@@ -1,12 +1,10 @@
-## eros 主项目地址
-- [https://github.com/bmfe/eros](https://github.com/bmfe/eros)
-
+## Bfban APP
+   由Cabbagelol负责维护的联Ban移动设备。
 
 ## 介绍
 
-> eros app 快速开发模板，可通过脚手架 eros-cli `init` 指令快速生成。
+> BfbanApp基于Weex + Vue上开发，涉及android和ios相关内容 
 
 ## 分支介绍
 
-- master (附带着 demo 的完整开发底层)
-- pure (无任何功能的纯净开发模板) `(开发中)`
+- master 主支，完整开发项目
