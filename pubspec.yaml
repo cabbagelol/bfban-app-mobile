@@ -1,0 +1,45 @@
+name: bfban
+description: bfban
+version: 1.0.0+1
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+
+  dio: 2.1.16
+
+  cookie_jar: ^1.0.0
+
+  # 状态管理
+  scoped_model: 1.0.1
+
+  # 路由管理
+  fluro: ^1.5.0
+
+  # 包信息
+  package_info: ^0.4.0+1
+
+  # html
+  html: 0.14.0+3
+
+  flutter_svg: 0.14.1
+
+  # 数据储存 https://pub.flutter-io.cn/packages/shared_preferences
+  shared_preferences: ^0.5.3+4
+
+  flutter_plugin_elui:
+    path: ../../flutter-elui-plugin-master
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
+    - assets/images/

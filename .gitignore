@@ -1,100 +1,73 @@
-Created by IDE
-.DS_Store
-.idea/
-*.iml
-
-docs
-
-.*
-!.gitignore
-!.eslintrc
-!.editorconfig
-!.babelrc
-
-# Node
-eros-widget/
-logs
-*.log
-npm-debug.log*
-.npm
-node_modules
-dist
-bower_components
-
-# Runtime data
-pids
-*.pid
-*.seed
-
-# Android
-# built application files
-*.apk
-*.ap_
-wxframework
-sdk
-bmwidget
-# files for the dex VM
-*.dex
-
-# Java class files
+# Miscellaneous
 *.class
-
-# generated files
-bin/
-gen/
-
-# Local configuration file (sdk path, etc)
-local.properties
-sign.properties
-
-# Eclipse project files
-.classpath
-.project
-
-# Android Studio
-.idea/
-.gradle
-/*/local.properties
-/*/outd
-build/
-.idea/
-.gradle/
-android/playground/local.properties
-
-/*/*/production
-*.iml
-*.iws
-*.ipr
-*~
+*.log
+*.pyc
 *.swp
-# END Android
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
 
-# IOS
-# Xcode
-*/build/*
-*.pbxuser
-*.pbxprog
-!default.pbxuser
-*.mode1v3
-!default.mode1v3
-*.mode2v3
-!default.mode2v3
-*.perspectivev3
-!default.perspectivev3
-xcuserdata
-profile
-*.moved-aside
-DerivedData
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
 .idea/
-*.hmap
-WeexiOSSDK
-Benmu-iOS-Library
 
-#CocoaPods
-Pods
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
 
-*.xccheckout
-*.xcworkspacedata
-*.xcworkspace
-Podfile.lock
-# END IOS
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Android related
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+
+# iOS/XCode related
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# Exceptions to above rules.
+!**/ios/**/default.mode1v3
+!**/ios/**/default.mode2v3
+!**/ios/**/default.pbxuser
+!**/ios/**/default.perspectivev3
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
