@@ -193,30 +193,87 @@ class _cheatersPageState extends State<cheatersPage> {
                       ],
                     ),
                   ),
-
+                  Container(
+                    color: Colors.black12,
+                    padding: EdgeInsets.only(
+                      top: 10,
+                      bottom: 10,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                cheatersInfo["data"] != null
+                                    ? cheatersInfo["data"]["games"][0]["game"]
+                                    : "",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                "被举报游戏",
+                                style: TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                cheatersInfoUser != null
+                                    ? cheatersInfo["data"]["cheater"][0]["n"].toString() + "/次"
+                                    : "",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                "围观",
+                                style: TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                (cheatersInfo["data"]["reports"].length + cheatersInfo["data"]["verifies"].length).toString() + "/条",
+                                //cheatersInfo["data"]["verifies"]
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                "回复",
+                                style: TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   /// E 信息方块
 
-                  detailCheatersCard(
-                    value: "第一次举报时间",
-                    cont: cheatersInfoUser != null
-                        ? cheatersInfoUser["createDatetime"]
-                        : "",
-                    fontSize: 15.0,
-                  ),
-                  detailCheatersCard(
-                    value: "最后更新",
-                    cont: cheatersInfoUser != null
-                        ? cheatersInfoUser["updateDatetime"]
-                        : "",
-                    fontSize: 15.0,
-                  ),
-                  detailCheatersCard(
-                    value: "被举报游戏",
-                    cont: cheatersInfo["data"] != null
-                        ? cheatersInfo["data"]["games"][0]["game"]
-                        : "",
-                    fontSize: 15.0,
-                  ),
                   Container(
                     margin: EdgeInsets.only(top: 10),
                     padding: EdgeInsets.all(20),
@@ -227,6 +284,15 @@ class _cheatersPageState extends State<cheatersPage> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
+                    ),
+                  ),
+                  Container(
+                    color: Colors.white,
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: <Widget>[
+
+                      ],
                     ),
                   ),
                   Container(
@@ -334,10 +400,8 @@ class _cheatersPageState extends State<cheatersPage> {
                 ),
                 Container(
                   color: Colors.white,
-                  margin: EdgeInsets.only(bottom: 20),
                   padding: EdgeInsets.all(20),
                   child: Html(
-//                    scrollable: false,
                     data: i["description"],
                     style: {
                       "img": Style(
