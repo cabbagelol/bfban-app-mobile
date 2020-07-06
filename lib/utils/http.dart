@@ -92,7 +92,7 @@ class Http extends ScaffoldState {
         receiveTimeout: RECEIVE_TIMEOUT,
       );
       dio = new Dio(options);
-      dio.interceptors.add(CookieManager(CookieJar()));
+//      dio.interceptors.add(CookieManager(CookieJar()));
     }
     return dio;
   }

@@ -43,18 +43,14 @@ class _RecordPageState extends State<recordPage> {
     await this._getIndexList(1);
   }
 
-  /**
-   * 下拉刷新方法,为list重新赋值
-   */
+  /// 下拉刷新方法,为list重新赋值
   Future<Null> _onRefresh() async {
     await Future.delayed(Duration(seconds: 1), () {
       this._getIndexList(1);
     });
   }
 
-  /**
-   * 获取用户信息
-   */
+  /// 获取用户信息
   getUserInfo() async {
     var result = await Storage.get('com.bfban.login');
     var data = jsonDecode(result);
@@ -124,9 +120,7 @@ class _RecordPageState extends State<recordPage> {
   }
 }
 
-/**
- * 记录卡片
- */
+/// 记录卡片
 class recordItem extends StatelessWidget {
   final item;
 

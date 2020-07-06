@@ -1,7 +1,6 @@
 /**
  * 功能：首页控制器
  * 描述：导航切换
- * By 向堂 2019/9/4
  */
 
 import 'package:flutter/material.dart';

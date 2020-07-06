@@ -10,23 +10,26 @@ dependencies:
 
   cupertino_icons: ^0.1.2
 
-  dio: 2.1.16
+  # 请求模块 https://pub.dev/packages/dio
+  dio: 3.0.9
 
-  cookie_jar: ^1.0.0
+  # cookie管理器
+  cookie_jar: 1.0.0
 
   # 状态管理
   scoped_model: 1.0.1
 
   # 路由管理
-  fluro: ^1.5.0
+  fluro: 1.6.3
 
   # 包信息
   package_info: ^0.4.0+1
 
   # html
-  html: 0.14.0+3
+  flutter_html: 1.0.0
 
-  flutter_svg: 0.14.1
+  # svg渲染模块 https://pub.dev/packages/flutter_svg
+  flutter_svg: ^0.17.4
 
   # 数据储存 https://pub.flutter-io.cn/packages/shared_preferences
   shared_preferences: ^0.5.3+4

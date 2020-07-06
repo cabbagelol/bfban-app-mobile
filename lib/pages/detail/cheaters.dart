@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_html/style.dart';
 
 class cheatersPage extends StatefulWidget {
   final id;
@@ -29,6 +31,7 @@ class _cheatersPageState extends State<cheatersPage> {
   Future _getCheatersInfo() async {
     var result =
         await Http.request('api/cheaters/${widget.id}', method: Http.GET);
+
     if (result.data != null && result.data["error"] == 0) {
       setState(() {
         cheatersInfo = result.data ?? new Map();
@@ -117,6 +120,7 @@ class _cheatersPageState extends State<cheatersPage> {
                       ],
                     ),
                   ),
+
                   Container(
                     margin: EdgeInsets.only(top: 20),
                     padding: EdgeInsets.all(20),
@@ -129,30 +133,107 @@ class _cheatersPageState extends State<cheatersPage> {
                       ),
                     ),
                   ),
+
+                  /// S 信息方块
+                  Container(
+                    color: Colors.black12,
+                    padding: EdgeInsets.only(
+                      top: 10,
+                      bottom: 10,
+                      left: 20,
+                      right: 20,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                cheatersInfoUser != null
+                                    ? cheatersInfoUser["createDatetime"]
+                                    : "",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                "第一次举报时间",
+                                style: TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                cheatersInfoUser != null
+                                    ? cheatersInfoUser["updateDatetime"]
+                                    : "",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                "最后更新",
+                                style: TextStyle(
+                                  color: Colors.white54,
+                                  fontSize: 12,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  /// E 信息方块
+
                   detailCheatersCard(
                     value: "第一次举报时间",
                     cont: cheatersInfoUser != null
                         ? cheatersInfoUser["createDatetime"]
                         : "",
+                    fontSize: 15.0,
                   ),
                   detailCheatersCard(
                     value: "最后更新",
                     cont: cheatersInfoUser != null
                         ? cheatersInfoUser["updateDatetime"]
                         : "",
+                    fontSize: 15.0,
                   ),
                   detailCheatersCard(
                     value: "被举报游戏",
                     cont: cheatersInfo["data"] != null
                         ? cheatersInfo["data"]["games"][0]["game"]
                         : "",
-                    onTap: () {},
+                    fontSize: 15.0,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 100),
+                    margin: EdgeInsets.only(top: 10),
                     padding: EdgeInsets.all(20),
                     child: Text(
-                      "时间线",
+                      "管理记录",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      "玩家举报记录",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -171,10 +252,10 @@ class _cheatersPageState extends State<cheatersPage> {
   static getUsetIdentity(type) {
     switch (type) {
       case "admin":
-        return "【管理员】";
+        return "管理员";
         break;
       case "normal":
-        return "【玩家】";
+        return "玩家";
         break;
     }
   }
@@ -188,28 +269,88 @@ class _cheatersPageState extends State<cheatersPage> {
       (i) {
         list.add(
           Container(
+            color: Colors.white,
             child: Column(
               children: <Widget>[
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      color: Colors.white30,
-                      padding: EdgeInsets.only(left: 20),
-                      child: Text("${getUsetIdentity(i["privilege"])}",
-                          style: style),
+                      decoration: new BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      ),
+                      margin: EdgeInsets.only(
+                        left: 20,
+                        top: 5,
+                        bottom: 5,
+                        right: 10,
+                      ),
+                      padding: EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: 1,
+                        bottom: 1,
+                      ),
+                      child: Text(
+                        "${getUsetIdentity(i["privilege"])}",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
-                    Text("${i["username"]}举报 ${cheatersInfoUser["originId"]}:",
-                        style: style),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "${i["username"]}举报 ${cheatersInfoUser["originId"]}:",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          "行为: ${i['cheatMethods']}",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          "发布时间: ${i['createDatetime']}",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
                 Container(
-                  color: Colors.white30,
+                  color: Colors.white,
                   margin: EdgeInsets.only(bottom: 20),
                   padding: EdgeInsets.all(20),
-//                  child: HtmlView(
+                  child: Html(
 //                    scrollable: false,
-//                    data: i["description"],
-//                  ),
+                    data: i["description"],
+                    style: {
+                      "img": Style(
+                        border: Border.all(
+                          width: 1.0,
+                          color: Colors.black12,
+                        ),
+                      ),
+                    },
+                    onImageTap: (src) {
+                      // Display the image in large form.
+                    },
+                  ),
                 )
               ],
             ),
@@ -223,16 +364,45 @@ class _cheatersPageState extends State<cheatersPage> {
   }
 }
 
+/// WG九宫格
+class detailCellCard extends StatelessWidget {
+  final text;
+  final value;
+
+  detailCellCard({
+    this.text = "",
+    this.value = "",
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    throw Column(
+      children: <Widget>[
+        Text(
+          text ?? "",
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+/// WG单元格
 class detailCheatersCard extends StatelessWidget {
   final value;
   final cont;
   final type;
   final onTap;
+  final fontSize;
 
   detailCheatersCard({
     this.value,
     this.cont,
     this.type = '0',
+    this.fontSize,
     this.onTap,
   });
 
@@ -258,7 +428,7 @@ class detailCheatersCard extends StatelessWidget {
                     value,
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: fontSize ?? 20,
                     ),
                   ),
                 ],
