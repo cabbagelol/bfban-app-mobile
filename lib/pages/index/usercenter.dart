@@ -35,6 +35,10 @@ class _usercenterState extends State<usercenter> {
   getUserInfo() async {
     var result = await Storage.get('com.bfban.login');
 
+    if (result == null) {
+      return;
+    }
+
     var data = jsonDecode(result);
 
     setState(() {

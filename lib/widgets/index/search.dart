@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 /**
  * 搜索
  * 公共头
@@ -44,17 +45,21 @@ class SearchHeadState extends State<SearchHead> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 10),
+      padding: EdgeInsets.only(top: 10, bottom: 15),
       child: Row(
         children: <Widget>[
           Expanded(
               flex: 1,
               child: Container(
+                margin: EdgeInsets.only(
+                  top: 0,
+                  bottom: 0,
+                ),
                 decoration: BoxDecoration(
                     color: Color.fromRGBO(238, 238, 238, 1),
-                    borderRadius: BorderRadius.circular(5.0)),
+                    borderRadius: BorderRadius.circular(5.0),
+                ),
                 child: Container(
-                  padding: EdgeInsets.all(8),
                   child: Row(
                     children: <Widget>[
                       Center(

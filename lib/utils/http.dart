@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'dart:async';
 
@@ -17,8 +18,8 @@ class Http extends ScaffoldState {
 
   /// default options
   static String API_PREFIX = Config.apiHost['url'] + '/';
-  static const int CONNECT_TIMEOUT = 10000;
-  static const int RECEIVE_TIMEOUT = 10000;
+  static const int CONNECT_TIMEOUT = 20000;
+  static const int RECEIVE_TIMEOUT = 20000;
 
   /// http request methods
   static const String GET = 'get';
@@ -92,7 +93,9 @@ class Http extends ScaffoldState {
         receiveTimeout: RECEIVE_TIMEOUT,
       );
       dio = new Dio(options);
-//      dio.interceptors.add(CookieManager(CookieJar()));
+      dio.interceptors.add(
+          CookieManager(CookieJar()),
+      );
     }
     return dio;
   }

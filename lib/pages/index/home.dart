@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/widgets/index/search.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_plugin_elui/elui.dart';
 
 class homePage extends StatefulWidget {
   @override
@@ -35,7 +36,8 @@ class _homePageState extends State<homePage> {
   void _getIndexList(index) async {
     var result = await Http.request(
         'api/cheaters/?game=bf1&status=100&cd=&ud=&page=${index}&sort=updateDatetime&tz=Asia%2FShanghai&limit=40',
-        method: Http.GET);
+        method: Http.GET,
+    );
 
     setState(() {
       indexPagesState = true;
@@ -43,7 +45,7 @@ class _homePageState extends State<homePage> {
 
     print(result);
 
-    if (result.data != null && result.data["error"] == 0) {
+    if (result["code"] == 0) {
       setState(() {
         indexDate = result.data;
         if (index > 1) {
@@ -54,6 +56,10 @@ class _homePageState extends State<homePage> {
           indexDateList = result.data["data"];
         }
       });
+    } else if (result["code"] == -2) {
+      EluiMessageComponent.error(context)(
+          child: Text("请求异常请联系开发者"),
+      );
     }
 
     setState(() {

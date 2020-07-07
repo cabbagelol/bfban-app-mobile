@@ -34,10 +34,11 @@ class HomePageState extends State<HomePage> {
       key: _scaffoldKey,
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-          image: AssetImage('assets/images/bk-companion.jpg'),
-          fit: BoxFit.fitHeight,
-        )),
+          image: DecorationImage(
+            image: AssetImage('assets/images/bk-companion.jpg'),
+            fit: BoxFit.fitHeight,
+          ),
+        ),
         child: Column(
           children: <Widget>[
             Expanded(
@@ -45,7 +46,8 @@ class HomePageState extends State<HomePage> {
                 child: IndexedStack(
                   children: widgets,
                   index: currentPage,
-                )),
+                ),
+            ),
             KKBottomAppBar(
               onTabSeleted: onTap,
               actviveColor: Colors.yellow,

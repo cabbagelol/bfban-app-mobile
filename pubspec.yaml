@@ -14,7 +14,8 @@ dependencies:
   dio: 3.0.9
 
   # cookie管理器
-  cookie_jar: 1.0.0
+#  cookie_jar: 1.0.0
+  dio_cookie_manager: 1.0.0
 
   # 状态管理
   scoped_model: 1.0.1
@@ -25,14 +26,17 @@ dependencies:
   # 包信息
   package_info: ^0.4.0+1
 
-  # html
-  flutter_html: 1.0.0
+  # html https://pub.dev/packages/flutter_html
+  flutter_html: ^1.0.0-pre.1
 
   # svg渲染模块 https://pub.dev/packages/flutter_svg
   flutter_svg: ^0.17.4
 
   # 数据储存 https://pub.flutter-io.cn/packages/shared_preferences
   shared_preferences: ^0.5.3+4
+
+
+  video_player: '0.10.11+2'
 
   flutter_plugin_elui:
     path: ../../flutter-elui-plugin-master
@@ -46,3 +50,4 @@ flutter:
   assets:
     - assets/
     - assets/images/
+    - assets/images/edit/

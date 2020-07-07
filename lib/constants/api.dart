@@ -23,8 +23,8 @@ class Config {
       case Env.LOCAL:
       default:
         return {
-          "url": "https://bfban.com",
-          "imgUrl": imgUrl
+          "url": "localhost:8080",
+          "imgUrl": imgUrl + '/'
         };
     }
   }
