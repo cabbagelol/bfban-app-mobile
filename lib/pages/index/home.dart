@@ -35,7 +35,7 @@ class _homePageState extends State<homePage> {
   /// 获取列表
   void _getIndexList(index) async {
     var result = await Http.request(
-        'api/cheaters/?game=bf1&status=100&cd=&ud=&page=${index}&sort=updateDatetime&tz=Asia%2FShanghai&limit=40',
+        'api/cheaters/?game=bfv&status=100&cd=&ud=&page=${index}&sort=updateDatetime&tz=Asia%2FShanghai&limit=40',
         method: Http.GET,
     );
 
@@ -43,17 +43,15 @@ class _homePageState extends State<homePage> {
       indexPagesState = true;
     });
 
-    print(result);
-
-    if (result["code"] == 0) {
+    if (result["error"] == 0) {
       setState(() {
-        indexDate = result.data;
+        indexDate = result;
         if (index > 1) {
-          result.data["data"].forEach((i) {
+          result["data"].forEach((i) {
             indexDateList.add(i);
           });
         } else {
-          indexDateList = result.data["data"];
+          indexDateList = result["data"];
         }
       });
     } else if (result["code"] == -2) {

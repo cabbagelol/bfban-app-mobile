@@ -17,7 +17,6 @@ class Http extends ScaffoldState {
   static Dio dio;
 
   /// default options
-  static String API_PREFIX = Config.apiHost['url'] + '/';
   static const int CONNECT_TIMEOUT = 20000;
   static const int RECEIVE_TIMEOUT = 20000;
 
@@ -31,6 +30,7 @@ class Http extends ScaffoldState {
   /// request method
   static Future request(
     String url, {
+    typeUrl = "url",
     data,
     method,
     headers,
@@ -45,38 +45,44 @@ class Http extends ScaffoldState {
       }
     });
 
-    print('请求地址：【' + method + '  ${API_PREFIX + url}】');
+    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
     print('请求参数：' + data.toString());
 
     Dio dio = createInstance();
     var result;
     try {
-      Response response = await dio.request(url,
-          data: data, options: new Options(method: method, headers: headers));
-      result = response;
+      Response response = await dio.request(
+        url,
+        data: data,
+        options: new Options(
+          method: method,
+          headers: headers,
+        ),
+      );
+      result = response.data;
       print('响应数据：' + response.toString());
     } on DioError catch (e) {
       switch (e.type) {
         case DioErrorType.RECEIVE_TIMEOUT:
-          return {'code': -1};
+          return {'error': -1};
           break;
         case DioErrorType.RESPONSE:
-          return {'code': -2};
+          return {'error': -2};
           break;
         case DioErrorType.CANCEL:
-          return {'code': -3};
+          return {'error': -3};
           break;
         case DioErrorType.CONNECT_TIMEOUT:
-          return {'code': -4};
+          return {'error': -4};
           break;
         case DioErrorType.DEFAULT:
-          return {'code': -5};
+          return {'error': -5};
           break;
         case DioErrorType.SEND_TIMEOUT:
-          return {'code': -6};
+          return {'error': -6};
           break;
         case DioErrorType.DEFAULT:
-          return {'code': -7};
+          return {'error': -7};
           break;
       }
       print('请求出错：' + e.toString());
@@ -88,13 +94,13 @@ class Http extends ScaffoldState {
     if (dio == null) {
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
       BaseOptions options = new BaseOptions(
-        baseUrl: API_PREFIX, // ignore: undefined_named_parameter
+        baseUrl: Config.apiHost['url'] + '/', // ignore: undefined_named_parameter
         connectTimeout: CONNECT_TIMEOUT,
         receiveTimeout: RECEIVE_TIMEOUT,
       );
       dio = new Dio(options);
       dio.interceptors.add(
-          CookieManager(CookieJar()),
+        CookieManager(CookieJar()),
       );
     }
     return dio;

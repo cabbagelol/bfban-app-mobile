@@ -16,7 +16,8 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         return {
-          "url": "https://bfban.com",
+          "url": "https://bf.bamket.com",
+          "tracker": "https://api.tracker.gg",
           "imgUrl": imgUrl + '/'
         };
       case Env.DEV:  // 开发
