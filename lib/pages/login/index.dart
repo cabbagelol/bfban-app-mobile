@@ -63,7 +63,7 @@ class _loginPageState extends State<loginPage> {
     });
 
     Response<dynamic> result = await Http.request(
-      'https://bfban.com/api/captcha?r=${t}',
+      'api/captcha?r=${t}',
       method: Http.GET,
     );
 

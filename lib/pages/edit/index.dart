@@ -5,6 +5,7 @@ import 'package:flutter_plugin_elui/elui.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:bfban/widgets/edit/ImageRadioController.dart';
+import 'package:bfban/widgets/edit/gameTypeRadio.dart';
 
 class editPage extends StatefulWidget {
   @override
@@ -134,39 +135,33 @@ class _editPageState extends State<editPage> {
 
             /// S 游戏ID
             Container(
+              color: Colors.yellow,
+              child: EluiTipComponent(
+                child: Text("一次只填写一个ID，不要把战队名字写进来，不要写成自己的ID"),
+              ),
+            ),
+            Container(
+              color: Colors.yellow,
+              child: EluiTipComponent(
+                child: Text("游戏ID是不区分大小写的，但请特别注意区分i I 1 l L o O 0，正确填写举报ID"),
+              ),
+            ),
+            Container(
               color: Color(0xff111b2b),
               padding: EdgeInsets.only(
                 left: 20,
                 right: 20,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "游戏ID",
-                    style: TextStyle(
+              child: EluiInputComponent(
+                title: "游戏ID",
+                theme: EluiInputTheme(
+                    textStyle: TextStyle(
                       color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: EluiInputComponent(
-                      theme: EluiInputTheme(
-                          textStyle: TextStyle(
-                            color: Colors.white,
-                          )
-                      ),
-                      Internalstyle: true,
-                      value: "",
-                      placeholder: "233",
-                    ),
-                  )
-                ],
+                    )
+                ),
+                Internalstyle: true,
+                value: "",
+                placeholder: "233",
               ),
             ),
             /// E 游戏ID
@@ -228,64 +223,3 @@ class _editPageState extends State<editPage> {
   }
 }
 
-/// 游戏类型单选
-class gameTypeRadio extends StatelessWidget {
-  final select;
-  final child;
-  final bool index;
-  final Function onTap;
-
-  gameTypeRadio({
-    this.select = 1,
-    this.child,
-    this.index = false,
-    this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        padding: EdgeInsets.only(
-          top: 8,
-          left: 5,
-          right: 5,
-          bottom: 8,
-        ),
-        decoration: BoxDecoration(
-          color: index ? Color(0xff364e80) : Colors.transparent,
-          border: Border(
-            top: BorderSide(
-              width: 1,
-              color: Color(0xff364e80) ,
-            ),
-            bottom: BorderSide(
-              width: 1,
-              color: Color(0xff364e80) ,
-            ),
-            left: select == 2
-                ? BorderSide(
-              width: 1,
-              color: Colors.transparent,
-            )
-                : BorderSide(
-              width: 1,
-              color: Color(0xff364e80) ,
-            ),
-            right: select == 2
-                ? BorderSide(
-              width: 1,
-              color: Colors.transparent,
-            )
-                : BorderSide(
-              width: 1,
-              color: Color(0xff364e80) ,
-            ),
-          ),
-        ),
-        child: child,
-      ),
-      onTap: this.onTap,
-    );
-  }
-}

@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
  */
 
 import 'package:flutter/material.dart';
+import 'package:flutter_plugin_elui/_input/index.dart';
 
 class SearchHead extends StatefulWidget {
   final Key key;
@@ -20,7 +21,7 @@ class SearchHead extends StatefulWidget {
     this.left,
     this.right,
     this.onSearch,
-    this.onChange
+    this.onChange,
   }) : super(key: key);
 
   @override
@@ -31,7 +32,6 @@ class SearchHeadState extends State<SearchHead> {
   @override
   void initState() {
     super.initState();
-
   }
 
   // 输入框onChange
@@ -45,58 +45,37 @@ class SearchHeadState extends State<SearchHead> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10, bottom: 15),
+      decoration: BoxDecoration(
+        color: Color.fromRGBO(238, 238, 238, 1),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
       child: Row(
         children: <Widget>[
-          Expanded(
-              flex: 1,
-              child: Container(
-                margin: EdgeInsets.only(
-                  top: 0,
-                  bottom: 0,
-                ),
-                decoration: BoxDecoration(
-                    color: Color.fromRGBO(238, 238, 238, 1),
-                    borderRadius: BorderRadius.circular(5.0),
-                ),
-                child: Container(
-                  child: Row(
-                    children: <Widget>[
-                      Center(
-                        child: Container(
-                          margin: EdgeInsets.only(left: 10, right: 5),
-                          child: Icon(
-                            Icons.search,
-                            color: Color(0xFF979797),
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: TextField(
-                                onChanged: _onChange,
-                                style: TextStyle(
-                                    fontSize: 14
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: '搜索玩家名称',
-                                  contentPadding: EdgeInsets.all(0),
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )),
+          Flexible(
+            flex: 1,
+            child: EluiInputComponent(
+              value: "",
+              placeholder: "搜索内容",
+              Internalstyle: true,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+              right: 2,
+              left: 4,
+            ),
+            child: FlatButton(
+              disabledColor: Colors.white70,
+              color: Color(0xff364e80),
+              child: Icon(
+                Icons.search,
+                color: Colors.white,
+                size: 20,
+              ),
+              onPressed: () {},
+            ),
+            height: 45,
+          )
         ],
       ),
     );

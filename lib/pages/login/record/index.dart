@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:fluro/fluro.dart';
-
 import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
 
 class recordPage extends StatefulWidget {
   @override
@@ -13,22 +12,27 @@ class recordPage extends StatefulWidget {
 
 class _RecordPageState extends State<recordPage> {
   ScrollController _scrollController = ScrollController();
+
   var indexDate = new Map();
+
   int indexPagesIndex = 1;
+
   bool indexPagesState = true;
-  List indexDateList = new List();
+
+  List indexDataList = new List();
+
   var userInfo;
+
   var userInfoState;
 
   @override
   void initState() {
     super.initState();
+
     this.ready();
+
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        print('滑动到了最底部');
-      }
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {}
     });
   }
 
@@ -55,8 +59,6 @@ class _RecordPageState extends State<recordPage> {
     var result = await Storage.get('com.bfban.login');
     var data = jsonDecode(result);
 
-    print(data);
-
     setState(() {
       userInfo = data;
       userInfoState = data.toString().length > 0 ? true : false;
@@ -65,8 +67,7 @@ class _RecordPageState extends State<recordPage> {
 
   /// 获取列表
   void _getIndexList(index) async {
-    var result =
-        await Http.request('api/account/${userInfo["uId"]}', method: Http.GET);
+    var result = await Http.request('api/account/${userInfo["uId"]}', method: Http.GET);
 
     setState(() {
       indexPagesState = true;
@@ -77,10 +78,10 @@ class _RecordPageState extends State<recordPage> {
         indexDate = result.data;
         if (index > 1) {
           result.data["data"]["reports"].forEach((i) {
-            indexDateList.add(i);
+            indexDataList.add(i);
           });
         } else {
-          indexDateList = result.data["data"]["reports"];
+          indexDataList = result.data["data"]["reports"];
         }
       });
     }
@@ -107,9 +108,9 @@ class _RecordPageState extends State<recordPage> {
               onRefresh: _onRefresh,
               child: ListView.builder(
                 controller: _scrollController,
-                itemCount: indexDateList.length,
+                itemCount: indexDataList.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return recordItem(item: indexDateList[index]);
+                  return recordItem(item: indexDataList[index]);
                 },
               ),
             ),
@@ -150,13 +151,11 @@ class recordItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(item["originId"],
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                  Text(item["originId"], style: TextStyle(color: Colors.white, fontSize: 20)),
                   Row(
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-
                           Text(
                             "游戏类型: ${item["game"].toString()}" ?? "",
                             style: TextStyle(
@@ -185,13 +184,8 @@ class recordItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text("发布日期:",
-                    style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, .6),
-                        fontSize: 12)),
-                Text("${item["createDatetime"]}",
-                    style: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, .6), fontSize: 13))
+                Text("发布日期:", style: TextStyle(color: Color.fromRGBO(255, 255, 255, .6), fontSize: 12)),
+                Text("${item["createDatetime"]}", style: TextStyle(color: Color.fromRGBO(255, 255, 255, .6), fontSize: 13))
               ],
             )
           ],

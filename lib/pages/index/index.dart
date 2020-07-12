@@ -33,12 +33,13 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/bk-companion.jpg'),
-            fit: BoxFit.fitHeight,
-          ),
-        ),
+        color: Color(0xff111b2b),
+//        decoration: BoxDecoration(
+//          image: DecorationImage(
+//            image: AssetImage('assets/images/bk-companion.jpg'),
+//            fit: BoxFit.fitHeight,
+//          ),
+//        ),
         child: Column(
           children: <Widget>[
             Expanded(

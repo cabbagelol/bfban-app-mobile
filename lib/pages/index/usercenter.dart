@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:fluro/fluro.dart';
-import 'package:flutter/widgets.dart';
-
-import 'package:bfban/router/router.dart';
 import 'package:bfban/pages/detail/cheaters.dart';
+import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/storage.dart';
-
+import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 
 class usercenter extends StatefulWidget {
@@ -50,7 +48,7 @@ class _usercenterState extends State<usercenter> {
   /**
    * 销毁用户信息
    */
-  remUserInfo () async {
+  remUserInfo() async {
     await Storage.remove('com.bfban.login');
     setState(() {
       userInfoState = false;
@@ -87,9 +85,7 @@ class _usercenterState extends State<usercenter> {
                     ),
                     Wrap(
                       children: <Widget>[
-                        Text('你愿加入联盟成员贡献作弊者名单吗？',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15)),
+                        Text('你愿加入联盟成员贡献作弊者名单吗？', style: TextStyle(color: Colors.white, fontSize: 15)),
                       ],
                     ),
                   ],
@@ -116,10 +112,7 @@ class _usercenterState extends State<usercenter> {
         !userInfoState
             ? GestureDetector(
                 onTap: () {
-                  Routes.router
-                      .navigateTo(context, '/login',
-                          transition: TransitionType.fadeIn)
-                      .then((res) {
+                  Routes.router.navigateTo(context, '/login', transition: TransitionType.fadeIn).then((res) {
                     if (res == 'loginBack') {
                       this.getUserInfo();
                     }
@@ -131,54 +124,90 @@ class _usercenterState extends State<usercenter> {
                   type: "1",
                 ),
               )
-            : detailCheatersCard(
-                value: "用户名称",
-                cont: "${userInfo['username']}",
-                type: "1",
+            : EluiCellComponent(
+                title: "用户名称",
+                theme: EluiCellTheme(
+                  backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+                ),
+                cont: Text(
+                  "${userInfo['username']}",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onTap: () {
+                  Routes.router.navigateTo(
+                    context,
+                    '/record',
+                    transition: TransitionType.cupertino,
+                  );
+                },
               ),
         userInfoState
-            ? Column(
-                children: <Widget>[
-                  detailCheatersCard(
-                    value: "举报记录",
-                    cont: "",
-                    type: "1",
-                    onTap: () {
-                      Routes.router
-                          .navigateTo(context, '/record',
-                              transition: TransitionType.fadeIn);
-                    },
-                  ),
-                ],
+            ? EluiCellComponent(
+                title: "举报记录",
+                theme: EluiCellTheme(
+                  backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+                ),
+                islink: true,
+                onTap: () {
+                  Routes.router.navigateTo(
+                    context,
+                    '/record',
+                    transition: TransitionType.cupertino,
+                  );
+                },
               )
             : Container(),
         Padding(
           padding: EdgeInsets.only(bottom: 20),
         ),
-        detailCheatersCard(
-          value: "网站地址",
-          cont: "https://bfban.com",
-          type: "1",
+
+        EluiCellComponent(
+          title: "网站地址",
+          theme: EluiCellTheme(
+            backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+          ),
+          cont: Text(
+            "https://bfban.com",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
-        detailCheatersCard(
-          value: "版本",
-          cont: "0.0.1",
-          type: "1",
+        EluiCellComponent(
+          title: "版本",
+          theme: EluiCellTheme(
+            backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+          ),
+          cont: Text(
+            "0.0.1",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
 
-        userInfoState ? Padding(
-          padding: EdgeInsets.only(
-            top: 30,
-            left: 20,
-            right: 20,
-          ),
-          child: EluiButtonComponent(
-            child: Text("注销"),
-            onTap: () {
-              this.remUserInfo();
-            },
-          ),
-        ) : Container()
+        userInfoState
+            ? Padding(
+                padding: EdgeInsets.only(
+                  top: 30,
+                  left: 20,
+                  right: 20,
+                ),
+                child: EluiButtonComponent(
+                  child: Text(
+                    "注销",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  onTap: () {
+                    this.remUserInfo();
+                  },
+                ),
+              )
+            : Container()
       ],
     );
   }

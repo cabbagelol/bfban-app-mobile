@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 
 import 'package:bfban/utils/index.dart';
+import 'package:bfban/router/router.dart';
+
 import 'package:flutter_html/style.dart';
 
 class cheatersPage extends StatefulWidget {
@@ -50,6 +53,21 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
       "s": "待观察",
       "t": "存在嫌疑,待观察",
       "c": Colors.red,
+    },
+    {
+      "s": "清白",
+      "t": "最终判决没有作弊行为",
+      "c": Colors.red,
+    },
+    {
+      "s": "回收站",
+      "t": "关闭的审核",
+      "c": Colors.orangeAccent,
+    },
+    {
+      "s": "讨论中",
+      "t": "需继续讨论",
+      "c": Colors.orangeAccent,
     }
   ];
 
@@ -71,7 +89,7 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
       typeUrl: "tracker",
     );
 
-    if (result["error"] == 0) {}
+//    if (result.data["error"] == 0) {}
   }
 
   /// 获取bfban用户信息
@@ -81,15 +99,15 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
       method: Http.GET,
     );
 
-    if (result != null && result["error"] == 0) {
+    if (result.data != null && result.data["error"] == 0) {
       setState(() {
-        cheatersInfo = result ?? new Map();
-        cheatersInfoUser = result["data"]["cheater"][0];
+        cheatersInfo = result.data ?? new Map();
+        cheatersInfoUser = result.data["data"]["cheater"][0];
       });
 
       /// 取最新ID查询
-      if (result["data"]["origins"].length > 0) {
-        this._getTrackerCheatersInfo(result["data"]["origins"][0]["cheaterGameName"], result["data"]["games"]);
+      if (result.data["data"]["origins"].length > 0) {
+        this._getTrackerCheatersInfo(result.data["data"]["origins"][0]["cheaterGameName"], result.data["data"]["games"]);
       }
 
       return cheatersInfo;
@@ -820,10 +838,6 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Container(
-                                              constraints: BoxConstraints(
-                                                minHeight: 60,
-                                                maxHeight: 100,
-                                              ),
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: <Widget>[
@@ -848,18 +862,18 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                                               padding: EdgeInsets.only(
                                                 right: 20,
                                               ),
-                                              decoration: BoxDecoration(
-                                                border: Border(
-                                                  right: BorderSide(
-                                                    width: 1,
-                                                    color: Colors.white12,
-                                                  ),
-                                                ),
-                                              ),
                                             ),
                                             Expanded(
                                               flex: 1,
                                               child: Container(
+                                                decoration: BoxDecoration(
+                                                  border: Border(
+                                                    left: BorderSide(
+                                                      width: 1,
+                                                      color: Colors.white12,
+                                                    ),
+                                                  ),
+                                                ),
                                                 child: Column(
                                                   children: <Widget>[
                                                     Text(
@@ -1062,16 +1076,24 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                           color: Colors.orangeAccent,
                         ),
                         Expanded(
-                          flex: 1,
-                          child: Text(
-                            "补充证据",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
+                            flex: 1,
+                            child: GestureDetector(
+                              child: Text(
+                                "补充证据",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              onTap: () {
+                                Routes.router.navigateTo(
+                                  context,
+                                  '/reply',
+                                  transition: TransitionType.cupertino,
+                                );
+                              },
+                            ))
                       ],
                     ),
                   )

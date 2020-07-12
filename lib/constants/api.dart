@@ -29,4 +29,25 @@ class Config {
         };
     }
   }
+
+  static Map get game {
+    return {
+      "type": [
+        {
+          "name": "BF1",
+          "img": {
+            "file": "assets/images/edit/battlefield-1-logo.png",
+            "network": "",
+          }
+        },
+        {
+          "name": "BFV",
+          "img": {
+            "file": "assets/images/edit/battlefield-v-png-logo.png",
+            "network": "",
+          }
+        },
+      ]
+    };
+  }
 }

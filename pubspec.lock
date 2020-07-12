@@ -35,7 +35,7 @@ packages:
       name: cached_network_image
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0-rc"
+    version: "2.2.0+1"
   charcode:
     dependency: transitive
     description:
@@ -184,7 +184,7 @@ packages:
   flutter_plugin_elui:
     dependency: "direct main"
     description:
-      path: "../../flutter-elui-plugin-master"
+      path: "../../flutter-elui-plugin"
       relative: true
     source: path
     version: "0.0.1"
@@ -212,6 +212,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.14.0+3"
+  html_editor:
+    dependency: "direct main"
+    description:
+      name: html_editor
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   http:
     dependency: transitive
     description:
@@ -268,6 +275,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.8"
+  mime:
+    dependency: transitive
+    description:
+      name: mime
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.6+3"
   open_iconic_flutter:
     dependency: transitive
     description:
@@ -400,7 +414,14 @@ packages:
       name: shared_preferences
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.5.7+3"
+    version: "0.5.8"
+  shared_preferences_linux:
+    dependency: transitive
+    description:
+      name: shared_preferences_linux
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.2+1"
   shared_preferences_macos:
     dependency: transitive
     description:

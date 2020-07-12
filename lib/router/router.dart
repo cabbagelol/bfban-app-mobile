@@ -8,6 +8,7 @@ import 'package:fluro/fluro.dart';
 // pages
 import 'package:bfban/pages/detail/cheaters.dart';
 import 'package:bfban/pages/edit/index.dart';
+import 'package:bfban/pages/edit/reply.dart';
 import 'package:bfban/pages/login/index.dart';
 import 'package:bfban/pages/login/record/index.dart';
 
@@ -33,6 +34,12 @@ class Routes {
         "url": "/edit",
         'item': (context, params) {
           return editPage();
+        }
+      },
+      {
+        "url": "/reply",
+        'item': (context, params) {
+          return replyPage();
         }
       },
       {

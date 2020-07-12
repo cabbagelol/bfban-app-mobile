@@ -32,6 +32,7 @@ class Http extends ScaffoldState {
     String url, {
     typeUrl = "url",
     data,
+    Map<String, dynamic> parame,
     method,
     headers,
   }) async {
@@ -45,21 +46,22 @@ class Http extends ScaffoldState {
       }
     });
 
-    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
-    print('请求参数：' + data.toString());
+//    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
+//    print('请求参数：' + data.toString());
 
     Dio dio = createInstance();
     var result;
     try {
       Response response = await dio.request(
-        url,
+        Config.apiHost[typeUrl] + '/' + url,
         data: data,
+        queryParameters: parame,
         options: new Options(
           method: method,
           headers: headers,
         ),
       );
-      result = response.data;
+      result = response;
       print('响应数据：' + response.toString());
     } on DioError catch (e) {
       switch (e.type) {

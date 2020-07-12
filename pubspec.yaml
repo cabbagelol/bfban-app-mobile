@@ -35,11 +35,13 @@ dependencies:
   # 数据储存 https://pub.flutter-io.cn/packages/shared_preferences
   shared_preferences: ^0.5.3+4
 
+  # 富文本 https://pub.flutter-io.cn/packages/html_editor
+  html_editor: ^1.0.1
 
   video_player: '0.10.11+2'
 
   flutter_plugin_elui:
-    path: ../../flutter-elui-plugin-master
+    path: ../../flutter-elui-plugin
 
 dev_dependencies:
   flutter_test:
