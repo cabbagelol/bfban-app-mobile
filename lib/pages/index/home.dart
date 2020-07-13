@@ -50,7 +50,7 @@ class _homePageState extends State<homePage> {
 
   /// 获取列表
   void _getIndexList() async {
-    var result = await Http.request(
+    Response result = await Http.request(
       'api/cheaters/',
       parame: cheatersPost,
       method: Http.GET,
@@ -71,7 +71,7 @@ class _homePageState extends State<homePage> {
           indexDataList = result.data["data"];
         }
       });
-    } else if (result["code"] == -2) {
+    } else if (result.data["code"] == -2) {
       EluiMessageComponent.error(context)(
         child: Text("请求异常请联系开发者"),
       );
@@ -460,7 +460,7 @@ class homeItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "${item["createDatetime"]}",
+                  new Date().getTimestampTransferCharacter(item["createDatetime"])["Y_D_M"],
                   style: TextStyle(
                     color: Color.fromRGBO(255, 255, 255, .6),
                     fontSize: 13,

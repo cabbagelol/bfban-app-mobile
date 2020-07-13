@@ -50,4 +50,16 @@ class Config {
       ]
     };
   }
+
+  static Map<String, String> get cheatingTpyes {
+    return {
+      "aimbot": "自瞄",
+      "wallhack": "透视",
+      "oneShotKill": "秒杀",
+      "damageChange": "改伤",
+      "stealth": "隐身",
+      "gadgetModify": "修改装备",
+      "shootingThroughWalls": "子弹穿墙",
+    };
+  }
 }

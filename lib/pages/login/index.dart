@@ -1,11 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_plugin_elui/elui.dart';
 
-import 'package:bfban/utils/storage.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:bfban/utils/storage.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -14,11 +13,12 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   String valueCaptcha = "";
+
   String CaotchaCookie = "";
+
   bool valueCaptchaLoad = false;
 
-  Widget buildTextField(TextEditingController controller, IconData icon,
-      bool obscureText, TextAlign align, int length) {
+  Widget buildTextField(TextEditingController controller, IconData icon, bool obscureText, TextAlign align, int length) {
     return TextField(
       controller: controller,
       maxLength: length,
@@ -70,6 +70,8 @@ class _loginPageState extends State<loginPage> {
     result.headers['set-cookie'].forEach((i) {
       CaotchaCookie += i + ';';
     });
+
+//    Storage.set("cookie", value: CaotchaCookie);
 
     setState(() {
       valueCaptcha = result.data;
@@ -170,10 +172,7 @@ class _loginPageState extends State<loginPage> {
                       ),
                       GestureDetector(
                         child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(5))
-                          ),
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5))),
                           margin: EdgeInsets.only(left: 10),
                           width: 100,
                           height: 55,
@@ -189,7 +188,7 @@ class _loginPageState extends State<loginPage> {
                         onTap: () {
                           this._getCaptcha();
                         },
-                      )
+                      ),
                     ],
                   ),
                   Container(

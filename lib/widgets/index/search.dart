@@ -54,7 +54,6 @@ class SearchHeadState extends State<SearchHead> {
           Flexible(
             flex: 1,
             child: EluiInputComponent(
-              value: "",
               placeholder: "搜索内容",
               Internalstyle: true,
             ),

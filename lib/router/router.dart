@@ -37,9 +37,11 @@ class Routes {
         }
       },
       {
-        "url": "/reply",
+        "url": "/reply/:id",
         'item': (context, params) {
-          return replyPage();
+          return replyPage(
+            data: params["id"][0],
+          );
         }
       },
       {

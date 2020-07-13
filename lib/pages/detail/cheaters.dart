@@ -1,15 +1,15 @@
 import 'dart:convert';
 
+import 'package:bfban/constants/api.dart';
+import 'package:bfban/router/router.dart';
+import 'package:bfban/utils/index.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_plugin_elui/elui.dart';
-
-import 'package:bfban/utils/index.dart';
-import 'package:bfban/router/router.dart';
-
 import 'package:flutter_html/style.dart';
+import 'package:flutter_plugin_elui/elui.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class cheatersPage extends StatefulWidget {
   final id;
@@ -36,6 +36,9 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
     Tab(text: '曾用名称'),
     Tab(text: '比赛表'),
   ];
+
+  /// 作弊行为
+  static Map cheatingTpyes = Config.cheatingTpyes;
 
   /// 进度状态
   final List<dynamic> startusIng = [
@@ -89,6 +92,8 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
       typeUrl: "tracker",
     );
 
+    print("22333: " + result.toString());
+
 //    if (result.data["error"] == 0) {}
   }
 
@@ -114,6 +119,23 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
     }
   }
 
+  /// 获取游戏类型
+  String _getGames(List games) {
+    String t = "";
+    games.forEach((element) {
+      t += "${element["game"].toString().toUpperCase()} ";
+    });
+    return t;
+  }
+
+  /// 回复链接执行
+  static _onPeUrl(String url) async {
+    if (url.length < 0) {
+      return;
+    }
+    await launch(url);
+  }
+
   /// 请求更新用户名称列表
   void _seUpdateUserNameList() async {
     var result = await Http.request(
@@ -130,135 +152,6 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
     }
   }
 
-  /// 获取管理记录
-  List<Widget> _getExamineLog() {
-    List<Widget> list = [];
-
-    /// 赞同
-    var confirms = cheatersInfo["data"]["confirms"] ?? [];
-
-    /// 管理审计
-    var verofies = cheatersInfo["verifies"] ?? [];
-
-    (verofies).forEach((i) {
-      list.add(
-        Container(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    decoration: new BoxDecoration(
-                      color: getUsetIdentity(i["privilege"])[2],
-                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                    ),
-                    margin: EdgeInsets.only(
-                      left: 20,
-                      top: 5,
-                      bottom: 5,
-                      right: 10,
-                    ),
-                    padding: EdgeInsets.only(
-                      left: 10,
-                      right: 10,
-                      top: 1,
-                      bottom: 1,
-                    ),
-                    child: Text(
-                      "${getUsetIdentity(i["privilege"])[0]}",
-                      style: TextStyle(
-                        color: getUsetIdentity(i["privilege"])[1],
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "${i["username"]}审查",
-                          //${cheatersInfoUser["originId"]}
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "认定行为: ${i['cheatMethods'] ?? "保持沉默"}",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Text(
-                          "发布时间: ${i['createDatetime']}",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      right: 10,
-                    ),
-                    child: Text(
-                      "回复",
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                        fontSize: 14,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-
-              /// Html评论内容
-              Container(
-                  margin: EdgeInsets.only(
-                    top: 2,
-                  ),
-                  color: Colors.white,
-                  child: Row(
-                    children: <Widget>[
-                      Padding(
-                        child: Text(
-                          "\“",
-                          style: TextStyle(
-                            fontSize: 40,
-                            color: Colors.black12,
-                          ),
-                        ),
-                        padding: EdgeInsets.only(left: 20),
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: Html(
-                          data: startusIng[int.parse(i["status"])]["t"] + ";" + i["suggestion"],
-                        ),
-                      )
-                    ],
-                  ))
-            ],
-          ),
-        ),
-      );
-    });
-    return list;
-  }
-
   /// 对比评论身份
   static getUsetIdentity(type) {
     switch (type) {
@@ -268,155 +161,626 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
       case "normal":
         return ["玩家", Colors.black, Colors.amber];
         break;
+      case "super":
+        return ["超管", Colors.white, Colors.blueAccent];
+        break;
       default:
         return ["未知", Colors.black, Colors.white12];
     }
   }
 
   /// 获取用户BFBAN中举报数据
-  static Widget _getUserInfo(cheatersInfo, cheatersInfoUser) {
+  static Widget _getUserInfo(context, Map cheatersInfo, cheatersInfoUser, startusIng) {
     List<Widget> list = [];
 
-    cheatersInfo["data"]["reports"].forEach(
+    /// 数据
+    Map _data = cheatersInfo["data"];
+
+    /// 所有用户回复信息
+    List _allReply = new List();
+
+    /// 回答
+    (_data["replies"] ?? []).forEach((i) => {
+          i["SystemType"] = 0,
+          _allReply.add(i),
+        });
+
+    /// 举报
+    (_data["reports"] ?? []).forEach((i) => {
+          i["SystemType"] = 1,
+          _allReply.add(i),
+        });
+
+    /// 审核
+    (_data["verifies"] ?? []).forEach((i) => {
+          i["SystemType"] = 2,
+          _allReply.add(i),
+        });
+
+    /// 赞同。审核员
+    (_data["confirms"] ?? []).forEach((i) => {
+          i["SystemType"] = 3,
+          _allReply.add(i),
+        });
+
+    /// 排序时间帖子
+    /// 序列化时间
+    _allReply.sort((time, timeing) =>
+        new Date().getTurnTheTimestamp(time["createDatetime"])["millisecondsSinceEpoch"] -
+        new Date().getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"]);
+
+    _allReply.forEach(
       (i) {
-        list.add(
-          Container(
-            padding: EdgeInsets.only(top: 10),
-            color: Colors.white,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
+        /// 作弊类型 若干
+        List<Widget> _cheatMethods = new List();
+        i['cheatMethods'].toString().split(",").forEach((i) {
+          _cheatMethods.add(EluiTagComponent(
+            value: cheatingTpyes[i] ?? '未知行为',
+            size: EluiTagSize.no2,
+            color: EluiTagColor.warning,
+          ));
+        });
+
+        switch (i["SystemType"].toString()) {
+          case "0":
+            list.add(
+              Container(
+                padding: EdgeInsets.only(
+                  top: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 10,
+                      color: Color(0xfff2f2f2),
+                    ),
+                  ),
+                ),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          decoration: new BoxDecoration(
+                            color: getUsetIdentity(i["fooPrivilege"])[2],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15.0),
+                            ),
+                          ),
+                          margin: EdgeInsets.only(
+                            left: 20,
+                            top: 5,
+                            bottom: 5,
+                            right: 10,
+                          ),
+                          padding: EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                            top: 1,
+                            bottom: 1,
+                          ),
+                          child: Text(
+                            "${getUsetIdentity(i["fooPrivilege"])[0]}",
+                            style: TextStyle(
+                              color: getUsetIdentity(i["fooPrivilege"])[1],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "${i["foo"]} 回复",
+                              //${cheatersInfoUser["originId"]}
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    /// Html评论内容
                     Container(
-                      decoration: new BoxDecoration(
-                        color: getUsetIdentity(i["privilege"])[2],
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      color: Colors.white,
+                      child: Html(
+                        data: i["content"],
+                        onLinkTap: (src) {
+                          _onPeUrl(i["bilibiliLink"].toString());
+                        },
                       ),
+                    )
+                  ],
+                ),
+              ),
+            );
+            break;
+          case "1":
+            list.add(
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 10,
+                      color: Color(0xfff2f2f2),
+                    ),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          decoration: new BoxDecoration(
+                            color: getUsetIdentity(i["privilege"])[2],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15.0),
+                            ),
+                          ),
+                          margin: EdgeInsets.only(
+                            left: 20,
+                            top: 5,
+                            bottom: 5,
+                            right: 10,
+                          ),
+                          padding: EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                            top: 1,
+                            bottom: 1,
+                          ),
+                          child: Text(
+                            "${getUsetIdentity(i["privilege"])[0]}",
+                            style: TextStyle(
+                              color: getUsetIdentity(i["privilege"])[1],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "${i["username"]} 举报在${i["game"]}作弊",
+                                //${cheatersInfoUser["originId"]}
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    "行为: ",
+                                    style: TextStyle(
+                                      color: Colors.black54,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Wrap(
+                                    spacing: 2,
+                                    runSpacing: 2,
+                                    children: _cheatMethods,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              right: 10,
+                            ),
+                            child: Text(
+                              "回复",
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            /// 帖子回复
+                            Routes.router.navigateTo(
+                              context,
+                              '/reply/${jsonEncode({
+                                "type": 1,
+                                "id": cheatersInfoUser["id"],
+                                "originUserId": cheatersInfoUser["originUserId"],
+                                "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                                "toUserId": i["userId"],
+                                "foo": i["username"],
+
+                                /// 取第一条举报信息下的userId
+                              })}',
+                              transition: TransitionType.cupertino,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+
+                    /// S 评论视频
+                    Container(
                       margin: EdgeInsets.only(
-                        left: 20,
                         top: 5,
-                        bottom: 5,
+                        left: 10,
                         right: 10,
                       ),
                       padding: EdgeInsets.only(
                         left: 10,
                         right: 10,
-                        top: 1,
-                        bottom: 1,
+                        top: 4,
+                        bottom: 4,
                       ),
-                      child: Text(
-                        "${getUsetIdentity(i["privilege"])[0]}",
-                        style: TextStyle(
-                          color: getUsetIdentity(i["privilege"])[1],
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "${i["username"]}的举报",
-                          //${cheatersInfoUser["originId"]}
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "行为: ${i['cheatMethods']}",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Text(
-                          "发布时间: ${i['createDatetime']}",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-
-                /// S 评论视频
-                Container(
-                    margin: EdgeInsets.only(
-                      top: 5,
-                      left: 10,
-                      right: 10,
-                    ),
-                    padding: EdgeInsets.only(
-                      left: 10,
-                      right: 10,
-                      top: 4,
-                      bottom: 4,
-                    ),
-                    decoration: BoxDecoration(
+                      decoration: BoxDecoration(
                         color: Color(0xfff2f2f2),
                         border: Border.all(
                           color: Colors.black12,
                           width: 1,
-                        )),
-                    child: Row(
-                      children: <Widget>[
-                        Text(
-                          "附加 ",
-                          style: TextStyle(
-                            fontSize: 12,
-                          ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            i["bilibiliLink"] == "" ? "暂无视频" : i["bilibiliLink"],
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            "附加 ",
                             style: TextStyle(
                               fontSize: 12,
                             ),
                           ),
-                        ),
-                        Icon(
-                          Icons.link,
-                          color: Colors.blueAccent,
-                        )
-                      ],
-                    )),
-
-                /// E 评论视频
-
-                /// Html评论内容
-                Container(
-                  color: Colors.white,
-                  child: Html(
-                    data: i["description"],
-                    style: {
-                      "img": Style(
-                        border: Border.all(
-                          width: 1.0,
-                          color: Colors.black12,
-                        ),
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              i["bilibiliLink"] == "" ? "暂无视频" : i["bilibiliLink"],
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            child: Icon(
+                              Icons.link,
+                              color: Colors.blueAccent,
+                            ),
+                            onTap: () {
+                              _onPeUrl(i["bilibiliLink"].toString());
+                            },
+                          ),
+                        ],
                       ),
-                    },
-                    onImageTap: (src) {
-                      // Display the image in large form.
-                    },
+                    ),
+
+                    /// E 评论视频
+
+                    /// Html评论内容
+                    Container(
+                      color: Colors.white,
+                      child: Html(
+                        data: i["description"],
+                        style: {
+                          "img": Style(
+                            border: Border.all(
+                              width: 1.0,
+                              color: Colors.black12,
+                            ),
+                          ),
+                        },
+                        onLinkTap: (src) {
+                          _onPeUrl(src);
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+            break;
+          case "2":
+            list.add(
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 10,
+                      color: Color(0xfff2f2f2),
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
-        );
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          decoration: new BoxDecoration(
+                            color: getUsetIdentity(i["privilege"])[2],
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15.0),
+                            ),
+                          ),
+                          margin: EdgeInsets.only(
+                            left: 20,
+                            top: 5,
+                            bottom: 5,
+                            right: 10,
+                          ),
+                          padding: EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                            top: 1,
+                            bottom: 1,
+                          ),
+                          child: Text(
+                            "${getUsetIdentity(i["privilege"])[0]}",
+                            style: TextStyle(
+                              color: getUsetIdentity(i["privilege"])[1],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "${i["username"]} 认为 ${startusIng[int.parse(i["status"])]["s"]}, 作弊判决：",
+                                //${cheatersInfoUser["originId"]}
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Wrap(
+                                spacing: 2,
+                                children: _cheatMethods,
+                              ),
+                              Text(
+                                "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              right: 10,
+                            ),
+                            child: Text(
+                              "回复",
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            /// 帖子回复
+                            Routes.router.navigateTo(
+                              context,
+                              '/reply/${jsonEncode({
+                                "type": 1,
+                                "id": cheatersInfoUser["id"],
+                                "originUserId": cheatersInfoUser["originUserId"],
+                                "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                                "toUserId": i["userId"],
+                                "foo": i["foo"],
+                                /// 取第一条举报信息下的userId
+                              })}',
+                              transition: TransitionType.cupertino,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+
+                    /// Html评论内容
+                    Container(
+                      color: Colors.white,
+                      child: Html(
+                        data: i["suggestion"],
+                        onLinkTap: (src) {
+                          _onPeUrl(src);
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+            break;
+          case "3":
+            list.add(
+              Container(
+                padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 10,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 10,
+                      color: Color(0xfff2f2f2),
+                    ),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          decoration: new BoxDecoration(
+                            color: getUsetIdentity(i["privilege"])[2],
+                            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                          ),
+                          margin: EdgeInsets.only(
+                            left: 20,
+                            top: 5,
+                            bottom: 5,
+                            right: 10,
+                          ),
+                          padding: EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                            top: 1,
+                            bottom: 1,
+                          ),
+                          child: Text(
+                            "${getUsetIdentity(i["privilege"])[0]}",
+                            style: TextStyle(
+                              color: getUsetIdentity(i["privilege"])[1],
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "${i["username"]} 同意该决定",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Wrap(
+                                spacing: 2,
+                                children: _cheatMethods,
+                              ),
+                              Text(
+                                "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          child: Container(
+                            margin: EdgeInsets.only(
+                              right: 10,
+                            ),
+                            child: Text(
+                              "回复",
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            /// 帖子回复
+                            Routes.router.navigateTo(
+                              context,
+                              '/reply/${jsonEncode({
+                                "type": 1,
+                                "id": cheatersInfoUser["id"],
+                                "originUserId": cheatersInfoUser["originUserId"],
+                                "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                                "toUserId": i["userId"],
+                                "foo": i["foo"],
+                                /// 取第一条举报信息下的userId
+                              })}',
+                              transition: TransitionType.cupertino,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+
+                    /// Html评论内容
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 2,
+                      ),
+                      color: Colors.white,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            child: Text(
+                              "\“",
+                              style: TextStyle(
+                                fontSize: 40,
+                                color: Colors.black12,
+                              ),
+                            ),
+                            padding: EdgeInsets.only(left: 20),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Html(
+                              data: (i["suggestion"] ?? ""), //  startusIng[int.parse(i["status"])]["t"] + ";" +
+                              onLinkTap: (src) {
+                                _onPeUrl(src);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+            break;
+        }
       },
     );
+
     return Column(
       children: list,
     );
@@ -681,7 +1045,7 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                                           children: <Widget>[
                                             Text(
                                               cheatersInfoUser != null
-                                                  ? cheatersInfoUser["createDatetime"].replaceAll("T", " ").replaceAll("Z", " ")
+                                                  ? new Date().getTimestampTransferCharacter(cheatersInfoUser["createDatetime"])["Y_D_M"]
                                                   : "",
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -705,7 +1069,7 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                                           children: <Widget>[
                                             Text(
                                               cheatersInfoUser != null
-                                                  ? cheatersInfoUser["updateDatetime"].replaceAll("T", " ").replaceAll("Z", " ")
+                                                  ? new Date().getTimestampTransferCharacter(cheatersInfoUser["updateDatetime"])["Y_D_M"]
                                                   : "",
                                               style: TextStyle(
                                                 color: Colors.white,
@@ -746,7 +1110,7 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                                         child: Column(
                                           children: <Widget>[
                                             Text(
-                                              cheatersInfo["data"] != null ? cheatersInfo["data"]["games"][0]["game"] : "",
+                                              cheatersInfo["data"] != null ? this._getGames(cheatersInfo["data"]["games"]) : "",
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -926,23 +1290,23 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 /// S记录
-                                Container(
-                                  padding: EdgeInsets.all(20),
-                                  child: Text(
-                                    "管理记录",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  color: Colors.white,
-                                  child: Column(
-                                    children: this._getExamineLog(),
-                                  ),
-                                ),
+//                                Container(
+//                                  padding: EdgeInsets.all(20),
+//                                  child: Text(
+//                                    "管理记录",
+//                                    style: TextStyle(
+//                                      fontSize: 20,
+//                                      fontWeight: FontWeight.bold,
+//                                      color: Colors.white,
+//                                    ),
+//                                  ),
+//                                ),
+//                                Container(
+//                                  color: Colors.white,
+//                                  child: Column(
+//                                    children: this._getExamineLog(),
+//                                  ),
+//                                ),
                                 Container(
                                   margin: EdgeInsets.only(top: 10),
                                   padding: EdgeInsets.all(20),
@@ -955,7 +1319,7 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                                     ),
                                   ),
                                 ),
-                                _getUserInfo(snapshot.data, cheatersInfoUser),
+                                _getUserInfo(context, snapshot.data, cheatersInfoUser, startusIng),
 
                                 /// E记录
                               ],
@@ -1087,9 +1451,18 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
                                 textAlign: TextAlign.center,
                               ),
                               onTap: () {
+                                /// 补充（追加）回复
                                 Routes.router.navigateTo(
                                   context,
-                                  '/reply',
+                                  '/reply/${jsonEncode({
+                                    "type": 0,
+                                    "id": cheatersInfoUser["id"],
+                                    "originUserId": cheatersInfoUser["originUserId"],
+                                    "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                                    "foo": cheatersInfo["data"]["reports"][0]["username"],
+
+                                    /// 取第一条举报信息下的userId
+                                  })}',
                                   transition: TransitionType.cupertino,
                                 );
                               },

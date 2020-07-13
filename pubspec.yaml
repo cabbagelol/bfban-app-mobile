@@ -38,6 +38,9 @@ dependencies:
   # 富文本 https://pub.flutter-io.cn/packages/html_editor
   html_editor: ^1.0.1
 
+  # 链接 https://pub.flutter-io.cn/packages/url_launcher
+  url_launcher: 5.5.0
+
   video_player: '0.10.11+2'
 
   flutter_plugin_elui:

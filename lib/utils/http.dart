@@ -1,3 +1,9 @@
+import 'dart:async';
+
+import 'package:bfban/constants/api.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 /**
  * 功能：http请求模块
  * 描述：
@@ -5,12 +11,7 @@
  */
 
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'dart:async';
 
-import 'package:bfban/constants/api.dart';
 export 'package:dio/dio.dart';
 
 class Http extends ScaffoldState {
@@ -46,8 +47,8 @@ class Http extends ScaffoldState {
       }
     });
 
-//    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
-//    print('请求参数：' + data.toString());
+    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
+    print('请求参数：' + data.toString());
 
     Dio dio = createInstance();
     var result;
@@ -62,7 +63,7 @@ class Http extends ScaffoldState {
         ),
       );
       result = response;
-      print('响应数据：' + response.toString());
+//      print('响应数据：' + response.toString());
     } on DioError catch (e) {
       switch (e.type) {
         case DioErrorType.RECEIVE_TIMEOUT:
