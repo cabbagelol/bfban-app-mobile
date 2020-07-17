@@ -1,15 +1,17 @@
 import 'dart:convert';
 
-import 'package:bfban/constants/api.dart';
-import 'package:bfban/router/router.dart';
-import 'package:bfban/utils/index.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluro/fluro.dart';
+
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'package:bfban/constants/api.dart';
+import 'package:bfban/router/router.dart';
+import 'package:bfban/utils/index.dart';
 
 class cheatersPage extends StatefulWidget {
   final id;
@@ -41,38 +43,7 @@ class _cheatersPageState extends State<cheatersPage> with SingleTickerProviderSt
   static Map cheatingTpyes = Config.cheatingTpyes;
 
   /// 进度状态
-  final List<dynamic> startusIng = [
-    {
-      "s": "未处理",
-      "t": "还未处理",
-      "c": Colors.white70,
-    },
-    {
-      "s": "作弊玩家",
-      "t": "确定存在作弊行为",
-      "c": Colors.red,
-    },
-    {
-      "s": "待观察",
-      "t": "存在嫌疑,待观察",
-      "c": Colors.red,
-    },
-    {
-      "s": "清白",
-      "t": "最终判决没有作弊行为",
-      "c": Colors.red,
-    },
-    {
-      "s": "回收站",
-      "t": "关闭的审核",
-      "c": Colors.orangeAccent,
-    },
-    {
-      "s": "讨论中",
-      "t": "需继续讨论",
-      "c": Colors.orangeAccent,
-    }
-  ];
+  final List<dynamic> startusIng = Config.startusIng;
 
   @override
   void initState() {

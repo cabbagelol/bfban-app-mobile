@@ -11,6 +11,7 @@ import 'package:bfban/constants/index.dart';
 
 import 'home.dart';
 import 'usercenter.dart';
+import 'news.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -28,18 +29,18 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: Klength.designWidth)..init(context);
 
-    List<Widget> widgets = [homePage(), usercenter()];
+    List<Widget> widgets = [homePage(), newsPage(), usercenter()];
 
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-        color: Color(0xff111b2b),
-//        decoration: BoxDecoration(
+        decoration: BoxDecoration(
+          color: Color(0xff111b2b),
 //          image: DecorationImage(
 //            image: AssetImage('assets/images/bk-companion.jpg'),
 //            fit: BoxFit.fitHeight,
 //          ),
-//        ),
+        ),
         child: Column(
           children: <Widget>[
             Expanded(
@@ -70,6 +71,19 @@ class HomePageState extends State<HomePage> {
                 BottomAppBarItemModal(
                   {
                     "icon": Icon(
+                      Icons.featured_video,
+                      color: Colors.white,
+                    ),
+                    "icon_s": Icon(
+                      Icons.featured_video,
+                      color: Colors.yellow,
+                    ),
+                  },
+                  '新闻',
+                ),
+                BottomAppBarItemModal(
+                  {
+                    "icon": Icon(
                       Icons.my_location,
                       color: Colors.white,
                     ),
@@ -79,7 +93,7 @@ class HomePageState extends State<HomePage> {
                     ),
                   },
                   '个人中心',
-                )
+                ),
               ],
             ),
           ],

@@ -1,9 +1,12 @@
 import 'dart:convert';
 
-import 'package:bfban/router/router.dart';
-import 'package:bfban/utils/index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+
+import 'package:bfban/router/router.dart';
+import 'package:bfban/utils/index.dart';
+import 'package:bfban/constants/api.dart';
+
 
 class recordPage extends StatefulWidget {
   @override
@@ -67,7 +70,10 @@ class _RecordPageState extends State<recordPage> {
 
   /// 获取列表
   void _getIndexList(index) async {
-    var result = await Http.request('api/account/${userInfo["uId"]}', method: Http.GET);
+    var result = await Http.request(
+      'api/account/${userInfo["uId"]}',
+      method: Http.GET,
+    );
 
     setState(() {
       indexPagesState = true;
@@ -100,22 +106,17 @@ class _RecordPageState extends State<recordPage> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: indexDataList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return recordItem(item: indexDataList[index]);
-                },
-              ),
-            ),
-          )
-        ],
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: indexDataList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return recordItem(
+              item: indexDataList[index],
+            );
+          },
+        ),
       ),
     );
   }
@@ -125,7 +126,9 @@ class _RecordPageState extends State<recordPage> {
 class recordItem extends StatelessWidget {
   final item;
 
-  recordItem({this.item});
+  recordItem({
+    this.item,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +154,13 @@ class recordItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(item["originId"], style: TextStyle(color: Colors.white, fontSize: 20)),
+                  Text(
+                    item["originId"]??"",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
                   Row(
                     children: <Widget>[
                       Row(
@@ -168,7 +177,7 @@ class recordItem extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Text(
-                            " 状态: ${['', '认为石锤'][int.parse(item["status"])]}" ?? "",
+                            " 状态: ${Config.startusIng[int.parse(item["status"])]["s"]}" ?? "",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 13,
@@ -184,10 +193,22 @@ class recordItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text("发布日期:", style: TextStyle(color: Color.fromRGBO(255, 255, 255, .6), fontSize: 12)),
-                Text("${item["createDatetime"]}", style: TextStyle(color: Color.fromRGBO(255, 255, 255, .6), fontSize: 13))
+                Text(
+                  "发布日期:",
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, .6),
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  "${item["createDatetime"]}",
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, .6),
+                    fontSize: 13,
+                  ),
+                )
               ],
-            )
+            ),
           ],
         ),
       ),

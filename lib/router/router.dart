@@ -9,6 +9,7 @@ import 'package:fluro/fluro.dart';
 import 'package:bfban/pages/detail/cheaters.dart';
 import 'package:bfban/pages/edit/index.dart';
 import 'package:bfban/pages/edit/reply.dart';
+import 'package:bfban/pages/edit/drafts.dart';
 import 'package:bfban/pages/login/index.dart';
 import 'package:bfban/pages/login/record/index.dart';
 
@@ -34,6 +35,12 @@ class Routes {
         "url": "/edit",
         'item': (context, params) {
           return editPage();
+        }
+      },
+      {
+        "url": "/drafts",
+        'item': (context, params) {
+          return draftsPage();
         }
       },
       {

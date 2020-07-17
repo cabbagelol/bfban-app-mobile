@@ -43,6 +43,9 @@ dependencies:
 
   video_player: '0.10.11+2'
 
+  # 游览器 https://pub.flutter-io.cn/packages/webview_flutter
+  webview_flutter: 0.3.22
+
   flutter_plugin_elui:
     path: ../../flutter-elui-plugin
 

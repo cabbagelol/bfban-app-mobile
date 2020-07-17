@@ -1,7 +1,15 @@
+import 'dart:convert';
+
 import 'package:bfban/constants/api.dart';
+import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/edit/ImageRadioController.dart';
 import 'package:bfban/widgets/edit/gameTypeRadio.dart';
+import 'package:fluro/fluro.dart';
+/**
+ * 举报页面
+ */
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plugin_elui/elui.dart';
@@ -37,6 +45,26 @@ class _editPageState extends State<editPage> {
   Map<String, dynamic> reportInfo = {
     "originId": "",
     "gameName": "",
+    "bilibiliLink": "",
+  };
+
+  Map videoInfo = {
+    "value": "",
+    "videoIndex": 0,
+    "links": [
+      {
+        "value": 0,
+        "s": "https://www.bilibili.com/video/",
+        "content": "原地址",
+        "placeholder": "http(s)://",
+      },
+      {
+        "value": 1,
+        "S": "",
+        "content": "BiliBili",
+        "placeholder": "AV/BV",
+      }
+    ],
   };
 
   var images = [
@@ -139,6 +167,32 @@ class _editPageState extends State<editPage> {
     return 0;
   }
 
+  /// 提交前验证
+  bool _onVerification() {
+    if (reportInfo["cheatMethods"] == "") {
+      EluiMessageComponent.warning(context)(
+        child: Text("至少选择一个作弊方式"),
+      );
+      return false;
+    }
+
+    if (reportInfo["description"] == "") {
+      EluiMessageComponent.warning(context)(
+        child: Text("至少填写描述内容, 有力的证据"),
+      );
+      return false;
+    }
+
+    if (reportInfo["bilibiliLink"] == "") {
+      EluiMessageComponent.warning(context)(
+        child: Text("填写有效的举报视频"),
+      );
+      return false;
+    }
+
+    return true;
+  }
+
   /// 提交举报
   void _onCheaters() async {
     var _is;
@@ -152,43 +206,15 @@ class _editPageState extends State<editPage> {
       }
     }
 
-    if (reportInfo["cheatMethods"] == "") {
-      EluiMessageComponent.warning(context)(
-        child: Text("至少选择一个作弊方式"),
-      );
+    if (!this._onVerification()) {
       return;
     }
-
-    if (reportInfo["description"] == "") {
-      EluiMessageComponent.warning(context)(
-        child: Text("至少填写描述内容, 有力的证据"),
-      );
-      return;
-    }
-
-    if (reportInfo["bilibiliLink"] == "") {
-      EluiMessageComponent.warning(context)(
-        child: Text("填写有效的举报视频"),
-      );
-      return;
-    }
-
-    if (reportInfo["captcha"] == "") {
-      EluiMessageComponent.warning(context)(
-        child: Text("请填写验证码"),
-      );
-      return;
-    }
-
-    print(reportInfo);
 
     Response<dynamic> result = await Http.request(
       'api/cheaters/',
       parame: reportInfo,
       method: Http.GET,
     );
-
-    print(result);
 
     if (result.data["error"] > 0) {
       EluiMessageComponent.warning(context)(
@@ -300,9 +326,78 @@ class _editPageState extends State<editPage> {
                 ),
               ),
               onPressed: () {
-                this._onCheaters();
+                if (!this._onVerification()) {
+                  return;
+                }
+
+                showDialog<Null>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return new SimpleDialog(
+                      backgroundColor: Colors.white,
+                      children: <Widget>[
+                        new SimpleDialogOption(
+                          child: Column(
+                            children: <Widget>[
+                              Text('发布'),
+                              Text(
+                                '将举报ID发布到BFBAN上',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                          onPressed: () {
+                            if (reportInfo["captcha"] == "") {
+                              EluiMessageComponent.warning(context)(
+                                child: Text("请填写验证码"),
+                              );
+                              return;
+                            }
+
+                            this._onCheaters();
+                          },
+                        ),
+                        SimpleDialogOption(
+                          child: Column(
+                            children: <Widget>[
+                              Text('草稿箱'),
+                              Text(
+                                '储存到草稿箱,不会被发布',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ],
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
+                          onPressed: () async {
+                            List _drafts = jsonDecode(await Storage.get("drafts"));
+                            reportInfo["date"] = DateTime.now().millisecondsSinceEpoch;
+
+                            if (_drafts.length >= 0) {
+                              List.generate(_drafts.length,(index) {
+                                if (reportInfo["originId"] == _drafts[index]["originId"]) {
+                                  _drafts.removeAt(index);
+                                }
+                              });
+                            }
+
+                            _drafts.add(reportInfo);
+                            Storage.set("drafts", value: jsonEncode(_drafts ?? []));
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
-            )
+            ),
           ],
         ),
         body: ListView(
@@ -329,6 +424,23 @@ class _editPageState extends State<editPage> {
                   color: Colors.white,
                   size: 24,
                 ),
+                onTap: () {
+                  Routes.router.navigateTo(
+                    context,
+                    '/drafts',
+                    transition: TransitionType.cupertino,
+                  ).then((value) {
+                    print("====== ${value}");
+
+                    if (value == null) {
+                      return;
+                    }
+
+                    setState(() {
+                      reportInfo = value;
+                    });
+                  });
+                },
               ),
             ),
 
@@ -432,13 +544,13 @@ class _editPageState extends State<editPage> {
               ),
               child: EluiInputComponent(
                 title: "游戏ID",
+                value: reportInfo["originId"],
                 theme: EluiInputTheme(
                   textStyle: TextStyle(
                     color: Colors.white,
                   ),
                 ),
                 Internalstyle: true,
-                value: "",
                 placeholder: "游戏ID",
                 onChange: (data) {
                   setState(() {
@@ -509,8 +621,39 @@ class _editPageState extends State<editPage> {
                   ),
                 ),
                 Internalstyle: true,
-                value: "",
-                placeholder: "http(s)://",
+                onChange: (data) {
+                  reportInfo["bilibiliLink"] = data["value"];
+                },
+                placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
+                right: Row(
+                  children: <Widget>[
+                    DropdownButton(
+                      dropdownColor: Colors.black,
+                      style: TextStyle(color: Colors.white),
+                      onChanged: (index) {
+                        setState(() {
+                          videoInfo["videoIndex"] = index;
+                        });
+                      },
+                      value: this.videoInfo["videoIndex"],
+                      items: this.videoInfo["links"].map<DropdownMenuItem>((value) {
+                        return DropdownMenuItem(
+                          value: value["value"],
+                          child: Text(
+                            value["content"],
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    Icon(
+                      Icons.info,
+                      color: Colors.white12,
+                    ),
+                  ],
+                ),
               ),
             ),
 
