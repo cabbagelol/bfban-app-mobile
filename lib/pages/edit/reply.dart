@@ -1,3 +1,5 @@
+/// 回复
+
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -30,8 +32,6 @@ class _replyPageState extends State<replyPage> {
   void initState() {
     super.initState();
 
-    GlobalKey<HtmlEditorState> _keyEditor = GlobalKey();
-
     setState(() {
       opt = json.decode(widget.data);
     });
@@ -57,8 +57,8 @@ class _replyPageState extends State<replyPage> {
       case "1":
         /// 帖子回复
         _data = {
-          "toFloor": "2",
-          "toUserId": "544",
+          "toFloor": "",
+          "toUserId": "",
         };
         break;
     }

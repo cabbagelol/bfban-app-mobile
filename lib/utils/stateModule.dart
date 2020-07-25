@@ -1,7 +1,5 @@
-/**
- * 状态管理
- * 关于更多信息请参考： https://juejin.im/post/5b97fa0d5188255c5546dcf8
- */
+/// 状态管理
+/// 关于更多信息请参考： https://juejin.im/post/5b97fa0d5188255c5546dcf8
 
 import 'package:scoped_model/scoped_model.dart';
 export 'package:scoped_model/scoped_model.dart';
@@ -17,14 +15,14 @@ class CountModel extends Model {
     notifyListeners();
   }
 
-  Map set (String name_, var data_) {
-    _data[name_] = data_;
+  Map set (String name, var data) {
+    _data[name] = data;
     notifyListeners();
   }
 
-  get (String name_) {
+  get (String name) {
     try {
-      return _data[name_]??null;
+      return _data[name]??null;
     } catch (e) {
       print(e);
     }

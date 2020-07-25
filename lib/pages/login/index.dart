@@ -1,9 +1,13 @@
+/// 用户登录
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
-import 'package:bfban/utils/storage.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:flutter_plugin_elui/elui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class loginPage extends StatefulWidget {
@@ -17,6 +21,12 @@ class _loginPageState extends State<loginPage> {
   String CaotchaCookie = "";
 
   bool valueCaptchaLoad = false;
+
+  String userController = "";
+
+  String passController = "";
+
+  String verificationController = "";
 
   Widget buildTextField(TextEditingController controller, IconData icon, bool obscureText, TextAlign align, int length) {
     return TextField(
@@ -63,7 +73,7 @@ class _loginPageState extends State<loginPage> {
     });
 
     Response<dynamic> result = await Http.request(
-      'api/captcha?r=${t}',
+      'api/captcha?r=$t',
       method: Http.GET,
     );
 
@@ -71,7 +81,7 @@ class _loginPageState extends State<loginPage> {
       CaotchaCookie += i + ';';
     });
 
-//    Storage.set("cookie", value: CaotchaCookie);
+    Storage.set("com.bfban.cookie", value: CaotchaCookie);
 
     setState(() {
       valueCaptcha = result.data;
@@ -81,137 +91,197 @@ class _loginPageState extends State<loginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final userController = TextEditingController();
-    final passController = TextEditingController();
-    final verificationController = TextEditingController();
-
     /// 登陆
     void _onLogin() async {
-      var self = this;
-      var result = await Http.request(
+
+      if (verificationController == "") {
+        EluiMessageComponent.error(context)(
+          child: Text("请填写验证码")
+        );
+        return;
+      } else if (passController == "") {
+        EluiMessageComponent.error(context)(
+            child: Text("请填写密码")
+        );
+        return;
+      } else if (userController == "") {
+        EluiMessageComponent.error(context)(
+            child: Text("请填写用户名")
+        );
+        return;
+      }
+
+      Response result = await Http.request(
         'api/account/signin',
         method: Http.POST,
-        headers: {'Cookie': self.CaotchaCookie},
+        headers: {'Cookie': this.CaotchaCookie},
         data: {
-          "captcha": verificationController.text.toString(),
-          "password": "zsezse", // passController.text.toString()??
-          "username": "cabbagelol" //  userController.text.toString()??
+          "captcha": verificationController,
+          "password": passController,
+          "username": userController,
         },
       );
 
-      if (result != null && result.data['error'] == 0) {
-        Storage.set('com.bfban.login', value: jsonEncode(result.data['data']));
+      if (result.data['error'] == 0) {
+        Storage.set(
+          'com.bfban.login',
+          value: jsonEncode(result.data['data']),
+        );
+        Storage.set(
+          'com.bfban.token',
+          value: result.data['token'],
+        );
         Navigator.pop(context, 'loginBack');
       } else {
         switch (result.data["msg"]) {
           case "invalid captcha":
-//            EluiMessageComponent.error(context)(child: Text("请输入验证码"));
+            EluiMessageComponent.error(context)(
+              child: Text("请输入验证码"),
+            );
             break;
         }
       }
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/bk-companion.jpg'),
-          fit: BoxFit.fitHeight,
-        ),
-      ),
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: Color(0xff111b2b),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            "".toString(),
-            style: TextStyle(
-              color: Colors.white,
-            ),
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "",
+          style: TextStyle(
+            color: Colors.white,
           ),
         ),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(20),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    child: buildTextField(
-                      userController,
-                      Icons.supervised_user_circle,
-                      false,
-                      TextAlign.left,
-                      30,
-                    ),
-                    margin: EdgeInsets.only(bottom: 10),
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: Colors.black26,
+                  padding: EdgeInsets.only(
+                    left: 10,
+                    right: 10,
                   ),
-                  Container(
-                    child: buildTextField(
-                      passController,
-                      Icons.visibility,
-                      true,
-                      TextAlign.left,
-                      30,
-                    ),
-                    margin: EdgeInsets.only(bottom: 10),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: buildTextField(
-                          verificationController,
-                          null,
-                          false,
-                          TextAlign.center,
-                          5,
-                        ),
+                  child: EluiInputComponent(
+                    placeholder: "输入账户ID",
+                    Internalstyle: true,
+                    theme: EluiInputTheme(
+                      textStyle: TextStyle(
+                        color: Colors.white,
                       ),
-                      GestureDetector(
-                        child: Container(
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(5))),
-                          margin: EdgeInsets.only(left: 10),
-                          width: 100,
-                          height: 55,
-                          child: valueCaptchaLoad
-                              ? Icon(
-                                  Icons.slow_motion_video,
-                                  color: Colors.black54,
-                                )
-                              : new SvgPicture.string(
-                                  valueCaptcha,
+                    ),
+                    onChange: (data) {
+                      setState(() {
+                        userController = data["value"];
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 1,
+                ),
+                Container(
+                  color: Colors.black26,
+                  padding: EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: EluiInputComponent(
+                    placeholder: "密码",
+                    type: TextInputType.visiblePassword,
+                    Internalstyle: true,
+                    theme: EluiInputTheme(
+                      textStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onChange: (data) {
+                      setState(() {
+                        passController = data["value"];
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Colors.black26,
+                        padding: EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                        ),
+                        child: EluiInputComponent(
+                          placeholder: "验证码",
+                          Internalstyle: true,
+                          maxLenght: 4,
+                          theme: EluiInputTheme(
+                            textStyle: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          right: GestureDetector(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(3),
                                 ),
+                              ),
+                              margin: EdgeInsets.only(left: 10),
+                              width: 60,
+                              height: 30,
+                              child: valueCaptchaLoad
+                                  ? Icon(
+                                      Icons.access_time,
+                                      color: Colors.black54,
+                                    )
+                                  : new SvgPicture.string(
+                                      valueCaptcha,
+                                    ),
+                            ),
+                            onTap: () => this._getCaptcha(),
+                          ),
+                          onChange: (data) {
+                            setState(() {
+                              verificationController = data["value"];
+                            });
+                          },
                         ),
-                        onTap: () {
-                          this._getCaptcha();
-                        },
                       ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 20),
-                    child: RaisedButton(
-                      child: Text(
-                        "登陆",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
-                      ),
-                      color: Colors.black54,
-                      onPressed: () {
-                        _onLogin();
-                      },
                     ),
-                  )
-                ],
-              ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                EluiButtonComponent(
+                  type: ButtonType.none,
+                  child: Text(
+                    "登陆",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+                  onTap: () => _onLogin(),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

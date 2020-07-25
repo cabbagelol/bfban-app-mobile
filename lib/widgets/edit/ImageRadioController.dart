@@ -4,7 +4,7 @@ import 'package:flutter/rendering.dart';
 
 class ImageRadio extends StatefulWidget {
 
-  ImageRadio(@required this.imageUrl, {
+  ImageRadio(this.imageUrl, {
     this.isSeleted: false,
     this.controller,
     this.onChange,

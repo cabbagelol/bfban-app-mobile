@@ -1,7 +1,5 @@
-/**
- * 功能：长久储存
- * 描述：
- */
+/// 功能：长久储存
+/// 描述：
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +24,7 @@ class Storage {
         break;
       case "string":
         await prefs.setString(name, value).then((value) {
-          get("Storage.get: ${name}");
+          get("Storage.get: $name");
         });
         break;
     }

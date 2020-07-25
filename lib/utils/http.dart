@@ -28,6 +28,13 @@ class Http extends ScaffoldState {
   static const String PATCH = 'patch';
   static const String DELETE = 'delete';
 
+  /// token
+  static String TOKEN = "";
+
+  static void setToken (value) {
+    return TOKEN = value;
+  }
+
   /// request method
   static Future request(
     String url, {
@@ -37,8 +44,16 @@ class Http extends ScaffoldState {
     method,
     headers,
   }) async {
+    Response result;
     data = data ?? {};
+    headers = headers ?? {
+      "token": "",
+    };
     method = method ?? 'GET';
+
+    if (TOKEN != "") {
+      headers["token"] = TOKEN;
+    }
 
     /// restful 请求处理
     data.forEach((key, value) {
@@ -48,10 +63,9 @@ class Http extends ScaffoldState {
     });
 
     print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
-    print('请求参数：' + data.toString());
+    print(headers);
 
     Dio dio = createInstance();
-    var result;
     try {
       Response response = await dio.request(
         Config.apiHost[typeUrl] + '/' + url,
@@ -67,25 +81,39 @@ class Http extends ScaffoldState {
     } on DioError catch (e) {
       switch (e.type) {
         case DioErrorType.RECEIVE_TIMEOUT:
-          return {'error': -1};
+          return Response(
+            data: {'error': -1},
+          );
           break;
         case DioErrorType.RESPONSE:
-          return {'error': -2};
+          return Response(
+            data: {'error': -2},
+          );
           break;
         case DioErrorType.CANCEL:
-          return {'error': -3};
+          return Response(
+            data: {'error': -3},
+          );
           break;
         case DioErrorType.CONNECT_TIMEOUT:
-          return {'error': -4};
+          return Response(
+            data: {'error': -4},
+          );
           break;
         case DioErrorType.DEFAULT:
-          return {'error': -5};
+          return Response(
+            data: {'error': -5},
+          );
           break;
         case DioErrorType.SEND_TIMEOUT:
-          return {'error': -6};
+          return Response(
+            data: {'error': -6},
+          );
           break;
         case DioErrorType.DEFAULT:
-          return {'error': -7};
+          return Response(
+            data: {'error': -7},
+          );
           break;
       }
       print('请求出错：' + e.toString());

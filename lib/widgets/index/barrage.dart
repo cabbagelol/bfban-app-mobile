@@ -32,7 +32,7 @@ class _usercenterBarrageState extends State<usercenterBarrage> {
   void startCountdownTimer() {
     _timer = Timer.periodic(Duration(seconds: 3), (timer) => {
       setState(() {
-        print('${_countdownTime} ${barrageList.length - 1}');
+        print('$_countdownTime ${barrageList.length - 1}');
         if (_countdownTime == barrageList.length - 2) {
           print("结束倒计时");
           timer.cancel();

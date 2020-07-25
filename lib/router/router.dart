@@ -1,17 +1,19 @@
-import 'package:bfban/pages/index/home.dart';
+/// 应用路由
 
-/**
- * 应用路由
- */
 import 'package:fluro/fluro.dart';
 
-// pages
+// S Pages
 import 'package:bfban/pages/detail/cheaters.dart';
 import 'package:bfban/pages/edit/index.dart';
 import 'package:bfban/pages/edit/reply.dart';
+import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/pages/edit/drafts.dart';
+import 'package:bfban/pages/edit/manage.dart';
 import 'package:bfban/pages/login/index.dart';
 import 'package:bfban/pages/login/record/index.dart';
+import 'package:bfban/pages/search/searchList.dart';
+import 'package:bfban/pages/usercenter/support.dart';
+// E Pages
 
 class Routes {
   static Router router;
@@ -22,19 +24,27 @@ class Routes {
       {
         'url': '/',
         'item': (context, params) {
-          return homePage();
+          return IndexPage();
         }
       },
       {
         "url": "/detail/cheaters/:id",
         'item': (context, params) {
-          return cheatersPage(id: params["id"][0]);
+          return CheatersPage(id: params["id"][0]);
         }
       },
       {
         "url": "/edit",
         'item': (context, params) {
           return editPage();
+        }
+      },
+      {
+        "url": "/edit/manage/:id",
+        'item': (context, params) {
+          return ManagePage(
+            id: params["id"][0],
+          );
         }
       },
       {
@@ -58,12 +68,27 @@ class Routes {
         }
       },
       {
-        "url": "/record",
+        "url": "/record/:data",
         'item': (context, params) {
-          return recordPage();
+          return recordPage(
+            data: params["data"][0],
+          );
         }
       },
-
+      {
+        "url": "/search/:data",
+        'item': (context, params) {
+          return SearchPage(
+            data: params["data"][0],
+          );
+        }
+      },
+      {
+        "url": "/usercenter/support",
+        'item': (context, params) {
+          return SupportPage();
+        }
+      },
     ];
 
     routerList.forEach((i) {

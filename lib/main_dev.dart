@@ -1,7 +1,5 @@
-/**
- * 开发环境容器
- * 载入开发配置
- */
+/// 开发环境容器
+/// 载入开发配置
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,8 +18,8 @@ void main() async {
 
   var configuredApp = new AppConfig(
     debug: false,
-    appName: '优e家 dev',
-    flavorName: 'development',
+    appName: 'BFBAN dev',
+    flavorName: 'com.cabbagelol.bfban',
     apiBaseUrl: 'http://192.168.1.5:6081',
     child: new MyApp(),
   );

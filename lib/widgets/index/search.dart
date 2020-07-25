@@ -1,18 +1,21 @@
-import 'package:flutter/cupertino.dart';
-/**
- * 搜索
- * 公共头
- */
+/// 搜索
+/// 公共头
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_plugin_elui/_input/index.dart';
 
 class SearchHead extends StatefulWidget {
   final Key key;
+
   final Widget left;
+
   final Widget right;
+
   final String value;
+
   final Function onSearch;
+
   final Function(String value) onChange;
 
   SearchHead({
@@ -29,12 +32,14 @@ class SearchHead extends StatefulWidget {
 }
 
 class SearchHeadState extends State<SearchHead> {
+  String searchValue = "";
+
   @override
   void initState() {
     super.initState();
   }
 
-  // 输入框onChange
+  /// 输入框onChange
   void _onChange(String value) {
     if (widget.onChange is Function) {
       widget.onChange(value);
@@ -45,33 +50,44 @@ class SearchHeadState extends State<SearchHead> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 40,
       decoration: BoxDecoration(
         color: Color.fromRGBO(238, 238, 238, 1),
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Flexible(
+          Expanded(
             flex: 1,
-            child: EluiInputComponent(
-              placeholder: "搜索内容",
-              Internalstyle: true,
+            child: Container(
+              child: EluiInputComponent(
+                placeholder: "搜索内容",
+                Internalstyle: true,
+                onChange: (data) {
+                  setState(() {
+                    searchValue = data["value"];
+                  });
+                },
+              ),
             ),
           ),
           Container(
             margin: EdgeInsets.only(
-              right: 2,
               left: 4,
             ),
             child: FlatButton(
               disabledColor: Colors.white70,
               color: Color(0xff364e80),
+              disabledTextColor: Colors.red,
               child: Icon(
                 Icons.search,
                 color: Colors.white,
                 size: 20,
               ),
-              onPressed: () {},
+              onPressed: () {
+                widget.onSearch(searchValue);
+              },
             ),
             height: 45,
           )

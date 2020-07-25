@@ -1,3 +1,5 @@
+/// 草稿箱
+
 import 'dart:convert';
 
 import 'package:bfban/utils/index.dart';
@@ -61,7 +63,6 @@ class _draftsPageState extends State<draftsPage> {
         backgroundColor: Colors.transparent,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-          backgroundColor: Color(0xff364e80),
           elevation: 0,
           centerTitle: true,
           title: Text(

@@ -1,12 +1,17 @@
+/// 用户中心
+
 import 'dart:convert';
 
-import 'package:bfban/pages/detail/cheaters.dart';
-import 'package:bfban/router/router.dart';
-import 'package:bfban/utils/storage.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fluro/fluro.dart';
+
+import 'package:bfban/constants/api.dart';
 import 'package:flutter_plugin_elui/elui.dart';
+import 'package:flutter/widgets.dart';
+
+import 'package:bfban/router/router.dart';
+import 'package:bfban/utils/index.dart';
+import 'package:bfban/widgets/index.dart';
 
 class usercenter extends StatefulWidget {
   @override
@@ -14,6 +19,8 @@ class usercenter extends StatefulWidget {
 }
 
 class _usercenterState extends State<usercenter> {
+  UrlUtil _urlUtil = new UrlUtil();
+
   /// 用户信息
   Map userInfo;
 
@@ -27,17 +34,15 @@ class _usercenterState extends State<usercenter> {
     this.getUserInfo();
   }
 
-  /**
-   * 获取用户信息
-   */
-  getUserInfo() async {
-    var result = await Storage.get('com.bfban.login');
+  /// 获取用户信息
+  void getUserInfo() async {
+    dynamic result = await Storage.get('com.bfban.login');
 
     if (result == null) {
       return;
     }
 
-    var data = jsonDecode(result);
+    dynamic data = jsonDecode(result);
 
     setState(() {
       userInfo = data;
@@ -45,14 +50,28 @@ class _usercenterState extends State<usercenter> {
     });
   }
 
-  /**
-   * 销毁用户信息
-   */
-  remUserInfo() async {
+  /// 销毁用户信息
+  void remUserInfo() async {
     await Storage.remove('com.bfban.login');
-    setState(() {
-      userInfoState = false;
-    });
+
+    Response result = await Http.request(
+      'api/account/signout',
+      headers: {'Cookie': await Storage.get("com.bfban.cookie")},
+      method: Http.GET,
+    );
+
+    if (result.data["error"] == 0) {
+      EluiMessageComponent.success(context)(
+        child: Text("注销成功"),
+      );
+      setState(() {
+        userInfoState = false;
+      });
+    } else {
+      EluiMessageComponent.error(context)(
+        child: Text("注册错误,请联系开发者"),
+      );
+    }
   }
 
   @override
@@ -96,13 +115,16 @@ class _usercenterState extends State<usercenter> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'BFBAN联盟',
-                      style: TextStyle(color: Colors.white, fontSize: 40),
+                    textLoad(
+                      value: "BFBAN联盟",
+                      fontSize: 40,
                     ),
                     Text(
                       '制裁不会缺席',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: TextStyle(
+                        color: Colors.white24,
+                        fontSize: 20,
+                      ),
                     ),
                   ],
                 ),
@@ -112,16 +134,27 @@ class _usercenterState extends State<usercenter> {
         !userInfoState
             ? GestureDetector(
                 onTap: () {
-                  Routes.router.navigateTo(context, '/login', transition: TransitionType.fadeIn).then((res) {
+                  Routes.router
+                      .navigateTo(
+                    context,
+                    '/login',
+                    transition: TransitionType.cupertino,
+                  )
+                      .then((res) {
                     if (res == 'loginBack') {
                       this.getUserInfo();
                     }
                   });
                 },
-                child: detailCheatersCard(
-                  value: "登陆",
-                  cont: "",
-                  type: "1",
+                child: EluiCellComponent(
+                  theme: EluiCellTheme(
+                    backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+                  ),
+                  icons: Icon(
+                    Icons.account_box,
+                    color: Colors.white,
+                  ),
+                  title: "登陆",
                 ),
               )
             : EluiCellComponent(
@@ -129,51 +162,64 @@ class _usercenterState extends State<usercenter> {
                 theme: EluiCellTheme(
                   backgroundColor: Color.fromRGBO(255, 255, 255, .07),
                 ),
-                cont: Text(
-                  "${userInfo['username']}",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                icons: Icon(
+                  Icons.account_box,
+                  color: Colors.white,
                 ),
-                onTap: () {
-                  Routes.router.navigateTo(
-                    context,
-                    '/record',
-                    transition: TransitionType.cupertino,
-                  );
-                },
-              ),
-        userInfoState
-            ? EluiCellComponent(
-                title: "举报记录",
-                theme: EluiCellTheme(
-                  backgroundColor: Color.fromRGBO(255, 255, 255, .07),
-                ),
-                islink: true,
-                onTap: () {
-                  Routes.router.navigateTo(
-                    context,
-                    '/record',
-                    transition: TransitionType.cupertino,
-                  );
-                },
-              )
-            : Container(),
-        Padding(
-          padding: EdgeInsets.only(bottom: 20),
+                cont: Wrap(
+                  spacing: 5,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "${userInfo['username']}",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    EluiTagComponent(
+                      value: Config.usetIdentity[userInfo["userPrivilege"]][0].toString(),
+                      color: EluiTagColor.succeed,
+                      size: EluiTagSize.no2,
+                    ),
+                  ],
+                )),
+        Offstage(
+          offstage: !userInfoState,
+          child: EluiCellComponent(
+            title: "举报记录",
+            theme: EluiCellTheme(
+              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+            ),
+            islink: true,
+            onTap: () {
+              Routes.router.navigateTo(
+                context,
+                '/record/-1',
+                transition: TransitionType.cupertino,
+              );
+            },
+          ),
         ),
-
+        SizedBox(
+          height: 20,
+        ),
         EluiCellComponent(
           title: "网站地址",
+          label: "BFBAN联盟网站",
           theme: EluiCellTheme(
             backgroundColor: Color.fromRGBO(255, 255, 255, .07),
           ),
-          cont: Text(
-            "https://bfban.com",
-            style: TextStyle(
-              color: Colors.white,
-            ),
+          islink: true,
+          onTap: () => _urlUtil.onPeUrl("https://bfban.com"),
+        ),
+        EluiCellComponent(
+          title: "支援",
+          label: "程序数据由不同服务商提供",
+          theme: EluiCellTheme(
+            backgroundColor: Color.fromRGBO(255, 255, 255, .07),
           ),
+          islink: true,
+          onTap: () => _urlUtil.opEnPage(context, '/usercenter/support'),
         ),
         EluiCellComponent(
           title: "版本",
@@ -188,26 +234,29 @@ class _usercenterState extends State<usercenter> {
           ),
         ),
 
-        userInfoState
-            ? Padding(
-                padding: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  right: 20,
+        Offstage(
+          offstage: !userInfoState,
+          child: Padding(
+            padding: EdgeInsets.only(
+              top: 30,
+              left: 20,
+              right: 20,
+              bottom: 20,
+            ),
+            child: EluiButtonComponent(
+              child: Text(
+                "注销",
+                style: TextStyle(
+                  color: Colors.white,
                 ),
-                child: EluiButtonComponent(
-                  child: Text(
-                    "注销",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () {
-                    this.remUserInfo();
-                  },
-                ),
-              )
-            : Container()
+              ),
+              type: ButtonType.error,
+              onTap: () {
+                this.remUserInfo();
+              },
+            ),
+          ),
+        ),
       ],
     );
   }

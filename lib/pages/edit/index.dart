@@ -1,19 +1,19 @@
-import 'dart:convert';
+/// 举报页面
 
-import 'package:bfban/constants/api.dart';
-import 'package:bfban/router/router.dart';
-import 'package:bfban/utils/index.dart';
-import 'package:bfban/widgets/edit/ImageRadioController.dart';
-import 'package:bfban/widgets/edit/gameTypeRadio.dart';
-import 'package:fluro/fluro.dart';
-/**
- * 举报页面
- */
+import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:bfban/utils/index.dart';
+import 'package:bfban/constants/api.dart';
+import 'package:bfban/widgets/edit/ImageRadioController.dart';
+import 'package:bfban/widgets/edit/gameTypeRadio.dart';
+import 'package:bfban/router/router.dart';
 
 class editPage extends StatefulWidget {
   @override
@@ -67,7 +67,7 @@ class _editPageState extends State<editPage> {
     ],
   };
 
-  var images = [
+  List images = [
     "https://file03.16sucai.com/2016/10/1100/16sucai_p20161017095_34f.JPG",
     "https://file03.16sucai.com/2016/10/1100/16sucai_p20161017095_34f.JPG",
     "https://file03.16sucai.com/2016/10/1100/16sucai_p20161017095_34f.JPG",
@@ -81,8 +81,9 @@ class _editPageState extends State<editPage> {
 
   @override
   void initState() {
-    controller = new ImageRadioController();
     super.initState();
+
+    controller = new ImageRadioController();
 
     setState(() {
       reportInfo["gameName"] = games[0]["value"];
@@ -145,6 +146,15 @@ class _editPageState extends State<editPage> {
       method: Http.POST,
     );
 
+    /// 提交预判
+    /// 这里返回的结构不一样，否则程序异常抛出错误
+    if (result.data["error"] == -2) {
+      EluiMessageComponent.warning(context)(
+        child: Text("身份过期"),
+      );
+      return 1;
+    }
+
     if (!result.data["idExist"]) {
       EluiMessageComponent.warning(context)(
         child: Text("举报这ID不存在,请检查用户ID是否填写正确"),
@@ -195,7 +205,8 @@ class _editPageState extends State<editPage> {
 
   /// 提交举报
   void _onCheaters() async {
-    var _is;
+    num _is;
+    String _token = await Storage.get("com.bfban.token");
 
     /// 是否检测过。 避免重复检测
     if (!reportInfoUserNameIsBool) {
@@ -212,6 +223,9 @@ class _editPageState extends State<editPage> {
 
     Response<dynamic> result = await Http.request(
       'api/cheaters/',
+      headers: {
+        "token": _token,
+      },
       parame: reportInfo,
       method: Http.GET,
     );
@@ -293,487 +307,472 @@ class _editPageState extends State<editPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(
-            'assets/images/bk-companion.jpg',
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Color(0xff364e80),
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          "举报作弊",
+          style: TextStyle(
+            color: Colors.white,
           ),
-          fit: BoxFit.fitHeight,
         ),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Color(0xff364e80),
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            "举报作弊",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          actions: <Widget>[
-            RaisedButton(
-              color: Color(0xff364e80),
-              child: Text(
-                "提交",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              onPressed: () {
-                if (!this._onVerification()) {
-                  return;
-                }
-
-                showDialog<Null>(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return new SimpleDialog(
-                      backgroundColor: Colors.white,
-                      children: <Widget>[
-                        new SimpleDialogOption(
-                          child: Column(
-                            children: <Widget>[
-                              Text('发布'),
-                              Text(
-                                '将举报ID发布到BFBAN上',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ],
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                          ),
-                          onPressed: () {
-                            if (reportInfo["captcha"] == "") {
-                              EluiMessageComponent.warning(context)(
-                                child: Text("请填写验证码"),
-                              );
-                              return;
-                            }
-
-                            this._onCheaters();
-                          },
-                        ),
-                        SimpleDialogOption(
-                          child: Column(
-                            children: <Widget>[
-                              Text('草稿箱'),
-                              Text(
-                                '储存到草稿箱,不会被发布',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ],
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                          ),
-                          onPressed: () async {
-                            List _drafts = jsonDecode(await Storage.get("drafts"));
-                            reportInfo["date"] = DateTime.now().millisecondsSinceEpoch;
-
-                            if (_drafts.length >= 0) {
-                              List.generate(_drafts.length,(index) {
-                                if (reportInfo["originId"] == _drafts[index]["originId"]) {
-                                  _drafts.removeAt(index);
-                                }
-                              });
-                            }
-
-                            _drafts.add(reportInfo);
-                            Storage.set("drafts", value: jsonEncode(_drafts ?? []));
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xff111b2b),
-                border: Border(
-                  bottom: BorderSide(
-                    width: 10,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              child: EluiCellComponent(
-                title: "草稿箱",
-                label: "副本",
-                theme: EluiCellTheme(
-                  backgroundColor: Colors.transparent,
-                  titleColor: Colors.white,
-                ),
-                cont: Icon(
-                  Icons.inbox,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                onTap: () {
-                  Routes.router.navigateTo(
-                    context,
-                    '/drafts',
-                    transition: TransitionType.cupertino,
-                  ).then((value) {
-                    print("====== ${value}");
-
-                    if (value == null) {
-                      return;
-                    }
-
-                    setState(() {
-                      reportInfo = value;
-                    });
-                  });
-                },
+        actions: <Widget>[
+          RaisedButton(
+            color: Color(0xff364e80),
+            child: Text(
+              "提交",
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
               ),
             ),
+            onPressed: () {
+              if (!this._onVerification()) {
+                return;
+              }
 
-            /// S 游戏类型
-            Container(
-              color: Color(0xff111b2b),
-              padding: EdgeInsets.only(
-                top: 20,
-                left: 20,
-                right: 20,
-                bottom: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "游戏",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 45,
-                  ),
-                  Row(
+              showDialog<Null>(
+                context: context,
+                builder: (BuildContext context) {
+                  return new SimpleDialog(
+                    backgroundColor: Colors.white,
                     children: <Widget>[
-                      gameTypeRadio(
-                        select: 1,
-                        index: gameTypeIndex == 1,
-                        child: Image.asset(
-                          "assets/images/edit/battlefield-1-logo.png",
-                          width: 80,
+                      new SimpleDialogOption(
+                        child: Column(
+                          children: <Widget>[
+                            Text('发布'),
+                            Text(
+                              '将举报ID发布到BFBAN上',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.black45,
+                              ),
+                            ),
+                          ],
+                          crossAxisAlignment: CrossAxisAlignment.start,
                         ),
-                        onTap: () {
-                          this._setGamesIndex(1);
+                        onPressed: () {
+                          if (reportInfo["captcha"] == "") {
+                            EluiMessageComponent.warning(context)(
+                              child: Text("请填写验证码"),
+                            );
+                            return;
+                          }
+
+                          this._onCheaters();
+                          Navigator.pop(context);
                         },
                       ),
-                      gameTypeRadio(
-                        select: 2,
-                        index: gameTypeIndex == 2,
-                        child: Image.asset(
-                          "assets/images/edit/battlefield-v-png-logo.png",
-                          width: 80,
+                      SimpleDialogOption(
+                        child: Column(
+                          children: <Widget>[
+                            Text('草稿箱'),
+                            Text(
+                              '储存到草稿箱,不会被发布',
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.black45,
+                              ),
+                            ),
+                          ],
+                          crossAxisAlignment: CrossAxisAlignment.start,
                         ),
-                        onTap: () {
-                          this._setGamesIndex(2);
+                        onPressed: () async {
+                          List _drafts = jsonDecode(await Storage.get("drafts"));
+                          reportInfo["date"] = DateTime.now().millisecondsSinceEpoch;
+                          if (_drafts.length >= 0) {
+                            List.generate(_drafts.length, (index) {
+                              if (reportInfo["originId"] == _drafts[index]["originId"]) {
+                                _drafts.removeAt(index);
+                              }
+                            });
+                          }
+                          _drafts.add(reportInfo);
+                          Storage.set(
+                            "drafts",
+                            value: jsonEncode(_drafts ?? []),
+                          );
+                          Navigator.pop(context);
                         },
                       ),
                     ],
-                  ),
-                ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xff111b2b),
+              border: Border(
+                bottom: BorderSide(
+                  width: 10,
+                  color: Colors.black,
+                ),
               ),
             ),
+            child: EluiCellComponent(
+              title: "草稿箱",
+              label: "副本",
+              theme: EluiCellTheme(
+                backgroundColor: Colors.transparent,
+                titleColor: Colors.white,
+              ),
+              cont: Icon(
+                Icons.inbox,
+                color: Colors.white,
+                size: 24,
+              ),
+              onTap: () {
+                Routes.router.navigateTo(context, '/drafts', transition: TransitionType.cupertino).then((value) {
+                  if (value == null) {
+                    return;
+                  }
 
-            /// E 游戏类型
+                  setState(() {
+                    reportInfo = value;
+                  });
+                });
+              },
+            ),
+          ),
 
-            /// S 游戏ID
+          /// S 游戏类型
+          Container(
+            color: Color(0xff111b2b),
+            padding: EdgeInsets.only(
+              top: 20,
+              left: 20,
+              right: 20,
+              bottom: 10,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "游戏",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+                SizedBox(
+                  width: 45,
+                ),
+                Row(
+                  children: <Widget>[
+                    gameTypeRadio(
+                      index: gameTypeIndex == 1,
+                      child: Image.asset(
+                        "assets/images/edit/battlefield-1-logo.png",
+                        width: 80,
+                      ),
+                      onTap: () {
+                        this._setGamesIndex(1);
+                      },
+                    ),
+                    gameTypeRadio(
+                      index: gameTypeIndex == 2,
+                      child: Image.asset(
+                        "assets/images/edit/battlefield-v-png-logo.png",
+                        width: 80,
+                      ),
+                      onTap: () {
+                        this._setGamesIndex(2);
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          /// E 游戏类型
+
+          /// S 游戏ID
 //            EluiTipComponent(
 //              child: Text("一次只填写一个ID，不要把战队名字写进来，不要写成自己的ID"),
 //            ),
 //            EluiTipComponent(
 //              child: Text("游戏ID是不区分大小写的，但请特别注意区分i I 1 l L o O 0，正确填写举报ID"),
 //            ),
-            Container(
-              padding: EdgeInsets.only(
-                top: 10,
-                left: 20,
-                right: 20,
-              ),
-              color: Color(0xff111b2b),
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    reportInfo["originId"] == "" ? "USER ID" : "" + reportInfo["originId"].toString(),
+          Container(
+            padding: EdgeInsets.only(
+              top: 10,
+              left: 20,
+              right: 20,
+            ),
+            color: Color(0xff111b2b),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  reportInfo["originId"] == "" ? "USER ID" : "" + reportInfo["originId"].toString(),
+                  style: TextStyle(
+                    color: reportInfo["originId"] == "" ? Colors.white12 : Colors.white,
+                    fontSize: 30,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Center(
+                  child: Text(
+                    reportInfoUserNameLoad ? "检查用户是否存在..." : (reportInfoUserNameIsBool ? "已通过检查" : "检查用户id是否举报正确"),
                     style: TextStyle(
-                      color: reportInfo["originId"] == "" ? Colors.white12 : Colors.white,
-                      fontSize: 30,
+                      color: reportInfoUserNameIsBool ? Colors.lightGreen : Colors.white12,
+                      fontSize: 12,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Center(
-                    child: Text(
-                      reportInfoUserNameLoad ? "检查用户是否存在..." : (reportInfoUserNameIsBool ? "已通过检查" : "检查用户id是否举报正确"),
-                      style: TextStyle(
-                        color: reportInfoUserNameIsBool ? Colors.lightGreen : Colors.white12,
-                        fontSize: 12,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Container(
-              color: Color(0xff111b2b),
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
+          ),
+          Container(
+            color: Color(0xff111b2b),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: EluiInputComponent(
+              title: "游戏ID",
+              value: reportInfo["originId"],
+              theme: EluiInputTheme(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
               ),
-              child: EluiInputComponent(
-                title: "游戏ID",
-                value: reportInfo["originId"],
-                theme: EluiInputTheme(
-                  textStyle: TextStyle(
+              Internalstyle: true,
+              placeholder: "游戏ID",
+              onChange: (data) {
+                setState(() {
+                  reportInfo["originId"] = data["value"];
+                });
+              },
+            ),
+          ),
+
+          /// E 游戏ID
+
+          /// S 作弊方式
+          Container(
+            color: Color(0xff111b2b),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "作弊方式",
+                  style: TextStyle(
                     color: Colors.white,
+                    fontSize: 15,
                   ),
                 ),
-                Internalstyle: true,
-                placeholder: "游戏ID",
-                onChange: (data) {
-                  setState(() {
-                    reportInfo["originId"] = data["value"];
-                  });
-                },
-              ),
-            ),
-
-            /// E 游戏ID
-
-            /// S 作弊方式
-            Container(
-              color: Color(0xff111b2b),
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "作弊方式",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      width: 80,
-                      height: 25,
-                      margin: EdgeInsets.only(
-                        left: 10,
-                      ),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          Wrap(
-                            spacing: 10,
-                            runSpacing: 10,
-                            children: this._setCheckboxIndex(),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            /// E 作弊方式
-
-            /// S 视频链接
-            Container(
-              color: Color(0xff111b2b),
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              child: EluiInputComponent(
-                title: "视频链接",
-                theme: EluiInputTheme(
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                Internalstyle: true,
-                onChange: (data) {
-                  reportInfo["bilibiliLink"] = data["value"];
-                },
-                placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
-                right: Row(
-                  children: <Widget>[
-                    DropdownButton(
-                      dropdownColor: Colors.black,
-                      style: TextStyle(color: Colors.white),
-                      onChanged: (index) {
-                        setState(() {
-                          videoInfo["videoIndex"] = index;
-                        });
-                      },
-                      value: this.videoInfo["videoIndex"],
-                      items: this.videoInfo["links"].map<DropdownMenuItem>((value) {
-                        return DropdownMenuItem(
-                          value: value["value"],
-                          child: Text(
-                            value["content"],
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                    Icon(
-                      Icons.info,
-                      color: Colors.white12,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            /// E 视频链接
-
-            /// S 言论
-            Container(
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              color: Color(0xff111b2b),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      "请列出阐明足够的证据，编辑器支持上传图片（限制2M)",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.white12,
-                      ),
-                    ),
-                    margin: EdgeInsets.only(
-                      bottom: 10,
-                    ),
-                  ),
-                  Wrap(
-                    spacing: 10,
-                    children: <Widget>[
-                      Icon(
-                        Icons.image,
-                        size: 20,
-                        color: Colors.white,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Color(0xff111b2b),
-                border: Border(
-                  bottom: BorderSide(
-                    width: 10,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              child: EluiTextareaComponent(
-                color: Colors.white,
-                maxLength: 500,
-                maxLines: 15,
-                onChange: (data) {
-                  setState(() {
-                    reportInfo["description"] = data["value"];
-                  });
-                },
-              ),
-            ),
-
-            /// E 言论
-
-            /// S 验证码
-            Container(
-              color: Color(0xff111b2b),
-              padding: EdgeInsets.only(
-                left: 20,
-                right: 20,
-              ),
-              child: EluiInputComponent(
-                title: "验证码",
-                Internalstyle: true,
-                theme: EluiInputTheme(
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                onChange: (data) {
-                  setState(() {
-                    reportInfo["captcha"] = data["value"];
-                  });
-                },
-                right: GestureDetector(
+                Expanded(
+                  flex: 1,
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
+                    width: 80,
+                    height: 25,
                     margin: EdgeInsets.only(
                       left: 10,
-                      bottom: 10,
-                      top: 10,
                     ),
-                    width: 100,
-                    height: 55,
-                    child: valueCaptchaLoad
-                        ? Icon(
-                            Icons.slow_motion_video,
-                            color: Colors.black54,
-                          )
-                        : new SvgPicture.string(
-                            valueCaptcha,
-                          ),
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: this._setCheckboxIndex(),
+                        )
+                      ],
+                    ),
                   ),
-                  onTap: () {
-                    this._getCaptcha();
-                  },
+                )
+              ],
+            ),
+          ),
+
+          /// E 作弊方式
+
+          /// S 视频链接
+          Container(
+            color: Color(0xff111b2b),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: EluiInputComponent(
+              title: "视频链接",
+
+              theme: EluiInputTheme(
+                textStyle: TextStyle(
+                  color: Colors.white,
                 ),
-                maxLenght: 4,
-                placeholder: "输入验证码",
+              ),
+              Internalstyle: true,
+              onChange: (data) {
+                reportInfo["bilibiliLink"] = data["value"];
+              },
+              placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
+              right: Row(
+                children: <Widget>[
+                  DropdownButton(
+                    dropdownColor: Colors.black,
+                    style: TextStyle(color: Colors.white),
+                    onChanged: (index) {
+                      setState(() {
+                        videoInfo["videoIndex"] = index;
+                      });
+                    },
+                    value: this.videoInfo["videoIndex"],
+                    items: this.videoInfo["links"].map<DropdownMenuItem>((value) {
+                      return DropdownMenuItem(
+                        value: value["value"],
+                        child: Text(
+                          value["content"],
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  Icon(
+                    Icons.info,
+                    color: Colors.white12,
+                  ),
+                ],
               ),
             ),
+          ),
 
-            /// E 验证码
-          ],
-        ),
+          /// E 视频链接
+
+          /// S 言论
+          Container(
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            color: Color(0xff111b2b),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    "请列出阐明足够的证据，编辑器支持上传图片（限制2M)",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white12,
+                    ),
+                  ),
+                  margin: EdgeInsets.only(
+                    bottom: 10,
+                  ),
+                ),
+                Wrap(
+                  spacing: 10,
+                  children: <Widget>[
+                    Icon(
+                      Icons.image,
+                      size: 20,
+                      color: Colors.white,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xff111b2b),
+              border: Border(
+                bottom: BorderSide(
+                  width: 10,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            child: EluiTextareaComponent(
+              color: Colors.white,
+              maxLength: 500,
+              maxLines: 15,
+              onChange: (data) {
+                setState(() {
+                  reportInfo["description"] = data["value"];
+                });
+              },
+            ),
+          ),
+
+          /// E 言论
+
+          /// S 验证码
+          Container(
+            color: Color(0xff111b2b),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+            ),
+            child: EluiInputComponent(
+              title: "验证码",
+              Internalstyle: true,
+              theme: EluiInputTheme(
+                textStyle: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onChange: (data) {
+                setState(() {
+                  reportInfo["captcha"] = data["value"];
+                });
+              },
+              right: GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                  ),
+                  margin: EdgeInsets.only(
+                    left: 10,
+                    bottom: 10,
+                    top: 10,
+                  ),
+                  width: 100,
+                  height: 55,
+                  child: valueCaptchaLoad
+                      ? Icon(
+                          Icons.slow_motion_video,
+                          color: Colors.black54,
+                        )
+                      : new SvgPicture.string(
+                          valueCaptcha,
+                        ),
+                ),
+                onTap: () {
+                  this._getCaptcha();
+                },
+              ),
+              maxLenght: 4,
+              placeholder: "输入验证码",
+            ),
+          ),
+
+          /// E 验证码
+        ],
       ),
     );
   }

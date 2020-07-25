@@ -8,7 +8,7 @@ class AppConfig extends InheritedWidget {
   final String apiBaseUrl;
 
   AppConfig({
-    @required this.debug = false,
+    this.debug = false,
     @required this.appName,
     @required this.flavorName,
     @required this.apiBaseUrl,

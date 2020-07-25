@@ -1,23 +1,27 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+/// 首页
+
+import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_plugin_elui/elui.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/edit/gameTypeRadio.dart';
-import 'package:bfban/widgets/index/search.dart';
+import 'package:bfban/widgets/index.dart';
 
-class homePage extends StatefulWidget {
+import 'package:flutter/rendering.dart';
+import 'package:flutter_plugin_elui/elui.dart';
+
+class HomePage extends StatefulWidget {
   @override
-  _homePageState createState() => _homePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _homePageState extends State<homePage> {
-  var indexDate = new Map();
+class _HomePageState extends State<HomePage> {
+  Map indexData = new Map();
 
   List indexDataList = new List();
 
@@ -32,6 +36,30 @@ class _homePageState extends State<homePage> {
 
   bool indexPagesState = true;
 
+  Map<dynamic, dynamic> gameSumStatus = {
+    "index": 0,
+  };
+
+  List gameSumStatusData = [
+    {
+      "s": "所有",
+      "t": "所有",
+      "c": Colors.white70,
+      "value": 100,
+    },
+  ];
+
+  List gameTypes = [
+    {
+      "name": "所有",
+      "value": "",
+      "img": {
+        "file": "",
+        "network": "",
+      },
+    },
+  ];
+
   int gameTypeIndex = 0;
 
   int gameStateIndex = 0;
@@ -41,6 +69,7 @@ class _homePageState extends State<homePage> {
   @override
   void initState() {
     super.initState();
+
     this._getIndexList();
 
     _scrollController.addListener(() {
@@ -48,10 +77,20 @@ class _homePageState extends State<homePage> {
         _getMore();
       }
     });
+
+    setState(() {
+      gameTypes.addAll(Config.game["type"]);
+
+      gameSumStatusData.addAll(Config.startusIng);
+    });
   }
 
   /// 获取列表
   void _getIndexList() async {
+    setState(() {
+      indexPagesState = true;
+    });
+
     Response result = await Http.request(
       'api/cheaters/',
       parame: cheatersPost,
@@ -59,12 +98,9 @@ class _homePageState extends State<homePage> {
     );
 
     setState(() {
-      indexPagesState = true;
-    });
+      if (result.data["error"] == 0) {
+        indexData = result.data;
 
-    if (result.data["error"] == 0) {
-      setState(() {
-        indexDate = result.data;
         if (this.cheatersPost["page"] > 1) {
           result.data["data"].forEach((i) {
             indexDataList.add(i);
@@ -72,12 +108,12 @@ class _homePageState extends State<homePage> {
         } else {
           indexDataList = result.data["data"];
         }
-      });
-    } else if (result.data["code"] == -2) {
-      EluiMessageComponent.error(context)(
-        child: Text("请求异常请联系开发者"),
-      );
-    }
+      } else if (result.data["code"] == -2) {
+        EluiMessageComponent.error(context)(
+          child: Text("请求异常请联系开发者"),
+        );
+      }
+    });
 
     setState(() {
       indexPagesState = false;
@@ -85,27 +121,57 @@ class _homePageState extends State<homePage> {
   }
 
   /// 筛选
-  void _setGameType(int index) {
+  void _setGameType() {
+    print("233");
+    setState(() {
+      this
+          .cheatersPost
+          .addAll({"page": 1, "game": gameTypes[gameTypeIndex]["value"], "status": gameSumStatusData[gameSumStatus["index"]]["value"]});
 
-    if (index == this.gameTypeIndex) {
+      _scrollController.animateTo(
+        0.0,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.decelerate,
+      );
+    });
+
+    this._getIndexList();
+  }
+
+  /// 搜索
+  void _onSearch(String value) {
+    if (value == "") {
+      EluiMessageComponent.warning(context)(
+        child: Text("请填写搜索内容"),
+      );
       return;
     }
 
-    setState(() {
-      this.cheatersPost["page"] = 1;
-      this.cheatersPost["game"] = index == 0 ? "" : Config.game["type"][index - 1]["name"];
-      this.gameTypeIndex = index;
-    });
+    Routes.router.navigateTo(
+      context,
+      '/search/${jsonEncode({
+        "id": value,
+      })}',
+      transition: TransitionType.cupertino,
+    );
+  }
 
-    setState(() => {
-          _scrollController.animateTo(
-            0.0,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.decelerate,
-          ),
-        });
+  /// 发布举报信息
+  void _opEnEdit() async {
+    dynamic _login = await Storage.get('com.bfban.login');
 
-    this._getIndexList();
+    if (_login == null) {
+      EluiMessageComponent.error(context)(
+        child: Text("请先登录BFBAN"),
+      );
+      return;
+    }
+
+    Routes.router.navigateTo(
+      context,
+      '/edit',
+      transition: TransitionType.cupertinoFullScreenDialog,
+    );
   }
 
   @override
@@ -116,18 +182,19 @@ class _homePageState extends State<homePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: SearchHead(),
+        title: SearchHead(
+          onSearch: (String value) => this._onSearch(value),
+        ),
       ),
       body: Column(
         children: <Widget>[
           /// S 游戏类型
           Container(
-            color: Color(0xff111b2b),
             padding: EdgeInsets.only(
-              top: 20,
+              top: 10,
               left: 20,
               right: 20,
-              bottom: 10,
+              bottom: 6,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -136,58 +203,78 @@ class _homePageState extends State<homePage> {
                 Text(
                   "游戏",
                   style: TextStyle(
-                    color: Color(0xff364e80),
+                    color: Colors.white,
                     fontSize: 15,
+                    shadows: <Shadow>[
+                      Shadow(
+                        color: Colors.black26,
+                        offset: Offset(1, 2),
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(
                   width: 15,
                 ),
-                Row(
-                  children: <Widget>[
-                    gameTypeRadio(
-                      select: 1,
-                      index: gameTypeIndex == 0,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                        ),
-                        child: Text(
-                          "所有",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 9,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        this._setGameType(0);
-                      },
+                ClipRRect(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(5),
+                  ),
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  child: Container(
+                    color: Colors.black38,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: gameTypes.asMap().keys.map((index) {
+                        return gameTypeRadio(
+                          index: gameTypeIndex == index,
+                          child: index != 0
+                              ? Wrap(
+                                  children: <Widget>[
+                                    Text(
+                                      gameTypes[index]["name"].toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                      color: Colors.red,
+                                      child: Text(
+                                        indexData["totalSum"] == null ? "0" : indexData["totalSum"][index - 1]["num"].toString(),
+                                        style: TextStyle(
+                                          fontSize: 8,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              : Text(
+                                  gameTypes[index]["name"].toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                          onTap: () {
+                            if (index == this.gameTypeIndex) {
+                              return;
+                            }
+
+                            setState(() {
+                              this.gameTypeIndex = index;
+                            });
+
+                            this._setGameType();
+                          },
+                        );
+                      }).toList(),
                     ),
-                    gameTypeRadio(
-                      select: 1,
-                      index: gameTypeIndex == 1,
-                      child: Image.asset(
-                        "assets/images/edit/battlefield-1-logo.png",
-                        width: 80,
-                      ),
-                      onTap: () {
-                        this._setGameType(1);
-                      },
-                    ),
-                    gameTypeRadio(
-                      select: 3,
-                      index: gameTypeIndex == 2,
-                      child: Image.asset(
-                        "assets/images/edit/battlefield-v-png-logo.png",
-                        width: 80,
-                      ),
-                      onTap: () {
-                        this._setGameType(2);
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
@@ -196,133 +283,215 @@ class _homePageState extends State<homePage> {
           /// E 游戏类型
 
           /// S 状态
-//          Container(
-//            color: Color(0xff111b2b),
-//            padding: EdgeInsets.only(
-//              left: 20,
-//              right: 20,
-//              bottom: 10,
-//            ),
-//            child: Row(
-//              children: <Widget>[
-//                Text(
-//                  "状态",
-//                  style: TextStyle(
-//                    color: Color(0xff364e80),
-//                    fontSize: 15,
-//                  ),
-//                ),
-//                SizedBox(
-//                  width: 15,
-//                ),
-//                gameTypeRadio(
-//                  select: 1,
-//                  index: gameStateIndex == 0,
-//                  child: Padding(
-//                    padding: EdgeInsets.only(
-//                      left: 10,
-//                      right: 10,
-//                    ),
-//                    child: Text(
-//                      "所有",
-//                      style: TextStyle(
-//                        color: Colors.white,
-//                        fontSize: 9,
-//                      ),
-//                    ),
-//                  ),
-//                  onTap: () {
-////                    this._setGameType(0);
-//                  },
-//                ),
-//                gameTypeRadio(
-//                  select: 1,
-//                  index: gameStateIndex == 0,
-//                  child: Padding(
-//                    padding: EdgeInsets.only(
-//                      left: 10,
-//                      right: 10,
-//                    ),
-//                    child: Text(
-//                      "所有",
-//                      style: TextStyle(
-//                        color: Colors.white,
-//                        fontSize: 9,
-//                      ),
-//                    ),
-//                  ),
-//                  onTap: () {
-////                    this._setGameType(0);
-//                  },
-//                ),
-//                gameTypeRadio(
-//                  select: 1,
-//                  index: gameStateIndex == 0,
-//                  child: Padding(
-//                    padding: EdgeInsets.only(
-//                      left: 10,
-//                      right: 10,
-//                    ),
-//                    child: Text(
-//                      "所有",
-//                      style: TextStyle(
-//                        color: Colors.white,
-//                        fontSize: 9,
-//                      ),
-//                    ),
-//                  ),
-//                  onTap: () {
-////                    this._setGameType(0);
-//                  },
-//                ),
-//              ],
-//            ),
-//          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: 6,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "类型",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    shadows: <Shadow>[
+                      Shadow(
+                        color: Colors.black26,
+                        offset: Offset(1, 2),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: Container(
+                      color: Colors.black38,
+                      height: 28,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: gameSumStatusData.asMap().keys.map((index) {
+                          return gameTypeRadio(
+                            index: gameSumStatus["index"] == index,
+                            child: Wrap(
+                              children: <Widget>[
+                                Text(
+                                  gameSumStatusData[index]["s"].toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+//                              Container(
+//                                color: Colors.red,
+//                                child: Text(
+//                                  indexDate["sum"][index]["status"].toString(),
+//                                  style: TextStyle(
+//                                    fontSize: 8,
+//                                    color: Colors.white,
+//                                  ),
+//                                ),
+//                              )
+                              ],
+                            ),
+                            onTap: () {
+                              if (index == this.gameSumStatus["index"]) {
+                                return;
+                              }
+
+                              setState(() {
+                                gameSumStatus["index"] = index;
+                              });
+
+                              this._setGameType();
+                            },
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           /// E 状态
 
           Expanded(
             flex: 1,
-            child: indexDataList.length > 0
+            child: !indexPagesState
                 ? RefreshIndicator(
                     onRefresh: _onRefresh,
                     child: ListView.builder(
                       controller: _scrollController,
                       itemCount: indexDataList.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return homeItem(
+                        return CheatListCard(
                           item: indexDataList[index],
+                          onTap: () {
+                            Routes.router.navigateTo(
+                              context,
+                              '/detail/cheaters/${indexDataList[index]["originUserId"]}',
+                              transition: TransitionType.cupertino,
+                            );
+                          },
                         );
                       },
                     ),
                   )
-                : EluiVacancyComponent(
-                    title: "BFBAN | 数据加载",
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Opacity(
+                          opacity: 0.8,
+                          child: textLoad(
+                            value: "BFBAN",
+                            fontSize: 30,
+                          ),
+                        ),
+                        Text(
+                          "Legion of BAN Coalition",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white38,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-          )
+          ),
+
+          /// S 管理面板
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              border: Border(
+                top: BorderSide(
+                  width: 1,
+                  color: Colors.white12,
+                ),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+//                    Text(
+//                      "${indexData == null ? 0 : indexData["sum"][0]["num"]}/条",
+//                      style: TextStyle(
+//                        fontSize: 16,
+//                        color: Colors.white,
+//                      ),
+//                    ),
+                    Text(
+                      "待审核",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+//                    Text(
+//                      "${indexData == null ? 0 : indexData["sum"][2]["num"]}/条",
+//                      style: TextStyle(
+//                        fontSize: 16,
+//                        color: Colors.white,
+//                      ),
+//                    ),
+                    Text(
+                      "未处理",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+
+          /// E 管理面板
         ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.add,
+          Icons.mode_edit,
           color: Colors.black,
-          size: 40,
+          size: 30,
         ),
-        onPressed: () {
-          Routes.router.navigateTo(
-            context,
-            '/edit',
-            transition: TransitionType.cupertino,
-          );
-        },
+        tooltip: "发布",
+        onPressed: () => this._opEnEdit(),
         backgroundColor: Colors.yellow,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
-  /**
-   * 加载更多时显示的组件,给用户提示
-   */
+  /// 加载更多时显示的组件,给用户提示
   Widget _getMoreWidget() {
     return Center(
       child: Padding(
@@ -344,18 +513,15 @@ class _homePageState extends State<homePage> {
     );
   }
 
-  /**
-   * 下拉刷新方法,为list重新赋值
-   */
+  /// 下拉刷新方法,为list重新赋值
+
   Future<Null> _onRefresh() async {
     await Future.delayed(Duration(seconds: 1), () {
       this._getIndexList();
     });
   }
 
-  /**
-   * 上拉加载更多
-   */
+  /// 上拉加载更多
   Future _getMore() async {
     await Future.delayed(Duration(seconds: 1), () {
       if (indexPagesState) {
@@ -374,105 +540,5 @@ class _homePageState extends State<homePage> {
   void dispose() {
     super.dispose();
     _scrollController.dispose();
-  }
-}
-
-class homeItem extends StatelessWidget {
-  final item;
-
-  homeItem({
-    this.item,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Routes.router.navigateTo(
-          context,
-          '/detail/cheaters/${item["originUserId"]}',
-          transition: TransitionType.cupertino,
-        );
-      },
-      child: Container(
-        color: Color.fromRGBO(0, 0, 0, .3),
-        margin: EdgeInsets.only(bottom: 1),
-        padding: EdgeInsets.all(20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: 40,
-              height: 40,
-              margin: EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(100),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    item["avatarLink"],
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(item["originId"], style: TextStyle(color: Colors.white, fontSize: 20)),
-                  Row(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.visibility,
-                            color: Colors.white,
-                            size: 13,
-                          ),
-                          Text(item["n"].toString() ?? "", style: TextStyle(color: Colors.white, fontSize: 12))
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.add_comment,
-                            color: Colors.white,
-                            size: 13,
-                          ),
-                          Text(item["commentsNum"].toString() ?? "", style: TextStyle(color: Colors.white, fontSize: 13))
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Text(
-                  "发布日期:",
-                  style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, .6),
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
-                  new Date().getTimestampTransferCharacter(item["createDatetime"])["Y_D_M"],
-                  style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, .6),
-                    fontSize: 13,
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
   }
 }

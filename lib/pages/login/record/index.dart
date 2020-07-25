@@ -1,3 +1,5 @@
+/// 用户空间
+
 import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
@@ -7,8 +9,15 @@ import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
 
+import 'package:flutter_plugin_elui/elui.dart';
 
 class recordPage extends StatefulWidget {
+  final data;
+
+  recordPage({
+    @required this.data,
+  });
+
   @override
   _RecordPageState createState() => _RecordPageState();
 }
@@ -18,15 +27,15 @@ class _RecordPageState extends State<recordPage> {
 
   var indexDate = new Map();
 
+  Map record = {
+    "uid": ""
+  };
+
   int indexPagesIndex = 1;
 
   bool indexPagesState = true;
 
   List indexDataList = new List();
-
-  var userInfo;
-
-  var userInfoState;
 
   @override
   void initState() {
@@ -42,12 +51,13 @@ class _RecordPageState extends State<recordPage> {
   @override
   void dispose() {
     super.dispose();
+
     _scrollController.dispose();
   }
 
-  ready() async {
-    await this.getUserInfo();
-    await this._getIndexList(1);
+  void ready() async {
+    await this._getUserInfo();
+    this._getIndexList(1);
   }
 
   /// 下拉刷新方法,为list重新赋值
@@ -58,20 +68,32 @@ class _RecordPageState extends State<recordPage> {
   }
 
   /// 获取用户信息
-  getUserInfo() async {
-    var result = await Storage.get('com.bfban.login');
-    var data = jsonDecode(result);
+  void _getUserInfo() async {
+    dynamic result = await Storage.get('com.bfban.login');
+    dynamic data;
+
+    if (result == null) {
+      return;
+    }
+
+    switch (widget.data.toString()) {
+      case "-1":
+        data = jsonDecode(result)["uId"];
+        break;
+      default:
+        data = widget.data;
+        break;
+    }
 
     setState(() {
-      userInfo = data;
-      userInfoState = data.toString().length > 0 ? true : false;
+      record["uid"] = data;
     });
   }
 
   /// 获取列表
-  void _getIndexList(index) async {
-    var result = await Http.request(
-      'api/account/${userInfo["uId"]}',
+  void _getIndexList(num index) async {
+    Response result = await Http.request(
+      'api/account/${record["uid"]}',
       method: Http.GET,
     );
 
@@ -100,9 +122,8 @@ class _RecordPageState extends State<recordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color(0xff111b2b),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
       ),
@@ -155,7 +176,7 @@ class recordItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    item["originId"]??"",
+                    item["originId"] ?? "",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,

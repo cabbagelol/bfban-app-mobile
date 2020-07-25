@@ -1,10 +1,8 @@
-/**
- * 功能：首页底部导航
- * 描述：
- * By 向堂 2019/8/20
- */
+/// 功能：首页底部导航
+/// 描述：
 
 import 'package:flutter/material.dart';
+
 import 'package:bfban/utils/screen_util.dart';
 import 'package:bfban/constants/index.dart';
 
