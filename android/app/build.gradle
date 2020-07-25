@@ -45,9 +45,9 @@ android {
         versionName flutterVersionName
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-//        ndk {
-//            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-//        }
+        ndk {
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
 
     buildTypes {
