@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
+import 'package:bfban/widgets/index.dart';
 
 import 'package:flutter_plugin_elui/elui.dart';
 
@@ -101,7 +102,7 @@ class _RecordPageState extends State<recordPage> {
       indexPagesState = true;
     });
 
-    if (result.data != null && result.data["error"] == 0) {
+    if (result.data["error"] == 0) {
       setState(() {
         indexDate = result.data;
         if (index > 1) {
@@ -127,7 +128,7 @@ class _RecordPageState extends State<recordPage> {
         elevation: 0,
         centerTitle: true,
       ),
-      body: RefreshIndicator(
+      body: indexDataList.length > 0 ? RefreshIndicator(
         onRefresh: _onRefresh,
         child: ListView.builder(
           controller: _scrollController,
@@ -137,6 +138,27 @@ class _RecordPageState extends State<recordPage> {
               item: indexDataList[index],
             );
           },
+        ),
+      ) : Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Opacity(
+              opacity: 0.8,
+              child: textLoad(
+                value: "BFBAN",
+                fontSize: 30,
+              ),
+            ),
+            Text(
+              "Legion of BAN Coalition",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white38,
+              ),
+            )
+          ],
         ),
       ),
     );

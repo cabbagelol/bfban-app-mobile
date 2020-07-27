@@ -3,6 +3,7 @@
 import 'package:fluro/fluro.dart';
 
 // S Pages
+import 'package:bfban/pages/guide/guide.dart';
 import 'package:bfban/pages/detail/cheaters.dart';
 import 'package:bfban/pages/edit/index.dart';
 import 'package:bfban/pages/edit/reply.dart';
@@ -87,7 +88,13 @@ class Routes {
         "url": "/usercenter/support",
         'item': (context, params) {
           return SupportPage();
-        }
+        },
+      },
+      {
+        "url": "/guide",
+        'item': (context, params) {
+          return guidePage();
+        },
       },
     ];
 

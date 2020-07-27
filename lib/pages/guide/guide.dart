@@ -1,0 +1,137 @@
+/// 引导
+import 'dart:ui' as ui;
+
+import 'package:flutter/material.dart';
+
+import 'package:flutter_plugin_elui/elui.dart';
+
+import 'package:bfban/utils/index.dart';
+
+import 'agreement.dart';
+import 'explain.dart';
+
+class guidePage extends StatefulWidget {
+  @override
+  _guidePageState createState() => _guidePageState();
+}
+
+class _guidePageState extends State<guidePage> {
+  bool guideAgreementIs = false;
+
+  num guideListPageIndex = 0;
+
+  List<Widget> guideListPage;
+
+  @override
+  void initState() {
+    super.initState();
+
+    guideListPage = [
+      agreementPage(
+        onChanged: (s) {
+          setState(() {
+            this.guideAgreementIs = s;
+          });
+        },
+      ),
+      explainPage(),
+    ];
+  }
+
+  /// 动作
+  void _onConfirm() {
+    print("${guideListPageIndex} ${guideListPage.length - 1}");
+    if (guideListPageIndex == guideListPage.length - 1) {
+      Storage.set("com.bfban.guide", value: "0");
+
+      Navigator.pop(context);
+      return;
+    }
+
+    setState(() {
+      guideListPageIndex++;
+    });
+  }
+
+  /// 判决禁用状态
+  bool _isState() {
+    if (guideListPageIndex == 0 && guideAgreementIs) {
+      return false;
+    } else if (guideListPageIndex == 1) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xff111b2b),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomRight,
+              colors: [Colors.transparent, Colors.black38],
+            ),
+          ),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Opacity(
+            opacity: 0.5,
+            child: Image.asset(
+              "assets/images/bk-companion-1.jpg",
+              fit: BoxFit.cover,
+            ),
+          ),
+          BackdropFilter(
+            child: IndexedStack(
+              index: guideListPageIndex,
+              children: guideListPage,
+            ),
+            filter: ui.ImageFilter.blur(
+              sigmaX: 0.0,
+              sigmaY: 0.0,
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        color: Colors.yellow,
+        child: EluiButtonComponent(
+          disabled: _isState(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                guideListPageIndex == guideListPage.length - 1 ? "确认" : "下一步",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              Offstage(
+                offstage: !_isState(),
+                child: Text(
+                  "请勾选必要条件",
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 11,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          onTap: () => _onConfirm(),
+        ),
+      ),
+    );
+  }
+}

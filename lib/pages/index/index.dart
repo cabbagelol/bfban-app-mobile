@@ -2,14 +2,17 @@
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
+import 'package:fluro/fluro.dart';
 
 import 'package:bfban/constants/index.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
+import 'package:bfban/router/router.dart';
 
 import 'home.dart';
 import 'news.dart';
 import 'usercenter.dart';
+
 
 class IndexPage extends StatefulWidget {
   IndexPage({
@@ -29,9 +32,24 @@ class _IndexPageState extends State<IndexPage> {
   void initState() {
     super.initState();
 
+    this.onGuide();
+
     Storage.get('com.bfban.token').then((value) => {
           Http.setToken(value),
         });
+  }
+
+  /// 引导器
+  void onGuide() async {
+    Storage.get('com.bfban.guide').then((value) {
+      if (value == null) {
+        Routes.router.navigateTo(
+          context,
+          '/guide',
+          transition: TransitionType.materialFullScreenDialog,
+        );
+      }
+    });
   }
 
   /// 首页控制器序列
@@ -75,7 +93,7 @@ class _IndexPageState extends State<IndexPage> {
                     color: Colors.white,
                     items: [
                       {
-                        "name": "首页",
+                        "name": "\u9996\u9875",
                         "icon": Icon(
                           Icons.home,
                           color: Colors.white,
@@ -86,7 +104,7 @@ class _IndexPageState extends State<IndexPage> {
                         ),
                       },
                       {
-                        "name": "新闻",
+                        "name": "\u65b0\u95fb",
                         "icon": Icon(
                           Icons.featured_video,
                           color: Colors.white,
@@ -97,7 +115,7 @@ class _IndexPageState extends State<IndexPage> {
                         ),
                       },
                       {
-                        "name": "个人中心",
+                        "name": "\u4e2a\u4eba\u4e2d\u5fc3",
                         "icon": Icon(
                           Icons.portrait,
                           color: Colors.white,
@@ -112,8 +130,7 @@ class _IndexPageState extends State<IndexPage> {
                         e,
                         e["name"],
                       );
-                    }).toList()
-                    ),
+                    }).toList()),
               ],
             ),
             filter: ui.ImageFilter.blur(

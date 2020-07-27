@@ -35,7 +35,7 @@ class Config {
     return {
       "type": [
         {
-          "name": "战地1",
+          "name": "\u6218\u5730\u0031",
           "value": "bf1",
           "img": {
             "file": "assets/images/edit/battlefield-1-logo.png",
@@ -43,7 +43,7 @@ class Config {
           }
         },
         {
-          "name": "战地V",
+          "name": "\u6218\u5730\u0056",
           "value": "bfv",
           "img": {
             "file": "assets/images/edit/battlefield-v-png-logo.png",
@@ -56,66 +56,66 @@ class Config {
 
   static Map<String, String> get cheatingTpyes {
     return {
-      "aimbot": "自瞄",
-      "wallhack": "透视",
-      "oneShotKill": "秒杀",
-      "damageChange": "改伤",
-      "stealth": "隐身",
-      "gadgetModify": "修改装备",
-      "shootingThroughWalls": "子弹穿墙",
+      "aimbot": "\u81ea\u7784",
+      "wallhack": "\u900f\u89c6",
+      "oneShotKill": "\u79d2\u6740",
+      "damageChange": "\u6539\u4f24",
+      "stealth": "\u9690\u8eab",
+      "gadgetModify": "\u4fee\u6539\u88c5\u5907",
+      "shootingThroughWalls": "\u5b50\u5f39\u7a7f\u5899",
     };
   }
 
   static Map get usetIdentity {
     return {
-      "admin": ["管理员", Colors.white, Colors.redAccent],
-      "normal": ["玩家", Colors.black, Colors.amber],
-      "super": ["超管", Colors.white, Colors.blueAccent],
-      "未知": ["未知", Colors.black, Colors.white12],
+      "admin": ["\u7ba1\u7406\u5458", Colors.white, Colors.redAccent],
+      "normal": ["\u73a9\u5bb6", Colors.black, Colors.amber],
+      "super": ["\u8d85\u7ba1", Colors.white, Colors.blueAccent],
+      "": ["\u672a\u77e5", Colors.black, Colors.white12],
     };
   }
 
   static List<dynamic> get startusIng {
     return [
       {
-        "s": "未处理",
-        "t": "还未处理",
+        "s": "\u672a\u5904\u7406",
+        "t": "\u8fd8\u672a\u5904\u7406",
         "c": Colors.white70,
         "value": 0,
       },
       {
-        "s": "作弊玩家",
-        "t": "确定存在作弊行为",
+        "s": "\u4f5c\u5f0a\u73a9\u5bb6",
+        "t": "\u786e\u5b9a\u5b58\u5728\u4f5c\u5f0a\u884c\u4e3a",
         "c": Colors.red,
         "value": 1,
       },
       {
-        "s": "待观察",
-        "t": "存在嫌疑,待观察",
+        "s": "\u5f85\u89c2\u5bdf",
+        "t": "\u5b58\u5728\u5acc\u7591\u002c\u5f85\u89c2\u5bdf",
         "c": Colors.orangeAccent,
         "value": 2,
       },
       {
-        "s": "清白",
-        "t": "最终判决没有作弊行为",
+        "s": "\u6e05\u767d",
+        "t": "\u6700\u7ec8\u5224\u51b3\u6ca1\u6709\u4f5c\u5f0a\u884c\u4e3a",
         "c": Colors.green,
         "value": 3,
       },
       {
-        "s": "回收站",
-        "t": "关闭的审核",
+        "s": "\u56de\u6536\u7ad9",
+        "t": "\u5173\u95ed\u7684\u5ba1\u6838",
         "c": Colors.black38,
         "value": 4,
       },
       {
-        "s": "讨论中",
-        "t": "需继续讨论",
+        "s": "\u8ba8\u8bba\u4e2d",
+        "t": "\u9700\u7ee7\u7eed\u8ba8\u8bba",
         "c": Colors.orange,
         "value": 5,
       },
       {
-        "s": "待确认",
-        "t": "等待管理确认",
+        "s": "\u5f85\u786e\u8ba4",
+        "t": "\u7b49\u5f85\u7ba1\u7406\u786e\u8ba4",
         "c": Colors.orange,
         "value": 6,
       }

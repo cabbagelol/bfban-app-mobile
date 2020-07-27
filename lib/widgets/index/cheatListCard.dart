@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 /// 作弊者列表卡片
 
 import 'package:flutter/material.dart';
@@ -84,48 +85,79 @@ class CheatListCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Text(
-                    new Date().getTimestampTransferCharacter(item["createDatetime"])["Y_D_M"],
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, .6),
-                      fontSize: 12,
-                    ),
+
+
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "发布时间:" + new Date().getTimestampTransferCharacter(item["createDatetime"])["Y_D_M"],
+                        style: TextStyle(
+                          color: Color.fromRGBO(255, 255, 255, .6),
+                          fontSize: 9,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: 7,
+                          right: 7,
+                        ),
+                        height: 8,
+                        width: 1,
+                        color: Colors.white12,
+                      ),
+                      Text(
+                        "最后更新:" + new Date().getTimestampTransferCharacter(item["updateDatetime"])["Y_D_M"],
+                        style: TextStyle(
+                          color: Color.fromRGBO(255, 255, 255, .6),
+                          fontSize: 9,
+                        ),
+                      ),
+                    ],
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Wrap(
                         spacing: 2,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: <Widget>[
                           Icon(
                             Icons.visibility,
                             color: Colors.white,
-                            size: 13,
+                            size: 10,
                           ),
                           Text(
                             item["n"].toString() ?? "",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 12,
+                              fontSize: 9,
                             ),
                           )
                         ],
                       ),
-                      SizedBox(
-                        width: 5,
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: 7,
+                          right: 7,
+                        ),
+                        height: 8,
+                        width: 1,
+                        color: Colors.white12,
                       ),
                       Wrap(
                         spacing: 2,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: <Widget>[
                           Icon(
                             Icons.add_comment,
                             color: Colors.white,
-                            size: 13,
+                            size: 10,
                           ),
                           Text(
                             item["commentsNum"].toString() ?? "",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 13,
+                              fontSize: 9,
                             ),
                           )
                         ],

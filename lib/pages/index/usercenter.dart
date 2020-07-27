@@ -61,6 +61,16 @@ class _usercenterState extends State<usercenter> {
     );
 
     if (result.data["error"] == 0) {
+      List list = [
+        "cookie",
+        "token",
+        "login",
+      ];
+
+      list.forEach((i) => {
+            Storage.remove("com.bfban.$i"),
+          });
+
       EluiMessageComponent.success(context)(
         child: Text("注销成功"),
       );
@@ -95,16 +105,17 @@ class _usercenterState extends State<usercenter> {
                       padding: EdgeInsets.only(bottom: 20),
                     ),
                     Text(
-                      '宣入反作弊联盟，',
+                      '\u5ba3\u5165\u53cd\u4f5c\u5f0a\u8054\u76df\uff0c',
                       style: TextStyle(color: Colors.white, fontSize: 40),
                     ),
                     Text(
-                      '维护公平的竞争环境',
+                      '\u7ef4\u62a4\u516c\u5e73\u7684\u7ade\u4e89\u73af\u5883',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     Wrap(
                       children: <Widget>[
-                        Text('你愿加入联盟成员贡献作弊者名单吗？', style: TextStyle(color: Colors.white, fontSize: 15)),
+                        Text('\u4f60\u613f\u52a0\u5165\u8054\u76df\u6210\u5458\u8d21\u732e\u4f5c\u5f0a\u8005\u540d\u5355\u5417\uff1f',
+                            style: TextStyle(color: Colors.white, fontSize: 15)),
                       ],
                     ),
                   ],
@@ -116,11 +127,11 @@ class _usercenterState extends State<usercenter> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     textLoad(
-                      value: "BFBAN联盟",
+                      value: "\u0042\u0046\u0042\u0041\u004e\u8054\u76df",
                       fontSize: 40,
                     ),
                     Text(
-                      '制裁不会缺席',
+                      '\u5236\u88c1\u4e0d\u4f1a\u7f3a\u5e2d',
                       style: TextStyle(
                         color: Colors.white24,
                         fontSize: 20,
@@ -154,11 +165,11 @@ class _usercenterState extends State<usercenter> {
                     Icons.account_box,
                     color: Colors.white,
                   ),
-                  title: "登陆",
+                  title: "\u767b\u9646",
                 ),
               )
             : EluiCellComponent(
-                title: "用户名称",
+                title: "\u7528\u6237\u540d\u79f0",
                 theme: EluiCellTheme(
                   backgroundColor: Color.fromRGBO(255, 255, 255, .07),
                 ),
@@ -182,11 +193,12 @@ class _usercenterState extends State<usercenter> {
                       size: EluiTagSize.no2,
                     ),
                   ],
-                )),
+                ),
+              ),
         Offstage(
           offstage: !userInfoState,
           child: EluiCellComponent(
-            title: "举报记录",
+            title: "\u4e3e\u62a5\u8bb0\u5f55",
             theme: EluiCellTheme(
               backgroundColor: Color.fromRGBO(255, 255, 255, .07),
             ),
@@ -204,8 +216,8 @@ class _usercenterState extends State<usercenter> {
           height: 20,
         ),
         EluiCellComponent(
-          title: "网站地址",
-          label: "BFBAN联盟网站",
+          title: "\u7f51\u7ad9\u5730\u5740",
+          label: "\u0042\u0046\u0042\u0041\u004e\u8054\u76df\u7f51\u7ad9",
           theme: EluiCellTheme(
             backgroundColor: Color.fromRGBO(255, 255, 255, .07),
           ),
@@ -213,8 +225,8 @@ class _usercenterState extends State<usercenter> {
           onTap: () => _urlUtil.onPeUrl("https://bfban.com"),
         ),
         EluiCellComponent(
-          title: "支援",
-          label: "程序数据由不同服务商提供",
+          title: "\u652f\u63f4",
+          label: "\u7a0b\u5e8f\u6570\u636e\u7531\u4e0d\u540c\u670d\u52a1\u5546\u63d0\u4f9b",
           theme: EluiCellTheme(
             backgroundColor: Color.fromRGBO(255, 255, 255, .07),
           ),
@@ -222,7 +234,7 @@ class _usercenterState extends State<usercenter> {
           onTap: () => _urlUtil.opEnPage(context, '/usercenter/support'),
         ),
         EluiCellComponent(
-          title: "版本",
+          title: "\u7248\u672c",
           theme: EluiCellTheme(
             backgroundColor: Color.fromRGBO(255, 255, 255, .07),
           ),
@@ -245,15 +257,13 @@ class _usercenterState extends State<usercenter> {
             ),
             child: EluiButtonComponent(
               child: Text(
-                "注销",
+                "\u6ce8\u9500",
                 style: TextStyle(
                   color: Colors.white,
                 ),
               ),
               type: ButtonType.error,
-              onTap: () {
-                this.remUserInfo();
-              },
+              onTap: () => this.remUserInfo(),
             ),
           ),
         ),

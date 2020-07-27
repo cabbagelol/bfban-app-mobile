@@ -1,20 +1,7 @@
+/// 时间
 /// by cabbagelol
 
 class Date {
-
-  /// 处理服务器直接取得的时间数据
-  String revise (String date) {
-    var _date;
-
-//    date = date.replaceAll("T", " ").replaceAll("Z", " ");
-
-//    parse(date)
-
-    _date = DateTime.parse(date);
-
-    return _date.toString();
-  }
-
   /// 补0
   String zeroPadding(number) {
     return number.toString().length == 1 ? "0$number" : number.toString();

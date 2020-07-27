@@ -45,6 +45,8 @@ class _editPageState extends State<editPage> {
   Map<String, dynamic> reportInfo = {
     "originId": "",
     "gameName": "",
+    "cheatMethods": "",
+    "description": "",
     "bilibiliLink": "",
   };
 
@@ -73,6 +75,8 @@ class _editPageState extends State<editPage> {
     "https://file03.16sucai.com/2016/10/1100/16sucai_p20161017095_34f.JPG",
   ];
 
+  List _cheatingTpyes = new List();
+
   String valueCaptcha = "";
 
   String CaotchaCookie = "";
@@ -87,6 +91,14 @@ class _editPageState extends State<editPage> {
 
     setState(() {
       reportInfo["gameName"] = games[0]["value"];
+
+      Config.cheatingTpyes.forEach((key, value) {
+        _cheatingTpyes.add({
+          "name": value,
+          "value": key,
+          "select": false,
+        });
+      });
     });
 
     this._getCaptcha();
@@ -137,7 +149,7 @@ class _editPageState extends State<editPage> {
       return;
     }
 
-    var result = await Http.request(
+    Response result = await Http.request(
       'api/checkGameIdExist',
       headers: {'Cookie': this.CaotchaCookie},
       data: {
@@ -247,7 +259,7 @@ class _editPageState extends State<editPage> {
     setState(() {
       gameTypeIndex = index;
 
-      reportInfo["gameName"] = games[gameTypeIndex - 1]["value"];
+      reportInfo["gameName"] = games[gameTypeIndex]["value"];
     });
   }
 
@@ -255,51 +267,46 @@ class _editPageState extends State<editPage> {
   List<Widget> _setCheckboxIndex() {
     List<Widget> list = new List();
 
-    List _cheatingTpyes = new List();
-
     String _value = "";
 
     num _valueIndex = 0;
 
-    Config.cheatingTpyes.forEach((key, value) {
-      _cheatingTpyes.add({
-        "name": value,
-        "value": key,
-      });
-    });
-
     _cheatingTpyes.forEach((element) {
       list.add(
-        EluiCheckboxComponent(
-          color: Colors.amber,
-          child: Text(
-            element["name"],
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.white,
+        Container(
+          child: gameTypeRadio(
+            index: element["select"],
+            child: Text(
+              element["name"],
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+              ),
             ),
+            onTap: () {
+              setState(() {
+                element["select"] = element["select"] != true;
+
+                print(element);
+
+                if (element["select"]) {
+                  reportInfoCheatMethods.add(element["value"]);
+                } else {
+                  reportInfoCheatMethods.remove(element["value"]);
+                }
+
+                reportInfoCheatMethods.forEach((element) {
+                  _value += element + (_valueIndex >= reportInfoCheatMethods.length - 1 ? "" : ",");
+                  _valueIndex += 1;
+                });
+
+                reportInfo["cheatMethods"] = _value;
+              });
+            },
           ),
-          onChanged: (bool) {
-            print(bool);
-            setState(() {
-              if (bool) {
-                reportInfoCheatMethods.add(element["value"]);
-              } else {
-                reportInfoCheatMethods.remove(element["value"]);
-              }
-            });
-          },
+          color: Colors.black12,
         ),
       );
-    });
-
-    reportInfoCheatMethods.forEach((element) {
-      _value += element + (_valueIndex >= reportInfoCheatMethods.length - 1 ? "" : ",");
-      _valueIndex += 1;
-    });
-
-    setState(() {
-      reportInfo["cheatMethods"] = _value;
     });
 
     return list;
@@ -308,10 +315,9 @@ class _editPageState extends State<editPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Color(0xff111b2b),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Color(0xff364e80),
         elevation: 0,
         centerTitle: true,
         title: Text(
@@ -445,58 +451,43 @@ class _editPageState extends State<editPage> {
             ),
           ),
 
-          /// S 游戏类型
-          Container(
-            color: Color(0xff111b2b),
-            padding: EdgeInsets.only(
-              top: 20,
-              left: 20,
-              right: 20,
-              bottom: 10,
+          /// S 游戏
+
+          EluiCellComponent(
+            title: "游戏",
+            theme: EluiCellTheme(
+              backgroundColor: Color(0xff111b2b),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "游戏",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-                SizedBox(
-                  width: 45,
-                ),
-                Row(
-                  children: <Widget>[
-                    gameTypeRadio(
-                      index: gameTypeIndex == 1,
-                      child: Image.asset(
-                        "assets/images/edit/battlefield-1-logo.png",
-                        width: 80,
+            cont: ClipRRect(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5),
+              ),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Container(
+                color: Colors.black38,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: List<dynamic>.from(Config.game["type"]).asMap().keys.map((index) {
+                    return Expanded(
+                      flex: 1,
+                      child: gameTypeRadio(
+                        index: gameTypeIndex == index,
+                        child: Image.asset(
+                          Config.game["type"][index]["img"]["file"],
+                          height: 18,
+                        ),
+                        onTap: () => this._setGamesIndex(index),
                       ),
-                      onTap: () {
-                        this._setGamesIndex(1);
-                      },
-                    ),
-                    gameTypeRadio(
-                      index: gameTypeIndex == 2,
-                      child: Image.asset(
-                        "assets/images/edit/battlefield-v-png-logo.png",
-                        width: 80,
-                      ),
-                      onTap: () {
-                        this._setGamesIndex(2);
-                      },
-                    ),
-                  ],
+                    );
+                  }).toList(),
                 ),
-              ],
+              ),
             ),
           ),
 
-          /// E 游戏类型
+          /// E 游戏
+
+          indexHr(),
 
           /// S 游戏ID
 //            EluiTipComponent(
@@ -507,8 +498,9 @@ class _editPageState extends State<editPage> {
 //            ),
           Container(
             padding: EdgeInsets.only(
-              top: 10,
+              top: 20,
               left: 20,
+              bottom: 5,
               right: 20,
             ),
             color: Color(0xff111b2b),
@@ -521,6 +513,26 @@ class _editPageState extends State<editPage> {
                     fontSize: 30,
                   ),
                   textAlign: TextAlign.center,
+                ),
+                Offstage(
+                  offstage: reportInfo["originId"].toString().length > 0,
+                  child: Wrap(
+                    spacing: 5,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.warning,
+                        color: Colors.yellow,
+                        size: 15,
+                      ),
+                      Text(
+                        "请填写作弊者人名称",
+                        style: TextStyle(
+                          color: Colors.yellow,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Center(
                   child: Text(
@@ -537,10 +549,6 @@ class _editPageState extends State<editPage> {
           ),
           Container(
             color: Color(0xff111b2b),
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
             child: EluiInputComponent(
               title: "游戏ID",
               value: reportInfo["originId"],
@@ -549,8 +557,7 @@ class _editPageState extends State<editPage> {
                   color: Colors.white,
                 ),
               ),
-              Internalstyle: true,
-              placeholder: "游戏ID",
+              placeholder: "请触摸这里输入游戏ID",
               onChange: (data) {
                 setState(() {
                   reportInfo["originId"] = data["value"];
@@ -561,139 +568,140 @@ class _editPageState extends State<editPage> {
 
           /// E 游戏ID
 
+          indexHr(),
+
           /// S 作弊方式
+          EluiCellComponent(
+            title: "作弊方式",
+            theme: EluiCellTheme(
+              backgroundColor: Colors.transparent,
+            ),
+            cont: Offstage(
+              offstage: reportInfo["cheatMethods"].toString().length > 0,
+              child: Wrap(
+                spacing: 5,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.warning,
+                    color: Colors.yellow,
+                    size: 15,
+                  ),
+                  Text(
+                    "请至少选择一下举报行为",
+                    style: TextStyle(
+                      color: Colors.yellow,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Container(
-            color: Color(0xff111b2b),
             padding: EdgeInsets.only(
               left: 20,
               right: 20,
+              bottom: 20,
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "作弊方式",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    width: 80,
-                    height: 25,
-                    margin: EdgeInsets.only(
-                      left: 10,
-                    ),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: this._setCheckboxIndex(),
-                        )
-                      ],
-                    ),
-                  ),
-                )
-              ],
+            child: Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: this._setCheckboxIndex(),
             ),
           ),
 
           /// E 作弊方式
 
-          /// S 视频链接
-          Container(
-            color: Color(0xff111b2b),
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
-            child: EluiInputComponent(
-              title: "视频链接",
+          indexHr(),
 
-              theme: EluiInputTheme(
-                textStyle: TextStyle(
-                  color: Colors.white,
-                ),
+          /// S 视频链接
+          EluiInputComponent(
+            title: "视频链接",
+            theme: EluiInputTheme(
+              textStyle: TextStyle(
+                color: Colors.white,
               ),
-              Internalstyle: true,
-              onChange: (data) {
-                reportInfo["bilibiliLink"] = data["value"];
-              },
-              placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
-              right: Row(
-                children: <Widget>[
-                  DropdownButton(
-                    dropdownColor: Colors.black,
-                    style: TextStyle(color: Colors.white),
-                    onChanged: (index) {
-                      setState(() {
-                        videoInfo["videoIndex"] = index;
-                      });
-                    },
-                    value: this.videoInfo["videoIndex"],
-                    items: this.videoInfo["links"].map<DropdownMenuItem>((value) {
-                      return DropdownMenuItem(
-                        value: value["value"],
-                        child: Text(
-                          value["content"],
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
+            ),
+            onChange: (data) {
+              reportInfo["bilibiliLink"] = data["value"];
+            },
+            placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
+            right: Row(
+              children: <Widget>[
+                DropdownButton(
+                  dropdownColor: Colors.black,
+                  style: TextStyle(color: Colors.white),
+                  onChanged: (index) {
+                    setState(() {
+                      videoInfo["videoIndex"] = index;
+                    });
+                  },
+                  value: this.videoInfo["videoIndex"],
+                  items: this.videoInfo["links"].map<DropdownMenuItem>((value) {
+                    return DropdownMenuItem(
+                      value: value["value"],
+                      child: Text(
+                        value["content"],
+                        style: TextStyle(
+                          color: Colors.white,
                         ),
-                      );
-                    }).toList(),
-                  ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                Icon(
+                  Icons.info,
+                  color: Colors.white12,
+                ),
+              ],
+            ),
+          ),
+
+          /// E 视频链接
+
+          indexHr(),
+
+          /// S 言论
+          EluiCellComponent(
+            theme: EluiCellTheme(
+              backgroundColor: Colors.transparent,
+            ),
+            title: "言论",
+            cont: Offstage(
+              offstage: reportInfo["description"].toString().length > 0,
+              child: Wrap(
+                spacing: 5,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: <Widget>[
                   Icon(
-                    Icons.info,
-                    color: Colors.white12,
+                    Icons.warning,
+                    color: Colors.yellow,
+                    size: 15,
+                  ),
+                  Text(
+                    "请填写有力证据的举报内容",
+                    style: TextStyle(
+                      color: Colors.yellow,
+                    ),
                   ),
                 ],
               ),
             ),
           ),
 
-          /// E 视频链接
-
-          /// S 言论
-          Container(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-            ),
-            color: Color(0xff111b2b),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    "请列出阐明足够的证据，编辑器支持上传图片（限制2M)",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.white12,
-                    ),
-                  ),
-                  margin: EdgeInsets.only(
-                    bottom: 10,
-                  ),
-                ),
-                Wrap(
-                  spacing: 10,
-                  children: <Widget>[
-                    Icon(
-                      Icons.image,
-                      size: 20,
-                      color: Colors.white,
-                    )
-                  ],
-                )
-              ],
-            ),
+          EluiTextareaComponent(
+            color: Colors.white,
+            maxLength: 500,
+            maxLines: 9,
+            onChange: (data) {
+              setState(() {
+                reportInfo["description"] = data["value"];
+              });
+            },
           ),
+
+          /// E 言论
+
           Container(
             decoration: BoxDecoration(
               color: Color(0xff111b2b),
@@ -704,19 +712,7 @@ class _editPageState extends State<editPage> {
                 ),
               ),
             ),
-            child: EluiTextareaComponent(
-              color: Colors.white,
-              maxLength: 500,
-              maxLines: 15,
-              onChange: (data) {
-                setState(() {
-                  reportInfo["description"] = data["value"];
-                });
-              },
-            ),
           ),
-
-          /// E 言论
 
           /// S 验证码
           Container(
@@ -774,6 +770,16 @@ class _editPageState extends State<editPage> {
           /// E 验证码
         ],
       ),
+    );
+  }
+}
+
+class indexHr extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.black12,
+      height: 1,
     );
   }
 }

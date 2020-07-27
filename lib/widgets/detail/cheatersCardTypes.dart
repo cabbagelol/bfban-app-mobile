@@ -17,8 +17,28 @@ import 'package:bfban/router/router.dart';
 
 /// 对比评论身份
 class detailApi {
+  static Map<String, Style> styleHtml(BuildContext context) {
+    return {
+      "a": Style(
+        after: "🔗",
+      ),
+      "p": Style(
+        fontSize: FontSize(12),
+        width: (MediaQuery.of(context).size.width - 15),
+      ),
+      "img": Style(
+        alignment: Alignment.centerLeft,
+        width: (MediaQuery.of(context).size.width - 15) / 3,
+        border: Border.all(
+          width: 1.0,
+          color: Colors.black12,
+        ),
+      ),
+    };
+  }
+
   /// 查看图片
-  static void onImageTap(context, String img) {
+  static void onImageTap(BuildContext context, String img) {
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (BuildContext context) {
         return PhotoViewSimpleScreen(
@@ -149,33 +169,123 @@ class CheatUserCheaters extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "${i["foo"]} 回复",
-                    //${cheatersInfoUser["originId"]}
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                  new Text.rich(
+                    TextSpan(
+                      style: new TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: <TextSpan>[
+                        i["toFloor"] == null ? TextSpan() : TextSpan(text: "#${i["toFloor"]} ", style: TextStyle(color: Colors.black26)),
+                        TextSpan(
+                            text: i["foo"],
+                            style: new TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationStyle: TextDecorationStyle.dotted,
+                              decorationColor: Colors.black,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                final _login = await Storage.get('com.bfban.login');
+
+                                if (_login == null) {
+                                  return;
+                                }
+
+                                Routes.router.navigateTo(
+                                  context,
+                                  '/record/${i["fooUId"]}',
+                                  transition: TransitionType.cupertino,
+                                );
+                              }),
+                        TextSpan(
+                          text: " 回复",
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Text(
                     "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
                     style: TextStyle(
                       color: Colors.black54,
-                      fontSize: 12,
+                      fontSize: 9,
                       fontWeight: FontWeight.w500,
                     ),
-                  )
+                  ),
                 ],
               ),
             ],
           ),
+
+          i["toFloor"] == null
+              ? Container()
+              : Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.only(
+                    top: 5,
+                    left: 10,
+                    bottom: 5,
+                    right: 10,
+                  ),
+                  color: Color(0xfff2f2f2),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Wrap(
+                          spacing: 5,
+                          children: <Widget>[
+                            Container(
+                              decoration: new BoxDecoration(
+                                color: detailApi.getUsetIdentity(i["fooPrivilege"])[2],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(15.0),
+                                ),
+                              ),
+                              padding: EdgeInsets.only(
+                                left: 5,
+                                right: 5,
+                                top: 1,
+                                bottom: 1,
+                              ),
+                              child: Text(
+                                "${detailApi.getUsetIdentity(i["fooPrivilege"])[0]}",
+                                style: TextStyle(
+                                  color: detailApi.getUsetIdentity(i["fooPrivilege"])[1],
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              i["bar"],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.vertical_align_top,
+                        color: Colors.black26,
+                        size: 15,
+                      )
+                    ],
+                  ),
+                ),
 
           /// Html评论内容
           Container(
             color: Colors.white,
             child: Html(
               data: i["content"],
+              style: detailApi.styleHtml(context),
               onLinkTap: (src) => _urlUtil.onPeUrl(src),
               onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
@@ -262,7 +372,7 @@ class CheatReports extends StatelessWidget {
                       TextSpan(
                         style: new TextStyle(
                           color: Colors.black,
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                         children: <TextSpan>[
@@ -270,11 +380,17 @@ class CheatReports extends StatelessWidget {
                               text: i["username"],
                               style: new TextStyle(
                                 decoration: TextDecoration.underline,
-                                decorationStyle: TextDecorationStyle.dashed,
-                                decorationColor: Colors.blue,
+                                decorationStyle: TextDecorationStyle.dotted,
+                                decorationColor: Colors.black,
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
+                                  final _login = await Storage.get('com.bfban.login');
+
+                                  if (_login == null) {
+                                    return;
+                                  }
+
                                   Routes.router.navigateTo(
                                     context,
                                     '/record/${i["uId"]}',
@@ -282,13 +398,19 @@ class CheatReports extends StatelessWidget {
                                   );
                                 }),
                           TextSpan(
-                            text: "举报在",
+                            text: " 举报在 ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                           TextSpan(
                             text: i["game"],
                           ),
                           TextSpan(
-                            text: "作弊",
+                            text: " 作弊",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ],
                       ),
@@ -297,7 +419,7 @@ class CheatReports extends StatelessWidget {
                       "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
                       style: TextStyle(
                         color: Colors.black54,
-                        fontSize: 12,
+                        fontSize: 9,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -307,7 +429,7 @@ class CheatReports extends StatelessWidget {
                           "举报行为: ",
                           style: TextStyle(
                             color: Colors.black54,
-                            fontSize: 12,
+                            fontSize: 9,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -359,14 +481,15 @@ class CheatReports extends StatelessWidget {
             decoration: BoxDecoration(
               color: Color(0xfff2f2f2),
               border: Border.all(
-                color: Colors.black12,
+                style: BorderStyle.none,
+                color: Colors.blue,
                 width: 1,
               ),
             ),
             child: Row(
               children: <Widget>[
                 Text(
-                  "附加 ",
+                  "附加: ",
                   style: TextStyle(
                     fontSize: 12,
                   ),
@@ -398,16 +521,7 @@ class CheatReports extends StatelessWidget {
             color: Colors.white,
             child: Html(
               data: i["description"],
-              style: {
-                "img": Style(
-                  alignment: Alignment.centerLeft,
-                  width: (MediaQuery.of(context).size.width - 15),
-                  border: Border.all(
-                    width: 1.0,
-                    color: Colors.black12,
-                  ),
-                ),
-              },
+              style: detailApi.styleHtml(context),
               onLinkTap: (src) => _urlUtil.onPeUrl(src),
               onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
@@ -420,7 +534,7 @@ class CheatReports extends StatelessWidget {
 
 /// 管理员判决列表
 /// 类型是2
-class CheatVerifies extends StatelessWidget {
+class CheatVerifies extends StatefulWidget {
   final i;
 
   final cheatMethods;
@@ -429,16 +543,53 @@ class CheatVerifies extends StatelessWidget {
 
   final cheatersInfo;
 
-  final List<dynamic> startusIng = Config.startusIng;
-
-  final UrlUtil _urlUtil = new UrlUtil();
-
   CheatVerifies({
     this.i,
     this.cheatMethods,
     this.cheatersInfoUser,
     this.cheatersInfo,
   });
+
+  @override
+  _CheatVerifiesState createState() => _CheatVerifiesState();
+}
+
+class _CheatVerifiesState extends State<CheatVerifies> {
+  final List<dynamic> startusIng = Config.startusIng;
+
+  final UrlUtil _urlUtil = new UrlUtil();
+
+  bool _isAdmin = false;
+
+  dynamic login;
+
+  @override
+  void initState() {
+    super.initState();
+
+    this._onisAdmin();
+  }
+
+  /// 判断是否另一个管理员，
+  /// 如果是显示赞同按钮
+  void _onisAdmin() async {
+    print(login);
+
+    login = jsonDecode(await Storage.get("com.bfban.login"));
+
+    setState(() {
+      if (widget.i == null || login == null) {
+        _isAdmin = true;
+      }
+
+      /// status 1： 作弊者
+      if (login["userPrivilege"] == "admin" && login["userId"] != widget.i["userId"] && widget.i["status"] == "1") {
+        _isAdmin = false;
+      } else {
+        _isAdmin = true;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -461,7 +612,7 @@ class CheatVerifies extends StatelessWidget {
             children: <Widget>[
               Container(
                 decoration: new BoxDecoration(
-                  color: detailApi.getUsetIdentity(i["privilege"])[2],
+                  color: detailApi.getUsetIdentity(widget.i["privilege"])[2],
                   borderRadius: BorderRadius.all(
                     Radius.circular(15.0),
                   ),
@@ -479,9 +630,9 @@ class CheatVerifies extends StatelessWidget {
                   bottom: 1,
                 ),
                 child: Text(
-                  "${detailApi.getUsetIdentity(i["privilege"])[0]}",
+                  "${detailApi.getUsetIdentity(widget.i["privilege"])[0]}",
                   style: TextStyle(
-                    color: detailApi.getUsetIdentity(i["privilege"])[1],
+                    color: detailApi.getUsetIdentity(widget.i["privilege"])[1],
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -492,43 +643,81 @@ class CheatVerifies extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "${i["username"]} 认为 ${startusIng[int.parse(i["status"])]["s"]}",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    new Text.rich(
+                      TextSpan(
+                        style: new TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: widget.i["username"],
+                              style: new TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationStyle: TextDecorationStyle.dotted,
+                                decorationColor: Colors.black,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  final _login = await Storage.get('com.bfban.login');
+
+                                  if (_login == null) {
+                                    return;
+                                  }
+
+                                  Routes.router.navigateTo(
+                                    context,
+                                    '/record/${widget.i["uId"]}',
+                                    transition: TransitionType.cupertino,
+                                  );
+                                }),
+                          TextSpan(
+                            text: " 认为 ",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          TextSpan(
+                            text: startusIng[int.parse(widget.i["status"])]["s"],
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Text(
-                      "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
+                      "发布时间: ${new Date().getTimestampTransferCharacter(widget.i['createDatetime'])["Y_D_M"]}",
                       style: TextStyle(
                         color: Colors.black54,
-                        fontSize: 12,
+                        fontSize: 9,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "举报行为: ",
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Wrap(
-                            spacing: 2,
-                            runSpacing: 2,
-                            children: cheatMethods,
-                          ),
-                        ),
-                      ],
-                    ),
+                    (widget.i["status"] == "1")
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "举报行为: ",
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Wrap(
+                                  spacing: 2,
+                                  runSpacing: 2,
+                                  children: widget.cheatMethods,
+                                ),
+                              ),
+                            ],
+                          )
+                        : SizedBox(),
                   ],
                 ),
               ),
@@ -539,11 +728,11 @@ class CheatVerifies extends StatelessWidget {
                     context,
                     '/reply/${jsonEncode({
                       "type": 1,
-                      "id": cheatersInfoUser["id"],
-                      "originUserId": cheatersInfoUser["originUserId"],
-                      "userId": cheatersInfo["data"]["reports"][0]["userId"],
-                      "toUserId": i["userId"],
-                      "foo": i["foo"],
+                      "id": widget.cheatersInfoUser["id"],
+                      "originUserId": widget.cheatersInfoUser["originUserId"],
+                      "userId": widget.cheatersInfo["data"]["reports"][0]["userId"],
+                      "toUserId": widget.i["userId"],
+                      "foo": widget.i["username"],
 
                       /// 取第一条举报信息下的userId
                     })}',
@@ -558,11 +747,58 @@ class CheatVerifies extends StatelessWidget {
           Container(
             color: Colors.white,
             child: Html(
-              data: i["suggestion"],
+              data: widget.i["suggestion"],
+              style: detailApi.styleHtml(context),
               onLinkTap: (src) => _urlUtil.onPeUrl(src),
               onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
-          )
+          ),
+
+          /// 管理赞同
+          Offstage(
+            offstage: _isAdmin,
+            child: Container(
+              padding: EdgeInsets.only(
+                left: 20,
+              ),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(
+                    width: 1,
+                    color: Color(0xfff2f2f2),
+                  ),
+                ),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "管理员选项:",
+                    style: TextStyle(
+                      color: Colors.black45,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(
+                      right: 20,
+                    ),
+                    color: Colors.green,
+                    child: EluiButtonComponent(
+                      child: Text(
+                        "赞同该决议",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -642,12 +878,39 @@ class CheatConfirms extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "${i["username"]} 同意该决定",
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                    new Text.rich(
+                      TextSpan(
+                        style: new TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: i["username"],
+                              style: new TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationStyle: TextDecorationStyle.dotted,
+                                decorationColor: Colors.black,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  final _login = await Storage.get('com.bfban.login');
+
+                                  if (_login == null) {
+                                    return;
+                                  }
+
+                                  Routes.router.navigateTo(
+                                    context,
+                                    '/record/${i["uId"]}',
+                                    transition: TransitionType.cupertino,
+                                  );
+                                }),
+                          TextSpan(
+                            text: "同意该决定",
+                          ),
+                        ],
                       ),
                     ),
                     Wrap(
@@ -658,7 +921,7 @@ class CheatConfirms extends StatelessWidget {
                       "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
                       style: TextStyle(
                         color: Colors.black54,
-                        fontSize: 12,
+                        fontSize: 9,
                         fontWeight: FontWeight.w500,
                       ),
                     )
@@ -708,7 +971,8 @@ class CheatConfirms extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: Html(
-                    data: (i["suggestion"] ?? ""), //  startusIng[int.parse(i["status"])]["t"] + ";" +
+                    data: (i["suggestion"] ?? ""),
+                    style: detailApi.styleHtml(context),
                     onLinkTap: (src) => _urlUtil.onPeUrl(src),
                     onImageTap: (img) => detailApi.onImageTap(context, img),
                   ),

@@ -49,49 +49,47 @@ class SearchHeadState extends State<SearchHead> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        color: Color.fromRGBO(238, 238, 238, 1),
-        borderRadius: BorderRadius.circular(5.0),
+    return ClipRRect(
+      borderRadius: BorderRadius.all(
+        Radius.circular(5),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Container(
-              child: EluiInputComponent(
-                placeholder: "搜索内容",
-                Internalstyle: true,
-                onChange: (data) {
-                  setState(() {
-                    searchValue = data["value"];
-                  });
-                },
+      child: Container(
+        height: 48,
+        color: Color.fromRGBO(238, 238, 238, 1),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Container(
+                child: EluiInputComponent(
+                  placeholder: "搜索作弊者ID",
+                  Internalstyle: true,
+                  onChange: (data) {
+                    setState(() {
+                      searchValue = data["value"];
+                    });
+                  },
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(
-              left: 4,
-            ),
-            child: FlatButton(
-              disabledColor: Colors.white70,
+            Container(
               color: Color(0xff364e80),
-              disabledTextColor: Colors.red,
-              child: Icon(
-                Icons.search,
-                color: Colors.white,
-                size: 20,
+              margin: EdgeInsets.only(
+                left: 4,
               ),
-              onPressed: () {
-                widget.onSearch(searchValue);
-              },
-            ),
-            height: 45,
-          )
-        ],
+              child: FlatButton(
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                onPressed: () => widget.onSearch(searchValue),
+              ),
+              height: 48,
+            )
+          ],
+        ),
       ),
     );
   }

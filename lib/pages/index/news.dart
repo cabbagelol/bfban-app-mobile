@@ -12,9 +12,8 @@ class newsPage extends StatefulWidget {
 class _newsPageState extends State<newsPage> {
   @override
   Widget build(BuildContext context) {
-//    return Container();
     return WebView(
-        initialUrl: "https://cabbagelol.github.io/bfbanApp/www/index.html",
+        initialUrl: "https://cabbagelol.github.io/bfbanApp/public/www/index.html",
     );
   }
 }

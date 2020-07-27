@@ -22,25 +22,30 @@ class replyPage extends StatefulWidget {
 }
 
 class _replyPageState extends State<replyPage> {
-  static GlobalKey _keyEditor;
+  Map replyInfo = {
+    "content": "",
+  };
 
-  Map replyInfo = new Map();
+  dynamic login;
 
-  Map<String, dynamic> opt = new Map();
+  Map<String, dynamic> data = new Map();
+
+  bool replyLoad = false;
 
   @override
   void initState() {
     super.initState();
 
     setState(() {
-      opt = json.decode(widget.data);
+      data = json.decode(widget.data);
     });
-    print(opt);
   }
 
   /// 回复
-  void _onReply () async {
+  void _onReply() async {
     var _data = new Map();
+
+    login = jsonDecode(await Storage.get("com.bfban.login"));
 
     if (replyInfo["content"] == "") {
       EluiMessageComponent.warning(context)(
@@ -49,39 +54,55 @@ class _replyPageState extends State<replyPage> {
       return;
     }
 
-    switch (widget.data["type"].toString()) {
+    switch (data["type"].toString()) {
       case "0":
+
         /// 追加
         _data = {};
         break;
       case "1":
+
         /// 帖子回复
         _data = {
-          "toFloor": "",
-          "toUserId": "",
+//          "toFloor": "",
+//          "toUserId": "",
         };
         break;
     }
 
     _data.addAll({
-      "cheaterId": widget.data["id"],
-      "originUserId": widget.data["originUserId"],
+      "cheaterId": data["id"],
+      "originUserId": data["originUserId"],
       "content": replyInfo["content"],
-      "userId": widget.data["userId"],
+      "userId": login["userId"],
+    });
+
+    setState(() {
+      replyLoad = true;
     });
 
     Response<dynamic> result = await Http.request(
       'api/cheaters/reply',
       data: _data,
-      method: Http.GET,
+      method: Http.POST,
     );
+
+    print(result);
 
     if (result.data["error"] == 0) {
       EluiMessageComponent.success(context)(
         child: Text("发布成功"),
       );
-      Navigator.pop(context);
+      Navigator.pop(context, "cheatersCardTypes");
+    } else {
+      EluiMessageComponent.error(context)(
+        child: Text("发布失败了 Q^Q"),
+      );
     }
+
+    setState(() {
+      replyLoad = false;
+    });
   }
 
   @override
@@ -104,19 +125,24 @@ class _replyPageState extends State<replyPage> {
             ),
           ),
           actions: <Widget>[
-            RaisedButton(
-              color: Color(0xff364e80),
-              child: Text(
-                "提交",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-              onPressed: () {
-                this._onReply();
-              },
-            )
+            replyLoad
+                ? RaisedButton(
+                    child: Icon(
+                      Icons.update,
+                      color: Colors.white,
+                    ),
+                  )
+                : RaisedButton(
+                    color: Color(0xff364e80),
+                    child: Text(
+                      "提交",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    onPressed: () => this._onReply(),
+                  )
           ],
         ),
         body: ListView(
@@ -137,7 +163,7 @@ class _replyPageState extends State<replyPage> {
             Container(
               padding: EdgeInsets.all(20),
               child: Text(
-                "@${opt["foo"].toString()}",// ${widget.data["foo"]??"未知"}
+                "@${data["foo"].toString()}", // ${widget.data["foo"]??"未知"}
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

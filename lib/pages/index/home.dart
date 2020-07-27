@@ -21,7 +21,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  /// 举报列表
   Map indexData = new Map();
+
+  /// 近期消息
+  Map indexActivity = new Map();
 
   List indexDataList = new List();
 
@@ -71,6 +75,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     this._getIndexList();
+
+    this._getActivity();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -122,7 +128,6 @@ class _HomePageState extends State<HomePage> {
 
   /// 筛选
   void _setGameType() {
-    print("233");
     setState(() {
       this
           .cheatersPost
@@ -154,6 +159,21 @@ class _HomePageState extends State<HomePage> {
       })}',
       transition: TransitionType.cupertino,
     );
+  }
+
+  /// 获取近期活动
+  void _getActivity () async {
+    Response result = await Http.request(
+      'api/activity',
+      parame: cheatersPost,
+      method: Http.GET,
+    );
+
+    if (result.data["error"] == 0) {
+      setState(() {
+        indexActivity = result.data["data"];
+      });
+    }
   }
 
   /// 发布举报信息
@@ -188,7 +208,7 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: <Widget>[
-          /// S 游戏类型
+          /// S 游戏
           Container(
             padding: EdgeInsets.only(
               top: 10,
@@ -204,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                   "游戏",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: 13,
                     shadows: <Shadow>[
                       Shadow(
                         color: Colors.black26,
@@ -230,6 +250,7 @@ class _HomePageState extends State<HomePage> {
                           index: gameTypeIndex == index,
                           child: index != 0
                               ? Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
                                   children: <Widget>[
                                     Text(
                                       gameTypes[index]["name"].toString(),
@@ -237,9 +258,6 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.white,
                                         fontSize: 13,
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
                                     ),
                                     Container(
                                       color: Colors.red,
@@ -280,9 +298,9 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          /// E 游戏类型
+          /// E 游戏
 
-          /// S 状态
+          /// S 类型
           Container(
             padding: EdgeInsets.only(
               left: 20,
@@ -291,13 +309,13 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   "类型",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 15,
+                    fontSize: 13,
                     shadows: <Shadow>[
                       Shadow(
                         color: Colors.black26,
@@ -317,36 +335,17 @@ class _HomePageState extends State<HomePage> {
                     ),
                     clipBehavior: Clip.antiAliasWithSaveLayer,
                     child: Container(
-                      color: Colors.black38,
-                      height: 28,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
+                      color: Colors.black26,
+                      child: Wrap(
                         children: gameSumStatusData.asMap().keys.map((index) {
                           return gameTypeRadio(
                             index: gameSumStatus["index"] == index,
-                            child: Wrap(
-                              children: <Widget>[
-                                Text(
-                                  gameSumStatusData[index]["s"].toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-//                              Container(
-//                                color: Colors.red,
-//                                child: Text(
-//                                  indexDate["sum"][index]["status"].toString(),
-//                                  style: TextStyle(
-//                                    fontSize: 8,
-//                                    color: Colors.white,
-//                                  ),
-//                                ),
-//                              )
-                              ],
+                            child: Text(
+                              gameSumStatusData[index]["s"].toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                             onTap: () {
                               if (index == this.gameSumStatus["index"]) {
@@ -369,7 +368,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          /// E 状态
+          /// E 类型
 
           Expanded(
             flex: 1,
@@ -430,22 +429,23 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-//                    Text(
-//                      "${indexData == null ? 0 : indexData["sum"][0]["num"]}/条",
-//                      style: TextStyle(
-//                        fontSize: 16,
-//                        color: Colors.white,
-//                      ),
-//                    ),
                     Text(
-                      "待审核",
+                      "${indexActivity["number"] == null ? "" :  indexActivity["number"]["report"]}",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "\u793e\u533a\u5df2\u6536\u5230\u4e3e\u62a5\u6b21\u6570",
+                      style: TextStyle(
+                        fontSize: 9,
                         color: Colors.white,
                       ),
                     )
@@ -453,18 +453,19 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-//                    Text(
-//                      "${indexData == null ? 0 : indexData["sum"][2]["num"]}/条",
-//                      style: TextStyle(
-//                        fontSize: 16,
-//                        color: Colors.white,
-//                      ),
-//                    ),
                     Text(
-                      "未处理",
+                      "${indexActivity["number"] == null ? "" : indexActivity["number"]["cheater"]}",
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      "\u5df2\u6838\u5b9e\u4f5c\u5f0a\u73a9\u5bb6\u4eba\u6570",
+                      style: TextStyle(
+                        fontSize: 9,
                         color: Colors.white,
                       ),
                     )
