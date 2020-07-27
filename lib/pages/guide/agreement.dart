@@ -1,4 +1,5 @@
 /// 协议内容
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,7 @@ import 'package:flutter_plugin_elui/elui.dart';
 
 class agreementPage extends StatefulWidget {
 
-  final onChanged;
+  final Function onChanged;
 
   agreementPage({
     this.onChanged,
@@ -17,6 +18,7 @@ class agreementPage extends StatefulWidget {
 }
 
 class _agreementPageState extends State<agreementPage> {
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -56,6 +58,7 @@ class _agreementPageState extends State<agreementPage> {
             ),
           ),
         ),
+
         SizedBox(
           height: 50,
         ),

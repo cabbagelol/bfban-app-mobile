@@ -9,6 +9,7 @@ import 'package:bfban/utils/index.dart';
 
 import 'agreement.dart';
 import 'explain.dart';
+import 'permission.dart';
 
 class guidePage extends StatefulWidget {
   @override
@@ -34,13 +35,13 @@ class _guidePageState extends State<guidePage> {
           });
         },
       ),
+      permissionPage(),
       explainPage(),
     ];
   }
 
   /// 动作
   void _onConfirm() {
-    print("${guideListPageIndex} ${guideListPage.length - 1}");
     if (guideListPageIndex == guideListPage.length - 1) {
       Storage.set("com.bfban.guide", value: "0");
 
@@ -57,7 +58,7 @@ class _guidePageState extends State<guidePage> {
   bool _isState() {
     if (guideListPageIndex == 0 && guideAgreementIs) {
       return false;
-    } else if (guideListPageIndex == 1) {
+    } else if (guideListPageIndex >= 1) {
       return false;
     }
     return true;

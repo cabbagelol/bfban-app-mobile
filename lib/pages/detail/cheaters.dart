@@ -60,7 +60,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   /// 进度状态
   final List<dynamic> startusIng = Config.startusIng;
 
-  dynamic _login;
+  static dynamic _login;
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   }
 
   /// 获取bfban用户信息
-  Future _getCheatersInfo() async {
+   Future _getCheatersInfo() async {
     Response result = await Http.request(
       'api/cheaters/${widget.id}',
       method: Http.GET,
@@ -127,6 +127,32 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     return t;
   }
 
+  /// 赞同决议
+  static _setConfirm(context, data) async {
+    Response result = await Http.request(
+      'api/cheaters/confirm',
+      data: {
+        "userVerifyCheaterId": data["id"],
+        "cheatMethods": data["cheatMethods"],
+        "userId": _login["userId"],
+        "originUserId": data["originUserId"],
+      },
+      method: Http.POST,
+    );
+
+    if (result.data["error"] == 0) {
+      EluiMessageComponent.success(context)(
+        child: Text("提交成功"),
+      );
+
+      Navigator.pop(context);
+    } else {
+      EluiMessageComponent.error(context)(
+        child: Text("提交失败"),
+      );
+    }
+  }
+
   /// 请求更新用户名称列表
   void _seUpdateUserNameList() async {
     if (_login == null) {
@@ -151,8 +177,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       method: Http.POST,
     );
 
-    print(result);
-
     if (result.data["error"] == 0) {
       this._getCheatersInfo();
     } else {
@@ -170,8 +194,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       );
       return null;
     }
-
-    print(_login);
 
     if (_login["userPrivilege"] != 'admin') {
       EluiMessageComponent.error(context)(
@@ -280,23 +302,31 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
         switch (i["SystemType"].toString()) {
           case "0":
-            list.add(CheatUserCheaters(i: i));
+            list.add(
+              CheatUserCheaters(i: i),
+            );
             break;
           case "1":
-            list.add(CheatReports(
-              i: i,
-              cheatMethods: _cheatMethods,
-              cheatersInfo: cheatersInfo,
-              cheatersInfoUser: cheatersInfoUser,
-            ));
+            list.add(
+              CheatReports(
+                i: i,
+                cheatMethods: _cheatMethods,
+                cheatersInfo: cheatersInfo,
+                cheatersInfoUser: cheatersInfoUser,
+              ),
+            );
             break;
           case "2":
-            list.add(CheatVerifies(
-              i: i,
-              cheatMethods: _cheatMethods,
-              cheatersInfo: cheatersInfo,
-              cheatersInfoUser: cheatersInfoUser,
-            ));
+            list.add(
+              CheatVerifies(
+                i: i,
+                cheatMethods: _cheatMethods,
+                cheatersInfo: cheatersInfo,
+                cheatersInfoUser: cheatersInfoUser,
+                login: _login,
+                onConfirm: () => _setConfirm(context, cheatersInfoUser),
+              ),
+            );
             break;
           case "3":
             list.add(
@@ -953,10 +983,25 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                   ),
                   FlatButton(
                     color: Colors.red,
-                    child: Text(
-                      "判决",
-                      style: TextStyle(
-                        color: Colors.white,
+                    child: Container(
+                      height: 35,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "判决",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "管理员选项",
+                            style: TextStyle(
+                              color: Colors.white60,
+                              fontSize: 9,
+                            ),
+                          )
+                        ],
                       ),
                     ),
                     onPressed: () => this._onAdminEdit(cheatersInfo["data"]["cheater"][0]["originUserId"]),

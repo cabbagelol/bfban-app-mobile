@@ -4,11 +4,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-import 'package:bfban/constants/api.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:bfban/constants/api.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
@@ -81,6 +82,13 @@ class _usercenterState extends State<usercenter> {
       EluiMessageComponent.error(context)(
         child: Text("注册错误,请联系开发者"),
       );
+    }
+  }
+
+  /// 打开权限中心
+  void _opEnPermanently () async {
+    if (await Permission.speech.isPermanentlyDenied) {
+      openAppSettings();
     }
   }
 
@@ -232,6 +240,14 @@ class _usercenterState extends State<usercenter> {
           ),
           islink: true,
           onTap: () => _urlUtil.opEnPage(context, '/usercenter/support'),
+        ),
+        EluiCellComponent(
+          title: "\u6743\u9650",
+          theme: EluiCellTheme(
+            backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+          ),
+          islink: true,
+          onTap: () => this._opEnPermanently(),
         ),
         EluiCellComponent(
           title: "\u7248\u672c",

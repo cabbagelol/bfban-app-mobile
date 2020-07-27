@@ -177,7 +177,6 @@ class CheatUserCheaters extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                       children: <TextSpan>[
-                        i["toFloor"] == null ? TextSpan() : TextSpan(text: "#${i["toFloor"]} ", style: TextStyle(color: Colors.black26)),
                         TextSpan(
                             text: i["foo"],
                             style: new TextStyle(
@@ -269,6 +268,15 @@ class CheatUserCheaters extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                      Offstage(
+                        offstage: i["toFloor"] == null,
+                        child: Text(
+                          "#${i["toFloor"]}楼 ",
+                          style: TextStyle(
+                            color: Colors.black26,
+                          ),
                         ),
                       ),
                       Icon(
@@ -543,11 +551,17 @@ class CheatVerifies extends StatefulWidget {
 
   final cheatersInfo;
 
+  Map login;
+
+  Function onConfirm;
+
   CheatVerifies({
-    this.i,
-    this.cheatMethods,
-    this.cheatersInfoUser,
-    this.cheatersInfo,
+    @required this.i,
+    @required this.cheatMethods,
+    @required this.cheatersInfoUser,
+    @required this.cheatersInfo,
+    @required this.login,
+    this.onConfirm,
   });
 
   @override
@@ -561,8 +575,6 @@ class _CheatVerifiesState extends State<CheatVerifies> {
 
   bool _isAdmin = false;
 
-  dynamic login;
-
   @override
   void initState() {
     super.initState();
@@ -573,9 +585,9 @@ class _CheatVerifiesState extends State<CheatVerifies> {
   /// 判断是否另一个管理员，
   /// 如果是显示赞同按钮
   void _onisAdmin() async {
-    print(login);
+    var login = widget.login;
 
-    login = jsonDecode(await Storage.get("com.bfban.login"));
+    bool _is = false;
 
     setState(() {
       if (widget.i == null || login == null) {
@@ -587,6 +599,19 @@ class _CheatVerifiesState extends State<CheatVerifies> {
         _isAdmin = false;
       } else {
         _isAdmin = true;
+      }
+
+      /// 索引同意列表是否已有该决议
+      if (widget.cheatersInfo["data"]["confirms"].length > 0) {
+        widget.cheatersInfo["data"]["confirms"].forEach((i) {
+          if (i["userVerifyCheaterId"] == widget.i["id"]) {
+            _is = true;
+          }
+        });
+
+        if (_is) {
+          _isAdmin = true;
+        }
       }
     });
   }
@@ -793,6 +818,7 @@ class _CheatVerifiesState extends State<CheatVerifies> {
                           fontSize: 12,
                         ),
                       ),
+                      onTap: () => widget.onConfirm(),
                     ),
                   ),
                 ],
@@ -887,28 +913,32 @@ class CheatConfirms extends StatelessWidget {
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                              text: i["username"],
-                              style: new TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationStyle: TextDecorationStyle.dotted,
-                                decorationColor: Colors.black,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () async {
-                                  final _login = await Storage.get('com.bfban.login');
+                            text: i["username"],
+                            style: new TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationStyle: TextDecorationStyle.dotted,
+                              decorationColor: Colors.black,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                final _login = await Storage.get('com.bfban.login');
 
-                                  if (_login == null) {
-                                    return;
-                                  }
+                                if (_login == null) {
+                                  return;
+                                }
 
-                                  Routes.router.navigateTo(
-                                    context,
-                                    '/record/${i["uId"]}',
-                                    transition: TransitionType.cupertino,
-                                  );
-                                }),
+                                Routes.router.navigateTo(
+                                  context,
+                                  '/record/${i["uId"]}',
+                                  transition: TransitionType.cupertino,
+                                );
+                              },
+                          ),
                           TextSpan(
                             text: "同意该决定",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ],
                       ),
@@ -956,28 +986,11 @@ class CheatConfirms extends StatelessWidget {
               top: 2,
             ),
             color: Colors.white,
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  child: Text(
-                    "\“",
-                    style: TextStyle(
-                      fontSize: 40,
-                      color: Colors.black12,
-                    ),
-                  ),
-                  padding: EdgeInsets.only(left: 20),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Html(
-                    data: (i["suggestion"] ?? ""),
-                    style: detailApi.styleHtml(context),
-                    onLinkTap: (src) => _urlUtil.onPeUrl(src),
-                    onImageTap: (img) => detailApi.onImageTap(context, img),
-                  ),
-                ),
-              ],
+            child: Html(
+              data: (i["suggestion"] ?? ""),
+              style: detailApi.styleHtml(context),
+              onLinkTap: (src) => _urlUtil.onPeUrl(src),
+              onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
           ),
         ],

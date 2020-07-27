@@ -49,6 +49,9 @@ dependencies:
   # 图片查看 https://pub.flutter-io.cn/packages/photo_view
   photo_view: 0.9.2
 
+  # 权限 https://pub.flutter-io.cn/packages/permission_handler
+  permission_handler: 5.0.1
+
   flutter_plugin_elui:
     path: ../../flutter-elui-plugin
 
