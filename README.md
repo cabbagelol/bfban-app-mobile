@@ -4,9 +4,9 @@
 
 
 ## Bfban应用
-[![pub package](https://img.shields.io/badge/pub-0.0.1-brightgreen)](https://github.com/cabbagelol/flutter-plugin-drawer)
-[![pub package](https://img.shields.io/badge/ios-yes-green)](https://github.com/cabbagelol/flutter-plugin-drawer)
-[![pub package](https://img.shields.io/badge/android-yes-green)](https://github.com/cabbagelol/flutter-plugin-drawer)
+[![pub package]()](https://github.com/cabbagelol/flutter-plugin-drawer)
+[![pub package]()](https://github.com/cabbagelol/flutter-plugin-drawer)
+[![pub package]()](https://github.com/cabbagelol/flutter-plugin-drawer)
 
    由Cabbagelol负责维护的联Ban移动设备应用，完成对移动设备快速举报功能，改进在移动设备展示效果。
 
