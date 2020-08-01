@@ -41,7 +41,7 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   void _onReady () async {
-    Map token = jsonDecode(await Storage.get('com.bfban.token'));
+    Map token = jsonDecode(await Storage.get('com.bfban.token') ?? '{}');
 
 
     /// 校验TOKEN
@@ -50,6 +50,8 @@ class _IndexPageState extends State<IndexPage> {
       EluiMessageComponent.warning(context)(
         child: Text("登录已过期，请重新登录"),
       );
+
+      Storage.remove('com.bfban.token');
 
       Routes.router.navigateTo(
         context,

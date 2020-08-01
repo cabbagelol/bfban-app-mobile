@@ -116,6 +116,7 @@ class _guidePageState extends State<guidePage> {
                 guideListPageIndex == guideListPage.length - 1 ? "确认" : "下一步",
                 style: TextStyle(
                   color: Colors.black,
+                  fontSize: 15,
                 ),
               ),
               Offstage(
@@ -124,7 +125,7 @@ class _guidePageState extends State<guidePage> {
                   "请勾选必要条件",
                   style: TextStyle(
                     color: Colors.black87,
-                    fontSize: 11,
+                    fontSize: 9,
                   ),
                 ),
               ),

@@ -87,9 +87,7 @@ class _usercenterState extends State<usercenter> {
 
   /// 打开权限中心
   void _opEnPermanently () async {
-    if (await Permission.speech.isPermanentlyDenied) {
-      openAppSettings();
-    }
+    openAppSettings();
   }
 
   @override

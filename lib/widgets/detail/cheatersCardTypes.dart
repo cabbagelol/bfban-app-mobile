@@ -18,6 +18,11 @@ import 'package:bfban/router/router.dart';
 /// 对比评论身份
 class detailApi {
   static Map<String, Style> styleHtml(BuildContext context) {
+    /// 3/1
+    num a = (MediaQuery.of(context).size.width - 15) / 3;
+
+    /// 3/1 -10
+    num b = a - 5;
     return {
       "a": Style(
         after: "🔗",
@@ -28,13 +33,35 @@ class detailApi {
       ),
       "img": Style(
         alignment: Alignment.centerLeft,
-        width: (MediaQuery.of(context).size.width - 15) / 3,
+        width: b,
+        height: a,
         border: Border.all(
-          width: 1.0,
-          color: Colors.black12,
+          width: 1,
+          color: Color(0xfff2f2f2),
         ),
+        margin: EdgeInsets.only(
+          right: 4.5,
+          bottom: 5,
+        ),
+        backgroundColor: Color(0xfff2f2f2),
       ),
     };
+  }
+
+  /// 楼层
+  static Widget getFloor(int index) {
+    return Container(
+      margin: EdgeInsets.only(
+        left: 10,
+        right: 5,
+      ),
+      child: Text(
+        "#${index}楼 ",
+        style: TextStyle(
+          color: Colors.black26,
+        ),
+      ),
+    );
   }
 
   /// 查看图片
@@ -111,10 +138,13 @@ class replyButton extends StatelessWidget {
 class CheatUserCheaters extends StatelessWidget {
   final Map i;
 
+  final int index;
+
   final UrlUtil _urlUtil = new UrlUtil();
 
   CheatUserCheaters({
     @required this.i,
+    this.index = 0,
   });
 
   @override
@@ -136,8 +166,9 @@ class CheatUserCheaters extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              detailApi.getFloor(index),
               Container(
                 decoration: new BoxDecoration(
                   color: detailApi.getUsetIdentity(i["fooPrivilege"])[2],
@@ -146,9 +177,6 @@ class CheatUserCheaters extends StatelessWidget {
                   ),
                 ),
                 margin: EdgeInsets.only(
-                  left: 20,
-                  top: 5,
-                  bottom: 5,
                   right: 10,
                 ),
                 padding: EdgeInsets.only(
@@ -309,6 +337,8 @@ class CheatUserCheaters extends StatelessWidget {
 class CheatReports extends StatelessWidget {
   final Map i;
 
+  final int index;
+
   final cheatMethods;
 
   final cheatersInfoUser;
@@ -318,7 +348,8 @@ class CheatReports extends StatelessWidget {
   final UrlUtil _urlUtil = new UrlUtil();
 
   CheatReports({
-    this.i,
+    @required this.i,
+    this.index = 0,
     this.cheatMethods,
     this.cheatersInfoUser,
     this.cheatersInfo,
@@ -341,8 +372,9 @@ class CheatReports extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              detailApi.getFloor(index),
               Container(
                 decoration: new BoxDecoration(
                   color: detailApi.getUsetIdentity(i["privilege"])[2],
@@ -351,9 +383,6 @@ class CheatReports extends StatelessWidget {
                   ),
                 ),
                 margin: EdgeInsets.only(
-                  left: 20,
-                  top: 5,
-                  bottom: 5,
                   right: 10,
                 ),
                 padding: EdgeInsets.only(
@@ -558,6 +587,8 @@ class CheatReports extends StatelessWidget {
 class CheatVerifies extends StatefulWidget {
   final i;
 
+  final int index;
+
   final cheatMethods;
 
   final cheatersInfoUser;
@@ -570,6 +601,7 @@ class CheatVerifies extends StatefulWidget {
 
   CheatVerifies({
     @required this.i,
+    this.index = 0,
     @required this.cheatMethods,
     @required this.cheatersInfoUser,
     @required this.cheatersInfo,
@@ -646,8 +678,9 @@ class _CheatVerifiesState extends State<CheatVerifies> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              detailApi.getFloor(widget.index),
               Container(
                 decoration: new BoxDecoration(
                   color: detailApi.getUsetIdentity(widget.i["privilege"])[2],
@@ -656,9 +689,6 @@ class _CheatVerifiesState extends State<CheatVerifies> {
                   ),
                 ),
                 margin: EdgeInsets.only(
-                  left: 20,
-                  top: 5,
-                  bottom: 5,
                   right: 10,
                 ),
                 padding: EdgeInsets.only(
@@ -849,6 +879,8 @@ class _CheatVerifiesState extends State<CheatVerifies> {
 class CheatConfirms extends StatelessWidget {
   final i;
 
+  final int index;
+
   final cheatMethods;
 
   final cheatersInfoUser;
@@ -858,7 +890,8 @@ class CheatConfirms extends StatelessWidget {
   final UrlUtil _urlUtil = new UrlUtil();
 
   CheatConfirms({
-    this.i,
+    @required this.i,
+    this.index = 0,
     this.cheatMethods,
     this.cheatersInfoUser,
     this.cheatersInfo,
@@ -881,20 +914,18 @@ class CheatConfirms extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              detailApi.getFloor(index),
               Container(
                 decoration: new BoxDecoration(
                   color: detailApi.getUsetIdentity(i["privilege"])[2],
                   borderRadius: BorderRadius.all(Radius.circular(15.0)),
                 ),
                 margin: EdgeInsets.only(
-                  left: 20,
-                  top: 5,
-                  bottom: 5,
                   right: 10,
                 ),
                 padding: EdgeInsets.only(

@@ -64,6 +64,12 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
   static Map _login;
 
+  /// 曾用名按钮状态 or 列表状态
+  Map userNameList = {
+    "buttonLoad": false,
+    "listLoad": false,
+  };
+
   @override
   void initState() {
     super.initState();
@@ -162,10 +168,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
   /// 请求更新用户名称列表
   void _seUpdateUserNameList() async {
-    if (_login == null) {
-      EluiMessageComponent.error(context)(
-        child: Text("请先登录BFBAN"),
-      );
+    if (userNameList['buttonLoad']) {
       return;
     }
 
@@ -175,6 +178,17 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       );
       return;
     }
+
+    if (_login == null) {
+      EluiMessageComponent.error(context)(
+        child: Text("请先登录BFBAN"),
+      );
+      return;
+    }
+
+    setState(() {
+      userNameList["buttonLoad"] = true;
+    });
 
     Response result = await Http.request(
       'api/cheaters/updateCheaterInfo',
@@ -191,6 +205,10 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
         child: Text("请求异常请联系开发者"),
       );
     }
+
+    setState(() {
+      userNameList["buttonLoad"] = false;
+    });
   }
 
   /// 管理员裁判
@@ -224,41 +242,35 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   void _setReply(num Type) async {
     if (_login == null || _login.isEmpty) {
       EluiMessageComponent.error(context)(
-        child: Wrap(
-          spacing: 10,
-          children: <Widget>[
-            Icon(Icons.warning, color: Colors.white,),
-            Text("请先登录BFBAN"),
-          ],
-        ),
+        child: Text("请先登录BFBAN"),
       );
       return;
     }
 
     /// 补充（追加）回复
+    /// 取第一条举报信息下的userId
     Routes.router
         .navigateTo(
-      context,
-      '/reply/${jsonEncode({
-        "type": Type ?? 0,
-        "id": cheatersInfoUser["id"],
-        "originUserId": cheatersInfoUser["originUserId"],
-//        "userId": cheatersInfo["data"]["reports"][0]["userId"],
-        "foo": cheatersInfo["data"]["reports"][0]["username"],
-
-        /// 取第一条举报信息下的userId
-      })}',
-      transition: TransitionType.cupertino,
-    )
+            context,
+            '/reply/${jsonEncode({
+              "type": Type ?? 0,
+              "id": cheatersInfoUser["id"],
+              "originUserId": cheatersInfoUser["originUserId"],
+              "foo": cheatersInfo["data"]["reports"][0]["username"],
+            })}',
+            transition: TransitionType.cupertino)
         .then((value) {
-      if (value == "cheatersCardTypes") {
-        this._getCheatersInfo();
-      }
+      this._getCheatersInfo();
     });
   }
 
   /// 获取用户BFBAN中举报数据
-  static Widget _getUserInfo(context, Map cheatersInfo, cheatersInfoUser, startusIng) {
+  static Widget _getUserInfo(
+    context,
+    Map cheatersInfo,
+    cheatersInfoUser,
+    startusIng,
+  ) {
     List<Widget> list = [];
 
     /// 数据
@@ -268,28 +280,16 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     List _allReply = new List();
 
     /// 回答
-    (_data["replies"] ?? []).forEach((i) => {
-          i["SystemType"] = 0,
-          _allReply.add(i),
-        });
+    (_data["replies"] ?? []).forEach((i) => {i["SystemType"] = 0, _allReply.add(i)});
 
     /// 举报
-    (_data["reports"] ?? []).forEach((i) => {
-          i["SystemType"] = 1,
-          _allReply.add(i),
-        });
+    (_data["reports"] ?? []).forEach((i) => {i["SystemType"] = 1, _allReply.add(i)});
 
     /// 审核
-    (_data["verifies"] ?? []).forEach((i) => {
-          i["SystemType"] = 2,
-          _allReply.add(i),
-        });
+    (_data["verifies"] ?? []).forEach((i) => {i["SystemType"] = 2, _allReply.add(i)});
 
     /// 赞同。审核员
-    (_data["confirms"] ?? []).forEach((i) => {
-          i["SystemType"] = 3,
-          _allReply.add(i),
-        });
+    (_data["confirms"] ?? []).forEach((i) => {i["SystemType"] = 3, _allReply.add(i)});
 
     /// 排序时间帖子
     /// 序列化时间
@@ -297,11 +297,12 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
         new Date().getTurnTheTimestamp(time["createDatetime"])["millisecondsSinceEpoch"] -
         new Date().getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"]);
 
-    _allReply.forEach(
+    _allReply.asMap().keys.forEach(
       (i) {
         /// 作弊类型 若干
         List<Widget> _cheatMethods = new List();
-        i['cheatMethods'].toString().split(",").forEach((i) {
+
+        _allReply[i]['cheatMethods'].toString().split(",").forEach((i) {
           _cheatMethods.add(EluiTagComponent(
             value: cheatingTpyes[i] ?? '未知行为',
             textStyle: TextStyle(
@@ -313,16 +314,20 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
           ));
         });
 
-        switch (i["SystemType"].toString()) {
+        switch (_allReply[i]["SystemType"].toString()) {
           case "0":
             list.add(
-              CheatUserCheaters(i: i),
+              CheatUserCheaters(
+                i: _allReply[i],
+                index: i+=1,
+              ),
             );
             break;
           case "1":
             list.add(
               CheatReports(
-                i: i,
+                i: _allReply[i],
+                index: i+=1,
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
@@ -332,7 +337,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
           case "2":
             list.add(
               CheatVerifies(
-                i: i,
+                i: _allReply[i],
+                index: i+=1,
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
@@ -344,7 +350,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
           case "3":
             list.add(
               CheatConfirms(
-                i: i,
+                i: _allReply[i],
+                index: i+=1,
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
@@ -525,21 +532,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                 ),
               ],
               iconTheme: IconThemeData(
-                color: _listViewValue > 0 ? Colors.white : Colors.white,
+                color: Colors.white,
               ),
-              title: _listViewValue > 180
-                  ? Text(
-                      cheatersInfoUser["originId"].toString(),
-                      style: TextStyle(
-                        shadows: <Shadow>[
-                          Shadow(
-                            color: Colors.black12,
-                            offset: Offset(1, 2),
-                          )
-                        ],
-                      ),
-                    )
-                  : null,
               centerTitle: true,
             ),
 
@@ -856,7 +850,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
                         /// S 审核记录
                         Container(
-                          color: Colors.white,
+                          color: Color(0xfff2f2f2),
                           child: ListView(
                             padding: EdgeInsets.zero,
                             children: <Widget>[
@@ -867,6 +861,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                 cheatersInfoUser,
                                 startusIng,
                               ),
+
                               /// E记录
                             ],
                           ),
@@ -908,7 +903,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                     ),
                                     textTheme: ButtonTextTheme.primary,
                                     label: Text(
-                                      "刷新",
+                                      userNameList['buttonLoad'] ? "刷新中" : "刷新",
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
@@ -924,7 +919,11 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                 right: 10,
                                 bottom: 10,
                               ),
-                              child: _getUsedname(snapshot.data),
+                              child: userNameList['listLoad']
+                                  ? EluiVacancyComponent(
+                                      title: "-",
+                                    )
+                                  : _getUsedname(snapshot.data),
                               margin: EdgeInsets.only(
                                 top: 10,
                               ),
@@ -956,6 +955,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
               padding: EdgeInsets.only(
                 left: 10,
                 right: 10,
+                top: 5,
+                bottom: 5,
               ),
               height: 50,
               child: Row(
@@ -999,7 +1000,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                   FlatButton(
                     color: Colors.red,
                     child: Container(
-                      height: 35,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[

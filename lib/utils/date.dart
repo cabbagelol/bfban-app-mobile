@@ -15,7 +15,7 @@ class Date {
     var time_ =  DateTime.parse(date);
 
     var year = time_.year;
-    var month = this.zeroPadding(time_.month + 1);
+    var month = this.zeroPadding(time_.month);
     var day = this.zeroPadding(time_.day);
     var hour = this.zeroPadding(time_.hour);
     var minute = this.zeroPadding(time_.minute);
