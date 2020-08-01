@@ -1,4 +1,6 @@
 /// 功能：首页控制器
+
+import 'dart:convert';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:bfban/constants/index.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:bfban/router/router.dart';
+import 'package:flutter_plugin_elui/_message/index.dart';
 
 import 'home.dart';
 import 'news.dart';
@@ -34,9 +37,28 @@ class _IndexPageState extends State<IndexPage> {
 
     this.onGuide();
 
-    Storage.get('com.bfban.token').then((value) => {
-          Http.setToken(value),
-        });
+    this._onReady();
+  }
+
+  void _onReady () async {
+    Map token = jsonDecode(await Storage.get('com.bfban.token'));
+
+
+    /// 校验TOKEN
+    /// 时间7日内该TOken生效并保留，否则重启登录
+    if (DateTime.parse(token["time"]).add(Duration(days: 7)).millisecondsSinceEpoch > new DateTime.now().millisecondsSinceEpoch) {
+      EluiMessageComponent.warning(context)(
+        child: Text("登录已过期，请重新登录"),
+      );
+
+      Routes.router.navigateTo(
+        context,
+        '/login',
+        transition: TransitionType.cupertino,
+      );
+    } else {
+      Http.setToken(token["value"]);
+    }
   }
 
   /// 引导器

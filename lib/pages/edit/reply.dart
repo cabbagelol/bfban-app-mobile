@@ -26,7 +26,7 @@ class _replyPageState extends State<replyPage> {
     "content": "",
   };
 
-  dynamic login;
+  Map login;
 
   Map<String, dynamic> data = new Map();
 
@@ -45,7 +45,14 @@ class _replyPageState extends State<replyPage> {
   void _onReply() async {
     var _data = new Map();
 
-    login = jsonDecode(await Storage.get("com.bfban.login"));
+    login = jsonDecode(await Storage.get("com.bfban.login") ?? '{}');
+
+    if (login == null || login.isEmpty) {
+      EluiMessageComponent.warning(context)(
+        child: Text("请登录"),
+      );
+      return;
+    }
 
     if (replyInfo["content"] == "") {
       EluiMessageComponent.warning(context)(

@@ -218,7 +218,7 @@ class _editPageState extends State<editPage> {
   /// 提交举报
   void _onCheaters() async {
     num _is;
-    String _token = await Storage.get("com.bfban.token");
+    String _token = jsonDecode(await Storage.get("com.bfban.token"));
 
     /// 是否检测过。 避免重复检测
     if (!reportInfoUserNameIsBool) {

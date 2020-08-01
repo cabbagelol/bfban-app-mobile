@@ -52,6 +52,20 @@ class _SupportPageState extends State<SupportPage> {
             height: 20,
           ),
           EluiCellComponent(
+            title: "内部",
+            theme: EluiCellTheme(
+              backgroundColor: Colors.transparent,
+              titleColor: Colors.white38,
+            ),
+          ),
+          EluiCellComponent(
+            title: "BFBAN WEB 接口",
+            label: "app.bfban.com",
+            theme: EluiCellTheme(
+              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+            ),
+          ),
+          EluiCellComponent(
             title: "第三方 (我们无法管控的数据)",
             theme: EluiCellTheme(
               backgroundColor: Colors.transparent,
@@ -60,7 +74,7 @@ class _SupportPageState extends State<SupportPage> {
           ),
           EluiCellComponent(
             title: "TRN",
-            label: "battlefieldtracker.com/",
+            label: "battlefieldtracker.com",
             theme: EluiCellTheme(
               backgroundColor: Color.fromRGBO(255, 255, 255, .07),
             ),

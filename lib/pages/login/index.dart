@@ -90,75 +90,78 @@ class _loginPageState extends State<loginPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    /// 登陆
-    void _onLogin() async {
-      if (loginInfo["verificationController"] == "") {
-        EluiMessageComponent.error(context)(child: Text("请填写验证码"));
-        return;
-      } else if (loginInfo["passController"] == "") {
-        EluiMessageComponent.error(context)(child: Text("请填写密码"));
-        return;
-      } else if (loginInfo["userController"] == "") {
-        EluiMessageComponent.error(context)(child: Text("请填写用户名"));
-        return;
-      }
-
-      setState(() {
-        loginLoad = true;
-      });
-
-      Response result = await Http.request(
-        'api/account/signin',
-        method: Http.POST,
-        headers: {'Cookie': loginInfo["CaotchaCookie"]},
-        data: {
-          "captcha": loginInfo["verificationController"],
-          "password": loginInfo["passController"],
-          "username": loginInfo["userController"],
-        },
-      );
-
-      print(result);
-
-      if (result.data['error'] == 0) {
-        Storage.set(
-          'com.bfban.login',
-          value: jsonEncode(result.data['data']),
-        );
-        Storage.set(
-          'com.bfban.token',
-          value: result.data['token'],
-        );
-        Navigator.pop(context, 'loginBack');
-      } else {
-        switch (result.data["msg"]) {
-          case "invalid captcha":
-            EluiMessageComponent.error(context)(
-              child: Text("请输入验证码"),
-            );
-            break;
-          case "captcha expires":
-            EluiMessageComponent.error(context)(
-              child: Text("错误的验证码"),
-            );
-            break;
-          case "username or password wrong":
-            EluiMessageComponent.error(context)(
-              child: Text("用户名或密码错误"),
-            );
-            break;
-        }
-
-        this._getCaptcha();
-      }
-
-      setState(() {
-        loginLoad = false;
-      });
+  /// 登陆
+  void _onLogin() async {
+    if (loginInfo["verificationController"] == "") {
+      EluiMessageComponent.error(context)(child: Text("请填写验证码"));
+      return;
+    } else if (loginInfo["passController"] == "") {
+      EluiMessageComponent.error(context)(child: Text("请填写密码"));
+      return;
+    } else if (loginInfo["userController"] == "") {
+      EluiMessageComponent.error(context)(child: Text("请填写用户名"));
+      return;
     }
 
+    setState(() {
+      loginLoad = true;
+    });
+
+    Response result = await Http.request(
+      'api/account/signin',
+      method: Http.POST,
+      headers: {'Cookie': loginInfo["CaotchaCookie"]},
+      data: {
+        "captcha": loginInfo["verificationController"],
+        "password": loginInfo["passController"],
+        "username": loginInfo["userController"],
+      },
+    );
+
+    print(result);
+
+    if (result.data['error'] == 0) {
+      Storage.set(
+        'com.bfban.login',
+        value: jsonEncode(result.data['data']),
+      );
+      Storage.set(
+        'com.bfban.token',
+        value: jsonEncode({
+          "value": result.data['token'],
+          "time": new DateTime.now().millisecondsSinceEpoch,
+        }),
+      );
+      Navigator.pop(context, 'loginBack');
+    } else {
+      switch (result.data["msg"]) {
+        case "invalid captcha":
+          EluiMessageComponent.error(context)(
+            child: Text("请输入验证码"),
+          );
+          break;
+        case "captcha expires":
+          EluiMessageComponent.error(context)(
+            child: Text("错误的验证码"),
+          );
+          break;
+        case "username or password wrong":
+          EluiMessageComponent.error(context)(
+            child: Text("用户名或密码错误"),
+          );
+          break;
+      }
+
+      this._getCaptcha();
+    }
+
+    setState(() {
+      loginLoad = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xff111b2b),
       extendBodyBehindAppBar: true,

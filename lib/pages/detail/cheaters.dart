@@ -41,6 +41,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   /// TAB导航控制器
   TabController _tabController;
 
+  int _tabControllerIndex = 0;
+
   /// 滚动控制器
   ScrollController _listViewController = new ScrollController();
 
@@ -60,7 +62,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   /// 进度状态
   final List<dynamic> startusIng = Config.startusIng;
 
-  static dynamic _login;
+  static Map _login;
 
   @override
   void initState() {
@@ -72,9 +74,14 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   }
 
   void ready() async {
-    _login = jsonDecode(await Storage.get('com.bfban.login'));
+    _login = jsonDecode(await Storage.get('com.bfban.login') ?? '{}');
 
-    _tabController = TabController(vsync: this, length: myTabs.length);
+    _tabController = TabController(vsync: this, length: myTabs.length)
+      ..addListener(() {
+        setState(() {
+          _tabControllerIndex = _tabController.index;
+        });
+      });
 
     _listViewController.addListener(() {
       setState(() {
@@ -97,7 +104,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   }
 
   /// 获取bfban用户信息
-   Future _getCheatersInfo() async {
+  Future _getCheatersInfo() async {
     Response result = await Http.request(
       'api/cheaters/${widget.id}',
       method: Http.GET,
@@ -215,9 +222,15 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
   /// 用户回复
   void _setReply(num Type) async {
-    if (_login == null) {
+    if (_login == null || _login.isEmpty) {
       EluiMessageComponent.error(context)(
-        child: Text("请先登录BFBAN"),
+        child: Wrap(
+          spacing: 10,
+          children: <Widget>[
+            Icon(Icons.warning, color: Colors.white,),
+            Text("请先登录BFBAN"),
+          ],
+        ),
       );
       return;
     }
@@ -842,19 +855,21 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                         /// E 举报信息
 
                         /// S 审核记录
-                        ListView(
-                          padding: EdgeInsets.zero,
-                          children: <Widget>[
-                            /// S记录
-                            _getUserInfo(
-                              context,
-                              snapshot.data,
-                              cheatersInfoUser,
-                              startusIng,
-                            ),
-
-                            /// E记录
-                          ],
+                        Container(
+                          color: Colors.white,
+                          child: ListView(
+                            padding: EdgeInsets.zero,
+                            children: <Widget>[
+                              /// S记录
+                              _getUserInfo(
+                                context,
+                                snapshot.data,
+                                cheatersInfoUser,
+                                startusIng,
+                              ),
+                              /// E记录
+                            ],
+                          ),
                         ),
 
                         /// E 审核记录
@@ -930,7 +945,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             /// 底栏
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
-                color: _tabController.index == 1 ? Colors.white : Colors.transparent,
+                color: _tabControllerIndex == 1 ? Colors.white : Colors.transparent,
                 border: Border(
                   top: BorderSide(
                     width: 1.0,

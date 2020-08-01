@@ -35,6 +35,8 @@ pubspec.lock
 /android/.gradle
 /android/gradle/
 /android/.gitignore
+/android/app/src/keystore/key.jks
+
 
 # Web related
 lib/generated_plugin_registrant.dart

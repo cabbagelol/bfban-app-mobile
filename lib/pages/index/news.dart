@@ -13,7 +13,7 @@ class _newsPageState extends State<newsPage> {
   @override
   Widget build(BuildContext context) {
     return WebView(
-        initialUrl: "https://cabbagelol.github.io/bfbanApp/public/www/news-app.html",
+        initialUrl: "https://app.bfban.com/public/www/news-app.html",
     );
   }
 }

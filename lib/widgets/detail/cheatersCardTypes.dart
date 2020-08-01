@@ -495,11 +495,21 @@ class CheatReports extends StatelessWidget {
               ),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "附加: ",
+                  "附加",
                   style: TextStyle(
                     fontSize: 12,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 8, right: 10),
+                  width: 1,
+                  height: 20,
+                  color: Colors.black12,
+                  constraints: BoxConstraints(
+                    minHeight: 20,
                   ),
                 ),
                 Expanded(
@@ -508,7 +518,10 @@ class CheatReports extends StatelessWidget {
                     i["bilibiliLink"] == "" ? "暂无视频" : i["bilibiliLink"],
                     style: TextStyle(
                       fontSize: 12,
+                      color: Colors.black45,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 GestureDetector(
