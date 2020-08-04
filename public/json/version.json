@@ -1,0 +1,10 @@
+{
+  "list": [
+    {
+      "version": "0.0.1",
+      "stage": "release",
+      "src": "https://github.com/cabbagelol/bfbanApp/releases/tag/v0.0.1-release",
+      "describe": "并非稳定版本！"
+    }
+  ]
+}

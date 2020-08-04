@@ -5,31 +5,53 @@
     <title>BFBAN 移动应用</title>
 
     <!-- CSS only -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
     <link rel="canonical" href="https://v4.bootcss.com/docs/examples/cover/">
     <link rel="canonical" href="https://v4.bootcss.com/docs/examples/sticky-footer-navbar/">
 
     <style>
         html, body {
-            background-color: #12202F;
             height: 100%;
+            overflow-x: hidden;
         }
 
         main {
             height: inherit;
+            overflow: hidden;
+        }
+
+        footer {
+            background: #ffc107;
+            margin: 200px 0 0 0;
+            padding: 10px 0;
         }
 
         .menu {
             width: 100%;
             height: 70px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.17);
+            background: #354e80;
             padding: 10px 0;
             margin: 0 0 50px 0
         }
 
+        .exhibition {
+            margin: -50px 0 -100px 250px;
+            width: 1100px;
+        }
+
+        @media (max-width: 580px) {
+            .exhibition {
+                display: none;
+            }
+        }
+
+
         .background {
-            background-image: url(https://pub.flutter-io.cn/static/img/hero-bg-static.svg?hash=pvblnkq8qgr4g10hr78tnibbr2qdpuqt);
+            background-image: url(../svg/bk.svg);
             background-size: cover;
             height: 100%;
             width: 100%;
@@ -43,6 +65,7 @@
             background-color: #666;
             color: #fff;
         }
+
     </style>
 
 </head>
@@ -52,7 +75,8 @@
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
             <a href="#" class="navbar-brand d-flex align-items-center">
-                <strong><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                <strong><font style="vertical-align: inherit;"><font
+                        style="vertical-align: inherit;">
                     BFBAN<span class="login-beta">Beta</span>
                 </font></font></strong>
             </a>
@@ -60,7 +84,7 @@
     </div>
 </header>
 
-<main role="main" class="flex-shrink-0">
+<main role="main" class="flex-shrink-0" id="app">
     <div class="menu">
         <div class="container">
             <div style="border-bottom: 2px solid #fff;height: 40px;float:left;margin:20px 30px 0 0;text-align:center;color: rgba(255, 255, 255, 0.64);">
@@ -84,65 +108,74 @@
         </div>
     </div>
     <div class="container">
-        <img src="https://github.com/cabbagelol/bfbanApp/raw/master/public/images/20200725184325.png" style="width: 300px;border-radius: 27px; box-shadow: 0 0 95px #00000073;overflow: hidden; margin: 0 auto -200px 60%;position: relative;z-index: 0;">
-        <section class="jumbotron" style="z-index: 2;position: relative;">
-            <div class="row">
-                <div class="col-sm">
-                    <div class="container">
-                        <h1><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">联BAN调查局应用程序</font></font>
-                        </h1>
-                        <p class="lead text-muted"><font style="vertical-align: inherit;"><font
-                                style="vertical-align: inherit;">程序目的增强BFBAN
-                            WEB功能，作为移动软体发挥查询与管理作用；增强会分三阶段逐步改进并且未来影响WEB端。</font></font>
-                        </p>
-                        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                            <a href="https://github.com/cabbagelol/bfbanApp/releases" target="_blank">
-                                <button type="button" class="btn btn-secondary">
-                                    下载Android版 <span class="badge badge-light">测试</span>
-                                </button>
-                            </a>
-                            <div class="btn-group" role="group">
-                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item" href="https://github.com/cabbagelol/bfbanApp/issues"
-                                       target="_blank">寻求应用程序帮助</a>
-                                </div>
-                            </div>
+        <section class="row">
+            <div class="col-sm-5">
+                <div class="container">
+                    <h1>
+                        <font style="vertical-align: inherit;">
+                            <b>联BAN</b>
+                            <br/>调查局应用程序
+                        </font>
+                    </h1>
+                    <p class="lead text-muted"><font style="vertical-align: inherit;"><font
+                            style="vertical-align: inherit;">程序目的增强BFBAN
+                        WEB功能，作为移动软体发挥查询与管理作用；增强会分三阶段逐步改进并且未来影响WEB端。</font></font>
+                    </p>
+                    <br />
+                    <div class="btn-group" role="group"
+                         aria-label="Button group with nested dropdown">
+                        <a href="https://github.com/cabbagelol/bfbanApp/releases"
+                           target="_blank">
+                            <button type="button" class="btn btn-secondary btn-lg">
+                                下载Android版 <span class="badge badge-light">测试</span>
+                            </button>
+                        </a>
+
+                    </div>
+                    <a href="https://trello.com/b/ZECQnnEz/bfban-app" target="_blank">
+                        <button type="button" class="btn btn-link btn-lg">开发进度</button>
+                    </a>
+                    <a href="https://github.com/cabbagelol/bfbanApp/issues" target="_blank">
+                        <button type="button" class="btn btn-link btn-lg">帮助</button>
+                    </a>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class=" text-muted"><a href="#" class="badge badge-warning">版本</a></div>
+                        </div>
+                        <div class="col-sm">
+                            <div class=" text-muted">{{ version.version }}</div>
                         </div>
                     </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class=" text-muted"><a href="#" class="badge badge-dark">说明</a></div>
+                        </div>
+                        <div class="col-sm">
+                            <div class=" text-muted">{{ version.describe }}</div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class=" text-muted"><a href="#" class="badge badge-primary">发行号</a></div>
+                        </div>
+                        <div class="col-sm">
+                            <div class=" text-muted">{{ version.stage }}</div>
+                        </div>
+                    </div>
+                    <hr/>
                 </div>
-                <div class="col-sm">
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between bg-light">
-                            <div class="text-success">
-                                <h6 class="my-0">第一阶段</h6>
-                                <small class="text-muted">完成bfban web应有功能</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <div>
-                                <h6 class="my-0">第二阶段</h6>
-                                <small class="text-muted">增强功能板块</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <div>
-                                <h6 class="my-0">第三阶段</h6>
-                                <small class="text-muted">编辑视频，合成图片</small>
-                            </div>
-                        </li>
-                    </ul>
-                    <p class="text-muted">具体执行详细转到<a href="https://trello.com/b/ZECQnnEz/bfban-app" target="_blank">点击我</a></p>
-                </div>
-
+            </div>
+            <div class="col-sm-7">
+                <img src="../images/exhibition.png" class="exhibition">
             </div>
         </section>
 
     </div>
 </main>
-<footer>
+<footer class="footer mt-auto">
     <div class="container text-center">
         <svg height="50" xmlns="http://www.w3.org/2000/svg" width="50">
             <g transform="scale(.4) translate(50, 12)">
@@ -150,7 +183,8 @@
                       d="m21.054845,6.553957c-4.29931,3.25323 -7.53805,6.56319 -10.92111,12.82111c-3.38307,6.25793 -4.74379,9.79716 -6.2871,14.84228c-1.54331,5.04513 -3.8268,17.22095 -3.46909,22.98968c0.35771,5.76873 0.47784,7.85769 2.52966,12.88058c2.05182,5.02289 3.59163,6.633 6.43001,8.94553c2.83838,2.31254 5.04028,4.19811 11.07306,7.35236c6.03278,3.15424 12.59586,5.14369 18.96779,6.15381c1.59299,0.25252 5.71691,0.73565 8.45737,0.63246c2.74046,-0.10319 5.02055,-0.79269 6.61808,-1.6547c3.19506,-1.72403 4.70823,-4.25139 1.16661,-6.95969c-3.54162,-2.7083 -13.14569,-10.50779 -17.65838,-15.04963c-4.51269,-4.54184 -9.46431,-10.56284 -13.53094,-17.97337c-4.06662,-7.41053 -3.21221,-15.01469 -2.34441,-17.21861c0.8678,-2.20392 1.31071,-2.42463 2.34284,-3.27444c1.03213,-0.84981 2.63878,-1.3702 4.4456,-1.43696c1.80682,-0.06676 6.29253,1.24014 8.00418,2.50796c1.71165,1.26782 6.84634,3.11291 10.68547,3.22481c3.83913,0.1119 6.80926,-2.2711 7.77394,-4.36382c0.96468,-2.09272 1.53376,-5.30566 0.12068,-9.26824c-1.41308,-3.96257 -0.7816,-6.06437 -2.79946,-9.02092c-2.01786,-2.95655 -3.76492,-4.77411 -8.32044,-7.30289c-4.55552,-2.52878 -7.06418,-2.32771 -11.38751,-2.55215c-4.32332,-0.22443 -9.7472,2.09823 -11.89685,3.72484z"
                       fill-opacity="null" stroke-opacity="null" stroke-width="0" fill="#fff"></path>
                 <path d="m39.721669,4.606055c4.18919,-1.8919 6.89191,-2.56758 10.27029,-2.97298c3.37838,-0.4054 8.91893,-0.54054 9.05407,0.54054c0.13513,1.08109 -3.24326,2.83783 -4.32434,4.05405c-1.08108,1.21622 -3.10811,3.3784 -4.05406,5.94597c-0.94595,2.56756 -15.13516,-5.67569 -10.94596,-7.56758z"
-                      fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#fff"></path>
+                      fill-opacity="null" stroke-opacity="null" stroke-width="0" stroke="#000"
+                      fill="#fff"></path>
             </g>
         </svg>
     </div>
@@ -171,3 +205,32 @@
 
 <!-- JS, baidu.com -->
 <script src="../js/baidu.js" type="text/javascript"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.20.0-0/axios.min.js"></script>
+
+<script>
+    /**
+     * 就这样吧，懒的构建一个完整本地项目
+     */
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            version: {},
+        },
+
+        created() {
+            const self = this;
+            axios({
+                method: 'post',
+                url: '../json/version.json',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then(function (response) {
+                self.version = response.data.list[0];
+            });
+        }
+    });
+</script>
