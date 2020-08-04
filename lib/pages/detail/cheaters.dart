@@ -658,7 +658,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                             ));
                           },
                           child: Container(
-                            color: Colors.black,
+                            color: Colors.white,
                             child: EluiImgComponent(
                               src: cheatersInfoUser["avatarLink"],
                               width: 70,

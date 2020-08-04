@@ -45,8 +45,13 @@ class _IndexPageState extends State<IndexPage> {
   void _onReady () async {
     Map token = jsonDecode(await Storage.get('com.bfban.token') ?? '{}');
 
+    print(token);
+
     /// 校验TOKEN
     /// 时间7日内该TOken生效并保留，否则重启登录
+    if (token.isEmpty) {
+      return;
+    }
     if (DateTime.parse(token["time"]).add(Duration(days: 7)).millisecondsSinceEpoch > new DateTime.now().millisecondsSinceEpoch) {
       EluiMessageComponent.warning(context)(
         child: Text("登录已过期，请重新登录"),

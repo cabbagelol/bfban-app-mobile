@@ -13,11 +13,20 @@ enum Env {
 class Config {
   static Env env;
 
+  /// 版本设置
+  static Map get versionApp {
+    return {
+      "v": "0.0.1",
+      "s": "release",
+    };
+  }
+
   static Map get apiHost {
     switch (env) {
       case Env.PROD: // 生产
         return {
           "url": "https://bf.bamket.com",
+          "app": "https://app.bfban.com",
           "tracker": "https://api.tracker.gg",
           "upload": "https://upload-z2.qiniup.com",
           "imgUrl": imgUrl + '/'
@@ -27,6 +36,7 @@ class Config {
       default:
         return {
           "url": "localhost:8080",
+          "app": "https://app.bfban.com",
           "tracker": "https://api.tracker.gg",
           "upload": "https://upload-z2.qiniup.com",
           "imgUrl": imgUrl + '/'

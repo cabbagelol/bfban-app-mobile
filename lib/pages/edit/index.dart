@@ -679,12 +679,12 @@ class _editPageState extends State<editPage> {
 
           indexHr(),
 
-          /// S 言论
+          /// S 理由
           EluiCellComponent(
             theme: EluiCellTheme(
               backgroundColor: Colors.transparent,
             ),
-            title: "言论",
+            title: "理由",
             cont: Offstage(
               offstage: reportInfo["description"].toString().length > 0,
               child: Wrap(
@@ -773,7 +773,7 @@ class _editPageState extends State<editPage> {
             onTap: () => _opEnRichEdit(),
           ),
 
-          /// E 言论
+          /// E 理由
 
           Container(
             decoration: BoxDecoration(

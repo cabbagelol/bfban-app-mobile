@@ -149,6 +149,10 @@ class _loginPageState extends State<loginPage> {
             child: Text("用户名或密码错误"),
           );
           break;
+        default:
+          EluiMessageComponent.error(context)(
+            child: Text(result.toString()),
+          );
       }
 
       this._getCaptcha();
@@ -320,153 +324,5 @@ class _loginPageState extends State<loginPage> {
         ],
       ),
     );
-
-//    return Scaffold(
-//      backgroundColor: Color(0xff111b2b),
-//      extendBodyBehindAppBar: true,
-//      appBar: AppBar(
-//        backgroundColor: Colors.transparent,
-//        elevation: 0,
-//        centerTitle: true,
-//        title: Text(
-//          "",
-//          style: TextStyle(
-//            color: Colors.white,
-//          ),
-//        ),
-//      ),
-//      body: ListView(
-//        children: <Widget>[
-//          Container(
-//            margin: EdgeInsets.all(20),
-//            child: Column(
-//              children: <Widget>[
-//                Container(
-//                  color: Colors.black26,
-//                  padding: EdgeInsets.only(
-//                    left: 10,
-//                    right: 10,
-//                  ),
-//                  child: EluiInputComponent(
-//                    placeholder: "输入账户ID",
-//                    Internalstyle: true,
-//                    theme: EluiInputTheme(
-//                      textStyle: TextStyle(
-//                        color: Colors.white,
-//                      ),
-//                    ),
-//                    onChange: (data) {
-//                      setState(() {
-//                        loginInfo["userController"] = data["value"];
-//                      });
-//                    },
-//                  ),
-//                ),
-//                SizedBox(
-//                  height: 1,
-//                ),
-//                Container(
-//                  color: Colors.black26,
-//                  padding: EdgeInsets.only(
-//                    left: 10,
-//                    right: 10,
-//                  ),
-//                  child: EluiInputComponent(
-//                    placeholder: "密码",
-//                    type: TextInputType.visiblePassword,
-//                    Internalstyle: true,
-//                    theme: EluiInputTheme(
-//                      textStyle: TextStyle(
-//                        color: Colors.white,
-//                      ),
-//                    ),
-//                    onChange: (data) {
-//                      setState(() {
-//                        loginInfo["passController"] = data["value"];
-//                      });
-//                    },
-//                  ),
-//                ),
-//                SizedBox(
-//                  height: 10,
-//                ),
-//                Row(
-//                  crossAxisAlignment: CrossAxisAlignment.start,
-//                  children: <Widget>[
-//                    Expanded(
-//                      flex: 1,
-//                      child: Container(
-//                        color: Colors.black26,
-//                        padding: EdgeInsets.only(
-//                          left: 10,
-//                          right: 10,
-//                        ),
-//                        child: EluiInputComponent(
-//                          placeholder: "验证码",
-//                          Internalstyle: true,
-//                          maxLenght: 4,
-//                          theme: EluiInputTheme(
-//                            textStyle: TextStyle(
-//                              color: Colors.white,
-//                            ),
-//                          ),
-//                          right: GestureDetector(
-//                            child: Container(
-//                              decoration: BoxDecoration(
-//                                color: Colors.white,
-//                                borderRadius: BorderRadius.all(
-//                                  Radius.circular(3),
-//                                ),
-//                              ),
-//                              margin: EdgeInsets.only(left: 10),
-//                              width: 60,
-//                              height: 30,
-//                              child: valueCaptchaLoad
-//                                  ? Icon(
-//                                      Icons.access_time,
-//                                      color: Colors.black54,
-//                                    )
-//                                  : new SvgPicture.string(
-//                                      loginInfo["valueCaptcha"],
-//                                    ),
-//                            ),
-//                            onTap: () => this._getCaptcha(),
-//                          ),
-//                          onChange: (data) {
-//                            setState(() {
-//                              loginInfo["verificationController"] = data["value"];
-//                            });
-//                          },
-//                        ),
-//                      ),
-//                    ),
-//                  ],
-//                ),
-//                SizedBox(
-//                  height: 30,
-//                ),
-//                EluiButtonComponent(
-//                  type: ButtonType.none,
-//                  child: loginLoad
-//                      ? ELuiLoadComponent(
-//                          type: "line",
-//                          lineWidth: 2,
-//                          color: Colors.white,
-//                        )
-//                      : Text(
-//                          "登陆",
-//                          style: TextStyle(
-//                            color: Colors.white,
-//                            fontSize: 20,
-//                          ),
-//                        ),
-//                  onTap: () => _onLogin(),
-//                ),
-//              ],
-//            ),
-//          ),
-//        ],
-//      ),
-//    );
   }
 }

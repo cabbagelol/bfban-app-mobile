@@ -7,3 +7,4 @@ export 'stateModule.dart';
 export 'storage.dart';
 export 'share.dart';
 export 'file.dart';
+export 'version.dart';

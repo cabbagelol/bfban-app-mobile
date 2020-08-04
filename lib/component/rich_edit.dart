@@ -1,12 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum RichEditDataType { TEXT, IMAGE, VIDEO }
+enum RichEditDataType { TEXT, IMAGE, VIDEO, NONE }
 
 class RichEditData {
   RichEditDataType type;
-  var data;
+  dynamic data;
 
   RichEditData(this.type, this.data);
 }
@@ -19,8 +18,10 @@ abstract class RichEditController {
   final Icon deleteIcon;
   final Icon imageIcon;
   final Icon videoIcon;
+  final Icon emptyIcon;
   final bool isImageIcon;
   final bool isVideoIcon;
+  final bool isEmptyIcon;
 
   RichEditController({
     this.textStyle,
@@ -28,20 +29,24 @@ abstract class RichEditController {
     Icon deleteIcon,
     Icon imageIcon,
     Icon videoIcon,
+    Icon emptyIcon,
     bool isImageIcon = true,
     bool isVideoIcon = true,
+    bool isEmptyIcon = true,
   })  : deleteIcon = deleteIcon ?? Icon(Icons.cancel),
         inputDecoration = inputDecoration ??
             InputDecoration(
-              hintText: "点击可输入内容..",
+              hintText: "<-",
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
               ),
             ),
         imageIcon = imageIcon ?? Icon(Icons.image),
         videoIcon = videoIcon ?? Icon(Icons.videocam),
-        isImageIcon = videoIcon ?? true,
-        isVideoIcon = videoIcon ?? true;
+        emptyIcon = emptyIcon ?? Icon(Icons.delete),
+        isImageIcon = isImageIcon ?? true,
+        isVideoIcon = isVideoIcon ?? true,
+        isEmptyIcon = isEmptyIcon ?? true;
 
   addImage();
 
@@ -82,13 +87,12 @@ abstract class RichEditController {
   }
 
   List generateView(String html) {
-    RegExp regDom = new RegExp('<[img|p|div].*?>([^\<]*?)<\/[img|p|div]>');
+    RegExp regDom = new RegExp('<[img|images|p|br].*?>([^\<]*?)<\/[img|images|p|br]>|<img.*?src="(.*?)".*?\/?>');
     RegExp regDomImg = new RegExp('<img.*?src="(.*?)".*?\/?>');
     RegExp regDomImgSrc = new RegExp(" src=\"(.*)\" ");
-    RegExp regDomName = new RegExp('<\/[img|p|div]');
+    RegExp regDomName = new RegExp('<(img|p)');
 
     Iterable<RegExpMatch> matches = regDom.allMatches(html);
-    Iterable<RegExpMatch> matches2 = regDomImg.allMatches(html);
 
     if (html == "") {
       return [];
@@ -96,50 +100,59 @@ abstract class RichEditController {
 
     _data.removeAt(0);
 
-    matches2.forEach((m) {
-      String DomContent = m.input.substring(m.start, m.end);
-      Iterable<RegExpMatch> rt = regDomImgSrc.allMatches(DomContent);
-
-      rt.forEach((_rt) {
-        String src = _rt.input.substring(_rt.start, _rt.end).replaceAll("src=\"","").replaceAll("\"", "");
-        _data.add(
-          RichEditData(
-            RichEditDataType.IMAGE,
-            src.trim(),
-          ),
-        );
-      });
-    });
-
     matches.forEach((m) {
       String DomContent = m.input.substring(m.start, m.end);
-      Iterable<RegExpMatch> rt = regDomName.allMatches(DomContent);
+      Iterable<RegExpMatch> domTags = regDomName.allMatches(DomContent);
+      Iterable<RegExpMatch> srcValue = regDomImgSrc.allMatches(DomContent);
 
-      print(DomContent);
+      /// img or image tag
+      srcValue.forEach((_rt) {
+        String src = _rt.input.substring(_rt.start, _rt.end).replaceAll("src=\"", "").replaceAll("\"", "");
+        if (DomContent.toString().indexOf("<img") >= 0) {
+          print(_data[_data.length - 1].type);
 
-      rt.forEach((_rt) {
-        switch (_rt.input.substring(_rt.start, _rt.end)) {
-          case "</div":
-          case "</p":
-            _data.add(
-              RichEditData(
-                RichEditDataType.TEXT,
-                this.remStringHtml(m.input.substring(m.start, m.end)),
-              ),
-            );
-            break;
-          case "</video":
-            print(DomContent);
-            break;
+          _data.addAll([
+            RichEditData(
+              RichEditDataType.IMAGE,
+              src.trim(),
+            ),
+            (_data[_data.length - 1].type == RichEditDataType.IMAGE || _data[_data.length - 1].type == RichEditDataType.VIDEO)
+                ? RichEditData(
+                    RichEditDataType.TEXT,
+                    "",
+                  )
+                : RichEditData(
+                    RichEditDataType.NONE,
+                    "",
+                  ),
+          ]);
         }
       });
+
+      if (DomContent.toString().indexOf("<p") >= 0) {
+        _data.add(
+          RichEditData(
+            RichEditDataType.TEXT,
+            this.remStringHtml(m.input.substring(m.start, m.end)),
+          ),
+        );
+      }
     });
+
+    _data.add(
+      RichEditData(
+        RichEditDataType.TEXT,
+        "",
+      ),
+    );
   }
 
   void generateTextHtml(StringBuffer sb, RichEditData element) {
-    sb.write("<p>");
-    sb.write(element.data);
-    sb.write("<\/p>");
+    if (element.data != "") {
+      sb.write("<p>");
+      sb.write(element.data);
+      sb.write("<\/p>");
+    }
   }
 
   void generateImageHtml(StringBuffer sb, RichEditData element) {
@@ -201,6 +214,9 @@ class RichEditState extends State<RichEdit> {
               var data = widget.controller._data[index];
               Widget item = Container();
               switch (data.type) {
+                case RichEditDataType.NONE:
+                  item = Container();
+                  break;
                 case RichEditDataType.TEXT:
                   var fn = FocusNode();
                   var textEditingController = TextEditingController.fromValue(TextEditingValue(text: data.data));
@@ -265,33 +281,48 @@ class RichEditState extends State<RichEdit> {
             color: Color(0xfff2f2f2),
             child: Row(
               children: <Widget>[
-                Offstage(
-                  offstage: !widget.controller.isImageIcon,
-                  child: IconButton(
-                      icon: widget.controller.imageIcon,
-                      onPressed: () async {
-                        String path = await widget.controller.addImage();
-                        if (path != null) {
-                          addView(
-                            RichEditData(RichEditDataType.IMAGE, path),
-                          );
-                        }
-                      }),
+                Expanded(
+                  flex: 1,
+                  child: Wrap(
+                    children: <Widget>[
+                      Offstage(
+                        offstage: !widget.controller.isImageIcon,
+                        child: IconButton(
+                            icon: widget.controller.imageIcon,
+                            onPressed: () async {
+                              String path = await widget.controller.addImage();
+                              if (path != null) {
+                                addView(
+                                  RichEditData(RichEditDataType.IMAGE, path),
+                                );
+                              }
+                            }),
+                      ),
+                      Offstage(
+                        offstage: !widget.controller.isVideoIcon,
+                        child: IconButton(
+                            icon: widget.controller.videoIcon,
+                            onPressed: () async {
+                              String path = await widget.controller.addVideo();
+                              if (path != null) {
+                                addView(
+                                  RichEditData(
+                                    RichEditDataType.VIDEO,
+                                    path,
+                                  ),
+                                );
+                              }
+                            }),
+                      ),
+                    ],
+                  ),
                 ),
                 Offstage(
-                  offstage: !widget.controller.isVideoIcon,
+                  offstage: !widget.controller.isEmptyIcon,
                   child: IconButton(
-                      icon: widget.controller.videoIcon,
-                      onPressed: () async {
-                        String path = await widget.controller.addVideo();
-                        if (path != null) {
-                          addView(
-                            RichEditData(
-                              RichEditDataType.VIDEO,
-                              path,
-                            ),
-                          );
-                        }
+                      icon: widget.controller.emptyIcon,
+                      onPressed: () {
+                        initial();
                       }),
                 ),
               ],
@@ -303,6 +334,14 @@ class RichEditState extends State<RichEdit> {
         )
       ],
     );
+  }
+
+  void initial () {
+    widget.controller._data.forEach((element) {
+      widget.controller._data.remove(element);
+    });
+    widget.controller._data.add(RichEditData(RichEditDataType.TEXT, ""));
+    setState(() {});
   }
 
   void remove(int index) {

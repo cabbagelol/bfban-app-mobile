@@ -28,11 +28,21 @@ class _usercenterState extends State<usercenter> {
   /// 用户状态
   bool userInfoState = false;
 
+  /// 本地版本
+  Map appInfo = Config.versionApp;
+
+  /// 版本细节
+  Map versionInfo = {
+    "load": false,
+    "is": false,
+  };
+
   @override
   void initState() {
     super.initState();
 
     this.getUserInfo();
+    this.getSystemAppInfo();
   }
 
   /// 获取用户信息
@@ -49,6 +59,43 @@ class _usercenterState extends State<usercenter> {
       userInfo = data;
       userInfoState = data.toString().length > 0 ? true : false;
     });
+  }
+
+  /// 获取程序版本
+  void getSystemAppInfo() async {
+    setState(() {
+      versionInfo["load"] = true;
+    });
+
+    Response result = await Http.request(
+      'public/json/version.json',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      typeUrl: "app",
+      method: Http.GET,
+    );
+
+    if (result.data.toString().length >= 0) {
+      Map newversion = result.data["list"][0];
+      bool res = Version().on("${newversion["version"]}-${newversion["stage"]}");
+
+      setState(() {
+        versionInfo["is"] = res;
+        versionInfo["info"] = newversion;
+      });
+    }
+
+    setState(() {
+      versionInfo["load"] = false;
+    });
+  }
+
+  /// 前往下载页面
+  void _opEnVersionDowUrl () {
+    if (versionInfo["is"]) {
+      UrlUtil().onPeUrl(versionInfo["info"]["src"]);
+    }
   }
 
   /// 销毁用户信息
@@ -86,7 +133,7 @@ class _usercenterState extends State<usercenter> {
   }
 
   /// 打开权限中心
-  void _opEnPermanently () async {
+  void _opEnPermanently() async {
     openAppSettings();
   }
 
@@ -252,12 +299,38 @@ class _usercenterState extends State<usercenter> {
           theme: EluiCellTheme(
             backgroundColor: Color.fromRGBO(255, 255, 255, .07),
           ),
-          cont: Text(
-            "0.0.1",
-            style: TextStyle(
-              color: Colors.white,
-            ),
+          cont: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              versionInfo["load"]
+                  ? ELuiLoadComponent(
+                      type: "line",
+                      color: Colors.white,
+                      lineWidth: 2,
+                      size: 20,
+                    )
+                  : Wrap(
+                      spacing: 10,
+                      children: <Widget>[
+                        Text(
+                          appInfo["v"].toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                        Offstage(
+                          offstage: !versionInfo["is"],
+                          child: EluiTagComponent(
+                            size: EluiTagSize.no2,
+                            color: EluiTagColor.warning,
+                            value: "有更新",
+                          ),
+                        )
+                      ],
+                    ),
+            ],
           ),
+          onTap: () => _opEnVersionDowUrl(),
         ),
 
         Offstage(
