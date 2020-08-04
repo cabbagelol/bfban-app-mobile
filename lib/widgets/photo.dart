@@ -1,67 +1,124 @@
-/// 图片查看器
-
+/// 图片查看
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:photo_view/photo_view.dart';
+
+import 'package:bfban/utils/index.dart';
 
 class PhotoViewSimpleScreen extends StatelessWidget {
   const PhotoViewSimpleScreen({
-    this.imageProvider, //图片
-    this.loadingChild, //加载时的widget
-    this.backgroundDecoration, //背景修饰
-    this.minScale, //最大缩放倍数
-    this.maxScale, //最小缩放倍数
-    this.heroTag, //hero动画tagid
+    this.imageUrl,
+    this.imageProvider,
+    this.loadingChild,
+    this.backgroundDecoration,
+    this.minScale,
+    this.maxScale,
+    this.heroTag,
   });
 
+  final String imageUrl;
+
   final ImageProvider imageProvider;
+
   final Widget loadingChild;
+
   final Decoration backgroundDecoration;
+
   final dynamic minScale;
+
   final dynamic maxScale;
+
   final String heroTag;
+
+
+  /// 储存图片
+  void onSave (String src) {
+    Storage.saveimg(src);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        constraints: BoxConstraints.expand(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-        ),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              child: PhotoView(
-                imageProvider: imageProvider,
-                loadingChild: loadingChild,
-                backgroundDecoration: backgroundDecoration,
-                minScale: minScale,
-                maxScale: maxScale,
-                heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
-                enableRotation: true,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+      ),
+      body: Stack(
+        children: <Widget>[
+          PhotoView(
+            imageProvider: imageProvider,
+            loadingChild: loadingChild,
+            backgroundDecoration: backgroundDecoration,
+            minScale: minScale,
+            maxScale: maxScale,
+            heroAttributes: PhotoViewHeroAttributes(tag: heroTag),
+            enableRotation: true,
+          ),
+          Positioned(
+            bottom: 10,
+            left: 10,
+            right: 10,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
+              padding: EdgeInsets.only(
+                bottom: 10,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(
+                          Icons.file_download,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          this.onSave(imageUrl);
+                        },
+                      ),
+                      Text(
+                        "保存",
+                        style: TextStyle(
+                          color: Colors.white54,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Opacity(
+                    opacity: .2,
+                    child: Column(
+                      children: <Widget>[
+                        IconButton(
+                          icon: Icon(
+                            Icons.insert_drive_file,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                        Text(
+                          "加入素材库",
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            Positioned( //右上角关闭按钮
-              right: 10,
-              top: MediaQuery
-                  .of(context)
-                  .padding
-                  .top,
-              child: IconButton(
-                icon: Icon(Icons.close, size: 30, color: Colors.white,),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

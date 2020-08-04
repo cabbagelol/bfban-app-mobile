@@ -60,7 +60,7 @@ class _SupportPageState extends State<SupportPage> {
           ),
           EluiCellComponent(
             title: "BFBAN WEB 接口",
-            label: "app.bfban.com",
+            label: "app.bfban.com / bf.bamket.com",
             theme: EluiCellTheme(
               backgroundColor: Color.fromRGBO(255, 255, 255, .07),
             ),

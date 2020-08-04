@@ -14,7 +14,7 @@ dependencies:
   dio: 3.0.9
 
   # cookie管理器
-#  cookie_jar: 1.0.0
+  #  cookie_jar: 1.0.0
   dio_cookie_manager: 1.0.0
 
   # 状态管理
@@ -35,9 +35,6 @@ dependencies:
   # 数据储存 https://pub.flutter-io.cn/packages/shared_preferences
   shared_preferences: ^0.5.3+4
 
-  # 富文本 https://pub.flutter-io.cn/packages/html_editor
-  html_editor: ^1.0.1
-
   # 链接 https://pub.flutter-io.cn/packages/url_launcher
   url_launcher: 5.5.0
 
@@ -51,6 +48,25 @@ dependencies:
 
   # 权限 https://pub.flutter-io.cn/packages/permission_handler
   permission_handler: 5.0.1
+
+  # 分享 https://pub.flutter-io.cn/packages/flutter_share
+  flutter_share: 1.0.2+1
+
+  # link https://pub.flutter-io.cn/packages/uni_links
+  uni_links: 0.4.0
+
+  # 本地通知 https://pub.flutter-io.cn/packages/flutter_local_notifications
+  flutter_local_notifications: 1.4.4+2
+
+  # https://pub.flutter-io.cn/packages/image_picker
+  image_picker: 0.6.7+4
+
+  # https://pub.flutter-io.cn/packages/rich_edit
+  chewie: 0.9.10
+  rich_edit: 0.1.1
+
+  # 图片保存
+  image_gallery_saver: ^1.2.2
 
   flutter_plugin_elui:
     path: ../../flutter-elui-plugin

@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_plugin_elui/elui.dart';
-import 'package:html_editor/html_editor.dart';
 
 import 'package:bfban/utils/index.dart';
 

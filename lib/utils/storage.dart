@@ -1,10 +1,29 @@
 /// 功能：长久储存
-/// 描述：
+import 'dart:typed_data';
+import 'package:dio/dio.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class Storage {
   static SharedPreferences prefs;
+
+  /// 储存图片
+  static Future saveimg(url) async {
+    var response = await Dio().get(
+      url,
+      options: Options(
+        responseType: ResponseType.bytes,
+      ),
+    );
+    final result = await ImageGallerySaver.saveImage(
+      Uint8List.fromList(
+        response.data,
+      ),
+    );
+
+    return result;
+  }
 
   /// 获取
   static Future get(String name, {type: "string"}) async {

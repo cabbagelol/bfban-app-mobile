@@ -32,16 +32,12 @@ class detailApi {
         width: (MediaQuery.of(context).size.width - 15),
       ),
       "img": Style(
-        alignment: Alignment.centerLeft,
-        width: b,
-        height: a,
+//        alignment: Alignment.centerLeft,
+//        width: b,
+//        height: a,
         border: Border.all(
           width: 1,
           color: Color(0xfff2f2f2),
-        ),
-        margin: EdgeInsets.only(
-          right: 4.5,
-          bottom: 5,
         ),
         backgroundColor: Color(0xfff2f2f2),
       ),
@@ -64,11 +60,21 @@ class detailApi {
     );
   }
 
+  /// 查看用户ID信息
+  static void onSeeUserInfo(context, uid) {
+    Routes.router.navigateTo(
+      context,
+      '/record/$uid',
+      transition: TransitionType.cupertino,
+    );
+  }
+
   /// 查看图片
   static void onImageTap(BuildContext context, String img) {
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (BuildContext context) {
         return PhotoViewSimpleScreen(
+          imageUrl: img,
           imageProvider: NetworkImage(img),
           heroTag: 'simple',
         );
@@ -214,17 +220,7 @@ class CheatUserCheaters extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
-                                final _login = await Storage.get('com.bfban.login');
-
-                                if (_login == null) {
-                                  return;
-                                }
-
-                                Routes.router.navigateTo(
-                                  context,
-                                  '/record/${i["fooUId"]}',
-                                  transition: TransitionType.cupertino,
-                                );
+                                detailApi.onSeeUserInfo(context, i["fooUId"]);
                               }),
                         TextSpan(
                           text: " 回复",
@@ -422,17 +418,7 @@ class CheatReports extends StatelessWidget {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
-                                  final _login = await Storage.get('com.bfban.login');
-
-                                  if (_login == null) {
-                                    return;
-                                  }
-
-                                  Routes.router.navigateTo(
-                                    context,
-                                    '/record/${i["uId"]}',
-                                    transition: TransitionType.cupertino,
-                                  );
+                                  detailApi.onSeeUserInfo(context, i["uId"]);
                                 }),
                           TextSpan(
                             text: " 举报在 ",
@@ -503,64 +489,67 @@ class CheatReports extends StatelessWidget {
           ),
 
           /// S 评论视频
-          Container(
-            margin: EdgeInsets.only(
-              top: 5,
-              left: 10,
-              right: 10,
-            ),
-            padding: EdgeInsets.only(
-              left: 10,
-              right: 10,
-              top: 4,
-              bottom: 4,
-            ),
-            decoration: BoxDecoration(
-              color: Color(0xfff2f2f2),
-              border: Border.all(
-                style: BorderStyle.none,
-                color: Colors.blue,
-                width: 1,
+          Offstage(
+            offstage: i["bilibiliLink"] == "",
+            child: Container(
+              margin: EdgeInsets.only(
+                top: 5,
+                left: 10,
+                right: 10,
               ),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "附加",
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 8, right: 10),
+              padding: EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 4,
+                bottom: 4,
+              ),
+              decoration: BoxDecoration(
+                color: Color(0xfff2f2f2),
+                border: Border.all(
+                  style: BorderStyle.none,
+                  color: Colors.blue,
                   width: 1,
-                  height: 20,
-                  color: Colors.black12,
-                  constraints: BoxConstraints(
-                    minHeight: 20,
-                  ),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    i["bilibiliLink"] == "" ? "暂无视频" : i["bilibiliLink"],
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "附加",
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.black45,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-                GestureDetector(
-                  child: Icon(
-                    Icons.link,
-                    color: Colors.blueAccent,
+                  Container(
+                    margin: EdgeInsets.only(left: 8, right: 10),
+                    width: 1,
+                    height: 20,
+                    color: Colors.black12,
+                    constraints: BoxConstraints(
+                      minHeight: 20,
+                    ),
                   ),
-                  onTap: () => _urlUtil.onPeUrl(i["bilibiliLink"].toString()),
-                ),
-              ],
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      i["bilibiliLink"],
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black45,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  GestureDetector(
+                    child: Icon(
+                      Icons.link,
+                      color: Colors.blueAccent,
+                    ),
+                    onTap: () => _urlUtil.onPeUrl(i["bilibiliLink"].toString()),
+                  ),
+                ],
+              ),
             ),
           ),
 
@@ -728,17 +717,7 @@ class _CheatVerifiesState extends State<CheatVerifies> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
-                                  final _login = await Storage.get('com.bfban.login');
-
-                                  if (_login == null) {
-                                    return;
-                                  }
-
-                                  Routes.router.navigateTo(
-                                    context,
-                                    '/record/${widget.i["uId"]}',
-                                    transition: TransitionType.cupertino,
-                                  );
+                                  detailApi.onSeeUserInfo(context, widget.i["uId"]);
                                 }),
                           TextSpan(
                             text: " 认为 ",
@@ -965,17 +944,7 @@ class CheatConfirms extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
-                                final _login = await Storage.get('com.bfban.login');
-
-                                if (_login == null) {
-                                  return;
-                                }
-
-                                Routes.router.navigateTo(
-                                  context,
-                                  '/record/${i["uId"]}',
-                                  transition: TransitionType.cupertino,
-                                );
+                                detailApi.onSeeUserInfo(context, i["uId"]);
                               },
                           ),
                           TextSpan(

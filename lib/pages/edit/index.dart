@@ -1,5 +1,6 @@
 /// 举报页面
 
+import 'dart:core';
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
@@ -8,12 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_html/flutter_html.dart';
 
+import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
+import 'package:bfban/widgets/index.dart';
 import 'package:bfban/widgets/edit/ImageRadioController.dart';
 import 'package:bfban/widgets/edit/gameTypeRadio.dart';
-import 'package:bfban/router/router.dart';
+import 'package:bfban/widgets/detail/cheatersCardTypes.dart';
 
 class editPage extends StatefulWidget {
   @override
@@ -81,7 +85,10 @@ class _editPageState extends State<editPage> {
 
   String CaotchaCookie = "";
 
-  bool valueCaptchaLoad = false;
+  static Map<String, bool> valueCaptchaState = {
+    "load": false,
+    "first": false,
+  };
 
   @override
   void initState() {
@@ -100,8 +107,6 @@ class _editPageState extends State<editPage> {
         });
       });
     });
-
-    this._getCaptcha();
   }
 
   @override
@@ -115,7 +120,10 @@ class _editPageState extends State<editPage> {
     var t = DateTime.now().millisecondsSinceEpoch.toString();
 
     setState(() {
-      valueCaptchaLoad = true;
+      valueCaptchaState = {
+        "load": true,
+        "first": true,
+      };
     });
 
     Response<dynamic> result = await Http.request(
@@ -129,12 +137,12 @@ class _editPageState extends State<editPage> {
 
     setState(() {
       valueCaptcha = result.data;
-      valueCaptchaLoad = false;
+      valueCaptchaState["load"] = false;
     });
   }
 
   /// 验证用户是否存在
-  _getIsUser() async {
+  dynamic _getIsUser() async {
     setState(() {
       reportInfoUserNameLoad = true;
     });
@@ -310,6 +318,22 @@ class _editPageState extends State<editPage> {
     });
 
     return list;
+  }
+
+  /// 打开编辑页面
+  void _opEnRichEdit() async {
+    dynamic data = jsonEncode({
+      "html": Uri.encodeComponent(reportInfo["description"]),
+    });
+
+    Routes.router.navigateTo(context, '/richedit/$data', transition: TransitionType.cupertino).then((data) {
+      /// 按下确认储存富文本编写的内容
+      if (data["code"] == 1) {
+        setState(() {
+          reportInfo["description"] = data["html"];
+        });
+      }
+    });
   }
 
   @override
@@ -490,12 +514,6 @@ class _editPageState extends State<editPage> {
           indexHr(),
 
           /// S 游戏ID
-//            EluiTipComponent(
-//              child: Text("一次只填写一个ID，不要把战队名字写进来，不要写成自己的ID"),
-//            ),
-//            EluiTipComponent(
-//              child: Text("游戏ID是不区分大小写的，但请特别注意区分i I 1 l L o O 0，正确填写举报ID"),
-//            ),
           Container(
             padding: EdgeInsets.only(
               top: 20,
@@ -557,7 +575,7 @@ class _editPageState extends State<editPage> {
                   color: Colors.white,
                 ),
               ),
-              placeholder: "请触摸这里输入游戏ID",
+              placeholder: "输入作弊玩家游戏ID",
               onChange: (data) {
                 setState(() {
                   reportInfo["originId"] = data["value"];
@@ -689,15 +707,70 @@ class _editPageState extends State<editPage> {
             ),
           ),
 
-          EluiTextareaComponent(
-            color: Colors.white,
-            maxLength: 500,
-            maxLines: 9,
-            onChange: (data) {
-              setState(() {
-                reportInfo["description"] = data["value"];
-              });
-            },
+          /// 富文本
+          GestureDetector(
+            child: Container(
+              constraints: BoxConstraints(
+                minHeight: 150,
+                maxHeight: 280,
+              ),
+              color: Colors.white,
+              padding: EdgeInsets.zero,
+              child: Stack(
+                children: <Widget>[
+                  Html(
+                    data: (reportInfo["description"] == null || reportInfo["description"] == "") ? "" : reportInfo["description"],
+                    style: detailApi.styleHtml(context),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        gradient: LinearGradient(
+                          colors: [Colors.transparent, Color(0xff111b2b)],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      color: Color.fromRGBO(17, 27, 43, 0.9),
+                      child: Center(
+                        child: Wrap(
+                          spacing: 5,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: <Widget>[
+                            Icon(
+                              Icons.edit,
+                              color: Colors.blue,
+                              size: 20,
+                            ),
+                            Text(
+                              "编辑",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onTap: () => _opEnRichEdit(),
           ),
 
           /// E 言论
@@ -747,20 +820,28 @@ class _editPageState extends State<editPage> {
                     bottom: 10,
                     top: 10,
                   ),
-                  width: 100,
-                  height: 55,
-                  child: valueCaptchaLoad
+                  width: 80,
+                  height: 40,
+                  child: valueCaptchaState["load"]
                       ? Icon(
                           Icons.slow_motion_video,
                           color: Colors.black54,
                         )
-                      : new SvgPicture.string(
-                          valueCaptcha,
-                        ),
+                      : valueCaptchaState["first"]
+                          ? new SvgPicture.string(
+                              valueCaptcha,
+                            )
+                          : Center(
+                              child: Text(
+                                "获取验证码",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ),
                 ),
-                onTap: () {
-                  this._getCaptcha();
-                },
+                onTap: () => this._getCaptcha(),
               ),
               maxLenght: 4,
               placeholder: "输入验证码",

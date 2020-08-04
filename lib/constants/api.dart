@@ -19,6 +19,7 @@ class Config {
         return {
           "url": "https://bf.bamket.com",
           "tracker": "https://api.tracker.gg",
+          "upload": "https://upload-z2.qiniup.com",
           "imgUrl": imgUrl + '/'
         };
       case Env.DEV: // 开发
@@ -26,6 +27,8 @@ class Config {
       default:
         return {
           "url": "localhost:8080",
+          "tracker": "https://api.tracker.gg",
+          "upload": "https://upload-z2.qiniup.com",
           "imgUrl": imgUrl + '/'
         };
     }

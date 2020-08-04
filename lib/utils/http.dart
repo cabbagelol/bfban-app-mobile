@@ -1,18 +1,15 @@
-import 'dart:async';
+/// http请求
 
-import 'package:bfban/constants/api.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-/**
- * 功能：http请求模块
- * 描述：
- * By 向堂 2019/8/23
- */
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 
 export 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+
+import 'package:bfban/constants/api.dart';
 
 class Http extends ScaffoldState {
   static Dio dio;
@@ -56,14 +53,16 @@ class Http extends ScaffoldState {
     }
 
     /// restful 请求处理
-    data.forEach((key, value) {
-      if (url.indexOf(key) != -1) {
-        url = url.replaceAll(':$key', value.toString());
-      }
-    });
+    if (data is Map || data is List) {
+      data.forEach((key, value) {
+        if (url.indexOf(key) != -1) {
+          url = url.replaceAll(':$key', value.toString());
+        }
+      });
+    }
 
     print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
-    print(headers);
+    print(data);
 
     Dio dio = createInstance();
     try {
@@ -77,7 +76,7 @@ class Http extends ScaffoldState {
         ),
       );
       result = response;
-//      print('响应数据：' + response.toString());
+      print('响应数据：' + response.toString());
     } on DioError catch (e) {
       switch (e.type) {
         case DioErrorType.RECEIVE_TIMEOUT:
@@ -125,7 +124,7 @@ class Http extends ScaffoldState {
     if (dio == null) {
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
       BaseOptions options = new BaseOptions(
-        baseUrl: Config.apiHost['url'] + '/', // ignore: undefined_named_parameter
+        baseUrl: Config.apiHost['url'] + '/',
         connectTimeout: CONNECT_TIMEOUT,
         receiveTimeout: RECEIVE_TIMEOUT,
       );

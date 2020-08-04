@@ -24,9 +24,6 @@ class _HomePageState extends State<HomePage> {
   /// 举报列表
   Map indexData = new Map();
 
-  /// 近期消息
-  Map indexActivity = new Map();
-
   List indexDataList = new List();
 
   Map<String, dynamic> cheatersPost = {
@@ -75,8 +72,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     this._getIndexList();
-
-    this._getActivity();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -143,38 +138,7 @@ class _HomePageState extends State<HomePage> {
     this._getIndexList();
   }
 
-  /// 搜索
-  void _onSearch(String value) {
-    if (value == "") {
-      EluiMessageComponent.warning(context)(
-        child: Text("请填写搜索内容"),
-      );
-      return;
-    }
 
-    Routes.router.navigateTo(
-      context,
-      '/search/${jsonEncode({
-        "id": value,
-      })}',
-      transition: TransitionType.cupertino,
-    );
-  }
-
-  /// 获取近期活动
-  void _getActivity () async {
-    Response result = await Http.request(
-      'api/activity',
-      parame: cheatersPost,
-      method: Http.GET,
-    );
-
-    if (result.data["error"] == 0) {
-      setState(() {
-        indexActivity = result.data["data"];
-      });
-    }
-  }
 
   /// 发布举报信息
   void _opEnEdit() async {
@@ -194,97 +158,187 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: SearchHead(
-          onSearch: (String value) => this._onSearch(value),
+  /// 筛选widget
+  Widget homeScreen() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: 40,
         ),
-      ),
-      body: Column(
-        children: <Widget>[
-          /// S 游戏
-          Container(
-            padding: EdgeInsets.only(
-              top: 10,
-              left: 20,
-              right: 20,
-              bottom: 6,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "游戏",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    shadows: <Shadow>[
-                      Shadow(
-                        color: Colors.black26,
-                        offset: Offset(1, 2),
-                      )
-                    ],
+        Padding(
+          padding: EdgeInsets.only(
+            left: 20,
+          ),
+          child: Wrap(
+            spacing: 5,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.filter,
+                color: Colors.white,
+                size: 40,
+              ),
+              Text(
+                "筛选",
+                style: TextStyle(
+                  fontSize: 40,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 10,
+        ),
+
+        /// S 游戏
+        Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 20,
+            right: 20,
+            bottom: 6,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "游戏",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  shadows: <Shadow>[
+                    Shadow(
+                      color: Colors.black26,
+                      offset: Offset(1, 2),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5),
+                ),
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                child: Container(
+                  color: Colors.black38,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: gameTypes.asMap().keys.map((index) {
+                      return gameTypeRadio(
+                        index: gameTypeIndex == index,
+                        child: index != 0
+                            ? Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    gameTypes[index]["name"].toString(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  Container(
+                                    color: Colors.red,
+                                    child: Text(
+                                      indexData["totalSum"] == null ? "0" : indexData["totalSum"][index - 1]["num"].toString(),
+                                      style: TextStyle(
+                                        fontSize: 8,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            : Text(
+                                gameTypes[index]["name"].toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                ),
+                              ),
+                        onTap: () {
+                          if (index == gameTypeIndex) {
+                            return;
+                          }
+
+                          setState(() {
+                            gameTypeIndex = index;
+                          });
+
+                          this._setGameType();
+                        },
+                      );
+                    }).toList(),
                   ),
                 ),
-                SizedBox(
-                  width: 15,
+              ),
+            ],
+          ),
+        ),
+
+        /// E 游戏
+
+        /// S 类型
+        Container(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            bottom: 6,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "类型",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 13,
+                  shadows: <Shadow>[
+                    Shadow(
+                      color: Colors.black26,
+                      offset: Offset(1, 2),
+                    )
+                  ],
                 ),
-                ClipRRect(
+              ),
+              SizedBox(
+                width: 15,
+              ),
+              Expanded(
+                flex: 1,
+                child: ClipRRect(
                   borderRadius: BorderRadius.all(
                     Radius.circular(5),
                   ),
                   clipBehavior: Clip.antiAliasWithSaveLayer,
                   child: Container(
-                    color: Colors.black38,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: gameTypes.asMap().keys.map((index) {
+                    color: Colors.black26,
+                    child: Wrap(
+                      children: gameSumStatusData.asMap().keys.map((index) {
                         return gameTypeRadio(
-                          index: gameTypeIndex == index,
-                          child: index != 0
-                              ? Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      gameTypes[index]["name"].toString(),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    Container(
-                                      color: Colors.red,
-                                      child: Text(
-                                        indexData["totalSum"] == null ? "0" : indexData["totalSum"][index - 1]["num"].toString(),
-                                        style: TextStyle(
-                                          fontSize: 8,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              : Text(
-                                  gameTypes[index]["name"].toString(),
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 13,
-                                  ),
-                                ),
+                          index: gameSumStatus["index"] == index,
+                          child: Text(
+                            gameSumStatusData[index]["s"].toString(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          ),
                           onTap: () {
-                            if (index == this.gameTypeIndex) {
+                            if (index == this.gameSumStatus["index"]) {
                               return;
                             }
 
                             setState(() {
-                              this.gameTypeIndex = index;
+                              gameSumStatus["index"] = index;
                             });
 
                             this._setGameType();
@@ -294,87 +348,39 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+        ),
 
-          /// E 游戏
+        /// E 类型
+      ],
+    );
+  }
 
-          /// S 类型
-          Container(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              bottom: 6,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "类型",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 13,
-                    shadows: <Shadow>[
-                      Shadow(
-                        color: Colors.black26,
-                        offset: Offset(1, 2),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(5),
-                    ),
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: Container(
-                      color: Colors.black26,
-                      child: Wrap(
-                        children: gameSumStatusData.asMap().keys.map((index) {
-                          return gameTypeRadio(
-                            index: gameSumStatus["index"] == index,
-                            child: Text(
-                              gameSumStatusData[index]["s"].toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
-                            ),
-                            onTap: () {
-                              if (index == this.gameSumStatus["index"]) {
-                                return;
-                              }
-
-                              setState(() {
-                                gameSumStatus["index"] = index;
-                              });
-
-                              this._setGameType();
-                            },
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          /// E 类型
-
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: titleSearch(
+          theme: titleSearchTheme.black,
+        ),
+      ),
+      drawerScrimColor: Colors.black87,
+      drawer: homeScreen(),
+      body: Column(
+        children: <Widget>[
           Expanded(
             flex: 1,
             child: !indexPagesState
                 ? RefreshIndicator(
                     onRefresh: _onRefresh,
+                    color: Colors.white,
+                    backgroundColor: Colors.yellow,
                     child: ListView.builder(
                       controller: _scrollController,
                       itemCount: indexDataList.length,
@@ -416,66 +422,7 @@ class _HomePageState extends State<HomePage> {
                   ),
           ),
 
-          /// S 管理面板
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              border: Border(
-                top: BorderSide(
-                  width: 1,
-                  color: Colors.white12,
-                ),
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      "${indexActivity["number"] == null ? "" :  indexActivity["number"]["report"]}",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      "\u793e\u533a\u5df2\u6536\u5230\u4e3e\u62a5\u6b21\u6570",
-                      style: TextStyle(
-                        fontSize: 9,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      "${indexActivity["number"] == null ? "" : indexActivity["number"]["cheater"]}",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text(
-                      "\u5df2\u6838\u5b9e\u4f5c\u5f0a\u73a9\u5bb6\u4eba\u6570",
-                      style: TextStyle(
-                        fontSize: 9,
-                        color: Colors.white,
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
 
-          /// E 管理面板
         ],
       ),
       floatingActionButton: FloatingActionButton(

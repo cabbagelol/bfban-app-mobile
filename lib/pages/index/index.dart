@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 
+import 'package:bfban/pages/index/community.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
@@ -15,6 +16,7 @@ import 'package:flutter_plugin_elui/_message/index.dart';
 import 'home.dart';
 import 'news.dart';
 import 'usercenter.dart';
+import 'community.dart';
 
 
 class IndexPage extends StatefulWidget {
@@ -42,7 +44,6 @@ class _IndexPageState extends State<IndexPage> {
 
   void _onReady () async {
     Map token = jsonDecode(await Storage.get('com.bfban.token') ?? '{}');
-
 
     /// 校验TOKEN
     /// 时间7日内该TOken生效并保留，否则重启登录
@@ -87,7 +88,7 @@ class _IndexPageState extends State<IndexPage> {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: Klength.designWidth)..init(context);
 
-    List<Widget> widgets = [HomePage(), newsPage(), usercenter()];
+    List<Widget> widgets = [HomePage(), communityPage(), newsPage(), usercenter()];
 
     return Scaffold(
       backgroundColor: Color(0xff111b2b),
@@ -124,6 +125,17 @@ class _IndexPageState extends State<IndexPage> {
                         ),
                         "icon_s": Icon(
                           Icons.home,
+                          color: Colors.yellow,
+                        ),
+                      },
+                      {
+                        "name": "\u793e\u533a",
+                        "icon": Icon(
+                          Icons.comment,
+                          color: Colors.white,
+                        ),
+                        "icon_s": Icon(
+                          Icons.comment,
                           color: Colors.yellow,
                         ),
                       },

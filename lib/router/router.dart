@@ -14,6 +14,7 @@ import 'package:bfban/pages/login/index.dart';
 import 'package:bfban/pages/login/record/index.dart';
 import 'package:bfban/pages/search/searchList.dart';
 import 'package:bfban/pages/usercenter/support.dart';
+import 'package:bfban/pages/richEdit/index.dart';
 // E Pages
 
 class Routes {
@@ -96,14 +97,20 @@ class Routes {
           return guidePage();
         },
       },
+      {
+        "url": "/richedit/:data",
+        'item': (context, params) {
+          return richEditPage(
+            data: params["data"][0],
+          );
+        },
+      },
     ];
 
     routerList.forEach((i) {
-      router.define(i['url'],
-          handler: Handler(handlerFunc: (context, Map<String, dynamic> params) {
-            return i['item'](context, params);
-          })
-      );
+      router.define(i['url'], handler: Handler(handlerFunc: (context, Map<String, dynamic> params) {
+        return i['item'](context, params);
+      }));
     });
 
     Routes.router = router;

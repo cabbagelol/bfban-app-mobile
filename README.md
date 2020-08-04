@@ -21,7 +21,7 @@
   2. 编码模式含'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'NDK，缺少文件到官网下载完整的NDK。
   3. 库里的gradle版本是6.1.1/kotlin:1.3.72，如果和本地不同，请自行修改。
   4. 入口是main_dev不是main。
-
+  
 ## 分支介绍
 
 - master 引用开发

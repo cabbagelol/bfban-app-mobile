@@ -1,6 +1,7 @@
 /// 举报信息详情
 
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -41,6 +42,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   /// TAB导航控制器
   TabController _tabController;
 
+  /// 导航下标
   int _tabControllerIndex = 0;
 
   /// 滚动控制器
@@ -319,7 +321,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             list.add(
               CheatUserCheaters(
                 i: _allReply[i],
-                index: i+=1,
+                index: i += 1,
               ),
             );
             break;
@@ -327,7 +329,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             list.add(
               CheatReports(
                 i: _allReply[i],
-                index: i+=1,
+                index: i += 1,
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
@@ -338,7 +340,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             list.add(
               CheatVerifies(
                 i: _allReply[i],
-                index: i+=1,
+                index: i += 1,
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
@@ -351,7 +353,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             list.add(
               CheatConfirms(
                 i: _allReply[i],
-                index: i+=1,
+                index: i += 1,
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
@@ -516,13 +518,15 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
               actions: <Widget>[
                 IconButton(
                   icon: Icon(
-                    Icons.share,
+                    Icons.open_in_new,
                   ),
                   onPressed: () {
-                    EluiMessageComponent.success(context)(
-                        child: Text(
-                      "链接已复制到剪切板中, 你可以粘贴到任何地方:D",
-                    ));
+                    Share().text(
+                      title: '联BFBAN分享',
+                      text: '走过路过，不要错过咯~ 快乐围观 ${cheatersInfoUser["originId"]} 在联BAN举报信息',
+                      linkUrl: 'https://bfban.com/#/cheaters/${cheatersInfoUser["originUserId"]}',
+                      chooserTitle: '联BFBAN分享',
+                    );
                     Clipboard.setData(
                       ClipboardData(
                         text: 'https://bfban.com/#/cheaters/${cheatersInfoUser["originUserId"]}',
@@ -646,6 +650,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                             Navigator.of(context).push(CupertinoPageRoute(
                               builder: (BuildContext context) {
                                 return PhotoViewSimpleScreen(
+                                  imageUrl: cheatersInfoUser["avatarLink"],
                                   imageProvider: NetworkImage(cheatersInfoUser["avatarLink"]),
                                   heroTag: 'simple',
                                 );

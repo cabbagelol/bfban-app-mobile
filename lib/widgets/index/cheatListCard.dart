@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+
 /// 作弊者列表卡片
 
 import 'package:flutter/material.dart';
@@ -56,22 +57,26 @@ class CheatListCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  Wrap(
+                    spacing: 5,
+                    runSpacing: 5,
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.only(
                           left: 5,
                           right: 5,
                         ),
-                        margin: EdgeInsets.only(
-                          right: 10,
+                        decoration: BoxDecoration(
+                          color: startusIng[int.parse(item["status"])]["c"] ?? Colors.transparent,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(2),
+                          ),
                         ),
-                        color: startusIng[int.parse(item["status"])]["c"] ?? Colors.transparent,
                         child: Text(
                           (startusIng[int.parse(item["status"])]["s"] ?? Colors.white).toString(),
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 12,
                             color: Colors.white,
                           ),
                         ),
@@ -85,8 +90,6 @@ class CheatListCard extends StatelessWidget {
                       ),
                     ],
                   ),
-
-
                   Row(
                     children: <Widget>[
                       Text(

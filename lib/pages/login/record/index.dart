@@ -26,16 +26,15 @@ class recordPage extends StatefulWidget {
 class _RecordPageState extends State<recordPage> {
   ScrollController _scrollController = ScrollController();
 
-  var indexDate = new Map();
+  Map indexDate = new Map();
 
-  Map record = {
-    "uid": ""
-  };
+  Map record = {"uid": ""};
 
   int indexPagesIndex = 1;
 
   bool indexPagesState = true;
 
+  /// 列表
   List indexDataList = new List();
 
   @override
@@ -58,7 +57,7 @@ class _RecordPageState extends State<recordPage> {
 
   void ready() async {
     await this._getUserInfo();
-    this._getIndexList(1);
+    await this._getIndexList(1);
   }
 
   /// 下拉刷新方法,为list重新赋值
@@ -69,13 +68,9 @@ class _RecordPageState extends State<recordPage> {
   }
 
   /// 获取用户信息
-  void _getUserInfo() async {
+  Future _getUserInfo() async {
     dynamic result = await Storage.get('com.bfban.login');
     dynamic data;
-
-    if (result == null) {
-      return;
-    }
 
     switch (widget.data.toString()) {
       case "-1":
@@ -92,7 +87,11 @@ class _RecordPageState extends State<recordPage> {
   }
 
   /// 获取列表
-  void _getIndexList(num index) async {
+  Future _getIndexList(num index) async {
+    if (record["uid"] == null || record["uid"] == "") {
+      return;
+    }
+
     Response result = await Http.request(
       'api/account/${record["uid"]}',
       method: Http.GET,
@@ -127,40 +126,61 @@ class _RecordPageState extends State<recordPage> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.open_in_new,
+            ),
+            onPressed: () {
+              Share().text(
+                title: '联BFBAN分享',
+                text: '这是我的举报记录，来看看我举报了那些人~',
+                linkUrl: 'https://bfban.com/#/account/${record["uid"]}',
+                chooserTitle: '联BFBAN分享',
+              );
+            },
+          ),
+        ],
       ),
-      body: indexDataList.length > 0 ? RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: indexDataList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return recordItem(
-              item: indexDataList[index],
-            );
-          },
-        ),
-      ) : Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Opacity(
-              opacity: 0.8,
-              child: textLoad(
-                value: "BFBAN",
-                fontSize: 30,
+      body: !indexPagesState
+          ? indexDataList.length > 0
+              ? RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: indexDataList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return recordItem(
+                        item: indexDataList[index],
+                      );
+                    },
+                  ),
+                )
+              : EluiVacancyComponent(
+                  title: "没有其他数据了:D",
+                )
+          : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Opacity(
+                    opacity: 0.8,
+                    child: textLoad(
+                      value: "BFBAN",
+                      fontSize: 30,
+                    ),
+                  ),
+                  Text(
+                    "Legion of BAN Coalition",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white38,
+                    ),
+                  )
+                ],
               ),
             ),
-            Text(
-              "Legion of BAN Coalition",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white38,
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

@@ -118,8 +118,6 @@ class _loginPageState extends State<loginPage> {
       },
     );
 
-    print(result);
-
     if (result.data['error'] == 0) {
       Storage.set(
         'com.bfban.login',
@@ -132,6 +130,7 @@ class _loginPageState extends State<loginPage> {
           "time": new DateTime.now().millisecondsSinceEpoch,
         }),
       );
+      Http.setToken(result.data['token']);
       Navigator.pop(context, 'loginBack');
     } else {
       switch (result.data["msg"]) {
