@@ -6,18 +6,26 @@
     <link rel="stylesheet" href="https://bootswatch.com/4/solar/bootstrap.css" media="screen">
     <link rel="stylesheet" href="https://bootswatch.com/_assets/css/custom.min.css">
     <link rel="icon" href="https://bfban.com/favicon.ico">
+
+    <title>新闻</title>
+
     <style>
         html, body {
-            margin: 5px 5px;
+            margin: 0;
             padding: 0px;
             background-color: #111b2b !important;
         }
 
+        #app {
+            background-color: rgba(0, 0, 0, 0.2) !important;
+            padding: 0 20px !important;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #dee2e605 !important;
+        }
     </style>
-    <title>新闻</title>
-
 <body>
-
 
 <div class="my-3 p-3 bg-white rounded shadow-sm" id="app">
     <h5 class=" border-gray pb-2 mb-0">这是作者发布关于BFBAN消息地方,</h5>
@@ -32,7 +40,7 @@
         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
             <strong class="d-block text-gray-dark">@{{i.username}}</strong>
             <block v-html="i.content" style="white-space: pre-wrap"></block>
-            <p>{{i.time}}</p>
+            <p>发布于 {{i.time}}</p>
         </div>
     </div>
 </div>
