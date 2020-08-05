@@ -61,8 +61,8 @@ class Http extends ScaffoldState {
       });
     }
 
-    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
-    print(data);
+//    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
+//    print(data);
 
     Dio dio = createInstance();
     try {

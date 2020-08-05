@@ -52,6 +52,8 @@ class _IndexPageState extends State<IndexPage> {
     if (token.isEmpty) {
       return;
     }
+
+    return;
     if (DateTime.parse(token["time"]).add(Duration(days: 7)).millisecondsSinceEpoch > new DateTime.now().millisecondsSinceEpoch) {
       EluiMessageComponent.warning(context)(
         child: Text("登录已过期，请重新登录"),
