@@ -57,11 +57,11 @@ class _communityPageState extends State<communityPage> {
     Function _getTurnTheTimestamp = new Date().getTurnTheTimestamp;
     List list = new List();
 
-    list.addAll(indexActivity["registers"]);
-    list.addAll(indexActivity["reports"]);
+    list.addAll(indexActivity["registers"] ?? []);
+    list.addAll(indexActivity["reports"] ?? []);
 
     list.sort((time, timeing) =>
-        _getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"] -
+    _getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"] -
         _getTurnTheTimestamp(time["createDatetime"])["millisecondsSinceEpoch"]);
 
     return list;
@@ -75,6 +75,7 @@ class _communityPageState extends State<communityPage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
+        title: Text("最近动态"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -86,9 +87,6 @@ class _communityPageState extends State<communityPage> {
       ),
       body: ListView(
         children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
           Container(
             color: Colors.black12,
             margin: EdgeInsets.only(
@@ -168,10 +166,10 @@ class _communityPageState extends State<communityPage> {
                   bottom: 5,
                 ),
                 padding: EdgeInsets.only(
-                  top: 10,
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
+                  top: 20,
+                  bottom: 20,
+                  left: 20,
+                  right: 20,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,19 +235,19 @@ class _communityPageState extends State<communityPage> {
                         ),
                         i["cheaterOriginId"] == null
                             ? Text(
-                                "注册了BFBAN，欢迎",
-                                style: TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 12,
-                                ),
-                              )
+                          "注册了BFBAN，欢迎",
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontSize: 12,
+                          ),
+                        )
                             : Text(
-                                " 举报了 ${i["cheaterOriginId"]} ${i["game"]}",
-                                style: TextStyle(
-                                  color: Colors.white54,
-                                  fontSize: 12,
-                                ),
-                              ),
+                          " 举报了 ${i["cheaterOriginId"]} ${i["game"]}",
+                          style: TextStyle(
+                            color: Colors.white54,
+                            fontSize: 12,
+                          ),
+                        ),
                       ],
                     ),
                   ],

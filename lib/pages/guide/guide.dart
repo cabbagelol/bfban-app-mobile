@@ -66,74 +66,79 @@ class _guidePageState extends State<guidePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xff111b2b),
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              colors: [Colors.transparent, Colors.black38],
-            ),
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Opacity(
-            opacity: 0.5,
-            child: Image.asset(
-              "assets/images/bk-companion-1.jpg",
-              fit: BoxFit.cover,
-            ),
-          ),
-          BackdropFilter(
-            child: IndexedStack(
-              index: guideListPageIndex,
-              children: guideListPage,
-            ),
-            filter: ui.ImageFilter.blur(
-              sigmaX: 0.0,
-              sigmaY: 0.0,
-            ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        color: Colors.yellow,
-        child: EluiButtonComponent(
-          disabled: _isState(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                guideListPageIndex == guideListPage.length - 1 ? "确认" : "下一步",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                ),
+    return WillPopScope(
+      child: Scaffold(
+        backgroundColor: Color(0xff111b2b),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomRight,
+                colors: [Colors.transparent, Colors.black38],
               ),
-              Offstage(
-                offstage: !_isState(),
-                child: Text(
-                  "请勾选必要条件",
+            ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+        ),
+        body: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            Opacity(
+              opacity: 0.5,
+              child: Image.asset(
+                "assets/images/bk-companion-1.jpg",
+                fit: BoxFit.cover,
+              ),
+            ),
+            BackdropFilter(
+              child: IndexedStack(
+                index: guideListPageIndex,
+                children: guideListPage,
+              ),
+              filter: ui.ImageFilter.blur(
+                sigmaX: 0.0,
+                sigmaY: 0.0,
+              ),
+            ),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          color: Colors.yellow,
+          child: EluiButtonComponent(
+            disabled: _isState(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "${guideListPageIndex == guideListPage.length - 1 ? "确认" : "下一步"} (${guideListPageIndex + 1}/${guideListPage.length})",
                   style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 9,
+                    color: Colors.black,
+                    fontSize: 15,
                   ),
                 ),
-              ),
-            ],
+                Offstage(
+                  offstage: !_isState(),
+                  child: Text(
+                    "请勾选必要条件",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 9,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            onTap: () => _onConfirm(),
           ),
-          onTap: () => _onConfirm(),
         ),
       ),
+      onWillPop: () async {
+        return false;
+      },
     );
   }
 }

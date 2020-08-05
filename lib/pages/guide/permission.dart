@@ -67,15 +67,12 @@ class _permissionPageState extends State<permissionPage> {
             ],
           ),
         ),
-        Expanded(
-          flex: 1,
-          child: Column(
-            children: permissions
-                .map(
-                  (permission) => PermissionWidget(permission),
-                )
-                .toList(),
-          ),
+        Column(
+          children: permissions
+              .map(
+                (permission) => PermissionWidget(permission),
+          )
+              .toList(),
         ),
         Padding(
           padding: EdgeInsets.only(

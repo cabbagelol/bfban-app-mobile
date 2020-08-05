@@ -9,20 +9,32 @@ class Storage {
   static SharedPreferences prefs;
 
   /// 储存图片
-  static Future saveimg(url) async {
+  static Future saveimg(url, {
+    fileUrl: "",
+  }) async {
     var response = await Dio().get(
       url,
       options: Options(
         responseType: ResponseType.bytes,
       ),
     );
+
     final result = await ImageGallerySaver.saveImage(
       Uint8List.fromList(
         response.data,
       ),
     );
 
-    return result;
+    if (result != "") {
+      return {
+        "src": result,
+        "code": 0,
+      };
+    }
+
+    return {
+      "code": -1,
+    };
   }
 
   /// 获取

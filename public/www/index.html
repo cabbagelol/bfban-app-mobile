@@ -11,6 +11,7 @@
           crossorigin="anonymous">
     <link rel="canonical" href="https://v4.bootcss.com/docs/examples/cover/">
     <link rel="canonical" href="https://v4.bootcss.com/docs/examples/sticky-footer-navbar/">
+    <link rel="icon" href="https://bfban.com/favicon.ico">
 
     <style>
         html, body {
@@ -21,12 +22,12 @@
         main {
             height: inherit;
             overflow: hidden;
+            min-height: 900px;
         }
 
         footer {
             background: #ffc107;
-            margin: 200px 0 0 0;
-            padding: 10px 0;
+            padding: 10px 0 10px 0;
         }
 
         .menu {
@@ -39,7 +40,7 @@
         }
 
         .exhibition {
-            margin: -50px 0 -100px 250px;
+            margin: -50px 0 -100px 0px;
             width: 1100px;
         }
 
@@ -61,8 +62,8 @@
             font-size: 12px;
             padding: 1px 4px;
             margin: 0 0 0 10px;
-            border-bottom: 2px solid #101010;
-            background-color: #666;
+            border-bottom: 2px solid #1c325d;
+            background-color: #354e80;
             color: #fff;
         }
 
@@ -109,7 +110,7 @@
     </div>
     <div class="container">
         <section class="row">
-            <div class="col-sm-5">
+            <div class="col-12 col-sm-9 col-md-5">
                 <div class="container">
                     <img src="https://i.loli.net/2018/11/03/5bdd8e977b10d.png" width="100" height="100"/>
                     <h1>
@@ -122,7 +123,7 @@
                             style="vertical-align: inherit;">程序目的增强BFBAN
                         WEB功能，作为移动软体发挥查询与管理作用；增强会分三阶段逐步改进并且未来影响WEB端。</font></font>
                     </p>
-                    <br />
+                    <br/>
                     <div class="btn-group" role="group"
                          aria-label="Button group with nested dropdown">
                         <a href="https://github.com/cabbagelol/bfbanApp/releases"
@@ -151,15 +152,6 @@
                     <hr/>
                     <div class="row">
                         <div class="col-sm">
-                            <div class=" text-muted"><a href="#" class="badge badge-dark">说明</a></div>
-                        </div>
-                        <div class="col-sm">
-                            <div class=" text-muted">{{ version.describe }}</div>
-                        </div>
-                    </div>
-                    <hr/>
-                    <div class="row">
-                        <div class="col-sm">
                             <div class=" text-muted"><a href="#" class="badge badge-primary">发行号</a></div>
                         </div>
                         <div class="col-sm">
@@ -167,16 +159,24 @@
                         </div>
                     </div>
                     <hr/>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class=" text-muted"><a href="#" class="badge badge-dark">说明</a></div>
+                        </div>
+                        <div class="col-sm">
+                            <div class=" text-muted">{{ version.describe }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-7">
+            <div class="col-12 col-sm-3 col-md-7">
                 <img src="../images/exhibition.png" class="exhibition">
             </div>
         </section>
 
     </div>
 </main>
-<footer class="footer mt-auto">
+<footer class="footer">
     <div class="container text-center">
         <svg height="50" xmlns="http://www.w3.org/2000/svg" width="50">
             <g transform="scale(.4) translate(50, 12)">
@@ -188,6 +188,16 @@
                       fill="#fff"></path>
             </g>
         </svg>
+
+        <div class="row">
+            <div class="col-sm">
+                <kbd>交流群</kbd> <a href="https://jq.qq.com/?_wv=1027&k=kXr9z9FE" target="_blank">612949946</a>
+            </div>
+            <div class="col-sm"></div>
+            <div class="col-sm">
+                ©2020 All Rights Reserved.
+            </div>
+        </div>
     </div>
 </footer>
 </body>
@@ -217,14 +227,13 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: 'Hello Vue!',
             version: {},
         },
 
         created() {
             const self = this;
             axios({
-                method: 'post',
+                method: 'get',
                 url: '../json/version.json',
                 headers: {
                     'Content-Type': 'application/json',
