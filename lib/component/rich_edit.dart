@@ -1,17 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_plugin_elui/elui.dart' show EluiPopupComponent, EluiPopupPlacement;
+
+import 'package:bfban/constants/api.dart';
+import 'package:bfban/utils/index.dart' show upload;
+
 enum RichEditDataType { TEXT, IMAGE, VIDEO, NONE }
 
 class RichEditData {
   RichEditDataType type;
   dynamic data;
+  TextEditingController controller;
+  FocusNode controllerFocus;
+  bool onOly;
 
-  RichEditData(this.type, this.data);
+  RichEditData(
+    this.type,
+    this.data, {
+    this.controller,
+    this.controllerFocus,
+    this.onOly = false,
+  });
 }
 
 abstract class RichEditController {
-  final List<RichEditData> _data = List.of({RichEditData(RichEditDataType.TEXT, "")});
+  final List<RichEditData> _data = List.of({
+    RichEditData(
+      RichEditDataType.TEXT,
+      "",
+      controller: TextEditingController(),
+      controllerFocus: FocusNode(),
+    )
+  });
 
   final TextStyle textStyle;
   final InputDecoration inputDecoration;
@@ -36,7 +58,7 @@ abstract class RichEditController {
   })  : deleteIcon = deleteIcon ?? Icon(Icons.cancel),
         inputDecoration = inputDecoration ??
             InputDecoration(
-              hintText: "<-",
+              hintText: "输入内容",
               border: OutlineInputBorder(
                 borderSide: BorderSide.none,
               ),
@@ -47,8 +69,6 @@ abstract class RichEditController {
         isImageIcon = isImageIcon ?? true,
         isVideoIcon = isVideoIcon ?? true,
         isEmptyIcon = isEmptyIcon ?? true;
-
-  addImage();
 
   addVideo();
 
@@ -120,6 +140,8 @@ abstract class RichEditController {
                 ? RichEditData(
                     RichEditDataType.TEXT,
                     "",
+                    controller: TextEditingController(),
+                    controllerFocus: FocusNode(),
                   )
                 : RichEditData(
                     RichEditDataType.NONE,
@@ -134,6 +156,8 @@ abstract class RichEditController {
           RichEditData(
             RichEditDataType.TEXT,
             this.remStringHtml(m.input.substring(m.start, m.end)),
+            controller: TextEditingController(),
+            controllerFocus: FocusNode(),
           ),
         );
       }
@@ -143,6 +167,8 @@ abstract class RichEditController {
       RichEditData(
         RichEditDataType.TEXT,
         "",
+        controller: TextEditingController(),
+        controllerFocus: FocusNode(),
       ),
     );
   }
@@ -156,9 +182,11 @@ abstract class RichEditController {
   }
 
   void generateImageHtml(StringBuffer sb, RichEditData element) {
-    sb.write("<img src=\"");
-    sb.write(element.data);
-    sb.write("\" />");
+    if (element.data != "") {
+      sb.write("<img src=\"");
+      sb.write(element.data);
+      sb.write("\" />");
+    }
   }
 
   void generateVideoHtml(StringBuffer sb, RichEditData element) {
@@ -188,8 +216,23 @@ class RichEdit extends StatefulWidget {
 
 class RichEditState extends State<RichEdit> {
   ScrollController _controller;
+
   Map<int, FocusNode> focusNodes = Map();
+
   Map<int, TextEditingController> textControllers = Map();
+
+  final List fileType = [
+    {
+      "name": "拍照",
+      "icon": Icons.party_mode,
+      "type": ImageSource.camera,
+    },
+    {
+      "name": "相册",
+      "icon": Icons.camera,
+      "type": ImageSource.gallery,
+    }
+  ];
 
   @override
   void initState() {
@@ -212,46 +255,122 @@ class RichEditState extends State<RichEdit> {
             itemCount: widget.controller._data.length,
             itemBuilder: (context, index) {
               var data = widget.controller._data[index];
+
               Widget item = Container();
+
               switch (data.type) {
                 case RichEditDataType.NONE:
                   item = Container();
                   break;
                 case RichEditDataType.TEXT:
-                  var fn = FocusNode();
-                  var textEditingController = TextEditingController.fromValue(TextEditingValue(text: data.data));
-                  textControllers[index] = textEditingController;
-                  focusNodes[index] = fn;
-                  item = Container(
-                    child: TextField(
-                      style: widget.controller.textStyle,
-                      focusNode: fn,
-                      controller: textEditingController,
-                      maxLines: 50,
-                      minLines: 1,
-                      onChanged: (s) {
-                        widget.controller._data[index].data = s;
-                      },
-                      decoration: widget.controller.inputDecoration,
+                  textControllers[index] = widget.controller._data[index].controller;
+                  focusNodes[index] = widget.controller._data[index].controllerFocus;
+
+                  /// 赋予值
+                  textControllers[index].text = data.data;
+
+                  /// 监听变动
+                  textControllers[index].addListener(() {});
+
+                  item = GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(focusNodes[index]);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        left: 10,
+                      ),
+                      padding: EdgeInsets.only(
+                        left: 5,
+                        top: 5,
+                        bottom: 5,
+                      ),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                        width: 1,
+                        color: Color(0xfff2f2f2),
+                      ))),
+                      child: EditableText(
+                        controller: textControllers[index],
+                        focusNode: focusNodes[index],
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.newline,
+                        style: widget.controller.textStyle ??
+                            TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                        minLines: 1,
+                        maxLines: null,
+                        cursorColor: Color(0xff364e80),
+                        backgroundCursorColor: Colors.transparent,
+                        onChanged: (text) {
+                          if (text == "" && widget.controller._data.length > 1) {
+                            print(index);
+                            setState(() {
+                              focusNodes.remove(focusNodes[index]);
+                              widget.controller._data.removeAt(index);
+                            });
+                            return;
+                          }
+
+                          if (text.indexOf("\n") >= 0) {
+                            List t = text.split("\n");
+                            widget.controller._data[index].data = t[0];
+                            widget.controller._data.insert(
+                              index + 1,
+                              RichEditData(
+                                RichEditDataType.TEXT,
+                                t.length > 1 ? t[1].toString().replaceAll("\n", "") ?? "" : "",
+                                controller: TextEditingController(),
+                                controllerFocus: FocusNode(),
+                              ),
+                            );
+
+                            FocusScope.of(context).unfocus();
+
+                            setState(() {});
+                          } else {
+                            widget.controller._data[index].data = text;
+                          }
+                        },
+                      ),
                     ),
                   );
                   break;
                 case RichEditDataType.IMAGE:
-                  item = Container(
-                    child: Stack(
-                      children: <Widget>[
-                        widget.controller.generateImageView(data),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: IconButton(
-                            icon: Icon(Icons.cancel),
-                            onPressed: () {
-                              remove(index);
-                            },
-                          ),
-                        )
-                      ],
+                  item = GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 0,
+                        vertical: 10,
+                      ),
+                      child: Stack(
+                        children: <Widget>[
+                          widget.controller.generateImageView(data),
+                          Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    colors: [Colors.transparent, Colors.black26],
+                                  ),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(Icons.cancel),
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    remove(index);
+                                  },
+                                ),
+                              ))
+                        ],
+                      ),
                     ),
                   );
                   break;
@@ -290,12 +409,13 @@ class RichEditState extends State<RichEdit> {
                         child: IconButton(
                             icon: widget.controller.imageIcon,
                             onPressed: () async {
-                              String path = await widget.controller.addImage();
-                              if (path != null) {
+                              FocusScope.of(context).requestFocus(FocusNode());
+
+                              this.image(context, camera: true, gallery: true, onSucceed: (String path) {
                                 addView(
                                   RichEditData(RichEditDataType.IMAGE, path),
                                 );
-                              }
+                              });
                             }),
                       ),
                       Offstage(
@@ -303,6 +423,8 @@ class RichEditState extends State<RichEdit> {
                         child: IconButton(
                             icon: widget.controller.videoIcon,
                             onPressed: () async {
+                              FocusScope.of(context).requestFocus(FocusNode());
+
                               String path = await widget.controller.addVideo();
                               if (path != null) {
                                 addView(
@@ -320,10 +442,9 @@ class RichEditState extends State<RichEdit> {
                 Offstage(
                   offstage: !widget.controller.isEmptyIcon,
                   child: IconButton(
-                      icon: widget.controller.emptyIcon,
-                      onPressed: () {
-                        initial();
-                      }),
+                    icon: widget.controller.emptyIcon,
+                    onPressed: () => initial(),
+                  ),
                 ),
               ],
             ),
@@ -336,12 +457,55 @@ class RichEditState extends State<RichEdit> {
     );
   }
 
-  void initial () {
-    widget.controller._data.forEach((element) {
-      widget.controller._data.remove(element);
+  Future image(
+    context, {
+    camera: true,
+    gallery: false,
+    Function onSucceed,
+  }) async {
+    final picker = ImagePicker();
+    Function popupClose;
+
+    popupClose = await EluiPopupComponent(context)(
+      placement: EluiPopupPlacement.bottom,
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: fileType.asMap().keys.map((index) {
+            return FileWidgetUI(
+              i: fileType[index],
+              onSucceed: () async {
+                popupClose.call();
+
+                PickedFile pickedImage = await picker.getImage(
+                  source: fileType[index]["type"],
+                  imageQuality: 30,
+                );
+
+                String key = await upload.on(pickedImage.path);
+                onSucceed(key != null ? "${Config.apiHost["qiniuyunSrc"]}/$key" : "");
+              },
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  void initial() {
+    print(widget.controller._data.length);
+    setState(() {
+      widget.controller._data.asMap().keys.map((index) {
+        remove(index);
+      });
+      widget.controller._data.add(RichEditData(
+        RichEditDataType.TEXT,
+        "",
+        controller: TextEditingController(),
+        controllerFocus: FocusNode(),
+      ));
     });
-    widget.controller._data.add(RichEditData(RichEditDataType.TEXT, ""));
-    setState(() {});
   }
 
   void remove(int index) {
@@ -372,7 +536,60 @@ class RichEditState extends State<RichEdit> {
       }
     });
     widget.controller._data.insert(insertIndex, richEditData);
-    widget.controller._data.insert(insertIndex + 1, RichEditData(RichEditDataType.TEXT, text));
+    widget.controller._data.insert(
+      insertIndex + 1,
+      RichEditData(
+        RichEditDataType.TEXT,
+        text,
+        controller: TextEditingController(),
+        controllerFocus: FocusNode(),
+      ),
+    );
     setState(() {});
+  }
+}
+
+class FileWidgetUI extends StatefulWidget {
+  final i;
+
+  final Function onSucceed;
+
+  FileWidgetUI({
+    this.i,
+    this.onSucceed,
+  });
+
+  @override
+  _FileWidgetUIState createState() => _FileWidgetUIState();
+}
+
+class _FileWidgetUIState extends State<FileWidgetUI> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.only(
+          top: 20,
+          bottom: 20,
+        ),
+        child: Center(
+          child: Wrap(
+            spacing: 10,
+            children: <Widget>[
+              Icon(
+                widget.i["icon"],
+                size: 20,
+                color: Colors.black,
+              ),
+              Text(widget.i["name"]),
+            ],
+          ),
+        ),
+      ),
+      onTap: () async {
+        widget.onSucceed();
+      },
+    );
   }
 }

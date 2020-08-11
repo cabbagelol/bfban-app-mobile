@@ -75,14 +75,22 @@ class _richEditPageState extends State<richEditPage> {
             onPressed: () {
               Navigator.pop(
                 context,
-                {"code": 1, "html": controller.generateHtml()},
+                {
+                  "code": 1,
+                  "html": controller.generateHtml(),
+                },
               );
             },
           ),
         ],
       ),
-      body: richText(
-        controller: controller,
+      body: Container(
+        padding: EdgeInsets.only(
+          top: 20,
+        ),
+        child: richText(
+          controller: controller,
+        ),
       ),
     );
   }

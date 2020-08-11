@@ -16,31 +16,33 @@ class Config {
   /// 版本设置
   static Map get versionApp {
     return {
-      "v": "0.0.1",
+      "v": "0.0.2",
       "s": "release",
     };
   }
 
   static Map get apiHost {
+    Map d = {
+      "app": "https://app.bfban.com",
+      "tracker": "https://api.tracker.gg",
+      "upload": "https://upload-z2.qiniup.com",
+      "qiniuyunSrc": "http://bfban.bamket.com",
+      "imgUrl": imgUrl + '/'
+    };
+
     switch (env) {
       case Env.PROD: // 生产
-        return {
+        d.addAll({
           "url": "https://bf.bamket.com",
-          "app": "https://app.bfban.com",
-          "tracker": "https://api.tracker.gg",
-          "upload": "https://upload-z2.qiniup.com",
-          "imgUrl": imgUrl + '/'
-        };
+        });
+        return d;
       case Env.DEV: // 开发
       case Env.LOCAL:
       default:
-        return {
+        d.addAll({
           "url": "localhost:8080",
-          "app": "https://app.bfban.com",
-          "tracker": "https://api.tracker.gg",
-          "upload": "https://upload-z2.qiniup.com",
-          "imgUrl": imgUrl + '/'
-        };
+        });
+        return d;
     }
   }
 

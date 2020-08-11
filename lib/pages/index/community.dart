@@ -61,7 +61,7 @@ class _communityPageState extends State<communityPage> {
     list.addAll(indexActivity["reports"] ?? []);
 
     list.sort((time, timeing) =>
-    _getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"] -
+        _getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"] -
         _getTurnTheTimestamp(time["createDatetime"])["millisecondsSinceEpoch"]);
 
     return list;
@@ -90,7 +90,6 @@ class _communityPageState extends State<communityPage> {
           Container(
             color: Colors.black12,
             margin: EdgeInsets.only(
-              top: 20,
               left: 10,
               right: 10,
             ),
@@ -223,15 +222,22 @@ class _communityPageState extends State<communityPage> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "${i["username"].toString()}",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            "${i["username"].toString()}",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         i["cheaterOriginId"] == null
                             ? Text(
@@ -247,7 +253,7 @@ class _communityPageState extends State<communityPage> {
                             color: Colors.white54,
                             fontSize: 12,
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ],

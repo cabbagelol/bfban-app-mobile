@@ -65,6 +65,9 @@ dependencies:
   chewie: 0.9.10
   rich_edit: 0.1.1
 
+  # uuid https://github.com/Daegalus/dart-uuid
+  uuid: 2.2.0
+
   # 图片保存
   image_gallery_saver: ^1.2.2
 

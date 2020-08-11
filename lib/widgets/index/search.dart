@@ -118,18 +118,20 @@ class _searchState extends State<titleSearch> {
                   controller: controller,
                   focusNode: controllerFocus,
                   keyboardType: TextInputType.text,
+                  cursorColor: Color(0xff364e80),
+                  cursorWidth: 3,
+                  cursorRadius: Radius.circular(100),
                   maxLines: 1,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 15,
                     color: Colors.black45,
                   ),
-                  cursorColor: Colors.white,
                   backgroundCursorColor: Colors.white,
                   onSubmitted: (data) => widget.onSubmitted(data) ,
                 ) : Text(
                   "搜索作弊者id",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 15,
                     color: titleSearchColor(widget.theme).textColor,
                   ),
                 ),

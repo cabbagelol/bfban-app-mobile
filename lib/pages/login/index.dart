@@ -140,6 +140,7 @@ class _loginPageState extends State<loginPage> {
           );
           break;
         case "captcha expires":
+        case "wrong captcha":
           EluiMessageComponent.error(context)(
             child: Text("错误的验证码"),
           );

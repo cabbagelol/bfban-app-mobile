@@ -756,7 +756,7 @@ class _editPageState extends State<editPage> {
                               size: 20,
                             ),
                             Text(
-                              "编辑",
+                              reportInfo["description"].toString().length <= 0 ? "填写理由" : "编辑",
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontSize: 18,

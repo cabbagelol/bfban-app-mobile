@@ -1,6 +1,8 @@
 /// 上传
 import 'dart:io';
 
+import 'package:uuid/uuid.dart';
+
 import 'http.dart';
 
 class upload extends Http {
@@ -19,29 +21,38 @@ class upload extends Http {
     return qiniuToken;
   }
 
+
   /// 上传
-  static upLoad(File src) async {
+  static upLoad(File file) async {
+    dynamic uuid = Uuid();
+    dynamic formdata = FormData.fromMap({
+      "token": qiniuToken,
+      "key": uuid.v4(),
+      "file": await MultipartFile.fromFile(file.path, filename: file.path),
+    });
+
     Response result = await Http.request(
       '',
       method: Http.POST,
       typeUrl: "upload",
-      data: FormData.fromMap({
-        "token": qiniuToken,
-        "key": src.path,
-        "file": src,
-      }),
+      data: formdata,
     );
 
-    return result;
+    print("============= data ===================");
+    print(result.data["key"]);
+
+    return result.data["key"];
   }
 
   /// 上传事件
-  static on(File src) async {
+  static on(String path) async {
+    File file = File(path);
+
     if (qiniuToken == "") {
       await getToken();
     }
 
-    Response result = await upLoad(src);
+    String result = await upLoad(file);
 
     return result;
   }
