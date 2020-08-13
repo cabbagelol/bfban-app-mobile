@@ -322,6 +322,9 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
               CheatUserCheaters(
                 i: _allReply[i],
                 index: i += 1,
+                cheatMethods: _cheatMethods,
+                cheatersInfo: cheatersInfo,
+                cheatersInfoUser: cheatersInfoUser,
               ),
             );
             break;
@@ -627,10 +630,12 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                 left: 5,
                                 right: 5,
                               ),
-                              margin: EdgeInsets.only(
-                                left: 10,
+                              decoration: BoxDecoration(
+                                color: startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["c"],
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(2),
+                                ),
                               ),
-                              color: startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["c"],
                               child: Text(
                                 startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["s"].toString(),
                                 style: TextStyle(
@@ -947,9 +952,9 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             ),
 
             /// 底栏
-            bottomNavigationBar: Container(
+            bottomNavigationBar: _tabControllerIndex == 1 ? Container(
               decoration: BoxDecoration(
-                color: _tabControllerIndex == 1 ? Colors.white : Colors.transparent,
+                color: Colors.white,
                 border: Border(
                   top: BorderSide(
                     width: 1.0,
@@ -1028,7 +1033,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                   ),
                 ],
               ),
-            ),
+            ) : null,
           ),
         );
       },

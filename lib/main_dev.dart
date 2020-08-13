@@ -27,7 +27,7 @@ void main() async {
   // 设置系统演示
   SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      statusBarBrightness: Brightness.light
+      statusBarBrightness: Brightness.light,
   );
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 

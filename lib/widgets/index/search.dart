@@ -82,10 +82,8 @@ class _searchState extends State<titleSearch> {
         return true;
         break;
     }
-
     return widget.theme == titleSearchTheme.black ? true : false;
   }
-
 
   @override
   Widget build(BuildContext context) {

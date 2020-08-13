@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
+import 'package:flutter_plugin_elui/_img/index.dart';
 
 class CheatListCard extends StatelessWidget {
   final item;
@@ -26,41 +27,39 @@ class CheatListCard extends StatelessWidget {
       onTap: () => this.onTap(),
       child: Container(
         color: Colors.black12,
-        padding: EdgeInsets.only(
-          top: 10,
-          left: 20,
-          bottom: 10,
-          right: 20,
+        padding: EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 15,
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
           children: <Widget>[
-            Container(
-              width: 40,
-              height: 40,
-              margin: EdgeInsets.only(right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(100),
-                image: DecorationImage(
-                  image: NetworkImage(
-                    item["avatarLink"],
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: 40,
+                  height: 40,
+                  margin: EdgeInsets.only(right: 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100),
+                    ),
+                    child: Container(
+                      child: EluiImgComponent(
+                        width: 40,
+                        height: 40,
+                        src: item["avatarLink"],
+                      ),
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Wrap(
-                    spacing: 5,
-                    runSpacing: 5,
-                    crossAxisAlignment: WrapCrossAlignment.center,
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.only(
@@ -81,108 +80,128 @@ class CheatListCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(
-                        item["originId"],
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
+                      Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            item["originId"],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "发布时间:" + new Date().getTimestampTransferCharacter(item["createDatetime"])["Y_D_M"],
-                        style: TextStyle(
-                          color: Color.fromRGBO(255, 255, 255, .6),
-                          fontSize: 9,
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: 7,
-                          right: 7,
-                        ),
-                        height: 8,
-                        width: 1,
-                        color: Colors.white12,
-                      ),
+//                      Text(
+//                        "创建时间 " + new Date().getTimestampTransferCharacter(item["createDatetime"])["Y_D_M"],
+//                        style: TextStyle(
+//                          color: Color.fromRGBO(255, 255, 255, .6),
+//                          fontSize: 9,
+//                        ),
+//                        overflow: TextOverflow.ellipsis,
+//                        maxLines: 1,
+//                      ),
                       Text(
                         "最后更新:" + new Date().getTimestampTransferCharacter(item["updateDatetime"])["Y_D_M"],
                         style: TextStyle(
                           color: Color.fromRGBO(255, 255, 255, .6),
                           fontSize: 9,
                         ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                     ],
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Wrap(
-                        spacing: 2,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.visibility,
-                            color: Colors.white,
-                            size: 10,
-                          ),
-                          Text(
-                            item["n"].toString() ?? "",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 9,
-                            ),
-                          )
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: 7,
-                          right: 7,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        cheatersCardIconitem(
+                          n: item["n"].toString() ?? "",
+                          e: "查阅次数",
+                          i: Icons.visibility,
                         ),
-                        height: 8,
-                        width: 1,
-                        color: Colors.white12,
-                      ),
-                      Wrap(
-                        spacing: 2,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.add_comment,
-                            color: Colors.white,
-                            size: 10,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 12,
                           ),
-                          Text(
-                            item["commentsNum"].toString() ?? "",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 9,
-                            ),
-                          )
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                Icon(
-                  Icons.keyboard_arrow_right,
-                  color: Colors.white,
-                  size: 30,
+                          height: 30,
+                          width: 1,
+                          color: Colors.white12,
+                        ),
+                        cheatersCardIconitem(
+                          n: item["commentsNum"].toString() ?? "",
+                          e: "回复/条",
+                          i: Icons.add_comment,
+                        ),
+                      ],
+                    ),
+                  ],
                 )
               ],
-            )
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class cheatersCardIconitem extends StatelessWidget {
+  final String n;
+
+  final String e;
+
+  final IconData i;
+
+  cheatersCardIconitem({
+    this.n,
+    this.e,
+    this.i,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Text(
+              n,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+              ),
+            ),
+            Text(
+              e,
+              style: TextStyle(
+                color: Colors.white38,
+                fontSize: 9,
+              ),
+            ),
+          ],
+        ),
+
+        Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: Icon(
+            i,
+            color: Colors.white12,
+            size: 26,
+          ),
+        ),
+      ],
     );
   }
 }

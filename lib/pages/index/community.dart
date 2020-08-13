@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 
+import 'package:bfban/router/router.dart';
+import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 
 class communityPage extends StatefulWidget {
@@ -59,12 +62,65 @@ class _communityPageState extends State<communityPage> {
 
     list.addAll(indexActivity["registers"] ?? []);
     list.addAll(indexActivity["reports"] ?? []);
+    list.addAll(indexActivity["verifies"] ?? []);
 
     list.sort((time, timeing) =>
         _getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"] -
         _getTurnTheTimestamp(time["createDatetime"])["millisecondsSinceEpoch"]);
 
     return list;
+  }
+
+  /// 判断显示动态状态结果
+  Widget WidgetStateText(i) {
+    if (i["cheaterOriginId"] == null) {
+      return Text(
+        "注册了BFBAN，欢迎",
+        style: TextStyle(
+          color: Colors.white54,
+          fontSize: 12,
+        ),
+      );
+    } else if (i["status"] != null) {
+      return Wrap(
+        children: <Widget>[
+          Text(
+            "将${i["cheaterOriginId"]}处理为",
+            style: TextStyle(
+              color: Colors.white54,
+              fontSize: 12,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+              left: 5,
+              right: 5,
+            ),
+            decoration: BoxDecoration(
+              color: Config.startusIng[int.parse(i["status"])]["c"],
+              borderRadius: BorderRadius.all(
+                Radius.circular(2),
+              ),
+            ),
+            child: Text(
+              Config.startusIng[int.parse(i["status"])]["s"].toString(),
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Text(
+        " 举报了 ${i["cheaterOriginId"]} ${i["game"]}",
+        style: TextStyle(
+          color: Colors.white54,
+          fontSize: 12,
+        ),
+      );
+    }
   }
 
   @override
@@ -88,7 +144,6 @@ class _communityPageState extends State<communityPage> {
       body: ListView(
         children: <Widget>[
           Container(
-            color: Colors.black12,
             margin: EdgeInsets.only(
               left: 10,
               right: 10,
@@ -99,6 +154,12 @@ class _communityPageState extends State<communityPage> {
               left: 10,
               right: 10,
             ),
+            decoration: BoxDecoration(
+                color: Colors.black12,
+                border: Border.all(
+                  width: 1,
+                  color: Colors.black12,
+                )),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -123,6 +184,15 @@ class _communityPageState extends State<communityPage> {
                       )
                     ],
                   ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(
+                    left: 7,
+                    right: 7,
+                  ),
+                  height: 30,
+                  width: 1,
+                  color: Colors.white12,
                 ),
                 Container(
                   child: Column(
@@ -155,112 +225,111 @@ class _communityPageState extends State<communityPage> {
           ),
 
           /// 动态
-          Column(
-            children: _onMerge().map<Widget>((i) {
-              return Container(
-                color: Color(0xff111b2b),
-                margin: EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  bottom: 5,
+          _onMerge().length > 0
+              ? Column(
+                  children: _onMerge().map<Widget>((i) {
+                    return GestureDetector(
+                      child: Container(
+                        color: Color(0xff111b2b),
+                        margin: EdgeInsets.only(
+                          left: 10,
+                          right: 10,
+                          bottom: 5,
+                        ),
+                        padding: EdgeInsets.only(
+                          top: 20,
+                          bottom: 20,
+                          left: 20,
+                          right: 20,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.deepOrange,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(100),
+                                    ),
+                                  ),
+                                  width: 20,
+                                  height: 20,
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.speaker_notes,
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "动态:",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    new Date().getTimestampTransferCharacter(i["createDatetime"])["Y_D_M"],
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    "${i["username"].toString()}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                WidgetStateText(i),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        Routes.router.navigateTo(
+                          context,
+                          '/detail/cheaters/${i["originUserId"]}',
+                          transition: TransitionType.cupertino,
+                        );
+                      },
+                    );
+                  }).toList(),
+                )
+              : Center(
+                  child: EluiVacancyComponent(
+                    title: "最近没有网站动态",
+                  ),
                 ),
-                padding: EdgeInsets.only(
-                  top: 20,
-                  bottom: 20,
-                  left: 20,
-                  right: 20,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.deepOrange,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(100),
-                            ),
-                          ),
-                          width: 20,
-                          height: 20,
-                          child: Center(
-                            child: Text(
-                              "公",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "动态:",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            new Date().getTimestampTransferCharacter(i["createDatetime"])["Y_D_M"],
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.white,
-                            ),
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "${i["username"].toString()}",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        i["cheaterOriginId"] == null
-                            ? Text(
-                          "注册了BFBAN，欢迎",
-                          style: TextStyle(
-                            color: Colors.white54,
-                            fontSize: 12,
-                          ),
-                        )
-                            : Text(
-                          " 举报了 ${i["cheaterOriginId"]} ${i["game"]}",
-                          style: TextStyle(
-                            color: Colors.white54,
-                            fontSize: 12,
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ),
         ],
       ),
     );

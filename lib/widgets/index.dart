@@ -11,7 +11,6 @@ export 'detail/cheatersCardTypes.dart';
 // S index
 export 'index/barrage.dart';
 export 'index/cheatListCard.dart';
-export 'index/search_.dart';
 export 'index/search.dart';
 export 'index/textLoad.dart';
 // E index

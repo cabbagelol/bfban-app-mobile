@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 
 import 'package:bfban/utils/index.dart';
+import 'package:bfban/widgets/richText.dart';
 
 class replyPage extends StatefulWidget {
   final data;
@@ -21,6 +22,8 @@ class replyPage extends StatefulWidget {
 }
 
 class _replyPageState extends State<replyPage> {
+  SimpleRichEditController controller;
+
   Map replyInfo = {
     "content": "",
   };
@@ -33,11 +36,16 @@ class _replyPageState extends State<replyPage> {
 
   @override
   void initState() {
-    super.initState();
-
     setState(() {
+      controller = SimpleRichEditController(
+        context: context,
+        isImageIcon: true,
+        isVideoIcon: false,
+      );
+
       data = json.decode(widget.data);
     });
+    super.initState();
   }
 
   /// 回复
@@ -45,6 +53,8 @@ class _replyPageState extends State<replyPage> {
     var _data = new Map();
 
     login = jsonDecode(await Storage.get("com.bfban.login") ?? '{}');
+
+    replyInfo["content"] = controller.generateHtml();
 
     if (login == null || login.isEmpty) {
       EluiMessageComponent.warning(context)(
@@ -70,8 +80,8 @@ class _replyPageState extends State<replyPage> {
 
         /// 帖子回复
         _data = {
-//          "toFloor": "",
-//          "toUserId": "",
+          "toFloor": data["toFloor"],
+          "toUserId": data["toUserId"],
         };
         break;
     }
@@ -114,12 +124,9 @@ class _replyPageState extends State<replyPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Color(0xff111b2b),
-      ),
+      color: Color(0xff111b2b),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Color(0xff364e80),
           elevation: 0,
@@ -151,41 +158,45 @@ class _replyPageState extends State<replyPage> {
                   )
           ],
         ),
-        body: ListView(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-//            Expanded(
-////              flex: 1,
-////              child: HtmlEditor(
-////                hint: "",
-////                decoration: BoxDecoration(
-////                  color: Colors.black12,
-////                ),
-////                //value: "text content initial, if any",
-////                key: _keyEditor,
-////                showBottomToolbar: false,
-////                height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - 150,
-////              ),
-////            )
             Container(
               padding: EdgeInsets.all(20),
-              child: Text(
-                "@${data["foo"].toString()}", // ${widget.data["foo"]??"未知"}
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "回复人:",
+                    style: TextStyle(
+                      color: Colors.white54,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  EluiTagComponent(
+                    value: "@${data["foo"].toString()}",
+                    size: EluiTagSize.no4,
+                    color: EluiTagColor.primary,
+                  ),
+                ],
               ),
             ),
-            EluiTextareaComponent(
-              placeholder: "请填写回复内容",
-              maxLines: 15,
-              maxLength: 500,
-              onChange: (data) {
-                setState(() {
-                  replyInfo["content"] = data["value"];
-                });
-              },
+//            EluiTextareaComponent(
+//              placeholder: "请填写回复内容",
+//              maxLines: 15,
+//              maxLength: 500,
+//              onChange: (data) {
+//                setState(() {
+//                  replyInfo["content"] = data["value"];
+//                });
+//              },
+//            ),
+            Expanded(
+              flex: 5,
+              child: richText(
+                controller: controller,
+              ),
             ),
           ],
         ),

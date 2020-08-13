@@ -146,11 +146,20 @@ class CheatUserCheaters extends StatelessWidget {
 
   final int index;
 
+  final cheatMethods;
+
+  final cheatersInfoUser;
+
+  final cheatersInfo;
+
   final UrlUtil _urlUtil = new UrlUtil();
 
   CheatUserCheaters({
     @required this.i,
     this.index = 0,
+    this.cheatMethods,
+    this.cheatersInfoUser,
+    this.cheatersInfo,
   });
 
   @override
@@ -200,46 +209,68 @@ class CheatUserCheaters extends StatelessWidget {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text.rich(
-                    TextSpan(
-                      style: new TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: i["foo"],
-                            style: new TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationStyle: TextDecorationStyle.dotted,
-                              decorationColor: Colors.black,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                detailApi.onSeeUserInfo(context, i["fooUId"]);
-                              }),
-                        TextSpan(
-                          text: " 回复",
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text.rich(
+                      TextSpan(
+                        style: new TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: i["foo"],
+                              style: new TextStyle(
+                                decoration: TextDecoration.underline,
+                                decorationStyle: TextDecorationStyle.dotted,
+                                decorationColor: Colors.black,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () async {
+                                  detailApi.onSeeUserInfo(context, i["fooUId"]);
+                                }),
+                          TextSpan(
+                            text: " 回复",
+                            style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Text(
-                    "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
-                    style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 9,
-                      fontWeight: FontWeight.w500,
+                    Text(
+                      "发布时间: ${new Date().getTimestampTransferCharacter(i['createDatetime'])["Y_D_M"]}",
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              replyButton(
+                onTap: () {
+                  Routes.router.navigateTo(
+                    context,
+                    '/reply/${jsonEncode({
+                      "type": 1,
+                      "id": cheatersInfoUser["id"],
+                      "originUserId": cheatersInfoUser["originUserId"],
+                      "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                      "toUserId": i["userId"],
+                      "foo": i["foo"],
+                      "toFloor": index.toString(),
+                      // ignore: equal_keys_in_map
+                      "toUserId": i["userId"],
+                    })}',
+                    transition: TransitionType.cupertino,
+                  );
+                },
               ),
             ],
           ),
@@ -468,7 +499,6 @@ class CheatReports extends StatelessWidget {
               ),
               replyButton(
                 onTap: () {
-                  /// 帖子回复
                   Routes.router.navigateTo(
                     context,
                     '/reply/${jsonEncode({
@@ -478,8 +508,9 @@ class CheatReports extends StatelessWidget {
                       "userId": cheatersInfo["data"]["reports"][0]["userId"],
                       "toUserId": i["userId"],
                       "foo": i["username"],
-
-                      /// 取第一条举报信息下的userId
+                      "toFloor": index.toString(),
+                      // ignore: equal_keys_in_map
+                      "toUserId": i["userId"],
                     })}',
                     transition: TransitionType.cupertino,
                   );
@@ -655,7 +686,7 @@ class _CheatVerifiesState extends State<CheatVerifies> {
     return Container(
       padding: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xfffff6dd),
         border: Border(
           bottom: BorderSide(
             width: 10,
@@ -770,7 +801,6 @@ class _CheatVerifiesState extends State<CheatVerifies> {
               ),
               replyButton(
                 onTap: () {
-                  /// 帖子回复
                   Routes.router.navigateTo(
                     context,
                     '/reply/${jsonEncode({
@@ -780,8 +810,9 @@ class _CheatVerifiesState extends State<CheatVerifies> {
                       "userId": widget.cheatersInfo["data"]["reports"][0]["userId"],
                       "toUserId": widget.i["userId"],
                       "foo": widget.i["username"],
-
-                      /// 取第一条举报信息下的userId
+                      "toFloor": widget.index.toString(),
+                      // ignore: equal_keys_in_map
+                      "toUserId": widget.i["userId"],
                     })}',
                     transition: TransitionType.cupertino,
                   );
@@ -792,7 +823,6 @@ class _CheatVerifiesState extends State<CheatVerifies> {
 
           /// Html评论内容
           Container(
-            color: Colors.white,
             child: Html(
               data: widget.i["suggestion"],
               style: detailApi.styleHtml(context),
@@ -884,7 +914,7 @@ class CheatConfirms extends StatelessWidget {
         bottom: 10,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xfffff6dd),
         border: Border(
           bottom: BorderSide(
             width: 10,
@@ -973,7 +1003,6 @@ class CheatConfirms extends StatelessWidget {
               ),
               replyButton(
                 onTap: () {
-                  /// 帖子回复
                   Routes.router.navigateTo(
                     context,
                     '/reply/${jsonEncode({
@@ -983,8 +1012,9 @@ class CheatConfirms extends StatelessWidget {
                       "userId": cheatersInfo["data"]["reports"][0]["userId"],
                       "toUserId": i["userId"],
                       "foo": i["foo"],
-
-                      /// 取第一条举报信息下的userId
+                      "toFloor": index.toString(),
+                      // ignore: equal_keys_in_map
+                      "toUserId": i["userId"],
                     })}',
                     transition: TransitionType.cupertino,
                   );
@@ -998,7 +1028,6 @@ class CheatConfirms extends StatelessWidget {
             margin: EdgeInsets.only(
               top: 2,
             ),
-            color: Colors.white,
             child: Html(
               data: (i["suggestion"] ?? ""),
               style: detailApi.styleHtml(context),

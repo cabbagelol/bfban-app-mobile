@@ -204,6 +204,10 @@ class _SearchPageState extends State<SearchPage> {
                           return EluiTagComponent(
                             value: e,
                             isClose: true,
+                            theme: EluiTagtheme(
+                              backgroundColor: Colors.black12,
+                              textColor: Colors.white,
+                            ),
                             onTap: () {
                               setState(() {
                                 value = e;
@@ -224,11 +228,14 @@ class _SearchPageState extends State<SearchPage> {
                 SizedBox(
                   height: 15,
                 ),
-                Text(
-                  "已列出符合检索关键词的ID",
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.white54,
+                Offstage(
+                  offstage: searchList.length <= 0,
+                  child: Text(
+                    "已列出符合检索关键词的ID",
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white54,
+                    ),
                   ),
                 ),
               ],

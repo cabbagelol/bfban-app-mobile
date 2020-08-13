@@ -69,6 +69,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -90,7 +91,6 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
             right: 10,
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.black87,
                 borderRadius: BorderRadius.all(
                   Radius.circular(10),
                 ),

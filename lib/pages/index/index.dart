@@ -119,61 +119,7 @@ class _IndexPageState extends State<IndexPage> {
                     index: currentPage,
                   ),
                 ),
-                KKBottomAppBar(
-                    onTabSeleted: onTap,
-                    actviveColor: Colors.yellow,
-                    color: Colors.white,
-                    items: [
-                      {
-                        "name": "\u9996\u9875",
-                        "icon": Icon(
-                          Icons.home,
-                          color: Colors.white,
-                        ),
-                        "icon_s": Icon(
-                          Icons.home,
-                          color: Colors.yellow,
-                        ),
-                      },
-                      {
-                        "name": "\u793e\u533a",
-                        "icon": Icon(
-                          Icons.comment,
-                          color: Colors.white,
-                        ),
-                        "icon_s": Icon(
-                          Icons.comment,
-                          color: Colors.yellow,
-                        ),
-                      },
-                      {
-                        "name": "\u65b0\u95fb",
-                        "icon": Icon(
-                          Icons.featured_video,
-                          color: Colors.white,
-                        ),
-                        "icon_s": Icon(
-                          Icons.featured_video,
-                          color: Colors.yellow,
-                        ),
-                      },
-                      {
-                        "name": "\u4e2a\u4eba\u4e2d\u5fc3",
-                        "icon": Icon(
-                          Icons.portrait,
-                          color: Colors.white,
-                        ),
-                        "icon_s": Icon(
-                          Icons.portrait,
-                          color: Colors.yellow,
-                        ),
-                      },
-                    ].map((e) {
-                      return BottomAppBarItemModal(
-                        e,
-                        e["name"],
-                      );
-                    }).toList()),
+
               ],
             ),
             filter: ui.ImageFilter.blur(
@@ -183,6 +129,61 @@ class _IndexPageState extends State<IndexPage> {
           ),
         ],
       ),
+      bottomNavigationBar: KKBottomAppBar(
+          onTabSeleted: onTap,
+          actviveColor: Colors.yellow,
+          color: Colors.white,
+          items: [
+            {
+              "name": "\u9996\u9875",
+              "icon": Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+              "icon_s": Icon(
+                Icons.home,
+                color: Colors.yellow,
+              ),
+            },
+            {
+              "name": "\u793e\u533a",
+              "icon": Icon(
+                Icons.comment,
+                color: Colors.white,
+              ),
+              "icon_s": Icon(
+                Icons.comment,
+                color: Colors.yellow,
+              ),
+            },
+            {
+              "name": "\u65b0\u95fb",
+              "icon": Icon(
+                Icons.featured_video,
+                color: Colors.white,
+              ),
+              "icon_s": Icon(
+                Icons.featured_video,
+                color: Colors.yellow,
+              ),
+            },
+            {
+              "name": "\u4e2a\u4eba\u4e2d\u5fc3",
+              "icon": Icon(
+                Icons.portrait,
+                color: Colors.white,
+              ),
+              "icon_s": Icon(
+                Icons.portrait,
+                color: Colors.yellow,
+              ),
+            },
+          ].map((e) {
+            return BottomAppBarItemModal(
+              e,
+              e["name"],
+            );
+          }).toList()),
     );
   }
 }

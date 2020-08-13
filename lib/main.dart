@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
       model: countModel,
       child: MaterialApp(
         theme: ThemeData(
+          platform: TargetPlatform.iOS,
           backgroundColor: Color(0xff111b2b),
           appBarTheme: AppBarTheme(
             color: Color(0xff364e80),

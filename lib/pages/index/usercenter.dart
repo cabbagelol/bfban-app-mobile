@@ -286,6 +286,9 @@ class _usercenterState extends State<usercenter> {
           islink: true,
           onTap: () => _urlUtil.opEnPage(context, '/usercenter/support'),
         ),
+        SizedBox(
+          height: 20,
+        ),
         EluiCellComponent(
           title: "\u6743\u9650",
           theme: EluiCellTheme(

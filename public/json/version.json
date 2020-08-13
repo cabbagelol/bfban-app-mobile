@@ -1,6 +1,12 @@
 {
   "list": [
     {
+      "version": "0.0.3",
+      "stage": "release",
+      "src": "https://github.com/cabbagelol/bfbanApp/releases/tag/v0.0.3-release",
+      "describe": "修复"
+    },
+    {
       "version": "0.0.2",
       "stage": "release",
       "src": "https://github.com/cabbagelol/bfbanApp/releases/tag/v0.0.2-release",

@@ -17,7 +17,7 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:bfban/widgets/edit/ImageRadioController.dart';
 import 'package:bfban/widgets/edit/gameTypeRadio.dart';
-import 'package:bfban/widgets/detail/cheatersCardTypes.dart';
+import 'package:bfban/widgets/detail/cheatersCardTypes.dart' show detailApi;
 
 class editPage extends StatefulWidget {
   @override

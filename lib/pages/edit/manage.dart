@@ -1,11 +1,18 @@
 /// 管理
 
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fluro/fluro.dart';
+
+import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
+import 'package:bfban/widgets/detail/cheatersCardTypes.dart' show detailApi;
 
 import 'package:flutter_plugin_elui/elui.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class ManagePage extends StatefulWidget {
   final id;
@@ -62,7 +69,7 @@ class _ManagePageState extends State<ManagePage> {
   }
 
   /// 验证
-  Map _onVerification () {
+  Map _onVerification() {
     if (manageData["status"] == 1) {
       if (manageData["cheatMethods"].toString().length == 0) {
         return {
@@ -177,6 +184,22 @@ class _ManagePageState extends State<ManagePage> {
     return list;
   }
 
+  /// 打开编辑页面
+  void _opEnRichEdit() async {
+    dynamic data = jsonEncode({
+      "html": Uri.encodeComponent(manageData["suggestion"]),
+    });
+
+    Routes.router.navigateTo(context, '/richedit/$data', transition: TransitionType.cupertino).then((data) {
+      /// 按下确认储存富文本编写的内容
+      if (data["code"] == 1) {
+        setState(() {
+          manageData["suggestion"] = data["html"];
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -201,32 +224,46 @@ class _ManagePageState extends State<ManagePage> {
             theme: EluiCellTheme(
               backgroundColor: Colors.transparent,
             ),
-            cont: DropdownButton(
-              isDense: true,
-              isExpanded: true,
-              dropdownColor: Colors.black,
-              style: TextStyle(color: Colors.white),
-              focusColor: Colors.white24,
-              onChanged: (index) {
-                setState(() {
-                  suggestionInfo["videoIndex"] = index;
-                  manageData["status"] = index;
-                });
-              },
-              value: this.manageData["status"],
-              items: this.suggestionInfo["links"].map<DropdownMenuItem>((value) {
-                return DropdownMenuItem(
-                  value: value["value"],
-                  child: Text(
-                    value["content"],
-                    style: TextStyle(
-                      color: Colors.white,
+            cont: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5)
+                )
+              ),
+              child: DropdownButton(
+                isDense: true,
+                isExpanded: true,
+                dropdownColor: Colors.black,
+                style: TextStyle(color: Colors.white),
+                underline: Container(),
+                focusColor: Colors.white24,
+                onChanged: (index) {
+                  setState(() {
+                    suggestionInfo["videoIndex"] = index;
+                    manageData["status"] = index;
+                  });
+                },
+                value: this.manageData["status"],
+                items: this.suggestionInfo["links"].map<DropdownMenuItem>((value) {
+                  return DropdownMenuItem(
+                    value: value["value"],
+                    child: Text(
+                      value["content"],
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  );
+                }).toList(),
+              ),
             ),
           ),
+
           /// E 意见
 
           Container(
@@ -260,39 +297,121 @@ class _ManagePageState extends State<ManagePage> {
               ),
             ),
           ),
+
           /// E 作弊方式
 
           /// S 理由
-          EluiTextareaComponent(
-            color: Colors.white,
-            placeholder: "请填写备注内容",
-            maxLength: 500,
-            maxLines: 15,
-            onChange: (data) {
-              setState(() {
-                manageData["suggestion"] = data["value"];
-              });
-            },
+
+          GestureDetector(
+            child: Container(
+              height: 300,
+              color: Colors.white,
+              padding: EdgeInsets.zero,
+              child: Stack(
+                children: <Widget>[
+                  Html(
+                    data: (manageData["suggestion"] == null || manageData["suggestion"] == "") ? "" : manageData["suggestion"],
+                    style: detailApi.styleHtml(context),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        gradient: LinearGradient(
+                          colors: [Colors.transparent, Color(0xff111b2b)],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0,
+                    child: Container(
+                      color: Color.fromRGBO(17, 27, 43, 0.9),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Wrap(
+                            spacing: 5,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.edit,
+                                color: Colors.blue,
+                                size: 20,
+                              ),
+                              Text(
+                                manageData["suggestion"].toString().length <= 0 ? "填写理由" : "编辑",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: EdgeInsets.only(
+                              top: 20,
+                              bottom: 20,
+                            ),
+                            child: Text(
+                              "1. 不要轻易下判断，如果不能做出处理判断，就使用上方回复参与讨论，等待举报者回复。 \n\n2.管理员的任何处理操作都会对作弊者的现有状态造成改变，如果不是100％确定，请使用回复留言讨论",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.white24,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onTap: () => _opEnRichEdit(),
           ),
+//          EluiTextareaComponent(
+//            color: Colors.white,
+//            placeholder: "请填写备注内容",
+//            maxLength: 500,
+//            maxLines: 15,
+//            onChange: (data) {
+//              setState(() {
+//                manageData["suggestion"] = data["value"];
+//              });
+//            },
+//          ),
 
           /// E 理由
 
           Container(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              "1. 不要轻易下判断，如果不能做出处理判断，就使用上方回复参与讨论，等待举报者回复。 \n\n2.管理员的任何处理操作都会对作弊者的现有状态造成改变，如果不是100％确定，请使用回复留言讨论",
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white12,
-              ),
-            ),
+            height: 10,
+            color: Colors.black,
           ),
 
           Padding(
             padding: EdgeInsets.all(20),
             child: EluiButtonComponent(
               type: ButtonType.succeed,
-              child: Text("提交"),
+              theme: EluiButtonTheme(backgroundColor: Colors.yellow),
+              child: Text(
+                "提交",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
               onTap: () => this._onRelease(),
             ),
           ),
