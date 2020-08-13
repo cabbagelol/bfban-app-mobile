@@ -1011,7 +1011,7 @@ class CheatConfirms extends StatelessWidget {
                       "originUserId": cheatersInfoUser["originUserId"],
                       "userId": cheatersInfo["data"]["reports"][0]["userId"],
                       "toUserId": i["userId"],
-                      "foo": i["foo"],
+                      "foo": i["username"],
                       "toFloor": index.toString(),
                       // ignore: equal_keys_in_map
                       "toUserId": i["userId"],

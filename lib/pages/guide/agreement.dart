@@ -35,12 +35,12 @@ class _agreementPageState extends State<agreementPage> {
           theme: EluiCellTheme(
             backgroundColor: Colors.black12,
           ),
-          title: "使用约定",
+          title: "\u4f7f\u7528\u7ea6\u5b9a",
           cont: Text(
             "使用约定是开源库所有参与者对使用者约定, 它不具有法律有效性，但声明表示着您已知该情况，了解程序无法提供任何责任，由使用承担；" +
-                "程序并非BFBAN官方程序所开发，由Github用户参与，整合不同功能，因此涉及不同第三方服务商信息交换（仅与列出通信名单交换信息，可" +
-                "在我的中心 > 支援查看），程序无法控制服务提供商，可能收集用户信息作其他用途。\t该程序账户引用'bfban.com'正常途径接口。所有代码" +
-                "都可在github/BFBAN地址上，任何人都可以查阅是否存在恶意行为。",
+            "程序并非BFBAN官方程序所开发，由Github用户参与，整合不同功能，因此涉及不同第三方服务商信息交换（仅与列出通信名单交换信息，可" +
+            "在我的中心 > 支援查看），程序无法控制服务提供商，可能收集用户信息作其他用途。\t该程序账户引用'bfban.com'正常途径接口。所有代码" +
+            "都可在github/BFBAN地址上，任何人都可以查阅是否存在恶意行为。",
             style: TextStyle(
               color: Colors.white54,
             ),
@@ -50,7 +50,7 @@ class _agreementPageState extends State<agreementPage> {
           theme: EluiCellTheme(
             backgroundColor: Colors.black12,
           ),
-          title: "注册方式",
+          title: "\u6ce8\u518c\u65b9\u5f0f",
           cont: Text(
             "程序不提供注册，请用户到bfban.com上自行注册",
             style: TextStyle(
@@ -70,7 +70,7 @@ class _agreementPageState extends State<agreementPage> {
           child: EluiCheckboxComponent(
             color: Colors.yellow,
             child: Text(
-              "已阅读上方内容",
+              "\u5df2\u9605\u8bfb\u4e0a\u65b9\u5185\u5bb9",
               style: TextStyle(
                 color: Colors.white,
               ),

@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
         }
       } else if (result.data["code"] == -2) {
         EluiMessageComponent.error(context)(
-          child: Text("请求异常请联系开发者"),
+          child: Text("\u8bf7\u6c42\u5f02\u5e38\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
         );
       }
     });
@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
 
     if (_login == null) {
       EluiMessageComponent.error(context)(
-        child: Text("请先登录BFBAN"),
+        child: Text("\u8bf7\u5148\u767b\u5f55\u0042\u0046\u0042\u0041\u004e"),
       );
       return;
     }
@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage> {
           color: Colors.black,
           size: 30,
         ),
-        tooltip: "发布",
+        tooltip: "\u53d1\u5e03",
         onPressed: () => this._opEnEdit(),
         backgroundColor: Colors.yellow,
       ),
@@ -235,7 +235,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 下拉刷新方法,为list重新赋值
-
   Future<Null> _onRefresh() async {
     await Future.delayed(Duration(seconds: 1), () {
       this._getIndexList();

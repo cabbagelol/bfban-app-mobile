@@ -20,12 +20,21 @@ class richEditPage extends StatefulWidget {
 class _richEditPageState extends State<richEditPage> {
   SimpleRichEditController controller;
 
+  Map data;
+
   @override
   void initState() {
+    data = jsonDecode(widget.data);
+
+    /// 返回的值是否为存文字
+    /// data["isText"]
+
     setState(() {
+      data["isText"] = (data["isText"] ?? false);
+
       controller = SimpleRichEditController(
         context: context,
-        isImageIcon: true,
+        isImageIcon: (data["isText"] ?? false) ? false : true,
         isVideoIcon: false,
       );
 
@@ -77,7 +86,7 @@ class _richEditPageState extends State<richEditPage> {
                 context,
                 {
                   "code": 1,
-                  "html": controller.generateHtml(),
+                  "html": data["isText"] ? controller.generateText() : controller.generateHtml(),
                 },
               );
             },

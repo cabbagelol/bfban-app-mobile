@@ -1,4 +1,5 @@
 /// 管理
+/// 作弊者裁决
 
 import 'dart:convert';
 
@@ -32,19 +33,19 @@ class _ManagePageState extends State<ManagePage> {
     "videoIndex": 0,
     "links": [
       {
-        "value": 1,
+        "value": "1",
         "content": "存在作弊",
       },
       {
-        "value": 2,
+        "value": "2",
         "content": "再观察",
       },
       {
-        "value": 3,
+        "value": "3",
         "content": "清白",
       },
       {
-        "value": 4,
+        "value": "4",
         "content": "回收站",
       }
     ],
@@ -53,7 +54,7 @@ class _ManagePageState extends State<ManagePage> {
   bool manageLoad = false;
 
   Map manageData = {
-    "status": 1,
+    "status": "1",
     "suggestion": "",
     "cheatMethods": "",
     "originUserId": "",
@@ -70,7 +71,7 @@ class _ManagePageState extends State<ManagePage> {
 
   /// 验证
   Map _onVerification() {
-    if (manageData["status"] == 1) {
+    if (manageData["status"] == "1") {
       if (manageData["cheatMethods"].toString().length == 0) {
         return {
           "code": -1,
@@ -90,6 +91,21 @@ class _ManagePageState extends State<ManagePage> {
       "code": 0,
       "msg": "",
     };
+  }
+
+  /// 校验当前举报者的状态
+  /// 在改变上一次作弊核实查询
+  /// 如 作弊、非作弊
+  void _getCheatersStatus () async {
+    Response result = await Http.request(
+      'api/cheaters/status',
+      method: Http.POST,
+      data: {
+        "originUserId": manageData["originUserId"],
+      },
+    );
+
+    // Todo
   }
 
   /// 发布
@@ -188,6 +204,7 @@ class _ManagePageState extends State<ManagePage> {
   void _opEnRichEdit() async {
     dynamic data = jsonEncode({
       "html": Uri.encodeComponent(manageData["suggestion"]),
+      "isText": true,
     });
 
     Routes.router.navigateTo(context, '/richedit/$data', transition: TransitionType.cupertino).then((data) {
@@ -209,7 +226,7 @@ class _ManagePageState extends State<ManagePage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "管理员裁判",
+          "\u7ba1\u7406\u5458\u88c1\u5224",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -219,8 +236,8 @@ class _ManagePageState extends State<ManagePage> {
         children: <Widget>[
           /// S 意见
           EluiCellComponent(
-            title: "意见",
-            label: "选择一项判决决议",
+            title: "\u610f\u89c1",
+            label: "\u9009\u62e9\u4e00\u9879\u5224\u51b3\u51b3\u8bae",
             theme: EluiCellTheme(
               backgroundColor: Colors.transparent,
             ),
@@ -229,12 +246,7 @@ class _ManagePageState extends State<ManagePage> {
                 horizontal: 20,
                 vertical: 10,
               ),
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5)
-                )
-              ),
+              decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.all(Radius.circular(5))),
               child: DropdownButton(
                 isDense: true,
                 isExpanded: true,
@@ -245,7 +257,7 @@ class _ManagePageState extends State<ManagePage> {
                 onChanged: (index) {
                   setState(() {
                     suggestionInfo["videoIndex"] = index;
-                    manageData["status"] = index;
+                    manageData["status"] = index.toString();
                   });
                 },
                 value: this.manageData["status"],
@@ -273,9 +285,9 @@ class _ManagePageState extends State<ManagePage> {
 
           /// S 作弊方式
           Offstage(
-            offstage: manageData["status"] != 1,
+            offstage: manageData["status"] != "1",
             child: EluiCellComponent(
-              title: "作弊方式",
+              title: "\u4f5c\u5f0a\u65b9\u5f0f",
               theme: EluiCellTheme(
                 backgroundColor: Colors.transparent,
               ),
@@ -352,7 +364,7 @@ class _ManagePageState extends State<ManagePage> {
                                 size: 20,
                               ),
                               Text(
-                                manageData["suggestion"].toString().length <= 0 ? "填写理由" : "编辑",
+                                manageData["suggestion"].toString().length <= 0 ? "\u586b\u5199\u7406\u7531" : "\u7f16\u8f91",
                                 style: TextStyle(
                                   color: Colors.blue,
                                   fontSize: 18,
@@ -382,18 +394,6 @@ class _ManagePageState extends State<ManagePage> {
             ),
             onTap: () => _opEnRichEdit(),
           ),
-//          EluiTextareaComponent(
-//            color: Colors.white,
-//            placeholder: "请填写备注内容",
-//            maxLength: 500,
-//            maxLines: 15,
-//            onChange: (data) {
-//              setState(() {
-//                manageData["suggestion"] = data["value"];
-//              });
-//            },
-//          ),
-
           /// E 理由
 
           Container(
@@ -406,12 +406,18 @@ class _ManagePageState extends State<ManagePage> {
             child: EluiButtonComponent(
               type: ButtonType.succeed,
               theme: EluiButtonTheme(backgroundColor: Colors.yellow),
-              child: Text(
-                "提交",
-                style: TextStyle(
-                  color: Colors.black,
-                ),
-              ),
+              child: manageLoad
+                  ? ELuiLoadComponent(
+                      type: "line",
+                      lineWidth: 2,
+                      color: Colors.black,
+                    )
+                  : Text(
+                      "\u63d0\u4ea4",
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
               onTap: () => this._onRelease(),
             ),
           ),

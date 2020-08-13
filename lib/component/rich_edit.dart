@@ -76,6 +76,14 @@ abstract class RichEditController {
 
   generateVideoView(RichEditData data);
 
+  String generateText() {
+    StringBuffer sb = StringBuffer();
+    _data.forEach((element) {
+      sb.write(element.data);
+    });
+    return sb.toString();
+  }
+
   String generateHtml() {
     StringBuffer sb = StringBuffer();
     _data.forEach((element) {

@@ -24,7 +24,7 @@ class _newsPageState extends State<newsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         automaticallyImplyLeading: false,
-        title: Text("应用新闻"),
+        title: Text("\u5e94\u7528\u65b0\u95fb"),
         actions: <Widget>[
           NavigationControls(_controller.future),
         ],

@@ -120,14 +120,14 @@ class _usercenterState extends State<usercenter> {
           });
 
       EluiMessageComponent.success(context)(
-        child: Text("注销成功"),
+        child: Text("\u6ce8\u9500\u6210\u529f"),
       );
       setState(() {
         userInfoState = false;
       });
     } else {
       EluiMessageComponent.error(context)(
-        child: Text("注册错误,请联系开发者"),
+        child: Text("\u6ce8\u518c\u9519\u8bef\u002c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
       );
     }
   }
@@ -326,7 +326,7 @@ class _usercenterState extends State<usercenter> {
                           child: EluiTagComponent(
                             size: EluiTagSize.no2,
                             color: EluiTagColor.warning,
-                            value: "有更新",
+                            value: "\u6709\u66f4\u65b0",
                           ),
                         )
                       ],

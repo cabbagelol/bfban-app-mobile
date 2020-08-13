@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
-
 /// 社区
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/elui.dart';
@@ -85,7 +84,8 @@ class _communityPageState extends State<communityPage> {
       return Wrap(
         children: <Widget>[
           Text(
-            "将${i["cheaterOriginId"]}处理为",
+            /// 将xx处理为
+            "\u5c06${i["cheaterOriginId"]}\u5904\u7406\u4e3a",
             style: TextStyle(
               color: Colors.white54,
               fontSize: 12,
@@ -114,7 +114,8 @@ class _communityPageState extends State<communityPage> {
       );
     } else {
       return Text(
-        " 举报了 ${i["cheaterOriginId"]} ${i["game"]}",
+        /// 举报了
+        " \u4e3e\u62a5\u4e86 ${i["cheaterOriginId"]} ${i["game"]}",
         style: TextStyle(
           color: Colors.white54,
           fontSize: 12,
@@ -131,7 +132,8 @@ class _communityPageState extends State<communityPage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        title: Text("最近动态"),
+        /// 最近动态
+        title: Text("\u6700\u8fd1\u52a8\u6001"),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -327,7 +329,7 @@ class _communityPageState extends State<communityPage> {
                 )
               : Center(
                   child: EluiVacancyComponent(
-                    title: "最近没有网站动态",
+                    title: "\u6700\u8fd1\u6ca1\u6709\u7f51\u7ad9\u52a8\u6001",
                   ),
                 ),
         ],

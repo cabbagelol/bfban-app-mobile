@@ -39,7 +39,7 @@ class _replyPageState extends State<replyPage> {
     setState(() {
       controller = SimpleRichEditController(
         context: context,
-        isImageIcon: true,
+        isImageIcon: false,
         isVideoIcon: false,
       );
 
@@ -54,18 +54,18 @@ class _replyPageState extends State<replyPage> {
 
     login = jsonDecode(await Storage.get("com.bfban.login") ?? '{}');
 
-    replyInfo["content"] = controller.generateHtml();
+    replyInfo["content"] = controller.generateText();
 
     if (login == null || login.isEmpty) {
       EluiMessageComponent.warning(context)(
-        child: Text("请登录"),
+        child: Text("\u8bf7\u767b\u5f55"),
       );
       return;
     }
 
     if (replyInfo["content"] == "") {
       EluiMessageComponent.warning(context)(
-        child: Text("请填写回复内容"),
+        child: Text("\u8bf7\u586b\u5199\u56de\u590d\u5185\u5bb9"),
       );
       return;
     }
@@ -103,16 +103,14 @@ class _replyPageState extends State<replyPage> {
       method: Http.POST,
     );
 
-    print(result);
-
     if (result.data["error"] == 0) {
       EluiMessageComponent.success(context)(
-        child: Text("发布成功"),
+        child: Text("\u53d1\u5e03\u6210\u529f"),
       );
       Navigator.pop(context, "cheatersCardTypes");
     } else {
       EluiMessageComponent.error(context)(
-        child: Text("发布失败了 Q^Q"),
+        child: Text("\u53d1\u5e03\u5931\u8d25\u4e86 Q^Q"),
       );
     }
 
@@ -132,7 +130,7 @@ class _replyPageState extends State<replyPage> {
           elevation: 0,
           centerTitle: true,
           title: Text(
-            "回复",
+            "\u56de\u590d",
             style: TextStyle(
               color: Colors.white,
             ),
@@ -148,7 +146,7 @@ class _replyPageState extends State<replyPage> {
                 : RaisedButton(
                     color: Color(0xff364e80),
                     child: Text(
-                      "提交",
+                      "\u63d0\u4ea4",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 16,
@@ -166,7 +164,7 @@ class _replyPageState extends State<replyPage> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    "回复人:",
+                    "\u56de\u590d\u4eba:",
                     style: TextStyle(
                       color: Colors.white54,
                     ),
@@ -182,16 +180,6 @@ class _replyPageState extends State<replyPage> {
                 ],
               ),
             ),
-//            EluiTextareaComponent(
-//              placeholder: "请填写回复内容",
-//              maxLines: 15,
-//              maxLength: 500,
-//              onChange: (data) {
-//                setState(() {
-//                  replyInfo["content"] = data["value"];
-//                });
-//              },
-//            ),
             Expanded(
               flex: 5,
               child: richText(

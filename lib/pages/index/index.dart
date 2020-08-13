@@ -18,7 +18,6 @@ import 'news.dart';
 import 'usercenter.dart';
 import 'community.dart';
 
-
 class IndexPage extends StatefulWidget {
   IndexPage({
     Key key,
@@ -42,7 +41,7 @@ class _IndexPageState extends State<IndexPage> {
     this._onReady();
   }
 
-  void _onReady () async {
+  void _onReady() async {
     Map token = jsonDecode(await Storage.get('com.bfban.token') ?? '{}');
 
     print(token);
@@ -53,10 +52,10 @@ class _IndexPageState extends State<IndexPage> {
       return;
     }
 
-    return;
-    if (DateTime.parse(token["time"]).add(Duration(days: 7)).millisecondsSinceEpoch > new DateTime.now().millisecondsSinceEpoch) {
+    if (DateTime.fromMicrosecondsSinceEpoch(token["time"]).add(Duration(days: 7)).millisecondsSinceEpoch >
+        new DateTime.now().millisecondsSinceEpoch) {
       EluiMessageComponent.warning(context)(
-        child: Text("登录已过期，请重新登录"),
+        child: Text("\u767b\u5f55\u5df2\u8fc7\u671f\uff0c\u8bf7\u91cd\u65b0\u767b\u5f55"),
       );
 
       Storage.remove('com.bfban.token');
@@ -119,7 +118,6 @@ class _IndexPageState extends State<IndexPage> {
                     index: currentPage,
                   ),
                 ),
-
               ],
             ),
             filter: ui.ImageFilter.blur(

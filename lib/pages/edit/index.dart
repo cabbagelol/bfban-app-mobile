@@ -69,7 +69,7 @@ class _editPageState extends State<editPage> {
         "S": "",
         "content": "BiliBili",
         "placeholder": "AV/BV",
-      }
+      },
     ],
   };
 
@@ -345,7 +345,8 @@ class _editPageState extends State<editPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          "举报作弊",
+          /// 举报作弊
+          "\u4e3e\u62a5\u4f5c\u5f0a",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -354,7 +355,7 @@ class _editPageState extends State<editPage> {
           RaisedButton(
             color: Color(0xff364e80),
             child: Text(
-              "提交",
+              "\u63d0\u4ea4",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -374,9 +375,9 @@ class _editPageState extends State<editPage> {
                       new SimpleDialogOption(
                         child: Column(
                           children: <Widget>[
-                            Text('发布'),
+                            Text('\u53d1\u5e03'),
                             Text(
-                              '将举报ID发布到BFBAN上',
+                              '\u5c06\u4e3e\u62a5\u0049\u0044\u53d1\u5e03\u5230\u0042\u0046\u0042\u0041\u004e\u4e0a',
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Colors.black45,
