@@ -137,6 +137,15 @@ class _usercenterState extends State<usercenter> {
     openAppSettings();
   }
 
+  /// 打开引导
+  void _opEnGuide () {
+    Routes.router.navigateTo(
+      context,
+      '/guide',
+      transition: TransitionType.materialFullScreenDialog,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -296,6 +305,14 @@ class _usercenterState extends State<usercenter> {
           ),
           islink: true,
           onTap: () => this._opEnPermanently(),
+        ),
+        EluiCellComponent(
+          title: "引导",
+          theme: EluiCellTheme(
+            backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+          ),
+          islink: true,
+          onTap: () => this._opEnGuide(),
         ),
         EluiCellComponent(
           title: "\u7248\u672c",

@@ -116,13 +116,12 @@ class _HomePageState extends State<HomePage> {
     dynamic _login = jsonDecode(await Storage.get('com.bfban.login') ?? '{}');
 
     if (_login != null && ['admin', 'super'].contains(_login["userPrivilege"])) {
-      return () {
-        Routes.router.navigateTo(
-          context,
-          '/edit',
-          transition: TransitionType.cupertinoFullScreenDialog,
-        );
-      };
+      Routes.router.navigateTo(
+        context,
+        '/edit',
+        transition: TransitionType.cupertinoFullScreenDialog,
+      );
+      return () {};
     } else {
       EluiMessageComponent.error(context)(
         child: Text("\u8bf7\u5148\u767b\u5f55\u0042\u0046\u0042\u0041\u004e"),
@@ -157,7 +156,7 @@ class _HomePageState extends State<HomePage> {
             child: !indexPagesState
                 ? RefreshIndicator(
                     onRefresh: _onRefresh,
-                    color: Colors.white,
+                    color: Colors.black,
                     backgroundColor: Colors.yellow,
                     child: ListView.builder(
                       controller: _scrollController,

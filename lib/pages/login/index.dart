@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter_plugin_elui/elui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:video_player/video_player.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -59,10 +60,25 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
+  VideoPlayerController _controller;
+
   @override
   void initState() {
     super.initState();
     this._getCaptcha();
+
+    _controller = VideoPlayerController.asset('assets/video/bf-video-hero-medium-steam-launch.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+      })
+      ..setLooping(true);
+    _controller.play();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   /// 更新验证码
@@ -174,26 +190,39 @@ class _loginPageState extends State<loginPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomRight,
+              colors: [Colors.transparent, Colors.black54],
+            ),
+          ),
+        ),
       ),
       body: Stack(
-        fit: StackFit.expand,
+        fit: StackFit.loose,
         children: <Widget>[
-//          Opacity(
-//            opacity: 0.5,
-//            child: Image.asset(
-//              "assets/images/bk-companion-1.jpg",
-//              fit: BoxFit.cover,
-//            ),
-//          ),
+          Positioned(
+            top: 0,
+            bottom: 0,
+            child: Container(
+              child: AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              ),
+            ),
+          ),
+
           BackdropFilter(
-            child: ListView(
+            child: Column(
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.all(20),
-                  child: Column(
-                    children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: ListView(
+                    children: [
                       Container(
-                        color: Colors.black26,
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        color: Color(0xff111b2b),
                         padding: EdgeInsets.only(
                           left: 10,
                           right: 10,
@@ -213,11 +242,9 @@ class _loginPageState extends State<loginPage> {
                           },
                         ),
                       ),
-                      SizedBox(
-                        height: 1,
-                      ),
                       Container(
-                        color: Colors.black26,
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        color: Color(0xff111b2b),
                         padding: EdgeInsets.only(
                           left: 10,
                           right: 10,
@@ -241,80 +268,44 @@ class _loginPageState extends State<loginPage> {
                       SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              color: Colors.black26,
-                              padding: EdgeInsets.only(
-                                left: 10,
-                                right: 10,
-                              ),
-                              child: EluiInputComponent(
-                                placeholder: "验证码",
-                                Internalstyle: true,
-                                maxLenght: 4,
-                                theme: EluiInputTheme(
-                                  textStyle: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                right: GestureDetector(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(3),
-                                      ),
-                                    ),
-                                    margin: EdgeInsets.only(left: 10),
-                                    width: 60,
-                                    height: 30,
-                                    child: valueCaptchaLoad
-                                        ? Icon(
-                                            Icons.access_time,
-                                            color: Colors.black54,
-                                          )
-                                        : new SvgPicture.string(
-                                            loginInfo["valueCaptcha"],
-                                          ),
-                                  ),
-                                  onTap: () => this._getCaptcha(),
-                                ),
-                                onChange: (data) {
-                                  setState(() {
-                                    loginInfo["verificationController"] = data["value"];
-                                  });
-                                },
-                              ),
+                      Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        color: Color(0xff111b2b),
+                        padding: EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: EluiInputComponent(
+                          placeholder: "验证码",
+                          Internalstyle: true,
+                          maxLenght: 4,
+                          theme: EluiInputTheme(
+                            textStyle: TextStyle(
+                              color: Colors.white,
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      EluiButtonComponent(
-                        type: ButtonType.none,
-                        theme: EluiButtonTheme(
-                          backgroundColor: Colors.black12,
+                          right: GestureDetector(
+                            child: Container(
+                              color: Colors.white,
+                              margin: EdgeInsets.only(left: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              height: 50,
+                              child: valueCaptchaLoad
+                                  ? Icon(
+                                      Icons.access_time,
+                                      color: Colors.black54,
+                                    )
+                                  : new SvgPicture.string(
+                                      loginInfo["valueCaptcha"],
+                                    ),
+                            ),
+                            onTap: () => this._getCaptcha(),
+                          ),
+                          onChange: (data) {
+                            setState(() {
+                              loginInfo["verificationController"] = data["value"];
+                            });
+                          },
                         ),
-                        child: loginLoad
-                            ? ELuiLoadComponent(
-                                type: "line",
-                                lineWidth: 2,
-                                color: Colors.white,
-                              )
-                            : Text(
-                                "登陆",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                ),
-                              ),
-                        onTap: () => _onLogin(),
                       ),
                     ],
                   ),
@@ -322,34 +313,80 @@ class _loginPageState extends State<loginPage> {
               ],
             ),
             filter: ui.ImageFilter.blur(
-              sigmaX: 0.0,
-              sigmaY: 0.0,
+              sigmaX: 6.0,
+              sigmaY: 6.0,
             ),
           ),
-        ],
-      ),
-      bottomSheet: Column(
-        children: [
-          SizedBox(
-            height: 30,
-            child: Center(
-              child: Text(
-                "or",
-                style: TextStyle(
-                  color: Colors.white38,
-                  fontSize: 11,
+
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black87,
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-          GestureDetector(
-            child: Text(
-              "注册BFBAN账户",
-              style: TextStyle(
-                color: Colors.white54,
-              ),
-            ),
-            onTap: () => UrlUtil().onPeUrl("https://bfban.com/#/signup"),
+                child: Column(
+                  children: [
+                    EluiButtonComponent(
+                      type: ButtonType.none,
+                      theme: EluiButtonTheme(
+                        backgroundColor: Color(0xff364e80),
+                      ),
+                      child: loginLoad
+                          ? ELuiLoadComponent(
+                        type: "line",
+                        lineWidth: 2,
+                        color: Colors.white,
+                      )
+                          : Icon(
+                        Icons.done,
+                        color: Colors.white,
+                      ),
+                      onTap: () => _onLogin(),
+                    ),
+                    SizedBox(
+                      height: 30,
+                      child: Center(
+                        child: Text(
+                          "or",
+                          style: TextStyle(
+                            color: Colors.white38,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      child: Wrap(
+                        spacing: 5,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          Text(
+                            "注册BFBAN账户",
+                            style: TextStyle(
+                              color: Colors.white54,
+                            ),
+                          ),
+                          Icon(
+                            Icons.open_in_new,
+                            color: Colors.white54,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                      onTap: () => UrlUtil().onPeUrl("https://bfban.com/#/signup"),
+                    ),
+                  ],
+                )),
           ),
         ],
       ),

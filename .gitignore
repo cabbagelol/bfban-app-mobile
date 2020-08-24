@@ -21,6 +21,7 @@
 #.vscode/
 
 # Flutter/Dart/Pub related
+*.psd
 **/doc/api/
 .dart_tool/
 .flutter-plugins
@@ -37,9 +38,6 @@ pubspec.lock
 /android/.gitignore
 /android/app/src/keystore/key.jks
 /android/app/src/keystore/key.properties
-
-
-
 
 # Web related
 lib/generated_plugin_registrant.dart

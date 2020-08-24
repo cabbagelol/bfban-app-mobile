@@ -29,7 +29,6 @@ class IndexPage extends StatefulWidget {
 
 class _IndexPageState extends State<IndexPage> {
   PageController pageController;
-
   int currentPage = 0;
 
   @override
@@ -37,7 +36,6 @@ class _IndexPageState extends State<IndexPage> {
     super.initState();
 
     this.onGuide();
-
     this._onReady();
   }
 

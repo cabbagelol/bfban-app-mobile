@@ -45,11 +45,10 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   /// 导航下标
   int _tabControllerIndex = 0;
 
+  int _ClistLenght = 0;
+
   /// 导航个体
-  final List<Tab> myTabs = <Tab>[
-    Tab(text: '举报信息'),
-    Tab(text: '审核记录'),
-  ];
+  List<Tab> myTabs = <Tab>[];
 
   /// 作弊行为
   static Map cheatingTpyes = Config.cheatingTpyes;
@@ -57,7 +56,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   /// 进度状态
   final List<dynamic> startusIng = Config.startusIng;
 
-  static Map _login;
+  static Map _login = {};
 
   /// 曾用名按钮状态 or 列表状态
   Map userNameList = {
@@ -71,7 +70,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-
     this.ready();
   }
 
@@ -229,7 +227,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
   /// 用户回复
   dynamic _setReply(num Type) {
-    if (['admin', 'super'].contains(_login["userPrivilege"])) {
+    print("_login");
+    if (_login.containsKey("userPrivilege")) {
       return () {
         /// 补充（追加）回复
         /// 取第一条举报信息下的userId
@@ -364,6 +363,15 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       },
     );
 
+    setState(() {
+      _ClistLenght = list.length;
+    });
+
+
+    list.add(SizedBox(
+      height: 100,
+    ));
+
     cheatersRecordWidgetList = Column(
       children: list,
     );
@@ -447,6 +455,27 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    myTabs = <Tab>[
+      Tab(text: '举报信息'),
+      Tab(
+        child: Wrap(
+          spacing: 5,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            Text("审核记录"),
+            EluiTagComponent(
+              value: "$_ClistLenght",
+              size: EluiTagSize.no2,
+              theme: EluiTagtheme(
+                textColor: _tabControllerIndex == 1 ? Colors.black : Colors.white54,
+                backgroundColor: _tabControllerIndex == 1 ? Colors.yellow : Colors.transparent,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ];
+
     return FutureBuilder(
       future: this.futureBuilder,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -577,10 +606,37 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                 child: Container(
                                   margin: EdgeInsets.only(top: 140, right: 10, left: 10, bottom: 50),
                                   child: Center(
-                                    child: EluiImgComponent(
-                                      src: cheatersInfoUser["avatarLink"],
-                                      width: 150,
-                                      height: 150,
+                                    child: Stack(
+                                      children: [
+                                        EluiImgComponent(
+                                          src: cheatersInfoUser["avatarLink"],
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                        Positioned(
+                                          right: 0,
+                                          bottom: 0,
+                                          child: Container(
+                                            padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.topLeft,
+                                                end: Alignment.bottomRight,
+                                                colors: [
+                                                  Colors.transparent,
+                                                  Colors.transparent,
+                                                  Colors.black87,
+                                                ],
+                                              ),
+                                            ),
+                                            child: Icon(
+                                              Icons.search,
+                                              color: Colors.white70,
+                                              size: 30,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -833,7 +889,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                 padding: EdgeInsets.only(
                                   left: 10,
                                   right: 10,
-                                  top: 10,
+                                  top: 20,
                                 ),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -933,88 +989,102 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             /// 底栏
             bottomSheet: _tabControllerIndex == 1
                 ? Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border(
-                  top: BorderSide(
-                    width: 1.0,
-                    color: Colors.black12,
-                  ),
-                ),
-              ),
-              padding: EdgeInsets.only(
-                left: 10,
-                right: 10,
-                top: 5,
-                bottom: 5,
-              ),
-              height: 50,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: FlatButton(
-                      color: Color(0xff111b2b),
-                      textColor: Colors.white,
-                      disabledColor: Colors.black12,
-                      disabledTextColor: Colors.black54,
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: 10,
-                        children: <Widget>[
-                          Icon(
-                            Icons.message,
-                            color: Colors.orangeAccent,
-                          ),
-                          Text(
-                            "补充证据",
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        top: BorderSide(
+                          width: 1.0,
+                          color: Colors.black12,
+                        ),
                       ),
-                      onPressed: _setReply(0),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      left: 7,
-                      right: 7,
+                    padding: EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                      top: 5,
+                      bottom: 5,
                     ),
-                    height: 20,
-                    width: 1,
-                    color: Colors.black12,
-                  ),
-                  FlatButton(
-                    color: Colors.red,
-                    textColor: Colors.white,
-                    disabledColor: Colors.black12,
-                    disabledTextColor: Colors.black54,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    height: 50,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        Text(
-                          "判决",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
+                        Expanded(
+                          flex: 1,
+                          child: FlatButton(
+                            color: Color(0xff111b2b),
+                            textColor: Colors.white,
+                            disabledColor: Colors.black12,
+                            disabledTextColor: Colors.black54,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 10,
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.message,
+                                      color: Colors.orangeAccent,
+                                    ),
+                                    Text(
+                                      "补充证据",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
+                                ),
+                                !_login.containsKey("userPrivilege")
+                                    ? Text(
+                                        "啊咧咧, 你是不是忘记登录啦, 登录后才可以回复哦",
+                                        style: TextStyle(
+                                          fontSize: 9,
+                                          color: Colors.black26,
+                                        ),
+                                      )
+                                    : SizedBox(),
+                              ],
+                            ),
+                            onPressed: _setReply(0),
                           ),
                         ),
-                        Text(
-                          "管理员选项",
-                          style: TextStyle(
-                            fontSize: 9,
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: 7,
+                            right: 7,
                           ),
-                        )
+                          height: 20,
+                          width: 1,
+                          color: Colors.black12,
+                        ),
+                        FlatButton(
+                          color: Colors.red,
+                          textColor: Colors.white,
+                          disabledColor: Colors.black12,
+                          disabledTextColor: Colors.black54,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "判决",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                "管理员选项",
+                                style: TextStyle(
+                                  fontSize: 9,
+                                ),
+                              )
+                            ],
+                          ),
+                          onPressed: onAdminSentence(),
+                        ),
                       ],
                     ),
-                    onPressed: onAdminSentence(),
-                  ),
-                ],
-              ),
-            )
+                  )
                 : null,
           ),
         );

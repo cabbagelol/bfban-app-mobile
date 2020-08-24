@@ -18,6 +18,7 @@ import 'package:bfban/router/router.dart';
 /// 对比评论身份
 class detailApi {
   static Color cardColor = Colors.white;
+  static Color cardButtonBorderColor = Color(0xff111b2b);
 
   static Map<String, Style> styleHtml(BuildContext context) {
     /// 3/1
@@ -176,7 +177,7 @@ class CheatUserCheaters extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             width: 10,
-            color: Color(0xfff2f2f2),
+            color: detailApi.cardButtonBorderColor,
           ),
         ),
       ),
@@ -394,7 +395,7 @@ class CheatReports extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             width: 10,
-            color: Color(0xfff2f2f2),
+            color: detailApi.cardButtonBorderColor,
           ),
         ),
       ),
@@ -693,7 +694,7 @@ class _CheatVerifiesState extends State<CheatVerifies> {
         border: Border(
           bottom: BorderSide(
             width: 10,
-            color: Color(0xfff2f2f2),
+            color: detailApi.cardButtonBorderColor,
           ),
         ),
       ),
@@ -921,7 +922,7 @@ class CheatConfirms extends StatelessWidget {
         border: Border(
           bottom: BorderSide(
             width: 10,
-            color: Color(0xfff2f2f2),
+            color: detailApi.cardButtonBorderColor,
           ),
         ),
       ),
