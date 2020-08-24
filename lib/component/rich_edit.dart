@@ -130,7 +130,6 @@ abstract class RichEditController {
 
     matches.forEach((m) {
       String DomContent = m.input.substring(m.start, m.end);
-      Iterable<RegExpMatch> domTags = regDomName.allMatches(DomContent);
       Iterable<RegExpMatch> srcValue = regDomImgSrc.allMatches(DomContent);
 
       /// img or image tag

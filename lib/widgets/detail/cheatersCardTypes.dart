@@ -17,6 +17,8 @@ import 'package:bfban/router/router.dart';
 
 /// 对比评论身份
 class detailApi {
+  static Color cardColor = Colors.white;
+
   static Map<String, Style> styleHtml(BuildContext context) {
     /// 3/1
     num a = (MediaQuery.of(context).size.width - 15) / 3;
@@ -28,6 +30,7 @@ class detailApi {
         after: "🔗",
       ),
       "p": Style(
+        color: Colors.white,
         fontSize: FontSize(12),
         width: (MediaQuery.of(context).size.width - 15),
       ),
@@ -169,7 +172,7 @@ class CheatUserCheaters extends StatelessWidget {
         top: 10,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: detailApi.cardColor,
         border: Border(
           bottom: BorderSide(
             width: 10,
@@ -345,7 +348,7 @@ class CheatUserCheaters extends StatelessWidget {
 
           /// Html评论内容
           Container(
-            color: Colors.white,
+            color: detailApi.cardColor,
             child: Html(
               data: i["content"],
               style: detailApi.styleHtml(context),
@@ -387,7 +390,7 @@ class CheatReports extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: detailApi.cardColor,
         border: Border(
           bottom: BorderSide(
             width: 10,
@@ -588,7 +591,7 @@ class CheatReports extends StatelessWidget {
 
           /// Html评论内容
           Container(
-            color: Colors.white,
+            color: detailApi.cardColor,
             child: Html(
               data: i["description"],
               style: detailApi.styleHtml(context),
@@ -686,7 +689,7 @@ class _CheatVerifiesState extends State<CheatVerifies> {
     return Container(
       padding: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
-        color: Color(0xfffff6dd),
+        color: detailApi.cardColor,
         border: Border(
           bottom: BorderSide(
             width: 10,
@@ -914,7 +917,7 @@ class CheatConfirms extends StatelessWidget {
         bottom: 10,
       ),
       decoration: BoxDecoration(
-        color: Color(0xfffff6dd),
+        color: detailApi.cardColor,
         border: Border(
           bottom: BorderSide(
             width: 10,

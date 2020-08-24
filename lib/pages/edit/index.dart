@@ -7,7 +7,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluro/fluro.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_plugin_elui/elui.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_html/flutter_html.dart';
 

@@ -130,6 +130,7 @@ class _loginPageState extends State<loginPage> {
           "time": new DateTime.now().millisecondsSinceEpoch,
         }),
       );
+
       Http.setToken(result.data['token']);
       Navigator.pop(context, 'loginBack');
     } else {
@@ -177,13 +178,13 @@ class _loginPageState extends State<loginPage> {
       body: Stack(
         fit: StackFit.expand,
         children: <Widget>[
-          Opacity(
-            opacity: 0.5,
-            child: Image.asset(
-              "assets/images/bk-companion-1.jpg",
-              fit: BoxFit.cover,
-            ),
-          ),
+//          Opacity(
+//            opacity: 0.5,
+//            child: Image.asset(
+//              "assets/images/bk-companion-1.jpg",
+//              fit: BoxFit.cover,
+//            ),
+//          ),
           BackdropFilter(
             child: ListView(
               children: <Widget>[
@@ -297,6 +298,9 @@ class _loginPageState extends State<loginPage> {
                       ),
                       EluiButtonComponent(
                         type: ButtonType.none,
+                        theme: EluiButtonTheme(
+                          backgroundColor: Colors.black12,
+                        ),
                         child: loginLoad
                             ? ELuiLoadComponent(
                                 type: "line",
@@ -321,6 +325,31 @@ class _loginPageState extends State<loginPage> {
               sigmaX: 0.0,
               sigmaY: 0.0,
             ),
+          ),
+        ],
+      ),
+      bottomSheet: Column(
+        children: [
+          SizedBox(
+            height: 30,
+            child: Center(
+              child: Text(
+                "or",
+                style: TextStyle(
+                  color: Colors.white38,
+                  fontSize: 11,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            child: Text(
+              "注册BFBAN账户",
+              style: TextStyle(
+                color: Colors.white54,
+              ),
+            ),
+            onTap: () => UrlUtil().onPeUrl("https://bfban.com/#/signup"),
           ),
         ],
       ),

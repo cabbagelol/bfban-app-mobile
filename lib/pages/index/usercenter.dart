@@ -76,7 +76,7 @@ class _usercenterState extends State<usercenter> {
       method: Http.GET,
     );
 
-    if (result.data.toString().length >= 0) {
+    if (result.data.toString().length >= 0 && result.data["error"] == 0) {
       Map newversion = result.data["list"][0];
       bool res = Version().on("${newversion["version"]}-${newversion["stage"]}");
 

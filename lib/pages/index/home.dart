@@ -1,4 +1,5 @@
 /// 首页
+import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   List indexDataList = new List();
 
   Map<String, dynamic> cheatersPost = {
-    "game": "bf1",
+    "game": "",
     "status": 100,
     "sort": "updateDatetime",
     "page": 1,
@@ -111,21 +112,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   /// 发布举报信息
-  void _opEnEdit() async {
-    dynamic _login = await Storage.get('com.bfban.login');
+  Future<VoidCallback> _opEnEdit() async {
+    dynamic _login = jsonDecode(await Storage.get('com.bfban.login') ?? '{}');
 
-    if (_login == null) {
+    if (_login != null && ['admin', 'super'].contains(_login["userPrivilege"])) {
+      return () {
+        Routes.router.navigateTo(
+          context,
+          '/edit',
+          transition: TransitionType.cupertinoFullScreenDialog,
+        );
+      };
+    } else {
       EluiMessageComponent.error(context)(
         child: Text("\u8bf7\u5148\u767b\u5f55\u0042\u0046\u0042\u0041\u004e"),
       );
-      return;
+      return null;
     }
-
-    Routes.router.navigateTo(
-      context,
-      '/edit',
-      transition: TransitionType.cupertinoFullScreenDialog,
-    );
   }
 
   @override
@@ -205,32 +208,12 @@ class _HomePageState extends State<HomePage> {
           size: 30,
         ),
         tooltip: "\u53d1\u5e03",
-        onPressed: () => this._opEnEdit(),
+        isExtended: true,
+        onPressed: _opEnEdit,
         backgroundColor: Colors.yellow,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-
-  /// 加载更多时显示的组件,给用户提示
-  Widget _getMoreWidget() {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              '加载中...     ',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            CircularProgressIndicator(
-              strokeWidth: 1.0,
-            )
-          ],
-        ),
-      ),
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
 

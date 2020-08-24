@@ -45,17 +45,10 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   /// 导航下标
   int _tabControllerIndex = 0;
 
-  /// 滚动控制器
-  ScrollController _listViewController = new ScrollController();
-
-  /// 滚动坐标
-  num _listViewValue = 0;
-
   /// 导航个体
   final List<Tab> myTabs = <Tab>[
     Tab(text: '举报信息'),
     Tab(text: '审核记录'),
-    Tab(text: '曾用名称'),
   ];
 
   /// 作弊行为
@@ -72,31 +65,24 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     "listLoad": false,
   };
 
+  /// 举报记录
+  Widget cheatersRecordWidgetList = Container();
+
   @override
   void initState() {
     super.initState();
 
     this.ready();
-
-    this._getCheatersInfo();
   }
 
   void ready() async {
     _login = jsonDecode(await Storage.get('com.bfban.login') ?? '{}');
-
     _tabController = TabController(vsync: this, length: myTabs.length)
       ..addListener(() {
         setState(() {
           _tabControllerIndex = _tabController.index;
         });
       });
-
-    _listViewController.addListener(() {
-      setState(() {
-        _listViewValue = _listViewController.offset;
-      });
-    });
-
     futureBuilder = this._getCheatersInfo();
   }
 
@@ -129,6 +115,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 //        this._getTrackerCheatersInfo(result.data["data"]["origins"][0]["cheaterGameName"], result.data["data"]["games"]);
       }
 
+      this._getUserInfo();
       return cheatersInfo;
     }
   }
@@ -241,38 +228,43 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   }
 
   /// 用户回复
-  void _setReply(num Type) async {
-    if (_login == null || _login.isEmpty) {
-      EluiMessageComponent.error(context)(
-        child: Text("请先登录BFBAN"),
-      );
-      return;
+  dynamic _setReply(num Type) {
+    if (['admin', 'super'].contains(_login["userPrivilege"])) {
+      return () {
+        /// 补充（追加）回复
+        /// 取第一条举报信息下的userId
+        Routes.router
+            .navigateTo(
+                context,
+                '/reply/${jsonEncode({
+                  "type": Type ?? 0,
+                  "id": cheatersInfoUser["id"],
+                  "originUserId": cheatersInfoUser["originUserId"],
+                  "foo": cheatersInfo["data"]["reports"][0]["username"],
+                })}',
+                transition: TransitionType.cupertino)
+            .then((value) {
+          this._getCheatersInfo();
+        });
+      };
     }
 
-    /// 补充（追加）回复
-    /// 取第一条举报信息下的userId
-    Routes.router
-        .navigateTo(
-            context,
-            '/reply/${jsonEncode({
-              "type": Type ?? 0,
-              "id": cheatersInfoUser["id"],
-              "originUserId": cheatersInfoUser["originUserId"],
-              "foo": cheatersInfo["data"]["reports"][0]["username"],
-            })}',
-            transition: TransitionType.cupertino)
-        .then((value) {
-      this._getCheatersInfo();
-    });
+    return null;
+  }
+
+  /// 审核人员判决
+  dynamic onAdminSentence() {
+    if (['admin', 'super'].contains(_login["userPrivilege"])) {
+      return () {
+        this._onAdminEdit(cheatersInfo["data"]["cheater"][0]["originUserId"]);
+      };
+    }
+    return null;
   }
 
   /// 获取用户BFBAN中举报数据
-  static Widget _getUserInfo(
-    context,
-    Map cheatersInfo,
-    cheatersInfoUser,
-    startusIng,
-  ) {
+  /// Map cheatersInfo, cheatersInfoUser, startusIng
+  void _getUserInfo() {
     List<Widget> list = [];
 
     /// 数据
@@ -281,17 +273,22 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     /// 所有用户回复信息
     List _allReply = new List();
 
-    /// 回答
-    (_data["replies"] ?? []).forEach((i) => {i["SystemType"] = 0, _allReply.add(i)});
-
-    /// 举报
-    (_data["reports"] ?? []).forEach((i) => {i["SystemType"] = 1, _allReply.add(i)});
-
-    /// 审核
-    (_data["verifies"] ?? []).forEach((i) => {i["SystemType"] = 2, _allReply.add(i)});
-
-    /// 赞同。审核员
-    (_data["confirms"] ?? []).forEach((i) => {i["SystemType"] = 3, _allReply.add(i)});
+    /// 回答0,举报1,审核2,赞同。审核员3
+    [
+      {0: 'replies', 1: 0},
+      {0: 'reports', 1: 1},
+      {0: 'verifies', 1: 2},
+      {0: 'confirms', 1: 3}
+    ].forEach((Map i) {
+      String name = i[0];
+      int index = i[1];
+      if (_data.containsKey(name)) {
+        _data[name].forEach((item) {
+          item["SystemType"] = index;
+          _allReply.add(item);
+        });
+      }
+    });
 
     /// 排序时间帖子
     /// 序列化时间
@@ -367,7 +364,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       },
     );
 
-    return Column(
+    cheatersRecordWidgetList = Column(
       children: list,
     );
   }
@@ -456,12 +453,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
         /// 数据未加载完成时
         if (snapshot.connectionState != ConnectionState.done) {
           return Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/bk-companion-1.jpg'),
-                fit: BoxFit.fitWidth,
-              ),
-            ),
+            color: Color(0xff111b2b),
             child: Scaffold(
               backgroundColor: Colors.transparent,
               appBar: AppBar(
@@ -503,13 +495,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
         /// 数据完成加载
         return Container(
-          decoration: BoxDecoration(
-            color: Color(0xff111b2b),
-            image: DecorationImage(
-              image: AssetImage('assets/images/bk-companion-1.jpg'),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
+          color: Color(0xff111b2b),
           child: Scaffold(
             backgroundColor: Colors.transparent,
             extendBodyBehindAppBar: true,
@@ -518,9 +504,19 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomRight,
-                    colors: [Colors.transparent, Colors.black38],
+                    colors: [Colors.transparent, Colors.black54],
                   ),
                 ),
+              ),
+              title: TabBar(
+                unselectedLabelColor: Colors.white38,
+                labelColor: Colors.yellow,
+                labelStyle: TextStyle(fontSize: 15),
+                indicatorWeight: 3,
+                indicatorColor: Colors.yellow,
+                controller: _tabController,
+                labelPadding: EdgeInsets.only(left: 0, right: 0),
+                tabs: myTabs,
               ),
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -554,131 +550,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             body: DefaultTabController(
               length: myTabs.length,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
-                  /// S 主体框架
-                  /// S header
-
-                  SizedBox(
-                    height: 150,
-                  ),
-                  Stack(
-                    overflow: Overflow.visible,
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(
-                          left: 100,
-                        ),
-                        color: Color(0xff364e80),
-                        width: MediaQuery.of(context).size.width,
-
-                        /// Tab 导航
-                        child: TabBar(
-                          unselectedLabelColor: Colors.white38,
-                          labelColor: Colors.yellow,
-                          labelStyle: TextStyle(
-                            fontSize: 15,
-                          ),
-                          indicatorColor: Colors.yellow,
-                          controller: _tabController,
-                          labelPadding: EdgeInsets.only(
-                            left: 0,
-                            right: 0,
-                          ),
-                          tabs: myTabs,
-                          onTap: (num index) {
-                            setState(() {});
-                          },
-                        ),
-                      ),
-                      Positioned(
-                        top: -30,
-                        left: 100,
-                        child: Row(
-                          children: <Widget>[
-                            /// 用户名称
-                            GestureDetector(
-                              child: Text(
-                                cheatersInfoUser["originId"].toString(),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  shadows: <Shadow>[
-                                    Shadow(
-                                      color: Colors.black12,
-                                      offset: Offset(1, 2),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              onTap: () {
-                                Clipboard.setData(
-                                  ClipboardData(
-                                    text: cheatersInfoUser["originId"],
-                                  ),
-                                );
-                                EluiMessageComponent.success(context)(
-                                  child: Text("复制成功"),
-                                );
-                              },
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-
-                            /// 最终状态
-                            Container(
-                              padding: EdgeInsets.only(
-                                left: 5,
-                                right: 5,
-                              ),
-                              decoration: BoxDecoration(
-                                color: startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["c"],
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(2),
-                                ),
-                              ),
-                              child: Text(
-                                startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["s"].toString(),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        top: -30,
-                        left: 10,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (BuildContext context) {
-                                return PhotoViewSimpleScreen(
-                                  imageUrl: cheatersInfoUser["avatarLink"],
-                                  imageProvider: NetworkImage(cheatersInfoUser["avatarLink"]),
-                                  heroTag: 'simple',
-                                );
-                              },
-                            ));
-                          },
-                          child: Container(
-                            color: Colors.white,
-                            child: EluiImgComponent(
-                              src: cheatersInfoUser["avatarLink"],
-                              width: 70,
-                              height: 70,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-
-                  /// E header
-
                   Expanded(
                     flex: 1,
                     child: Container(
@@ -690,6 +562,106 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                           ListView(
                             padding: EdgeInsets.zero,
                             children: <Widget>[
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                    builder: (BuildContext context) {
+                                      return PhotoViewSimpleScreen(
+                                        imageUrl: cheatersInfoUser["avatarLink"],
+                                        imageProvider: NetworkImage(cheatersInfoUser["avatarLink"]),
+                                        heroTag: 'simple',
+                                      );
+                                    },
+                                  ));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(top: 140, right: 10, left: 10, bottom: 50),
+                                  child: Center(
+                                    child: EluiImgComponent(
+                                      src: cheatersInfoUser["avatarLink"],
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                color: Colors.black12,
+                                margin: EdgeInsets.symmetric(horizontal: 10),
+                                padding: EdgeInsets.all(10),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: <Widget>[
+                                          GestureDetector(
+                                            child: Icon(
+                                              Icons.code,
+                                              color: Colors.white,
+                                            ),
+                                            onTap: () {
+                                              Clipboard.setData(
+                                                ClipboardData(
+                                                  text: cheatersInfoUser["originId"],
+                                                ),
+                                              );
+                                              EluiMessageComponent.success(context)(
+                                                child: Text("复制成功"),
+                                              );
+                                            },
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+
+                                          /// 用户名称
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              cheatersInfoUser["originId"].toString(),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                shadows: <Shadow>[
+                                                  Shadow(
+                                                    color: Colors.black12,
+                                                    offset: Offset(1, 2),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+
+                                          /// 最终状态
+                                          Container(
+                                            padding: EdgeInsets.only(
+                                              left: 5,
+                                              right: 5,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["c"],
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(2),
+                                              ),
+                                            ),
+                                            child: Text(
+                                              startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["s"].toString(),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Container(
                                 color: Colors.black12,
                                 margin: EdgeInsets.only(
@@ -857,36 +829,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-
-                          /// E 举报信息
-
-                          /// S 审核记录
-                          Container(
-                            color: Color(0xfff2f2f2),
-                            child: ListView(
-                              padding: EdgeInsets.zero,
-                              children: <Widget>[
-                                /// S记录
-                                _getUserInfo(
-                                  context,
-                                  snapshot.data,
-                                  cheatersInfoUser,
-                                  startusIng,
-                                ),
-
-                                /// E记录
-                              ],
-                            ),
-                          ),
-
-                          /// E 审核记录
-
-                          /// S 曾用名称
-                          ListView(
-                            padding: EdgeInsets.zero,
-                            children: <Widget>[
                               Container(
                                 padding: EdgeInsets.only(
                                   left: 10,
@@ -935,8 +877,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                 ),
                                 child: userNameList['listLoad']
                                     ? EluiVacancyComponent(
-                                  title: "-",
-                                )
+                                        title: "-",
+                                      )
                                     : _getUsedname(snapshot.data),
                                 margin: EdgeInsets.only(
                                   top: 10,
@@ -945,7 +887,39 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                             ],
                           ),
 
-                          /// E 曾用名称
+                          /// E 举报信息
+
+                          /// S 审核记录
+                          ListView(
+                            children: <Widget>[
+                              Container(
+                                width: double.maxFinite,
+                                height: 1,
+                                child: Stack(
+                                  overflow: Overflow.visible,
+                                  children: [
+                                    Positioned(
+                                      top: -150,
+                                      left: 0,
+                                      right: 0,
+                                      child: Text(
+                                        "别看啦,真没有了 /(ㄒoㄒ)/~~",
+                                        style: TextStyle(color: Colors.white38),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+
+                              /// S记录
+                              cheatersRecordWidgetList,
+
+                              /// E记录
+                            ],
+                          ),
+
+                          /// E 审核记录
                         ],
                       ),
                     ),
@@ -957,89 +931,90 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             ),
 
             /// 底栏
-            bottomNavigationBar: _tabControllerIndex == 1
+            bottomSheet: _tabControllerIndex == 1
                 ? Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                        top: BorderSide(
-                          width: 1.0,
-                          color: Colors.black12,
-                        ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  top: BorderSide(
+                    width: 1.0,
+                    color: Colors.black12,
+                  ),
+                ),
+              ),
+              padding: EdgeInsets.only(
+                left: 10,
+                right: 10,
+                top: 5,
+                bottom: 5,
+              ),
+              height: 50,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: FlatButton(
+                      color: Color(0xff111b2b),
+                      textColor: Colors.white,
+                      disabledColor: Colors.black12,
+                      disabledTextColor: Colors.black54,
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 10,
+                        children: <Widget>[
+                          Icon(
+                            Icons.message,
+                            color: Colors.orangeAccent,
+                          ),
+                          Text(
+                            "补充证据",
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
+                      onPressed: _setReply(0),
                     ),
-                    padding: EdgeInsets.only(
-                      left: 10,
-                      right: 10,
-                      top: 5,
-                      bottom: 5,
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(
+                      left: 7,
+                      right: 7,
                     ),
-                    height: 50,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    height: 20,
+                    width: 1,
+                    color: Colors.black12,
+                  ),
+                  FlatButton(
+                    color: Colors.red,
+                    textColor: Colors.white,
+                    disabledColor: Colors.black12,
+                    disabledTextColor: Colors.black54,
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: FlatButton(
-                            color: Color(0xff111b2b),
-                            child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              spacing: 10,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.message,
-                                  color: Colors.orangeAccent,
-                                ),
-                                Text(
-                                  "补充证据",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                            onPressed: () => this._setReply(0),
+                        Text(
+                          "判决",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 7,
-                            right: 7,
+                        Text(
+                          "管理员选项",
+                          style: TextStyle(
+                            fontSize: 9,
                           ),
-                          height: 20,
-                          width: 1,
-                          color: Colors.black12,
-                        ),
-                        FlatButton(
-                          color: Colors.red,
-                          child: Container(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  "判决",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                Text(
-                                  "管理员选项",
-                                  style: TextStyle(
-                                    color: Colors.white60,
-                                    fontSize: 9,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          onPressed: () => this._onAdminEdit(cheatersInfo["data"]["cheater"][0]["originUserId"]),
-                        ),
+                        )
                       ],
                     ),
-                  )
+                    onPressed: onAdminSentence(),
+                  ),
+                ],
+              ),
+            )
                 : null,
           ),
         );

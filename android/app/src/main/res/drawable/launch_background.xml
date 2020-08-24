@@ -8,10 +8,12 @@
             android:mipMap="true"
             android:src="@drawable/splash" />
     </item>
-    <item >
+    <item android:bottom="30dp">
         <bitmap
             android:gravity="bottom"
-            android:mipMap="true"
+            android:bottom="130dp"
             android:src="@drawable/splash_button_text"/>
     </item>
 </layer-list>
+
+
