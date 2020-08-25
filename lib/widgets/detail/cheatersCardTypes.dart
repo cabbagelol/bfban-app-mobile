@@ -31,7 +31,6 @@ class detailApi {
         after: "🔗",
       ),
       "p": Style(
-        color: Colors.white,
         fontSize: FontSize(12),
         width: (MediaQuery.of(context).size.width - 15),
       ),
