@@ -12,7 +12,7 @@ class Date {
   Map getTimestampTransferCharacter (String date, {
     num = 0,
   }) {
-    var time_ =  DateTime.parse(date);
+    var time_ =  DateTime.parse(date ?? DateTime.now().toIso8601String());
 
     var year = time_.year;
     var month = this.zeroPadding(time_.month);

@@ -105,7 +105,9 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     if (result.data != null && result.data["error"] == 0) {
       setState(() {
         cheatersInfo = result.data ?? new Map();
-        cheatersInfoUser = result.data["data"]["cheater"][0];
+        print('Map.from(result.data["data"]).containsKey("cheater")');
+        print(result.data["data"]["cheater"].length);
+        cheatersInfoUser = result.data["data"]["cheater"].length > 0 ? result.data["data"]["cheater"][0] : {};
       });
 
       /// 取最新ID查询
@@ -227,7 +229,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
   /// 用户回复
   dynamic _setReply(num Type) {
-    print("_login");
     if (_login.containsKey("userPrivilege")) {
       return () {
         /// 补充（追加）回复
@@ -366,7 +367,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     setState(() {
       _ClistLenght = list.length;
     });
-
 
     list.add(SizedBox(
       height: 100,
@@ -699,16 +699,16 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                               right: 5,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["c"],
+                                              color: startusIng[int.parse(cheatersInfoUser["status"]="0")]["c"],
                                               borderRadius: BorderRadius.all(
                                                 Radius.circular(2),
                                               ),
                                             ),
                                             child: Text(
-                                              startusIng[int.parse(cheatersInfo["data"]["cheater"][0]["status"])]["s"].toString(),
+                                              startusIng[int.parse(cheatersInfoUser["status"]  ?? 0)]["s"].toString(),
                                               style: TextStyle(
                                                 fontSize: 12,
-                                                color: Colors.white,
+                                                color: startusIng[int.parse(cheatersInfoUser["status"]  ?? 0)]["tc"],
                                               ),
                                             ),
                                           ),
@@ -804,7 +804,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                       child: Column(
                                         children: <Widget>[
                                           Text(
-                                            cheatersInfoUser != null ? cheatersInfo["data"]["cheater"][0]["n"].toString() + "/次" : "",
+                                            cheatersInfoUser != null ? cheatersInfoUser["n"].toString() + "/次" : "",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,

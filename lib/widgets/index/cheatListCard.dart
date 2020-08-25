@@ -76,7 +76,7 @@ class CheatListCard extends StatelessWidget {
                           (startusIng[int.parse(item["status"])]["s"] ?? Colors.white).toString(),
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white,
+                            color: startusIng[int.parse(item["status"])]["tc"],
                           ),
                         ),
                       ),

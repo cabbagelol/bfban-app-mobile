@@ -450,6 +450,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.5"
+  sentry:
+    dependency: "direct main"
+    description:
+      name: sentry
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -602,6 +609,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.2+1"
+  usage:
+    dependency: transitive
+    description:
+      name: usage
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.4.2"
   uuid:
     dependency: "direct main"
     description:

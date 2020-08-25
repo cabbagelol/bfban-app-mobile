@@ -124,6 +124,18 @@ class _communityPageState extends State<communityPage> {
     }
   }
 
+  /// 打开社区动态详情内容i
+  /// 区分类型
+  void _opEnDynamicDetail (i) {
+    if (i["status"] != null) {
+      Routes.router.navigateTo(
+        context,
+        '/detail/cheaters/${i["originUserId"]}',
+        transition: TransitionType.cupertino,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -317,13 +329,7 @@ class _communityPageState extends State<communityPage> {
                           ],
                         ),
                       ),
-                      onTap: () {
-                        Routes.router.navigateTo(
-                          context,
-                          '/detail/cheaters/${i["originUserId"]}',
-                          transition: TransitionType.cupertino,
-                        );
-                      },
+                      onTap: () => _opEnDynamicDetail(i),
                     );
                   }).toList(),
                 )

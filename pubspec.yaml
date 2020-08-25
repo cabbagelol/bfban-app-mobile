@@ -71,6 +71,9 @@ dependencies:
   # 图片保存
   image_gallery_saver: ^1.2.2
 
+  # https://pub.dev/packages/sentry
+  sentry: 3.0.1
+
   flutter_plugin_elui:
     path: ../../flutter-elui-plugin
 

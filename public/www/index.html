@@ -67,6 +67,7 @@
             color: #fff;
         }
 
+
     </style>
 
 </head>
@@ -88,31 +89,35 @@
 <main role="main" class="flex-shrink-0" id="app">
     <div class="menu">
         <div class="container">
-            <div style="border-bottom: 2px solid #fff;height: 40px;float:left;margin:20px 30px 0 0;text-align:center;color: rgba(255, 255, 255, 0.64);">
-                了解更多资讯
+            <div class="row">
+                <div class="col-10">
+                    <div style="border-bottom: 2px solid #fff;height: 40px;float:left;margin:20px 30px 0 0;text-align:center;color: rgba(255, 255, 255, 0.64);">
+                        了解更多资讯
+                    </div>
+                    <block v-for="i of [{'n': '联BFBAN网站', 'u': 'https://bfban.com'}, {'n': '设计者', 'u': 'https://cabbagelol.net/about'}, {'n': '捐赠', 'u': 'https://cabbagelol.net/%e6%8d%90%e5%8a%a9/'}]">
+                        <a href="i.u" target="_blank">
+                            <div style="height: 40px;float:left;margin:20px 30px 0 0;text-align:center;color: rgba(255, 255, 255, 0.64);">
+                                {{i.n}}
+                            </div>
+                        </a>
+                    </block>
+
+                </div>
+                <div class="col-2 justify-content-center text-right"
+                     style="display: flex;align-items: center;margin-bottom: 10px;">
+                    <a href="https://jq.qq.com/?_wv=1027&k=kXr9z9FE" target="_blank">
+                        <button type="button" class="btn btn-primary">612949946</button>
+                    </a>
+                </div>
             </div>
-            <a href="https://bfban.com" target="_blank">
-                <div style="height: 40px;float:left;margin:20px 30px 0 0;text-align:center;color: rgba(255, 255, 255, 0.64);">
-                    联BFBAN网站
-                </div>
-            </a>
-            <a href="https://cabbagelol.net/about" target="_blank">
-                <div style="height: 40px;float:left;margin:20px 30px 0 0;text-align:center;color: rgba(255, 255, 255, 0.64);">
-                    设计者
-                </div>
-            </a>
-            <a href="https://cabbagelol.net/%e6%8d%90%e5%8a%a9/" target="_blank">
-                <div style="height: 40px;float:left;margin:20px 30px 0 0;text-align:center;color: rgba(255, 255, 255, 0.64);">
-                    捐赠
-                </div>
-            </a>
         </div>
     </div>
     <div class="container">
         <section class="row">
             <div class="col-12 col-sm-9 col-md-5">
                 <div class="container">
-                    <img src="https://i.loli.net/2018/11/03/5bdd8e977b10d.png" width="100" height="100"/>
+                    <img src="https://i.loli.net/2018/11/03/5bdd8e977b10d.png" width="100"
+                         height="100"/>
                     <h1>
                         <font style="vertical-align: inherit;">
                             <b>联BAN</b>
@@ -126,12 +131,38 @@
                     <br/>
                     <div class="btn-group" role="group"
                          aria-label="Button group with nested dropdown">
-                        <a href="https://github.com/cabbagelol/bfbanApp/releases"
-                           target="_blank">
-                            <button type="button" class="btn btn-secondary btn-lg">
-                                下载 <span class="badge badge-light">测试</span>
-                            </button>
-                        </a>
+
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal"
+                                data-target="#staticBackdrop">
+                            下载 <span class="badge badge-light">测试</span>
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                             tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">下载告示</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <iframe src="news-app.html" height="500" frameborder="0"></iframe>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <a href="https://github.com/cabbagelol/bfbanApp/releases"
+                                           target="_blank">
+                                            <button type="button" class="btn btn-primary">
+                                                了解,前往
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                     <a href="https://trello.com/b/ZECQnnEz/bfban-app" target="_blank">
@@ -143,7 +174,8 @@
                     <hr/>
                     <div class="row">
                         <div class="col-sm">
-                            <div class=" text-muted"><a href="#" class="badge badge-warning">版本</a></div>
+                            <div class=" text-muted"><a href="#" class="badge badge-warning">版本</a>
+                            </div>
                         </div>
                         <div class="col-sm">
                             <div class=" text-muted">{{ version.version }}</div>
@@ -152,7 +184,8 @@
                     <hr/>
                     <div class="row">
                         <div class="col-sm">
-                            <div class=" text-muted"><a href="#" class="badge badge-primary">发行号</a></div>
+                            <div class=" text-muted"><a href="#" class="badge badge-primary">发行号</a>
+                            </div>
                         </div>
                         <div class="col-sm">
                             <div class=" text-muted">{{ version.stage }}</div>
@@ -161,7 +194,8 @@
                     <hr/>
                     <div class="row">
                         <div class="col-sm">
-                            <div class=" text-muted"><a href="#" class="badge badge-dark">说明</a></div>
+                            <div class=" text-muted"><a href="#" class="badge badge-dark">说明</a>
+                            </div>
                         </div>
                         <div class="col-sm">
                             <div class=" text-muted">{{ version.describe }}</div>
@@ -188,16 +222,6 @@
                       fill="#fff"></path>
             </g>
         </svg>
-
-        <div class="row">
-            <div class="col-sm">
-                <kbd>交流群</kbd> <a href="https://jq.qq.com/?_wv=1027&k=kXr9z9FE" target="_blank">612949946</a>
-            </div>
-            <div class="col-sm"></div>
-            <div class="col-sm">
-                ©2020 All Rights Reserved.
-            </div>
-        </div>
     </div>
 </footer>
 </body>
@@ -220,7 +244,7 @@
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.20.0-0/axios.min.js"></script>
 
-<script>
+<script type="text/javascript">
     /**
      * 就这样吧，懒的构建一个完整本地项目
      */
@@ -243,4 +267,6 @@
             });
         }
     });
+
+
 </script>

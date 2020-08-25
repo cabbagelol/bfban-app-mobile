@@ -18,7 +18,7 @@ import 'package:bfban/router/router.dart';
 /// 对比评论身份
 class detailApi {
   static Color cardColor = Colors.white;
-  static Color cardButtonBorderColor = Color(0xff111b2b);
+  static Color cardButtonBorderColor = Color(0xfff2f2f2);
 
   static Map<String, Style> styleHtml(BuildContext context) {
     /// 3/1
@@ -482,6 +482,7 @@ class CheatReports extends StatelessWidget {
                       ),
                     ),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           "举报行为: ",
@@ -491,10 +492,13 @@ class CheatReports extends StatelessWidget {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Wrap(
-                          spacing: 2,
-                          runSpacing: 2,
-                          children: cheatMethods,
+                        Expanded(
+                          flex: 1,
+                          child: Wrap(
+                            spacing: 2,
+                            runSpacing: 2,
+                            children: cheatMethods,
+                          ),
                         ),
                       ],
                     ),
@@ -664,7 +668,7 @@ class _CheatVerifiesState extends State<CheatVerifies> {
       }
 
       /// status 1： 作弊者
-      if (login["userPrivilege"] == "admin" && login["userId"] != widget.i["userId"] && widget.i["status"] == "1") {
+      if (['admin', 'super'].contains(login["userPrivilege"]) && login["userId"] != widget.i["userId"] && widget.i["status"] == "1") {
         _isAdmin = false;
       } else {
         _isAdmin = true;
