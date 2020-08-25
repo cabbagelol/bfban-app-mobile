@@ -16,8 +16,8 @@ class Config {
   /// 版本设置
   static Map get versionApp {
     return {
-      "v": "0.0.3",
-      "s": "release",
+      "v": "0.0.2",
+      "s": "beta",
     };
   }
 
