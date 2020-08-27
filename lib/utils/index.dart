@@ -10,3 +10,4 @@ export 'share.dart';
 export 'version.dart';
 export 'upload.dart';
 export 'provider.dart';
+export 'theme.dart';

@@ -96,8 +96,8 @@ class Config {
       {
         "s": "\u672a\u5904\u7406",
         "t": "\u8fd8\u672a\u5904\u7406",
-        "c": Colors.white70,
-        "tc": Colors.black,
+        "c": Colors.lightBlueAccent,
+        "tc": Colors.white,
         "value": 0,
       },
       {

@@ -29,21 +29,22 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  PageController pageController;
-  int currentPage = 0;
+  Map theme = THEMELIST['none'];
+  int _currentIndex = 0;
+  List<Widget> list = List();
 
   @override
   void initState() {
     super.initState();
 
-    this._onGuide();
+    list = [HomePage(), communityPage(), newsPage(), usercenter()];
+
     this._onReady();
+    this._onGuide();
   }
 
   void _onReady() async {
     Map token = jsonDecode(await Storage.get('com.bfban.token') ?? '{}');
-
-    print(token);
 
     /// 校验TOKEN
     /// 时间7日内该TOken生效并保留，否则重启登录
@@ -85,151 +86,110 @@ class _IndexPageState extends State<IndexPage> {
   /// 首页控制器序列
   void onTap(int index) {
     setState(() {
-      this.currentPage = index;
+      this._currentIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
     ScreenUtil.instance = ScreenUtil(width: Klength.designWidth)..init(context);
-    List<Widget> widgets = [HomePage(), communityPage(), newsPage(), usercenter()];
 
-    return Column(
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: IndexedStack(
-            children: widgets,
-            index: currentPage,
-          ),
-        ),
-        KKBottomAppBar(
-            onTabSeleted: onTap,
-            theme: theme,
-            items: [
-              {
-                "name": "\u9996\u9875",
-                "icon": Icon(
-                  Icons.home,
-                  color: theme['index_index_tabs']['color'],
-                ),
-                "icon_s": Icon(
-                  Icons.home,
-                  color: theme['index_index_tabs']['actviveColor'],
-                ),
-              },
-              {
-                "name": "\u793e\u533a",
-                "icon": Icon(
-                  Icons.comment,
-                  color: theme['index_index_tabs']['color'],
-                ),
-                "icon_s": Icon(
-                  Icons.comment,
-                  color: theme['index_index_tabs']['actviveColor'],
-                ),
-              },
-              {
-                "name": "\u65b0\u95fb",
-                "icon": Icon(
-                  Icons.featured_video,
-                  color: theme['index_index_tabs']['color'],
-                ),
-                "icon_s": Icon(
-                  Icons.featured_video,
-                  color: theme['index_index_tabs']['actviveColor'],
-                ),
-              },
-              {
-                "name": "\u4e2a\u4eba\u4e2d\u5fc3",
-                "icon": Icon(
-                  Icons.portrait,
-                  color: theme['index_index_tabs']['color'],
-                ),
-                "icon_s": Icon(
-                  Icons.portrait,
-                  color: theme['index_index_tabs']['actviveColor'],
-                ),
-              },
-            ].map((e) {
-              return BottomAppBarItemModal(
-                e,
-                e["name"],
-              );
-            }).toList()),
-      ],
+    return Scaffold(
+      body: IndexedStack(
+        children: list,
+        index: _currentIndex,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        items: [
+          {
+            "name": "\u9996\u9875",
+            "icon": Icon(Icons.home),
+          },
+          {
+            "name": "\u793e\u533a",
+            "icon": Icon(Icons.comment),
+          },
+          {
+            "name": "\u65b0\u95fb",
+            "icon": Icon(Icons.featured_video),
+          },
+          {
+            "name": "\u4e2a\u4eba\u4e2d\u5fc3",
+            "icon": Icon(Icons.portrait),
+          },
+        ].map((e) {
+          return BottomNavigationBarItem(
+            icon: e["icon"],
+            title: Text(e["name"]),
+          );
+        }).toList(),
+        currentIndex: _currentIndex,
+        onTap: (int index) => onTap(index),
+      ),
     );
   }
 }
 
-class BottomAppBarItemModal {
-  final Map iconData;
-  final String text;
-
-  BottomAppBarItemModal(
-    this.iconData,
-    this.text,
-  );
-}
-
-class KKBottomAppBar extends StatefulWidget {
-  final List<BottomAppBarItemModal> items;
-  final ValueChanged<int> onTabSeleted;
-  final theme;
-
-  KKBottomAppBar({
-    this.items,
-    this.onTabSeleted,
-    this.theme,
-  }) : super();
-
+class BottomNavigationWidget extends StatefulWidget {
   @override
-  BottomAppBarState createState() => BottomAppBarState();
+  State<StatefulWidget> createState() => BottomNavigationWidgetState();
 }
 
-class BottomAppBarState extends State<KKBottomAppBar> {
-  int currentIndex = 0;
+class BottomNavigationWidgetState extends State<BottomNavigationWidget> {
+  final _bottomNavigationColor = Colors.blue;
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    int l = widget.items.length;
-    double bottom = ScreenUtil.bottomBarHeight; //IPhone 底部
-
-    List<Widget> listWidgets = List.generate(l, (index) {
-      BottomAppBarItemModal i = widget.items[index];
-
-      return Expanded(
-        flex: 1,
-        child: FlatButton(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              index == currentIndex ? i.iconData["icon_s"] : i.iconData["icon"],
-              Text(
-                i.text,
-                style: TextStyle(color: index == currentIndex ? widget.theme['index_index_tabs']['actviveColor'] : widget.theme['index_index_tabs']['color'], fontSize: 12),
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: _bottomNavigationColor,
               ),
-            ],
-          ),
-          onPressed: () {
-            setState(() => this.currentIndex = index);
-            widget.onTabSeleted(index);
-          },
-        ),
-      );
-    });
-
-    return Container(
-      height: Klength.bottomBarHeight,
-      color: widget.theme['index_index_tabs']['backgroundColor'],
-      alignment: Alignment.center,
-      margin: EdgeInsets.only(bottom: bottom),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: listWidgets,
+              title: Text(
+                'HOME',
+                style: TextStyle(color: _bottomNavigationColor),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.email,
+                color: _bottomNavigationColor,
+              ),
+              title: Text(
+                'Email',
+                style: TextStyle(color: _bottomNavigationColor),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.pages,
+                color: _bottomNavigationColor,
+              ),
+              title: Text(
+                'PAGES',
+                style: TextStyle(color: _bottomNavigationColor),
+              )),
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.airplay,
+                color: _bottomNavigationColor,
+              ),
+              title: Text(
+                'AIRPLAY',
+                style: TextStyle(color: _bottomNavigationColor),
+              )),
+        ],
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
     );
   }

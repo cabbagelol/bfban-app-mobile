@@ -16,18 +16,35 @@ class SupportPage extends StatefulWidget {
 class _SupportPageState extends State<SupportPage> {
   UrlUtil _urlUtil = new UrlUtil();
 
+  /// 打开引导
+  void _opEnGuide() {
+    UrlUtil().onPeUrl('/guide');
+  }
+
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor ?? 'none'];
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        title: Text("支援"),
       ),
       body: ListView(
         children: <Widget>[
+          EluiCellComponent(
+            title: "引导",
+            theme: EluiCellTheme(
+              titleColor: theme["text"]["subtitle"],
+              labelColor: theme["text"]["subtext1"],
+              linkColor: theme["text"]["subtitle"],
+              backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
+            ),
+            islink: true,
+            onTap: () => this._opEnGuide(),
+          ),
           EluiCellComponent(
             title: "Github",
             label: "开源地址",

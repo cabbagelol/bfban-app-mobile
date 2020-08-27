@@ -13,6 +13,8 @@ import 'package:flutter_plugin_elui/_img/index.dart';
 class CheatListCard extends StatelessWidget {
   final item;
 
+  final Map theme;
+
   final onTap;
 
   /// 进度状态
@@ -20,17 +22,16 @@ class CheatListCard extends StatelessWidget {
 
   CheatListCard({
     @required this.item,
+    this.theme,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return GestureDetector(
       onTap: () => this.onTap(),
       child: Container(
-        color: theme['index_home']['card']['backgroundColor'] ?? Colors.black12,
+        color: Theme.of(context).cardColor ?? Colors.black12,
         padding: EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 15,
@@ -55,7 +56,7 @@ class CheatListCard extends StatelessWidget {
                         height: 40,
                         src: item["avatarLink"],
                       ),
-                      color: theme['index_home']['card']['subtitle1'],
+                      color: Theme.of(context).cardColor, //?? theme['index_home']['card']['subtitle1'],
                     ),
                   ),
                 ),
@@ -92,7 +93,7 @@ class CheatListCard extends StatelessWidget {
                           Text(
                             item["originId"],
                             style: TextStyle(
-                              color: theme['index_home']['card']['subtitle1'] ?? Colors.white,
+                              color: Theme.of(context).primaryTextTheme.headline1.color ?? theme['index_home']['card']['subtitle1'] ?? Colors.white,
                               fontSize: 20,
                             ),
                           ),
@@ -110,7 +111,7 @@ class CheatListCard extends StatelessWidget {
                       Text(
                         "最后更新:" + new Date().getTimestampTransferCharacter(item["updateDatetime"])["Y_D_M"],
                         style: TextStyle(
-                          color: theme['index_home']['card']['subtitle2'] ?? Color.fromRGBO(255, 255, 255, .6),
+                          color: Theme.of(context).primaryTextTheme.headline1.color ?? theme['index_home']['card']['subtitle2'] ?? Color.fromRGBO(255, 255, 255, .6),
                           fontSize: 9,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -140,7 +141,7 @@ class CheatListCard extends StatelessWidget {
                           ),
                           height: 30,
                           width: 1,
-                          color:  theme['hr']['secondary'] ?? Colors.white12,
+                          color:  Theme.of(context).dividerColor ?? theme['hr']['secondary'] ?? Colors.white12,
                         ),
                         cheatersCardIconitem(
                           theme: theme,
@@ -183,14 +184,14 @@ class cheatersCardIconitem extends StatelessWidget {
             Text(
               n,
               style: TextStyle(
-                color: theme['index_home']['card']['rightsubtitle1'] ?? Colors.white,
+                color: Theme.of(context).primaryTextTheme.headline1.color ?? theme['index_home']['card']['rightsubtitle1'] ?? Colors.white,
                 fontSize: 17,
               ),
             ),
             Text(
               e,
               style: TextStyle(
-                color: theme['index_home']['card']['rightsubtitle2'] ?? Colors.white38,
+                color: Theme.of(context).primaryTextTheme.headline4.color ?? theme['index_home']['card']['rightsubtitle2'] ?? Colors.white38,
                 fontSize: 9,
               ),
             ),
@@ -203,7 +204,7 @@ class cheatersCardIconitem extends StatelessWidget {
           right: 0,
           child: Icon(
             i,
-            color: theme['text']['subtext3'] ?? Colors.white12,
+            color: Theme.of(context).primaryTextTheme.headline6.color ?? theme['text']['subtext3'] ?? Colors.white12,
             size: 26,
           ),
         ),

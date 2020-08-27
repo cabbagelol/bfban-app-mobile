@@ -31,6 +31,8 @@ class CheatersPage extends StatefulWidget {
 }
 
 class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderStateMixin {
+  Map theme = THEMELIST['none'];
+
   /// 作弊者结果
   Map cheatersInfo = Map();
 
@@ -73,6 +75,13 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
   void initState() {
     super.initState();
     this.ready();
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   void ready() async {
@@ -457,8 +466,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     cheatersTabs = <Tab>[
       Tab(text: '举报信息'),
       Tab(

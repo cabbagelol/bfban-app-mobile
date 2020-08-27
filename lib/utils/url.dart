@@ -40,13 +40,13 @@ class UrlUtil {
   }
 
   /// 打开页面
-  Future opEnPage(BuildContext context, String url) {
-    Routes.router.navigateTo(
+  Future opEnPage(BuildContext context, String url) async {
+    var res = await Routes.router.navigateTo(
       context,
       url,
       transition: TransitionType.cupertino,
-    ).then((res) {
-      return res;
-    });
+    );
+
+    return res;
   }
 }

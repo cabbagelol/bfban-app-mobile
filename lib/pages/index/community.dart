@@ -18,6 +18,8 @@ class communityPage extends StatefulWidget {
 }
 
 class _communityPageState extends State<communityPage> {
+  Map theme = THEMELIST['none'];
+
   /// 近期消息
   Map indexActivity = {
     "registers": [],
@@ -37,6 +39,13 @@ class _communityPageState extends State<communityPage> {
     super.initState();
 
     this._getActivity();
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   /// 获取近期活动
@@ -86,8 +95,6 @@ class _communityPageState extends State<communityPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -112,10 +119,10 @@ class _communityPageState extends State<communityPage> {
               right: 10,
             ),
             decoration: BoxDecoration(
-              color: theme['index_community']['statisticsBackground'] ?? Colors.black12,
+              color: Theme.of(context).cardColor ?? theme['index_community']['statisticsBackground'] ?? Colors.black12,
               border: Border.all(
                 width: 1,
-                color: theme['index_community']['statisticsBackground'] ?? Colors.black12,
+                color: Theme.of(context).cardColor ?? theme['index_community']['statisticsBackground'] ?? Colors.black12,
               ),
             ),
             child: Row(
@@ -127,7 +134,9 @@ class _communityPageState extends State<communityPage> {
                       Text(
                         "${indexActivity["number"] == null ? "" : indexActivity["number"]["cheater"]}",
                         style: TextStyle(
-                          color: theme['index_community']['statisticsText'] ?? Colors.white,
+                          color: Theme.of(context).primaryTextTheme.headline1.color ??
+                              theme['index_community']['statisticsText'] ??
+                              Colors.white,
                           fontSize: 16,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -136,7 +145,9 @@ class _communityPageState extends State<communityPage> {
                       Text(
                         "\u5df2\u6838\u5b9e\u4f5c\u5f0a\u73a9\u5bb6\u4eba\u6570",
                         style: TextStyle(
-                          color: theme['index_community']['statisticsTextSubtitle'] ?? Colors.white54,
+                          color: Theme.of(context).primaryTextTheme.headline3.color ??
+                              theme['index_community']['statisticsTextSubtitle'] ??
+                              Colors.white54,
                           fontSize: 12,
                         ),
                       )
@@ -150,7 +161,7 @@ class _communityPageState extends State<communityPage> {
                   ),
                   height: 30,
                   width: 1,
-                  color: theme['hr']['secondary'] ?? Colors.white12,
+                  color: Theme.of(context).dividerColor ?? theme['hr']['secondary'] ?? Colors.white12,
                 ),
                 Container(
                   child: Column(
@@ -158,7 +169,9 @@ class _communityPageState extends State<communityPage> {
                       Text(
                         "${indexActivity["number"] == null ? "" : indexActivity["number"]["report"]}",
                         style: TextStyle(
-                          color: theme['index_community']['statisticsText'] ?? Colors.white,
+                          color: Theme.of(context).primaryTextTheme.headline1.color ??
+                              theme['index_community']['statisticsText'] ??
+                              Colors.white,
                           fontSize: 16,
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -167,7 +180,9 @@ class _communityPageState extends State<communityPage> {
                       Text(
                         "\u793e\u533a\u5df2\u6536\u5230\u4e3e\u62a5\u6b21\u6570",
                         style: TextStyle(
-                          color: theme['index_community']['statisticsTextSubtitle'] ?? Colors.white54,
+                          color: Theme.of(context).primaryTextTheme.headline3.color ??
+                              theme['index_community']['statisticsTextSubtitle'] ??
+                              Colors.white54,
                           fontSize: 12,
                         ),
                       )
@@ -188,7 +203,7 @@ class _communityPageState extends State<communityPage> {
                   children: _onMerge().map<Widget>((i) {
                     return GestureDetector(
                       child: Container(
-                        color: theme['index_community']['card']['backgroundColor'] ?? Color(0xff111b2b),
+                        color: Theme.of(context).cardColor ?? theme['index_community']['card']['backgroundColor'] ?? Color(0xff111b2b),
                         padding: EdgeInsets.only(
                           top: 20,
                           bottom: 20,
@@ -224,7 +239,9 @@ class _communityPageState extends State<communityPage> {
                                   "动态:",
                                   style: TextStyle(
                                     fontSize: 12,
-                                    color: theme['index_community']['card']['subtitle1'] ?? Colors.white,
+                                    color: Theme.of(context).primaryTextTheme.headline1.color ??
+                                        theme['index_community']['card']['subtitle1'] ??
+                                        Colors.white,
                                   ),
                                 ),
                                 Expanded(
@@ -233,7 +250,9 @@ class _communityPageState extends State<communityPage> {
                                     new Date().getTimestampTransferCharacter(i["createDatetime"])["Y_D_M"],
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: theme['index_community']['card']['subtitle1'] ?? Colors.white,
+                                      color: Theme.of(context).primaryTextTheme.headline1.color ??
+                                          theme['index_community']['card']['subtitle1'] ??
+                                          Colors.white,
                                     ),
                                     textAlign: TextAlign.end,
                                   ),
@@ -252,7 +271,9 @@ class _communityPageState extends State<communityPage> {
                                   child: Text(
                                     "${i["username"].toString()}",
                                     style: TextStyle(
-                                      color: theme['index_community']['card']['subtitle1'] ?? Colors.white,
+                                      color: Theme.of(context).primaryTextTheme.headline1.color ??
+                                          theme['index_community']['card']['subtitle1'] ??
+                                          Colors.white,
                                       fontSize: 16,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -302,7 +323,7 @@ class WidgetStateText extends StatelessWidget {
       return Text(
         "注册了BFBAN，欢迎",
         style: TextStyle(
-          color:  theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
+          color: Theme.of(context).primaryTextTheme.headline3.color ?? theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
           fontSize: 12,
         ),
       );
@@ -313,7 +334,7 @@ class WidgetStateText extends StatelessWidget {
             /// 将xx处理为
             "\u5c06${i["cheaterOriginId"]}\u5904\u7406\u4e3a",
             style: TextStyle(
-              color: theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
+              color: Theme.of(context).primaryTextTheme.headline3.color ?? theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
               fontSize: 12,
             ),
           ),
@@ -343,7 +364,7 @@ class WidgetStateText extends StatelessWidget {
         /// 举报了
         " \u4e3e\u62a5\u4e86 ${i["cheaterOriginId"]} ${i["game"]}",
         style: TextStyle(
-          color: theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
+          color: Theme.of(context).primaryTextTheme.headline3.color ?? theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
           fontSize: 12,
         ),
       );

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_plugin_elui/_button/index.dart';
+import 'package:flutter_plugin_elui/_load/index.dart';
 import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -17,22 +18,43 @@ class ThemePage extends StatefulWidget {
 class _ThemePageState extends State<ThemePage> {
   String _colorKey;
 
+  bool _themeLoad = false;
+
+  Map theme = THEMELIST['none'];
+
   @override
   void initState() {
     super.initState();
-//    _initAsync();
+    this._initTheme();
   }
 
-//  Future<void> _initAsync() async {
-//    await SpUtil.getInstance();
-//    _colorKey = SpUtil.getString('key_theme_color',
-//        defValue: 'blue',
-//    ); // 设置初始化主题颜色  Provider.of<AppInfoProvider>(context, listen: false).setTheme(_colorKey);
-//  }
+  /// 初始主题
+  Future<void> _initTheme() async {
+    String res = await Storage.get("com.bfban.theme");
+    if (res != null) {
+      setState(() {
+        _colorKey = res;
+
+        theme = THEMELIST[res];
+      });
+    } else {
+      Provider.of<AppInfoProvider>(context, listen: false).setTheme('none');
+    }
+  }
 
   /// 确认主题
-  void onTheme() {
-    Provider.of<AppInfoProvider>(context, listen: false).setTheme(_colorKey);
+  void onTheme() async {
+    setState(() {
+      _themeLoad = true;
+    });
+
+    await Provider.of<AppInfoProvider>(context, listen: false).setTheme(_colorKey);
+    await Storage.set("com.bfban.theme", value: _colorKey);
+
+    setState(() {
+      _themeLoad = false;
+      theme = THEMELIST[_colorKey];
+    });
   }
 
   @override
@@ -42,7 +64,14 @@ class _ThemePageState extends State<ThemePage> {
         elevation: 0,
         title: Text("主题"),
       ),
-      body: ListView(
+      body: GridView(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 20.0,
+          crossAxisSpacing: 10.0,
+          childAspectRatio: 1.0,
+        ),
+        padding: EdgeInsets.all(10),
         children: THEMELIST.keys.map((key) {
           return InkWell(
             onTap: () {
@@ -51,8 +80,6 @@ class _ThemePageState extends State<ThemePage> {
               });
             },
             child: Container(
-              height: 100,
-              margin: EdgeInsets.only(left: 10, right: 10, top: 10),
               color: THEMELIST[key]["nameColor"],
               child: Stack(
                 children: [
@@ -66,31 +93,42 @@ class _ThemePageState extends State<ThemePage> {
                       child: Text(THEMELIST[key]["name"]),
                     ),
                   ),
-                  Center(
-                    child: _colorKey == key
-                        ? Icon(
-                      Icons.done,
-                      color: Colors.white,
-                    )
-                        : null,
-                  ),
+                  Container(
+                    color: _colorKey == key ? Colors.black12 : null,
+                    child: Center(
+                      child: _colorKey == key
+                          ? Icon(
+                              Icons.done,
+                              color: Colors.white,
+                            )
+                          : null,
+                    ),
+                  )
                 ],
               ),
             ),
           );
         }).toList(),
       ),
-      bottomSheet: Padding(
+      bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: EluiButtonComponent(
-          child: Text(
-            "确认",
-            style: TextStyle(
-              color: THEMELIST[context.watch<AppInfoProvider>().themeColor]["button"]["textColor"],
-            ),
-          ),
+          disabled: _themeLoad,
+          child: _themeLoad
+              ? ELuiLoadComponent(
+                  type: "line",
+                  lineWidth: 2,
+                  color: theme['text']['subtitle'],
+                  size: 18,
+                )
+              : Text(
+                  "确认",
+                  style: TextStyle(
+                    color: theme["button"]["textColor"],
+                  ),
+                ),
           theme: EluiButtonTheme(
-            backgroundColor: THEMELIST[context.watch<AppInfoProvider>().themeColor]["button"]["backgroundColor"],
+            backgroundColor: Theme.of(context).buttonColor,
           ),
           onTap: () => onTheme(),
         ),

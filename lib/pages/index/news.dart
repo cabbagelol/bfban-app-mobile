@@ -14,13 +14,26 @@ class newsPage extends StatefulWidget {
 }
 
 class _newsPageState extends State<newsPage> {
+  Map theme = THEMELIST['none'];
+
   final Completer<WebViewController> _controller = Completer<WebViewController>();
 
   String webviewSrc = "https://app.bfban.com/public/www/news-app.html";
 
   @override
+  void initState() {
+    super.initState();
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
 
     return Scaffold(
       extendBodyBehindAppBar: true,

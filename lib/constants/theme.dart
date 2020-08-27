@@ -84,7 +84,27 @@ Map THEMELIST = {
     "data": ThemeData(
       platform: TargetPlatform.iOS,
       scaffoldBackgroundColor: Color(0xff111b2b),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      buttonColor: Color(0xff364e80),
+      bottomAppBarColor: Colors.black,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.yellow,
+        selectedLabelStyle: TextStyle(
+          color: Colors.yellow,
+          fontSize: 14,
+        ),
+        unselectedItemColor: Colors.white,
+        unselectedLabelStyle: TextStyle(
+          color: Colors.white,
+          fontSize: 14,
+        ),
+      ),
       appBarTheme: AppBarTheme(
+        textTheme: TextTheme(
+          headline6: TextStyle(color: Colors.white, fontSize: 18),
+        ),
         color: Color(0xff364e80),
       ),
       primaryColor: Color(0xff111b2b),
@@ -99,8 +119,21 @@ Map THEMELIST = {
           ),
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.yellow,
+      ),
       iconTheme: IconThemeData(
         color: Colors.white,
+      ),
+      dividerColor: Colors.white12,
+      cardColor: Colors.black12,
+      primaryTextTheme: TextTheme(
+        headline1: TextStyle(color: Colors.white),
+        headline2: TextStyle(color: Colors.white70),
+        headline3: TextStyle(color: Colors.white54),
+        headline4: TextStyle(color: Colors.white38),
+        headline5: TextStyle(color: Colors.white24),
+        headline6: TextStyle(color: Colors.white12),
       ),
     ),
   },
@@ -152,7 +185,7 @@ Map THEMELIST = {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.bottomRight,
-            colors: [Colors.transparent, Colors.black12],
+            colors: [Colors.transparent, Color.fromRGBO(0, 0, 0, .1)],
           ),
         ),
       ),
@@ -187,6 +220,21 @@ Map THEMELIST = {
     "data": ThemeData(
       platform: TargetPlatform.iOS,
       scaffoldBackgroundColor: Color(0xfff2f2f2),
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        backgroundColor: Colors.white,
+        selectedItemColor: Color(0xff364e80),
+        selectedLabelStyle: TextStyle(
+          color: Color(0xff364e80),
+          fontSize: 14,
+        ),
+        unselectedItemColor: Colors.black54,
+        unselectedLabelStyle: TextStyle(
+          color: Colors.black54,
+          fontSize: 14,
+        ),
+      ),
       appBarTheme: AppBarTheme(
         color: Color(0xfff2f2f2),
         textTheme: TextTheme(
@@ -208,8 +256,24 @@ Map THEMELIST = {
           ),
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Color(0xff364e80),
+        focusColor: Colors.white,
+      ),
       iconTheme: IconThemeData(
         color: Colors.black,
+      ),
+      dividerColor: Colors.black12,
+      cardTheme: CardTheme(
+        color: Colors.white,
+      ),
+      primaryTextTheme: TextTheme(
+        headline1: TextStyle(color: Colors.black),
+        headline2: TextStyle(color: Colors.black87),
+        headline3: TextStyle(color: Colors.black54),
+        headline4: TextStyle(color: Colors.black38),
+        headline5: TextStyle(color: Colors.black26),
+        headline6: TextStyle(color: Colors.black12),
       ),
     ),
   },

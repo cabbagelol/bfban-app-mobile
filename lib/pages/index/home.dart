@@ -21,6 +21,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Map theme = THEMELIST['none'];
+
   /// 抽屉
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -54,10 +56,18 @@ class _HomePageState extends State<HomePage> {
         _getMore();
       }
     });
+
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   /// 获取列表
-  void _getIndexList() async {
+  Future _getIndexList() async {
     setState(() {
       indexPagesState = true;
     });
@@ -89,6 +99,8 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       indexPagesState = false;
     });
+
+    return THEMELIST[context.watch<AppInfoProvider>().themeColor ?? 'none'];
   }
 
   /// 筛选
@@ -132,8 +144,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -144,7 +154,7 @@ class _HomePageState extends State<HomePage> {
           theme: titleSearchTheme.black,
         ),
       ),
-      drawerScrimColor: theme['index_home']['drawer']['color'] ??  Color(0xff111b2b),
+      drawerScrimColor: theme['index_home']['drawer']['color'] ?? Color(0xff111b2b),
       drawer: indexScreen(
         theme: theme,
         keyname: _scaffoldKey,
@@ -166,6 +176,7 @@ class _HomePageState extends State<HomePage> {
                       itemBuilder: (BuildContext context, int index) {
                         return CheatListCard(
                           item: indexDataList[index],
+                          theme: theme,
                           onTap: () {
                             Routes.router.navigateTo(
                               context,
@@ -205,19 +216,17 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.mode_edit,
-          color: theme['index_home']['buttonEdit']["textColor"],
+          color: Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']["textColor"],
           size: 30,
         ),
         tooltip: "\u53d1\u5e03",
         isExtended: true,
         onPressed: _opEnEdit,
-        backgroundColor: theme['index_home']['buttonEdit']["backgroundColor"],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
-
 
   /// 下拉刷新方法,为list重新赋值
   Future<Null> _onRefresh() async {

@@ -24,6 +24,8 @@ class usercenter extends StatefulWidget {
 class _usercenterState extends State<usercenter> {
   UrlUtil _urlUtil = new UrlUtil();
 
+  Map theme = THEMELIST['none'];
+
   /// 用户信息
   Map userInfo;
 
@@ -45,6 +47,13 @@ class _usercenterState extends State<usercenter> {
 
     this.getUserInfo();
     this.getSystemAppInfo();
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   /// 获取用户信息
@@ -117,9 +126,7 @@ class _usercenterState extends State<usercenter> {
         "login",
       ];
 
-      list.forEach((i) => {
-            Storage.remove("com.bfban.$i"),
-          });
+      list.forEach((i) => Storage.remove("com.bfban.$i"));
 
       EluiMessageComponent.success(context)(
         child: Text("\u6ce8\u9500\u6210\u529f"),
@@ -141,137 +148,129 @@ class _usercenterState extends State<usercenter> {
 
   /// 打开主题
   void _opEnTheme() {
-    _urlUtil.opEnPage(context, '/usercenter/theme');
-  }
-
-  /// 打开引导
-  void _opEnGuide() {
-    Routes.router.navigateTo(
-      context,
-      '/guide',
-      transition: TransitionType.materialFullScreenDialog,
-    );
+    _urlUtil.opEnPage(context, '/usercenter/theme').then((value) {
+      print(value);
+      this.onReadyTheme();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return Scaffold(
       body: ListView(
         children: <Widget>[
           !userInfoState
               ? Container(
-            padding: EdgeInsets.all(40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  child: Align(
-                    child: Image.asset(
-                      "assets/images/bfban-logo.png",
-                      width: 60,
-                      height: 60,
-                    ),
-                  ),
-                  padding: EdgeInsets.only(bottom: 20),
-                ),
-                Text(
-                  '\u5ba3\u5165\u53cd\u4f5c\u5f0a\u8054\u76df\uff0c',
-                  style: TextStyle(color: theme['text']['subtitle'] ?? Colors.white, fontSize: 40),
-                ),
-                Text(
-                  '\u7ef4\u62a4\u516c\u5e73\u7684\u7ade\u4e89\u73af\u5883',
-                  style: TextStyle(color: theme['text']['subtitle'] ?? Colors.white, fontSize: 20),
-                ),
-                Wrap(
-                  children: <Widget>[
-                    Text(
-                      '\u4f60\u613f\u52a0\u5165\u8054\u76df\u6210\u5458\u8d21\u732e\u4f5c\u5f0a\u8005\u540d\u5355\u5417\uff1f',
-                      style: TextStyle(
-                        color: theme['text']['subtext1'] ?? Colors.white,
-                        fontSize: 15,
+                  padding: EdgeInsets.all(40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        child: Align(
+                          child: Image.asset(
+                            "assets/images/bfban-logo.png",
+                            width: 60,
+                            height: 60,
+                          ),
+                        ),
+                        padding: EdgeInsets.only(bottom: 20),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )
+                      Text(
+                        '\u5ba3\u5165\u53cd\u4f5c\u5f0a\u8054\u76df\uff0c',
+                        style: TextStyle(color: theme['text']['subtitle'] ?? Colors.white, fontSize: 40),
+                      ),
+                      Text(
+                        '\u7ef4\u62a4\u516c\u5e73\u7684\u7ade\u4e89\u73af\u5883',
+                        style: TextStyle(color: theme['text']['subtitle'] ?? Colors.white, fontSize: 20),
+                      ),
+                      Wrap(
+                        children: <Widget>[
+                          Text(
+                            '\u4f60\u613f\u52a0\u5165\u8054\u76df\u6210\u5458\u8d21\u732e\u4f5c\u5f0a\u8005\u540d\u5355\u5417\uff1f',
+                            style: TextStyle(
+                              color: theme['text']['subtext1'] ?? Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
               : Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                textLoad(
-                  value: "\u0042\u0046\u0042\u0041\u004e\u8054\u76df",
-                  fontSize: 40,
-                ),
-                Text(
-                  '\u5236\u88c1\u4e0d\u4f1a\u7f3a\u5e2d',
-                  style: TextStyle(
-                    color: theme['text']['subtext1'] ?? Colors.white24,
-                    fontSize: 20,
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      textLoad(
+                        value: "\u0042\u0046\u0042\u0041\u004e\u8054\u76df",
+                        fontSize: 40,
+                      ),
+                      Text(
+                        '\u5236\u88c1\u4e0d\u4f1a\u7f3a\u5e2d',
+                        style: TextStyle(
+                          color: theme['text']['subtext1'] ?? Colors.white24,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
 
           /// 用户板块
           !userInfoState
               ? GestureDetector(
-            onTap: () {
-              Routes.router.navigateTo(context, '/login', transition: TransitionType.cupertino).then((res) {
-                if (res == 'loginBack') {
-                  this.getUserInfo();
-                }
-              });
-            },
-            child: EluiCellComponent(
-              theme: EluiCellTheme(
-                titleColor: theme["text"]["subtitle"],
-                labelColor: theme["text"]["subtext1"],
-                linkColor: theme["text"]["subtitle"],
-                backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
-              ),
-              icons: Icon(
-                Icons.account_box,
-                color: theme["text"]["subtitle"] ?? Colors.white,
-              ),
-              title: "\u767b\u9646",
-            ),
-          )
+                  onTap: () {
+                    Routes.router.navigateTo(context, '/login', transition: TransitionType.cupertino).then((res) {
+                      if (res == 'loginBack') {
+                        this.getUserInfo();
+                      }
+                    });
+                  },
+                  child: EluiCellComponent(
+                    theme: EluiCellTheme(
+                      titleColor: theme["text"]["subtitle"],
+                      labelColor: theme["text"]["subtext1"],
+                      linkColor: theme["text"]["subtitle"],
+                      backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
+                    ),
+                    icons: Icon(
+                      Icons.account_box,
+                      color: theme["text"]["subtitle"] ?? Colors.white,
+                    ),
+                    title: "\u767b\u9646",
+                  ),
+                )
               : EluiCellComponent(
-            title: "\u7528\u6237\u540d\u79f0",
-            theme: EluiCellTheme(
-              titleColor: theme["text"]["subtitle"],
-              labelColor: theme["text"]["subtext1"],
-              linkColor: theme["text"]["subtitle"],
-              backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
-            ),
-            icons: Icon(
-              Icons.account_box,
-              color: theme["text"]["subtitle"] ?? Colors.white,
-            ),
-            cont: Wrap(
-              spacing: 5,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: <Widget>[
-                Text(
-                  "${userInfo['username']}",
-                  style: TextStyle(
-                    color: Colors.white,
+                  title: "\u7528\u6237\u540d\u79f0",
+                  theme: EluiCellTheme(
+                    titleColor: theme["text"]["subtitle"],
+                    labelColor: theme["text"]["subtext1"],
+                    linkColor: theme["text"]["subtitle"],
+                    backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
+                  ),
+                  icons: Icon(
+                    Icons.account_box,
+                    color: theme["text"]["secondary"] ?? Colors.white,
+                  ),
+                  cont: Wrap(
+                    spacing: 5,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "${userInfo['username']}",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      EluiTagComponent(
+                        value: Config.usetIdentity[userInfo["userPrivilege"]][0].toString(),
+                        color: EluiTagColor.succeed,
+                        size: EluiTagSize.no2,
+                      ),
+                    ],
                   ),
                 ),
-                EluiTagComponent(
-                  value: Config.usetIdentity[userInfo["userPrivilege"]][0].toString(),
-                  color: EluiTagColor.succeed,
-                  size: EluiTagSize.no2,
-                ),
-              ],
-            ),
-          ),
           Offstage(
             offstage: !userInfoState,
             child: EluiCellComponent(
@@ -345,17 +344,6 @@ class _usercenterState extends State<usercenter> {
             onTap: () => this._opEnTheme(),
           ),
           EluiCellComponent(
-            title: "引导",
-            theme: EluiCellTheme(
-              titleColor: theme["text"]["subtitle"],
-              labelColor: theme["text"]["subtext1"],
-              linkColor: theme["text"]["subtitle"],
-              backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
-            ),
-            islink: true,
-            onTap: () => this._opEnGuide(),
-          ),
-          EluiCellComponent(
             title: "\u7248\u672c",
             theme: EluiCellTheme(
               titleColor: theme["text"]["subtitle"],
@@ -368,30 +356,30 @@ class _usercenterState extends State<usercenter> {
               children: <Widget>[
                 versionInfo["load"]
                     ? ELuiLoadComponent(
-                  type: "line",
-                  color: theme["text"]["subtitle"] ?? Colors.white,
-                  lineWidth: 2,
-                  size: 20,
-                )
-                    : Wrap(
-                  spacing: 10,
-                  children: <Widget>[
-                    Text(
-                      appInfo["v"].toString(),
-                      style: TextStyle(
+                        type: "line",
                         color: theme["text"]["subtitle"] ?? Colors.white,
+                        lineWidth: 2,
+                        size: 20,
+                      )
+                    : Wrap(
+                        spacing: 10,
+                        children: <Widget>[
+                          Text(
+                            appInfo["v"].toString(),
+                            style: TextStyle(
+                              color: theme["text"]["subtitle"] ?? Colors.white,
+                            ),
+                          ),
+                          Offstage(
+                            offstage: !versionInfo["is"],
+                            child: EluiTagComponent(
+                              size: EluiTagSize.no2,
+                              color: EluiTagColor.warning,
+                              value: "\u6709\u66f4\u65b0",
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                    Offstage(
-                      offstage: !versionInfo["is"],
-                      child: EluiTagComponent(
-                        size: EluiTagSize.no2,
-                        color: EluiTagColor.warning,
-                        value: "\u6709\u66f4\u65b0",
-                      ),
-                    )
-                  ],
-                ),
               ],
             ),
             onTap: () => _opEnVersionDowUrl(),
