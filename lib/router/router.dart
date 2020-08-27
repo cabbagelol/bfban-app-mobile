@@ -14,6 +14,7 @@ import 'package:bfban/pages/login/index.dart';
 import 'package:bfban/pages/login/record/index.dart';
 import 'package:bfban/pages/search/searchList.dart';
 import 'package:bfban/pages/usercenter/support.dart';
+import 'package:bfban/pages/usercenter/theme.dart';
 import 'package:bfban/pages/richEdit/index.dart';
 // E Pages
 
@@ -89,6 +90,12 @@ class Routes {
         "url": "/usercenter/support",
         'item': (context, params) {
           return SupportPage();
+        },
+      },
+      {
+        "url": "/usercenter/theme",
+        'item': (context, params) {
+          return ThemePage();
         },
       },
       {

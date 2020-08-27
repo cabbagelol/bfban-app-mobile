@@ -16,10 +16,13 @@ class indexScreen extends StatefulWidget {
 
   final indexData;
 
+  final Map theme;
+
   indexScreen({
     this.keyname,
     this.onSucceed,
     this.indexData,
+    this.theme,
   });
 
   @override
@@ -144,7 +147,7 @@ class _indexScreenState extends State<indexScreen> {
                       Text(
                         "游戏",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: widget.theme['text']['subtitle'] ?? Colors.white,
                           fontSize: 13,
                           shadows: <Shadow>[
                             Shadow(
@@ -163,11 +166,12 @@ class _indexScreenState extends State<indexScreen> {
                         ),
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: Container(
-                          color: Colors.black38,
+                          color: widget.theme['card']['prominent'] ?? Colors.black38,
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: gameTypes.asMap().keys.map((index) {
                               return gameTypeRadio(
+                                widget.theme,
                                 index: gameTypeIndex == index,
                                 child: index != 0
                                     ? Wrap(
@@ -176,7 +180,9 @@ class _indexScreenState extends State<indexScreen> {
                                           Text(
                                             gameTypes[index]["name"].toString(),
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: gameTypeIndex == index
+                                                  ? widget.theme['text']['subtitle']
+                                                  : widget.theme['text']['secondary'] ?? Colors.white,
                                               fontSize: 13,
                                             ),
                                           ),
@@ -197,7 +203,9 @@ class _indexScreenState extends State<indexScreen> {
                                     : Text(
                                         gameTypes[index]["name"].toString(),
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: gameTypeIndex == index
+                                              ? widget.theme['text']['subtitle']
+                                              : widget.theme['text']['secondary'] ?? Colors.white,
                                           fontSize: 13,
                                         ),
                                       ),
@@ -235,7 +243,7 @@ class _indexScreenState extends State<indexScreen> {
                       Text(
                         "类型",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: widget.theme['text']['subtitle'] ?? Colors.white,
                           fontSize: 13,
                           shadows: <Shadow>[
                             Shadow(
@@ -256,15 +264,18 @@ class _indexScreenState extends State<indexScreen> {
                           ),
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: Container(
-                            color: Colors.black26,
+                            color: widget.theme['card']['prominent'] ?? Colors.black26,
                             child: Wrap(
                               children: gameSumStatusData.asMap().keys.map((index) {
                                 return gameTypeRadio(
+                                  widget.theme,
                                   index: gameSumStatus["index"] == index,
                                   child: Text(
                                     gameSumStatusData[index]["s"].toString(),
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: gameSumStatus["index"] == index
+                                          ? widget.theme['text']['subtitle']
+                                          : widget.theme['text']['secondary'] ?? Colors.white,
                                       fontSize: 13,
                                     ),
                                   ),
@@ -272,7 +283,6 @@ class _indexScreenState extends State<indexScreen> {
                                     if (index == this.gameSumStatus["index"]) {
                                       return;
                                     }
-
                                     setState(() {
                                       gameSumStatus["index"] = index;
                                     });
@@ -303,7 +313,7 @@ class _indexScreenState extends State<indexScreen> {
                       Text(
                         "排序",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: widget.theme['text']['subtitle'] ?? Colors.white,
                           fontSize: 13,
                           shadows: <Shadow>[
                             Shadow(
@@ -325,9 +335,9 @@ class _indexScreenState extends State<indexScreen> {
                             color: Colors.transparent,
                           ),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: widget.theme['text']['subtitle'] ?? Colors.white,
                           ),
-                          dropdownColor: Colors.black,
+                          dropdownColor: widget.theme['card']['prominent'] ?? Colors.black,
                           isDense: false,
                           isExpanded: true,
                           onChanged: (String value) {
@@ -385,12 +395,12 @@ class _indexScreenState extends State<indexScreen> {
                     child: Text(
                       "确认",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: widget.theme['button']['textColor'] ?? Colors.white,
                       ),
                     ),
                     size: ButtonSize.mini,
                     theme: EluiButtonTheme(
-                      backgroundColor: Color(0xff364e80),
+                      backgroundColor: widget.theme['button']['backgroundColor'] ?? Color(0xff364e80),
                     ),
                     onTap: () {
                       this.onChange();

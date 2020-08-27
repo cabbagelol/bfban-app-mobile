@@ -3,15 +3,16 @@
 import 'dart:convert';
 import 'dart:ui' as ui;
 
+import 'package:bfban/constants/theme.dart';
 import 'package:bfban/pages/index/community.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_plugin_elui/_message/index.dart';
 
 import 'package:bfban/constants/index.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:bfban/widgets/index.dart';
 import 'package:bfban/router/router.dart';
-import 'package:flutter_plugin_elui/_message/index.dart';
 
 import 'home.dart';
 import 'news.dart';
@@ -35,7 +36,7 @@ class _IndexPageState extends State<IndexPage> {
   void initState() {
     super.initState();
 
-    this.onGuide();
+    this._onGuide();
     this._onReady();
   }
 
@@ -69,7 +70,7 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   /// 引导器
-  void onGuide() async {
+  void _onGuide() async {
     Storage.get('com.bfban.guide').then((value) {
       if (value == null) {
         Routes.router.navigateTo(
@@ -90,96 +91,146 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
     ScreenUtil.instance = ScreenUtil(width: Klength.designWidth)..init(context);
-
     List<Widget> widgets = [HomePage(), communityPage(), newsPage(), usercenter()];
 
-    return Scaffold(
-      backgroundColor: Color(0xff111b2b),
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Opacity(
-            opacity: 0.5,
-            child: Image.asset(
-              "assets/images/bk-companion-1.jpg",
-              fit: BoxFit.cover,
-            ),
+    return Column(
+      children: <Widget>[
+        Expanded(
+          flex: 1,
+          child: IndexedStack(
+            children: widgets,
+            index: currentPage,
           ),
-          BackdropFilter(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: IndexedStack(
-                    children: widgets,
-                    index: currentPage,
-                  ),
+        ),
+        KKBottomAppBar(
+            onTabSeleted: onTap,
+            theme: theme,
+            items: [
+              {
+                "name": "\u9996\u9875",
+                "icon": Icon(
+                  Icons.home,
+                  color: theme['index_index_tabs']['color'],
                 ),
-              ],
-            ),
-            filter: ui.ImageFilter.blur(
-              sigmaX: 0.0,
-              sigmaY: 0.0,
-            ),
+                "icon_s": Icon(
+                  Icons.home,
+                  color: theme['index_index_tabs']['actviveColor'],
+                ),
+              },
+              {
+                "name": "\u793e\u533a",
+                "icon": Icon(
+                  Icons.comment,
+                  color: theme['index_index_tabs']['color'],
+                ),
+                "icon_s": Icon(
+                  Icons.comment,
+                  color: theme['index_index_tabs']['actviveColor'],
+                ),
+              },
+              {
+                "name": "\u65b0\u95fb",
+                "icon": Icon(
+                  Icons.featured_video,
+                  color: theme['index_index_tabs']['color'],
+                ),
+                "icon_s": Icon(
+                  Icons.featured_video,
+                  color: theme['index_index_tabs']['actviveColor'],
+                ),
+              },
+              {
+                "name": "\u4e2a\u4eba\u4e2d\u5fc3",
+                "icon": Icon(
+                  Icons.portrait,
+                  color: theme['index_index_tabs']['color'],
+                ),
+                "icon_s": Icon(
+                  Icons.portrait,
+                  color: theme['index_index_tabs']['actviveColor'],
+                ),
+              },
+            ].map((e) {
+              return BottomAppBarItemModal(
+                e,
+                e["name"],
+              );
+            }).toList()),
+      ],
+    );
+  }
+}
+
+class BottomAppBarItemModal {
+  final Map iconData;
+  final String text;
+
+  BottomAppBarItemModal(
+    this.iconData,
+    this.text,
+  );
+}
+
+class KKBottomAppBar extends StatefulWidget {
+  final List<BottomAppBarItemModal> items;
+  final ValueChanged<int> onTabSeleted;
+  final theme;
+
+  KKBottomAppBar({
+    this.items,
+    this.onTabSeleted,
+    this.theme,
+  }) : super();
+
+  @override
+  BottomAppBarState createState() => BottomAppBarState();
+}
+
+class BottomAppBarState extends State<KKBottomAppBar> {
+  int currentIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    int l = widget.items.length;
+    double bottom = ScreenUtil.bottomBarHeight; //IPhone 底部
+
+    List<Widget> listWidgets = List.generate(l, (index) {
+      BottomAppBarItemModal i = widget.items[index];
+
+      return Expanded(
+        flex: 1,
+        child: FlatButton(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              index == currentIndex ? i.iconData["icon_s"] : i.iconData["icon"],
+              Text(
+                i.text,
+                style: TextStyle(color: index == currentIndex ? widget.theme['index_index_tabs']['actviveColor'] : widget.theme['index_index_tabs']['color'], fontSize: 12),
+              ),
+            ],
           ),
-        ],
+          onPressed: () {
+            setState(() => this.currentIndex = index);
+            widget.onTabSeleted(index);
+          },
+        ),
+      );
+    });
+
+    return Container(
+      height: Klength.bottomBarHeight,
+      color: widget.theme['index_index_tabs']['backgroundColor'],
+      alignment: Alignment.center,
+      margin: EdgeInsets.only(bottom: bottom),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: listWidgets,
       ),
-      bottomNavigationBar: KKBottomAppBar(
-          onTabSeleted: onTap,
-          actviveColor: Colors.yellow,
-          color: Colors.white,
-          items: [
-            {
-              "name": "\u9996\u9875",
-              "icon": Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              "icon_s": Icon(
-                Icons.home,
-                color: Colors.yellow,
-              ),
-            },
-            {
-              "name": "\u793e\u533a",
-              "icon": Icon(
-                Icons.comment,
-                color: Colors.white,
-              ),
-              "icon_s": Icon(
-                Icons.comment,
-                color: Colors.yellow,
-              ),
-            },
-            {
-              "name": "\u65b0\u95fb",
-              "icon": Icon(
-                Icons.featured_video,
-                color: Colors.white,
-              ),
-              "icon_s": Icon(
-                Icons.featured_video,
-                color: Colors.yellow,
-              ),
-            },
-            {
-              "name": "\u4e2a\u4eba\u4e2d\u5fc3",
-              "icon": Icon(
-                Icons.portrait,
-                color: Colors.white,
-              ),
-              "icon_s": Icon(
-                Icons.portrait,
-                color: Colors.yellow,
-              ),
-            },
-          ].map((e) {
-            return BottomAppBarItemModal(
-              e,
-              e["name"],
-            );
-          }).toList()),
     );
   }
 }

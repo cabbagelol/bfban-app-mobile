@@ -5,8 +5,9 @@ class gameTypeRadio extends StatelessWidget {
   final child;
   final bool index;
   final Function onTap;
+  final Map theme;
 
-  gameTypeRadio({
+  gameTypeRadio(this.theme, {
     this.child,
     this.index = false,
     this.onTap,
@@ -22,7 +23,7 @@ class gameTypeRadio extends StatelessWidget {
           top: 5,
           bottom: 5,
         ),
-        color: index ? Color(0xff364e80) : Colors.transparent,
+        color: index ? (theme['nameColor'] ?? Color(0xff364e80)) : Colors.transparent,
         child: child,
       ),
       onTap: this.onTap,

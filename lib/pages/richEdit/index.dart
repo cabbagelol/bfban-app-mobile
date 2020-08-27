@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rich_html/main.dart';
 
 import 'package:bfban/widgets/richText.dart';
 
@@ -18,7 +19,8 @@ class richEditPage extends StatefulWidget {
 }
 
 class _richEditPageState extends State<richEditPage> {
-  SimpleRichEditController controller;
+  List<RichHtmlLabelType> _richhtmlSupport;
+  MySimpleRichHtmlController _richhtmlController;
 
   Map data;
 
@@ -26,44 +28,49 @@ class _richEditPageState extends State<richEditPage> {
   void initState() {
     data = jsonDecode(widget.data);
 
-    /// 返回的值是否为存文字
-    /// data["isText"]
-
     setState(() {
       data["isText"] = (data["isText"] ?? false);
 
-      controller = SimpleRichEditController(
-        context: context,
-        isImageIcon: (data["isText"] ?? false) ? false : true,
-        isVideoIcon: false,
-      );
+      _richhtmlSupport = [
+        RichHtmlLabelType.IMAGE,
+        RichHtmlLabelType.P,
+        RichHtmlLabelType.TEXT,
+      ];
 
-      controller.generateView(
-        Uri.decodeComponent(
-          jsonDecode(widget.data)["html"],
+      _richhtmlController = MySimpleRichHtmlController(
+        context,
+        theme: RichHtmlTheme(
+          mainColor: Colors.deepPurple,
         ),
-      );
+      )..html = Uri.decodeComponent(
+          jsonDecode(widget.data)["html"],
+        );
     });
     super.initState();
+  }
+
+  /// 确认
+
+  void _onSubmit() {
+    Navigator.pop(
+      context,
+      {
+        "code": 1,
+        "html": data["isText"] ? _richhtmlController.text : _richhtmlController.html,
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.white,
-        ),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(
-            Icons.close,
-            color: Colors.white,
-            size: 25,
-          ),
+          icon: Icon(Icons.close),
           onPressed: () {
             Navigator.pop(
               context,
@@ -71,34 +78,36 @@ class _richEditPageState extends State<richEditPage> {
             );
           },
         ),
+        title: Text("编辑"),
         actions: <Widget>[
-          RaisedButton(
-            color: Color(0xff364e80),
-            child: Text(
-              "确认",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
-            onPressed: () {
-              Navigator.pop(
-                context,
-                {
-                  "code": 1,
-                  "html": data["isText"] ? controller.generateText() : controller.generateHtml(),
-                },
-              );
-            },
+          IconButton(
+            icon: Icon(Icons.done),
+            onPressed: () => _onSubmit(),
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.only(
-          top: 20,
+      body: RichHtml(
+        _richhtmlController,
+        richhtmlSupportLabel: _richhtmlSupport,
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(
+              width: 1,
+              color: Color(0xfff2f2f2),
+            ),
+          ),
         ),
-        child: richText(
-          controller: controller,
+        child: RichHtmlToolbar(
+          _richhtmlController,
+          children: <RichHtmlTool>[
+            RichHtmlToolSizedBox(
+              flex: 1,
+            ),
+            RichHtmlToolImages(),
+          ],
         ),
       ),
     );

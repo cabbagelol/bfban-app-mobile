@@ -2,8 +2,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:bfban/widgets/news/index.dart';
+import 'package:bfban/constants/theme.dart';
+import 'package:bfban/utils/index.dart';
 
 class newsPage extends StatefulWidget {
   @override
@@ -17,8 +20,9 @@ class _newsPageState extends State<newsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
+
     return Scaffold(
-      backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -28,14 +32,7 @@ class _newsPageState extends State<newsPage> {
         actions: <Widget>[
           NavigationControls(_controller.future),
         ],
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              colors: [Colors.transparent, Colors.black38],
-            ),
-          ),
-        ),
+        flexibleSpace: theme['appBar']['flexibleSpace'],
       ),
       body: SafeArea(
         top: true,

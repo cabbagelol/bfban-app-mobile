@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_plugin_elui/elui.dart';
+import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
+import 'package:bfban/constants/theme.dart';
 
 class SupportPage extends StatefulWidget {
   @override
@@ -16,16 +18,12 @@ class _SupportPageState extends State<SupportPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
+
     return Scaffold(
-      backgroundColor: Color(0xff111b2b),
       extendBodyBehindAppBar: true,
-      appBar: EluiHeadComponent(
-        context: context,
-        backgroundColor: Color(0xff364e80),
-        title: "",
-        titleStyle: TextStyle(
-          color: Colors.white,
-        ),
+      appBar: AppBar(
+        elevation: 0,
         centerTitle: true,
       ),
       body: ListView(
@@ -34,7 +32,9 @@ class _SupportPageState extends State<SupportPage> {
             title: "Github",
             label: "开源地址",
             theme: EluiCellTheme(
-              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+              titleColor: theme['text']['subtitle'],
+              labelColor: theme['text']['secondary'],
+              backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
             islink: true,
             onTap: () => _urlUtil.onPeUrl("https://github.com/BFBAN/bfban-app"),
@@ -43,7 +43,9 @@ class _SupportPageState extends State<SupportPage> {
             title: "捐赠",
             label: "向BFBAN APP开发者捐赠人民币",
             theme: EluiCellTheme(
-              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+              titleColor: theme['text']['subtitle'],
+              labelColor: theme['text']['secondary'],
+              backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
             islink: true,
             onTap: () => _urlUtil.onPeUrl("https://cabbagelol.net/%e6%8d%90%e5%8a%a9/"),
@@ -54,43 +56,53 @@ class _SupportPageState extends State<SupportPage> {
           EluiCellComponent(
             title: "内部",
             theme: EluiCellTheme(
+              labelColor: theme['text']['secondary'],
               backgroundColor: Colors.transparent,
-              titleColor: Colors.white38,
+              titleColor: theme['text']['subtitle'] ?? Colors.white38,
             ),
           ),
           EluiCellComponent(
             title: "BFBAN WEB 接口",
             label: "app.bfban.com / bf.bamket.com",
             theme: EluiCellTheme(
-              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+              titleColor: theme['text']['subtitle'],
+              labelColor: theme['text']['secondary'],
+              backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
           ),
           EluiCellComponent(
             title: "第三方 (我们无法管控的数据)",
             theme: EluiCellTheme(
+              labelColor: theme['text']['secondary'],
               backgroundColor: Colors.transparent,
-              titleColor: Colors.white38,
+              titleColor: theme['text']['subtitle'] ?? Colors.white38,
             ),
           ),
           EluiCellComponent(
             title: "TRN",
             label: "battlefieldtracker.com",
             theme: EluiCellTheme(
-              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+              titleColor: theme['text']['subtitle'],
+              labelColor: theme['text']['secondary'],
+              backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
           ),
           EluiCellComponent(
             title: "@Lv_Aini",
             label: "record.huiyi.sc.cn",
             theme: EluiCellTheme(
-              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+              titleColor: theme['text']['subtitle'],
+              labelColor: theme['text']['secondary'],
+              backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
           ),
           EluiCellComponent(
             title: "@Lv_Ainio",
             label: "api.tracker.gg",
             theme: EluiCellTheme(
-              backgroundColor: Color.fromRGBO(255, 255, 255, .07),
+              titleColor: theme['text']['subtitle'],
+              labelColor: theme['text']['secondary'],
+              backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
           ),
         ],

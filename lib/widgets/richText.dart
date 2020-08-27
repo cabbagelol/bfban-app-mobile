@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rich_html/main.dart';
 
 import 'package:bfban/component/rich_edit.dart';
 
@@ -87,4 +88,39 @@ class SimpleRichEditController extends RichEditController {
   Widget generateImageView(RichEditData data) => Image.network(
         data.data,
       );
+}
+
+
+
+
+
+
+
+
+
+
+
+class MySimpleRichHtmlController extends RichHtmlController {
+  final context;
+  final RichHtmlTheme theme;
+
+  MySimpleRichHtmlController(
+      this.context, {
+        this.theme,
+      });
+
+  @override
+  Future<String> insertVideo() async {
+    return "https://www.w3school.com.cn/i/movie.mp4";
+  }
+
+  @override
+  Future<String> insertImage() async {
+    return "https://www.w3school.com.cn/i/eg_tulip.jpg";
+  }
+
+  @override
+  noSuchMethod(Invocation invocation) {
+    return super.noSuchMethod(invocation);
+  }
 }

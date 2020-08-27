@@ -45,10 +45,11 @@ void main() async {
       );
     },
   );
-  FlutterError.onError = (details, {bool forceReport = false}) async {
-    sentry.captureException(
-      exception: details.exception,
-      stackTrace: details.stack,
-    );
-  };
+
+//  FlutterError.onError = (details, {bool forceReport = false}) async {
+//    sentry.captureException(
+//      exception: details.exception,
+//      stackTrace: details.stack,
+//    );
+//  };
 }

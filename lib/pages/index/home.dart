@@ -7,10 +7,12 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:bfban/constants/theme.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:bfban/widgets/index/screen.dart';
 
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 
 class HomePage extends StatefulWidget {
@@ -91,8 +93,6 @@ class _HomePageState extends State<HomePage> {
 
   /// 筛选
   void _setScreenData(Map data) {
-    print(data);
-
     setState(() {
       this.cheatersPost.addAll({
         "page": 1,
@@ -132,9 +132,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
+
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -143,8 +144,9 @@ class _HomePageState extends State<HomePage> {
           theme: titleSearchTheme.black,
         ),
       ),
-      drawerScrimColor: Color(0xff111b2b),
+      drawerScrimColor: theme['index_home']['drawer']['color'] ??  Color(0xff111b2b),
       drawer: indexScreen(
+        theme: theme,
         keyname: _scaffoldKey,
         indexData: indexData,
         onSucceed: (Map data) => this._setScreenData(data),
@@ -156,8 +158,8 @@ class _HomePageState extends State<HomePage> {
             child: !indexPagesState
                 ? RefreshIndicator(
                     onRefresh: _onRefresh,
-                    color: Colors.black,
-                    backgroundColor: Colors.yellow,
+                    color: theme['index_home']['buttonEdit']['textColor'] ?? Colors.black,
+                    backgroundColor: theme['index_home']['buttonEdit']['backgroundColor'] ?? Colors.yellow,
                     child: ListView.builder(
                       controller: _scrollController,
                       itemCount: indexDataList.length,
@@ -203,18 +205,19 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.mode_edit,
-          color: Colors.black,
+          color: theme['index_home']['buttonEdit']["textColor"],
           size: 30,
         ),
         tooltip: "\u53d1\u5e03",
         isExtended: true,
         onPressed: _opEnEdit,
-        backgroundColor: Colors.yellow,
+        backgroundColor: theme['index_home']['buttonEdit']["backgroundColor"],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
+
 
   /// 下拉刷新方法,为list重新赋值
   Future<Null> _onRefresh() async {

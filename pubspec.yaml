@@ -33,7 +33,7 @@ dependencies:
   flutter_svg: ^0.18.1
 
   # 数据储存 https://pub.flutter-io.cn/packages/shared_preferences
-  shared_preferences: ^0.5.3+4
+  shared_preferences: ^0.5.10
 
   # 链接 https://pub.flutter-io.cn/packages/url_launcher
   url_launcher: 5.5.0
@@ -64,6 +64,8 @@ dependencies:
   # https://pub.flutter-io.cn/packages/rich_edit
   chewie: 0.9.10
   rich_edit: 0.1.1
+  flutter_rich_html:
+    path: ../../flutter-rich-html
 
   # uuid https://github.com/Daegalus/dart-uuid
   uuid: 2.2.0
@@ -73,6 +75,9 @@ dependencies:
 
   # https://pub.dev/packages/sentry
   sentry: 3.0.1
+
+  # 状态管理
+  provider: ^4.0.5
 
   flutter_plugin_elui:
     path: ../../flutter-elui-plugin

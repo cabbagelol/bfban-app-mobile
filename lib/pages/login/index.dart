@@ -3,13 +3,15 @@ import 'dart:ui' as ui;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import 'package:bfban/utils/index.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:flutter_plugin_elui/elui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:bfban/utils/index.dart';
+import 'package:bfban/constants/theme.dart';
+
 import 'package:video_player/video_player.dart';
+import 'package:provider/provider.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -183,21 +185,15 @@ class _loginPageState extends State<loginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
+
     return Scaffold(
-      backgroundColor: Color(0xff111b2b),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              colors: [Colors.transparent, Colors.black54],
-            ),
-          ),
-        ),
+        flexibleSpace: theme['appBar']['flexibleSpace'],
       ),
       body: Stack(
         fit: StackFit.loose,
@@ -212,112 +208,113 @@ class _loginPageState extends State<loginPage> {
               ),
             ),
           ),
-
           BackdropFilter(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: ListView(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        color: Color(0xff111b2b),
-                        padding: EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                        ),
-                        child: EluiInputComponent(
-                          placeholder: "输入账户ID",
-                          Internalstyle: true,
-                          theme: EluiInputTheme(
-                            textStyle: TextStyle(
-                              color: Colors.white,
-                            ),
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: ListView(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          color: theme['input']['prominent'] ??Color(0xff111b2b),
+                          padding: EdgeInsets.only(
+                            left: 10,
+                            right: 10,
                           ),
-                          onChange: (data) {
-                            setState(() {
-                              loginInfo["userController"] = data["value"];
-                            });
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        color: Color(0xff111b2b),
-                        padding: EdgeInsets.only(
-                          left: 10,
-                          right: 10,
-                        ),
-                        child: EluiInputComponent(
-                          placeholder: "密码",
-                          type: TextInputType.visiblePassword,
-                          Internalstyle: true,
-                          theme: EluiInputTheme(
-                            textStyle: TextStyle(
-                              color: Colors.white,
+                          child: EluiInputComponent(
+                            placeholder: "输入账户ID",
+                            Internalstyle: true,
+                            theme: EluiInputTheme(
+                              textStyle: TextStyle(
+                                color: theme['text']['subtitle'] ?? Colors.white,
+                              ),
                             ),
+                            onChange: (data) {
+                              setState(() {
+                                loginInfo["userController"] = data["value"];
+                              });
+                            },
                           ),
-                          onChange: (data) {
-                            setState(() {
-                              loginInfo["passController"] = data["value"];
-                            });
-                          },
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        color: Color(0xff111b2b),
-                        padding: EdgeInsets.only(
-                          left: 10,
-                        ),
-                        child: EluiInputComponent(
-                          placeholder: "验证码",
-                          Internalstyle: true,
-                          maxLenght: 4,
-                          theme: EluiInputTheme(
-                            textStyle: TextStyle(
-                              color: Colors.white,
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          color:theme['input']['prominent'] ?? Color(0xff111b2b),
+                          padding: EdgeInsets.only(
+                            left: 10,
+                            right: 10,
+                          ),
+                          child: EluiInputComponent(
+                            placeholder: "密码",
+                            type: TextInputType.visiblePassword,
+                            Internalstyle: true,
+                            theme: EluiInputTheme(
+                              textStyle: TextStyle(
+                                color: theme['text']['subtitle'] ?? Colors.white,
+                              ),
                             ),
+                            onChange: (data) {
+                              setState(() {
+                                loginInfo["passController"] = data["value"];
+                              });
+                            },
                           ),
-                          right: GestureDetector(
-                            child: Container(
-                              color: Colors.white,
-                              margin: EdgeInsets.only(left: 10),
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                              height: 50,
-                              child: valueCaptchaLoad
-                                  ? Icon(
-                                      Icons.access_time,
-                                      color: Colors.black54,
-                                    )
-                                  : new SvgPicture.string(
-                                      loginInfo["valueCaptcha"],
-                                    ),
-                            ),
-                            onTap: () => this._getCaptcha(),
-                          ),
-                          onChange: (data) {
-                            setState(() {
-                              loginInfo["verificationController"] = data["value"];
-                            });
-                          },
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          color: theme['input']['prominent'] ?? Color(0xff111b2b),
+                          padding: EdgeInsets.only(
+                            left: 10,
+                          ),
+                          child: EluiInputComponent(
+                            placeholder: "验证码",
+                            Internalstyle: true,
+                            maxLenght: 4,
+                            theme: EluiInputTheme(
+                              textStyle: TextStyle(
+                                color: theme['text']['subtitle'] ?? Colors.white,
+                              ),
+                            ),
+                            right: GestureDetector(
+                              child: Container(
+                                color: Colors.white,
+                                margin: EdgeInsets.only(left: 10),
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                height: 50,
+                                child: valueCaptchaLoad
+                                    ? Icon(
+                                        Icons.access_time,
+                                        color: Colors.black54,
+                                      )
+                                    : new SvgPicture.string(
+                                        loginInfo["valueCaptcha"],
+                                      ),
+                              ),
+                              onTap: () => this._getCaptcha(),
+                            ),
+                            onChange: (data) {
+                              setState(() {
+                                loginInfo["verificationController"] = data["value"];
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              color: theme['login_index']['backgroundColor'] ?? Color.fromRGBO(17, 27, 43, .8),
             ),
             filter: ui.ImageFilter.blur(
               sigmaX: 6.0,
               sigmaY: 6.0,
             ),
           ),
-
           Positioned(
             left: 0,
             right: 0,
@@ -339,18 +336,18 @@ class _loginPageState extends State<loginPage> {
                     EluiButtonComponent(
                       type: ButtonType.none,
                       theme: EluiButtonTheme(
-                        backgroundColor: Color(0xff364e80),
+                        backgroundColor: theme['button']['backgroundColor'] ?? Color(0xff364e80),
                       ),
                       child: loginLoad
                           ? ELuiLoadComponent(
-                        type: "line",
-                        lineWidth: 2,
-                        color: Colors.white,
-                      )
+                              type: "line",
+                              lineWidth: 2,
+                              color: theme['button']['textColor'] ?? Colors.white,
+                            )
                           : Icon(
-                        Icons.done,
-                        color: Colors.white,
-                      ),
+                              Icons.done,
+                              color: theme['button']['textColor'] ?? Colors.white,
+                            ),
                       onTap: () => _onLogin(),
                     ),
                     SizedBox(

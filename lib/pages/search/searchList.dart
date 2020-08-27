@@ -9,7 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/widgets/index.dart';
+import 'package:bfban/constants/theme.dart';
 
+import 'package:provider/provider.dart';
 import 'package:flutter_plugin_elui/_cell/cell.dart';
 import 'package:flutter_plugin_elui/_tag/tag.dart';
 import 'package:flutter_plugin_elui/_vacancy/index.dart';
@@ -60,7 +62,11 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   /// 账户搜索
-  void _onSearch() async {
+  void _onSearch(value) async {
+    setState(() {
+      this.value = value;
+    });
+
     if (value == "") {
       return;
     }
@@ -129,22 +135,17 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
+
     return Scaffold(
-      backgroundColor: Color(0xff111b2b),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Color(0xff364e80),
         elevation: 0,
         centerTitle: true,
         title: titleSearch(
           controller: _searchController,
           theme: titleSearchTheme.white,
-          onSubmitted: (String value) {
-            setState(() {
-              this.value = value;
-            });
-            this._onSearch();
-          },
+          onSubmitted: (String value) => this._onSearch(value),
         ),
       ),
       body: ListView(
@@ -172,14 +173,14 @@ class _SearchPageState extends State<SearchPage> {
                             children: <Widget>[
                               Icon(
                                 Icons.history,
-                                color: Colors.white54,
+                                color: theme['text']['subtitle'] ?? Colors.white54,
                                 size: 17,
                               ),
                               Text(
                                 "搜索历史",
                                 style: TextStyle(
                                   fontSize: 15,
-                                  color: Colors.white54,
+                                  color: theme['text']['subtitle'] ?? Colors.white54,
                                 ),
                               )
                             ],
@@ -200,25 +201,24 @@ class _SearchPageState extends State<SearchPage> {
                       Wrap(
                         spacing: 10,
                         runSpacing: 5,
-                        children: serachLogList.map((e) {
+                        children: serachLogList.map((value) {
                           return EluiTagComponent(
-                            value: e,
+                            value: value,
                             isClose: true,
                             theme: EluiTagtheme(
-                              backgroundColor: Colors.black12,
-                              textColor: Colors.white,
+                              backgroundColor: theme['card']['color'],
+                              textColor: theme['text']['subtitle'] ?? Colors.white,
                             ),
                             onTap: () {
                               setState(() {
-                                value = e;
                                 _searchController.value = TextEditingValue(
-                                  text: e,
+                                  text: value,
                                 );
 
-                                this._onSearch();
+                                this._onSearch(value);
                               });
                             },
-                            onClose: () => this._deleSearchLog(e),
+                            onClose: () => this._deleSearchLog(value),
                           );
                         }).toList(),
                       ),
@@ -234,7 +234,7 @@ class _SearchPageState extends State<SearchPage> {
                     "已列出符合检索关键词的ID",
                     style: TextStyle(
                       fontSize: 15,
-                      color: Colors.white54,
+                      color: theme['text']['subtitle'] ?? Colors.white54,
                     ),
                   ),
                 ),
@@ -251,7 +251,8 @@ class _SearchPageState extends State<SearchPage> {
                     children: searchList.map((i) {
                       return EluiCellComponent(
                         theme: EluiCellTheme(
-                          backgroundColor: Colors.black12,
+                          titleColor: theme['text']['subtitle'],
+                          backgroundColor: theme['card']['color'] ?? Colors.black12,
                         ),
                         title: i["originId"].toString(),
                         islink: true,

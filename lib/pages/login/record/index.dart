@@ -9,8 +9,10 @@ import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/widgets/index.dart';
+import 'package:bfban/constants/theme.dart';
 
 import 'package:flutter_plugin_elui/elui.dart';
+import 'package:provider/provider.dart';
 
 class recordPage extends StatefulWidget {
   final data;
@@ -121,8 +123,9 @@ class _RecordPageState extends State<recordPage> {
 
   @override
   Widget build(BuildContext context) {
+    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
+
     return Scaffold(
-      backgroundColor: Color(0xff111b2b),
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
@@ -151,6 +154,7 @@ class _RecordPageState extends State<recordPage> {
                     itemCount: indexDataList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return recordItem(
+                        theme: theme,
                         item: indexDataList[index],
                       );
                     },
@@ -188,9 +192,11 @@ class _RecordPageState extends State<recordPage> {
 /// 记录卡片
 class recordItem extends StatelessWidget {
   final item;
+  final Map theme;
 
   recordItem({
     this.item,
+    this.theme,
   });
 
   @override
@@ -204,7 +210,7 @@ class recordItem extends StatelessWidget {
         );
       },
       child: Container(
-        color: Color.fromRGBO(0, 0, 0, .3),
+        color: theme['card']['color'] ?? Color.fromRGBO(0, 0, 0, .3),
         margin: EdgeInsets.only(bottom: 1),
         padding: EdgeInsets.all(20),
         child: Row(
@@ -220,7 +226,7 @@ class recordItem extends StatelessWidget {
                   Text(
                     item["originId"] ?? "",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: theme['text']['subtitle'] ?? Colors.white,
                       fontSize: 20,
                     ),
                   ),
@@ -231,7 +237,7 @@ class recordItem extends StatelessWidget {
                           Text(
                             "游戏类型: ${item["game"].toString()}" ?? "",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: theme['text']['subtitle'] ?? Colors.white,
                               fontSize: 12,
                             ),
                           )
@@ -242,7 +248,7 @@ class recordItem extends StatelessWidget {
                           Text(
                             " 状态: ${Config.startusIng[int.parse(item["status"])]["s"]}" ?? "",
                             style: TextStyle(
-                              color: Colors.white,
+                              color: theme['text']['subtitle'] ?? Colors.white,
                               fontSize: 13,
                             ),
                           )
@@ -259,14 +265,14 @@ class recordItem extends StatelessWidget {
                 Text(
                   "发布日期:",
                   style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, .6),
+                    color: theme['text']['subtext1'] ?? Color.fromRGBO(255, 255, 255, .6),
                     fontSize: 12,
                   ),
                 ),
                 Text(
                   "${item["createDatetime"]}",
                   style: TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, .6),
+                    color: theme['text']['subtext1'] ?? Color.fromRGBO(255, 255, 255, .6),
                     fontSize: 13,
                   ),
                 )
