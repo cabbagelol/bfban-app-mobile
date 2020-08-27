@@ -1,6 +1,7 @@
 /// 程序入口
 
 import 'package:flutter/material.dart';
+import 'package:flutter_plugin_elui/_load/index.dart';
 
 import 'package:provider/provider.dart';
 
@@ -21,29 +22,27 @@ class MyApp extends StatelessWidget {
           value: AppInfoProvider(),
         ),
       ],
-      child: Consumer<AppInfoProvider>(
-          builder: (context, appInfo, _) {
-            String colorKey = appInfo.themeColor;
-            if (THEMELIST[colorKey] != null) {
-              _theme = THEMELIST[colorKey]["data"];
-            }
+      child: Consumer<AppInfoProvider>(builder: (context, appInfo, child) {
+        String colorKey = appInfo.themeColor;
+        if (THEMELIST[colorKey] != null) {
+          _theme = THEMELIST[colorKey]["data"];
+        }
 
-            return MaterialApp(
-              theme: _theme,
-              initialRoute: '/',
-              onGenerateRoute: Routes.router.generator,
-              routes: {
-                '/': (context) =>
-                    DefaultTextStyle(
-                      child: IndexPage(),
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-              },
-              debugShowCheckedModeBanner: false,
-            );
-          }),
+        return MaterialApp(
+          theme: _theme ?? THEMELIST["none"]["data"],
+          initialRoute: '/',
+          onGenerateRoute: Routes.router.generator,
+          routes: {
+            '/': (context) => DefaultTextStyle(
+                  child: IndexPage(),
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+          },
+          debugShowCheckedModeBanner: false,
+        );
+      }),
     );
   }
 }

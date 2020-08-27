@@ -121,6 +121,7 @@ Map THEMELIST = {
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.yellow,
+        focusColor: Colors.black,
       ),
       iconTheme: IconThemeData(
         color: Colors.white,

@@ -84,7 +84,7 @@ class _communityPageState extends State<communityPage> {
   /// 打开社区动态详情内容i
   /// 区分类型
   void _opEnDynamicDetail(i) {
-    if (i["status"] != null) {
+    if (i["originUserId"] != null) {
       Routes.router.navigateTo(
         context,
         '/detail/cheaters/${i["originUserId"]}',

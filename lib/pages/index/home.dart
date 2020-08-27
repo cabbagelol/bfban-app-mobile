@@ -142,92 +142,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: titleSearch(
-          theme: titleSearchTheme.black,
-        ),
-      ),
-      drawerScrimColor: theme['index_home']['drawer']['color'] ?? Color(0xff111b2b),
-      drawer: indexScreen(
-        theme: theme,
-        keyname: _scaffoldKey,
-        indexData: indexData,
-        onSucceed: (Map data) => this._setScreenData(data),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: !indexPagesState
-                ? RefreshIndicator(
-                    onRefresh: _onRefresh,
-                    color: theme['index_home']['buttonEdit']['textColor'] ?? Colors.black,
-                    backgroundColor: theme['index_home']['buttonEdit']['backgroundColor'] ?? Colors.yellow,
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: indexDataList.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CheatListCard(
-                          item: indexDataList[index],
-                          theme: theme,
-                          onTap: () {
-                            Routes.router.navigateTo(
-                              context,
-                              '/detail/cheaters/${indexDataList[index]["originUserId"]}',
-                              transition: TransitionType.cupertino,
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  )
-                : Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Opacity(
-                          opacity: 0.8,
-                          child: textLoad(
-                            value: "BFBAN",
-                            fontSize: 30,
-                          ),
-                        ),
-                        Text(
-                          "Legion of BAN Coalition",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white38,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.mode_edit,
-          color: Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']["textColor"],
-          size: 30,
-        ),
-        tooltip: "\u53d1\u5e03",
-        isExtended: true,
-        onPressed: _opEnEdit,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
-    );
-  }
-
   /// 下拉刷新方法,为list重新赋值
   Future<Null> _onRefresh() async {
     await Future.delayed(Duration(seconds: 1), () {
@@ -254,5 +168,91 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     super.dispose();
     _scrollController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: titleSearch(
+          theme: titleSearchTheme.black,
+        ),
+      ),
+      drawerScrimColor: theme['index_home']['drawer']['color'] ?? Color(0xff111b2b),
+      drawer: indexScreen(
+        theme: theme,
+        keyname: _scaffoldKey,
+        indexData: indexData,
+        onSucceed: (Map data) => this._setScreenData(data),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: !indexPagesState
+                ? RefreshIndicator(
+              onRefresh: _onRefresh,
+              color: Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']['textColor'] ?? Colors.black,
+              backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor ?? theme['index_home']['buttonEdit']['backgroundColor'] ?? Colors.yellow,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: indexDataList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return CheatListCard(
+                    item: indexDataList[index],
+                    theme: theme,
+                    onTap: () {
+                      Routes.router.navigateTo(
+                        context,
+                        '/detail/cheaters/${indexDataList[index]["originUserId"]}',
+                        transition: TransitionType.cupertino,
+                      );
+                    },
+                  );
+                },
+              ),
+            )
+                : Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Opacity(
+                    opacity: 0.8,
+                    child: textLoad(
+                      value: "BFBAN",
+                      fontSize: 30,
+                    ),
+                  ),
+                  Text(
+                    "Legion of BAN Coalition",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.white38,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.mode_edit,
+          color: Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']["textColor"],
+          size: 30,
+        ),
+        tooltip: "\u53d1\u5e03",
+        isExtended: true,
+        onPressed: _opEnEdit,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
+    );
   }
 }

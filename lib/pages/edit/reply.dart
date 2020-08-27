@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_plugin_elui/elui.dart';
+import 'package:flutter_rich_html/main.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/richText.dart';
@@ -23,6 +24,8 @@ class replyPage extends StatefulWidget {
 
 class _replyPageState extends State<replyPage> {
   SimpleRichEditController controller;
+  List<RichHtmlLabelType> _richhtmlSupport;
+  MySimpleRichHtmlController _richhtmlController;
 
   Map replyInfo = {
     "content": "",
@@ -37,10 +40,17 @@ class _replyPageState extends State<replyPage> {
   @override
   void initState() {
     setState(() {
-      controller = SimpleRichEditController(
-        context: context,
-        isImageIcon: false,
-        isVideoIcon: false,
+      _richhtmlSupport = [
+        RichHtmlLabelType.IMAGE,
+        RichHtmlLabelType.P,
+        RichHtmlLabelType.TEXT,
+      ];
+
+      _richhtmlController = MySimpleRichHtmlController(
+        context,
+        theme: RichHtmlTheme(
+          mainColor: Colors.deepPurple,
+        ),
       );
 
       data = json.decode(widget.data);
@@ -54,7 +64,7 @@ class _replyPageState extends State<replyPage> {
 
     login = jsonDecode(await Storage.get("com.bfban.login") ?? '{}');
 
-    replyInfo["content"] = controller.generateText();
+    replyInfo["content"] = _richhtmlController.text;
 
     if (login == null || login.isEmpty) {
       EluiMessageComponent.warning(context)(
@@ -121,73 +131,70 @@ class _replyPageState extends State<replyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color(0xff111b2b),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Color(0xff364e80),
-          elevation: 0,
-          centerTitle: true,
-          title: Text(
-            "\u56de\u590d",
-            style: TextStyle(
-              color: Colors.white,
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: Text("\u56de\u590d"),
+        actions: <Widget>[
+          replyLoad
+              ? Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: ELuiLoadComponent(
+                    type: "line",
+                    color: Theme.of(context).primaryTextTheme.headline1.color,
+                    size: 20,
+                    lineWidth: 2,
+                  ),
+                )
+              : IconButton(
+                  icon: Icon(Icons.done),
+                  onPressed: () => this._onReply(),
+                ),
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Container(
+            color: Colors.white,
+            padding: EdgeInsets.all(20),
+            child: Row(
+              children: <Widget>[
+                Text(
+                  "\u56de\u590d\u4eba:",
+                  style: TextStyle(
+                    color: Colors.black54,
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                EluiTagComponent(
+                  value: "@${data["foo"].toString()}",
+                  size: EluiTagSize.no4,
+                  color: EluiTagColor.primary,
+                ),
+              ],
             ),
           ),
-          actions: <Widget>[
-            replyLoad
-                ? RaisedButton(
-                    child: Icon(
-                      Icons.update,
-                      color: Colors.white,
-                    ),
-                  )
-                : RaisedButton(
-                    color: Color(0xff364e80),
-                    child: Text(
-                      "\u63d0\u4ea4",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                    onPressed: () => this._onReply(),
-                  )
-          ],
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "\u56de\u590d\u4eba:",
-                    style: TextStyle(
-                      color: Colors.white54,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  EluiTagComponent(
-                    value: "@${data["foo"].toString()}",
-                    size: EluiTagSize.no4,
-                    color: EluiTagColor.primary,
-                  ),
-                ],
+          SizedBox(
+            child: Container(
+              height: 1,
+              color: Color(0xfff2f2f2),
+            ),
+          ),
+          Expanded(
+            flex: 5,
+            child: Container(
+              color: Colors.white,
+              child: RichHtml(
+                _richhtmlController,
+                richhtmlSupportLabel: _richhtmlSupport,
               ),
             ),
-            Expanded(
-              flex: 5,
-              child: richText(
-                controller: controller,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

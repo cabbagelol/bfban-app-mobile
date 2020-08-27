@@ -29,7 +29,6 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
-  Map theme = THEMELIST['none'];
   int _currentIndex = 0;
   List<Widget> list = List();
 

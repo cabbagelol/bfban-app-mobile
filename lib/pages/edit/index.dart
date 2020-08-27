@@ -28,6 +28,8 @@ class editPage extends StatefulWidget {
 }
 
 class _editPageState extends State<editPage> {
+  Map theme = THEMELIST['none'];
+
   ImageRadioController controller;
 
   int gameTypeIndex = 1;
@@ -110,6 +112,14 @@ class _editPageState extends State<editPage> {
         });
       });
     });
+
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   @override
@@ -411,8 +421,6 @@ class _editPageState extends State<editPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

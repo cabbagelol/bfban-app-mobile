@@ -10,6 +10,6 @@ class ThemeUtil {
     String themeName = await Storage.get('com.bfban.theme');
     await Provider.of<AppInfoProvider>(context, listen: false).setTheme(themeName ?? 'none');
 
-    return THEMELIST[themeName];
+    return THEMELIST[themeName ?? 'none'];
   }
 }

@@ -341,6 +341,17 @@ class _usercenterState extends State<usercenter> {
               backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
             islink: true,
+            cont: Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                color: theme["nameColor"],
+                border: Border.all(
+                  width: 1,
+                  color: Colors.white70,
+                ),
+              ),
+            ),
             onTap: () => this._opEnTheme(),
           ),
           EluiCellComponent(

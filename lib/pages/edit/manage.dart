@@ -10,6 +10,7 @@ import 'package:fluro/fluro.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
+import 'package:bfban/constants/theme.dart';
 import 'package:bfban/widgets/detail/cheatersCardTypes.dart' show detailApi;
 
 import 'package:flutter_plugin_elui/elui.dart';
@@ -28,6 +29,8 @@ class ManagePage extends StatefulWidget {
 
 class _ManagePageState extends State<ManagePage> {
   List reportInfoCheatMethods = new List();
+
+  Map theme = THEMELIST['none'];
 
   Map suggestionInfo = {
     "videoIndex": 0,
@@ -67,6 +70,14 @@ class _ManagePageState extends State<ManagePage> {
     setState(() {
       manageData["originUserId"] = widget.id;
     });
+
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   /// 验证
@@ -96,7 +107,7 @@ class _ManagePageState extends State<ManagePage> {
   /// 校验当前举报者的状态
   /// 在改变上一次作弊核实查询
   /// 如 作弊、非作弊
-  void _getCheatersStatus () async {
+  void _getCheatersStatus() async {
     Response result = await Http.request(
       'api/cheaters/status',
       method: Http.POST,
@@ -171,7 +182,7 @@ class _ManagePageState extends State<ManagePage> {
             element["name"],
             style: TextStyle(
               fontSize: 14,
-              color: Colors.white,
+              color: theme['text']['subtitle'] ?? Colors.white,
             ),
           ),
           onChanged: (bool) {
@@ -220,17 +231,11 @@ class _ManagePageState extends State<ManagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff111b2b),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Text(
-          "\u7ba1\u7406\u5458\u88c1\u5224",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        title: Text("\u7ba1\u7406\u5458\u88c1\u5224"),
       ),
       body: ListView(
         children: <Widget>[
@@ -239,7 +244,9 @@ class _ManagePageState extends State<ManagePage> {
             title: "\u610f\u89c1",
             label: "\u9009\u62e9\u4e00\u9879\u5224\u51b3\u51b3\u8bae",
             theme: EluiCellTheme(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Theme.of(context).cardColor ?? Colors.transparent,
+              titleColor: Theme.of(context).primaryTextTheme.headline1.color,
+              labelColor: Theme.of(context).primaryTextTheme.headline3.color,
             ),
             cont: Container(
               padding: EdgeInsets.symmetric(
@@ -250,8 +257,8 @@ class _ManagePageState extends State<ManagePage> {
               child: DropdownButton(
                 isDense: true,
                 isExpanded: true,
-                dropdownColor: Colors.black,
-                style: TextStyle(color: Colors.white),
+                dropdownColor: Theme.of(context).cardColor ?? Colors.black,
+                style: TextStyle(color: theme['text']['subtitle'] ?? Colors.white),
                 underline: Container(),
                 focusColor: Colors.white24,
                 onChanged: (index) {
@@ -264,12 +271,7 @@ class _ManagePageState extends State<ManagePage> {
                 items: this.suggestionInfo["links"].map<DropdownMenuItem>((value) {
                   return DropdownMenuItem(
                     value: value["value"],
-                    child: Text(
-                      value["content"],
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: Text(value["content"]),
                   );
                 }).toList(),
               ),
@@ -278,9 +280,8 @@ class _ManagePageState extends State<ManagePage> {
 
           /// E 意见
 
-          Container(
+          SizedBox(
             height: 10,
-            color: Colors.black,
           ),
 
           /// S 作弊方式
@@ -289,7 +290,9 @@ class _ManagePageState extends State<ManagePage> {
             child: EluiCellComponent(
               title: "\u4f5c\u5f0a\u65b9\u5f0f",
               theme: EluiCellTheme(
-                backgroundColor: Colors.transparent,
+                backgroundColor: Theme.of(context).cardColor ?? Colors.transparent,
+                titleColor: Theme.of(context).primaryTextTheme.headline1.color,
+                labelColor: Theme.of(context).primaryTextTheme.headline3.color,
               ),
               cont: Container(
                 height: 25,
@@ -334,7 +337,7 @@ class _ManagePageState extends State<ManagePage> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         gradient: LinearGradient(
-                          colors: [Colors.transparent, Color(0xff111b2b)],
+                          colors: [Colors.transparent, theme['card']['color'] ?? Color(0xff111b2b)],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ),
@@ -347,7 +350,7 @@ class _ManagePageState extends State<ManagePage> {
                     bottom: 0,
                     right: 0,
                     child: Container(
-                      color: Color.fromRGBO(17, 27, 43, 0.9),
+                      color: Theme.of(context).cardColor ?? Color.fromRGBO(17, 27, 43, 0.9),
                       padding: EdgeInsets.symmetric(
                         horizontal: 20,
                       ),
@@ -381,7 +384,7 @@ class _ManagePageState extends State<ManagePage> {
                               "1. 不要轻易下判断，如果不能做出处理判断，就使用上方回复参与讨论，等待举报者回复。 \n\n2.管理员的任何处理操作都会对作弊者的现有状态造成改变，如果不是100％确定，请使用回复留言讨论",
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Colors.white24,
+                                color: theme['text']['subtitle'] ?? Colors.white24,
                               ),
                             ),
                           ),
@@ -394,11 +397,11 @@ class _ManagePageState extends State<ManagePage> {
             ),
             onTap: () => _opEnRichEdit(),
           ),
+
           /// E 理由
 
-          Container(
+          SizedBox(
             height: 10,
-            color: Colors.black,
           ),
 
           Padding(
