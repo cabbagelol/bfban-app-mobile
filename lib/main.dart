@@ -1,11 +1,9 @@
 /// 程序入口
 
 import 'package:flutter/material.dart';
-import 'package:flutter_plugin_elui/_load/index.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:bfban/utils/index.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/constants/theme.dart';
@@ -18,57 +16,28 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: AppInfoProvider(),
-        ),
+        ChangeNotifierProvider.value(value: AppInfoProvider()),
       ],
-      child: Consumer<AppInfoProvider>(builder: (context, appInfo, child) {
-        String colorKey = appInfo.themeColor;
-        if (THEMELIST[colorKey] != null) {
-          _theme = THEMELIST[colorKey]["data"];
-        }
+      child: Consumer<AppInfoProvider>(
+        builder: (context, appInfo, child) {
+          String colorKey = appInfo.themeColor;
 
-        return MaterialApp(
-          theme: _theme ?? THEMELIST["none"]["data"],
-          initialRoute: '/',
-          onGenerateRoute: Routes.router.generator,
-          routes: {
-            '/': (context) => DefaultTextStyle(
-                  child: IndexPage(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-          },
-          debugShowCheckedModeBanner: false,
-        );
-      }),
+          if (THEMELIST[colorKey] != null) {
+            _theme = THEMELIST[colorKey]["data"];
+          }
+
+          return MaterialApp(
+            theme: _theme ?? THEMELIST["none"]["data"],
+            initialRoute: '/',
+            onGenerateRoute: Routes.router.generator,
+            routes: {
+              '/': (context) => child,
+            },
+            debugShowCheckedModeBanner: false,
+          );
+        },
+        child: IndexPage(),
+      ),
     );
   }
 }
-
-//class MyApp extends StatelessWidget {
-//  Color _themeColor;
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return MultiProvider(
-//      child: Consumer<AppInfoProvider>(
-//        builder: (context, appInfo, _) {
-//          String colorKey = appInfo.themeColor;
-//          if (themeColorMap[colorKey] != null) {
-//            _themeColor = themeColorMap[colorKey];
-//          }
-//          return MaterialApp(
-//            title: 'Flutter Demo',
-//            theme: ThemeData(
-//              primaryColor: _themeColor,
-//              floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: _themeColor),
-//            ),
-//            home: MyHomePage(title: 'Flutter Theme Change demo'),
-//          );
-//        },
-//      ),
-//    );
-//  }
-//}

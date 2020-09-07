@@ -26,6 +26,8 @@ class recordPage extends StatefulWidget {
 }
 
 class _RecordPageState extends State<recordPage> {
+  Map theme = THEMELIST['none'];
+
   ScrollController _scrollController = ScrollController();
 
   Map indexDate = new Map();
@@ -44,6 +46,7 @@ class _RecordPageState extends State<recordPage> {
     super.initState();
 
     this.ready();
+    this.onReadyTheme();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {}
@@ -55,6 +58,12 @@ class _RecordPageState extends State<recordPage> {
     super.dispose();
 
     _scrollController.dispose();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   void ready() async {
@@ -123,8 +132,6 @@ class _RecordPageState extends State<recordPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

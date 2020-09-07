@@ -19,6 +19,8 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+  Map theme = THEMELIST['none'];
+
   /// 登录数据
   Map loginInfo = {
     "valueCaptcha": "",
@@ -75,6 +77,14 @@ class _loginPageState extends State<loginPage> {
       })
       ..setLooping(true);
     _controller.play();
+
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   @override
@@ -185,8 +195,6 @@ class _loginPageState extends State<loginPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

@@ -28,6 +28,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  Map theme = THEMELIST['none'];
+
   TextEditingController _searchController = TextEditingController();
 
   /// 搜索值
@@ -44,6 +46,13 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
 
     this._onReady();
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   void _onReady() async {
@@ -135,8 +144,6 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor];
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

@@ -82,7 +82,6 @@ Map THEMELIST = {
       "secondary": Colors.white12,
     },
     "data": ThemeData(
-      platform: TargetPlatform.iOS,
       scaffoldBackgroundColor: Color(0xff111b2b),
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
@@ -219,7 +218,6 @@ Map THEMELIST = {
       "secondary": Colors.black12,
     },
     "data": ThemeData(
-      platform: TargetPlatform.iOS,
       scaffoldBackgroundColor: Color(0xfff2f2f2),
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,

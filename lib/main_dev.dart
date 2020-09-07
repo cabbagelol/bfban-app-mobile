@@ -9,7 +9,6 @@ import 'package:fluro/fluro.dart';
 import 'package:sentry/sentry.dart';
 
 import 'package:bfban/router/router.dart';
-import 'package:bfban/constants/config.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/main.dart';
 
@@ -21,14 +20,6 @@ void main() async {
 
   Config.env = Env.PROD;
 
-  AppConfig configuredApp = new AppConfig(
-    debug: false,
-    appName: 'BFBAN dev',
-    flavorName: 'com.cabbagelol.bfban',
-    apiBaseUrl: 'http://192.168.1.5:6081',
-    child: new MyApp(),
-  );
-
   /// 设置系统演示
   SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -37,7 +28,7 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 
   runZonedGuarded(
-    () => runApp(configuredApp),
+    () => runApp(MyApp()),
     (error, stackTrace) async {
       await sentry.captureException(
         exception: error,

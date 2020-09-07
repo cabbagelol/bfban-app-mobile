@@ -388,62 +388,58 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     );
   }
 
+  /// 查看图片
+  void _onEnImgInfo(context) {
+    Navigator.of(context).push(CupertinoPageRoute(
+      builder: (BuildContext context) {
+        return PhotoViewSimpleScreen(
+          imageUrl: cheatersInfoUser["avatarLink"],
+          imageProvider: NetworkImage(cheatersInfoUser["avatarLink"]),
+          heroTag: 'simple',
+        );
+      },
+    ));
+  }
+
   /// 曾经使用过的名称
   static Widget _getUsedname(theme, cheatersInfo) {
-    List<TableRow> list = [
-      new TableRow(
-        children: <Widget>[
-          new TableCell(
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                '游戏ID',
-                style: TextStyle(
-                  color: theme['text']['subtitle'] ?? Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          new TableCell(
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                '获取时间',
-                style: TextStyle(
-                  color: theme['text']['subtitle'] ?? Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    ];
+    List<DataRow> list = [];
 
-    cheatersInfo["data"]["origins"].forEach((i) {
+    cheatersInfo["data"]["origins"].asMap().keys.forEach((index) {
+      var i = cheatersInfo["data"]["origins"][index];
+
       list.add(
-        TableRow(
-          children: <Widget>[
-            TableCell(
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  i["cheaterGameName"],
-                  style: TextStyle(
-                    color: theme['text']['subtitle'] ?? Colors.white,
+        new DataRow(
+          cells: [
+            DataCell(
+              Wrap(
+                spacing: 5,
+                children: [
+                  SelectableText(
+                    i["cheaterGameName"],
+                    style: TextStyle(
+                      color: theme['text']['subtitle'] ?? Colors.white,
+                    ),
                   ),
-                ),
+                  Visibility(
+                    visible: index >= cheatersInfo["data"]["origins"].length - 1,
+                    child: EluiTagComponent(
+                      size: EluiTagSize.no2,
+                      theme: EluiTagtheme(
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                      ),
+                      value: "最新",
+                    ),
+                  ),
+                ],
               ),
             ),
-            TableCell(
-              child: Padding(
-                padding: EdgeInsets.all(10),
-                child: Text(
-                  new Date().getTimestampTransferCharacter(i["createDatetime"])["Y_D_M"],
-                  style: TextStyle(
-                    color: theme['text']['subtitle'] ?? Colors.white,
-                  ),
+            DataCell(
+              Text(
+                new Date().getFriendlyDescriptionTime(i["createDatetime"]),
+                style: TextStyle(
+                  color: theme['text']['subtitle'] ?? Colors.white,
                 ),
               ),
             ),
@@ -454,12 +450,29 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
     return Container(
       color: theme['card']['color'] ?? Colors.black12,
-      child: Table(
-        border: new TableBorder.all(
-          width: 1.0,
-          color: Color.fromRGBO(251, 251, 251, 0.01),
-        ),
-        children: list,
+      child: DataTable(
+        columns: [
+          DataColumn(
+            label: Text(
+              "游戏id",
+              style: TextStyle(
+                color: theme['text']['subtitle'] ?? Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          DataColumn(
+            numeric: true,
+            label: Text(
+              "获取时间",
+              style: TextStyle(
+                color: theme['text']['subtitle'] ?? Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+        rows: list,
       ),
     );
   }
@@ -478,31 +491,14 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
               value: "$_ClistLenght",
               size: EluiTagSize.no2,
               theme: EluiTagtheme(
-                textColor: _tabControllerIndex == 1
-                    ? Colors.black
-                    : theme["detail_cheaters_tabs_label"]["textColor"],
-                backgroundColor: _tabControllerIndex == 1
-                    ? theme["detail_cheaters_tabs_label"]["backgroundColor"]
-                    : Colors.transparent,
+                textColor: _tabControllerIndex == 1 ? Colors.black : theme["detail_cheaters_tabs_label"]["textColor"],
+                backgroundColor: _tabControllerIndex == 1 ? theme["detail_cheaters_tabs_label"]["backgroundColor"] : Colors.transparent,
               ),
             ),
           ],
         ),
       ),
     ];
-
-    /// 查看图片
-    void _onEnImgInfo () {
-      Navigator.of(context).push(CupertinoPageRoute(
-        builder: (BuildContext context) {
-          return PhotoViewSimpleScreen(
-            imageUrl: cheatersInfoUser["avatarLink"],
-            imageProvider: NetworkImage(cheatersInfoUser["avatarLink"]),
-            heroTag: 'simple',
-          );
-        },
-      ));
-    }
 
     return FutureBuilder(
       future: this.futureBuilder,
@@ -591,48 +587,47 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                         padding: EdgeInsets.zero,
                         children: <Widget>[
                           GestureDetector(
-                              onTap: () => _onEnImgInfo(),
-                              child: Container(
-                                margin: EdgeInsets.only(top: 140, right: 10, left: 10, bottom: 50),
-                                child: Center(
-                                  child: Stack(
-                                    children: [
-                                      ClipRRect(
-                                          borderRadius: BorderRadius.circular(5),
-                                          child: EluiImgComponent(
-                                            src: cheatersInfoUser["avatarLink"],
-                                            width: 150,
-                                            height: 150,
-                                          ),
+                            onTap: () => _onEnImgInfo(context),
+                            child: Container(
+                              margin: EdgeInsets.only(top: 140, right: 10, left: 10, bottom: 50),
+                              child: Center(
+                                child: Stack(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: EluiImgComponent(
+                                        src: cheatersInfoUser["avatarLink"],
+                                        width: 150,
+                                        height: 150,
                                       ),
-
-                                      Positioned(
-                                        right: 0,
-                                        bottom: 0,
-                                        child: Container(
-                                          padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                              colors: [
-                                                Colors.transparent,
-                                                Colors.transparent,
-                                                Colors.black87,
-                                              ],
-                                            ),
-                                          ),
-                                          child: Icon(
-                                            Icons.search,
-                                            color: Colors.white70,
-                                            size: 30,
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              Colors.transparent,
+                                              Colors.transparent,
+                                              Colors.black87,
+                                            ],
                                           ),
                                         ),
+                                        child: Icon(
+                                          Icons.search,
+                                          color: Colors.white70,
+                                          size: 30,
+                                        ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
+                            ),
                           ),
                           Container(
                             color: theme['card']['color'] ?? Colors.black12,
@@ -667,7 +662,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                       /// 用户名称
                                       Expanded(
                                         flex: 1,
-                                        child: Text(
+                                        child: SelectableText(
                                           cheatersInfoUser["originId"].toString(),
                                           style: TextStyle(
                                             color: theme['text']['subtitle'] ?? Colors.white,
@@ -679,6 +674,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                               )
                                             ],
                                           ),
+                                          showCursor: true,
                                         ),
                                       ),
                                       SizedBox(
@@ -732,7 +728,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                     children: <Widget>[
                                       Text(
                                         cheatersInfoUser != null
-                                            ? new Date().getTimestampTransferCharacter(cheatersInfoUser["createDatetime"])["Y_D_M"]
+                                            ? new Date().getFriendlyDescriptionTime(cheatersInfoUser["createDatetime"])
                                             : "",
                                         style: TextStyle(
                                           color: theme['text']['subtitle'] ?? Colors.white,
@@ -756,7 +752,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                     children: <Widget>[
                                       Text(
                                         cheatersInfoUser != null
-                                            ? new Date().getTimestampTransferCharacter(cheatersInfoUser["updateDatetime"])["Y_D_M"]
+                                            ? new Date().getFriendlyDescriptionTime(cheatersInfoUser["updateDatetime"])
                                             : "",
                                         style: TextStyle(
                                           color: theme['text']['subtitle'] ?? Colors.white,
@@ -879,6 +875,60 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                             ),
                           ),
                           Container(
+                            padding: EdgeInsets.only(left: 10, right: 10, top: 20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: cheatersInfo["data"]["games"].map<Widget>((i) {
+                                var bf = [
+                                  {
+                                    "f": "bf1,bfv",
+                                    "n": "battlefieldtracker",
+                                    "url": "https://battlefieldtracker.com/bf1/profile/pc/${cheatersInfoUser["originId"]}"
+                                  },
+                                  {
+                                    "f": "bf1",
+                                    "n": "bf1stats",
+                                    "url": "http://bf1stats.com/pc/${cheatersInfoUser["originId"]}",
+                                  },
+                                  {
+                                    "f": "bf1,bfv",
+                                    "n": "247fairplay",
+                                    "url": "https://www.247fairplay.com/CheatDetector/${cheatersInfoUser["originId"]}",
+                                  },
+                                ];
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: bf.map<Widget>((e) {
+                                    return Visibility(
+                                      visible: e["f"].indexOf(i["game"]) >= 0,
+                                      child: GestureDetector(
+                                        onTap: () => UrlUtil().onPeUrl(e["url"]),
+                                        child: Container(
+                                          color: theme['card']['color'] ?? Colors.white,
+                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                          child: Wrap(
+                                            spacing: 5,
+                                            children: [
+                                              Icon(Icons.insert_link, size: 16, color: theme['text']['subtitle']),
+                                              Text(
+                                                e["n"],
+                                                style: TextStyle(
+                                                  color: theme['text']['secondary'] ?? Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          Container(
                             padding: EdgeInsets.only(
                               left: 10,
                               right: 10,
@@ -926,8 +976,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                             ),
                             child: userNameList['listLoad']
                                 ? EluiVacancyComponent(
-                              title: "-",
-                            )
+                                    title: "-",
+                                  )
                                 : _getUsedname(theme, snapshot.data),
                             margin: EdgeInsets.only(
                               top: 10,
@@ -972,6 +1022,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                     ],
                   ),
                 ),
+
                 /// E 主体框架
               ],
             ),

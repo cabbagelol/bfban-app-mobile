@@ -25,6 +25,7 @@
         .border-bottom {
             border-bottom: 1px solid #dee2e605 !important;
         }
+
     </style>
 <body>
 
@@ -32,8 +33,10 @@
     <h5 class=" border-gray pb-2 mb-0">这是作者发布关于BFBAN消息地方,</h5>
     <h6 class="border-bottom border-gray pb-2 mb-0">欢迎随时回来查看</h6>
     <div class="media text-muted pt-3" v-for="i of list">
-        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32" xmlns="http://www.w3.org/2000/svg"
-             preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>
+        <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
+             xmlns="http://www.w3.org/2000/svg"
+             preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+             aria-label="Placeholder: 32x32"><title>
             Placeholder</title>
             <rect width="100%" height="100%" fill="#6f42c1"></rect>
             <text x="50%" y="50%" fill="#6f42c1" dy=".3em">32x32</text>
@@ -63,6 +66,19 @@
         el: '#app',
         data: {
             list: [
+                {
+                    username: '0.0.4',
+                    time: '2020 0/0',
+                    content: `
+新增
+1. 替换用户评论内置的图片控件，现在它们会被缓存下来防止再次加载，并且会加载网络中缩略图，除非进入图片观察窗口内是不会原图下载。
+2. 在详情页内作弊者ID允许用户复制。
+3. 时间同步网页的方式，它不在是不论如何都显示完整时间，特定时间内以“1分钟前”、“昨天”表示。
+4. 新增主题功能，切换明亮与默认主题。
+5. 尝试修复打开外部游览器错误【已观察到bug】。
+6. 增加战绩链接:D，它在举报者id下方。
+                    `,
+                },
                 {
                     username: '0.0.3',
                     time: '2020 0/0',
@@ -112,4 +128,5 @@
             ],
         },
     });
+
 </script>

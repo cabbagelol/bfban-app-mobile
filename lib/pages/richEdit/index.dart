@@ -41,6 +41,9 @@ class _richEditPageState extends State<richEditPage> {
         context,
         theme: RichHtmlTheme(
           mainColor: Colors.deepPurple,
+          viewTheme: RichHtmlViewTheme(
+            color: Colors.white,
+          )
         ),
       )..html = Uri.decodeComponent(
           jsonDecode(widget.data)["html"],
@@ -106,7 +109,7 @@ class _richEditPageState extends State<richEditPage> {
             RichHtmlToolSizedBox(
               flex: 1,
             ),
-            RichHtmlToolImages(),
+           !data["isText"] ? RichHtmlToolImages() : RichHtmlToolSizedBox(),
           ],
         ),
       ),

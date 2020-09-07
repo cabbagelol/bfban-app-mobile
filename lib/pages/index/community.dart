@@ -247,7 +247,7 @@ class _communityPageState extends State<communityPage> {
                                 Expanded(
                                   flex: 1,
                                   child: Text(
-                                    new Date().getTimestampTransferCharacter(i["createDatetime"])["Y_D_M"],
+                                    new Date().getFriendlyDescriptionTime(i["createDatetime"]),
                                     style: TextStyle(
                                       fontSize: 12,
                                       color: Theme.of(context).primaryTextTheme.headline1.color ??

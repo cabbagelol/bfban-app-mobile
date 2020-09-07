@@ -50,6 +50,9 @@ class _replyPageState extends State<replyPage> {
         context,
         theme: RichHtmlTheme(
           mainColor: Colors.deepPurple,
+          viewTheme: RichHtmlViewTheme(
+            color: Colors.white,
+          ),
         ),
       );
 

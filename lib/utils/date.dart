@@ -9,10 +9,11 @@ class Date {
 
   /// 时间转字符
   /// TTC
-  Map getTimestampTransferCharacter (String date, {
+  Map getTimestampTransferCharacter(
+    String date, {
     num = 0,
   }) {
-    var time_ =  DateTime.parse(date ?? DateTime.now().toIso8601String());
+    var time_ = DateTime.parse(date ?? DateTime.now().toIso8601String());
 
     var year = time_.year;
     var month = this.zeroPadding(time_.month);
@@ -40,12 +41,38 @@ class Date {
 
   /// 解析字符串转时间戳
   /// TTT
-  Map getTurnTheTimestamp (String date) {
-    var time =  DateTime.parse(date);
+  Map getTurnTheTimestamp(String date) {
+    var time = DateTime.parse(date);
 
     return {
       "secondsSinceEpoch": time.millisecondsSinceEpoch / 1000,
       "millisecondsSinceEpoch": time.millisecondsSinceEpoch,
     };
+  }
+
+  /// 翻译中文
+  String getFriendlyDescriptionTime(String date, {type: "Y_D_M"}) {
+    var time = DateTime.parse(date);
+    var now = DateTime.now();
+    var d = now.difference(time);
+
+    if (d.inDays == 0) {
+      if (d.inSeconds <= 60) {
+        return "${d.inSeconds}秒前";
+      } else if (d.inSeconds > 60 && d.inMinutes <= 1) {
+        return "${d.inMinutes}分钟前";
+      } else if (d.inMinutes > 1 && d.inHours <= 24) {
+        return "${d.inHours}小时前";
+      }
+      return "今天";
+    } else if (d.inDays == 1) {
+      return "昨天";
+    } else if (d.inDays == 2) {
+      return "前天";
+    } else if (d.inDays >= 3 && d.inDays <= 7) {
+      return "${d.inDays}天前";
+    }
+
+    return this.getTimestampTransferCharacter(date)[type];
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/style.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 
@@ -20,12 +21,77 @@ class detailApi {
   static Color cardColor = Colors.white;
   static Color cardButtonBorderColor = Color(0xfff2f2f2);
 
-  static Map<String, Style> styleHtml(BuildContext context) {
-    /// 3/1
-    num a = (MediaQuery.of(context).size.width - 15) / 3;
+  static Map<String, CustomRender> customRender (context) {
+    return {
+      "img": (renderContext, child, attributes, node) {
+        return GestureDetector(
+          child: Stack(
+            children: [
+              EluiImgComponent(
+                src: attributes['src'] + "?imageslim",
+                width: double.infinity,
+                errorWidget: const Icon(
+                  Icons.error,
+                  size: 50,
+                  color: Colors.black54,
+                ),
+                isPlaceholder: true,
+                placeholder: (BuildContext context, String url) {
+                  return ELuiLoadComponent(
+                    type: "line",
+                    color: Colors.black54,
+                    size: 20,
+                    lineWidth: 2,
+                  );
+                },
+                fit: BoxFit.cover,
+              ),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.transparent,
+                        Colors.transparent,
+                        Colors.black87,
+                      ],
+                    ),
+                  ),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.white70,
+                    size: 30,
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 12,
+                bottom: 12,
+                child: Container(
+                  padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white70,
+                    size: 12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          onTap: () {
+            onImageTap(context, attributes['src']);
+          },
+        );
+      }
+    };
+  }
 
-    /// 3/1 -10
-    num b = a - 5;
+  static Map<String, Style> styleHtml(BuildContext context) {
     return {
       "a": Style(
         after: "🔗",
@@ -35,9 +101,6 @@ class detailApi {
         width: (MediaQuery.of(context).size.width - 15),
       ),
       "img": Style(
-//        alignment: Alignment.centerLeft,
-//        width: b,
-//        height: a,
         border: Border.all(
           width: 1,
           color: Color(0xfff2f2f2),
@@ -351,9 +414,9 @@ class CheatUserCheaters extends StatelessWidget {
             color: detailApi.cardColor,
             child: Html(
               data: i["content"],
+              customRender: detailApi.customRender(context),
               style: detailApi.styleHtml(context),
               onLinkTap: (src) => _urlUtil.onPeUrl(src),
-              onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
           )
         ],
@@ -599,8 +662,8 @@ class CheatReports extends StatelessWidget {
             child: Html(
               data: i["description"],
               style: detailApi.styleHtml(context),
+              customRender: detailApi.customRender(context),
               onLinkTap: (src) => _urlUtil.onPeUrl(src),
-              onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
           )
         ],
@@ -833,8 +896,8 @@ class _CheatVerifiesState extends State<CheatVerifies> {
             child: Html(
               data: widget.i["suggestion"],
               style: detailApi.styleHtml(context),
+              customRender: detailApi.customRender(context),
               onLinkTap: (src) => _urlUtil.onPeUrl(src),
-              onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
           ),
 
@@ -1038,8 +1101,8 @@ class CheatConfirms extends StatelessWidget {
             child: Html(
               data: (i["suggestion"] ?? ""),
               style: detailApi.styleHtml(context),
+              customRender: detailApi.customRender(context),
               onLinkTap: (src) => _urlUtil.onPeUrl(src),
-              onImageTap: (img) => detailApi.onImageTap(context, img),
             ),
           ),
         ],

@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   /// 举报列表
   Map indexData = new Map();
 
-  List indexDataList = new List();
+  static List indexDataList = new List();
 
   Map<String, dynamic> cheatersPost = {
     "game": "",
@@ -57,7 +57,13 @@ class _HomePageState extends State<HomePage> {
       }
     });
 
-    this.onReadyTheme();
+//    this.onReadyTheme();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   void onReadyTheme() async {
@@ -78,8 +84,8 @@ class _HomePageState extends State<HomePage> {
       method: Http.GET,
     );
 
-    setState(() {
-      if (result.data["error"] == 0) {
+    if (result.data["error"] == 0) {
+      setState(() {
         indexData = result.data;
 
         if (this.cheatersPost["page"] > 1) {
@@ -89,18 +95,18 @@ class _HomePageState extends State<HomePage> {
         } else {
           indexDataList = result.data["data"];
         }
-      } else if (result.data["code"] == -2) {
-        EluiMessageComponent.error(context)(
-          child: Text("\u8bf7\u6c42\u5f02\u5e38\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
-        );
-      }
-    });
+      });
+    } else if (result.data["code"] == -2) {
+      EluiMessageComponent.error(context)(
+        child: Text("\u8bf7\u6c42\u5f02\u5e38\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
+      );
+    }
 
     setState(() {
       indexPagesState = false;
     });
 
-    return THEMELIST[context.watch<AppInfoProvider>().themeColor ?? 'none'];
+    return THEMELIST[context.read<AppInfoProvider>().themeColor ?? 'none'];
   }
 
   /// 筛选
@@ -127,13 +133,13 @@ class _HomePageState extends State<HomePage> {
   Future<VoidCallback> _opEnEdit() async {
     dynamic _login = jsonDecode(await Storage.get('com.bfban.login') ?? '{}');
 
-    if (_login != null && ['admin', 'super'].contains(_login["userPrivilege"])) {
+    if (_login != '{}' && ['admin', 'super'].contains(_login["userPrivilege"])) {
       Routes.router.navigateTo(
         context,
         '/edit',
         transition: TransitionType.cupertinoFullScreenDialog,
       );
-      return () {};
+      return ()  {};
     } else {
       EluiMessageComponent.error(context)(
         child: Text("\u8bf7\u5148\u767b\u5f55\u0042\u0046\u0042\u0041\u004e"),
@@ -165,12 +171,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
@@ -189,15 +189,14 @@ class _HomePageState extends State<HomePage> {
         indexData: indexData,
         onSucceed: (Map data) => this._setScreenData(data),
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: !indexPagesState
-                ? RefreshIndicator(
+      body: !indexPagesState
+          ? RefreshIndicator(
               onRefresh: _onRefresh,
-              color: Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']['textColor'] ?? Colors.black,
-              backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor ?? theme['index_home']['buttonEdit']['backgroundColor'] ?? Colors.yellow,
+              color:
+                  Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']['textColor'] ?? Colors.black,
+              backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor ??
+                  theme['index_home']['buttonEdit']['backgroundColor'] ??
+                  Colors.yellow,
               child: ListView.builder(
                 controller: _scrollController,
                 itemCount: indexDataList.length,
@@ -216,7 +215,7 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             )
-                : Center(
+          : Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -238,9 +237,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          ),
-        ],
-      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.mode_edit,
@@ -249,7 +245,7 @@ class _HomePageState extends State<HomePage> {
         ),
         tooltip: "\u53d1\u5e03",
         isExtended: true,
-        onPressed: _opEnEdit,
+        onPressed: () => _opEnEdit(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,

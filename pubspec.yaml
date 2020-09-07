@@ -18,7 +18,8 @@ dependencies:
   dio_cookie_manager: 1.0.0
 
   # 状态管理
-  scoped_model: 1.0.1
+#  scoped_model: 1.0.1
+  provider: ^4.0.5
 
   # 路由管理
   fluro: 1.6.3
@@ -36,9 +37,7 @@ dependencies:
   shared_preferences: ^0.5.10
 
   # 链接 https://pub.flutter-io.cn/packages/url_launcher
-  url_launcher: 5.5.0
-
-  video_player: any
+  url_launcher: ^5.5.0
 
   # 游览器 https://pub.flutter-io.cn/packages/webview_flutter
   webview_flutter: ^0.3.22+1
@@ -62,7 +61,6 @@ dependencies:
   image_picker: 0.6.7+4
 
   # https://pub.flutter-io.cn/packages/rich_edit
-  chewie: 0.9.10
   rich_edit: 0.1.1
   flutter_rich_html:
     path: ../../flutter-rich-html
@@ -75,9 +73,6 @@ dependencies:
 
   # https://pub.dev/packages/sentry
   sentry: 3.0.1
-
-  # 状态管理
-  provider: ^4.0.5
 
   flutter_plugin_elui:
     path: ../../flutter-elui-plugin

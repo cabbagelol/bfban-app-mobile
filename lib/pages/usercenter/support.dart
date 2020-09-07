@@ -14,7 +14,21 @@ class SupportPage extends StatefulWidget {
 }
 
 class _SupportPageState extends State<SupportPage> {
+  Map theme = THEMELIST['none'];
+
   UrlUtil _urlUtil = new UrlUtil();
+
+  @override
+  void initState() {
+    super.initState();
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
+  }
 
   /// 打开引导
   void _opEnGuide() {
@@ -23,8 +37,6 @@ class _SupportPageState extends State<SupportPage> {
 
   @override
   Widget build(BuildContext context) {
-    Map theme = THEMELIST[context.watch<AppInfoProvider>().themeColor ?? 'none'];
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

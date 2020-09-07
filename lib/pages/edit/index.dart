@@ -271,7 +271,7 @@ class _editPageState extends State<editPage> {
       EluiMessageComponent.success(context)(
         child: Text("发布成功"),
       );
-      Navigator.pop(context);
+      UrlUtil().opEnPage(context, "/edit/publishResultsPage");
     }
   }
 
@@ -328,7 +328,7 @@ class _editPageState extends State<editPage> {
   }
 
   /// 打开编辑页面
-  void _opEnRichEdit() async {
+  void  _opEnRichEdit() async {
     dynamic data = jsonEncode({
       "html": Uri.encodeComponent(reportInfo["description"]),
     });
@@ -528,6 +528,7 @@ class _editPageState extends State<editPage> {
                         ? theme['text']['subtext3'] ?? Colors.white12
                         : theme['text']['subtitle'] ?? Colors.white,
                     fontSize: 30,
+                    letterSpacing: 8,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -741,7 +742,7 @@ class _editPageState extends State<editPage> {
                       height: 100,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Colors.transparent, (theme['card']['color'] ?? Color(0xff111b2b))],
+                          colors: [Colors.transparent, Colors.black54],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ),
@@ -754,7 +755,7 @@ class _editPageState extends State<editPage> {
                     bottom: 0,
                     right: 0,
                     child: Container(
-                      color: theme['card']['color'] ?? Color.fromRGBO(17, 27, 43, 0.9),
+                      color: Color.fromRGBO(0, 0, 0, 0.2),
                       child: Center(
                         child: Wrap(
                           spacing: 5,
