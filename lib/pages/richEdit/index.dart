@@ -40,20 +40,18 @@ class _richEditPageState extends State<richEditPage> {
       _richhtmlController = MySimpleRichHtmlController(
         context,
         theme: RichHtmlTheme(
-          mainColor: Colors.deepPurple,
-          viewTheme: RichHtmlViewTheme(
-            color: Colors.white,
-          )
-        ),
+            mainColor: Colors.deepPurple,
+            viewTheme: RichHtmlViewTheme(
+              color: Colors.white,
+            )),
       )..html = Uri.decodeComponent(
-          jsonDecode(widget.data)["html"],
+          jsonDecode(widget.data)["html"] ?? '',
         );
     });
     super.initState();
   }
 
   /// 确认
-
   void _onSubmit() {
     Navigator.pop(
       context,
@@ -109,7 +107,7 @@ class _richEditPageState extends State<richEditPage> {
             RichHtmlToolSizedBox(
               flex: 1,
             ),
-           !data["isText"] ? RichHtmlToolImages() : RichHtmlToolSizedBox(),
+            !data["isText"] ? RichHtmlToolImages() : RichHtmlToolSizedBox(),
           ],
         ),
       ),

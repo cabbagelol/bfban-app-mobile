@@ -149,7 +149,6 @@ class _usercenterState extends State<usercenter> {
   /// 打开主题
   void _opEnTheme() {
     _urlUtil.opEnPage(context, '/usercenter/theme').then((value) {
-      print(value);
       this.onReadyTheme();
     });
   }

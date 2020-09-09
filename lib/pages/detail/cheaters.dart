@@ -31,6 +31,8 @@ class CheatersPage extends StatefulWidget {
 }
 
 class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderStateMixin {
+  ScrollController _scrollController = new ScrollController();
+
   Map theme = THEMELIST['none'];
 
   /// 作弊者结果
@@ -95,17 +97,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     futureBuilder = this._getCheatersInfo();
   }
 
-  /// 获取tracker上用户信息
-  Future _getTrackerCheatersInfo(String name, List games) async {
-    Response result = await Http.request(
-      'api/v2/${games[0]["game"]}/standard/profile/origin/$name',
-      method: Http.GET,
-      typeUrl: "tracker",
-    );
-
-//    if (result.data["error"] == 0) {}
-  }
-
   /// 获取bfban用户信息
   Future _getCheatersInfo() async {
     Response result = await Http.request(
@@ -116,8 +107,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     if (result.data != null && result.data["error"] == 0) {
       setState(() {
         cheatersInfo = result.data ?? new Map();
-        print('Map.from(result.data["data"]).containsKey("cheater")');
-        print(result.data["data"]["cheater"].length);
         cheatersInfoUser = result.data["data"]["cheater"].length > 0 ? result.data["data"]["cheater"][0] : {};
       });
 
@@ -131,6 +120,15 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     }
   }
 
+  /// 评论刷新事件
+  Future<Null> _onRefresh() async {
+    await Future.delayed(Duration(seconds: 1), () async {
+      await this._getCheatersInfo();
+
+      return true;
+    });
+  }
+
   /// 获取游戏类型
   String _getGames(List games) {
     String t = "";
@@ -140,16 +138,25 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     return t;
   }
 
+  /// 评论内回复
+  void _onReplySucceed(value) async {
+    if (value == null) {
+      return;
+    }
+    this._scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
+
   /// 赞同决议
-  static _setConfirm(context, data) async {
+  /// data举报者信息 R单条评论
+  void _setConfirm(context, data, R) async {
     Response result = await Http.request(
       'api/cheaters/confirm',
-      data: {
+      data: Map.from({
         "userVerifyCheaterId": data["id"],
-        "cheatMethods": data["cheatMethods"],
-        "userId": _login["userId"],
+        "cheatMethods": R["cheatMethods"],
+        "userId": R["userId"], //_login["userId"]
         "originUserId": data["originUserId"],
-      },
+      }),
       method: Http.POST,
     );
 
@@ -158,7 +165,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
         child: Text("提交成功"),
       );
 
-      Navigator.pop(context);
+      await this._getCheatersInfo();
     } else {
       EluiMessageComponent.error(context)(
         child: Text("提交失败"),
@@ -227,13 +234,12 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       return null;
     }
 
-    Routes.router
-        .navigateTo(
-          context,
-          '/edit/manage/$uid',
-          transition: TransitionType.cupertino,
-        )
-        .then((value) => this._getCheatersInfo());
+    Routes.router.navigateTo(context, '/edit/manage/$uid', transition: TransitionType.cupertino).then((value) {
+      if (value != null) {
+        this._getCheatersInfo();
+        this._scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
 
     return true;
   }
@@ -244,18 +250,42 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       return () {
         /// 补充（追加）回复
         /// 取第一条举报信息下的userId
+        String content = jsonEncode({
+          "type": Type ?? 0,
+          "id": cheatersInfoUser["id"],
+          "originUserId": cheatersInfoUser["originUserId"],
+          "foo": cheatersInfo["data"]["reports"][0]["username"],
+        });
+
+        Routes.router.navigateTo(context, '/reply/$content', transition: TransitionType.cupertino).then((value) {
+          if (value != null) {
+            this._getCheatersInfo();
+            this._scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          }
+        });
+      };
+    }
+
+    return null;
+  }
+
+  /// 补充举报用户信息
+  dynamic _onReport() {
+    if (_login.containsKey("userPrivilege")) {
+      return () {
         Routes.router
             .navigateTo(
-                context,
-                '/reply/${jsonEncode({
-                  "type": Type ?? 0,
-                  "id": cheatersInfoUser["id"],
-                  "originUserId": cheatersInfoUser["originUserId"],
-                  "foo": cheatersInfo["data"]["reports"][0]["username"],
-                })}',
-                transition: TransitionType.cupertino)
+          context,
+          '/edit/${jsonEncode({
+            "originId": cheatersInfoUser["originId"],
+          })}',
+          transition: TransitionType.cupertinoFullScreenDialog,
+        )
             .then((value) {
-          this._getCheatersInfo();
+          if (value != null) {
+            this._getCheatersInfo();
+            this._scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          }
         });
       };
     }
@@ -289,7 +319,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       {0: 'replies', 1: 0},
       {0: 'reports', 1: 1},
       {0: 'verifies', 1: 2},
-      {0: 'confirms', 1: 3}
+      {0: 'confirms', 1: 3},
     ].forEach((Map i) {
       String name = i[0];
       int index = i[1];
@@ -333,6 +363,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
+                onReplySucceed: _onReplySucceed,
               ),
             );
             break;
@@ -344,6 +375,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
+                onReplySucceed: _onReplySucceed,
               ),
             );
             break;
@@ -356,7 +388,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
                 login: _login,
-                onConfirm: () => _setConfirm(context, cheatersInfoUser),
+                onConfirm: () => _setConfirm(context, cheatersInfoUser, _allReply[i - 1]),
+                onReplySucceed: _onReplySucceed,
               ),
             );
             break;
@@ -368,6 +401,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                 cheatMethods: _cheatMethods,
                 cheatersInfo: cheatersInfo,
                 cheatersInfoUser: cheatersInfoUser,
+                onReplySucceed: _onReplySucceed,
               ),
             );
             break;
@@ -377,15 +411,11 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
     setState(() {
       _ClistLenght = list.length;
+
+      cheatersRecordWidgetList = Column(
+        children: list,
+      );
     });
-
-    list.add(SizedBox(
-      height: 100,
-    ));
-
-    cheatersRecordWidgetList = Column(
-      children: list,
-    );
   }
 
   /// 查看图片
@@ -415,12 +445,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
               Wrap(
                 spacing: 5,
                 children: [
-                  SelectableText(
-                    i["cheaterGameName"],
-                    style: TextStyle(
-                      color: theme['text']['subtitle'] ?? Colors.white,
-                    ),
-                  ),
                   Visibility(
                     visible: index >= cheatersInfo["data"]["origins"].length - 1,
                     child: EluiTagComponent(
@@ -430,6 +454,12 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                         textColor: Colors.white,
                       ),
                       value: "最新",
+                    ),
+                  ),
+                  SelectableText(
+                    i["cheaterGameName"],
+                    style: TextStyle(
+                      color: theme['text']['subtitle'] ?? Colors.white,
                     ),
                   ),
                 ],
@@ -451,6 +481,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
     return Container(
       color: theme['card']['color'] ?? Colors.black12,
       child: DataTable(
+        sortAscending: true,
+        sortColumnIndex: 0,
         columns: [
           DataColumn(
             label: Text(
@@ -462,7 +494,6 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
             ),
           ),
           DataColumn(
-            numeric: true,
             label: Text(
               "获取时间",
               style: TextStyle(
@@ -591,40 +622,43 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                             child: Container(
                               margin: EdgeInsets.only(top: 140, right: 10, left: 10, bottom: 50),
                               child: Center(
-                                child: Stack(
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(5),
-                                      child: EluiImgComponent(
-                                        src: cheatersInfoUser["avatarLink"],
-                                        width: 150,
-                                        height: 150,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        color: Colors.white,
+                                        child: EluiImgComponent(
+                                          src: cheatersInfoUser["avatarLink"],
+                                          width: 150,
+                                          height: 150,
+                                        ),
                                       ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                        padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [
-                                              Colors.transparent,
-                                              Colors.transparent,
-                                              Colors.black87,
-                                            ],
+                                      Positioned(
+                                        right: 0,
+                                        bottom: 0,
+                                        child: Container(
+                                          padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                              colors: [
+                                                Colors.transparent,
+                                                Colors.transparent,
+                                                Colors.black87,
+                                              ],
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.search,
+                                            color: Colors.white70,
+                                            size: 30,
                                           ),
                                         ),
-                                        child: Icon(
-                                          Icons.search,
-                                          color: Colors.white70,
-                                          size: 30,
-                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -780,14 +814,10 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                               left: 10,
                               right: 10,
                             ),
-                            padding: EdgeInsets.only(
-                              top: 10,
-                              bottom: 10,
-                              left: 10,
-                              right: 10,
-                            ),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Container(
                                   child: Column(
@@ -808,6 +838,15 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                       )
                                     ],
                                   ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    left: 7,
+                                    right: 7,
+                                  ),
+                                  height: 30,
+                                  width: 1,
+                                  color: Theme.of(context).dividerColor ?? theme['hr']['secondary'] ?? Colors.white12,
                                 ),
                                 Container(
                                   child: Column(
@@ -832,6 +871,15 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                   ),
                                 ),
                                 Container(
+                                  margin: EdgeInsets.only(
+                                    left: 7,
+                                    right: 7,
+                                  ),
+                                  height: 30,
+                                  width: 1,
+                                  color: Theme.of(context).dividerColor ?? theme['hr']['secondary'] ?? Colors.white12,
+                                ),
+                                Container(
                                   child: Column(
                                     children: <Widget>[
                                       Text(
@@ -850,6 +898,15 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                       )
                                     ],
                                   ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    left: 7,
+                                    right: 7,
+                                  ),
+                                  height: 30,
+                                  width: 1,
+                                  color: Theme.of(context).dividerColor ?? theme['hr']['secondary'] ?? Colors.white12,
                                 ),
                                 Container(
                                   child: Column(
@@ -934,38 +991,25 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                               right: 10,
                               top: 20,
                             ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    "如果无法更新列表或获取,仅出现该用户未游玩过该游戏以及已被封禁二种状态.",
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: theme['text']['secondary'] ?? Colors.white54,
-                                    ),
-                                    maxLines: 3,
-                                  ),
+                            child: Align(
+                              child: FlatButton.icon(
+                                color: theme['text']['subtext3'] ?? Colors.black12,
+                                padding: EdgeInsets.zero,
+                                icon: Icon(
+                                  Icons.refresh,
+                                  size: 25,
+                                  color: theme['text']['subtitle'] ?? Colors.white,
                                 ),
-                                FlatButton.icon(
-                                  color: theme['text']['subtext3'] ?? Colors.black12,
-                                  padding: EdgeInsets.zero,
-                                  icon: Icon(
-                                    Icons.refresh,
-                                    size: 25,
+                                textTheme: ButtonTextTheme.primary,
+                                label: Text(
+                                  userNameList['buttonLoad'] ? "刷新中" : "刷新",
+                                  style: TextStyle(
                                     color: theme['text']['subtitle'] ?? Colors.white,
                                   ),
-                                  textTheme: ButtonTextTheme.primary,
-                                  label: Text(
-                                    userNameList['buttonLoad'] ? "刷新中" : "刷新",
-                                    style: TextStyle(
-                                      color: theme['text']['subtitle'] ?? Colors.white,
-                                    ),
-                                  ),
-                                  onPressed: () => this._seUpdateUserNameList(),
-                                )
-                              ],
+                                ),
+                                onPressed: () => this._seUpdateUserNameList(),
+                              ),
+                              alignment: Alignment.centerRight,
                             ),
                           ),
                           Container(
@@ -989,33 +1033,43 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                       /// E 举报信息
 
                       /// S 审核记录
-                      ListView(
-                        children: <Widget>[
-                          Container(
-                            width: double.maxFinite,
-                            height: 1,
-                            child: Stack(
-                              overflow: Overflow.visible,
-                              children: [
-                                Positioned(
-                                  top: -150,
-                                  left: 0,
-                                  right: 0,
-                                  child: Text(
-                                    "别看啦,真没有了 /(ㄒoㄒ)/~~",
-                                    style: TextStyle(color: Colors.white38),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )
-                              ],
+                      RefreshIndicator(
+                        onRefresh: _onRefresh,
+                        color: Theme.of(context).floatingActionButtonTheme.focusColor ??
+                            theme['index_home']['buttonEdit']['textColor'] ??
+                            Colors.black,
+                        backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor ??
+                            theme['index_home']['buttonEdit']['backgroundColor'] ??
+                            Colors.yellow,
+                        child: ListView(
+                          controller: _scrollController,
+                          children: <Widget>[
+                            Container(
+                              width: double.maxFinite,
+                              height: 1,
+                              child: Stack(
+                                overflow: Overflow.visible,
+                                children: [
+                                  Positioned(
+                                    top: -150,
+                                    left: 0,
+                                    right: 0,
+                                    child: Text(
+                                      "别看啦,真没有了 /(ㄒoㄒ)/~~",
+                                      style: TextStyle(color: Colors.white38),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
 
-                          /// S记录
-                          cheatersRecordWidgetList,
+                            /// S记录
+                            cheatersRecordWidgetList,
 
-                          /// E记录
-                        ],
+                            /// E记录
+                          ],
+                        ),
                       ),
 
                       /// E 审核记录
@@ -1029,105 +1083,111 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
           ),
 
           /// 底栏
-          bottomSheet: _tabControllerIndex == 1
-              ? Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border(
-                      top: BorderSide(
-                        width: 1.0,
-                        color: Colors.black12,
-                      ),
-                    ),
-                  ),
-                  padding: EdgeInsets.only(
-                    left: 10,
-                    right: 10,
-                    top: 5,
-                    bottom: 5,
-                  ),
-                  height: 50,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: FlatButton(
-                          color: Color(0xff111b2b),
-                          textColor: Colors.white,
-                          disabledColor: Colors.black12,
-                          disabledTextColor: Colors.black54,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                spacing: 10,
-                                children: <Widget>[
-                                  Icon(
-                                    Icons.message,
-                                    color: Colors.orangeAccent,
-                                    size: 16,
-                                  ),
-                                  Text(
-                                    "补充证据",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                              !_login.containsKey("userPrivilege")
-                                  ? Text(
-                                      "啊咧咧, 你是不是忘记登录啦, 登录后才可以回复哦",
-                                      style: TextStyle(
-                                        fontSize: 9,
-                                      ),
-                                    )
-                                  : SizedBox(),
-                            ],
-                          ),
-                          onPressed: _setReply(0),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: 7,
-                          right: 7,
-                        ),
-                        height: 20,
-                        width: 1,
-                        color: Colors.black12,
-                      ),
-                      FlatButton(
-                        color: Colors.red,
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  width: 1.0,
+                  color: Colors.black12,
+                ),
+              ),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            height: 50,
+            child: IndexedStack(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: FlatButton(
+                        color: Color(0xff111b2b),
                         textColor: Colors.white,
                         disabledColor: Colors.black12,
                         disabledTextColor: Colors.black54,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Text(
+                          "补充证据",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        onPressed: _onReport(),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: FlatButton(
+                        color: Color(0xff111b2b),
+                        textColor: Colors.white,
+                        disabledColor: Colors.black12,
+                        disabledTextColor: Colors.black54,
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 10,
                           children: <Widget>[
-                            Text(
-                              "判决",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                              ),
+                            Icon(
+                              Icons.message,
+                              color: Colors.orangeAccent,
                             ),
                             Text(
-                              "管理员选项",
+                              "回复",
                               style: TextStyle(
-                                fontSize: 9,
+                                fontSize: 14,
                               ),
-                            )
+                              textAlign: TextAlign.center,
+                            ),
                           ],
                         ),
-                        onPressed: onAdminSentence(),
+                        onPressed: _setReply(0),
                       ),
-                    ],
-                  ),
-                )
-              : null,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(
+                        left: 7,
+                        right: 7,
+                      ),
+                      height: 20,
+                      width: 1,
+                      color: Colors.black12,
+                    ),
+                    FlatButton(
+                      color: Colors.red,
+                      textColor: Colors.white,
+                      disabledColor: Colors.black12,
+                      disabledTextColor: Colors.black54,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "判决",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            "管理员选项",
+                            style: TextStyle(
+                              fontSize: 9,
+                            ),
+                          )
+                        ],
+                      ),
+                      onPressed: onAdminSentence(),
+                    ),
+                  ],
+                ),
+              ],
+              index: _tabControllerIndex,
+            ),
+          ),
         );
       },
     );

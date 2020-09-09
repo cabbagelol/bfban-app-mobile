@@ -1,6 +1,7 @@
 /// 新闻
 import 'dart:async';
 
+import 'package:bfban/widgets/index.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +19,6 @@ class _newsPageState extends State<newsPage> {
 
   final Completer<WebViewController> _controller = Completer<WebViewController>();
 
-  String webviewSrc = "https://app.bfban.com/public/www/news-app.html";
-
   @override
   void initState() {
     super.initState();
@@ -34,7 +33,6 @@ class _newsPageState extends State<newsPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -42,17 +40,11 @@ class _newsPageState extends State<newsPage> {
         elevation: 0,
         automaticallyImplyLeading: false,
         title: Text("\u5e94\u7528\u65b0\u95fb"),
-        actions: <Widget>[
-          NavigationControls(_controller.future),
-        ],
         flexibleSpace: theme['appBar']['flexibleSpace'],
       ),
-      body: SafeArea(
-        top: true,
-        child: newscomponent(
-          src: webviewSrc,
-          controller: _controller,
-        ),
+      body: newscomponent(
+        controller: _controller,
+        src: "https://app.bfban.com/public/www/news-app.html",
       ),
     );
   }

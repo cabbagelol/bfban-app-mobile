@@ -66,8 +66,6 @@ class _SearchPageState extends State<SearchPage> {
 
       serachLogList = log;
     });
-
-    print(serachLogList);
   }
 
   /// 账户搜索
@@ -93,8 +91,6 @@ class _SearchPageState extends State<SearchPage> {
     if (result.data["error"] == 0) {
       setState(() {
         searchList = result.data["data"]["cheaters"];
-
-        print(searchList);
       });
     }
   }

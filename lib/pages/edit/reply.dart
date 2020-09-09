@@ -54,7 +54,7 @@ class _replyPageState extends State<replyPage> {
             color: Colors.white,
           ),
         ),
-      );
+      )..html = "";
 
       data = json.decode(widget.data);
     });
@@ -67,7 +67,7 @@ class _replyPageState extends State<replyPage> {
 
     login = jsonDecode(await Storage.get("com.bfban.login") ?? '{}');
 
-    replyInfo["content"] = _richhtmlController.text;
+    replyInfo["content"] = _richhtmlController.html;
 
     if (login == null || login.isEmpty) {
       EluiMessageComponent.warning(context)(

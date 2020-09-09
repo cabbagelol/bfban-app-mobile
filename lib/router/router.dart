@@ -38,9 +38,11 @@ class Routes {
         }
       },
       {
-        "url": "/edit",
+        "url": "/edit/:data",
         'item': (context, params) {
-          return editPage();
+          return editPage(
+            data: params["data"][0],
+          );
         }
       },
       {

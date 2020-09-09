@@ -20,19 +20,20 @@
             background-color: rgba(0, 0, 0, 0.2) !important;
             padding: 20px 20px !important;
             margin: 0px !important;
+            padding-top: constant(safe-area-inset-top);
+            padding-top:env(safe-area-inset-top);
         }
 
         .border-bottom {
             border-bottom: 1px solid #dee2e605 !important;
         }
 
+
     </style>
 <body>
 
 <div class="my-3 p-3 bg-white rounded shadow-sm" id="app">
-    <h5 class=" border-gray pb-2 mb-0">这是作者发布关于BFBAN消息地方,</h5>
-    <h6 class="border-bottom border-gray pb-2 mb-0">欢迎随时回来查看</h6>
-    <div class="media text-muted pt-3" v-for="i of list">
+    <div class="media text-muted pt-3" v-for="i of data">
         <svg class="bd-placeholder-img mr-2 rounded" width="32" height="32"
              xmlns="http://www.w3.org/2000/svg"
              preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
@@ -43,7 +44,7 @@
         </svg>
         <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
             <strong class="d-block text-gray-dark">@{{i.username}}</strong>
-            <block v-html="i.content" style="white-space: pre-wrap"></block>
+            <p style="margin: 0" style="white-space: pre-wrap" v-for='v of i.content'>{{v.toString()}}</p>
             <p>发布于 {{i.time}}</p>
         </div>
     </div>
@@ -58,75 +59,29 @@
 <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.20.0-0/axios.min.js"></script>
 
-<script>
+<script type="text/javascript">
     /**
      * 就这样吧，懒的构建一个完整本地项目
      */
     var app = new Vue({
         el: '#app',
         data: {
-            list: [
-                {
-                    username: '0.0.4',
-                    time: '2020 0/0',
-                    content: `
-新增
-1. 替换用户评论内置的图片控件，现在它们会被缓存下来防止再次加载，并且会加载网络中缩略图，除非进入图片观察窗口内是不会原图下载。
-2. 在详情页内作弊者ID允许用户复制。
-3. 时间同步网页的方式，它不在是不论如何都显示完整时间，特定时间内以“1分钟前”、“昨天”表示。
-4. 新增主题功能，切换明亮与默认主题。
-5. 尝试修复打开外部游览器错误【已观察到bug】。
-6. 增加战绩链接:D，它在举报者id下方。
-                    `,
-                },
-                {
-                    username: '0.0.3',
-                    time: '2020 0/0',
-                    content: `
-新增
-1. 针对详情页UI反馈作改进，最主要对留言列表修复性能浪费。
-2. 改进首页列表单元排版，增加序列筛选选项。
-3. 修复社区遗漏管理动态数据，修复在社区打开动态详情引起错误。
-4. 新增错误追踪。
-5. 修改登录界面。
-6. 补充用户登录身份过期提示。
-
---------------
-
-已知0.0.2问题
-在新一轮测试中，我已经知一些还未解决问题：
-1.其中发现个别用户无法登录，由于无法还原流程并没有最终解决，因此0.0.3会引用错误上报系统，并在未来继续增加更加详情log记录；
-2.用户身份无法正常进行操作，列如更新作弊者id，发布举报重要功能，这已经引起bfban该应用正常范围，因此接下来时间与bfban作者核对。
-                    `,
-                },
-                {
-                    username: '0.0.2',
-                    time: '2020 8/3',
-                    content: `
-新增
-1. 为详情、个人记录添加分享。
-2. 图片允许下载。
-3. 改进搜索界面以及流程。
-4. 改进审核记录链接显示、添加楼层指示器。
-5. 改进富文本，允许插图。
-6. 新增社区。
-
-修复
-1. 审核记录内记录无法打开。
-                    `,
-                },
-                {
-                    username: '0.0.1',
-                    time: '2020 8/3',
-                    content: `
-各位好, 我是Cabbagelol:
-平常大家都叫我菜萌，实际上在去年已经联系BFBAN希望参与网站改进，BFBAN负责人也回应我声音，开放BFBAN接口；在完善WEB接口前，我闪现App计划，立即投身之中，遗憾的是，碍于工作平常都在晚上开展，6月份BFBAN召集广大志愿者组成小组，让该项目得以加速，现在终于发布了第一个版本！
-
-首先这是一个依旧存在许多隐性问题的app，我需要更多参与者能在使用中告诉我那些改进地方以及问题，避免我闭门造车，你的问题可以在https://github.com/cabbagelol/bfbanApp/issues 中告诉我。
-                    `,
-                },
-            ],
+            data: {},
         },
+        created() {
+            const self = this;
+            axios({
+                method: 'get',
+                url: '../json/news.json',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }).then(function (response) {
+                console.log(response.data);
+                self.data = response.data.news;
+            });
+        }
     });
+
 
 </script>

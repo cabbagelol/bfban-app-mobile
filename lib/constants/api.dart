@@ -41,7 +41,7 @@ class Config {
       case Env.LOCAL:
       default:
         d.addAll({
-          "url": "localhost:8080",
+          "url": "http://dev.bamket.com",
         });
         return d;
     }

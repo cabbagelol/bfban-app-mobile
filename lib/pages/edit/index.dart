@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/elui.dart';
-import 'package:provider/provider.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -23,6 +22,12 @@ import 'package:bfban/widgets/edit/gameTypeRadio.dart';
 import 'package:bfban/widgets/detail/cheatersCardTypes.dart' show detailApi;
 
 class editPage extends StatefulWidget {
+  final data;
+
+  editPage({
+    this.data,
+  });
+
   @override
   _editPageState createState() => _editPageState();
 }
@@ -103,7 +108,7 @@ class _editPageState extends State<editPage> {
 
     setState(() {
       reportInfo["gameName"] = games[0]["value"];
-
+      reportInfo["originId"] = jsonDecode(widget.data)["originId"];
       Config.cheatingTpyes.forEach((key, value) {
         _cheatingTpyes.add({
           "name": value,
@@ -328,7 +333,7 @@ class _editPageState extends State<editPage> {
   }
 
   /// 打开编辑页面
-  void  _opEnRichEdit() async {
+  void _opEnRichEdit() async {
     dynamic data = jsonEncode({
       "html": Uri.encodeComponent(reportInfo["description"]),
     });
@@ -528,7 +533,7 @@ class _editPageState extends State<editPage> {
                         ? theme['text']['subtext3'] ?? Colors.white12
                         : theme['text']['subtitle'] ?? Colors.white,
                     fontSize: 30,
-                    letterSpacing: 8,
+//                    letterSpacing: 8,
                   ),
                   textAlign: TextAlign.center,
                 ),

@@ -67,17 +67,14 @@ class _communityPageState extends State<communityPage> {
 
   /// 整理活动
   List _onMerge() {
-    Function _getTurnTheTimestamp = new Date().getTurnTheTimestamp;
-    List list = new List();
-
-    list.addAll(indexActivity["registers"] ?? []);
-    list.addAll(indexActivity["reports"] ?? []);
-    list.addAll(indexActivity["verifies"] ?? []);
+    Function _TTT = new Date().getTurnTheTimestamp;
+    List list = new List()
+      ..addAll(indexActivity["registers"] ?? [])
+      ..addAll(indexActivity["reports"] ?? [])
+      ..addAll(indexActivity["verifies"] ?? []);
 
     list.sort((time, timeing) =>
-        _getTurnTheTimestamp(timeing["createDatetime"])["millisecondsSinceEpoch"] -
-        _getTurnTheTimestamp(time["createDatetime"])["millisecondsSinceEpoch"]);
-
+        _TTT(timeing["createDatetime"])["millisecondsSinceEpoch"] - _TTT(time["createDatetime"])["millisecondsSinceEpoch"]);
     return list;
   }
 
@@ -96,10 +93,11 @@ class _communityPageState extends State<communityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
 
         /// 最近动态
         title: Text("\u6700\u8fd1\u52a8\u6001"),
@@ -334,7 +332,8 @@ class WidgetStateText extends StatelessWidget {
             /// 将xx处理为
             "\u5c06${i["cheaterOriginId"]}\u5904\u7406\u4e3a",
             style: TextStyle(
-              color: Theme.of(context).primaryTextTheme.headline3.color ?? theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
+              color:
+                  Theme.of(context).primaryTextTheme.headline3.color ?? theme['index_community']['card']['rightsubtitle'] ?? Colors.white54,
               fontSize: 12,
             ),
           ),

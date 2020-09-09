@@ -121,10 +121,6 @@ class _ManagePageState extends State<ManagePage> {
 
   /// 发布
   void _onRelease() async {
-    setState(() {
-      manageLoad = true;
-    });
-
     dynamic _verification = this._onVerification();
 
     if (_verification["code"] != 0) {
@@ -133,6 +129,10 @@ class _ManagePageState extends State<ManagePage> {
       );
       return;
     }
+
+    setState(() {
+      manageLoad = true;
+    });
 
     Response result = await Http.request(
       'api/cheaters/verify',
@@ -186,7 +186,6 @@ class _ManagePageState extends State<ManagePage> {
             ),
           ),
           onChanged: (bool) {
-            print(bool);
             setState(() {
               if (bool) {
                 reportInfoCheatMethods.add(element["value"]);
@@ -213,18 +212,16 @@ class _ManagePageState extends State<ManagePage> {
 
   /// 打开编辑页面
   void _opEnRichEdit() async {
-    dynamic data = jsonEncode({
-      "html": Uri.encodeComponent(manageData["suggestion"]),
+    String data = jsonEncode({
+      "html": Uri.encodeComponent(manageData["suggestion"] ?? ''),
       "isText": true,
     });
 
     Routes.router.navigateTo(context, '/richedit/$data', transition: TransitionType.cupertino).then((data) {
       /// 按下确认储存富文本编写的内容
-      if (data["code"] == 1) {
-        setState(() {
-          manageData["suggestion"] = data["html"];
-        });
-      }
+      setState(() {
+        manageData["suggestion"] = data["html"];
+      });
     });
   }
 

@@ -1,13 +1,14 @@
 /// 功能：首页控制器
-
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:bfban/pages/index/community.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/_message/index.dart';
+import 'package:flutter/services.dart' show PlatformException;
+import 'package:uni_links/uni_links.dart';
 
-import 'package:bfban/constants/index.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/router/router.dart';
 
@@ -26,7 +27,10 @@ class IndexPage extends StatefulWidget {
 }
 
 class _IndexPageState extends State<IndexPage> {
+  StreamSubscription _sub;
+
   int _currentIndex = 0;
+
   List<Widget> list = [HomePage(), communityPage(), newsPage(), usercenter()];
 
   @override
@@ -35,6 +39,13 @@ class _IndexPageState extends State<IndexPage> {
 
     this._onReady();
     this._onGuide();
+    this._onEnUniLinks();
+  }
+
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
   }
 
   void _onReady() async {
@@ -62,6 +73,15 @@ class _IndexPageState extends State<IndexPage> {
     } else {
       Http.setToken(token["value"]);
     }
+  }
+
+
+  /// 外链初始
+  Future<Null> _onEnUniLinks () async {
+    _sub = getLinksStream().listen((String link) {
+      print("link" + link);
+    }, onError: (err) {
+    });
   }
 
   /// 引导器

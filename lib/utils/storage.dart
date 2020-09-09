@@ -6,10 +6,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class Storage {
-  static SharedPreferences prefs;
+  static SharedPreferences _prefs;
+
+  static SharedPreferences get getPrefs => _prefs;
 
   /// 储存图片
-  static Future saveimg(url, {
+  static Future saveimg(
+    url, {
     fileUrl: "",
   }) async {
     var response = await Dio().get(
@@ -39,38 +42,56 @@ class Storage {
 
   /// 获取
   static Future get(String name, {type: "string"}) async {
-    prefs = await SharedPreferences.getInstance();
-    switch (type) {
-      case "string":
-        return prefs.get(name) ?? null;
-        break;
+    try {
+      _prefs = await SharedPreferences.getInstance();
+      switch (type) {
+        case "string":
+          return _prefs.get(name) ?? null;
+          break;
+      }
+
+      return _prefs;
+    } catch (E) {
+      throw E;
     }
   }
 
   /// 设置
-  static set(String name, {String type = "string", value = "null"}) async {
-    prefs = await SharedPreferences.getInstance();
-    switch (type) {
-      case "bool":
-        break;
-      case "string":
-        await prefs.setString(name, value).then((value) {
-          get("Storage.get: $name");
-        });
-        break;
+  static Future set(String name, {String type = "string", value = "null"}) async {
+    try {
+      _prefs = await SharedPreferences.getInstance();
+      switch (type) {
+        case "bool":
+          break;
+        case "string":
+          await _prefs.setString(name, value).then((value) {
+            get("Storage.get: $name");
+          });
+          break;
+      }
+
+      return _prefs;
+    } catch (E) {
+      throw E;
     }
   }
 
   /// 删除
-  static remove(String name, {String type = "name"}) async {
-    prefs = await SharedPreferences.getInstance();
-    switch (type) {
-      case "all":
-        prefs.clear();
-        break;
-      case "name":
-        prefs.remove(name); //删除指定键
-        break;
+  static Future remove(String name, {String type = "name"}) async {
+    try {
+      _prefs = await SharedPreferences.getInstance();
+      switch (type) {
+        case "all":
+          _prefs.clear();
+          break;
+        case "name":
+          _prefs.remove(name); //删除指定键
+          break;
+      }
+
+      return _prefs;
+    } catch (E) {
+      throw E;
     }
   }
 }

@@ -90,16 +90,6 @@ class SimpleRichEditController extends RichEditController {
       );
 }
 
-
-
-
-
-
-
-
-
-
-
 class MySimpleRichHtmlController extends RichHtmlController {
   final context;
   final RichHtmlTheme theme;

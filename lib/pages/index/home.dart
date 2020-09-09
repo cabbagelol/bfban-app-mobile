@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
     if (_login != '{}' && ['admin', 'super'].contains(_login["userPrivilege"])) {
       Routes.router.navigateTo(
         context,
-        '/edit',
+        '/edit/${jsonEncode({})}',
         transition: TransitionType.cupertinoFullScreenDialog,
       );
       return ()  {};

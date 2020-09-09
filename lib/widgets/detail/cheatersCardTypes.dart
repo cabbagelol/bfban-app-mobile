@@ -21,71 +21,104 @@ class detailApi {
   static Color cardColor = Colors.white;
   static Color cardButtonBorderColor = Color(0xfff2f2f2);
 
-  static Map<String, CustomRender> customRender (context) {
+  static Map<String, CustomRender> customRender(context) {
+    final UrlUtil _urlUtil = new UrlUtil();
+
     return {
+      "a": (renderContext, child, attributes, node) {
+        return GestureDetector(
+          onTap: () => _urlUtil.onPeUrl(attributes["href"]),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+            decoration: BoxDecoration(
+              color: Color(0xfff2f2f2),
+              borderRadius: BorderRadius.all(Radius.circular(2)),
+            ),
+            child: Wrap(
+              spacing: 5,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Icon(
+                  Icons.insert_link,
+                  color: Colors.blue,
+                ),
+                child,
+              ],
+            ),
+          ),
+        );
+      },
       "img": (renderContext, child, attributes, node) {
         return GestureDetector(
-          child: Stack(
-            children: [
-              EluiImgComponent(
-                src: attributes['src'] + "?imageslim",
-                width: double.infinity,
-                errorWidget: const Icon(
-                  Icons.error,
-                  size: 50,
-                  color: Colors.black54,
-                ),
-                isPlaceholder: true,
-                placeholder: (BuildContext context, String url) {
-                  return ELuiLoadComponent(
-                    type: "line",
-                    color: Colors.black54,
-                    size: 20,
-                    lineWidth: 2,
-                  );
-                },
-                fit: BoxFit.cover,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xfff2f2f2),
+              border: Border.all(
+                width: 1,
+                color: Color(0xfff2f2f2),
               ),
-              Positioned(
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        Colors.transparent,
-                        Colors.transparent,
-                        Colors.black87,
-                      ],
+            ),
+            margin: EdgeInsets.symmetric(vertical: 5),
+            child: Stack(
+              children: [
+                EluiImgComponent(
+                  src: attributes['src'] + "?imageslim",
+                  width: double.infinity,
+                  errorWidget: const Icon(
+                    Icons.error,
+                    size: 50,
+                    color: Colors.black54,
+                  ),
+                  isPlaceholder: true,
+                  placeholder: (BuildContext context, String url) {
+                    return ELuiLoadComponent(
+                      type: "line",
+                      color: Colors.black54,
+                      size: 20,
+                      lineWidth: 2,
+                    );
+                  },
+                  fit: BoxFit.cover,
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.transparent,
+                          Colors.transparent,
+                          Colors.black87,
+                        ],
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white70,
+                      size: 30,
                     ),
                   ),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white70,
-                    size: 30,
+                ),
+                Positioned(
+                  right: 12,
+                  bottom: 12,
+                  child: Container(
+                    padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white70,
+                      size: 12,
+                    ),
                   ),
                 ),
-              ),
-              Positioned(
-                right: 12,
-                bottom: 12,
-                child: Container(
-                  padding: EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white70,
-                    size: 12,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
-          onTap: () {
-            onImageTap(context, attributes['src']);
-          },
+          onTap: () => onImageTap(context, attributes['src']),
         );
       }
     };
@@ -93,19 +126,8 @@ class detailApi {
 
   static Map<String, Style> styleHtml(BuildContext context) {
     return {
-      "a": Style(
-        after: "🔗",
-      ),
       "p": Style(
         fontSize: FontSize(12),
-        width: (MediaQuery.of(context).size.width - 15),
-      ),
-      "img": Style(
-        border: Border.all(
-          width: 1,
-          color: Color(0xfff2f2f2),
-        ),
-        backgroundColor: Color(0xfff2f2f2),
       ),
     };
   }
@@ -218,7 +240,7 @@ class CheatUserCheaters extends StatelessWidget {
 
   final cheatersInfo;
 
-  final UrlUtil _urlUtil = new UrlUtil();
+  final Function onReplySucceed;
 
   CheatUserCheaters({
     @required this.i,
@@ -226,6 +248,7 @@ class CheatUserCheaters extends StatelessWidget {
     this.cheatMethods,
     this.cheatersInfoUser,
     this.cheatersInfo,
+    this.onReplySucceed,
   });
 
   @override
@@ -321,21 +344,23 @@ class CheatUserCheaters extends StatelessWidget {
               ),
               replyButton(
                 onTap: () {
-                  Routes.router.navigateTo(
-                    context,
-                    '/reply/${jsonEncode({
-                      "type": 1,
-                      "id": cheatersInfoUser["id"],
-                      "originUserId": cheatersInfoUser["originUserId"],
-                      "userId": cheatersInfo["data"]["reports"][0]["userId"],
-                      "toUserId": i["userId"],
-                      "foo": i["foo"],
-                      "toFloor": index.toString(),
-                      // ignore: equal_keys_in_map
-                      "toUserId": i["userId"],
-                    })}',
-                    transition: TransitionType.cupertino,
-                  );
+                  Routes.router
+                      .navigateTo(
+                        context,
+                        '/reply/${jsonEncode({
+                          "type": 1,
+                          "id": cheatersInfoUser["id"],
+                          "originUserId": cheatersInfoUser["originUserId"],
+                          "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                          "toUserId": i["userId"],
+                          "foo": i["foo"],
+                          "toFloor": index.toString(),
+                          // ignore: equal_keys_in_map
+                          "toUserId": i["userId"],
+                        })}',
+                        transition: TransitionType.cupertino,
+                      )
+                      .then((value) => onReplySucceed?.call(value));
                 },
               ),
             ],
@@ -416,7 +441,6 @@ class CheatUserCheaters extends StatelessWidget {
               data: i["content"],
               customRender: detailApi.customRender(context),
               style: detailApi.styleHtml(context),
-              onLinkTap: (src) => _urlUtil.onPeUrl(src),
             ),
           )
         ],
@@ -440,12 +464,15 @@ class CheatReports extends StatelessWidget {
 
   final UrlUtil _urlUtil = new UrlUtil();
 
+  final Function onReplySucceed;
+
   CheatReports({
     @required this.i,
     this.index = 0,
     this.cheatMethods,
     this.cheatersInfoUser,
     this.cheatersInfo,
+    this.onReplySucceed,
   });
 
   @override
@@ -569,21 +596,23 @@ class CheatReports extends StatelessWidget {
               ),
               replyButton(
                 onTap: () {
-                  Routes.router.navigateTo(
-                    context,
-                    '/reply/${jsonEncode({
-                      "type": 1,
-                      "id": cheatersInfoUser["id"],
-                      "originUserId": cheatersInfoUser["originUserId"],
-                      "userId": cheatersInfo["data"]["reports"][0]["userId"],
-                      "toUserId": i["userId"],
-                      "foo": i["username"],
-                      "toFloor": index.toString(),
-                      // ignore: equal_keys_in_map
-                      "toUserId": i["userId"],
-                    })}',
-                    transition: TransitionType.cupertino,
-                  );
+                  Routes.router
+                      .navigateTo(
+                        context,
+                        '/reply/${jsonEncode({
+                          "type": 1,
+                          "id": cheatersInfoUser["id"],
+                          "originUserId": cheatersInfoUser["originUserId"],
+                          "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                          "toUserId": i["userId"],
+                          "foo": i["username"],
+                          "toFloor": index.toString(),
+                          // ignore: equal_keys_in_map
+                          "toUserId": i["userId"],
+                        })}',
+                        transition: TransitionType.cupertino,
+                      )
+                      .then((value) => onReplySucceed?.call(value));
                 },
               ),
             ],
@@ -663,7 +692,6 @@ class CheatReports extends StatelessWidget {
               data: i["description"],
               style: detailApi.styleHtml(context),
               customRender: detailApi.customRender(context),
-              onLinkTap: (src) => _urlUtil.onPeUrl(src),
             ),
           )
         ],
@@ -685,6 +713,8 @@ class CheatVerifies extends StatefulWidget {
 
   final cheatersInfo;
 
+  final Function onReplySucceed;
+
   Map login;
 
   Function onConfirm;
@@ -697,6 +727,7 @@ class CheatVerifies extends StatefulWidget {
     @required this.cheatersInfo,
     @required this.login,
     this.onConfirm,
+    this.onReplySucceed,
   });
 
   @override
@@ -705,8 +736,6 @@ class CheatVerifies extends StatefulWidget {
 
 class _CheatVerifiesState extends State<CheatVerifies> {
   final List<dynamic> startusIng = Config.startusIng;
-
-  final UrlUtil _urlUtil = new UrlUtil();
 
   bool _isAdmin = false;
 
@@ -871,21 +900,23 @@ class _CheatVerifiesState extends State<CheatVerifies> {
               ),
               replyButton(
                 onTap: () {
-                  Routes.router.navigateTo(
-                    context,
-                    '/reply/${jsonEncode({
-                      "type": 1,
-                      "id": widget.cheatersInfoUser["id"],
-                      "originUserId": widget.cheatersInfoUser["originUserId"],
-                      "userId": widget.cheatersInfo["data"]["reports"][0]["userId"],
-                      "toUserId": widget.i["userId"],
-                      "foo": widget.i["username"],
-                      "toFloor": widget.index.toString(),
-                      // ignore: equal_keys_in_map
-                      "toUserId": widget.i["userId"],
-                    })}',
-                    transition: TransitionType.cupertino,
-                  );
+                  Routes.router
+                      .navigateTo(
+                        context,
+                        '/reply/${jsonEncode({
+                          "type": 1,
+                          "id": widget.cheatersInfoUser["id"],
+                          "originUserId": widget.cheatersInfoUser["originUserId"],
+                          "userId": widget.cheatersInfo["data"]["reports"][0]["userId"],
+                          "toUserId": widget.i["userId"],
+                          "foo": widget.i["username"],
+                          "toFloor": widget.index.toString(),
+                          // ignore: equal_keys_in_map
+                          "toUserId": widget.i["userId"],
+                        })}',
+                        transition: TransitionType.cupertino,
+                      )
+                      .then((value) => widget.onReplySucceed?.call(value));
                 },
               ),
             ],
@@ -897,7 +928,6 @@ class _CheatVerifiesState extends State<CheatVerifies> {
               data: widget.i["suggestion"],
               style: detailApi.styleHtml(context),
               customRender: detailApi.customRender(context),
-              onLinkTap: (src) => _urlUtil.onPeUrl(src),
             ),
           ),
 
@@ -966,7 +996,7 @@ class CheatConfirms extends StatelessWidget {
 
   final cheatersInfo;
 
-  final UrlUtil _urlUtil = new UrlUtil();
+  final Function onReplySucceed;
 
   CheatConfirms({
     @required this.i,
@@ -974,6 +1004,7 @@ class CheatConfirms extends StatelessWidget {
     this.cheatMethods,
     this.cheatersInfoUser,
     this.cheatersInfo,
+    this.onReplySucceed,
   });
 
   @override
@@ -1073,21 +1104,23 @@ class CheatConfirms extends StatelessWidget {
               ),
               replyButton(
                 onTap: () {
-                  Routes.router.navigateTo(
-                    context,
-                    '/reply/${jsonEncode({
-                      "type": 1,
-                      "id": cheatersInfoUser["id"],
-                      "originUserId": cheatersInfoUser["originUserId"],
-                      "userId": cheatersInfo["data"]["reports"][0]["userId"],
-                      "toUserId": i["userId"],
-                      "foo": i["username"],
-                      "toFloor": index.toString(),
-                      // ignore: equal_keys_in_map
-                      "toUserId": i["userId"],
-                    })}',
-                    transition: TransitionType.cupertino,
-                  );
+                  Routes.router
+                      .navigateTo(
+                        context,
+                        '/reply/${jsonEncode({
+                          "type": 1,
+                          "id": cheatersInfoUser["id"],
+                          "originUserId": cheatersInfoUser["originUserId"],
+                          "userId": cheatersInfo["data"]["reports"][0]["userId"],
+                          "toUserId": i["userId"],
+                          "foo": i["username"],
+                          "toFloor": index.toString(),
+                          // ignore: equal_keys_in_map
+                          "toUserId": i["userId"],
+                        })}',
+                        transition: TransitionType.cupertino,
+                      )
+                      .then((value) => onReplySucceed?.call(value));
                 },
               ),
             ],
@@ -1102,7 +1135,6 @@ class CheatConfirms extends StatelessWidget {
               data: (i["suggestion"] ?? ""),
               style: detailApi.styleHtml(context),
               customRender: detailApi.customRender(context),
-              onLinkTap: (src) => _urlUtil.onPeUrl(src),
             ),
           ),
         ],

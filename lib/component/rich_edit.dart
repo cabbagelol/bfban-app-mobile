@@ -136,8 +136,6 @@ abstract class RichEditController {
       srcValue.forEach((_rt) {
         String src = _rt.input.substring(_rt.start, _rt.end).replaceAll("src=\"", "").replaceAll("\"", "");
         if (DomContent.toString().indexOf("<img") >= 0) {
-          print(_data[_data.length - 1].type);
-
           _data.addAll([
             RichEditData(
               RichEditDataType.IMAGE,
@@ -319,7 +317,6 @@ class RichEditState extends State<RichEdit> {
                           backgroundCursorColor: Colors.transparent,
                           onChanged: (text) {
                             if (text == "" && widget.controller._data.length > 1) {
-                              print(index);
                               setState(() {
                                 focusNodes.remove(focusNodes[index]);
                                 widget.controller._data.removeAt(index);
@@ -504,7 +501,6 @@ class RichEditState extends State<RichEdit> {
   }
 
   void initial() {
-    print(widget.controller._data.length);
     setState(() {
       widget.controller._data.asMap().keys.map((index) {
         remove(index);

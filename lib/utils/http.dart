@@ -50,6 +50,7 @@ class Http extends ScaffoldState {
 
     if (TOKEN != "") {
       headers["token"] = TOKEN;
+      headers["x-access-token"] = TOKEN;
     }
 
     /// restful 请求处理

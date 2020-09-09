@@ -95,14 +95,14 @@ class _loginPageState extends State<loginPage> {
 
   /// 更新验证码
   void _getCaptcha() async {
-    var t = DateTime.now().millisecondsSinceEpoch.toString();
+    String time = DateTime.now().millisecondsSinceEpoch.toString();
 
     setState(() {
       valueCaptchaLoad = true;
     });
 
     Response<dynamic> result = await Http.request(
-      'api/captcha?r=$t',
+      'api/captcha?r=$time',
       method: Http.GET,
     );
 
@@ -110,7 +110,7 @@ class _loginPageState extends State<loginPage> {
       loginInfo["CaotchaCookie"] += i + ';';
     });
 
-    Storage.set("com.bfban.cookie", value: loginInfo["CaotchaCookie"]);
+    await Storage.set("com.bfban.cookie", value: loginInfo["CaotchaCookie"]);
 
     setState(() {
       loginInfo["valueCaptcha"] = result.data;
@@ -147,20 +147,25 @@ class _loginPageState extends State<loginPage> {
     );
 
     if (result.data['error'] == 0) {
-      Storage.set(
-        'com.bfban.login',
-        value: jsonEncode(result.data['data']),
-      );
-      Storage.set(
-        'com.bfban.token',
-        value: jsonEncode({
-          "value": result.data['token'],
-          "time": new DateTime.now().millisecondsSinceEpoch,
-        }),
-      );
-
-      Http.setToken(result.data['token']);
-      Navigator.pop(context, 'loginBack');
+      Future.wait([
+        Storage.set(
+          'com.bfban.login',
+          value: jsonEncode(result.data['data']),
+        ),
+        Storage.set(
+          'com.bfban.token',
+          value: jsonEncode({
+            "value": result.data['token'],
+            "time": new DateTime.now().millisecondsSinceEpoch,
+          }),
+        )
+      ]).then((value) {
+        Http.setToken(result.data['token']);
+      }).catchError((E) {
+        EluiMessageComponent.error(context)(
+          child: Text("$E"),
+        );
+      }).whenComplete(() => Navigator.pop(context, 'loginBack'));
     } else {
       switch (result.data["msg"]) {
         case "invalid captcha":
@@ -226,7 +231,7 @@ class _loginPageState extends State<loginPage> {
                       children: [
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 20),
-                          color: theme['input']['prominent'] ??Color(0xff111b2b),
+                          color: theme['input']['prominent'] ?? Color(0xff111b2b),
                           padding: EdgeInsets.only(
                             left: 10,
                             right: 10,
@@ -248,7 +253,7 @@ class _loginPageState extends State<loginPage> {
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 20),
-                          color:theme['input']['prominent'] ?? Color(0xff111b2b),
+                          color: theme['input']['prominent'] ?? Color(0xff111b2b),
                           padding: EdgeInsets.only(
                             left: 10,
                             right: 10,
