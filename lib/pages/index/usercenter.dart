@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -106,7 +107,6 @@ class _usercenterState extends State<usercenter> {
   void _opEnVersionDowUrl() {
     if (versionInfo["is"]) {
       UrlUtil().onPeUrl(versionInfo["info"]["src"]);
-
       return;
     }
   }
@@ -375,6 +375,7 @@ class _usercenterState extends State<usercenter> {
                       )
                     : Wrap(
                         spacing: 10,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: <Widget>[
                           Text(
                             appInfo["v"].toString(),
@@ -388,6 +389,7 @@ class _usercenterState extends State<usercenter> {
                               size: EluiTagSize.no2,
                               color: EluiTagColor.warning,
                               value: "\u6709\u66f4\u65b0",
+                              onTap: () => _opEnVersionDowUrl(),
                             ),
                           )
                         ],

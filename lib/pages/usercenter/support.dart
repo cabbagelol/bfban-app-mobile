@@ -58,6 +58,18 @@ class _SupportPageState extends State<SupportPage> {
             onTap: () => this._opEnGuide(),
           ),
           EluiCellComponent(
+            title: "反馈群 (612949946)",
+            label: "和作者更加接近呢",
+            theme: EluiCellTheme(
+              titleColor: theme["text"]["subtitle"],
+              labelColor: theme["text"]["subtext1"],
+              linkColor: theme["text"]["subtitle"],
+              backgroundColor: theme['card']['color'] ?? Color.fromRGBO(255, 255, 255, .07),
+            ),
+            islink: true,
+            onTap: () => UrlUtil().onPeUrl("https://jq.qq.com/?_wv=1027&k=kXr9z9FE"),
+          ),
+          EluiCellComponent(
             title: "Github",
             label: "开源地址",
             theme: EluiCellTheme(
