@@ -106,6 +106,8 @@ class _usercenterState extends State<usercenter> {
   void _opEnVersionDowUrl() {
     if (versionInfo["is"]) {
       UrlUtil().onPeUrl(versionInfo["info"]["src"]);
+
+      return;
     }
   }
 

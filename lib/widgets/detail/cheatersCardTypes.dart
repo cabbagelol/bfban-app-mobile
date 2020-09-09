@@ -127,7 +127,7 @@ class detailApi {
   static Map<String, Style> styleHtml(BuildContext context) {
     return {
       "p": Style(
-        fontSize: FontSize(12),
+//        fontSize: FontSize(12),
       ),
     };
   }

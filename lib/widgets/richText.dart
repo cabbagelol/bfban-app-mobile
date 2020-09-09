@@ -9,9 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rich_html/main.dart';
 
 import 'package:bfban/component/rich_edit.dart';
+import 'package:bfban/constants/api.dart';
+import 'package:bfban/utils/index.dart' show upload;
 
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
+import 'package:image_picker/image_picker.dart';
 
 /// 富文本视图
 class richText extends StatefulWidget {
@@ -100,13 +103,16 @@ class MySimpleRichHtmlController extends RichHtmlController {
       });
 
   @override
-  Future<String> insertVideo() async {
-    return "https://www.w3school.com.cn/i/movie.mp4";
-  }
-
-  @override
   Future<String> insertImage() async {
-    return "https://www.w3school.com.cn/i/eg_tulip.jpg";
+    final picker = ImagePicker();
+    PickedFile pickedImage = await picker.getImage(
+      source: ImageSource.gallery,
+      imageQuality: 30,
+    );
+
+    String key = await upload.on(pickedImage.path);
+
+    return key != null ? "${Config.apiHost["qiniuyunSrc"]}/$key" : "";
   }
 
   @override

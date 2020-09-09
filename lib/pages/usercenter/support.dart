@@ -32,7 +32,7 @@ class _SupportPageState extends State<SupportPage> {
 
   /// 打开引导
   void _opEnGuide() {
-    UrlUtil().onPeUrl('/guide');
+    UrlUtil().opEnWebView('/guide');
   }
 
   @override
