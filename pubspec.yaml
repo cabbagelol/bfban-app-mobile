@@ -1,12 +1,14 @@
 name: bfban
 description: bfban
-version: 1.0.0+1
+version: 0.0.4
 environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_plugin_android_lifecycle: 1.0.8
 
   cupertino_icons: ^0.1.2
 
