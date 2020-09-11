@@ -20,7 +20,12 @@
 
 > Bfban应用借助FlutterUI库混合原生实现跨平台，可发布android和ios以及桌面应用
 
-部署android：
+额外依赖：
+
+- flutter_plugin_elui: https://github.com/cabbagelol/flutter-elui-plugin
+- flutter_rich_html: https://github.com/cabbagelol/rich_html-d20822
+
+ 部署android：
 1. android部分仅保留部分资源文件，构建本地android项目需要先"flutter create
    kotlin ."，再导入克隆项目内的android文件。
 2. 编码模式含'armeabi', 'x86', 'armeabi-v7a', 'x86_64',
