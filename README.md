@@ -9,8 +9,12 @@
 
 由Cabbagelol负责维护的联Ban移动设备应用，完成对移动设备快速举报功能，改进在移动设备展示效果。该应用并`非官方`，关于隐私问题具体可查看源代码检查应用是否作出此类行为。
 
-Android和ios下载请前往：
-[https://github.com/cabbagelol/bfbanApp/releases]()
+[Android和ios下载](https://github.com/cabbagelol/bfbanApp/releases)
+| [开发计划进展](https://trello.com/b/ZECQnnEz/bfban-app) |
+[联Ban网站](https://bfban.com) |
+[应用网站](http://app.bfban.com/public/www) |
+[BFBANApp交流群(612949946)](https://jq.qq.com/?_wv=1027&k=kXr9z9FE)
+
 
 ## 介绍
 
