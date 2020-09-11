@@ -23,7 +23,6 @@ class replyPage extends StatefulWidget {
 }
 
 class _replyPageState extends State<replyPage> {
-  SimpleRichEditController controller;
   List<RichHtmlLabelType> _richhtmlSupport;
   MySimpleRichHtmlController _richhtmlController;
 
