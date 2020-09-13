@@ -15,6 +15,8 @@
 [应用网站](http://app.bfban.com/public/www) |
 [BFBANApp交流群(612949946)](https://jq.qq.com/?_wv=1027&k=kXr9z9FE)
 
+避免在第三方模拟器中使用，它可能导致某些内置Api无法使用。关于此问题继续追踪修复方案。
+
 
 ## 介绍
 

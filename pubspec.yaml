@@ -8,19 +8,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_plugin_android_lifecycle: 1.0.8
-
   cupertino_icons: ^0.1.2
 
   # 请求模块 https://pub.dev/packages/dio
   dio: 3.0.9
 
   # cookie管理器
-  #  cookie_jar: 1.0.0
   dio_cookie_manager: 1.0.0
 
   # 状态管理
-#  scoped_model: 1.0.1
   provider: ^4.0.5
 
   # 路由管理
@@ -63,7 +59,7 @@ dependencies:
   image_picker: 0.6.7+4
 
   # https://pub.flutter-io.cn/packages/rich_edit
-  rich_edit: 0.1.1
+  # rich_edit: 0.1.1
   flutter_rich_html:
     path: ../../flutter-rich-html
 
@@ -90,4 +86,3 @@ flutter:
     - assets/video/
     - assets/images/
     - assets/images/edit/
-    - assets/images/news/

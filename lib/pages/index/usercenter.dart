@@ -145,7 +145,15 @@ class _usercenterState extends State<usercenter> {
 
   /// 打开权限中心
   void _opEnPermanently() async {
-    openAppSettings();
+    try {
+      if (!await openAppSettings()) {
+        EluiMessageComponent.error(context)(
+          child: Text("该设备无法打开权限, 请尝试在设置>应用打开")
+        );
+      }
+    } catch (E) {
+      throw E;
+    }
   }
 
   /// 打开主题

@@ -106,7 +106,9 @@ class _HomePageState extends State<HomePage> {
       indexPagesState = false;
     });
 
-    return THEMELIST[context.read<AppInfoProvider>().themeColor ?? 'none'];
+    return THEMELIST[context
+        .read<AppInfoProvider>()
+        .themeColor ?? 'none'];
   }
 
   /// 筛选
@@ -141,7 +143,7 @@ class _HomePageState extends State<HomePage> {
         })}',
         transition: TransitionType.cupertinoFullScreenDialog,
       );
-      return ()  {};
+      return () {};
     } else {
       EluiMessageComponent.error(context)(
         child: Text("\u8bf7\u5148\u767b\u5f55\u0042\u0046\u0042\u0041\u004e"),
@@ -193,56 +195,65 @@ class _HomePageState extends State<HomePage> {
       ),
       body: !indexPagesState
           ? RefreshIndicator(
-              onRefresh: _onRefresh,
-              color:
-                  Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']['textColor'] ?? Colors.black,
-              backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor ??
-                  theme['index_home']['buttonEdit']['backgroundColor'] ??
-                  Colors.yellow,
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: indexDataList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return CheatListCard(
-                    item: indexDataList[index],
-                    theme: theme,
-                    onTap: () {
-                      Routes.router.navigateTo(
-                        context,
-                        '/detail/cheaters/${indexDataList[index]["originUserId"]}',
-                        transition: TransitionType.cupertino,
-                      );
-                    },
-                  );
-                },
-              ),
-            )
+        onRefresh: _onRefresh,
+        color:
+        Theme
+            .of(context)
+            .floatingActionButtonTheme
+            .focusColor ?? theme['index_home']['buttonEdit']['textColor'] ?? Colors.black,
+        backgroundColor: Theme
+            .of(context)
+            .floatingActionButtonTheme
+            .backgroundColor ??
+            theme['index_home']['buttonEdit']['backgroundColor'] ??
+            Colors.yellow,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: indexDataList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return CheatListCard(
+              item: indexDataList[index],
+              theme: theme,
+              onTap: () {
+                Routes.router.navigateTo(
+                  context,
+                  '/detail/cheaters/${indexDataList[index]["originUserId"]}',
+                  transition: TransitionType.cupertino,
+                );
+              },
+            );
+          },
+        ),
+      )
           : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Opacity(
-                    opacity: 0.8,
-                    child: textLoad(
-                      value: "BFBAN",
-                      fontSize: 30,
-                    ),
-                  ),
-                  Text(
-                    "Legion of BAN Coalition",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white38,
-                    ),
-                  )
-                ],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Opacity(
+              opacity: 0.8,
+              child: textLoad(
+                value: "BFBAN",
+                fontSize: 30,
               ),
             ),
+            Text(
+              "Legion of BAN Coalition",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white38,
+              ),
+            )
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
           Icons.mode_edit,
-          color: Theme.of(context).floatingActionButtonTheme.focusColor ?? theme['index_home']['buttonEdit']["textColor"],
+          color: Theme
+              .of(context)
+              .floatingActionButtonTheme
+              .focusColor ?? theme['index_home']['buttonEdit']["textColor"],
           size: 30,
         ),
         tooltip: "\u53d1\u5e03",
