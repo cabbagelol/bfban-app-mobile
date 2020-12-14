@@ -3,6 +3,7 @@
 import 'package:fluro/fluro.dart';
 
 // S Pages
+import 'package:bfban/pages/network-result.dart';
 import 'package:bfban/pages/guide/guide.dart';
 import 'package:bfban/pages/detail/cheaters.dart';
 import 'package:bfban/pages/edit/index.dart';
@@ -20,10 +21,10 @@ import 'package:bfban/pages/richEdit/index.dart';
 // E Pages
 
 class Routes {
-  static Router router;
+  static FluroRouter router;
   static List routerList;
 
-  static void configureRoutes(Router router) {
+  static void configureRoutes(FluroRouter router) {
     routerList = [
       {
         'url': '/',
@@ -121,6 +122,14 @@ class Routes {
           );
         },
       },
+      {
+        "url": "/network/:data",
+        'item': (context, params) {
+          return NetworkResultPage(
+            data: params["data"][0],
+          );
+        },
+      }
     ];
 
     routerList.forEach((i) {

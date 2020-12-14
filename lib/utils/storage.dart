@@ -6,10 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class Storage {
-  static SharedPreferences _prefs;
-
-  static SharedPreferences get getPrefs => _prefs;
-
   /// 储存图片
   static Future saveimg(
     url, {
@@ -43,13 +39,15 @@ class Storage {
   /// 获取
   static Future get(String name, {type: "string"}) async {
     try {
-      _prefs = await SharedPreferences.getInstance();
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
       switch (type) {
-        case "string":
+        case "none":
           return _prefs.get(name) ?? null;
           break;
+        case "string":
+          return _prefs.getString(name) ?? null;
+          break;
       }
-
       return _prefs;
     } catch (E) {
       throw E;
@@ -59,7 +57,7 @@ class Storage {
   /// 设置
   static Future set(String name, {String type = "string", value = "null"}) async {
     try {
-      _prefs = await SharedPreferences.getInstance();
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
       switch (type) {
         case "bool":
           break;
@@ -79,7 +77,7 @@ class Storage {
   /// 删除
   static Future remove(String name, {String type = "name"}) async {
     try {
-      _prefs = await SharedPreferences.getInstance();
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
       switch (type) {
         case "all":
           _prefs.clear();

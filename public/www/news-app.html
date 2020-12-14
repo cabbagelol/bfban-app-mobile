@@ -64,7 +64,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            data: {},
+            data: [],
         },
         created() {
             const self = this;
@@ -75,7 +75,6 @@
                     'Content-Type': 'application/json',
                 },
             }).then(function (response) {
-                console.log(response.data);
                 self.data = response.data.news;
             });
         }

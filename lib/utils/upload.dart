@@ -38,9 +38,6 @@ class upload extends Http {
       data: formdata,
     );
 
-    print("============= data ===================");
-    print(result.data["key"]);
-
     return result.data["key"];
   }
 

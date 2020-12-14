@@ -104,7 +104,7 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
       method: Http.GET,
     );
 
-    if (result.data != null && result.data["error"] == 0) {
+    if (result.data["error"] == 0) {
       setState(() {
         cheatersInfo = result.data ?? new Map();
         cheatersInfoUser = result.data["data"]["cheater"].length > 0 ? result.data["data"]["cheater"][0] : {};
@@ -117,6 +117,8 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
 
       this._getUserInfo();
       return cheatersInfo;
+    } else {
+      EluiMessageComponent.error(context)(child: Text("获取失败, 结果: " + (result.data["error"] ?? '-1') + result.data.toString()));
     }
   }
 
@@ -628,8 +630,13 @@ class _CheatersPageState extends State<CheatersPage> with SingleTickerProviderSt
                                     children: [
                                       Container(
                                         color: Colors.white,
-                                        child: EluiImgComponent(
-                                          src: cheatersInfoUser["avatarLink"],
+                                        // child: EluiImgComponent(
+                                        //   src: cheatersInfoUser["avatarLink"],
+                                        //   width: 150,
+                                        //   height: 150,
+                                        // ),
+                                        child: Image.network(
+                                          cheatersInfoUser["avatarLink"],
                                           width: 150,
                                           height: 150,
                                         ),

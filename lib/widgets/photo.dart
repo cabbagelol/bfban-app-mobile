@@ -18,9 +18,9 @@ class PhotoViewSimpleScreen extends StatefulWidget {
 
   final Decoration backgroundDecoration;
 
-  final dynamic minScale;
+  final double minScale;
 
-  final dynamic maxScale;
+  final double maxScale;
 
   final String heroTag;
 
@@ -86,9 +86,9 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
             enableRotation: true,
           ),
           Positioned(
-            bottom: 10,
-            left: 10,
-            right: 10,
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(

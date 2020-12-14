@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/_message/index.dart';
 import 'package:flutter/services.dart' show PlatformException;
+import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -16,6 +17,7 @@ import 'home.dart';
 import 'news.dart';
 import 'usercenter.dart';
 import 'community.dart';
+import '../guide/guide.dart';
 
 class IndexPage extends StatefulWidget {
   IndexPage({
@@ -29,16 +31,19 @@ class IndexPage extends StatefulWidget {
 class _IndexPageState extends State<IndexPage> {
   StreamSubscription _sub;
 
+  Future futureBuilder;
+
+  static Widget indexView = Container();
+
   int _currentIndex = 0;
 
-  List<Widget> list = [HomePage(), communityPage(), newsPage(), usercenter()];
+  List<Widget> list = [];
 
   @override
   void initState() {
     super.initState();
 
     this._onReady();
-    this._onGuide();
     this._onEnUniLinks();
   }
 
@@ -51,6 +56,7 @@ class _IndexPageState extends State<IndexPage> {
   void _onReady() async {
     Map token = jsonDecode(await Storage.get('com.bfban.token') ?? '{}');
 
+    /// =============================
     /// 校验TOKEN
     /// 时间7日内该TOken生效并保留，否则重启登录
     if (token.isEmpty) {
@@ -75,26 +81,11 @@ class _IndexPageState extends State<IndexPage> {
     }
   }
 
-
   /// 外链初始
-  Future<Null> _onEnUniLinks () async {
+  Future<Null> _onEnUniLinks() async {
     _sub = getLinksStream().listen((String link) {
       print("link" + link);
-    }, onError: (err) {
-    });
-  }
-
-  /// 引导器
-  void _onGuide() async {
-    Storage.get('com.bfban.guide').then((value) {
-      if (value == null) {
-        Routes.router.navigateTo(
-          context,
-          '/guide',
-          transition: TransitionType.materialFullScreenDialog,
-        );
-      }
-    });
+    }, onError: (err) {});
   }
 
   /// 首页控制器序列
@@ -106,41 +97,52 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        children: list,
-        index: _currentIndex,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: [
-          {
-            "name": "\u9996\u9875",
-            "icon": Icon(Icons.home),
-          },
-          {
-            "name": "\u793e\u533a",
-            "icon": Icon(Icons.comment),
-          },
-          {
-            "name": "\u65b0\u95fb",
-            "icon": Icon(Icons.featured_video),
-          },
-          {
-            "name": "\u4e2a\u4eba\u4e2d\u5fc3",
-            "icon": Icon(Icons.portrait),
-          },
-        ].map((e) {
-          return BottomNavigationBarItem(
-            icon: e["icon"],
-            title: Text(e["name"]),
-          );
-        }).toList(),
-        currentIndex: _currentIndex,
-        onTap: (int index) => onTap(index),
-      ),
+    return Consumer<AppInfoProvider>(
+      builder: (context, appInfo, child) {
+        num _guideState = Provider.of<AppInfoProvider>(context, listen: false).guideState;
+        if (_guideState == 1) {
+          list = [HomePage(), communityPage(), newsPage(), usercenter()];
+        }
+
+        return _guideState == 0
+            ? guidePage()
+            : Scaffold(
+                body: IndexedStack(
+                  children: list,
+                  index: _currentIndex,
+                ),
+                bottomNavigationBar: BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: true,
+                  items: [
+                    {
+                      "name": "\u9996\u9875",
+                      "icon": Icon(Icons.home),
+                    },
+                    {
+                      "name": "\u793e\u533a",
+                      "icon": Icon(Icons.comment),
+                    },
+                    {
+                      "name": "\u65b0\u95fb",
+                      "icon": Icon(Icons.featured_video),
+                    },
+                    {
+                      "name": "\u4e2a\u4eba\u4e2d\u5fc3",
+                      "icon": Icon(Icons.portrait),
+                    },
+                  ].map((e) {
+                    return BottomNavigationBarItem(
+                      icon: e["icon"],
+                      title: Text(e["name"]),
+                    );
+                  }).toList(),
+                  currentIndex: _currentIndex,
+                  onTap: (int index) => onTap(index),
+                ),
+              );
+      },
     );
   }
 }

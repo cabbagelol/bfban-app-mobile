@@ -12,9 +12,11 @@ import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/main.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 void main() async {
   final SentryClient sentry = new SentryClient(dsn: Config.apiHost["sentry"]);
-  final routers = new Router();
+  final routers = new FluroRouter();
 
   Routes.configureRoutes(routers);
 
@@ -26,6 +28,10 @@ void main() async {
     statusBarBrightness: Brightness.light,
   );
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+
+  SharedPreferences.setMockInitialValues({
+    "name": "bfban"
+  });
 
   runZonedGuarded(
     () => runApp(MyApp()),

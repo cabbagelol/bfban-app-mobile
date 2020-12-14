@@ -75,6 +75,7 @@ class _SupportPageState extends State<SupportPage> {
             theme: EluiCellTheme(
               titleColor: theme['text']['subtitle'],
               labelColor: theme['text']['secondary'],
+              linkColor: theme["text"]["subtitle"],
               backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
             islink: true,
@@ -86,6 +87,7 @@ class _SupportPageState extends State<SupportPage> {
             theme: EluiCellTheme(
               titleColor: theme['text']['subtitle'],
               labelColor: theme['text']['secondary'],
+              linkColor: theme["text"]["subtitle"],
               backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
             islink: true,
@@ -99,6 +101,7 @@ class _SupportPageState extends State<SupportPage> {
             theme: EluiCellTheme(
               labelColor: theme['text']['secondary'],
               backgroundColor: Colors.transparent,
+              linkColor: theme["text"]["subtitle"],
               titleColor: theme['text']['subtitle'] ?? Colors.white38,
             ),
           ),
@@ -108,6 +111,7 @@ class _SupportPageState extends State<SupportPage> {
             theme: EluiCellTheme(
               titleColor: theme['text']['subtitle'],
               labelColor: theme['text']['secondary'],
+              linkColor: theme["text"]["subtitle"],
               backgroundColor: theme['index_home']['card']['backgroundColor'] ?? Color.fromRGBO(255, 255, 255, .07),
             ),
           ),
@@ -116,6 +120,7 @@ class _SupportPageState extends State<SupportPage> {
             theme: EluiCellTheme(
               labelColor: theme['text']['secondary'],
               backgroundColor: Colors.transparent,
+              linkColor: theme["text"]["subtitle"],
               titleColor: theme['text']['subtitle'] ?? Colors.white38,
             ),
           ),

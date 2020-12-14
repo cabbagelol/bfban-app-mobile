@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_plugin_elui/elui.dart';
 
 import 'package:bfban/utils/index.dart';
+import 'package:provider/provider.dart';
 
 import 'agreement.dart';
 import 'explain.dart';
@@ -45,7 +46,7 @@ class _guidePageState extends State<guidePage> {
     if (guideListPageIndex == guideListPage.length - 1) {
       Storage.set("com.bfban.guide", value: "0");
 
-      Navigator.pop(context);
+      Provider.of<AppInfoProvider>(context, listen: false).setGuideNumberState(1);
       return;
     }
 
@@ -87,13 +88,13 @@ class _guidePageState extends State<guidePage> {
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[
-            Opacity(
-              opacity: 0.5,
-              child: Image.asset(
-                "assets/images/bk-companion-1.jpg",
-                fit: BoxFit.cover,
-              ),
-            ),
+            // Opacity(
+            //   opacity: 0.5,
+            //   child: Image.asset(
+            //     "assets/images/bk-companion-1.jpg",
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
             BackdropFilter(
               child: IndexedStack(
                 index: guideListPageIndex,
@@ -108,6 +109,7 @@ class _guidePageState extends State<guidePage> {
         ),
         bottomNavigationBar: Container(
           color: Colors.yellow,
+          height: 50,
           child: EluiButtonComponent(
             disabled: _isState(),
             child: Column(

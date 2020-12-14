@@ -64,19 +64,10 @@ class _loginPageState extends State<loginPage> {
     );
   }
 
-  VideoPlayerController _controller;
-
   @override
   void initState() {
     super.initState();
     this._getCaptcha();
-
-    _controller = VideoPlayerController.asset('assets/video/bf-video-hero-medium-steam-launch.mp4')
-      ..initialize().then((_) {
-        setState(() {});
-      })
-      ..setLooping(true);
-    _controller.play();
 
     this.onReadyTheme();
   }
@@ -90,7 +81,6 @@ class _loginPageState extends State<loginPage> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
   }
 
   /// 更新验证码
@@ -101,7 +91,7 @@ class _loginPageState extends State<loginPage> {
       valueCaptchaLoad = true;
     });
 
-    Response<dynamic> result = await Http.request(
+    Response result = await Http.request(
       'api/captcha?r=$time',
       method: Http.GET,
     );
@@ -214,11 +204,9 @@ class _loginPageState extends State<loginPage> {
           Positioned(
             top: 0,
             bottom: 0,
-            child: Container(
-              child: AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              ),
+            child: Image.asset(
+              "assets/images/bk-companion-1.jpg",
+              fit: BoxFit.cover,
             ),
           ),
           BackdropFilter(
@@ -293,17 +281,21 @@ class _loginPageState extends State<loginPage> {
                               ),
                             ),
                             right: GestureDetector(
-                              child: Container(
+                              child: AnimatedContainer(
+                                duration: Duration(seconds: 1),
                                 color: Colors.white,
                                 margin: EdgeInsets.only(left: 10),
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 height: 50,
+                                width: 100,
                                 child: valueCaptchaLoad
-                                    ? Icon(
-                                        Icons.access_time,
-                                        color: Colors.black54,
+                                    ? ELuiLoadComponent(
+                                        type: "line",
+                                        color: Colors.black,
+                                        lineWidth: 2,
+                                        size: 20,
                                       )
-                                    : new SvgPicture.string(
+                                    : SvgPicture.string(
                                         loginInfo["valueCaptcha"],
                                       ),
                               ),
@@ -333,70 +325,71 @@ class _loginPageState extends State<loginPage> {
             right: 0,
             bottom: 0,
             child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black87,
-                    ],
-                  ),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    Colors.black87,
+                  ],
                 ),
-                child: Column(
-                  children: [
-                    EluiButtonComponent(
-                      type: ButtonType.none,
-                      theme: EluiButtonTheme(
-                        backgroundColor: theme['button']['backgroundColor'] ?? Color(0xff364e80),
-                      ),
-                      child: loginLoad
-                          ? ELuiLoadComponent(
-                              type: "line",
-                              lineWidth: 2,
-                              color: theme['button']['textColor'] ?? Colors.white,
-                            )
-                          : Icon(
-                              Icons.done,
-                              color: theme['button']['textColor'] ?? Colors.white,
-                            ),
-                      onTap: () => _onLogin(),
+              ),
+              child: Column(
+                children: [
+                  EluiButtonComponent(
+                    type: ButtonType.none,
+                    theme: EluiButtonTheme(
+                      backgroundColor: theme['button']['backgroundColor'] ?? Color(0xff364e80),
                     ),
-                    SizedBox(
-                      height: 30,
-                      child: Center(
-                        child: Text(
-                          "or",
-                          style: TextStyle(
-                            color: Colors.white38,
-                            fontSize: 11,
+                    child: loginLoad
+                        ? ELuiLoadComponent(
+                            type: "line",
+                            lineWidth: 2,
+                            color: theme['button']['textColor'] ?? Colors.white,
+                          )
+                        : Icon(
+                            Icons.done,
+                            color: theme['button']['textColor'] ?? Colors.white,
                           ),
+                    onTap: () => _onLogin(),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        "or",
+                        style: TextStyle(
+                          color: Colors.white38,
+                          fontSize: 11,
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      child: Wrap(
-                        spacing: 5,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          Text(
-                            "注册BFBAN账户",
-                            style: TextStyle(
-                              color: Colors.white54,
-                            ),
-                          ),
-                          Icon(
-                            Icons.open_in_new,
+                  ),
+                  GestureDetector(
+                    child: Wrap(
+                      spacing: 5,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text(
+                          "注册BFBAN账户",
+                          style: TextStyle(
                             color: Colors.white54,
-                            size: 18,
                           ),
-                        ],
-                      ),
-                      onTap: () => UrlUtil().onPeUrl("https://bfban.com/#/signup"),
+                        ),
+                        Icon(
+                          Icons.open_in_new,
+                          color: Colors.white54,
+                          size: 18,
+                        ),
+                      ],
                     ),
-                  ],
-                )),
+                    onTap: () => UrlUtil().onPeUrl("https://bfban.com/#/signup"),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),

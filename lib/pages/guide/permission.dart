@@ -1,9 +1,13 @@
 /// 权限
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_plugin_elui/_cell/cell.dart';
+import 'package:bfban/constants/theme.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+
+import 'package:bfban/utils/index.dart';
 
 class permissionPage extends StatefulWidget {
   final Function onChange;
@@ -17,6 +21,8 @@ class permissionPage extends StatefulWidget {
 }
 
 class _permissionPageState extends State<permissionPage> {
+  Map theme = THEMELIST['none'];
+
   List<Permission> permissions = [
     Permission.camera,
     Permission.photos,
@@ -28,6 +34,13 @@ class _permissionPageState extends State<permissionPage> {
     super.initState();
 
     this._getQueryPermanentlyState();
+    this.onReadyTheme();
+  }
+
+  void onReadyTheme() async {
+    /// 初始主题
+    Map _theme = await ThemeUtil().ready(context);
+    setState(() => theme = _theme);
   }
 
   /// 查询权限结果
@@ -70,8 +83,8 @@ class _permissionPageState extends State<permissionPage> {
         Column(
           children: permissions
               .map(
-                (permission) => PermissionWidget(permission),
-          )
+                (permission) => PermissionWidget(permission, theme),
+              )
               .toList(),
         ),
         Padding(
@@ -106,10 +119,13 @@ class _permissionPageState extends State<permissionPage> {
 class PermissionWidget extends StatefulWidget {
   final Permission _permission;
 
+  final Map theme;
+
   final Function onChange;
 
   const PermissionWidget(
-    this._permission, {
+    this._permission,
+    this.theme, {
     this.onChange,
   });
 
@@ -200,6 +216,9 @@ class _PermissionState extends State<PermissionWidget> {
       ),
       theme: EluiCellTheme(
         backgroundColor: Colors.black12,
+        titleColor: widget.theme['text']['subtitle'],
+        labelColor: widget.theme['text']['secondary'],
+        linkColor: widget.theme['text']['subtitle'],
       ),
       title: "${permissionName[_permission]["name"]} - ${permissionStatus[_permissionStatus]["text"]}",
       label: permissionName[_permission]["describe"],

@@ -27,14 +27,18 @@ class Http extends ScaffoldState {
 
   /// token
   static String TOKEN = "";
+  static BuildContext CONTENT;
 
-  static void setToken (value) {
+  static void setToken(value) {
     return TOKEN = value;
   }
 
+  static of (content) {
+    return CONTENT = content;
+  }
+
   /// request method
-  static Future request(
-    String url, {
+  static Future request(String url, {
     typeUrl = "url",
     data,
     Map<String, dynamic> parame,
@@ -63,8 +67,6 @@ class Http extends ScaffoldState {
     }
 
     print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
-    print(data ?? parame);
-    print(headers);
 
     Dio dio = createInstance();
     try {
@@ -80,6 +82,7 @@ class Http extends ScaffoldState {
       result = response;
       print('响应数据：' + response.toString());
     } on DioError catch (e) {
+      print(e.type);
       switch (e.type) {
         case DioErrorType.RECEIVE_TIMEOUT:
           return Response(
@@ -111,13 +114,7 @@ class Http extends ScaffoldState {
             data: {'error': -6},
           );
           break;
-        case DioErrorType.DEFAULT:
-          return Response(
-            data: {'error': -7},
-          );
-          break;
       }
-      print('请求出错：' + e.toString());
     }
     return result;
   }

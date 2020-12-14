@@ -22,7 +22,7 @@ Map THEMELIST = {
     },
     "index_home": {
       "drawer": {
-        "color": Color(0xff111b2b),
+        "color": Color(0xff0a121f),
       },
       "buttonEdit": {
         "textColor": Colors.black,

@@ -7,13 +7,21 @@ import 'package:provider/provider.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/constants/theme.dart';
-import 'package:bfban/utils/provider.dart';
+import 'package:bfban/utils/index.dart';
+// import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 
 class MyApp extends StatelessWidget {
   ThemeData _theme;
 
   @override
+  StatelessElement createElement() {
+    // FlutterSplashScreen.hide();
+    return super.createElement();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: AppInfoProvider()),

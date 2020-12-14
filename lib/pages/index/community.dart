@@ -130,7 +130,7 @@ class _communityPageState extends State<communityPage> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "${indexActivity["number"] == null ? "" : indexActivity["number"]["cheater"]}",
+                        "${indexActivity["number"] == null ? "0" : indexActivity["number"]["cheater"]}",
                         style: TextStyle(
                           color: Theme.of(context).primaryTextTheme.headline1.color ??
                               theme['index_community']['statisticsText'] ??
@@ -165,7 +165,7 @@ class _communityPageState extends State<communityPage> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        "${indexActivity["number"] == null ? "" : indexActivity["number"]["report"]}",
+                        "${indexActivity["number"] == null ? "0" : indexActivity["number"]["report"]}",
                         style: TextStyle(
                           color: Theme.of(context).primaryTextTheme.headline1.color ??
                               theme['index_community']['statisticsText'] ??

@@ -61,24 +61,29 @@ class detailApi {
             margin: EdgeInsets.symmetric(vertical: 5),
             child: Stack(
               children: [
-                EluiImgComponent(
-                  src: attributes['src'] + "?imageslim",
-                  width: double.infinity,
-                  errorWidget: const Icon(
-                    Icons.error,
-                    size: 50,
-                    color: Colors.black54,
-                  ),
-                  isPlaceholder: true,
-                  placeholder: (BuildContext context, String url) {
-                    return ELuiLoadComponent(
-                      type: "line",
-                      color: Colors.black54,
-                      size: 20,
-                      lineWidth: 2,
-                    );
-                  },
+                // EluiImgComponent(
+                //   src: attributes['src'] + "?imageslim",
+                //   width: double.infinity,
+                //   errorWidget: const Icon(
+                //     Icons.error,
+                //     size: 50,
+                //     color: Colors.black54,
+                //   ),
+                //   isPlaceholder: true,
+                //   placeholder: (BuildContext context, String url) {
+                //     return ELuiLoadComponent(
+                //       type: "line",
+                //       color: Colors.white12,
+                //       size: 20,
+                //       lineWidth: 2,
+                //     );
+                //   },
+                //   fit: BoxFit.cover,
+                // ),
+                Image.network(
+                  attributes['src'] + "?imageslim",
                   fit: BoxFit.cover,
+                  width: double.infinity,
                 ),
                 Positioned(
                   right: 0,
@@ -128,7 +133,7 @@ class detailApi {
     return {
       "p": Style(
 //        fontSize: FontSize(12),
-      ),
+          ),
     };
   }
 
