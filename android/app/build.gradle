@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId "com.cabbagelol.bfban"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -68,12 +68,6 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-
-            minifyEnabled true  //资源压缩设置
-            useProguard true    //代码压缩设置
-
-            //读取代码压缩配置文件
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }

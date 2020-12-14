@@ -47,6 +47,8 @@ class _guidePageState extends State<guidePage> {
       Storage.set("com.bfban.guide", value: "0");
 
       Provider.of<AppInfoProvider>(context, listen: false).setGuideNumberState(1);
+
+      // Storage.get("com.bfban.guide").then((value) => print(value));
       return;
     }
 

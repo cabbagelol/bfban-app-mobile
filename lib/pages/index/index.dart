@@ -6,7 +6,6 @@ import 'package:bfban/pages/index/community.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/_message/index.dart';
-import 'package:flutter/services.dart' show PlatformException;
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -32,8 +31,6 @@ class _IndexPageState extends State<IndexPage> {
   StreamSubscription _sub;
 
   Future futureBuilder;
-
-  static Widget indexView = Container();
 
   int _currentIndex = 0;
 
@@ -96,52 +93,59 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context)   {
+    _getStorageGuide () async {
+      return await Storage.get("com.bfban.guide");
+    }
+
     return Consumer<AppInfoProvider>(
       builder: (context, appInfo, child) {
         num _guideState = Provider.of<AppInfoProvider>(context, listen: false).guideState;
+
+        if (_getStorageGuide() != null) {
+          _guideState = 1;
+        }
+
         if (_guideState == 1) {
           list = [HomePage(), communityPage(), newsPage(), usercenter()];
         }
 
-        return _guideState == 0
-            ? guidePage()
-            : Scaffold(
-                body: IndexedStack(
-                  children: list,
-                  index: _currentIndex,
-                ),
-                bottomNavigationBar: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  showSelectedLabels: true,
-                  showUnselectedLabels: true,
-                  items: [
-                    {
-                      "name": "\u9996\u9875",
-                      "icon": Icon(Icons.home),
-                    },
-                    {
-                      "name": "\u793e\u533a",
-                      "icon": Icon(Icons.comment),
-                    },
-                    {
-                      "name": "\u65b0\u95fb",
-                      "icon": Icon(Icons.featured_video),
-                    },
-                    {
-                      "name": "\u4e2a\u4eba\u4e2d\u5fc3",
-                      "icon": Icon(Icons.portrait),
-                    },
-                  ].map((e) {
-                    return BottomNavigationBarItem(
-                      icon: e["icon"],
-                      title: Text(e["name"]),
-                    );
-                  }).toList(),
-                  currentIndex: _currentIndex,
-                  onTap: (int index) => onTap(index),
-                ),
+        return _guideState == 0 ? guidePage() : Scaffold(
+          body: IndexedStack(
+            children: list,
+            index: _currentIndex,
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            items: [
+              {
+                "name": "\u9996\u9875",
+                "icon": Icon(Icons.home),
+              },
+              {
+                "name": "\u793e\u533a",
+                "icon": Icon(Icons.comment),
+              },
+              {
+                "name": "\u65b0\u95fb",
+                "icon": Icon(Icons.featured_video),
+              },
+              {
+                "name": "\u4e2a\u4eba\u4e2d\u5fc3",
+                "icon": Icon(Icons.portrait),
+              },
+            ].map((e) {
+              return BottomNavigationBarItem(
+                icon: e["icon"],
+                title: Text(e["name"]),
               );
+            }).toList(),
+            currentIndex: _currentIndex,
+            onTap: (int index) => onTap(index),
+          ),
+        );
       },
     );
   }
