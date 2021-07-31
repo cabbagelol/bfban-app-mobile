@@ -44,11 +44,11 @@ class _usercenterState extends State<usercenter> {
 
   @override
   void initState() {
-    super.initState();
-
     this.getUserInfo();
     this.getSystemAppInfo();
     this.onReadyTheme();
+
+    super.initState();
   }
 
   void onReadyTheme() async {
@@ -60,6 +60,8 @@ class _usercenterState extends State<usercenter> {
   /// 获取用户信息
   void getUserInfo() async {
     dynamic result = await Storage.get('com.bfban.login');
+
+    print('result：${result}');
 
     if (result == null) {
       return;

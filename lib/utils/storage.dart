@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 
+import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
@@ -45,10 +46,10 @@ class Storage {
           return _prefs.get(name) ?? null;
           break;
         case "string":
+          print('ST==================> ${name}  || ${_prefs.getString(name)}');
           return _prefs.getString(name) ?? null;
           break;
       }
-      return _prefs;
     } catch (E) {
       throw E;
     }
@@ -62,11 +63,12 @@ class Storage {
         case "bool":
           break;
         case "string":
-          await _prefs.setString(name, value).then((value) {
-            get("Storage.get: $name");
-          });
+          await _prefs.setString(name, value);
           break;
       }
+
+      String a = await get(name);
+      print('aaaaaaaaaaaaaaaaaa => ${a}');
 
       return _prefs;
     } catch (E) {

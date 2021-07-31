@@ -34,14 +34,14 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         d.addAll({
-          "url": "https://bf.bamket.com",
+          "url": "https://bfban.gametools.network",
         });
         return d;
       case Env.DEV: // 开发
       case Env.LOCAL:
       default:
         d.addAll({
-          "url": "http://dev.bamket.com",
+          "url": "https://bfban.gametools.network",
         });
         return d;
     }

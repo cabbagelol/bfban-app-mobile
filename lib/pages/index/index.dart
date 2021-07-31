@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_plugin_elui/_message/index.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -95,7 +96,8 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context)   {
     _getStorageGuide () async {
-      return await Storage.get("com.bfban.guide");
+      return true;
+      // return await Storage.get("com.bfban.guide");
     }
 
     return Consumer<AppInfoProvider>(

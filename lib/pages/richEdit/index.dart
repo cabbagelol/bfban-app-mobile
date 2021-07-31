@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_rich_html/main.dart';
+// import 'package:flutter_rich_html/main.dart';
 
 import 'package:bfban/widgets/richText.dart';
 
@@ -19,8 +19,8 @@ class richEditPage extends StatefulWidget {
 }
 
 class _richEditPageState extends State<richEditPage> {
-  List<RichHtmlLabelType> _richhtmlSupport;
-  MySimpleRichHtmlController _richhtmlController;
+  // List<RichHtmlLabelType> _richhtmlSupport;
+  // MySimpleRichHtmlController _richhtmlController;
 
   Map data;
 
@@ -31,22 +31,22 @@ class _richEditPageState extends State<richEditPage> {
     setState(() {
       data["isText"] = (data["isText"] ?? false);
 
-      _richhtmlSupport = [
-        RichHtmlLabelType.IMAGE,
-        RichHtmlLabelType.P,
-        RichHtmlLabelType.TEXT,
-      ];
+      // _richhtmlSupport = [
+      //   RichHtmlLabelType.IMAGE,
+      //   RichHtmlLabelType.P,
+      //   RichHtmlLabelType.TEXT,
+      // ];
 
-      _richhtmlController = MySimpleRichHtmlController(
-        context,
-        theme: RichHtmlTheme(
-            mainColor: Colors.deepPurple,
-            viewTheme: RichHtmlViewTheme(
-              color: Colors.white,
-            )),
-      )..html = Uri.decodeComponent(
-          jsonDecode(widget.data)["html"] ?? '',
-        );
+      // _richhtmlController = MySimpleRichHtmlController(
+      //   context,
+      //   theme: RichHtmlTheme(
+      //       mainColor: Colors.deepPurple,
+      //       viewTheme: RichHtmlViewTheme(
+      //         color: Colors.white,
+      //       )),
+      // )..html = Uri.decodeComponent(
+      //     jsonDecode(widget.data)["html"] ?? '',
+      //   );
     });
     super.initState();
   }
@@ -57,7 +57,7 @@ class _richEditPageState extends State<richEditPage> {
       context,
       {
         "code": 1,
-        "html": data["isText"] ? _richhtmlController.text : _richhtmlController.html,
+        // "html": data["isText"] ? _richhtmlController.text : _richhtmlController.html,
       },
     );
   }
@@ -87,10 +87,10 @@ class _richEditPageState extends State<richEditPage> {
           ),
         ],
       ),
-      body: RichHtml(
-        _richhtmlController,
-        richhtmlSupportLabel: _richhtmlSupport,
-      ),
+      // body: RichHtml(
+      //   _richhtmlController,
+      //   richhtmlSupportLabel: _richhtmlSupport,
+      // ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -101,15 +101,15 @@ class _richEditPageState extends State<richEditPage> {
             ),
           ),
         ),
-        child: RichHtmlToolbar(
-          _richhtmlController,
-          children: <RichHtmlTool>[
-            RichHtmlToolSizedBox(
-              flex: 1,
-            ),
-            !data["isText"] ? RichHtmlToolImages() : RichHtmlToolSizedBox(),
-          ],
-        ),
+        // child: RichHtmlToolbar(
+        //   _richhtmlController,
+        //   children: <RichHtmlTool>[
+        //     RichHtmlToolSizedBox(
+        //       flex: 1,
+        //     ),
+        //     !data["isText"] ? RichHtmlToolImages() : RichHtmlToolSizedBox(),
+        //   ],
+        // ),
       ),
     );
   }

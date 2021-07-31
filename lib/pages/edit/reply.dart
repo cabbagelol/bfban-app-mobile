@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_plugin_elui/elui.dart';
-import 'package:flutter_rich_html/main.dart';
+// import 'package:flutter_rich_html/main.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/richText.dart';
@@ -23,8 +23,8 @@ class replyPage extends StatefulWidget {
 }
 
 class _replyPageState extends State<replyPage> {
-  List<RichHtmlLabelType> _richhtmlSupport;
-  MySimpleRichHtmlController _richhtmlController;
+  // List<RichHtmlLabelType> _richhtmlSupport;
+  // MySimpleRichHtmlController _richhtmlController;
 
   Map replyInfo = {
     "content": "",
@@ -39,21 +39,21 @@ class _replyPageState extends State<replyPage> {
   @override
   void initState() {
     setState(() {
-      _richhtmlSupport = [
-        RichHtmlLabelType.IMAGE,
-        RichHtmlLabelType.P,
-        RichHtmlLabelType.TEXT,
-      ];
+      // _richhtmlSupport = [
+      //   RichHtmlLabelType.IMAGE,
+      //   RichHtmlLabelType.P,
+      //   RichHtmlLabelType.TEXT,
+      // ];
 
-      _richhtmlController = MySimpleRichHtmlController(
-        context,
-        theme: RichHtmlTheme(
-          mainColor: Colors.deepPurple,
-          viewTheme: RichHtmlViewTheme(
-            color: Colors.white,
-          ),
-        ),
-      )..html = "";
+      // _richhtmlController = MySimpleRichHtmlController(
+      //   context,
+      //   theme: RichHtmlTheme(
+      //     mainColor: Colors.deepPurple,
+      //     viewTheme: RichHtmlViewTheme(
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // )..html = "";
 
       data = json.decode(widget.data);
     });
@@ -66,7 +66,7 @@ class _replyPageState extends State<replyPage> {
 
     login = jsonDecode(await Storage.get("com.bfban.login") ?? '{}');
 
-    replyInfo["content"] = _richhtmlController.html;
+    // replyInfo["content"] = _richhtmlController.html;
 
     if (login == null || login.isEmpty) {
       EluiMessageComponent.warning(context)(
@@ -190,10 +190,10 @@ class _replyPageState extends State<replyPage> {
             flex: 5,
             child: Container(
               color: Colors.white,
-              child: RichHtml(
-                _richhtmlController,
-                richhtmlSupportLabel: _richhtmlSupport,
-              ),
+              // child: RichHtml(
+              //   _richhtmlController,
+              //   richhtmlSupportLabel: _richhtmlSupport,
+              // ),
             ),
           ),
         ],

@@ -25,9 +25,9 @@ class detailApi {
     final UrlUtil _urlUtil = new UrlUtil();
 
     return {
-      "a": (renderContext, child, attributes, node) {
+      "a": (RenderContext context, Widget child) {
         return GestureDetector(
-          onTap: () => _urlUtil.onPeUrl(attributes["href"]),
+          onTap: () => _urlUtil.onPeUrl(context.tree.element.attributes["href"]),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 0),
             decoration: BoxDecoration(
@@ -48,7 +48,7 @@ class detailApi {
           ),
         );
       },
-      "img": (renderContext, child, attributes, node) {
+      "img": (RenderContext context, Widget child) {
         return GestureDetector(
           child: Container(
             decoration: BoxDecoration(
@@ -81,7 +81,7 @@ class detailApi {
                 //   fit: BoxFit.cover,
                 // ),
                 Image.network(
-                  attributes['src'] + "?imageslim",
+                  context.tree.element.attributes['src'] + "?imageslim",
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
@@ -123,7 +123,7 @@ class detailApi {
               ],
             ),
           ),
-          onTap: () => onImageTap(context, attributes['src']),
+          onTap: () => onImageTap(context, context.tree.element.attributes['src']),
         );
       }
     };
@@ -163,7 +163,7 @@ class detailApi {
   }
 
   /// 查看图片
-  static void onImageTap(BuildContext context, String img) {
+  static void onImageTap(context, String img) {
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (BuildContext context) {
         return PhotoViewSimpleScreen(

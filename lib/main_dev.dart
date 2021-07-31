@@ -29,9 +29,7 @@ void main() async {
   );
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 
-  SharedPreferences.setMockInitialValues({
-    "name": "bfban"
-  });
+  SharedPreferences.setMockInitialValues({});
 
   runZonedGuarded(
     () => runApp(MyApp()),

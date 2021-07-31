@@ -443,31 +443,31 @@ class _editPageState extends State<editPage> {
       ),
       body: ListView(
         children: <Widget>[
-          EluiCellComponent(
-            title: "草稿箱",
-            label: "副本",
-            isBotton: true,
-            theme: EluiCellTheme(
-                backgroundColor: theme['card']['color'] ?? Colors.transparent,
-                titleColor: theme['text']['subtitle'] ?? Colors.white,
-                labelColor: theme['text']['subtext1']),
-            cont: Icon(
-              Icons.inbox,
-              color: theme['text']['subtitle'] ?? Colors.white,
-              size: 24,
-            ),
-            onTap: () {
-              Routes.router.navigateTo(context, '/drafts', transition: TransitionType.cupertino).then((value) {
-                if (value == null) {
-                  return;
-                }
-
-                setState(() {
-                  reportInfo = value;
-                });
-              });
-            },
-          ),
+          // EluiCellComponent(
+          //   title: "草稿箱",
+          //   label: "副本",
+          //   isBotton: true,
+          //   theme: EluiCellTheme(
+          //       backgroundColor: theme['card']['color'] ?? Colors.transparent,
+          //       titleColor: theme['text']['subtitle'] ?? Colors.white,
+          //       labelColor: theme['text']['subtext1']),
+          //   cont: Icon(
+          //     Icons.inbox,
+          //     color: theme['text']['subtitle'] ?? Colors.white,
+          //     size: 24,
+          //   ),
+          //   onTap: () {
+          //     Routes.router.navigateTo(context, '/drafts', transition: TransitionType.cupertino).then((value) {
+          //       if (value == null) {
+          //         return;
+          //       }
+          //
+          //       setState(() {
+          //         reportInfo = value;
+          //       });
+          //     });
+          //   },
+          // ),
           SizedBox(
             height: 10,
           ),
