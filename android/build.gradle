@@ -1,0 +1,69 @@
+buildscript {
+    ext.kotlin_version = '1.6.10'
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/public/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/google/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/jcenter/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/gradle-plugin/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/central/'
+        }
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/public/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/google/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/jcenter/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/gradle-plugin/'
+        }
+        maven {
+            allowInsecureProtocol = true
+            url = 'https://maven.aliyun.com/repository/central/'
+        }
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(':app')
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

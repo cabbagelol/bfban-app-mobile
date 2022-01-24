@@ -1,0 +1,156 @@
+/// 搜索
+import 'dart:convert';
+import 'package:flutter/material.dart';
+
+import 'package:fluro/fluro.dart';
+
+import 'package:bfban/router/router.dart';
+
+enum titleSearchTheme {
+  white,
+  black,
+}
+
+class titleSearchColor {
+  Color? color;
+  Color? iconColor;
+  Color? textColor;
+
+  titleSearchColor(titleSearchTheme theme) {
+    switch (theme) {
+      case titleSearchTheme.black:
+        color = Colors.black38;
+        iconColor = Colors.white;
+        textColor = Colors.white54;
+        break;
+      case titleSearchTheme.white:
+        color = Colors.white;
+        iconColor = Colors.black45;
+        textColor = Colors.black45;
+        break;
+    }
+  }
+}
+
+class titleSearch extends StatefulWidget {
+  final titleSearchTheme theme;
+
+  final Function? onSubmitted;
+
+  final Function? onChanged;
+
+  final Widget? child;
+
+  final TextEditingController controller;
+
+  titleSearch({
+    this.theme = titleSearchTheme.black,
+    this.child,
+    this.onSubmitted,
+    this.onChanged,
+    required this.controller,
+  });
+
+  @override
+  _searchState createState() => _searchState();
+}
+
+class _searchState extends State<titleSearch> {
+  TextEditingController controller = TextEditingController(text: "");
+
+  FocusNode controllerFocus = FocusNode();
+
+  String value = "";
+
+  @override
+  void initState() {
+    controller = widget.controller;
+
+    super.initState();
+  }
+
+  /// 搜索
+  dynamic _onSearch() {
+    switch (widget.theme) {
+      case titleSearchTheme.white:
+        FocusScope.of(context).requestFocus(controllerFocus);
+        break;
+      case titleSearchTheme.black:
+        Routes.router!.navigateTo(
+          context,
+          '/search/${jsonEncode({
+                "id": value,
+              })}',
+          transition: TransitionType.cupertino,
+        );
+        return true;
+    }
+
+    return widget.theme == titleSearchTheme.black ? true : false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(
+          Radius.circular(5),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                color: titleSearchColor(widget.theme).color,
+                child: Row(
+                  children: <Widget>[
+                    Icon(
+                      Icons.search,
+                      color: titleSearchColor(widget.theme).iconColor,
+                      size: 20,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: widget.theme == titleSearchTheme.white
+                          ? EditableText(
+                              controller: controller,
+                              focusNode: controllerFocus,
+                              keyboardType: TextInputType.text,
+                              cursorColor: Color(0xff364e80),
+                              cursorWidth: 3,
+                              cursorRadius: Radius.circular(100),
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black45,
+                              ),
+                              backgroundCursorColor: Colors.white,
+                              onSubmitted: (data) => widget.onSubmitted!(data),
+                              onChanged: (data) => widget.onChanged!(data),
+                            )
+                          : Text(
+                              "搜索作弊者id",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: titleSearchColor(widget.theme).textColor,
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+              flex: 1,
+            ),
+
+            // 尾部
+            if (widget.child != null) widget.child!,
+          ],
+        ),
+      ),
+      onTap: () => _onSearch(),
+    );
+  }
+}
