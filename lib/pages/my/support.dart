@@ -35,6 +35,14 @@ class _SupportPageState extends State<SupportPage> {
         elevation: 0,
         centerTitle: true,
         title: const Text("支援"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _urlUtil.opEnPage(context, "/network");
+            },
+            icon: Icon(Icons.electrical_services),
+          ),
+        ],
       ),
       body: ListView(
         children: <Widget>[

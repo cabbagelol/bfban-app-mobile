@@ -12,7 +12,8 @@
 [Android和ios下载](https://github.com/cabbagelol/bfbanApp/releases)
 | [开发计划进展](https://trello.com/b/ZECQnnEz/bfban-app) |
 [联Ban网站](https://bfban.com) |
-[应用网站](http://app.bfban.com/public/www) |
+[应用网站](http://bfban-app.cabbagelol.net) |
+[App网站仓库](https://github.com/cabbagelol/bfbanAppWebsite) |
 [BFBANApp交流群(612949946)](https://jq.qq.com/?_wv=1027&k=kXr9z9FE)
 
 避免在第三方模拟器中使用，它可能导致某些内置Api无法使用。关于此问题继续追踪修复方案。
@@ -27,6 +28,9 @@
 - flutter_plugin_elui: https://github.com/cabbagelol/flutter-elui-plugin
 - flutter_rich_html: https://github.com/cabbagelol/rich_html-d20822
 
+(内置app相关配置接口来源)
+- app网站: https://github.com/cabbagelol/bfbanAppWebsite
+
  部署android：
 1. android部分仅保留部分资源文件，构建本地android项目需要先"flutter create
    kotlin ."，再导入克隆项目内的android文件。
@@ -34,7 +38,7 @@
    'arm64-v8a'NDK，缺少文件到官网下载完整的NDK。
 3. 库里的gradle版本是6.1.1/kotlin:1.3.72，如果和本地不同，请自行修改。
 4. 入口是main_dev不是main。
-5. 签名自己生成,在app/key下
+5. 签名自己生成(需配置key.properties),在android/app/keystore
 
 部署ios: (未确认，自行构建)
 1. 通过"flutter create ios ."创建:D，资源在andorid项目取。

@@ -40,7 +40,7 @@ class Http extends ScaffoldState {
   /// request method
   static Future request(
     String url, {
-    typeUrl = "url",
+    String typeUrl = "url",
     data,
     Map<String, dynamic>? parame,
     method,
@@ -49,10 +49,7 @@ class Http extends ScaffoldState {
     Response result =
         Response(data: {}, requestOptions: RequestOptions(path: '/'));
     data = data ?? {};
-    headers = headers ??
-        {
-          "token": "",
-        };
+    headers = headers ?? {"token": ""};
     method = method ?? 'GET';
 
     if (TOKEN != "") {
@@ -74,7 +71,7 @@ class Http extends ScaffoldState {
     Dio dio = createInstance();
     try {
       Response response = await dio.request(
-        Config.apiHost[typeUrl] + url,
+        "${typeUrl.isEmpty ? "" : Config.apiHost[typeUrl]}$url",
         data: data,
         queryParameters: parame,
         options: Options(

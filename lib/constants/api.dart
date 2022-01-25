@@ -2,8 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-var imgUrl = 'https://figure.kjwangluo.com';
-
 enum Env {
   PROD,
   DEV,
@@ -16,14 +14,27 @@ class Config {
   /// 版本设置
   static Map get versionApp {
     return {
-      "v": "0.0.5",
+      "v": "0.1.0",
       "s": "beta",
     };
   }
 
   /// 基础请求
   static Map get apiHost {
-    Map d = {"sentry": "https://475f587d2c9a44f38cbe58978c0429c7@o438603.ingest.sentry.io/5403628", "app": "https://app.bfban.com", "tracker": "https://api.tracker.gg", "upload": "https://upload-z2.qiniup.com", "qiniuyunSrc": "http://bfban.bamket.com", "imgUrl": imgUrl + '/'};
+    Map d = {
+      "none": "",
+      "sentry":
+          "https://475f587d2c9a44f38cbe58978c0429c7@o438603.ingest.sentry.io/5403628",
+      "web_site": "https://bfban-app.cabbagelol.net/",
+      // "tracker": "https://api.tracker.gg",
+      // "upload": "https://upload-z2.qiniup.com",
+      // "qiniuyunSrc": "http://bfban.bamket.com",
+
+      // # NOT USE
+      "gametools": "https://bfban.gametools.network",
+      "image_service_1":"https://imagedelivery.net",
+      "bfban_web_site": "http://101.43.35.41:84",
+    };
 
     switch (env) {
       case Env.PROD: // 生产

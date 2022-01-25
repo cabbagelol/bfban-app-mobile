@@ -1,1 +1,1 @@
-flutter build apk lib/main_dev.dart -release
+flutter build apk -release

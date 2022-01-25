@@ -3,21 +3,17 @@
 import 'package:bfban/constants/api.dart';
 
 class Version {
-   dynamic on(String version) {
-    return _getContrast(
+  dynamic on(String version) {
+    return getContrast(
       version,
       "${Config.versionApp["v"]}-${Config.versionApp["s"]}",
     );
   }
 
-  /// 获取版本
-  String getVersion () {
-    return "${Config.versionApp["v"]}-${Config.versionApp["s"]}";
-  }
-
+  /// [Event]
   /// 对比版本
   /// 通常格式 0.0.1-beta
-  _getContrast(String v1, String v2) {
+  bool getContrast(String v1, String v2) {
     Map _vs = {
       "beta": 0,
       "release": 1,
@@ -38,7 +34,7 @@ class Version {
     }
   }
 
-  _setSplitfactory(v) {
+  Map _setSplitfactory(v) {
     List s = v.split("-");
 
     return {

@@ -97,6 +97,9 @@ class MessageProvider with ChangeNotifier {
             }
           }
           break;
+        case MessageType.none:
+          // TODO: Handle this case.
+          break;
       }
 
       notifyListeners();

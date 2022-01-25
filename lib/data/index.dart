@@ -9,5 +9,6 @@ export './Report.dart';
 export './Replay.dart';
 export './Manage.dart';
 export './Message.dart';
+export './Network.dart';
 
 import './DataUtil.dart';

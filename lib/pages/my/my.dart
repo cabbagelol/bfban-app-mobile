@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/router/router.dart';
@@ -11,6 +12,7 @@ import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/package_provider.dart';
 import '../../provider/userinfo_provider.dart';
 
 class UserCenterPage extends StatefulWidget {
@@ -35,17 +37,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
   /// 本地版本
   Map appInfo = Config.versionApp;
 
-  /// 版本细节
-  Map versionInfo = {
-    "load": false,
-    "is": false,
-  };
-
   @override
   void initState() {
-    getSystemAppInfo();
     // getMyInfo();
-
     super.initState();
   }
 
@@ -66,44 +60,14 @@ class _UserCenterPageState extends State<UserCenterPage> {
     setState(() {});
   }
 
-  /// [Response]
-  /// 获取程序版本
-  Future<void> getSystemAppInfo() async {
-    setState(() {
-      versionInfo["load"] = true;
-    });
-
-    Response result = await Http.request(
-      'public/json/version.json',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      typeUrl: "app",
-      method: Http.GET,
-    );
-
-    if (result.data.toString().length >= 0) {
-      Map newversion = result.data["list"][0];
-      bool res = Version().on("${newversion["version"]}-${newversion["stage"]}");
-
-      setState(() {
-        versionInfo["is"] = res;
-        versionInfo["info"] = newversion;
-      });
-    }
-
-    setState(() {
-      versionInfo["load"] = false;
-    });
-  }
-
   /// [Event]
   /// 前往下载页面
   void _opEnVersionDowUrl() {
-    if (versionInfo["is"]) {
-      UrlUtil().onPeUrl(versionInfo["info"]["src"]);
-      return;
-    }
+    _urlUtil.opEnPage(context, "/my/version");
+    // if (versionInfo["is"]) {
+    //   _urlUtil.onPeUrl(versionInfo["info"]["src"]);
+    //   return;
+    // }
   }
 
   /// [Response]
@@ -126,7 +90,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
       );
     } else {
       EluiMessageComponent.error(context)(
-        child: const Text("\u6ce8\u518c\u9519\u8bef\u002c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
+        child: const Text(
+            "\u6ce8\u518c\u9519\u8bef\u002c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
       );
     }
   }
@@ -153,7 +118,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
   void _opEnPermanently() async {
     try {
       if (!await openAppSettings()) {
-        EluiMessageComponent.error(context)(child: const Text("该设备无法打开权限, 请尝试在设置>应用打开"));
+        EluiMessageComponent.error(context)(
+            child: const Text("该设备无法打开权限, 请尝试在设置>应用打开"));
       }
     } catch (E) {
       rethrow;
@@ -163,7 +129,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
   /// [Event]
   /// 打开登录
   void _opEnLogin() {
-    Routes.router!.navigateTo(context, '/login/panel', transition: TransitionType.cupertino);
+    Routes.router!.navigateTo(context, '/login/panel',
+        transition: TransitionType.cupertino);
   }
 
   /// [Event]
@@ -217,14 +184,17 @@ class _UserCenterPageState extends State<UserCenterPage> {
                     ),
                   )
                 : Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 30),
                     child: Card(
                       elevation: 15,
                       borderOnForeground: true,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                         side: BorderSide(
-                          color: Theme.of(context).backgroundColor.withOpacity(.09),
+                          color: Theme.of(context)
+                              .backgroundColor
+                              .withOpacity(.09),
                           width: 1,
                         ),
                       ),
@@ -248,7 +218,12 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       ),
                                       Text(
                                         "id: ${data.userinfo["userId"]}",
-                                        style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.subtitle2!.color),
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2!
+                                                .color),
                                       ),
                                       const Icon(Icons.chevron_right),
                                     ],
@@ -257,10 +232,12 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 ),
                                 const SizedBox(height: 20),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: const <Widget>[
                                         Text(
                                           "0",
@@ -279,17 +256,22 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       ],
                                     ),
                                     Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       height: 30,
                                       width: 1,
                                       color: Theme.of(context).dividerColor,
                                     ),
                                     GestureDetector(
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            ProviderUtil().ofMessage(context).total.toString(),
+                                            ProviderUtil()
+                                                .ofMessage(context)
+                                                .total
+                                                .toString(),
                                             style: const TextStyle(
                                               fontSize: 16,
                                             ),
@@ -305,25 +287,33 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                         ],
                                       ),
                                       onTap: () {
-                                        _urlUtil.opEnPage(context, "/message/list");
+                                        _urlUtil.opEnPage(
+                                            context, "/message/list");
                                       },
                                     ),
                                     Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20),
                                       height: 30,
                                       width: 1,
                                       color: Theme.of(context).dividerColor,
                                     ),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: <Widget>[
                                         Wrap(
-                                          children: data.userinfo["privilege"].map<Widget>((i) {
+                                          children: data.userinfo["privilege"]
+                                              .map<Widget>((i) {
                                             return EluiTagComponent(
                                               color: EluiTagType.none,
                                               size: EluiTagSize.no2,
                                               theme: EluiTagTheme(
-                                                backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .appBarTheme
+                                                        .backgroundColor!
+                                                        .withOpacity(.2),
                                               ),
                                               value: i.toString(),
                                             );
@@ -364,7 +354,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
             ),
             EluiCellComponent(
               title: "\u652f\u63f4",
-              label: "\u7a0b\u5e8f\u6570\u636e\u7531\u4e0d\u540c\u670d\u52a1\u5546\u63d0\u4f9b",
+              label:
+                  "\u7a0b\u5e8f\u6570\u636e\u7531\u4e0d\u540c\u670d\u52a1\u5546\u63d0\u4f9b",
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -411,46 +402,15 @@ class _UserCenterPageState extends State<UserCenterPage> {
             //   onTap: () => _opEnTheme(),
             // ),
             EluiCellComponent(
-              title: "\u7248\u672c",
+              title: "版本",
+              islink: true,
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle1?.color,
                 linkColor: Theme.of(context).textTheme.subtitle1?.color,
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
-              cont: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  versionInfo["load"]
-                      ? const ELuiLoadComponent(
-                          type: "line",
-                          // color: Theme.of(context).cardTheme.color,
-                          lineWidth: 2,
-                          size: 20,
-                        )
-                      : Wrap(
-                          spacing: 10,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              appInfo["v"].toString(),
-                              style: TextStyle(
-                                color: Theme.of(context).textTheme.subtitle1?.color ?? Colors.white,
-                              ),
-                            ),
-                            Offstage(
-                              offstage: !versionInfo["is"],
-                              child: EluiTagComponent(
-                                size: EluiTagSize.no2,
-                                color: EluiTagType.warning,
-                                value: "\u6709\u66f4\u65b0",
-                                onTap: () => _opEnVersionDowUrl(),
-                              ),
-                            )
-                          ],
-                        ),
-                ],
-              ),
+              cont: Text(ProviderUtil().ofPackage(context).currentVersion.toString()),
               onTap: () => _opEnVersionDowUrl(),
             ),
 

@@ -1,5 +1,6 @@
 /// 状态管理 工具包
 
+import 'package:bfban/provider/package_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../provider/appInfo_provider.dart';
@@ -20,5 +21,10 @@ class ProviderUtil {
   // 消息
   MessageProvider ofMessage (BuildContext context) {
     return Provider.of<MessageProvider>(context, listen: false);
+  }
+
+  // 包
+  PackageProvider ofPackage (BuildContext context) {
+    return Provider.of<PackageProvider>(context, listen: false);
   }
 }

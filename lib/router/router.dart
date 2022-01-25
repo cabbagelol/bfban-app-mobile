@@ -26,6 +26,8 @@ import '../pages/camera/index.dart';
 import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
 import '../pages/message/index.dart';
+import '../pages/my/app_network.dart';
+import '../pages/my/app_package.dart';
 // E Pages
 
 class Routes {
@@ -38,6 +40,12 @@ class Routes {
         'url': '/',
         'item': (context, params) {
           return IndexPage();
+        }
+      },
+      {
+        'url': '/network',
+        'item': (context, params) {
+          return AppNetworkPage();
         }
       },
       {
@@ -150,6 +158,12 @@ class Routes {
         "url": "/my/support",
         'item': (context, params) {
           return SupportPage();
+        },
+      },
+      {
+        "url": "/my/version",
+        'item': (context, params) {
+          return AppPackagePage();
         },
       },
       {

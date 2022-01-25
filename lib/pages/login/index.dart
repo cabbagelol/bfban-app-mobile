@@ -2,6 +2,7 @@
 
 import 'dart:ui' as ui;
 
+import 'package:bfban/utils/index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_button/index.dart';
@@ -33,7 +34,11 @@ class _LoginPanelState extends State<LoginPanelPage> {
       context,
       '/signin',
       transition: TransitionType.materialFullScreenDialog,
-    );
+    ).then((value) {
+      if (ProviderUtil().ofUser(context).isLogin) {
+        _urlUtil.popPage(context);
+      }
+    });
   }
 
   /// [Event]
@@ -46,6 +51,18 @@ class _LoginPanelState extends State<LoginPanelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              _urlUtil.opEnPage(context, "/network");
+            },
+            icon: Icon(Icons.electrical_services),
+          ),
+        ],
+      ),
       body: Consumer<UserInfoProvider>(
         builder: (BuildContext context, data, Widget? child) {
           return Stack(
@@ -102,7 +119,8 @@ class _LoginPanelState extends State<LoginPanelPage> {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -133,13 +151,13 @@ class _LoginPanelState extends State<LoginPanelPage> {
                             ),
                           ],
                         ),
-                        onTap: () => _urlUtil.onPeUrl("https://bfban.com/#/signup"),
+                        onTap: () =>
+                            _urlUtil.onPeUrl("https://bfban.com/#/signup"),
                       ),
                     ],
                   ),
                 ),
               ),
-
             ],
           );
         },

@@ -1,7 +1,6 @@
 /// 摄像
+
 import 'dart:convert';
-import 'dart:io';
-import 'dart:ui' as ui;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
@@ -9,7 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_sdk/dynamsoft_barcode.dart';
 import 'package:flutter_barcode_sdk/flutter_barcode_sdk.dart';
 
+import 'package:bfban/constants/api.dart';
+
 import '../../utils/camera.dart';
+import '../../utils/url.dart';
 import '../../widgets/drawer.dart';
 
 class CameraPage extends StatefulWidget {
@@ -20,6 +22,8 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
+  final UrlUtil _urlUtil = UrlUtil();
+
   dynamic firstCamera;
 
   late CameraController _controller;
@@ -33,17 +37,19 @@ class _CameraPageState extends State<CameraPage> {
   bool _isScanRunning = false;
 
   /// 扫码结果
-  List _scanResult = ["299388", "23399"];
+  List _scanResult = [
+    // {"type_index": 0, "type": "web_site_link", "content": "1004766466591"},
+    // {"type_index": 1, "type": "app_palyer_link", "content": "1004766466591"},
+    // {"type_index": 2, "type": "text", "content": "1004766466591"}
+  ];
 
   @override
   void initState() {
     super.initState();
-    // To display the current output from the Camera,
-    // create a CameraController.
+
+    // 初始相机
     _controller = CameraController(
-      // Get a specific camera from the list of available cameras.
       Camera.camera.first,
-      // Define the resolution to use.
       ResolutionPreset.medium,
     );
 
@@ -53,7 +59,6 @@ class _CameraPageState extends State<CameraPage> {
       setState(() {});
     });
 
-    // Initialize Dynamsoft Barcode Reader
     initBarcodeSDK();
   }
 
@@ -73,7 +78,6 @@ class _CameraPageState extends State<CameraPage> {
     await _barcodeReader.setBarcodeFormats(BarcodeFormat.ALL);
 
     // Get all current parameters.
-    // Refer to: https://www.dynamsoft.com/barcode-reader/parameters/reference/image-parameter/?ver=latest
     String params = await _barcodeReader.getParameters();
 
     // Convert parameters to a JSON object.
@@ -83,14 +87,44 @@ class _CameraPageState extends State<CameraPage> {
     obj['ImageParameter']['DeblurLevel'] = 5;
 
     // Update the parameters.
-    int ret = await _barcodeReader.setParameters(json.encode(obj));
   }
 
   /// [Event]
   /// 处理扫描结果
-  onScanResult(barcodeResults) {
+  onScanResult(String barcodeResults) {
+    _scanResult = [];
     _scanResult.removeWhere((element) => element.toString().isEmpty);
-    _scanResult.add(barcodeResults);
+
+    // 序列化
+    Map scanResult = jsonDecode(barcodeResults);
+
+    if (barcodeResults.toString().indexOf("bfban") >= 0) {
+      _scanResult.addAll([
+        {"type_index": 0, "type": "web_site_link", "content": scanResult["id"]},
+        {"type_index": 1, "type": "app_palyer", "content": scanResult["id"]}
+      ]);
+    } else {
+      // 不符合格式
+      _scanResult.addAll([
+        {"type_index": 2, "type": "text", "content": scanResult["id"]},
+      ]);
+    }
+  }
+
+  /// [Event]
+  /// 启动内容
+  void openLink(data) {
+    switch (data["type"]) {
+      case "web_site_link":
+        // 外部链接
+        _urlUtil.onPeUrl(
+            Config.apiHost["bfban_web_site"] + "/player/" + data["content"]);
+        break;
+      case "app_palyer_link":
+        // 内部玩家链接
+        _urlUtil.opEnPage(context, "/detail/player/${data["content"]}");
+        break;
+    }
   }
 
   /// [Event]
@@ -99,7 +133,8 @@ class _CameraPageState extends State<CameraPage> {
     if (!_isScanRunning) {
       _isScanRunning = true;
       await _controller.startImageStream((CameraImage availableImage) async {
-        assert(defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS);
+        assert(defaultTargetPlatform == TargetPlatform.android ||
+            defaultTargetPlatform == TargetPlatform.iOS);
         int format = FlutterBarcodeSdk.IF_UNKNOWN;
 
         switch (availableImage.format.group) {
@@ -119,12 +154,17 @@ class _CameraPageState extends State<CameraPage> {
 
         _isScanAvailable = false;
 
-        _barcodeReader.decodeImageBuffer(availableImage.planes[0].bytes, availableImage.width, availableImage.height, availableImage.planes[0].bytesPerRow, format).then((results) {
+        _barcodeReader
+            .decodeImageBuffer(
+                availableImage.planes[0].bytes,
+                availableImage.width,
+                availableImage.height,
+                availableImage.planes[0].bytesPerRow,
+                format)
+            .then((results) {
           if (_isScanRunning) {
-            setState(() {
-              /// 处理结果
-              onScanResult(getBarcodeResults(results));
-            });
+            /// 处理结果
+            onScanResult(getBarcodeResults(results));
           }
 
           _isScanAvailable = true;
@@ -206,28 +246,64 @@ class _CameraPageState extends State<CameraPage> {
                     ),
                   ),
                   SizedBox(
-                    height: _screenHeight * 0.7 - _screenBarHeight,
+                    height: _screenHeight * 0.5 - _screenBarHeight,
                     child: MediaQuery.removePadding(
                       context: context,
                       removeTop: true,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                      child: ListView(
                         children: _scanResult.map((e) {
-                          return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          return GestureDetector(
+                            onTap: () => openLink(e),
                             child: Card(
+                              margin: EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 child: Row(
                                   children: [
+                                    IndexedStack(
+                                      index: e["type_index"],
+                                      children: [
+                                        Icon(Icons.touch_app_rounded),
+                                        Icon(Icons.link),
+                                        Icon(Icons.text_snippet)
+                                      ],
+                                    ),
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                                        child: Text("1"),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 20,
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            e["type_index"] != 2
+                                                ? Text(e["content"].toString())
+                                                : TextField(
+                                                    controller:
+                                                        TextEditingController(
+                                                            text: e["content"]
+                                                                .toString()),
+                                                    maxLines: 3,
+                                                  ),
+                                            // 描述
+                                            IndexedStack(
+                                              index: e["type_index"],
+                                              children: [
+                                                Text("从bfban网站打开"),
+                                                Text("打开应用内部的玩家信息")
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                    Icon(Icons.chevron_right)
+                                    Icon(Icons.chevron_right),
                                   ],
                                 ),
                               ),
@@ -244,7 +320,10 @@ class _CameraPageState extends State<CameraPage> {
               color: Colors.black,
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                  color: Theme.of(context)
+                      .appBarTheme
+                      .backgroundColor!
+                      .withOpacity(.2),
                   offset: const Offset(0, -2),
                   spreadRadius: .2,
                   blurRadius: 10,
@@ -257,65 +336,27 @@ class _CameraPageState extends State<CameraPage> {
             ),
             height: _screenBarHeight,
           ),
-          defaultShowHeight: _screenBarHeight + 80,
-          height: _screenHeight * .7,
+          defaultShowHeight: _screenBarHeight,
+          height: _screenHeight * .5,
         ),
       ),
 
       // 按钮
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+        materialTapTargetSize: MaterialTapTargetSize.padded,
         elevation: 10,
-        backgroundColor: !_isScanRunning ? Theme.of(context).backgroundColor : Theme.of(context).floatingActionButtonTheme.backgroundColor,
+        backgroundColor: !_isScanRunning
+            ? Theme.of(context).backgroundColor
+            : Theme.of(context).floatingActionButtonTheme.backgroundColor,
         onPressed: () async {
           await _initializeControllerFuture;
 
           videoScan();
         },
-        child: _isScanRunning ? CircularProgressIndicator() : Icon(Icons.qr_code_outlined, size: 30),
-      ),
-    );
-  }
-}
-
-// A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
-  final String? imagePath;
-  final String? barcodeResults;
-
-  const DisplayPictureScreen({Key? key, this.imagePath, this.barcodeResults}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Dynamsoft Barcode Reader')),
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Stack(
-        alignment: const Alignment(0.0, 0.0),
-        children: [
-          // Show full screen image: https://stackoverflow.com/questions/48716067/show-fullscreen-image-at-flutter
-          Image.file(
-            File(imagePath!),
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.center,
-          ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black45,
-            ),
-            child: Text(
-              // 'Dynamsoft Barcode Reader',
-              barcodeResults!,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
+        child: _isScanRunning
+            ? CircularProgressIndicator()
+            : Icon(Icons.qr_code_outlined, size: 30),
       ),
     );
   }

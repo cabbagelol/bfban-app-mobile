@@ -1,6 +1,7 @@
 /// 说明
 import 'dart:async';
 
+import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/widgets/news/index.dart';
@@ -16,7 +17,7 @@ class _explainPageState extends State<explainPage> {
   @override
   Widget build(BuildContext context) {
     return newscomponent(
-      src: "https://app.bfban.com/public/www/news-app.html",
+      src: Config.apiHost["web_site"] + "/news-app.html",
       controller: _controller,
     );
   }

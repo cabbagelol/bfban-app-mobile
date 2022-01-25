@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:bfban/provider/message_provider.dart';
+import 'package:bfban/provider/package_provider.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,6 +81,7 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => AppInfoProvider()),
         ChangeNotifierProvider(create: (context) => UserInfoProvider()),
         ChangeNotifierProvider(create: (context) => MessageProvider()),
+        ChangeNotifierProvider(create: (context) => PackageProvider()),
       ],
       child: Consumer<AppInfoProvider>(
         builder: (BuildContext? context, appInfo, Widget? child) {
