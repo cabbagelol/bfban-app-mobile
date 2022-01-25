@@ -43,13 +43,13 @@ class titleSearch extends StatefulWidget {
 
   final TextEditingController controller;
 
-  titleSearch({
+  titleSearch({Key? key,
     this.theme = titleSearchTheme.black,
     this.child,
     this.onSubmitted,
     this.onChanged,
     required this.controller,
-  });
+  }) : super(key: key);
 
   @override
   _searchState createState() => _searchState();
@@ -93,14 +93,14 @@ class _searchState extends State<titleSearch> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: ClipRRect(
-        borderRadius: BorderRadius.all(
+        borderRadius: const BorderRadius.all(
           Radius.circular(5),
         ),
         child: Row(
           children: [
             Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 color: titleSearchColor(widget.theme).color,
                 child: Row(
                   children: <Widget>[
@@ -109,7 +109,7 @@ class _searchState extends State<titleSearch> {
                       color: titleSearchColor(widget.theme).iconColor,
                       size: 20,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Expanded(
@@ -119,11 +119,11 @@ class _searchState extends State<titleSearch> {
                               controller: controller,
                               focusNode: controllerFocus,
                               keyboardType: TextInputType.text,
-                              cursorColor: Color(0xff364e80),
+                              cursorColor: const Color(0xff364e80),
                               cursorWidth: 3,
-                              cursorRadius: Radius.circular(100),
+                              cursorRadius: const Radius.circular(100),
                               maxLines: 1,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 15,
                                 color: Colors.black45,
                               ),

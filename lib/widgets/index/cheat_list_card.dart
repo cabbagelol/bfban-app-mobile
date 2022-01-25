@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
-import 'package:bfban/constants/theme.dart';
 
-import 'package:provider/provider.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
 
 class CheatListCard extends StatelessWidget {
@@ -17,10 +15,10 @@ class CheatListCard extends StatelessWidget {
   /// 进度状态
   final Map startusIng = Config.startusIng;
 
-  CheatListCard({
+  CheatListCard({Key? key,
     required this.item,
     this.onTap,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +102,7 @@ class CheatListCard extends StatelessWidget {
 //                        maxLines: 1,
 //                      ),
                       Text(
-                        "最后更新:" + new Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
+                        "最后更新:" + Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
                         style: TextStyle(
                           color: Theme.of(context).primaryTextTheme.headline1!.color,
                           fontSize: 9,
@@ -160,11 +158,11 @@ class cheatersCardIconitem extends StatelessWidget {
   final String? e;
   final IconData? i;
 
-  cheatersCardIconitem({
+  cheatersCardIconitem({Key? key,
     this.n,
     this.e,
     this.i,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

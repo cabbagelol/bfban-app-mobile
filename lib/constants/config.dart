@@ -6,13 +6,13 @@ class AppConfig extends InheritedWidget {
   final String flavorName;
   final String apiBaseUrl;
 
-  AppConfig({
+  AppConfig({Key? key,
     this.debug = false,
     required this.appName,
     required this.flavorName,
     required this.apiBaseUrl,
     required Widget child,
-  }) : super(child: child);
+  }) : super(key: key, child: child);
 
   static AppConfig? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppConfig>();

@@ -9,9 +9,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:provider/provider.dart';
 
-import '../../provider/userinfo_provider.dart';
 
 class CommunityPage extends StatefulWidget {
   const CommunityPage({Key? key}) : super(key: key);
@@ -167,11 +165,11 @@ class _CommunityPageState extends State<CommunityPage> {
 
                 return GestureDetector(
                   child: Card(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     child: Stack(
                       children: [
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[

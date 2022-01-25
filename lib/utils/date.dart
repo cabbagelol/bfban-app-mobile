@@ -24,10 +24,10 @@ class Date {
 
     return {
       "year": "$year",
-      "month": "$month",
-      "day": "$day",
-      "hour": "$hour",
-      "minute": "$minute",
+      "month": month,
+      "day": day,
+      "hour": hour,
+      "minute": minute,
       "microsecond": "$microsecond",
       "millisecond": "$microsecond",
       "(zh)D_M": "$month月$day日",
@@ -51,7 +51,7 @@ class Date {
   }
 
   /// 翻译中文
-  String getFriendlyDescriptionTime(String date, {type: "Y_D_M"}) {
+  String getFriendlyDescriptionTime(String date, {type = "Y_D_M"}) {
     var time = DateTime.parse(date);
     var now = DateTime.now();
     var d = now.difference(time);

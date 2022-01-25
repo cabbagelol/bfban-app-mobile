@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_elui_plugin/elui.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/router/router.dart';
@@ -12,7 +11,6 @@ import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/package_provider.dart';
 import '../../provider/userinfo_provider.dart';
 
 class UserCenterPage extends StatefulWidget {

@@ -3,7 +3,6 @@
 import 'package:bfban/utils/index.dart' show Storage, AppInfoProvider;
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
 
 /// eumn
 enum appThemeType {
@@ -17,7 +16,7 @@ final Map<String, AppThemeItem> appThemeList = {
     name: "default",
     isDefault: true,
     themeData: ThemeData(
-      backgroundColor: Color(0xff0d1421),
+      backgroundColor: const Color(0xff0d1421),
       colorScheme: const ColorScheme(
         brightness: Brightness.dark,
         primary: Color(0xff364e80),
@@ -31,7 +30,7 @@ final Map<String, AppThemeItem> appThemeList = {
         surface: Colors.white,
         onSurface: Colors.white,
       ),
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         // displayLarge: const TextStyle(color: Colors.white),
         // displayMedium: const TextStyle(color: Colors.white),
         // displaySmall: const TextStyle(color: Colors.white),
@@ -47,16 +46,16 @@ final Map<String, AppThemeItem> appThemeList = {
         // labelLarge: const TextStyle(color: Colors.white),
         // labelMedium: const TextStyle(color: Colors.white),
         // labelSmall: const TextStyle(color: Colors.white),
-        headline1: const TextStyle(color: Colors.white),
-        headline2: const TextStyle(color: Colors.white),
-        headline3: const TextStyle(color: Colors.white),
-        headline4: const TextStyle(color: Colors.white),
-        headline5: const TextStyle(color: Colors.white),
-        headline6: const TextStyle(color: Colors.white),
-        subtitle1: const TextStyle(color: Colors.white),
-        subtitle2: const TextStyle(color: Colors.white54),
-        bodyText1: const TextStyle(color: Colors.white),
-        bodyText2: const TextStyle(color: Colors.white),
+        headline1: TextStyle(color: Colors.white),
+        headline2: TextStyle(color: Colors.white),
+        headline3: TextStyle(color: Colors.white),
+        headline4: TextStyle(color: Colors.white),
+        headline5: TextStyle(color: Colors.white),
+        headline6: TextStyle(color: Colors.white),
+        subtitle1: TextStyle(color: Colors.white),
+        subtitle2: TextStyle(color: Colors.white54),
+        bodyText1: TextStyle(color: Colors.white),
+        bodyText2: TextStyle(color: Colors.white),
         // caption: const TextStyle(color: Colors.white),
         // button: const TextStyle(color: Colors.white),
         // overline: const TextStyle(color: Colors.white),
@@ -71,7 +70,7 @@ final Map<String, AppThemeItem> appThemeList = {
       bottomAppBarColor: Colors.black,
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
-      dialogTheme: DialogTheme(
+      dialogTheme: const DialogTheme(
         elevation: 10,
         backgroundColor: Color(0xff364e80),
         titleTextStyle: TextStyle(
@@ -79,7 +78,7 @@ final Map<String, AppThemeItem> appThemeList = {
         ),
       ),
       highlightColor: Colors.transparent,
-      toggleButtonsTheme: ToggleButtonsThemeData(
+      toggleButtonsTheme: const ToggleButtonsThemeData(
         color: Color(0xff111b2b),
         fillColor: Colors.black38,
         textStyle: TextStyle(
@@ -91,16 +90,16 @@ final Map<String, AppThemeItem> appThemeList = {
         splashColor: Colors.black38,
         borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
-      progressIndicatorTheme: ProgressIndicatorThemeData(
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.white,
       ),
-      popupMenuTheme: PopupMenuThemeData(
-        color: const Color(0xff364e80),
+      popupMenuTheme: const PopupMenuThemeData(
+        color: Color(0xff364e80),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(Color(0xff111b2b)),
+          backgroundColor: MaterialStateProperty.all(const Color(0xff111b2b)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
@@ -111,21 +110,21 @@ final Map<String, AppThemeItem> appThemeList = {
         ),
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      bannerTheme: MaterialBannerThemeData(
+      bannerTheme: const MaterialBannerThemeData(
         backgroundColor: Color(0xff364e80),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Color(0xff364e80),
-        disabledColor: Color(0xff364e80).withOpacity(.2),
+        buttonColor: const Color(0xff364e80),
+        disabledColor: const Color(0xff364e80).withOpacity(.2),
       ),
-      bottomAppBarTheme: BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarTheme(
         color: Colors.black,
         elevation: 0,
       ),
-      buttonBarTheme: ButtonBarThemeData(
+      buttonBarTheme: const ButtonBarThemeData(
         layoutBehavior: ButtonBarLayoutBehavior.constrained,
       ),
-      navigationBarTheme: NavigationBarThemeData(
+      navigationBarTheme: const NavigationBarThemeData(
         backgroundColor: Colors.black,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -142,7 +141,7 @@ final Map<String, AppThemeItem> appThemeList = {
           fontSize: 14,
         ),
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         color: Color(0xff364e80),
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
@@ -173,12 +172,12 @@ final Map<String, AppThemeItem> appThemeList = {
       ),
       cardColor: const Color(0xff0d1323),
       primaryTextTheme: const TextTheme(
-        headline1: const TextStyle(color: Colors.white),
-        headline2: const TextStyle(color: Colors.white70),
-        headline3: const TextStyle(color: Colors.white54),
+        headline1: TextStyle(color: Colors.white),
+        headline2: TextStyle(color: Colors.white70),
+        headline3: TextStyle(color: Colors.white54),
         headline4: TextStyle(color: Colors.white38),
-        headline5: const TextStyle(color: Colors.white24),
-        headline6: const TextStyle(color: Colors.white12),
+        headline5: TextStyle(color: Colors.white24),
+        headline6: TextStyle(color: Colors.white12),
       ),
     ),
   )

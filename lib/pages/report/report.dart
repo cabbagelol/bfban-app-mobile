@@ -5,19 +5,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_html/flutter_html.dart';
 
-import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
-import 'package:bfban/widgets/index.dart';
 import 'package:bfban/widgets/edit/game_type_radio.dart';
-import 'package:bfban/widgets/detail/cheaters_card_types.dart' show detailApi;
-import 'package:provider/provider.dart';
 
 import '../../data/index.dart';
 
@@ -294,7 +288,7 @@ class _ReportPageState extends State<ReportPage> {
             SimpleDialogOption(
               child: Column(
                 children: <Widget>[
-                  Text('\u53d1\u5e03'),
+                  const Text('\u53d1\u5e03'),
                   Text(
                     '\u5c06\u4e3e\u62a5\u0049\u0044\u53d1\u5e03\u5230\u0042\u0046\u0042\u0041\u004e\u4e0a',
                     style: TextStyle(color: Theme.of(context).textTheme.subtitle2!.color),
@@ -317,7 +311,7 @@ class _ReportPageState extends State<ReportPage> {
             SimpleDialogOption(
               child: Column(
                 children: <Widget>[
-                  Text('草稿箱'),
+                  const Text('草稿箱'),
                   Text(
                     '储存到草稿箱,不会被发布',
                     style: TextStyle(color: Theme.of(context).textTheme.subtitle2!.color),
@@ -411,7 +405,7 @@ class _ReportPageState extends State<ReportPage> {
                             ],
                           ),
                         ),
-                        Center(
+                        const Center(
                           child: Text(
                             "检查用户id是否举报正确",
                             style: TextStyle(color: Colors.white12, fontSize: 12),
@@ -509,7 +503,7 @@ class _ReportPageState extends State<ReportPage> {
           EluiCellComponent(
             title: "视频链接 (${videoList.length}/20)",
             cont: TextButton(
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
               onPressed: () {
                 if (videoList.length > 19) return;
                 setState(() {
@@ -518,14 +512,14 @@ class _ReportPageState extends State<ReportPage> {
               },
             ),
           ),
-          videoList.length > 0
+          videoList.isNotEmpty
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: videoList.asMap().keys.map((index) {
                     return Card(
-                      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                      margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 20),
                       child: Container(
-                        margin: EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.only(right: 10),
                         child: Row(
                           children: [
                             Expanded(
@@ -548,7 +542,7 @@ class _ReportPageState extends State<ReportPage> {
                                   videoList.removeAt(index);
                                 });
                               },
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             )
                           ],
                         ),
@@ -557,9 +551,9 @@ class _ReportPageState extends State<ReportPage> {
                   }).toList(),
                 )
               : Card(
-                  margin: EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                  margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 20),
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
                     child: Text(
                       "空",
                       textAlign: TextAlign.center,
@@ -601,7 +595,7 @@ class _ReportPageState extends State<ReportPage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Card(
               elevation: 10,
               clipBehavior: Clip.hardEdge,
@@ -645,7 +639,7 @@ class _ReportPageState extends State<ReportPage> {
                           color: const Color.fromRGBO(0, 0, 0, 0.2),
                           child: Center(
                             child: TextButton.icon(
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               label: Text(
                                 reportStatus.param!.data!["description"].toString().isEmpty ? "填写理由" : "编辑",
                                 style: const TextStyle(fontSize: 18),
@@ -736,16 +730,16 @@ class _ReportPageState extends State<ReportPage> {
                 _openDrafts();
               },
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               flex: 1,
               child: TextButton(
                 child: reportStatus.load!
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: 10,
-                        children: <Widget>[
+                        children: const <Widget>[
                           Icon(
                             Icons.done,
                             color: Colors.orangeAccent,
@@ -767,10 +761,10 @@ class _ReportPageState extends State<ReportPage> {
                 ),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             IconButton(
               onPressed: () => _onSubmitMore(),
-              icon: Icon(Icons.add),
+              icon: const Icon(Icons.add),
             ),
           ],
         ),

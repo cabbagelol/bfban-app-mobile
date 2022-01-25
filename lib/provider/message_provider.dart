@@ -5,7 +5,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 
-import 'package:bfban/utils/http.dart';
 
 import '../constants/api.dart';
 import '../data/index.dart';

@@ -188,11 +188,11 @@ class _searchPanelState extends State<SearchPanel> {
                 return Visibility(
                   visible: !appInfo.isLogin,
                   child: MaterialBanner(
-                    content: Text("登录联ban账户，对作弊玩家提交证据或自我证明功能"),
+                    content: const Text("登录联ban账户，对作弊玩家提交证据或自我证明功能"),
                     actions: [
                       TextButton(
                         onPressed: _openLogin(),
-                        child: Text("登录"),
+                        child: const Text("登录"),
                       )
                     ],
                   ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PublishResultsPage extends StatefulWidget {
+  const PublishResultsPage({Key? key}) : super(key: key);
+
   @override
   _PublishResultsPageState createState() => _PublishResultsPageState();
 }
@@ -22,7 +24,7 @@ class _PublishResultsPageState extends State<PublishResultsPage> {
             );
           },
         ),
-        title: Text(
+        title: const Text(
           "完成",
         ),
       ),
@@ -34,7 +36,7 @@ class _PublishResultsPageState extends State<PublishResultsPage> {
             Wrap(
               spacing: 5,
               children: [
-                Icon(
+                const Icon(
                   Icons.check_circle_outline,
                   size: 20,
                   color: Colors.green,

@@ -34,7 +34,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
             onPressed: () {
               _urlUtil.opEnPage(context, "/network");
             },
-            icon: Icon(Icons.electrical_services),
+            icon: const Icon(Icons.electrical_services),
           ),
         ],
       ),
@@ -52,7 +52,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
                     title: "当前版本",
                     cont: Text(data.currentVersion.toString()),
                   ),
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
                 Card(
                   child: EluiCellComponent(
@@ -64,31 +64,29 @@ class _AppPackagePageState extends State<AppPackagePage> {
                     islink: true,
                     cont: data.onlineVersion.isNotEmpty
                         ? Text(data.onlineVersion.toString())
-                        : CircularProgressIndicator(strokeWidth: 2),
+                        : const CircularProgressIndicator(strokeWidth: 2),
                     onTap: () {
                       _urlUtil.onPeUrl(Config.apiHost["app"]);
                     },
                   ),
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 data.list
                             .where((i) {
                               return data.setIssue(i["version"], i["stage"]) ==
                                   data.currentVersion;
                             })
-                            .toList()
-                            .length <=
-                        0
+                            .toList().isEmpty
                     ? SizedBox(
                         height: 50,
                         child: EluiTipComponent(
                           type: EluiTip.warning,
-                          child: Text("未找到对应版本，您当前版本可能是超发版本"),
+                          child: const Text("未找到对应版本，您当前版本可能是超发版本"),
                         ),
                       )
                     : Container(),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Expanded(
                   flex: 1,
                   child: ListView(
@@ -99,7 +97,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(e["version"].toString()),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             EluiTagComponent(
                               value: "类型: ${e["stage"].toUpperCase()}",
                               color: EluiTagType.none,
@@ -110,7 +108,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
                                 borderColor: Theme.of(context).backgroundColor,
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             data.setIssue(e["version"], e["stage"]) ==
                                     data.currentVersion
                                 ? EluiTagComponent(
@@ -127,7 +125,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
                           ],
                         ),
                         subtitle: Text(e["describe"].toString()),
-                        trailing: Icon(Icons.chevron_right),
+                        trailing: const Icon(Icons.chevron_right),
                         onTap: () {
                           _urlUtil.onPeUrl(e["src"]);
                         },

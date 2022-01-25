@@ -23,7 +23,7 @@ class PhotoViewSimpleScreen extends StatefulWidget {
 
   final Object? heroTag;
 
-  const PhotoViewSimpleScreen({
+   PhotoViewSimpleScreen({Key? key,
     this.imageUrl,
     this.imageProvider,
     this.loadingChild,
@@ -31,7 +31,7 @@ class PhotoViewSimpleScreen extends StatefulWidget {
     this.minScale,
     this.maxScale,
     this.heroTag,
-  });
+  }) : super(key: key);
 
   @override
   _PhotoViewSimpleScreenState createState() => _PhotoViewSimpleScreenState();

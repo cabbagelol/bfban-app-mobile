@@ -41,7 +41,7 @@ class UserInfoProvider with ChangeNotifier {
   /// [Event]
   /// 检查登录状态，否则调起登录
   bool checkLogin() {
-    if (!isLogin) _urlUtil.opEnPage(context!, "login/panel");;
+    if (!isLogin) _urlUtil.opEnPage(context!, "login/panel");
 
     return isLogin;
   }

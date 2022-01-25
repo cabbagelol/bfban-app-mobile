@@ -98,7 +98,7 @@ class _CameraPageState extends State<CameraPage> {
     // 序列化
     Map scanResult = jsonDecode(barcodeResults);
 
-    if (barcodeResults.toString().indexOf("bfban") >= 0) {
+    if (barcodeResults.toString().contains("bfban")) {
       _scanResult.addAll([
         {"type_index": 0, "type": "web_site_link", "content": scanResult["id"]},
         {"type_index": 1, "type": "app_palyer", "content": scanResult["id"]}
@@ -183,7 +183,7 @@ class _CameraPageState extends State<CameraPage> {
   /// 相机视图
   Widget getCameraWidget() {
     if (!_controller.value.isInitialized) {
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     } else {
       // https://stackoverflow.com/questions/49946153/flutter-camera-appears-stretched
       final size = MediaQuery.of(context).size;
@@ -255,17 +255,17 @@ class _CameraPageState extends State<CameraPage> {
                           return GestureDetector(
                             onTap: () => openLink(e),
                             child: Card(
-                              margin: EdgeInsets.symmetric(
+                              margin: const EdgeInsets.symmetric(
                                 horizontal: 10,
                                 vertical: 5,
                               ),
                               child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Row(
                                   children: [
                                     IndexedStack(
                                       index: e["type_index"],
-                                      children: [
+                                      children: const [
                                         Icon(Icons.touch_app_rounded),
                                         Icon(Icons.link),
                                         Icon(Icons.text_snippet)
@@ -274,7 +274,7 @@ class _CameraPageState extends State<CameraPage> {
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                           horizontal: 10,
                                           vertical: 20,
                                         ),
@@ -294,7 +294,7 @@ class _CameraPageState extends State<CameraPage> {
                                             // 描述
                                             IndexedStack(
                                               index: e["type_index"],
-                                              children: [
+                                              children: const [
                                                 Text("从bfban网站打开"),
                                                 Text("打开应用内部的玩家信息")
                                               ],
@@ -303,7 +303,7 @@ class _CameraPageState extends State<CameraPage> {
                                         ),
                                       ),
                                     ),
-                                    Icon(Icons.chevron_right),
+                                    const Icon(Icons.chevron_right),
                                   ],
                                 ),
                               ),
@@ -329,7 +329,7 @@ class _CameraPageState extends State<CameraPage> {
                   blurRadius: 10,
                 )
               ],
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0),
               ),
@@ -355,21 +355,21 @@ class _CameraPageState extends State<CameraPage> {
           videoScan();
         },
         child: _isScanRunning
-            ? CircularProgressIndicator()
-            : Icon(Icons.qr_code_outlined, size: 30),
+            ? const CircularProgressIndicator()
+            : const Icon(Icons.qr_code_outlined, size: 30),
       ),
     );
   }
 }
 
 String getBarcodeResults(List<BarcodeResult> results) {
-  StringBuffer sb = new StringBuffer();
+  StringBuffer sb = StringBuffer();
   for (BarcodeResult result in results) {
     sb.write(result.format);
     sb.write("\n");
     sb.write(result.text);
     sb.write("\n\n");
   }
-  if (results.length == 0) sb.write("No Barcode Detected");
+  if (results.isEmpty) sb.write("No Barcode Detected");
   return sb.toString();
 }

@@ -1,15 +1,10 @@
-/// 登录面板
-
-import 'dart:ui' as ui;
 
 import 'package:bfban/utils/index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_button/index.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/userinfo_provider.dart';
-import '../../utils/url.dart';
 
 class LoginPanelPage extends StatefulWidget {
   const LoginPanelPage({Key? key}) : super(key: key);
@@ -59,7 +54,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
             onPressed: () {
               _urlUtil.opEnPage(context, "/network");
             },
-            icon: Icon(Icons.electrical_services),
+            icon: const Icon(Icons.electrical_services),
           ),
         ],
       ),
@@ -69,7 +64,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
             fit: StackFit.loose,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
+                margin: const EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -78,8 +73,8 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       radius: 40,
                       child: Image.asset("assets/images/bfban-logo.png"),
                     ),
-                    SizedBox(height: 15),
-                    Text(
+                    const SizedBox(height: 15),
+                    const Text(
                       "BFBAN",
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
@@ -91,25 +86,25 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                     MaterialButton(
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       color: Theme.of(context).appBarTheme.backgroundColor,
                       elevation: 5,
                       onPressed: () {
                         _openSignin();
                       },
-                      child: Text("BFBAN 账户登录"),
+                      child: const Text("BFBAN 账户登录"),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     MaterialButton(
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       color: Theme.of(context).backgroundColor,
                       elevation: 0,
                       onPressed: () {
                         _pop();
                       },
-                      child: Text("取消"),
+                      child: const Text("取消"),
                     ),
                   ],
                 ),

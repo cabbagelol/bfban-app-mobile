@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -13,14 +12,13 @@ import 'package:bfban/widgets/index.dart';
 import 'package:bfban/constants/theme.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
-import 'package:provider/provider.dart';
 
 class recordPage extends StatefulWidget {
   final data;
 
-  recordPage({
+  recordPage({Key? key,
     @required this.data,
-  });
+  }) : super(key: key);
 
   @override
   _RecordPageState createState() => _RecordPageState();
@@ -29,9 +27,9 @@ class recordPage extends StatefulWidget {
 class _RecordPageState extends State<recordPage> {
   Map theme = THEMELIST['none'];
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
-  Map indexDate = new Map();
+  Map indexDate = {};
 
   Map record = {"uid": ""};
 
@@ -46,8 +44,8 @@ class _RecordPageState extends State<recordPage> {
   void initState() {
     super.initState();
 
-    this.ready();
-    this.onReadyTheme();
+    ready();
+    onReadyTheme();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {}
@@ -68,14 +66,14 @@ class _RecordPageState extends State<recordPage> {
   }
 
   void ready() async {
-    await this._getUserInfo();
-    await this._getIndexList(1);
+    await _getUserInfo();
+    await _getIndexList(1);
   }
 
   /// 下拉刷新方法,为list重新赋值
-  Future<Null> _onRefresh() async {
-    await Future.delayed(Duration(seconds: 1), () {
-      this._getIndexList(1);
+  Future<void> _onRefresh() async {
+    await Future.delayed(const Duration(seconds: 1), () {
+      _getIndexList(1);
     });
   }
 
@@ -139,7 +137,7 @@ class _RecordPageState extends State<recordPage> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.open_in_new,
             ),
             onPressed: () {
@@ -154,7 +152,7 @@ class _RecordPageState extends State<recordPage> {
         ],
       ),
       body: !indexPagesState
-          ? indexDataList.length > 0
+          ? indexDataList.isNotEmpty
               ? RefreshIndicator(
                   onRefresh: _onRefresh,
                   child: ListView.builder(
@@ -183,7 +181,7 @@ class _RecordPageState extends State<recordPage> {
                       fontSize: 30,
                     ),
                   ),
-                  Text(
+                  const Text(
                     "Legion of BAN Coalition",
                     style: TextStyle(
                       fontSize: 14,
@@ -202,10 +200,10 @@ class recordItem extends StatelessWidget {
   final item;
   final Map theme;
 
-  recordItem({
+  recordItem({Key? key,
     this.item,
     required this.theme,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -218,9 +216,9 @@ class recordItem extends StatelessWidget {
         );
       },
       child: Container(
-        color: theme['card']['color'] ?? Color.fromRGBO(0, 0, 0, .3),
-        margin: EdgeInsets.only(bottom: 1),
-        padding: EdgeInsets.all(20),
+        color: theme['card']['color'] ?? const Color.fromRGBO(0, 0, 0, .3),
+        margin: const EdgeInsets.only(bottom: 1),
+        padding: const EdgeInsets.all(20),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -273,14 +271,14 @@ class recordItem extends StatelessWidget {
                 Text(
                   "发布日期:",
                   style: TextStyle(
-                    color: theme['text']['subtext1'] ?? Color.fromRGBO(255, 255, 255, .6),
+                    color: theme['text']['subtext1'] ?? const Color.fromRGBO(255, 255, 255, .6),
                     fontSize: 12,
                   ),
                 ),
                 Text(
                   "${item["createDatetime"]}",
                   style: TextStyle(
-                    color: theme['text']['subtext1'] ?? Color.fromRGBO(255, 255, 255, .6),
+                    color: theme['text']['subtext1'] ?? const Color.fromRGBO(255, 255, 255, .6),
                     fontSize: 13,
                   ),
                 )

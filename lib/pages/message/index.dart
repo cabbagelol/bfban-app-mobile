@@ -243,8 +243,8 @@ class _MessagePageState extends State<MessagePage> {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text("${userinfo.data!["username"]} (${widget.id})"),
-                      SizedBox(width: 10),
-                      Icon(Icons.arrow_drop_down),
+                      const SizedBox(width: 10),
+                      const Icon(Icons.arrow_drop_down),
                     ],
                   ),
                   onPressed: () {},
@@ -281,10 +281,10 @@ class _MessagePageState extends State<MessagePage> {
                                           ),
                                         ],
                                       ),
-                                      margin: EdgeInsets.only(right: 60, top: 10),
+                                      margin: const EdgeInsets.only(right: 60, top: 10),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(top: 10),
+                                      margin: const EdgeInsets.only(top: 10),
                                       child: CircleAvatar(
                                         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                                         child: Text(selfInfo!["username"][0].toString()),
@@ -292,16 +292,16 @@ class _MessagePageState extends State<MessagePage> {
                                     ),
                                     Card(
                                       child: Padding(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         child: Html(
                                           data: e["content"].toString(),
                                         ),
                                       ),
-                                      margin: EdgeInsets.only(right: 60, top: 40),
+                                      margin: const EdgeInsets.only(right: 60, top: 40),
                                     ),
                                   ],
                                 ),
-                                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               );
                             } else {
                               // 对话对方
@@ -326,20 +326,20 @@ class _MessagePageState extends State<MessagePage> {
                                           Text(Date().getFriendlyDescriptionTime(e!["createTime"]).toString()),
                                         ],
                                       ),
-                                      margin: EdgeInsets.only(left: 60),
+                                      margin: const EdgeInsets.only(left: 60),
                                     ),
                                     Card(
                                       child: Padding(
-                                        padding: EdgeInsets.all(10),
+                                        padding: const EdgeInsets.all(10),
                                         child: Html(
                                           data: e["content"].toString(),
                                         ),
                                       ),
-                                      margin: EdgeInsets.only(left: 60, top: 25),
+                                      margin: const EdgeInsets.only(left: 60, top: 25),
                                     ),
                                   ],
                                 ),
-                                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               );
                             }
                           }).toList(),
@@ -352,7 +352,7 @@ class _MessagePageState extends State<MessagePage> {
               ),
               bottomSheet: Container(
                 key: buttonGlobalKey,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -362,7 +362,7 @@ class _MessagePageState extends State<MessagePage> {
                           controller: textFieldcontroller,
                           maxLines: null,
                           maxLength: 10,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             counterText: '',
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(horizontal: 10),
@@ -373,12 +373,12 @@ class _MessagePageState extends State<MessagePage> {
                       flex: 1,
                     ),
                     Container(
-                      margin: EdgeInsets.only(top: 5),
+                      margin: const EdgeInsets.only(top: 5),
                       child: TextButton(
                         onPressed: _healButton(),
                         child: !messageSendStatus!["load"]
-                            ? Text("发送")
-                            : Container(
+                            ? const Text("发送")
+                            : const SizedBox(
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                 ),

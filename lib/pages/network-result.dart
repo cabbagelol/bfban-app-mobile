@@ -6,9 +6,9 @@ import 'package:bfban/constants/theme.dart';
 class NetworkResultPage extends StatefulWidget {
   final String? data;
 
-  NetworkResultPage({
+   NetworkResultPage({Key? key,
     this.data
-  });
+  }) : super(key: key);
 
   @override
   _networkResultPageState createState() => _networkResultPageState();
@@ -19,7 +19,7 @@ class _networkResultPageState extends State<NetworkResultPage> {
 
   @override
   void initState() {
-    this.onReadyTheme();
+    onReadyTheme();
     super.initState();
   }
 
@@ -40,7 +40,7 @@ class _networkResultPageState extends State<NetworkResultPage> {
         flexibleSpace: theme['appBar']['flexibleSpace'],
       ),
       body: ListView(
-        children: [Text("233")],
+        children: const [Text("233")],
       ),
     );
   }

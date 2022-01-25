@@ -1,7 +1,3 @@
-/// 管理
-/// 作弊者裁决
-
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
@@ -220,19 +216,19 @@ class _ManagePageState extends State<ManagePage> {
                   onPressed: () {
                     _onRelease();
                   },
-                  icon: Icon(Icons.done),
+                  icon: const Icon(Icons.done),
                 ),
         ],
       ),
       body: ListView(
         children: <Widget>[
           /// S 处理意见
-          EluiCellComponent(title: "\u610f\u89c1"),
+          const EluiCellComponent(title: "\u610f\u89c1"),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Card(
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: DropdownButton(
                   isDense: true,
                   isExpanded: true,
@@ -265,7 +261,7 @@ class _ManagePageState extends State<ManagePage> {
             offstage: manageStatus.data!.action != "1",
             child: Column(
               children: [
-                EluiCellComponent(title: "\u4f5c\u5f0a\u65b9\u5f0f"),
+                const EluiCellComponent(title: "\u4f5c\u5f0a\u65b9\u5f0f"),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                   child: Wrap(
@@ -305,7 +301,7 @@ class _ManagePageState extends State<ManagePage> {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 15),
+            margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Card(
               elevation: 10,
               clipBehavior: Clip.hardEdge,
@@ -344,7 +340,7 @@ class _ManagePageState extends State<ManagePage> {
                           color: const Color.fromRGBO(0, 0, 0, 0.2),
                           child: Center(
                             child: TextButton.icon(
-                              icon: Icon(Icons.edit),
+                              icon: const Icon(Icons.edit),
                               label: Text(
                                 manageStatus.data!.content!.isEmpty ? "填写理由" : "编辑",
                                 style: const TextStyle(fontSize: 18),

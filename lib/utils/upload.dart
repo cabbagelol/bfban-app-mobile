@@ -1,7 +1,6 @@
 /// 上传
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:uuid/uuid.dart';
 
 import 'http.dart';
@@ -25,7 +24,7 @@ class upload extends Http {
 
   /// 上传
   static upLoad(File file) async {
-    dynamic uuid = Uuid();
+    dynamic uuid = const Uuid();
     dynamic formdata = FormData.fromMap({
       "token": qiniuToken,
       "key": uuid.v4(),

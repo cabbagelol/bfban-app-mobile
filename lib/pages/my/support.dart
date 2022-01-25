@@ -40,7 +40,7 @@ class _SupportPageState extends State<SupportPage> {
             onPressed: () {
               _urlUtil.opEnPage(context, "/network");
             },
-            icon: Icon(Icons.electrical_services),
+            icon: const Icon(Icons.electrical_services),
           ),
         ],
       ),
@@ -87,10 +87,10 @@ class _SupportPageState extends State<SupportPage> {
             islink: true,
             onTap: () => _urlUtil.onPeUrl("https://cabbagelol.net/%e6%8d%90%e5%8a%a9/"),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          EluiCellComponent(
+          const EluiCellComponent(
             title: "内部",
           ),
           EluiCellComponent(
@@ -103,7 +103,7 @@ class _SupportPageState extends State<SupportPage> {
               backgroundColor: Theme.of(context).cardTheme.color,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           EluiCellComponent(

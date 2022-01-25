@@ -70,10 +70,10 @@ class _draftsPageState extends State<draftsPage> {
               color: Colors.white,
             ),
           ),
-          actions: <Widget>[],
+          actions: const <Widget>[],
         ),
         body: ListView(
-          children: draftsList.length > 0
+          children: draftsList.isNotEmpty
               ? (draftsList).asMap().keys.map((index) {
                   return GestureDetector(
                     child: Container(

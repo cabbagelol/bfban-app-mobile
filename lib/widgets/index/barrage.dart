@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class usercenterBarrage extends StatefulWidget {
+  const usercenterBarrage({Key? key}) : super(key: key);
+
   @override
   _usercenterBarrageState createState() => _usercenterBarrageState();
 }
@@ -26,11 +28,11 @@ class _usercenterBarrageState extends State<usercenterBarrage> {
     setState(() {
       _countdownTime = 0;
     });
-    this.startCountdownTimer();
+    startCountdownTimer();
   }
 
   void startCountdownTimer() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) => {
+    _timer = Timer.periodic(const Duration(seconds: 3), (timer) => {
       setState(() {
         print('$_countdownTime ${barrageList.length - 1}');
         if (_countdownTime == barrageList.length - 2) {
@@ -54,7 +56,7 @@ class _usercenterBarrageState extends State<usercenterBarrage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(barrageList[_countdownTime]??"", style: TextStyle(
+        Text(barrageList[_countdownTime]??"", style: const TextStyle(
           color: Colors.white,
           fontSize: 30
         ),)

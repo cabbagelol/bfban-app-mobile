@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 
 class ScreenUtil {
-  static ScreenUtil instance = new ScreenUtil(width: 0, height: 0);
+  static ScreenUtil instance = ScreenUtil(width: 0, height: 0);
 
   //设计稿的设备尺寸修改
   late int _designWidth;
   late int _designHeight;
 
-  static MediaQueryData _mediaQueryData = new MediaQueryData();
+  static MediaQueryData _mediaQueryData = const MediaQueryData();
   static double _screenWidth = 0.floorToDouble();
   static double _screenHeight = 0.floorToDouble();
   static double _pixelRatio = 0.floorToDouble();

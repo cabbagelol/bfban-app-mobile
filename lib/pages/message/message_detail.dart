@@ -1,7 +1,5 @@
 import 'package:bfban/data/index.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:fluro/fluro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -119,12 +117,12 @@ class _messageDetailPageState extends State<MessageDetailPage> {
                     ),
                     title: Text(userinfo.data!["username"].toString()),
                     subtitle: Text(userinfo.data!["id"].toString()),
-                    trailing: Icon(Icons.chevron_right),
+                    trailing: const Icon(Icons.chevron_right),
                     onTap: openPlayerDetail(userinfo.data!["id"]),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Card(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     child: Html(
                       data: messageStatus.data["content"],
                     ),

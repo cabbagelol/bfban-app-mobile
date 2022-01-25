@@ -11,10 +11,10 @@ class newscomponent extends StatefulWidget {
 
   final String? src;
 
-  newscomponent({
+  newscomponent({Key? key,
     this.src,
     this.controller,
-  });
+  }) : super(key: key);
 
   @override
   _newsPageState createState() => _newsPageState();

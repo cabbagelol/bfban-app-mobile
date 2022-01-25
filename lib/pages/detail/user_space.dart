@@ -2,7 +2,6 @@
 /// 站内用户空间
 
 import 'package:fluro/fluro.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -10,7 +9,6 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
-import '../../widgets/photo.dart';
 
 class UserSpacePage extends StatefulWidget {
   // 站内用户id
@@ -161,7 +159,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                 actions: [
                   IconButton(
                     onPressed: _openMessage(userinfo.data!["id"].toString()),
-                    icon: Icon(Icons.message),
+                    icon: const Icon(Icons.message),
                   ),
                   // PopupMenuButton(
                   //   onSelected: (value) {
@@ -207,15 +205,15 @@ class UserSpacePageState extends State<UserSpacePage> {
                             radius: 35,
                             child: Text(
                               snapshot.data["username"][0].toString().toUpperCase(),
-                              style: TextStyle(fontSize: 25),
+                              style: const TextStyle(fontSize: 25),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Text(
                             snapshot.data["username"],
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           // 自我描述
                           Card(
                             child: Html(
@@ -230,10 +228,10 @@ class UserSpacePageState extends State<UserSpacePage> {
                     // 统计信息
                     Container(
                       height: 100,
-                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
                       child: Card(
                         child: Padding(
-                          padding: EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(20),
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
@@ -340,7 +338,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // 举报列表
                     Column(
@@ -409,7 +407,7 @@ class RecordItemCard extends StatelessWidget {
           )
         ],
       ),
-      trailing: Icon(Icons.chevron_right),
+      trailing: const Icon(Icons.chevron_right),
       onTap: () => _openPlayerDetail(context),
     );
   }

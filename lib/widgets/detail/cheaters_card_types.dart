@@ -13,7 +13,6 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
-import 'package:bfban/router/router.dart';
 
 /// 卡片内置公共
 class CardFun {
@@ -135,7 +134,7 @@ class CardFun {
   /// 配置html 样式表
   Map<String, Style> styleHtml(BuildContext context) {
     return {
-      "*": Style(fontSize: FontSize(12), color: Theme.of(context).textTheme.subtitle1!.color),
+      "*": Style(fontSize: const FontSize(12), color: Theme.of(context).textTheme.subtitle1!.color),
     };
   }
 

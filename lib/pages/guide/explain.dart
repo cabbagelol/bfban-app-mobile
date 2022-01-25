@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:bfban/widgets/news/index.dart';
 
 class explainPage extends StatefulWidget {
+  const explainPage({Key? key}) : super(key: key);
+
   @override
   _explainPageState createState() => _explainPageState();
 }

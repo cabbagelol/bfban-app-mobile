@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 var THEMELIST = {};
 /// 默认主题
 // "none": {

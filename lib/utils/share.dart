@@ -1,14 +1,12 @@
-/// 分享
-import 'package:flutter/services.dart';
 
 import 'package:flutter_share/flutter_share.dart';
 
 class Share {
   Future<void> text({
-    title: 'Example share',
-    text: 'Example share text',
-    linkUrl: 'https://flutter.cn/',
-    chooserTitle: 'Example Chooser Title',
+    title = 'Example share',
+    text = 'Example share text',
+    linkUrl = 'https://flutter.cn/',
+    chooserTitle = 'Example Chooser Title',
   }) async {
     await FlutterShare.share(
       title: title,

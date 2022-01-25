@@ -11,7 +11,6 @@ import 'package:bfban/utils/index.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/widgets/index.dart';
 
-import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_elui_plugin/_vacancy/index.dart';
 
@@ -162,17 +161,17 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: Container(
+        title: SizedBox(
           height: 35,
           child: ToggleButtons(
             children: [
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                child: Text("现在"),
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                child: const Text("现在"),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                child: Text("过去"),
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                child: const Text("过去"),
               ),
             ],
             isSelected: isSelected.map((e) => e.value).toList(),
@@ -180,10 +179,10 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
               setState(() {
                 int forindex = 0;
 
-                isSelected.forEach((i) {
+                for (var i in isSelected) {
                   i.value = index == forindex;
                   forindex++;
-                });
+                }
 
                 searchStatus.parame!.scope = searchScope[index];
               });
@@ -205,16 +204,14 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
                 titleSearch(
                   controller: _searchController,
                   theme: titleSearchTheme.white,
-                  child: Container(
-                    child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Theme.of(context).appBarTheme.backgroundColor),
-                      ),
-                      onPressed: () => _onSearch(),
-                      child: const Icon(
-                        Icons.subdirectory_arrow_left,
-                      ),
+                  child: TextButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Theme.of(context).appBarTheme.backgroundColor),
+                    ),
+                    onPressed: () => _onSearch(),
+                    child: const Icon(
+                      Icons.subdirectory_arrow_left,
                     ),
                   ),
                   onChanged: (String value) {

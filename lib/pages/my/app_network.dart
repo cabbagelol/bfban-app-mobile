@@ -1,14 +1,10 @@
 /// 网络
 
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
-import 'package:flutter_elui_plugin/_tip/index.dart';
-import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
 import '../../data/index.dart';
-import '../../provider/package_provider.dart';
 import '../../utils/index.dart';
 
 class AppNetworkPage extends StatefulWidget {
@@ -102,13 +98,13 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
             Theme.of(context).floatingActionButtonTheme.backgroundColor,
         child: Column(
           children: [
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Expanded(
               flex: 1,
               child: ListView(
                 children: appNetworkStatus.list!.map((e) {
                   return Card(
-                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     child: ListTile(
                       title: Text(
                         "[${e["statusCode"].toString()}] " +
@@ -144,7 +140,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                         ],
                       ),
                       trailing: e["load"]
-                          ? CircularProgressIndicator(
+                          ? const CircularProgressIndicator(
                               strokeWidth: 2,
                             )
                           : null,

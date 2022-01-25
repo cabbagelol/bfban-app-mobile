@@ -12,6 +12,8 @@ import 'explain.dart';
 import 'permission.dart';
 
 class GuidePage extends StatefulWidget {
+  const GuidePage({Key? key}) : super(key: key);
+
   @override
   _GuidePageState createState() => _GuidePageState();
 }
@@ -41,7 +43,7 @@ class _GuidePageState extends State<GuidePage> {
         },
       ),
       const permissionPage(onChange: null,),
-      explainPage(),
+      const explainPage(),
     ];
   }
 

@@ -39,7 +39,7 @@ class Version {
 
     return {
       "0": int.parse(s[0].replaceAll(".", "")),
-      "1": s[1].toString(),
+      "1": s.toString(),
     };
   }
 }

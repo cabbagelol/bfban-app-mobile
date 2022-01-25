@@ -43,7 +43,7 @@ class PackageProvider with ChangeNotifier {
   );
 
   // 版本
-  Version _version = Version();
+  final Version _version = Version();
 
   /// [Event]
   /// 初始
@@ -92,7 +92,7 @@ class PackageProvider with ChangeNotifier {
   /// [Event]
   /// 装载发行号
   String setIssue (String version, issue) {
-    return "${version}-${issue}";
+    return "$version-$issue";
   }
 
   /// 检查是否空，如果空者触发更新

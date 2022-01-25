@@ -205,7 +205,7 @@ class _ReplyPageState extends State<ReplyPage> {
                                   icon: const Icon(Icons.edit),
                                   label: Text(
                                     replyStatus.data!.content.toString().isEmpty ? "填写回复" : "编辑",
-                                    style: TextStyle(fontSize: 18),
+                                    style: const TextStyle(fontSize: 18),
                                   ),
                                   onPressed: () {
                                     _opEnRichEdit();

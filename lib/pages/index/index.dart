@@ -6,11 +6,9 @@ import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
-import 'package:bfban/router/router.dart';
 
 import '../../widgets/index/search.dart';
 import '../my/my.dart';

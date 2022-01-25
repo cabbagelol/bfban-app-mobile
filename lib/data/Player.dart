@@ -1,5 +1,3 @@
-import 'index.dart';
-import './DataUtil.dart';
 
 /// 玩家数据
 class Player {

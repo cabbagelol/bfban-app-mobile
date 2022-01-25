@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
-import 'package:flutter_elui_plugin/_tag/tag.dart';
 
 import '../../data/index.dart';
 import '../../router/router.dart';
@@ -159,13 +157,13 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 controller: _tabController,
                 isScrollable: true,
                 indicatorWeight: .1,
-                labelPadding: EdgeInsets.symmetric(horizontal: 10),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 10),
                 onTap: (index) async {
                   int _value = cheaterStatus[index]["value"];
 
                   playersStatus!.parame!.data["status"] = _value;
 
-                  await resetPlayerParame(skip: true, page: true);
+                  resetPlayerParame(skip: true, page: true);
                   await getPlayerList();
                 },
                 tabs: cheaterStatus.map((i) {
@@ -173,16 +171,16 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 }).toList(),
               ),
             ),
-            SizedBox(width: 5),
+            const SizedBox(width: 5),
             TextButton.icon(
               onPressed: () {},
-              icon: Icon(
+              icon: const Icon(
                 Icons.filter_list,
                 size: 15,
               ),
-              label: Text("筛选"),
+              label: const Text("筛选"),
             ),
-            SizedBox(width: 4),
+            const SizedBox(width: 4),
             PopupMenuButton(
               padding: EdgeInsets.zero,
               icon: TextButton(
@@ -215,7 +213,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               onRefresh: _onRefresh,
               color: Theme.of(context).floatingActionButtonTheme.focusColor,
               backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
-              child: playersStatus!.list!.length > 0 ? ListView.builder(
+              child: playersStatus!.list!.isNotEmpty ? ListView.builder(
                 controller: _scrollController,
                 itemCount: playersStatus?.list?.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -255,8 +253,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               ? Container(
                   height: 30,
                   width: 30,
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  child: const CircularProgressIndicator(strokeWidth: 2),
                 )
               : Container(),
         ],

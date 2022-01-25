@@ -19,7 +19,7 @@ class _richEditPageState extends State<RichEditPage> {
   Future? futureBuilder;
 
   // 滚动控制器
-  ScrollController? _scrollController = ScrollController();
+  final ScrollController? _scrollController = ScrollController();
 
   // 文本控制器
   EditorController? _editorController;
@@ -89,7 +89,7 @@ class _richEditPageState extends State<RichEditPage> {
                   controller: _editorController,
                   minHeight: 300,
                   scaleFactor: 1,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   initialText: data,
                   placeholder: "",
                   webViewTitle: "Editor",

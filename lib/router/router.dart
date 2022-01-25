@@ -39,19 +39,19 @@ class Routes {
       {
         'url': '/',
         'item': (context, params) {
-          return IndexPage();
+          return const IndexPage();
         }
       },
       {
         'url': '/network',
         'item': (context, params) {
-          return AppNetworkPage();
+          return const AppNetworkPage();
         }
       },
       {
         "url": "/message/list",
         'item': (context, params) {
-          return MessageListPage();
+          return const MessageListPage();
         }
       },
       {
@@ -69,7 +69,7 @@ class Routes {
       {
         "url": "/camera",
         'item': (context, params) {
-          return CameraPage();
+          return const CameraPage();
         }
       },
       {
@@ -95,7 +95,7 @@ class Routes {
       {
         "url": "/report/publishResultsPage",
         'item': (context, params) {
-          return PublishResultsPage();
+          return const PublishResultsPage();
         }
       },
       {
@@ -109,7 +109,7 @@ class Routes {
       {
         "url": "/drafts",
         'item': (context, params) {
-          return draftsPage();
+          return const draftsPage();
         }
       },
       {
@@ -123,19 +123,19 @@ class Routes {
       {
         "url": "/signin",
         'item': (context, params) {
-          return SigninPage();
+          return const SigninPage();
         }
       },
       {
         "url": "/signup",
         'item': (context, params) {
-          return SignupPage();
+          return const SignupPage();
         }
       },
       {
         "url": "/login/panel",
         'item': (context, params) {
-          return LoginPanelPage();
+          return const LoginPanelPage();
         }
       },
       {
@@ -157,32 +157,32 @@ class Routes {
       {
         "url": "/my/support",
         'item': (context, params) {
-          return SupportPage();
+          return const SupportPage();
         },
       },
       {
         "url": "/my/version",
         'item': (context, params) {
-          return AppPackagePage();
+          return const AppPackagePage();
         },
       },
       {
         "url": "/my/theme",
         'item': (context, params) {
-          return ThemePage();
+          return const ThemePage();
         },
       },
       {
         "url": "/guide",
         'item': (context, params) {
-          return GuidePage();
+          return const GuidePage();
         },
       },
       {
         "url": "/richedit",
         'item': (context, params) {
           print(params);
-          return RichEditPage();
+          return const RichEditPage();
         },
       },
       {
@@ -195,11 +195,11 @@ class Routes {
       }
     ];
 
-    routerList!.forEach((i) {
+    for (var i in routerList!) {
       router.define(i['url'], handler: Handler(handlerFunc: (context, Map<String, dynamic> params) {
         return i['item'](context, params);
       }));
-    });
+    }
 
     Routes.router = router;
   }

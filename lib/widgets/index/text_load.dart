@@ -7,10 +7,10 @@ class textLoad extends StatefulWidget {
 
   final double? fontSize;
 
-  textLoad({
+  textLoad({Key? key,
     this.value,
     this.fontSize,
-  });
+  }) : super(key: key);
 
   @override
   _textLoadState createState() => _textLoadState();
@@ -26,7 +26,7 @@ class _textLoadState extends State<textLoad> with TickerProviderStateMixin {
     super.initState();
 
     _controller = AnimationController(
-      duration: Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
     _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
@@ -50,7 +50,7 @@ class _textLoadState extends State<textLoad> with TickerProviderStateMixin {
         double value = _animation.value;
 
         Gradient gradient = LinearGradient(
-          colors: [Colors.grey, Colors.white, Colors.grey],
+          colors: const [Colors.grey, Colors.white, Colors.grey],
           stops: [value - 0.2, value, value + 0.2],
         );
 

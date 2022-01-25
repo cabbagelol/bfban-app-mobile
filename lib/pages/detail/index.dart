@@ -12,7 +12,6 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
-import 'package:bfban/router/router.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
@@ -1001,7 +1000,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                             // 管理员 判决
                             data.isAdmin ? const SizedBox(
                               width: 10,
-                            ) : SizedBox(),
+                            ) : const SizedBox(),
                             data.isAdmin ? Expanded(
                               child: TextButton(
                                 child: Column(
@@ -1024,7 +1023,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                 onPressed: onAdminSentence(),
                               ),
                               flex: 1,
-                            ) : SizedBox(),
+                            ) : const SizedBox(),
                           ],
                         ),
                       ],

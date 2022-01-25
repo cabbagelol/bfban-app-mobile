@@ -124,7 +124,7 @@ class _SearchPageState extends State<SearchPage> {
                 blurRadius: 10,
               )
             ],
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0),
               topRight: Radius.circular(20.0),
             ),

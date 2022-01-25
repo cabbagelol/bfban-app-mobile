@@ -1,7 +1,6 @@
 /// 全局状态管理
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppInfoProvider with ChangeNotifier {
   // 主题 + 状态管理

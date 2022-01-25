@@ -22,7 +22,7 @@ class _FileWidgetUIState extends State<FileWidgetUI> {
     return GestureDetector(
       child: Container(
         color: Colors.white,
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           top: 20,
           bottom: 20,
         ),

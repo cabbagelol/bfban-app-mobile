@@ -66,7 +66,7 @@ class _MessagePageState extends State<MessageListPage> {
             onPressed: () async {
               await providerUtil!.delectLocalMessage();
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
         ],
       ),

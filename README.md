@@ -34,16 +34,22 @@
  部署android：
 1. android部分仅保留部分资源文件，构建本地android项目需要先"flutter create
    kotlin ."，再导入克隆项目内的android文件。
-2. 编码模式含'armeabi', 'x86', 'armeabi-v7a', 'x86_64',
-   'arm64-v8a'NDK，缺少文件到官网下载完整的NDK。
-3. 库里的gradle版本是6.1.1/kotlin:1.3.72，如果和本地不同，请自行修改。
-4. 入口是main_dev不是main。
-5. 签名自己生成(需配置key.properties),在android/app/keystore
+2. 签名自己生成(需配置key.properties),在android/app/keystore
 
 部署ios: (未确认，自行构建)
 1. 通过"flutter create ios ."创建:D，资源在andorid项目取。
 2. 在Info.plist添加网络、文件储存权限。
 3. 包名com.cabbagelol.bfban, 由于目前还没确认，随便配吧， 对吧~
+
+
+## 构建
+
+运行
+`
+   flutter build --release
+`
+
+
 
 
 ## 分支介绍
