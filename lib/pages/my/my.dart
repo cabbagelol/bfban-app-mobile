@@ -35,34 +35,22 @@ class _UserCenterPageState extends State<UserCenterPage> {
   /// 本地版本
   Map appInfo = Config.versionApp;
 
-  @override
-  void initState() {
-    // getMyInfo();
-    super.initState();
-  }
-
-  /// [Response]
-  /// 获取个人信息
-  Future<void> getMyInfo() async {
-    setState(() {});
-
-    Response result = await Http.request(
-      Config.httpHost["user_me"],
-      method: Http.GET,
-    );
-
-    if (result.data["success"] == 1) {
-      setState(() {});
-    }
-
-    setState(() {});
-  }
-
-  /// [Event]
-  /// 前往下载页面
-  void _opEnVersionDowUrl() {
-    _urlUtil.opEnPage(context, "/my/version");
-  }
+  // /// [Response]
+  // /// 获取个人信息
+  // Future<void> getMyInfo() async {
+  //   setState(() {});
+  //
+  //   Response result = await Http.request(
+  //     Config.httpHost["user_me"],
+  //     method: Http.GET,
+  //   );
+  //
+  //   if (result.data["success"] == 1) {
+  //     setState(() {});
+  //   }
+  //
+  //   setState(() {});
+  // }
 
   /// [Response]
   /// 注销用户信息
@@ -107,27 +95,15 @@ class _UserCenterPageState extends State<UserCenterPage> {
   }
 
   /// [Event]
-  /// 打开权限中心
-  void _opEnPermanently() async {
-    try {
-      if (!await openAppSettings()) {
-        EluiMessageComponent.error(context)(child: const Text("该设备无法打开权限, 请尝试在设置>应用打开"));
-      }
-    } catch (E) {
-      rethrow;
-    }
-  }
-
-  /// [Event]
   /// 打开登录
   void _opEnLogin() {
-    Routes.router!.navigateTo(context, '/login/panel', transition: TransitionType.cupertino);
+    _urlUtil.opEnPage(context, '/login/panel');
   }
 
   /// [Event]
-  /// 打开主题
-  void _opEnTheme() {
-    _urlUtil.opEnPage(context, '/my/theme').then((value) {});
+  /// 应用设置
+  void _opEnSetting() {
+    _urlUtil.opEnPage(context, '/my/setting');
   }
 
   /// [Event]
@@ -303,6 +279,22 @@ class _UserCenterPageState extends State<UserCenterPage> {
                     ),
                   ),
 
+            Visibility(
+              visible: data.isLogin,
+              child: EluiCellComponent(
+                title: "账户",
+                label: "管理BFBAN的账户信息",
+                theme: EluiCellTheme(
+                  titleColor: Theme.of(context).textTheme.subtitle1?.color,
+                  labelColor: Theme.of(context).textTheme.subtitle2?.color,
+                  linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                  backgroundColor: Theme.of(context).cardTheme.color,
+                ),
+                islink: true,
+                onTap: () => _urlUtil.opEnWebView(Config.apiHost["bfban_web_site"] + "/profile/account"),
+              ),
+            ),
+
             const SizedBox(
               height: 20,
             ),
@@ -334,7 +326,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
               height: 20,
             ),
             EluiCellComponent(
-              title: "\u6743\u9650",
+              title: "设置",
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -342,30 +334,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               islink: true,
-              onTap: () => _opEnPermanently(),
-            ),
-            EluiCellComponent(
-              title: "主题",
-              theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
-                backgroundColor: Theme.of(context).cardTheme.color,
-              ),
-              islink: true,
-              onTap: () => _opEnTheme(),
-            ),
-            EluiCellComponent(
-              title: "版本",
-              islink: true,
-              theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle1?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
-                backgroundColor: Theme.of(context).cardTheme.color,
-              ),
-              cont: Text(ProviderUtil().ofPackage(context).currentVersion.toString()),
-              onTap: () => _opEnVersionDowUrl(),
+              onTap: () => _opEnSetting(),
             ),
 
             Offstage(

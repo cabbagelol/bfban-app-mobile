@@ -1,9 +1,12 @@
 /// 作弊玩家列表
+
+import 'package:bfban/widgets/detail/cheaters_card_types.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_elui_plugin/_cell/cell.dart';
 
 import '../../data/index.dart';
 import '../../router/router.dart';
@@ -140,6 +143,96 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     await getPlayerList();
   }
 
+  /// [Event]
+  /// 筛选
+  _openFiltrate() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            dynamic _playersStatus = playersStatus;
+            return AlertDialog(
+              clipBehavior: Clip.hardEdge,
+              insetPadding: EdgeInsets.zero,
+              titlePadding: EdgeInsets.zero,
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    EluiCellComponent(
+                      title: "游戏类型",
+                    ),
+                    PopupMenuButton(
+                      padding: EdgeInsets.zero,
+                      icon: Card(
+                        child: Container(
+                          padding: EdgeInsets.all(2),
+                          child: Image.asset(
+                            Config.game["type"].where((e) => _playersStatus!.parame!.data!["game"] == e["value"]).toList()[0]["img"]["file"],
+                            width: 300,
+                          ),
+                        ),
+                      ),
+                      onSelected: (value) {
+                        setState(() {
+                          _playersStatus!.parame!.data!["game"] = value;
+                        });
+                      },
+                      itemBuilder: (context) => Config.game["type"].map<PopupMenuItem>((i) {
+                        return CheckedPopupMenuItem(
+                          padding: EdgeInsets.zero,
+                          height: 20,
+                          value: i["value"],
+                          checked: _playersStatus!.parame!.data!["game"] == i["value"],
+                          child: Card(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: Image.asset(i["img"]["file"]),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('取消'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: const Text('确认'),
+                  onPressed: () {
+                    getPlayerList();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  /// [Event]
+  /// 筛选 时间选择器
+  _openFiltrateTime(BuildContext context) {
+    return DialogRoute(
+      context: context,
+      builder: (context) {
+        return DatePickerDialog(
+          initialDate: DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime.now(),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -171,33 +264,12 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             ),
             const SizedBox(width: 5),
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () => _openFiltrate(),
               icon: const Icon(
                 Icons.filter_list,
                 size: 15,
               ),
               label: const Text("筛选"),
-            ),
-            const SizedBox(width: 4),
-            PopupMenuButton(
-              padding: EdgeInsets.zero,
-              icon: TextButton(
-                onPressed: null,
-                child: Text(playersStatus!.parame!.data!["game"].toString()),
-              ),
-              onSelected: (value) {
-                setState(() {
-                  playersStatus!.parame!.data!["game"] = value;
-                });
-              },
-              itemBuilder: (context) => Config.game["type"].map<PopupMenuItem>((i) {
-                return CheckedPopupMenuItem(
-                  padding: EdgeInsets.zero,
-                  value: i["value"],
-                  checked: playersStatus!.parame!.data!["game"] == i["value"],
-                  child: Image.asset(i["img"]["file"]),
-                );
-              }).toList(),
             ),
           ],
         ),
@@ -209,38 +281,40 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             flex: 1,
             child: RefreshIndicator(
               onRefresh: _onRefresh,
-              child: playersStatus!.list!.isNotEmpty ? ListView.builder(
-                controller: _scrollController,
-                itemCount: playersStatus?.list?.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (playersStatus!.list![index]["pageTip"] != null) {
-                    // 分页提示
-                    return SizedBox(
-                      height: 30,
-                      child: Center(
-                        child: Text(
-                          "第${playersStatus!.list![index]["pageIndex"]}页",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).textTheme.subtitle2?.color,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
+              child: playersStatus!.list!.isNotEmpty
+                  ? ListView.builder(
+                      controller: _scrollController,
+                      itemCount: playersStatus?.list?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (playersStatus!.list![index]["pageTip"] != null) {
+                          // 分页提示
+                          return SizedBox(
+                            height: 30,
+                            child: Center(
+                              child: Text(
+                                "第${playersStatus!.list![index]["pageIndex"]}页",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).textTheme.subtitle2?.color,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
 
-                  return CheatListCard(
-                    item: playersStatus?.list![index],
-                    onTap: () {
-                      Routes.router!.navigateTo(
-                        context,
-                        '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
-                        transition: TransitionType.cupertino,
-                      );
-                    },
-                  );
-                },
-              ) : const Center(child: Text('No items')),
+                        return CheatListCard(
+                          item: playersStatus?.list![index],
+                          onTap: () {
+                            Routes.router!.navigateTo(
+                              context,
+                              '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
+                              transition: TransitionType.cupertino,
+                            );
+                          },
+                        );
+                      },
+                    )
+                  : const Center(child: Text('No items')),
             ),
           ),
 

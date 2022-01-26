@@ -211,11 +211,7 @@ class _MessagePageState extends State<MessagePage> {
         "item.content": item["content"],
       });
 
-      if (
-        item["byUserId"].toString() == selfInfo!["userId"].toString() &&
-        widget.id.toString() == item["toUserId"].toString() ||
-        item["byUserId"].toString() == widget.id.toString()
-      ) {
+      if (item["byUserId"].toString() == selfInfo!["userId"].toString() && widget.id.toString() == item["toUserId"].toString() || item["byUserId"].toString() == widget.id.toString()) {
         _is = true;
       }
       return _is;
@@ -259,7 +255,6 @@ class _MessagePageState extends State<MessagePage> {
                         child: ListView(
                           controller: listViewController,
                           children: _getData(data).toList().map<Widget>((e) {
-
                             if (e["onLoacl"] != null && e["onLoacl"] == true) {
                               // 我
                               return Container(

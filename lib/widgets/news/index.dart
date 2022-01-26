@@ -1,4 +1,5 @@
-/// 新闻
+/// 新闻面板
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -6,21 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 export 'package:webview_flutter/webview_flutter.dart';
 
-class newscomponent extends StatefulWidget {
+class NewsComponentPanel extends StatefulWidget {
   final Completer<WebViewController>? controller;
 
   final String? src;
 
-  newscomponent({Key? key,
+  const NewsComponentPanel({
+    Key? key,
     this.src,
     this.controller,
   }) : super(key: key);
 
   @override
-  _newsPageState createState() => _newsPageState();
+  _NewsComponentPanelState createState() => _NewsComponentPanelState();
 }
 
-class _newsPageState extends State<newscomponent> {
+class _NewsComponentPanelState extends State<NewsComponentPanel> {
   @override
   Widget build(BuildContext context) {
     return WebView(
@@ -34,7 +36,10 @@ class _newsPageState extends State<newscomponent> {
 }
 
 class NavigationControls extends StatelessWidget {
-  const NavigationControls(this._webViewControllerFuture) : assert(_webViewControllerFuture != null);
+  const NavigationControls(
+    this._webViewControllerFuture, {
+    Key? key,
+  }) : super(key: key);
 
   final Future<WebViewController> _webViewControllerFuture;
 
@@ -55,9 +60,6 @@ class NavigationControls extends StatelessWidget {
                       if (await controller!.canGoBack()) {
                         await controller.goBack();
                       } else {
-                        Scaffold.of(context).showSnackBar(
-                          const SnackBar(content: Text("No back history item")),
-                        );
                         return;
                       }
                     },
@@ -70,9 +72,6 @@ class NavigationControls extends StatelessWidget {
                       if (await controller!.canGoForward()) {
                         await controller.goForward();
                       } else {
-                        Scaffold.of(context).showSnackBar(
-                          const SnackBar(content: Text("No forward history item")),
-                        );
                         return;
                       }
                     },

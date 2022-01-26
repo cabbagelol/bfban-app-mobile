@@ -2,14 +2,14 @@
 
 import 'dart:ui' as ui;
 
-import 'package:bfban/pages/index/search_panel.dart';
+import 'package:bfban/pages/index/home_bottom_panel.dart';
 import 'package:bfban/widgets/drawer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../data/Theme.dart';
-import 'community.dart';
+import 'home_community.dart';
 
 class SearchPage extends StatefulWidget {
   final int num;
@@ -79,7 +79,7 @@ class _SearchPageState extends State<SearchPage> {
           //       : Container(),
           // ),
           BackdropFilter(
-            child: const CommunityPage(),
+            child: const HomeCommunityPage(),
             filter: ui.ImageFilter.blur(
               sigmaX: 6.0,
               sigmaY: 6.0,
@@ -108,7 +108,7 @@ class _SearchPageState extends State<SearchPage> {
                   child: MediaQuery.removePadding(
                     context: context,
                     removeTop: true,
-                    child: const SearchPanel(),
+                    child: const HomeButtomPanel(),
                   ),
                 ),
               ],
@@ -132,7 +132,7 @@ class _SearchPageState extends State<SearchPage> {
           height: _screenBarHeight,
         ),
         defaultShowHeight: _screenBarHeight + 70,
-        height: _screenHeight * .7,
+        height: _screenHeight * .8,
       ),
     );
   }

@@ -39,14 +39,14 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         d.addAll({
-          "url": "http://101.43.35.41:3000/api/",
+          "network_service_request": "http://101.43.35.41:3000/api/",
         });
         return d;
       case Env.DEV: // 开发
       case Env.LOCAL:
       default:
         d.addAll({
-          "url": "https://bfban.gametools.network",
+          "network_service_request": "https://bfban.gametools.network",
         });
         return d;
     }
@@ -56,6 +56,14 @@ class Config {
   static Map get game {
     return {
       "type": [
+        {
+          "name": "所有",
+          "value": "all",
+          "img": {
+            "file": "assets/images/report/battlefield-v-png-logo.png",
+            "network": "",
+          }
+        },
         {
           "name": "\u6218\u5730\u0031",
           "value": "bf1",
@@ -76,7 +84,7 @@ class Config {
           "name": "战地风云2042",
           "value": "bf6",
           "img": {
-            "file": "assets/images/report/battlefield-v-png-logo.png",
+            "file": "assets/images/report/battlefield-2042-logo.png",
             "network": "",
           }
         },

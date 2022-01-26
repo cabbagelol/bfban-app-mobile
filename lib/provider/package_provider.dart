@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
+/// 包
+
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../constants/api.dart';
 import '../utils/http.dart';
 import '../utils/url.dart';
 import '../utils/version.dart';

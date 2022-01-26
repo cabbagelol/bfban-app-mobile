@@ -1,6 +1,8 @@
 /// 应用路由
 
 import 'package:bfban/pages/detail/user_space.dart';
+import 'package:bfban/pages/my/setting/destock.dart';
+import 'package:bfban/pages/my/setting/setting.dart';
 import 'package:fluro/fluro.dart';
 
 // S Pages
@@ -17,7 +19,7 @@ import 'package:bfban/pages/login/signin.dart';
 import 'package:bfban/pages/login/record/index.dart';
 import 'package:bfban/pages/search/index.dart';
 import 'package:bfban/pages/my/support.dart';
-import 'package:bfban/pages/my/theme.dart';
+import 'package:bfban/pages/my/setting/theme.dart';
 import 'package:bfban/pages/rich_edit/index.dart';
 import 'package:bfban/pages/message/message_list.dart';
 import 'package:bfban/pages/message/message_detail.dart';
@@ -153,6 +155,18 @@ class Routes {
             data: params["data"][0],
           );
         }
+      },
+      {
+        "url": "/my/destock",
+        'item': (context, params) {
+          return const DestockPage();
+        },
+      },
+      {
+        "url": "/my/setting",
+        'item': (context, params) {
+          return const SettingPage();
+        },
       },
       {
         "url": "/my/support",

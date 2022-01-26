@@ -1,6 +1,7 @@
 /// 状态管理 工具包
 
 import 'package:bfban/provider/package_provider.dart';
+import 'package:bfban/provider/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../provider/appInfo_provider.dart';
@@ -15,7 +16,7 @@ class ProviderUtil {
 
   // 用户信息
   UserInfoProvider ofUser (BuildContext context) {
-    return Provider.of<UserInfoProvider>(context, listen: false)..context = context;;
+    return Provider.of<UserInfoProvider>(context, listen: false)..context = context;
   }
 
   // 消息
@@ -26,5 +27,10 @@ class ProviderUtil {
   // 包
   PackageProvider ofPackage (BuildContext context) {
     return Provider.of<PackageProvider>(context, listen: false)..context = context;
+  }
+
+  // 主题
+  ThemeProvider ofTheme (BuildContext context) {
+    return Provider.of<ThemeProvider>(context, listen: false)..context = context;
   }
 }

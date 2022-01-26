@@ -10,18 +10,21 @@ import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 
-class CommunityPage extends StatefulWidget {
-  const CommunityPage({Key? key}) : super(key: key);
+class HomeCommunityPage extends StatefulWidget {
+  const HomeCommunityPage({Key? key}) : super(key: key);
 
   @override
-  _CommunityPageState createState() => _CommunityPageState();
+  _HomeCommunityPageState createState() => _HomeCommunityPageState();
 }
 
-class _CommunityPageState extends State<CommunityPage> {
+class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTickerProviderStateMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 列表视图控制器
   final ScrollController _scrollController = ScrollController();
+
+  // TAB
+  late TabController? _tabController;
 
   // 动态数据
   Activity? activity = Activity(
@@ -55,11 +58,19 @@ class _CommunityPageState extends State<CommunityPage> {
     _getActivity();
     _getStatisticsInfo();
 
+    // 滚动视图初始
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
         _getMore();
       }
     });
+
+    // 标签初始
+    _tabController = TabController(
+      vsync: this,
+      initialIndex: 0,
+      length: 3,
+    );
     super.initState();
   }
 

@@ -60,7 +60,6 @@ class Storage {
         case "none":
           return _prefs!.get(name);
         case "string":
-          print('ST==================> $name  || ${_prefs!.getString(name)}');
           return _prefs!.getString(name);
       }
     } catch (E) {
@@ -109,5 +108,14 @@ class Storage {
     } catch (E) {
       rethrow;
     }
+  }
+
+  /// [Event]
+  /// 获取所有
+  Future getAll () async {
+    if (!isInit) await init();
+    print('返回！');
+    print(_prefs!.getKeys());
+    return _prefs!.getKeys();
   }
 }

@@ -12,7 +12,7 @@ import 'package:bfban/utils/index.dart';
 
 import '../../widgets/index/search.dart';
 import '../my/my.dart';
-import 'search.dart';
+import 'home.dart';
 import 'players.dart';
 
 class IndexPage extends StatefulWidget {
@@ -64,7 +64,7 @@ class _IndexPageState extends State<IndexPage> {
     ProviderUtil().ofPackage(context).init();
 
     // 主题初始
-    ProviderUtil().ofApp(context).init();
+    ProviderUtil().ofTheme(context).init();
   }
 
   /// [Event]

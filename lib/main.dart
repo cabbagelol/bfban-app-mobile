@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:bfban/provider/message_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
+import 'package:bfban/provider/theme_provider.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -75,11 +76,14 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => UserInfoProvider()),
         ChangeNotifierProvider(create: (context) => MessageProvider()),
         ChangeNotifierProvider(create: (context) => PackageProvider()),
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
       ],
-      child: Consumer<AppInfoProvider>(
-        builder: (BuildContext? context, appInfo, Widget? child) {
+      child: Consumer<ThemeProvider>(
+        builder: (BuildContext? context, data, Widget? child) {
           return MaterialApp(
-            theme: appInfo.currentThemeData,
+            theme:  data.currentThemeData,
+            darkTheme: data.list!["default"]!.themeData!,
+
             initialRoute: '/',
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,
@@ -89,7 +93,6 @@ class _BfBanAppState extends State<BfBanApp> {
             routes: {
               '/': (context) => child!,
             },
-            debugShowCheckedModeBanner: true,
           );
         },
         child: const IndexPage(),

@@ -40,7 +40,7 @@ class Http extends ScaffoldState {
   /// request method
   static Future request(
     String url, {
-    String typeUrl = "url",
+    String typeUrl = "network_service_request",
     data,
     Map<String, dynamic>? parame,
     method,

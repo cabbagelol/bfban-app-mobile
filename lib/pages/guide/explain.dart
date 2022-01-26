@@ -18,7 +18,7 @@ class _explainPageState extends State<explainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return newscomponent(
+    return NewsComponentPanel(
       src: Config.apiHost["web_site"] + "/news-app.html",
       controller: _controller,
     );

@@ -10,14 +10,14 @@ import '../../constants/api.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/index.dart';
 
-class SearchPanel extends StatefulWidget {
-  const SearchPanel({Key? key}) : super(key: key);
+class HomeButtomPanel extends StatefulWidget {
+  const HomeButtomPanel({Key? key}) : super(key: key);
 
   @override
-  _searchPanelState createState() => _searchPanelState();
+  _HomeButtomPanelState createState() => _HomeButtomPanelState();
 }
 
-class _searchPanelState extends State<SearchPanel> {
+class _HomeButtomPanelState extends State<HomeButtomPanel> {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 统计数据

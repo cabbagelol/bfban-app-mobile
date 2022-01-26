@@ -46,7 +46,11 @@ class UrlUtil {
           url,
           forceSafariVC: true,
           forceWebView: true,
-          headers: <String, String>{'webview_type': 'bfban'},
+          headers: <String, String>{
+            "webview_type": "bfban",
+          },
+          statusBarBrightness: Brightness.dark,
+          webOnlyWindowName: url.toString(),
         );
       } else {
         throw 'Could not launch $url';
@@ -75,7 +79,7 @@ class UrlUtil {
   }
 
   /// 返回页面
-  Future popPage (BuildContext context) async {
+  Future popPage(BuildContext context) async {
     return Routes.router!.pop(context);
   }
 }
