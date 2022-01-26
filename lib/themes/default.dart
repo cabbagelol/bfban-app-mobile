@@ -1,28 +1,23 @@
-/// 主题
-
-import 'package:bfban/utils/index.dart' show Storage, AppInfoProvider;
 import 'package:flutter/material.dart';
 
+import '../data/index.dart';
 
-/// eumn
-enum appThemeType {
-  none,
-  main,
-}
-
-/// 主题列表
-final Map<String, AppThemeItem> appThemeList = {
-  "default": AppThemeItem(
+class DefaultTheme {
+  static dynamic data = AppThemeItem(
     name: "default",
     isDefault: true,
     themeData: ThemeData(
-      backgroundColor: const Color(0xff0d1421),
+      backgroundColor: Colors.black,
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: Colors.black,
+        modalBackgroundColor: Colors.black,
+      ),
       colorScheme: const ColorScheme(
         brightness: Brightness.dark,
         primary: Color(0xff364e80),
         onPrimary: Color(0xff364e80),
-        secondary: Color(0xfff2f2f2),
-        onSecondary: Color(0xfff2f2f2),
+        secondary: Color(0xff0a111c),
+        onSecondary: Color(0xff0a111c),
         error: Colors.red,
         onError: Colors.red,
         background: Color(0xff111b2b),
@@ -30,22 +25,9 @@ final Map<String, AppThemeItem> appThemeList = {
         surface: Colors.white,
         onSurface: Colors.white,
       ),
+      canvasColor: Colors.yellow,
+      primaryColorDark: Colors.yellow,
       textTheme: const TextTheme(
-        // displayLarge: const TextStyle(color: Colors.white),
-        // displayMedium: const TextStyle(color: Colors.white),
-        // displaySmall: const TextStyle(color: Colors.white),
-        // headlineLarge: const TextStyle(color: Colors.white),
-        // headlineMedium: const TextStyle(color: Colors.white),
-        // headlineSmall: const TextStyle(color: Colors.white),
-        // titleLarge: const TextStyle(color: Colors.white),
-        // titleMedium: const TextStyle(color: Colors.white),
-        // titleSmall: const TextStyle(color: Colors.white),
-        // bodyLarge: const TextStyle(color: Colors.white),
-        // bodyMedium: const TextStyle(color: Colors.white),
-        // bodySmall: const TextStyle(color: Colors.white),
-        // labelLarge: const TextStyle(color: Colors.white),
-        // labelMedium: const TextStyle(color: Colors.white),
-        // labelSmall: const TextStyle(color: Colors.white),
         headline1: TextStyle(color: Colors.white),
         headline2: TextStyle(color: Colors.white),
         headline3: TextStyle(color: Colors.white),
@@ -56,9 +38,6 @@ final Map<String, AppThemeItem> appThemeList = {
         subtitle2: TextStyle(color: Colors.white54),
         bodyText1: TextStyle(color: Colors.white),
         bodyText2: TextStyle(color: Colors.white),
-        // caption: const TextStyle(color: Colors.white),
-        // button: const TextStyle(color: Colors.white),
-        // overline: const TextStyle(color: Colors.white),
       ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),
@@ -95,6 +74,9 @@ final Map<String, AppThemeItem> appThemeList = {
       ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Color(0xff364e80),
+      ),
+      dividerTheme: DividerThemeData(
+        color: Colors.black,
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -160,17 +142,16 @@ final Map<String, AppThemeItem> appThemeList = {
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.yellow,
-        focusColor: Colors.black,
+        focusColor: Color(0xff364e80),
       ),
       iconTheme: const IconThemeData(
         color: Colors.white,
       ),
-      dividerColor: Colors.white12,
       cardTheme: const CardTheme(
         color: Color(0xff0d1323),
-        shadowColor: Color(0xff0d1323),
+        shadowColor: Colors.black54,
+        elevation: 2,
       ),
-      cardColor: const Color(0xff0d1323),
       primaryTextTheme: const TextTheme(
         headline1: TextStyle(color: Colors.white),
         headline2: TextStyle(color: Colors.white70),
@@ -180,51 +161,5 @@ final Map<String, AppThemeItem> appThemeList = {
         headline6: TextStyle(color: Colors.white12),
       ),
     ),
-  )
-};
-
-/// 主题管理类
-class ThemeUtil {
-  // 当前主题
-  AppThemeItem appTheme = AppThemeItem(name: "none");
-
-  /// 公开 获取主题列表
-  Map<String, AppThemeItem> get list => appThemeList;
-
-  /// 初始化
-  ready(context) async {
-    final String storageThemeName = await Storage().get('com.bfban.theme');
-    String themeName = "default";
-
-    if (storageThemeName.isNotEmpty) {
-      themeName = storageThemeName;
-    }
-
-    // await Provider.of<AppInfoProvider>(context, listen: false)
-    //     .setTheme(themeName);
-
-    print("default: " + themeName);
-    return name(themeName);
-  }
-
-  /// 获取特定主题实例
-  AppThemeItem? name(String name) {
-    return appThemeList[name];
-
-    // 没有取默认
-    // return appThemeList["default"];
-  }
-}
-
-/// 单个主题
-class AppThemeItem {
-  final String name;
-  final bool isDefault;
-  final ThemeData? themeData;
-
-  AppThemeItem({
-    this.name = "none",
-    this.isDefault = false,
-    this.themeData,
-  });
+  );
 }

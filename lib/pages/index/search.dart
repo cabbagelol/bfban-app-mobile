@@ -8,7 +8,7 @@ import 'package:bfban/widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-import '../../utils/theme.dart';
+import '../../data/Theme.dart';
 import 'community.dart';
 
 class SearchPage extends StatefulWidget {
@@ -115,10 +115,10 @@ class _SearchPageState extends State<SearchPage> {
             ),
           ),
           decoration: BoxDecoration(
-            color: Colors.black,
+            color: Theme.of(context).backgroundColor,
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                color: Theme.of(context).scaffoldBackgroundColor,
                 offset: const Offset(0, -2),
                 spreadRadius: .2,
                 blurRadius: 10,
@@ -131,7 +131,7 @@ class _SearchPageState extends State<SearchPage> {
           ),
           height: _screenBarHeight,
         ),
-        defaultShowHeight: _screenBarHeight + 80,
+        defaultShowHeight: _screenBarHeight + 70,
         height: _screenHeight * .7,
       ),
     );

@@ -187,7 +187,6 @@ class _SigninPageState extends State<SigninPage> {
             child: Text(result.toString()),
           );
       }
-
       _getCaptcha();
     }
 
@@ -272,7 +271,9 @@ class _SigninPageState extends State<SigninPage> {
                                 ),
                                 Card(
                                   clipBehavior: Clip.none,
-                                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                  ),
                                   child: EluiInputComponent(
                                     placeholder: "验证码",
                                     internalstyle: true,
@@ -293,7 +294,7 @@ class _SigninPageState extends State<SigninPage> {
                                               )
                                             : SvgPicture.string(
                                                 loginStatus.captcha!.captchaSvg,
-                                                color: Colors.white,
+                                                color: Theme.of(context).textTheme.bodyText1!.color,
                                               ),
                                       ),
                                       onTap: () => _getCaptcha(),
@@ -320,7 +321,7 @@ class _SigninPageState extends State<SigninPage> {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -331,26 +332,20 @@ class _SigninPageState extends State<SigninPage> {
                       ],
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      EluiButtonComponent(
-                        disabled: loginStatus.load,
-                        type: ButtonType.none,
-                        theme: EluiButtonTheme(
-                          backgroundColor: Theme.of(context).cardColor,
-                        ),
-                        child: loginStatus.load
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2),
-                              )
-                            : const Icon(
-                                Icons.done,
-                              ),
-                        onTap: () => _onLogin(),
-                      ),
-                    ],
+                  child: TextButton(
+                    child: loginStatus.load
+                        ? const SizedBox(
+                            height: 40,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const SizedBox(
+                            height: 40,
+                            child: Icon(
+                              Icons.done,
+                            ),
+                          ),
+                    onPressed: () => _onLogin(),
                   ),
                 ),
               ),

@@ -62,10 +62,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
   /// 前往下载页面
   void _opEnVersionDowUrl() {
     _urlUtil.opEnPage(context, "/my/version");
-    // if (versionInfo["is"]) {
-    //   _urlUtil.onPeUrl(versionInfo["info"]["src"]);
-    //   return;
-    // }
   }
 
   /// [Response]
@@ -88,8 +84,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
       );
     } else {
       EluiMessageComponent.error(context)(
-        child: const Text(
-            "\u6ce8\u518c\u9519\u8bef\u002c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
+        child: const Text("\u6ce8\u518c\u9519\u8bef\u002c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
       );
     }
   }
@@ -116,8 +111,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
   void _opEnPermanently() async {
     try {
       if (!await openAppSettings()) {
-        EluiMessageComponent.error(context)(
-            child: const Text("该设备无法打开权限, 请尝试在设置>应用打开"));
+        EluiMessageComponent.error(context)(child: const Text("该设备无法打开权限, 请尝试在设置>应用打开"));
       }
     } catch (E) {
       rethrow;
@@ -127,16 +121,13 @@ class _UserCenterPageState extends State<UserCenterPage> {
   /// [Event]
   /// 打开登录
   void _opEnLogin() {
-    Routes.router!.navigateTo(context, '/login/panel',
-        transition: TransitionType.cupertino);
+    Routes.router!.navigateTo(context, '/login/panel', transition: TransitionType.cupertino);
   }
 
   /// [Event]
   /// 打开主题
   void _opEnTheme() {
-    _urlUtil.opEnPage(context, '/my/theme').then((value) {
-      // onReadyTheme();
-    });
+    _urlUtil.opEnPage(context, '/my/theme').then((value) {});
   }
 
   /// [Event]
@@ -158,7 +149,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
             /// 用户信息板块
             !data.isLogin
                 ? Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -182,17 +173,14 @@ class _UserCenterPageState extends State<UserCenterPage> {
                     ),
                   )
                 : Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 30),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
                     child: Card(
                       elevation: 15,
                       borderOnForeground: true,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(5),
                         side: BorderSide(
-                          color: Theme.of(context)
-                              .backgroundColor
-                              .withOpacity(.09),
+                          color: Theme.of(context).dividerTheme.color!.withOpacity(.1),
                           width: 1,
                         ),
                       ),
@@ -216,12 +204,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       ),
                                       Text(
                                         "id: ${data.userinfo["userId"]}",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .subtitle2!
-                                                .color),
+                                        style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.subtitle2!.color),
                                       ),
                                       const Icon(Icons.chevron_right),
                                     ],
@@ -230,12 +213,10 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 ),
                                 const SizedBox(height: 20),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: const <Widget>[
                                         Text(
                                           "0",
@@ -254,22 +235,17 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       ],
                                     ),
                                     Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 20),
+                                      margin: const EdgeInsets.symmetric(horizontal: 20),
                                       height: 30,
                                       width: 1,
-                                      color: Theme.of(context).dividerColor,
+                                      color: Theme.of(context).dividerTheme.color,
                                     ),
                                     GestureDetector(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            ProviderUtil()
-                                                .ofMessage(context)
-                                                .total
-                                                .toString(),
+                                            ProviderUtil().ofMessage(context).total.toString(),
                                             style: const TextStyle(
                                               fontSize: 16,
                                             ),
@@ -285,33 +261,25 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                         ],
                                       ),
                                       onTap: () {
-                                        _urlUtil.opEnPage(
-                                            context, "/message/list");
+                                        _urlUtil.opEnPage(context, "/message/list");
                                       },
                                     ),
                                     Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 20),
+                                      margin: const EdgeInsets.symmetric(horizontal: 20),
                                       height: 30,
                                       width: 1,
-                                      color: Theme.of(context).dividerColor,
+                                      color: Theme.of(context).dividerTheme.color,
                                     ),
                                     Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         Wrap(
-                                          children: data.userinfo["privilege"]
-                                              .map<Widget>((i) {
+                                          children: data.userinfo["privilege"].map<Widget>((i) {
                                             return EluiTagComponent(
                                               color: EluiTagType.none,
                                               size: EluiTagSize.no2,
                                               theme: EluiTagTheme(
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .appBarTheme
-                                                        .backgroundColor!
-                                                        .withOpacity(.2),
+                                                backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
                                               ),
                                               value: i.toString(),
                                             );
@@ -352,8 +320,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
             ),
             EluiCellComponent(
               title: "\u652f\u63f4",
-              label:
-                  "\u7a0b\u5e8f\u6570\u636e\u7531\u4e0d\u540c\u670d\u52a1\u5546\u63d0\u4f9b",
+              label: "\u7a0b\u5e8f\u6570\u636e\u7531\u4e0d\u540c\u670d\u52a1\u5546\u63d0\u4f9b",
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -377,28 +344,17 @@ class _UserCenterPageState extends State<UserCenterPage> {
               islink: true,
               onTap: () => _opEnPermanently(),
             ),
-            // EluiCellComponent(
-            //   title: "主题",
-            //   theme: EluiCellTheme(
-            //     titleColor: Theme.of(context).textTheme.subtitle1?.color,
-            //     labelColor: Theme.of(context).textTheme.subtitle2?.color,
-            //     linkColor: Theme.of(context).textTheme.subtitle1?.color,
-            //     backgroundColor: Theme.of(context).cardTheme.color,
-            //   ),
-            //   islink: true,
-            //   cont: Container(
-            //     height: 20,
-            //     width: 20,
-            //     decoration: BoxDecoration(
-            //       // color: theme["nameColor"],
-            //       border: Border.all(
-            //         width: 1,
-            //         color: Colors.white70,
-            //       ),
-            //     ),
-            //   ),
-            //   onTap: () => _opEnTheme(),
-            // ),
+            EluiCellComponent(
+              title: "主题",
+              theme: EluiCellTheme(
+                titleColor: Theme.of(context).textTheme.subtitle1?.color,
+                labelColor: Theme.of(context).textTheme.subtitle2?.color,
+                linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                backgroundColor: Theme.of(context).cardTheme.color,
+              ),
+              islink: true,
+              onTap: () => _opEnTheme(),
+            ),
             EluiCellComponent(
               title: "版本",
               islink: true,

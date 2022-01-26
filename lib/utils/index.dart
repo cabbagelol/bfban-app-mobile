@@ -9,7 +9,6 @@ export 'share.dart';
 export 'version.dart';
 export 'upload.dart';
 export '../provider/appInfo_provider.dart';
-export 'theme.dart';
 export 'camera.dart';
 export 'provider.dart';
 export 'i18n.dart';

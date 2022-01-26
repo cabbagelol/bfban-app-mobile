@@ -43,7 +43,8 @@ class titleSearch extends StatefulWidget {
 
   final TextEditingController controller;
 
-  titleSearch({Key? key,
+  titleSearch({
+    Key? key,
     this.theme = titleSearchTheme.black,
     this.child,
     this.onSubmitted,

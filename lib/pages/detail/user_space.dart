@@ -191,8 +191,6 @@ class UserSpacePageState extends State<UserSpacePage> {
               ),
               body: RefreshIndicator(
                 onRefresh: _onRefresh,
-                color: Theme.of(context).floatingActionButtonTheme.focusColor,
-                backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
                 child: ListView(
                   padding: EdgeInsets.zero,
                   children: <Widget>[
@@ -228,8 +226,16 @@ class UserSpacePageState extends State<UserSpacePage> {
                     // 统计信息
                     Container(
                       height: 100,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(
+                          width: 1,
+                          color: Theme.of(context).dividerTheme.color!.withOpacity(.1),
+                        ),
+                      ),
                       child: Card(
+                        margin: EdgeInsets.zero,
                         child: Padding(
                           padding: const EdgeInsets.all(20),
                           child: ListView(
@@ -262,7 +268,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                 margin: const EdgeInsets.symmetric(horizontal: 20),
                                 height: 30,
                                 width: 1,
-                                color: Theme.of(context).dividerColor,
+                                color: Theme.of(context).dividerTheme.color,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -287,7 +293,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                 margin: const EdgeInsets.symmetric(horizontal: 20),
                                 height: 30,
                                 width: 1,
-                                color: Theme.of(context).dividerColor,
+                                color: Theme.of(context).dividerTheme.color,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -312,7 +318,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                 margin: const EdgeInsets.symmetric(horizontal: 20),
                                 height: 30,
                                 width: 1,
-                                color: Theme.of(context).dividerColor,
+                                color: Theme.of(context).dividerTheme.color,
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -401,8 +407,9 @@ class RecordItemCard extends StatelessWidget {
         children: <Widget>[
           Text(
             "状态: ${Config.startusIng[item!["status"]]["s"]}",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 13,
+              color: Theme.of(context).textTheme.subtitle2!.color,
             ),
           )
         ],

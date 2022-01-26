@@ -75,9 +75,7 @@ class _searchPanelState extends State<SearchPanel> {
   dynamic _openReply() {
     return () {
       // 新举报 传空
-      String data = jsonEncode({
-        "originName":""
-      });
+      String data = jsonEncode({"originName": ""});
 
       _urlUtil.opEnPage(context, '/report/$data').then((value) {});
     };
@@ -105,10 +103,10 @@ class _searchPanelState extends State<SearchPanel> {
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(5),
                   border: Border.all(
                     width: 1,
-                    color: Theme.of(context).cardColor,
+                    color: Theme.of(context).dividerTheme.color!,
                   ),
                 ),
                 child: Row(
@@ -238,7 +236,7 @@ class _searchPanelState extends State<SearchPanel> {
                             ],
                           ),
                           onPressed: () {
-                            _urlUtil.onPeUrl("https://bfban.com/apps");
+                            _urlUtil.onPeUrl("${Config.apiHost["web_site"]}/apps");
                           },
                         ),
                         TextButton(

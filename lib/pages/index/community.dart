@@ -10,7 +10,6 @@ import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 
-
 class CommunityPage extends StatefulWidget {
   const CommunityPage({Key? key}) : super(key: key);
 
@@ -155,8 +154,6 @@ class _CommunityPageState extends State<CommunityPage> {
         Expanded(
           child: RefreshIndicator(
             onRefresh: _onRefresh,
-            color: Theme.of(context).floatingActionButtonTheme.focusColor,
-            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
             child: ListView.builder(
               controller: _scrollController,
               itemCount: activity!.list?.length,
@@ -206,7 +203,6 @@ class _CommunityPageState extends State<CommunityPage> {
                             ],
                           ),
                         ),
-
                         Positioned(
                           top: 5,
                           left: 0,

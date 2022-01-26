@@ -102,10 +102,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       final List d = result.data["data"]["result"];
       setState(() {
         if (playersStatus!.page <= 1) {
-          print("刷新");
           playersStatus?.list = d;
         } else {
-          print("追加数据");
           // 追加数据
           if (d.isNotEmpty) {
             playersStatus?.list
@@ -146,9 +144,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).backgroundColor.withOpacity(.1),
         title: Row(
           children: [
             Expanded(
@@ -211,8 +209,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             flex: 1,
             child: RefreshIndicator(
               onRefresh: _onRefresh,
-              color: Theme.of(context).floatingActionButtonTheme.focusColor,
-              backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
               child: playersStatus!.list!.isNotEmpty ? ListView.builder(
                 controller: _scrollController,
                 itemCount: playersStatus?.list?.length,

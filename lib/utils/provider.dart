@@ -25,6 +25,6 @@ class ProviderUtil {
 
   // 包
   PackageProvider ofPackage (BuildContext context) {
-    return Provider.of<PackageProvider>(context, listen: false);
+    return Provider.of<PackageProvider>(context, listen: false)..context = context;
   }
 }

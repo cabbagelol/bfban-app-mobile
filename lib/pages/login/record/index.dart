@@ -45,7 +45,6 @@ class _RecordPageState extends State<recordPage> {
     super.initState();
 
     ready();
-    onReadyTheme();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {}
@@ -57,12 +56,6 @@ class _RecordPageState extends State<recordPage> {
     super.dispose();
 
     _scrollController.dispose();
-  }
-
-  void onReadyTheme() async {
-    /// 初始主题
-    Map _theme = await ThemeUtil().ready(context);
-    setState(() => theme = _theme);
   }
 
   void ready() async {

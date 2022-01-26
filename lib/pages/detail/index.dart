@@ -513,8 +513,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                           /// S 举报信息
                           RefreshIndicator(
                             onRefresh: _onRefreshCheatersInfo,
-                            color: Theme.of(context).floatingActionButtonTheme.focusColor,
-                            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
                             child: ListView(
                               padding: EdgeInsets.zero,
                               children: <Widget>[
@@ -881,8 +879,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                           /// S 审核记录
                           RefreshIndicator(
                             onRefresh: _onRefreshTimeline,
-                            color: Theme.of(context).floatingActionButtonTheme.focusColor,
-                            backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
                             child: ListView.builder(
                               controller: _scrollController,
                               itemCount: playerTimelineStatus.list!.length,
@@ -940,9 +936,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                 builder: (context, data, child) {
                   return Container(
                     height: 70,
-                    decoration: const BoxDecoration(
-                      color: Colors.black,
-                      border: Border(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+                      border: const Border(
                         top: BorderSide(
                           width: 1.0,
                           color: Colors.black12,
@@ -998,32 +994,36 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                             ),
 
                             // 管理员 判决
-                            data.isAdmin ? const SizedBox(
-                              width: 10,
-                            ) : const SizedBox(),
-                            data.isAdmin ? Expanded(
-                              child: TextButton(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const <Widget>[
-                                    Text(
-                                      "判决",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
+                            data.isAdmin
+                                ? const SizedBox(
+                                    width: 10,
+                                  )
+                                : const SizedBox(),
+                            data.isAdmin
+                                ? Expanded(
+                                    child: TextButton(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: const <Widget>[
+                                          Text(
+                                            "判决",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          Text(
+                                            "管理员选项",
+                                            style: TextStyle(
+                                              fontSize: 9,
+                                            ),
+                                          )
+                                        ],
                                       ),
+                                      onPressed: onAdminSentence(),
                                     ),
-                                    Text(
-                                      "管理员选项",
-                                      style: TextStyle(
-                                        fontSize: 9,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                onPressed: onAdminSentence(),
-                              ),
-                              flex: 1,
-                            ) : const SizedBox(),
+                                    flex: 1,
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       ],

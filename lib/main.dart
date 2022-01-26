@@ -67,13 +67,6 @@ class BfBanApp extends StatefulWidget {
 }
 
 class _BfBanAppState extends State<BfBanApp> {
-  final ThemeUtil _themeUtil = ThemeUtil();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -86,7 +79,7 @@ class _BfBanAppState extends State<BfBanApp> {
       child: Consumer<AppInfoProvider>(
         builder: (BuildContext? context, appInfo, Widget? child) {
           return MaterialApp(
-            theme: _themeUtil.name("default")?.themeData,
+            theme: appInfo.currentThemeData,
             initialRoute: '/',
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

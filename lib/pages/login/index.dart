@@ -1,4 +1,3 @@
-
 import 'package:bfban/utils/index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +24,13 @@ class _LoginPanelState extends State<LoginPanelPage> {
   /// [Event]
   /// 登录
   dynamic _openSignin() {
-    _urlUtil.opEnPage(
+    _urlUtil
+        .opEnPage(
       context,
       '/signin',
       transition: TransitionType.materialFullScreenDialog,
-    ).then((value) {
+    )
+        .then((value) {
       if (ProviderUtil().ofUser(context).isLogin) {
         _urlUtil.popPage(context);
       }
@@ -89,7 +90,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                     const SizedBox(height: 50),
                     MaterialButton(
                       padding: const EdgeInsets.symmetric(vertical: 15),
-                      color: Theme.of(context).appBarTheme.backgroundColor,
+                      color: Theme.of(context).colorScheme.primary,
                       elevation: 5,
                       onPressed: () {
                         _openSignin();
@@ -99,11 +100,9 @@ class _LoginPanelState extends State<LoginPanelPage> {
                     const SizedBox(height: 20),
                     MaterialButton(
                       padding: const EdgeInsets.symmetric(vertical: 15),
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       elevation: 0,
-                      onPressed: () {
-                        _pop();
-                      },
+                      onPressed: () => _pop(),
                       child: const Text("取消"),
                     ),
                   ],
@@ -114,8 +113,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -146,8 +144,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                             ),
                           ],
                         ),
-                        onTap: () =>
-                            _urlUtil.onPeUrl("https://bfban.com/#/signup"),
+                        onTap: () => _urlUtil.onPeUrl("https://bfban.com/#/signup"),
                       ),
                     ],
                   ),

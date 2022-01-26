@@ -3,12 +3,10 @@
 import 'dart:convert';
 
 import 'package:bfban/data/index.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:bfban/router/router.dart';
 import 'package:bfban/widgets/index.dart';
 
 import 'package:flutter_elui_plugin/_tag/tag.dart';
@@ -27,6 +25,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> with RestorationMixin {
+  final UrlUtil _urlUtil = UrlUtil();
+
   // 搜索框控制器
   final TextEditingController _searchController = TextEditingController();
 
@@ -73,6 +73,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
   }
 
   /// [Event]
+  /// 初始化
   void _onReady() async {
     List log = jsonDecode(await Storage().get("com.bfban.serachlog") ?? '[]');
 
@@ -111,11 +112,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
   /// [Event]
   /// 打开详情
   void _onPenDetail(Map item) {
-    // Routes.router!.navigateTo(
-    //   context,
-    //   '/detail/cheaters/${item["originUserId"]}',
-    //   transition: TransitionType.cupertino,
-    // );
+    _urlUtil.opEnPage(context, "/detail/player/${item["originPersonaId"]}");
   }
 
   /// [Event]
@@ -201,23 +198,35 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                titleSearch(
-                  controller: _searchController,
-                  theme: titleSearchTheme.white,
-                  child: TextButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          Theme.of(context).appBarTheme.backgroundColor),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: titleSearch(
+                        controller: _searchController,
+                        theme: titleSearchTheme.white,
+                        onChanged: (String value) {
+                          searchStatus.parame!.value = value;
+                        },
+                        onSubmitted: () => _onSearch(),
+                      ),
                     ),
-                    onPressed: () => _onSearch(),
-                    child: const Icon(
-                      Icons.subdirectory_arrow_left,
+                    Container(
+                      height: 40,
+                      margin: EdgeInsets.only(left: 10),
+                      child: TextButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
+                        ),
+                        onPressed: () => _onSearch(),
+                        child: const Icon(
+                          Icons.subdirectory_arrow_left,
+                        ),
+                      ),
                     ),
-                  ),
-                  onChanged: (String value) {
-                    searchStatus.parame!.value = value;
-                  },
-                  onSubmitted: () => _onSearch(),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 Offstage(
@@ -247,9 +256,6 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
                           ),
                           EluiTagComponent(
                             color: EluiTagType.none,
-                            theme: EluiTagTheme(
-                              backgroundColor: Colors.yellow,
-                            ),
                             size: EluiTagSize.no2,
                             value: "${searchStatus.historyList!.length}/20",
                           )
@@ -300,13 +306,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
                     children: searchStatus.list!.map((i) {
                       return CheatListCard(
                         item: i,
-                        onTap: () {
-                          Routes.router!.navigateTo(
-                            context,
-                            '/detail/cheaters/${i!["originPersonaId"]}',
-                            transition: TransitionType.cupertino,
-                          );
-                        },
+                        onTap: () => _onPenDetail(i),
                       );
                     }).toList(),
                   )

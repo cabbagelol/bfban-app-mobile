@@ -75,7 +75,7 @@ class UrlUtil {
   }
 
   /// 返回页面
-  popPage (BuildContext context) {
+  Future popPage (BuildContext context) async {
     return Routes.router!.pop(context);
   }
 }

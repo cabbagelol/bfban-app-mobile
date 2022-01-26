@@ -72,14 +72,19 @@ class _MessagePageState extends State<MessageListPage> {
       ),
       body: RefreshIndicator(
         onRefresh: _onRefresh,
-        color: Theme.of(context).floatingActionButtonTheme.focusColor,
-        backgroundColor: Theme.of(context).floatingActionButtonTheme.backgroundColor,
         child: Consumer<MessageProvider>(
           builder: (BuildContext context, data, Widget? child) {
             return ListView.builder(
-              itemCount: data.list.where((element) => element["byUserId"] != selfInfo!["userId"]).length.toInt(),
+              itemCount: data.list
+                  .where(
+                      (element) => element["byUserId"] != selfInfo!["userId"])
+                  .length
+                  .toInt(),
               itemBuilder: (BuildContext context, int index) {
-                Map i = data.list.where((element) => element["byUserId"] != selfInfo!["userId"]).toList()[index];
+                Map i = data.list
+                    .where(
+                        (element) => element["byUserId"] != selfInfo!["userId"])
+                    .toList()[index];
 
                 return ListTile(
                   horizontalTitleGap: 10,
@@ -102,7 +107,14 @@ class _MessagePageState extends State<MessageListPage> {
                       child: Text(i["haveRead"] == 0 ? "未读" : "已读"),
                     ),
                   ),
-                  subtitle: Text(Date().getFriendlyDescriptionTime(i["createTime"].toString())),
+                  subtitle: Text(
+                    Date().getFriendlyDescriptionTime(
+                      i["createTime"].toString(),
+                    ),
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.subtitle2!.color,
+                    ),
+                  ),
                   trailing: PopupMenuButton(
                     onSelected: (index) {
                       switch (index) {
@@ -116,10 +128,12 @@ class _MessagePageState extends State<MessageListPage> {
                           onDeleteMessage(i["id"]);
                           break;
                         case 10:
-                          _urlUtil.opEnPage(context, "/message/detail/${i["id"]}");
+                          _urlUtil.opEnPage(
+                              context, "/message/detail/${i["id"]}");
                           break;
                         case 20:
-                          _urlUtil.opEnPage(context, "/message/${i["byUserId"]}");
+                          _urlUtil.opEnPage(
+                              context, "/message/${i["byUserId"]}");
                           break;
                       }
                     },

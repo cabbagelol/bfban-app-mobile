@@ -62,6 +62,9 @@ class _IndexPageState extends State<IndexPage> {
 
     // 包 更新状态机
     ProviderUtil().ofPackage(context).init();
+
+    // 主题初始
+    ProviderUtil().ofApp(context).init();
   }
 
   /// [Event]

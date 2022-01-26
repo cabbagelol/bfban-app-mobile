@@ -6,7 +6,7 @@ import 'package:bfban/constants/theme.dart';
 class NetworkResultPage extends StatefulWidget {
   final String? data;
 
-   NetworkResultPage({Key? key,
+   const NetworkResultPage({Key? key,
     this.data
   }) : super(key: key);
 
@@ -15,20 +15,6 @@ class NetworkResultPage extends StatefulWidget {
 }
 
 class _networkResultPageState extends State<NetworkResultPage> {
-  Map theme = THEMELIST['none'];
-
-  @override
-  void initState() {
-    onReadyTheme();
-    super.initState();
-  }
-
-  void onReadyTheme() async {
-    /// 初始主题
-    Map _theme = await ThemeUtil().ready(context);
-    setState(() => theme = _theme);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +23,6 @@ class _networkResultPageState extends State<NetworkResultPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        flexibleSpace: theme['appBar']['flexibleSpace'],
       ),
       body: ListView(
         children: const [Text("233")],

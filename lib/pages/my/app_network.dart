@@ -93,9 +93,6 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
       appBar: AppBar(),
       body: RefreshIndicator(
         onRefresh: _onRefresh,
-        color: Theme.of(context).floatingActionButtonTheme.focusColor,
-        backgroundColor:
-            Theme.of(context).floatingActionButtonTheme.backgroundColor,
         child: Column(
           children: [
             const SizedBox(height: 10),

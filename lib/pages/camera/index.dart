@@ -117,8 +117,7 @@ class _CameraPageState extends State<CameraPage> {
     switch (data["type"]) {
       case "web_site_link":
         // 外部链接
-        _urlUtil.onPeUrl(
-            Config.apiHost["bfban_web_site"] + "/player/" + data["content"]);
+        _urlUtil.onPeUrl(Config.apiHost["bfban_web_site"] + "/player/" + data["content"]);
         break;
       case "app_palyer_link":
         // 内部玩家链接
@@ -133,8 +132,7 @@ class _CameraPageState extends State<CameraPage> {
     if (!_isScanRunning) {
       _isScanRunning = true;
       await _controller.startImageStream((CameraImage availableImage) async {
-        assert(defaultTargetPlatform == TargetPlatform.android ||
-            defaultTargetPlatform == TargetPlatform.iOS);
+        assert(defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS);
         int format = FlutterBarcodeSdk.IF_UNKNOWN;
 
         switch (availableImage.format.group) {
@@ -154,14 +152,7 @@ class _CameraPageState extends State<CameraPage> {
 
         _isScanAvailable = false;
 
-        _barcodeReader
-            .decodeImageBuffer(
-                availableImage.planes[0].bytes,
-                availableImage.width,
-                availableImage.height,
-                availableImage.planes[0].bytesPerRow,
-                format)
-            .then((results) {
+        _barcodeReader.decodeImageBuffer(availableImage.planes[0].bytes, availableImage.width, availableImage.height, availableImage.planes[0].bytesPerRow, format).then((results) {
           if (_isScanRunning) {
             /// 处理结果
             onScanResult(getBarcodeResults(results));
@@ -265,11 +256,7 @@ class _CameraPageState extends State<CameraPage> {
                                   children: [
                                     IndexedStack(
                                       index: e["type_index"],
-                                      children: const [
-                                        Icon(Icons.touch_app_rounded),
-                                        Icon(Icons.link),
-                                        Icon(Icons.text_snippet)
-                                      ],
+                                      children: const [Icon(Icons.touch_app_rounded), Icon(Icons.link), Icon(Icons.text_snippet)],
                                     ),
                                     Expanded(
                                       flex: 1,
@@ -279,25 +266,18 @@ class _CameraPageState extends State<CameraPage> {
                                           vertical: 20,
                                         ),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             e["type_index"] != 2
                                                 ? Text(e["content"].toString())
                                                 : TextField(
-                                                    controller:
-                                                        TextEditingController(
-                                                            text: e["content"]
-                                                                .toString()),
+                                                    controller: TextEditingController(text: e["content"].toString()),
                                                     maxLines: 3,
                                                   ),
                                             // 描述
                                             IndexedStack(
                                               index: e["type_index"],
-                                              children: const [
-                                                Text("从bfban网站打开"),
-                                                Text("打开应用内部的玩家信息")
-                                              ],
+                                              children: const [Text("从bfban网站打开"), Text("打开应用内部的玩家信息")],
                                             ),
                                           ],
                                         ),
@@ -320,10 +300,7 @@ class _CameraPageState extends State<CameraPage> {
               color: Colors.black,
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context)
-                      .appBarTheme
-                      .backgroundColor!
-                      .withOpacity(.2),
+                  color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
                   offset: const Offset(0, -2),
                   spreadRadius: .2,
                   blurRadius: 10,
@@ -346,17 +323,15 @@ class _CameraPageState extends State<CameraPage> {
       floatingActionButton: FloatingActionButton(
         materialTapTargetSize: MaterialTapTargetSize.padded,
         elevation: 10,
-        backgroundColor: !_isScanRunning
-            ? Theme.of(context).backgroundColor
-            : Theme.of(context).floatingActionButtonTheme.backgroundColor,
+        // backgroundColor: !_isScanRunning
+        //     ? Theme.of(context).backgroundColor
+        //     : Theme.of(context).floatingActionButtonTheme.backgroundColor,
         onPressed: () async {
           await _initializeControllerFuture;
 
           videoScan();
         },
-        child: _isScanRunning
-            ? const CircularProgressIndicator()
-            : const Icon(Icons.qr_code_outlined, size: 30),
+        child: _isScanRunning ? const CircularProgressIndicator() : const Icon(Icons.qr_code_outlined, size: 30),
       ),
     );
   }

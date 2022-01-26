@@ -10,5 +10,6 @@ export './Replay.dart';
 export './Manage.dart';
 export './Message.dart';
 export './Network.dart';
+export './Theme.dart';
 
 import './DataUtil.dart';
