@@ -11,7 +11,9 @@ class AppInfoProvider with ChangeNotifier {
   NetwrokConf? conf = NetwrokConf();
 }
 
-class NetwrokConf {
+class NetwrokConf with ChangeNotifier {
+  String? packageName = "com.bfban.netwrok_conf";
+
   // 从远程服务获取配置
   NetworkConfData data = NetworkConfData(
     confList: ["privilege", "gameName", "cheatMethodsGlossary", "action"],
@@ -24,39 +26,46 @@ class NetwrokConf {
   /// [Event]
   /// 初始化
   init() async {
-    List<Future> reqlist = [];
+    await getConf("gameName");
+    await getConf("privilege");
+    await getConf("cheatMethodsGlossary");
+    await getConf("action");
 
-    for (var i = 0; i < data.confList!.length; i++) {
-      reqlist.add(getConf(data.confList![i]));
-    }
+    // 更新类
+    Config.game = data.gameName!;
+    Config.privilege = data.privilege!;
+    Config.cheatMethodsGlossary = data.cheatMethodsGlossary!;
+    Config.action = data.action!;
 
-    await Future.any(reqlist);
+    notifyListeners();
     return true;
   }
 
   /// [Response]
   /// 请求获取
-  getConf(String fileName) async {
+  Future getConf(String fileName) async {
     Response result = await Http.request(
-      Config.apiHost["web_site"] + "/conf/$fileName.json",
-      typeUrl: "web_site",
+      "/conf/$fileName.json",
+      typeUrl: "bfban_web_site_conf",
       method: Http.GET,
     );
 
     switch (fileName) {
       case "gameName":
-        data.gameName = jsonDecode(result.data);
+        data.gameName = result.data;
         break;
       case "action":
-        data.action = jsonDecode(result.data);
+        data.action = result.data;
         break;
       case "cheatMethodsGlossary":
-        data.cheatMethodsGlossary = jsonDecode(result.data);
+        data.cheatMethodsGlossary = result.data;
         break;
       case "privilege":
-        data.privilege = jsonDecode(result.data);
+        data.privilege = result.data;
         break;
     }
+
+    return result;
   }
 }
 

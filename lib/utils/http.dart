@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
 
 export 'package:dio/dio.dart';
@@ -46,8 +47,7 @@ class Http extends ScaffoldState {
     method,
     headers,
   }) async {
-    Response result =
-        Response(data: {}, requestOptions: RequestOptions(path: '/'));
+    Response result = Response(data: {}, requestOptions: RequestOptions(path: '/'));
     data = data ?? {};
     headers = headers ?? {"token": ""};
     method = method ?? 'GET';
@@ -66,8 +66,6 @@ class Http extends ScaffoldState {
       });
     }
 
-    print('请求地址：【' + method + '  ${Config.apiHost[typeUrl] + '/' + url}】');
-
     Dio dio = createInstance();
     try {
       Response response = await dio.request(
@@ -79,8 +77,8 @@ class Http extends ScaffoldState {
           headers: headers,
         ),
       );
+
       result = response;
-      print('响应数据：' + response.toString());
     } on DioError catch (e) {
       switch (e.type) {
         case DioErrorType.receiveTimeout:

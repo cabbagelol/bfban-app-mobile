@@ -65,6 +65,9 @@ class _IndexPageState extends State<IndexPage> {
 
     // 主题初始
     ProviderUtil().ofTheme(context).init();
+
+    // 配置初始
+    ProviderUtil().ofApp(context).conf!.init();
   }
 
   /// [Event]

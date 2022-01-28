@@ -3,13 +3,6 @@
 import 'package:bfban/constants/api.dart';
 
 class Version {
-  dynamic on(String version) {
-    return getContrast(
-      version,
-      "${Config.versionApp["v"]}-${Config.versionApp["s"]}",
-    );
-  }
-
   /// [Event]
   /// 对比版本
   /// 通常格式 0.0.1-beta

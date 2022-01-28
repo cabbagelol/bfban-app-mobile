@@ -1,15 +1,13 @@
-/// 作弊玩家列表
-
-import 'package:bfban/widgets/detail/cheaters_card_types.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fluro/fluro.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_elui_plugin/_cell/cell.dart';
 
+import '../../component/_filter/index.dart';
 import '../../data/index.dart';
 import '../../router/router.dart';
+import '../../widgets/filter/game_filter.dart';
+import '../../widgets/filter/solt_filter.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class PlayerListPage extends StatefulWidget {
@@ -143,179 +141,113 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     await getPlayerList();
   }
 
-  /// [Event]
-  /// 筛选
-  _openFiltrate() async {
-    await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            dynamic _playersStatus = playersStatus;
-            return AlertDialog(
-              clipBehavior: Clip.hardEdge,
-              insetPadding: EdgeInsets.zero,
-              titlePadding: EdgeInsets.zero,
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    EluiCellComponent(
-                      title: "游戏类型",
-                    ),
-                    PopupMenuButton(
-                      padding: EdgeInsets.zero,
-                      icon: Card(
-                        child: Container(
-                          padding: EdgeInsets.all(2),
-                          child: Image.asset(
-                            Config.game["type"].where((e) => _playersStatus!.parame!.data!["game"] == e["value"]).toList()[0]["img"]["file"],
-                            width: 300,
-                          ),
-                        ),
-                      ),
-                      onSelected: (value) {
-                        setState(() {
-                          _playersStatus!.parame!.data!["game"] = value;
-                        });
-                      },
-                      itemBuilder: (context) => Config.game["type"].map<PopupMenuItem>((i) {
-                        return CheckedPopupMenuItem(
-                          padding: EdgeInsets.zero,
-                          height: 20,
-                          value: i["value"],
-                          checked: _playersStatus!.parame!.data!["game"] == i["value"],
-                          child: Card(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                              child: Image.asset(i["img"]["file"]),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('取消'),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                TextButton(
-                  child: const Text('确认'),
-                  onPressed: () {
-                    getPlayerList();
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  /// [Event]
-  /// 筛选 时间选择器
-  _openFiltrateTime(BuildContext context) {
-    return DialogRoute(
-      context: context,
-      builder: (context) {
-        return DatePickerDialog(
-          initialDate: DateTime.now(),
-          firstDate: DateTime.now(),
-          lastDate: DateTime.now(),
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: false,
       appBar: AppBar(
+        titleSpacing: 0,
+        centerTitle: true,
         backgroundColor: Theme.of(context).backgroundColor.withOpacity(.1),
-        title: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: TabBar(
-                controller: _tabController,
-                isScrollable: true,
-                indicatorWeight: .1,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-                onTap: (index) async {
-                  int _value = cheaterStatus[index]["value"];
+        title: TabBar(
+          controller: _tabController,
+          isScrollable: true,
+          indicatorWeight: .1,
+          labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+          onTap: (index) async {
+            int _value = cheaterStatus[index]["value"];
 
-                  playersStatus!.parame!.data["status"] = _value;
+            playersStatus!.parame!.data["status"] = _value;
 
-                  resetPlayerParame(skip: true, page: true);
-                  await getPlayerList();
-                },
-                tabs: cheaterStatus.map((i) {
-                  return Tab(text: Config.startusIng[i["value"]]["s"].toString());
-                }).toList(),
-              ),
-            ),
-            const SizedBox(width: 5),
-            TextButton.icon(
-              onPressed: () => _openFiltrate(),
-              icon: const Icon(
-                Icons.filter_list,
-                size: 15,
-              ),
-              label: const Text("筛选"),
-            ),
-          ],
+            resetPlayerParame(skip: true, page: true);
+            await getPlayerList();
+          },
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          tabs: cheaterStatus.map((i) {
+            return Tab(
+              text: Config.startusIng[i["value"]]["s"].toString(),
+            );
+          }).toList(),
         ),
       ),
       body: Column(
         children: [
-          // 内容
           Expanded(
-            flex: 1,
-            child: RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: playersStatus!.list!.isNotEmpty
-                  ? ListView.builder(
-                      controller: _scrollController,
-                      itemCount: playersStatus?.list?.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (playersStatus!.list![index]["pageTip"] != null) {
-                          // 分页提示
-                          return SizedBox(
-                            height: 30,
-                            child: Center(
-                              child: Text(
-                                "第${playersStatus!.list![index]["pageIndex"]}页",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).textTheme.subtitle2?.color,
+            child: Filter(
+              // 内容
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: playersStatus!.list!.isNotEmpty
+                    ? ListView.builder(
+                        controller: _scrollController,
+                        itemCount: playersStatus?.list?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (playersStatus!.list![index]["pageTip"] != null) {
+                            // 分页提示
+                            return SizedBox(
+                              height: 30,
+                              child: Center(
+                                child: Text(
+                                  "第${playersStatus!.list![index]["pageIndex"]}页",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Theme.of(context).textTheme.subtitle2?.color,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        }
-
-                        return CheatListCard(
-                          item: playersStatus?.list![index],
-                          onTap: () {
-                            Routes.router!.navigateTo(
-                              context,
-                              '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
-                              transition: TransitionType.cupertino,
                             );
-                          },
-                        );
-                      },
-                    )
-                  : const Center(child: Text('No items')),
+                          }
+
+                          return CheatListCard(
+                            item: playersStatus?.list![index],
+                            onTap: () {
+                              Routes.router!.navigateTo(
+                                context,
+                                '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
+                              );
+                            },
+                          );
+                        },
+                      )
+                    : const Center(child: Text('No items')),
+              ),
+              maxHeight: 300,
+              suckTop: true,
+              slot: [
+                FilterItemWidget(
+                  title: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      "排序方式",
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                  ),
+                  panel: SoltFilterPanel(),
+                ),
+                FilterItemWidget(
+                  title: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      "游戏类型",
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.subtitle1!.color,
+                      ),
+                    ),
+                  ),
+                  panel: GameNameFilterPanel(),
+                ),
+              ],
+              onChange: (data) async {
+                playersStatus!.parame!.data["game"] = data[1].value;
+                playersStatus!.parame!.data["sort"] = data[0].value;
+                await _onRefresh();
+              },
+              onReset: () => resetPlayerParame(),
             ),
+            flex: 1,
           ),
 
           // 加载

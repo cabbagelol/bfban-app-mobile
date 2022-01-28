@@ -444,11 +444,11 @@ class _ReportPageState extends State<ReportPage> {
                   reportStatus.param!.data!["game"] = value;
                 });
               },
-              itemBuilder: (context) => Config.game["type"].map<PopupMenuItem>((i) {
+              itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
                 return CheckedPopupMenuItem(
                   value: i["value"],
                   checked: reportStatus.param!.data!["game"] == i["value"],
-                  child: Image.asset(i["img"]["file"], height: 18),
+                  child: Image.asset(i["app_assets_logo_file"], height: 18),
                 );
               }).toList(),
             ),

@@ -32,9 +32,6 @@ class UserCenterPage extends StatefulWidget {
 class _UserCenterPageState extends State<UserCenterPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  /// 本地版本
-  Map appInfo = Config.versionApp;
-
   // /// [Response]
   // /// 获取个人信息
   // Future<void> getMyInfo() async {

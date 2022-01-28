@@ -11,20 +11,11 @@ enum Env {
 class Config {
   static Env env = Env.DEV;
 
-  /// 版本设置
-  static Map get versionApp {
-    return {
-      "v": "0.1.0",
-      "s": "beta",
-    };
-  }
-
   /// 基础请求
   static Map get apiHost {
     Map d = {
       "none": "",
-      "sentry":
-          "https://475f587d2c9a44f38cbe58978c0429c7@o438603.ingest.sentry.io/5403628",
+      "sentry": "https://475f587d2c9a44f38cbe58978c0429c7@o438603.ingest.sentry.io/5403628",
       "web_site": "https://bfban-app.cabbagelol.net/",
       // "tracker": "https://api.tracker.gg",
       // "upload": "https://upload-z2.qiniup.com",
@@ -32,8 +23,9 @@ class Config {
 
       // # NOT USE
       "gametools": "https://bfban.gametools.network",
-      "image_service_1":"https://imagedelivery.net",
+      "image_service_1": "https://imagedelivery.net",
       "bfban_web_site": "http://101.43.35.41:84",
+      "bfban_web_site_conf": "https://bfban.cabbagelol.net/",
     };
 
     switch (env) {
@@ -53,44 +45,26 @@ class Config {
   }
 
   /// 游戏类型
-  static Map get game {
-    return {
-      "type": [
-        {
-          "name": "所有",
-          "value": "all",
-          "img": {
-            "file": "assets/images/report/battlefield-v-png-logo.png",
-            "network": "",
-          }
-        },
-        {
-          "name": "\u6218\u5730\u0031",
-          "value": "bf1",
-          "img": {
-            "file": "assets/images/report/battlefield-1-logo.png",
-            "network": "",
-          }
-        },
-        {
-          "name": "\u6218\u5730\u0056",
-          "value": "bfv",
-          "img": {
-            "file": "assets/images/report/battlefield-v-png-logo.png",
-            "network": "",
-          }
-        },
-        {
-          "name": "战地风云2042",
-          "value": "bf6",
-          "img": {
-            "file": "assets/images/report/battlefield-2042-logo.png",
-            "network": "",
-          }
-        },
-      ]
-    };
-  }
+  /// base 配置, 会被远程覆盖
+  static Map game = {
+    "child": [
+      {
+        "value": "bf1",
+        "app_assets_logo_file": "assets/images/report/battlefield-1-png-logo.png",
+      },
+      {
+        "value": "bfv",
+        "app_assets_logo_file": "assets/images/report/battlefield-v-png-logo.png",
+      },
+      {
+        "value": "bf6",
+        "app_assets_logo_file": "assets/images/report/battlefield-2042-logo.png",
+      },
+    ]
+  };
+  static Map privilege = {};
+  static Map cheatMethodsGlossary = {};
+  static Map action = {};
 
   /// 请求接口
   /// 参考 bfban.com项目内置的util/api.js
