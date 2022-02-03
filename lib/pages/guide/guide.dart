@@ -1,14 +1,13 @@
 /// 引导
-import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-
-import 'package:flutter_elui_plugin/elui.dart';
+import 'package:animations/animations.dart';
 
 import 'package:bfban/utils/index.dart';
-
+import 'package:flutter_translate/flutter_translate.dart';
 import 'agreement.dart';
 import 'explain.dart';
+import 'login.dart';
 import 'permission.dart';
 
 class GuidePage extends StatefulWidget {
@@ -21,36 +20,43 @@ class GuidePage extends StatefulWidget {
 class _GuidePageState extends State<GuidePage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  /// 引导下标
+  int guideListPageIndex = 0;
+
   /// 是否同意条约
   bool guideAgreementIs = false;
 
-  /// 引导下标
-  int? guideListPageIndex = 0;
-
   /// 引导页面列表
-  late List<Widget> guideListPage;
+  late List<Widget> guideListPage = [];
 
   @override
   void initState() {
     super.initState();
 
     guideListPage = [
-      agreementPage(
-        onChanged: (s) {
+      GuideAgreementPage(
+        onChanged: (checked) {
           setState(() {
-            guideAgreementIs = s;
+            guideAgreementIs = checked;
           });
         },
       ),
-      const permissionPage(onChange: null,),
-      const explainPage(),
+      GuideLoginPage(),
+      const GuidePermissionPage(
+        onChange: null,
+      ),
+      const GuideExplainPage(),
     ];
   }
 
-  /// 动作
-  void _onConfirm() async {
+  /// [Event]
+  /// 下一步
+  _onNext() async {
+    // 勾选
+    if (!guideAgreementIs) return;
+
+    // 完成离开
     if (guideListPageIndex == guideListPage.length - 1) {
-      // 完成离开
       await Storage().set("com.bfban.guide", value: "1");
 
       _urlUtil.popPage(context);
@@ -58,25 +64,23 @@ class _GuidePageState extends State<GuidePage> {
     }
 
     setState(() {
-      guideListPageIndex = (guideListPageIndex! + 1);
+      guideListPageIndex++;
     });
   }
 
-  /// 判决禁用状态
-  bool _isState() {
-    if (guideListPageIndex == 0 && guideAgreementIs) {
-      return false;
-    } else if (guideListPageIndex! >= 1) {
-      return false;
-    }
-    return true;
+  /// [Event]
+  /// 上一步
+  _onBacktrack() async {
+    if (guideListPageIndex <= 0) return;
+    setState(() {
+      guideListPageIndex--;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       child: Scaffold(
-        backgroundColor: const Color(0xff111b2b),
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -92,56 +96,38 @@ class _GuidePageState extends State<GuidePage> {
           elevation: 0,
           centerTitle: true,
         ),
-        body: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            // Opacity(
-            //   opacity: 0.5,
-            //   child: Image.asset(
-            //     "assets/images/bk-companion-1.jpg",
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            BackdropFilter(
-              child: IndexedStack(
-                index: guideListPageIndex,
-                children: guideListPage,
-              ),
-              filter: ui.ImageFilter.blur(
-                sigmaX: 0.0,
-                sigmaY: 0.0,
-              ),
-            ),
-          ],
+        body: PageTransitionSwitcher(
+          duration: Duration(milliseconds: 150),
+          transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
+            return SharedAxisTransition(
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
+              animation: primaryAnimation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,
+            );
+          },
+          child: guideListPage[guideListPageIndex],
         ),
-        bottomNavigationBar: Container(
-          color: Colors.yellow,
-          height: 50,
-          child: EluiButtonComponent(
-            disabled: _isState(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "${guideListPageIndex == guideListPage.length - 1 ? "确认" : "下一步"} (${guideListPageIndex! + 1}/${guideListPage.length})",
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                  ),
+        bottomSheet: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AnimatedOpacity(
+                opacity: guideListPageIndex == 0 ? 0 : 1,
+                duration: Duration(milliseconds: 300),
+                child: TextButton(
+                  onPressed: _onBacktrack,
+                  child: Text(translate("guide.back")),
                 ),
-                Offstage(
-                  offstage: !_isState(),
-                  child: const Text(
-                    "请勾选必要条件",
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 9,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            onTap: () => _onConfirm(),
+              ),
+              Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
+              ElevatedButton(
+                onPressed: _onNext,
+                child: guideListPageIndex + 1 < guideListPage.length ? Text(translate("guide.next")) : Text(translate("guide.endNext")),
+              ),
+            ],
           ),
         ),
       ),

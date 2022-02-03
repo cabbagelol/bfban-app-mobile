@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../constants/api.dart';
 import '../../data/index.dart';
@@ -48,7 +49,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
     });
   }
 
-  /// [Event]
+  /// [Response]
   /// 网络检查
   _onNetWork(String url) async {
     dynamic item = appNetworkStatus.list!
@@ -90,7 +91,9 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(translate("networkDetection.title")),
+      ),
       body: RefreshIndicator(
         onRefresh: _onRefresh,
         child: Column(
@@ -115,7 +118,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                         index: e["err"],
                         children: [
                           EluiTagComponent(
-                            value: "检查中 ",
+                            value: translate("networkDetection.status.0"),
                             theme: EluiTagTheme(
                               backgroundColor: Theme.of(context)
                                   .appBarTheme
@@ -125,12 +128,12 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                             size: EluiTagSize.no2,
                           ),
                           EluiTagComponent(
-                            value: "失去响应",
+                            value: translate("networkDetection.status.2"),
                             color: EluiTagType.error,
                             size: EluiTagSize.no2,
                           ),
                           EluiTagComponent(
-                            value: "服务正常",
+                            value: translate("networkDetection.status.1"),
                             color: EluiTagType.succeed,
                             size: EluiTagSize.no2,
                           )

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/_cell/cell.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 
 
-class permissionPage extends StatefulWidget {
+class GuidePermissionPage extends StatefulWidget {
   final Function? onChange;
 
-  const permissionPage({
+  const GuidePermissionPage({
     Key? key,
     this.onChange,
   }) : super(key: key);
@@ -17,11 +18,12 @@ class permissionPage extends StatefulWidget {
   _permissionPageState createState() => _permissionPageState();
 }
 
-class _permissionPageState extends State<permissionPage> {
+class _permissionPageState extends State<GuidePermissionPage> {
   List<Permission> permissions = [
     Permission.camera,
     Permission.photos,
     Permission.storage,
+    Permission.notification,
   ];
 
   @override
@@ -50,17 +52,17 @@ class _permissionPageState extends State<permissionPage> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const <Widget>[
+            children: <Widget>[
               Text(
-                "权限",
-                style: TextStyle(
+                translate("guide.permission.title"),
+                style: const TextStyle(
                   fontSize: 25,
                   color: Colors.white,
                 ),
               ),
               Text(
-                "请触摸下方单元，授权权限给予应用。并非强制要求",
-                style: TextStyle(
+                translate("guide.permission.label"),
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.white54,
                 ),
@@ -79,15 +81,15 @@ class _permissionPageState extends State<permissionPage> {
           ),
           child: Wrap(
             spacing: 10,
-            children: const <Widget>[
-              Icon(
+            children: <Widget>[
+              const Icon(
                 Icons.warning,
                 size: 16,
                 color: Colors.yellow,
               ),
               Text(
-                "如果存在【永久拒绝】选项，可以到设置》应用》权限修改",
-                style: TextStyle(
+                translate("guide.permission.tip"),
+                style: const TextStyle(
                   fontSize: 12,
                   color: Colors.yellow,
                 ),
@@ -120,38 +122,43 @@ class _PermissionState extends State<PermissionWidget> {
 
   Map permissionName = {
     Permission.camera: {
-      "name": "摄像头",
-      "describe": "主要用于拍摄或录制多媒体，媒体内容多为证据为主。",
+      "name": translate("guide.permission.list.0.name"),
+      "describe": translate("guide.permission.list.0.describe"),
     },
     Permission.photos: {
-      "name": "相册",
-      "describe": "读取相册内容，用途证据为主",
+      "name": translate("guide.permission.list.1.name"),
+      "describe": translate("guide.permission.list.1.describe"),
     },
     Permission.storage: {
-      "name": "本地储存",
-      "describe": "授权应用储存用户数据，其中包含登录信息以及草稿箱。",
+      "name": translate("guide.permission.list.2.name"),
+      "describe": translate("guide.permission.list.2.describe"),
+    },
+
+    Permission.notification: {
+      "name": translate("guide.permission.list.3.name"),
+      "describe": translate("guide.permission.list.3.describe"),
     },
   };
 
   Map permissionStatus = {
     PermissionStatus.granted: {
-      "text": "授权成功",
+      "text": translate("guide.permission.status.0"),
       "icon": Icons.check_circle,
     },
     PermissionStatus.values: {
-      "text": "未知",
+      "text": translate("guide.permission.status.-1"),
       "icon": Icons.remove_circle,
     },
     PermissionStatus.denied: {
-      "text": "未授权",
+      "text": translate("guide.permission.status.1"),
       "icon": Icons.warning,
     },
     PermissionStatus.permanentlyDenied: {
-      "text": "永久拒绝",
+      "text": translate("guide.permission.status.2"),
       "icon": Icons.error,
     },
     PermissionStatus.restricted: {
-      "text": "受限制",
+      "text": translate("guide.permission.status.3"),
       "icon": Icons.info,
     },
   };

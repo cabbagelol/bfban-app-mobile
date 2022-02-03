@@ -166,6 +166,12 @@ class LightnesTheme {
         shadowColor: Color(0x39131372),
       ),
       cardColor: Color(0xfff2f2f2),
+      radioTheme: RadioThemeData(
+        mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
+        overlayColor: MaterialStateProperty.all(Color(0xff364e80).withOpacity(.7)),
+        fillColor: MaterialStateProperty.all(Color(0xff364e80)),
+      ),
+      toggleableActiveColor: Colors.black,
       primaryTextTheme: const TextTheme(
         headline1: TextStyle(color: Colors.black),
         headline2: TextStyle(color: Colors.black87),

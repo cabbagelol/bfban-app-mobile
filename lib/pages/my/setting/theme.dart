@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import '../../../data/index.dart';
 
@@ -25,8 +26,7 @@ class _ThemePageState extends State<ThemePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text("主题"),
+        title: Text(translate("setting.theme.title")),
       ),
       body: Consumer<ThemeProvider>(
         builder: (BuildContext context, data, Widget? child) {
@@ -34,8 +34,8 @@ class _ThemePageState extends State<ThemePage> {
             children: [
               // 自动
               EluiCellComponent(
-                title: "自动",
-                label: "依照系统决定",
+                title: translate("basic.function.auto.title"),
+                label: translate("basic.function.auto.describe"),
                 theme: EluiCellTheme(
                   titleColor: Theme.of(context).textTheme.subtitle1?.color,
                   labelColor: Theme.of(context).textTheme.subtitle2?.color,

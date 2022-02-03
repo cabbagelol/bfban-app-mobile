@@ -1,13 +1,15 @@
-![](public/images/github.logo.jpg)
+![](https://bfban-app.cabbagelol.net/images/github.logo.jpg)
 
 ## Bfban应用
 
+![GitHub closed issues](https://img.shields.io/github/issues-closed/cabbagelol/bfbanApp)
+![GitHub Sponsors](https://img.shields.io/github/sponsors/cabbagelol)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cabbagelol/bfbanApp)
 ![pub package](https://img.shields.io/badge/ios-no-green)
 ![pub package](https://img.shields.io/badge/android-yes-green)
 ![GitHub All Releases](https://img.shields.io/github/downloads/cabbagelol/bfbanApp/total)
 
-由Cabbagelol负责维护的联Ban移动设备应用，完成对移动设备快速举报功能，改进在移动设备展示效果。该应用并`非官方`，关于隐私问题具体可查看源代码检查应用是否作出此类行为。
+由Cabbagelol负责维护的联Ban移动设备应用，完成对移动设备快速举报功能，改进在移动设备展示效果。关于隐私问题具体可查看源代码检查应用是否作出此类行为。
 
 [Android和ios下载](https://github.com/cabbagelol/bfbanApp/releases)
 | [开发计划进展](https://trello.com/b/ZECQnnEz/bfban-app) |
@@ -21,7 +23,7 @@
 
 ## 介绍
 
-> Bfban应用借助FlutterUI库混合原生实现跨平台，可发布android和ios以及桌面应用
+> Bfban应用借助FlutterUI库混合原生实现跨平台，可发布android和ios以及桌面应用, 由于目前ios经费不足，不上线ios版本，请通过官方渠道捐助bfban，并注明为bfban app的ios经费捐助。
 
 额外依赖：
 
@@ -48,8 +50,6 @@
 `
    flutter build --release
 `
-
-
 
 
 ## 分支介绍

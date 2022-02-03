@@ -2,6 +2,8 @@
 
 import 'package:bfban/pages/detail/user_space.dart';
 import 'package:bfban/pages/my/setting/destock.dart';
+import 'package:bfban/pages/my/setting/language.dart';
+import 'package:bfban/pages/my/setting/notice.dart';
 import 'package:bfban/pages/my/setting/setting.dart';
 import 'package:fluro/fluro.dart';
 
@@ -16,7 +18,6 @@ import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/pages/report/drafts.dart';
 import 'package:bfban/pages/report/manage.dart';
 import 'package:bfban/pages/login/signin.dart';
-import 'package:bfban/pages/login/record/index.dart';
 import 'package:bfban/pages/search/index.dart';
 import 'package:bfban/pages/my/support.dart';
 import 'package:bfban/pages/my/setting/theme.dart';
@@ -30,6 +31,7 @@ import '../pages/login/signup.dart';
 import '../pages/message/index.dart';
 import '../pages/my/app_network.dart';
 import '../pages/my/app_package.dart';
+import '../pages/splash.dart';
 // E Pages
 
 class Routes {
@@ -42,6 +44,12 @@ class Routes {
         'url': '/',
         'item': (context, params) {
           return const IndexPage();
+        }
+      },
+      {
+        'url': '/splash',
+        'item': (context, params) {
+          return const SplashPage();
         }
       },
       {
@@ -141,20 +149,18 @@ class Routes {
         }
       },
       {
-        "url": "/record/:data",
-        'item': (context, params) {
-          return recordPage(
-            data: params["data"][0],
-          );
-        }
-      },
-      {
         "url": "/search/:data",
         'item': (context, params) {
           return SearchPage(
             data: params["data"][0],
           );
         }
+      },
+      {
+        "url": "/my/language",
+        'item': (context, params) {
+          return const LanguagePage();
+        },
       },
       {
         "url": "/my/destock",
@@ -185,6 +191,12 @@ class Routes {
         'item': (context, params) {
           return const ThemePage();
         },
+      },
+      {
+        "url": "/my/notice",
+        'item': (context, params) {
+          return NoticePage();
+        }
       },
       {
         "url": "/guide",

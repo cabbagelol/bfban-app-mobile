@@ -52,19 +52,21 @@ class Storage {
 
   /// [Event]
   /// 获取
-  Future get(String name, {type = "string", backNullValue = "none"}) async {
-    try {
-      if (!isInit) await init();
+  Future<dynamic> get(String name, {type = "string", backNullValue = "none"}) async {
+    if (!isInit) await init();
 
-      switch (type) {
-        case "none":
-          return _prefs!.get(name);
-        case "string":
-          return _prefs!.getString(name);
-      }
-    } catch (E) {
-      rethrow;
+    dynamic result;
+
+    switch (type) {
+      case "none":
+        result = _prefs!.get(name);
+        break;
+      case "string":
+        result = _prefs!.getString(name);
+        break;
     }
+
+    return result is Null ? null : result;
   }
 
   /// [Event]
@@ -112,7 +114,7 @@ class Storage {
 
   /// [Event]
   /// 获取所有
-  Future getAll () async {
+  Future getAll() async {
     if (!isInit) await init();
     print('返回！');
     print(_prefs!.getKeys());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../component/_filter/index.dart';
 import '../../data/index.dart';
@@ -22,6 +23,9 @@ class PlayerListPage extends StatefulWidget {
 class PlayerListPageState extends State<PlayerListPage> with SingleTickerProviderStateMixin {
   // 抽屉
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // 筛选
+  final GlobalKey<GameNameFilterPanelState> _gameNameFilterKey = GlobalKey();
 
   // TAB
   late TabController? _tabController;
@@ -46,17 +50,24 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     ),
   );
 
-  List cheaterStatus = Config.cheaterStatus;
+  // 玩家状态
+  List? cheaterStatus = Config.cheaterStatus["child"];
+
+  // 刷新key
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
+  // 筛选key
+  final GlobalKey<FilterState> _filterKey = GlobalKey();
 
   @override
   void initState() {
-    getPlayerList();
+    ready();
 
     // 标签初始
     _tabController = TabController(
       vsync: this,
       initialIndex: 0,
-      length: Config.cheaterStatus.length,
+      length: cheaterStatus!.length,
     );
 
     // 滚动视图初始
@@ -73,12 +84,25 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   }
 
   /// [Event]
+  /// 初始
+  ready() async {
+    cheaterStatus!.insert(0, {
+      "value": -1,
+      "values": [-1],
+    });
+
+    getPlayerList();
+    await getPlayerStatistics();
+  }
+
+  /// [Event]
   /// 重置参数
-  bool resetPlayerParame({skip = false, sort = false, game = false, page = false}) {
+  bool resetPlayerParame({skip = false, sort = false, game = false, page = false, data = false}) {
     if (skip) playersStatus!.parame!.data["skip"] = 0;
     if (sort) playersStatus!.parame!.data["sort"] = "updateTime";
     if (game) playersStatus!.parame!.data["game"] = "all";
-    if (game) playersStatus!.page = 1;
+    if (page) playersStatus!.page = 1;
+    if (data) playersStatus!.list = [];
 
     return true;
   }
@@ -141,6 +165,87 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     await getPlayerList();
   }
 
+  /// [Event]
+  /// tab切换
+  _onSwitchTab(int index) async {
+    Future.delayed(const Duration(seconds: 0), () {
+      _refreshIndicatorKey.currentState!.show();
+    });
+
+    int _value = cheaterStatus![index]["value"];
+
+    playersStatus!.parame!.data["status"] = _value;
+
+    resetPlayerParame(skip: true, page: true);
+
+    _scrollController.jumpTo(0);
+
+    await getPlayerList();
+  }
+
+  /// [Response]
+  /// 取得数量统计
+  Future getPlayerStatistics() async {
+    Map data = {"data": []};
+
+    Config.game["child"].forEach((i) {
+      data["data"].add({"game": i["value"], "status": -1});
+    });
+
+    cheaterStatus!.asMap().keys.forEach((index) {
+      // 跳过状态 -1 全部
+      if (cheaterStatus![index]["value"] >= 0) {
+        data["data"].add({
+          "game": playersStatus!.parame!.data["game"] == 'all' ? '*' : cheaterStatus![index]["value"],
+          "status": cheaterStatus![index]["value"],
+        });
+      }
+    });
+
+    Response result = await Http.request(
+      Config.httpHost["playerStatistics"],
+      data: data,
+      method: Http.POST,
+    );
+
+    if (result.data["success"] == 1) {
+      final List d = result.data["data"];
+
+      cheaterStatus!.asMap().keys.forEach((itemIndex) {
+        if (itemIndex >= 0) {
+          d.forEach((i) {
+            // 状态统计
+            if (i["game"] == "*") {
+              if (cheaterStatus![itemIndex]["value"] == i["status"]) {
+                setState(() {
+                  // +1 是跳过 [全部] 标题不计入统计
+                  cheaterStatus![itemIndex]["num"] = i["count"];
+                });
+              }
+            }
+
+            // 游戏类型统计
+            // 游戏类i["status"]是-1
+            if (i["game"] != "*") {
+              Config.game["child"].asMap().keys.forEach((index) {
+                var gameNameItem = Config.game["child"][index];
+
+                if (gameNameItem["value"] == i["game"]) {
+                  gameNameItem["num"] = i["count"];
+                }
+              });
+            }
+          });
+        }
+      });
+
+      // 重新渲染筛选控件内部数据
+      _gameNameFilterKey.currentState!.upData();
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,111 +260,182 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           isScrollable: true,
           indicatorWeight: .1,
           labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-          onTap: (index) async {
-            int _value = cheaterStatus[index]["value"];
-
-            playersStatus!.parame!.data["status"] = _value;
-
-            resetPlayerParame(skip: true, page: true);
-            await getPlayerList();
-          },
+          onTap: (index) => _onSwitchTab(index),
           padding: EdgeInsets.symmetric(horizontal: 15),
-          tabs: cheaterStatus.map((i) {
+          tabs: cheaterStatus!.map((i) {
             return Tab(
-              text: Config.startusIng[i["value"]]["s"].toString(),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: <Widget>[
+                  Text(translate("basic.status.${i["value"]}")),
+                  Positioned(
+                    top: -7,
+                    right: -12,
+                    child: AnimatedOpacity(
+                      opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
+                      duration: Duration(seconds: 1),
+                      child: Container(
+                        padding: const EdgeInsets.all(1),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 15,
+                          minHeight: 15,
+                        ),
+                        child: Text(
+                          i["num"].toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           }).toList(),
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Filter(
-              // 内容
-              child: RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: playersStatus!.list!.isNotEmpty
-                    ? ListView.builder(
-                        controller: _scrollController,
-                        itemCount: playersStatus?.list?.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          if (playersStatus!.list![index]["pageTip"] != null) {
-                            // 分页提示
-                            return SizedBox(
-                              height: 30,
-                              child: Center(
-                                child: Text(
-                                  "第${playersStatus!.list![index]["pageIndex"]}页",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Theme.of(context).textTheme.subtitle2?.color,
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
+      body: Filter(
+        key: _filterKey,
+        // 内容
+        child: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          onRefresh: _onRefresh,
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: playersStatus!.list!.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              if (index < playersStatus!.list!.length) {
+                // 分页提示
+                if (playersStatus!.list![index]["pageTip"] != null) {
+                  return SizedBox(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        "第${playersStatus!.list![index]["pageIndex"]}页",
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.subtitle2?.color,
+                        ),
+                      ),
+                    ),
+                  );
+                }
 
-                          return CheatListCard(
-                            item: playersStatus?.list![index],
-                            onTap: () {
-                              Routes.router!.navigateTo(
-                                context,
-                                '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
-                              );
-                            },
-                          );
-                        },
-                      )
-                    : const Center(child: Text('No items')),
+                // 内容卡片
+                return CheatListCard(
+                  item: playersStatus?.list![index],
+                  onTap: () {
+                    Routes.router!.navigateTo(
+                      context,
+                      '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
+                    );
+                  },
+                );
+              } else if (index >= playersStatus!.list!.length && playersStatus!.load!) {
+                // 下拉加载
+                return Center(
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                );
+              }
+
+              return Container();
+            },
+          ),
+        ),
+        maxHeight: 300,
+        suckTop: false,
+        actions: [
+          Expanded(
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: ButtonBar(
+                alignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.max,
+                buttonAlignedDropdown: true,
+                overflowButtonSpacing: 10.0,
+                buttonMinWidth: 100,
+                buttonHeight: 100,
+                buttonTextTheme: ButtonTextTheme.primary,
+                buttonPadding: EdgeInsets.zero,
+                children: <Widget>[
+                  TextButton(
+                    child: const Text(
+                      "取消",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {
+                      _filterKey.currentState!.hidden();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text(
+                      "确定",
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {
+                      _filterKey.currentState!.hidden();
+                      _filterKey.currentState!.updataFrom();
+                    },
+                  ),
+                ],
               ),
-              maxHeight: 300,
-              suckTop: true,
-              slot: [
-                FilterItemWidget(
-                  title: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      "排序方式",
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle1!.color,
-                      ),
-                    ),
-                  ),
-                  panel: SoltFilterPanel(),
-                ),
-                FilterItemWidget(
-                  title: Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Text(
-                      "游戏类型",
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle1!.color,
-                      ),
-                    ),
-                  ),
-                  panel: GameNameFilterPanel(),
-                ),
-              ],
-              onChange: (data) async {
-                playersStatus!.parame!.data["game"] = data[1].value;
-                playersStatus!.parame!.data["sort"] = data[0].value;
-                await _onRefresh();
-              },
-              onReset: () => resetPlayerParame(),
             ),
             flex: 1,
           ),
-
-          // 加载
-          playersStatus!.load!
-              ? Container(
-                  height: 30,
-                  width: 30,
-                  margin: const EdgeInsets.symmetric(vertical: 20),
-                  child: const CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Container(),
         ],
+        slot: [
+          FilterItemWidget(
+            title: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "排序方式",
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+              ),
+            ),
+            panel: SoltFilterPanel(),
+          ),
+          FilterItemWidget(
+            title: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                "游戏类型",
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+              ),
+            ),
+            panel: GameNameFilterPanel(
+              key: _gameNameFilterKey,
+            ),
+          ),
+        ],
+        onChange: (data) async {
+          resetPlayerParame(game: true, sort: true, data: true);
+
+          playersStatus!.parame!.data["game"] = data[1].value;
+          playersStatus!.parame!.data["sort"] = data[0].value;
+
+          await _onRefresh();
+        },
+        onReset: () => resetPlayerParame(),
       ),
     );
   }

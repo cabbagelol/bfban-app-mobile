@@ -68,13 +68,21 @@ class UrlUtil {
   }
 
   /// 打开页面
-  Future opEnPage(BuildContext context, String url, {TransitionType transition = TransitionType.cupertino}) async {
+  Future opEnPage(
+    BuildContext context,
+    String url, {
+    TransitionType transition = TransitionType.cupertino,
+    clearStack = false,
+    rootNavigator = false,
+  }) async {
     if (url.isEmpty) return;
 
     return await Routes.router!.navigateTo(
       context,
       url,
       transition: transition,
+      rootNavigator: rootNavigator,
+      clearStack: clearStack,
     );
   }
 

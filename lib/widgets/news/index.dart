@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_message/index.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 export 'package:webview_flutter/webview_flutter.dart';
@@ -23,14 +24,52 @@ class NewsComponentPanel extends StatefulWidget {
 }
 
 class _NewsComponentPanelState extends State<NewsComponentPanel> {
+  Map webview = {
+    "load": false,
+    "loadProgress": 0,
+  };
+
   @override
   Widget build(BuildContext context) {
-    return WebView(
-      initialUrl: widget.src,
-      javascriptMode: JavascriptMode.unrestricted,
-      onWebViewCreated: (WebViewController webViewController) {
-        widget.controller!.complete(webViewController);
-      },
+    return Column(
+      children: [
+        Visibility(
+          child: const LinearProgressIndicator(
+            minHeight: 2,
+          ),
+          visible: webview["load"],
+        ),
+        Expanded(
+          child: WebView(
+            initialUrl: widget.src,
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: (WebViewController webViewController) {
+              widget.controller!.complete(webViewController);
+            },
+            onPageStarted: (String url) {
+              setState(() {
+                webview["load"] = true;
+              });
+            },
+            onPageFinished: (String url) {
+              setState(() {
+                webview["load"] = false;
+              });
+            },
+            onWebResourceError: (WebResourceError error) {
+              EluiMessageComponent.warning(context)(
+                child: Text(error.description.toString()),
+              );
+            },
+            onProgress: (int progress) {
+              setState(() {
+                webview["loadProgress"] = (progress * 0.01).toDouble();
+              });
+            },
+          ),
+          flex: 1,
+        ),
+      ],
     );
   }
 }

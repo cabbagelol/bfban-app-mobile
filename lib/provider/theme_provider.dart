@@ -31,14 +31,18 @@ class ThemeProvider with ChangeNotifier {
 
   /// [Event]
   /// 初始
-  init() async {
+  Future<bool> init() async {
     // 本地读取 赋予当前
-    Map? loacl = await getLoaclTheme();
+    Map loacl = await getLoaclTheme();
+
+    if (loacl.isEmpty) return false;
 
     // 读取本地 更新自动主题状态
-    theme.autoSwitchTheme = loacl!["autoTheme"];
+    theme.autoSwitchTheme = loacl["autoTheme"];
 
     theme.current = loacl["name"];
+
+    return true;
   }
 
   Brightness get isBrightnessMode {
@@ -70,8 +74,8 @@ class ThemeProvider with ChangeNotifier {
 
   /// [Event]
   /// 获取储存主题
-  Future<Map?> getLoaclTheme() async {
-    String loacl = await Storage().get(themePackageName!);
+  Future<Map> getLoaclTheme() async {
+    String? loacl = await Storage().get(themePackageName!);
 
     if (loacl != null) {
       Map formjson = jsonDecode(loacl);

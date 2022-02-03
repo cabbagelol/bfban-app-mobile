@@ -20,6 +20,9 @@ class PackageStatus {
 
   List? list;
 
+  String? appName;
+  String? packageName;
+
   dynamic buildSignature;
   dynamic buildNumber;
 
@@ -29,6 +32,8 @@ class PackageStatus {
     this.onlineVersion,
     this.loadOnline,
     this.list,
+    this.appName,
+    this.packageName,
     this.buildNumber,
     this.buildSignature,
   });
@@ -41,6 +46,8 @@ class PackageProvider with ChangeNotifier {
 
   // 包状态
   PackageStatus? package = PackageStatus(
+    appName: "",
+    packageName: "",
     currentVersion: "0.0.0",
     loadCurrent: false,
     onlineVersion: "",
@@ -53,17 +60,18 @@ class PackageProvider with ChangeNotifier {
 
   /// [Event]
   /// 初始
-  init() async {
+  Future init() async {
     await getPackage();
     await getOnlinePackage();
 
-    openUpPanel();
+    await openUpPanel();
     notifyListeners();
+    return true;
   }
 
   /// [Event]
   /// 打开app升级面板
-  openUpPanel() async {
+  Future openUpPanel() async {
     if (!isNewVersion) {
       await showDialog(
         context: context!,
@@ -117,16 +125,20 @@ class PackageProvider with ChangeNotifier {
         },
       );
     }
+
+    return;
   }
 
   /// [Event]
   /// 获取包信息
-  getPackage() async {
+  Future getPackage() async {
     package!.loadCurrent = true;
     notifyListeners();
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
+    package!.appName = packageInfo.appName;
+    package!.packageName = packageInfo.packageName;
     package!.currentVersion = packageInfo.version.toString();
     package!.loadCurrent = false;
     notifyListeners();

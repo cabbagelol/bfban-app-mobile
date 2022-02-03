@@ -26,6 +26,11 @@ class DefaultTheme {
         onSurface: Colors.white,
       ),
       canvasColor: Colors.yellow,
+      chipTheme: ChipThemeData(
+        backgroundColor: Colors.black12,
+        secondarySelectedColor: Colors.white,
+        checkmarkColor: Colors.black,
+      ),
       primaryColorDark: Colors.yellow,
       textTheme: const TextTheme(
         headline1: TextStyle(color: Colors.white),
@@ -78,8 +83,14 @@ class DefaultTheme {
       dividerTheme: DividerThemeData(
         color: Colors.black,
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
+          textStyle: MaterialStateProperty.all(TextStyle(
+            color: Colors.white,
+          )),
           elevation: MaterialStateProperty.all(0.2),
           backgroundColor: MaterialStateProperty.all(const Color(0xff111b2b)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
@@ -152,6 +163,12 @@ class DefaultTheme {
         shadowColor: Colors.black54,
         elevation: 2,
       ),
+      radioTheme: RadioThemeData(
+        mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
+        overlayColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.7)),
+        fillColor: MaterialStateProperty.all(Colors.yellow),
+      ),
+      toggleableActiveColor: Colors.white,
       primaryTextTheme: const TextTheme(
         headline1: TextStyle(color: Colors.white),
         headline2: TextStyle(color: Colors.white70),

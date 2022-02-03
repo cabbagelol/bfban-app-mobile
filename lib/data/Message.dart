@@ -32,3 +32,19 @@ class MessageParams {
     };
   }
 }
+
+/// 极光状态
+class MessageJiguanStatus {
+  // 应用通知
+  bool autoSwitchAppMessage;
+  // 站内通知
+  bool onSwitchSiteMessage;
+  // tags
+  List? AppMessageTags;
+
+  MessageJiguanStatus({
+    this.autoSwitchAppMessage = false,
+    this.onSwitchSiteMessage = false,
+    this.AppMessageTags,
+  });
+}

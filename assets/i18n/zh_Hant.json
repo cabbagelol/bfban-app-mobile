@@ -1,0 +1,42 @@
+{
+  "name": "名字",
+  "basic": {
+    "status": [
+      "未处理",
+      "石锤",
+      "嫌疑再观察",
+      "无作弊",
+      "回收站",
+      "回复讨论中",
+      "等待管理确认",
+      "攻击服务器"
+    ],
+    "privilege": {
+      "root": "系统",
+      "admin": "管理员",
+      "super": "超级管理员",
+      "normal": "用户"
+    },
+    "tip": {
+      "notlang": "未翻译"
+    },
+    "support": "支援",
+    "web_site": "网站地址",
+    "setting": "设置"
+  },
+  "signin": {
+    "title": "登录"
+  },
+  "signup": {
+    "title": "注册"
+  },
+  "my": {
+    "title": "我"
+  },
+  "player": {
+    "title": "列表"
+  },
+  "home": {
+    "title": "首页"
+  }
+}

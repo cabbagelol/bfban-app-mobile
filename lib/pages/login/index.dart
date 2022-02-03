@@ -1,6 +1,7 @@
 import 'package:bfban/utils/index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/userinfo_provider.dart';
@@ -24,13 +25,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
   /// [Event]
   /// 登录
   dynamic _openSignin() {
-    _urlUtil
-        .opEnPage(
-      context,
-      '/signin',
-      transition: TransitionType.materialFullScreenDialog,
-    )
-        .then((value) {
+    _urlUtil.opEnPage(context, '/signin', transition: TransitionType.materialFullScreenDialog).then((value) {
       if (ProviderUtil().ofUser(context).isLogin) {
         _urlUtil.popPage(context);
       }
@@ -75,13 +70,13 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       child: Image.asset("assets/images/bfban-logo.png"),
                     ),
                     const SizedBox(height: 15),
-                    const Text(
-                      "BFBAN",
-                      style: TextStyle(fontSize: 20),
+                    Text(
+                      translate("signin.panel.title"),
+                      style: const TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "欢迎使用 BFBAN App",
+                      translate("signin.panel.label"),
                       style: TextStyle(
                         color: Theme.of(context).textTheme.subtitle2!.color,
                       ),
@@ -95,7 +90,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       onPressed: () {
                         _openSignin();
                       },
-                      child: const Text("BFBAN 账户登录"),
+                      child: Text(translate("signin.panel.BfbanAccountButton")),
                     ),
                     const SizedBox(height: 20),
                     MaterialButton(
@@ -103,7 +98,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       color: Theme.of(context).colorScheme.secondary,
                       elevation: 0,
                       onPressed: () => _pop(),
-                      child: const Text("取消"),
+                      child: Text(translate("signin.panel.cancelButton")),
                     ),
                   ],
                 ),
@@ -130,14 +125,14 @@ class _LoginPanelState extends State<LoginPanelPage> {
                         child: Wrap(
                           spacing: 5,
                           crossAxisAlignment: WrapCrossAlignment.center,
-                          children: const [
+                          children: [
                             Text(
-                              "注册BFBAN账户",
-                              style: TextStyle(
+                              translate("signin.panel.signupButton"),
+                              style: const TextStyle(
                                 color: Colors.white54,
                               ),
                             ),
-                            Icon(
+                            const Icon(
                               Icons.open_in_new,
                               color: Colors.white54,
                               size: 18,

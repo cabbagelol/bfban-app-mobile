@@ -9,6 +9,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class HomeCommunityPage extends StatefulWidget {
   const HomeCommunityPage({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class HomeCommunityPage extends StatefulWidget {
   _HomeCommunityPageState createState() => _HomeCommunityPageState();
 }
 
-class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTickerProviderStateMixin {
+class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTickerProviderStateMixin, RestorationMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 列表视图控制器
@@ -53,11 +54,22 @@ class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTicker
   // 请求参
   Map<String, dynamic> playerParame = {};
 
+  // 筛选标签的值
+  late List<RestorableBool> restorablebool = [];
+
+  // 筛选标签配置
+  Map chipCont = {
+    "list": [
+      {"name": "举报", "value": "report", "index": 0},
+      {"name": "注册", "value": "register", "index": 1},
+      {"name": "判决", "value": "verify", "index": 2},
+      {"name": "回复", "value": "judgement", "index": 3}
+    ],
+    "tonal": 0
+  };
+
   @override
   void initState() {
-    _getActivity();
-    _getStatisticsInfo();
-
     // 滚动视图初始
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -71,7 +83,34 @@ class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTicker
       initialIndex: 0,
       length: 3,
     );
+
+    // 初始筛选
+    chipCont["list"].forEach((element) {
+      restorablebool.add(RestorableBool(true));
+    });
+
+    _getActivity();
+    _getStatisticsInfo();
+
     super.initState();
+  }
+
+  @override
+  String get restorationId => 'filter_chip';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool? initialRestore) {
+    restorablebool.asMap().keys.forEach((index) {
+      registerForRestoration(restorablebool[index], index.toString());
+    });
+  }
+
+  @override
+  void dispose() {
+    restorablebool.forEach((element) {
+      element.dispose();
+    });
+    super.dispose();
   }
 
   /// [Response]
@@ -160,93 +199,117 @@ class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: RefreshIndicator(
-            onRefresh: _onRefresh,
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: activity!.list?.length,
-              itemBuilder: (BuildContext context, int index) {
-                var i = activity!.list![index];
+    // 消息筛选
+    _chips() {
+      // 筛选标签
+      List chips = [];
 
-                return GestureDetector(
-                  child: Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+      chipCont["list"].asMap().keys.forEach((index) {
+        chips.add(
+          FilterChip(
+            padding: EdgeInsets.zero,
+            labelStyle: TextStyle(
+              fontSize: 13,
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            label: Text(chipCont["list"][index]["name"].toString()),
+            selected: restorablebool[index].value,
+            onSelected: (value) {
+              setState(() {
+                restorablebool[index].value = !restorablebool[index].value;
+              });
+            },
+          ),
+        );
+      });
+      return chips.map<Widget>((chip) => chip).toList();
+    }
+
+    // 消息筛选是否可见
+    bool _isShow(i) {
+      var item = chipCont["list"].where((element) => element["value"] == i["type"]).toList();
+      var is_ = item.length > 0 ? restorablebool[item[0]["index"]].value : false;
+
+      return is_;
+    }
+
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: activity!.list!.length + 1,
+        itemBuilder: (BuildContext context, int index) {
+          // 筛选
+          if (index == 0) {
+            return Container(
+              child: Wrap(
+                spacing: 5,
+                runSpacing: 5,
+                children: _chips(),
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            );
+          }
+
+          Map i = activity!.list![index - 1];
+          return Visibility(
+            visible: _isShow(i),
+            child: GestureDetector(
+              child: Card(
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
                             children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    (i["username"] ?? i["byUserName"] ?? i["toPlayerName"]).toString(),
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      Date().getFriendlyDescriptionTime(i["createTime"]),
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                      textAlign: TextAlign.end,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                (i["username"] ?? i["byUserName"] ?? i["toPlayerName"]).toString(),
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                               ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Wrap(
-                                children: <Widget>[
-                                  WidgetStateText(itemdata: i),
-                                ],
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  Date().getFriendlyDescriptionTime(i["createTime"]),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                  textAlign: TextAlign.end,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Positioned(
-                          top: 5,
-                          left: 0,
-                          child: Icon(
-                            Icons.message,
-                            size: 100,
-                            color: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.02),
+                          const SizedBox(
+                            height: 5,
                           ),
-                        ),
-                      ],
+                          WidgetStateText(itemdata: i),
+                        ],
+                      ),
                     ),
-                  ),
-                  onTap: () => _opEnDynamicDetail(i),
-                );
-              },
-            ),
-          ),
-          flex: 1,
-        ),
-
-        // 加载
-        activity!.load
-            ? const Padding(
-                padding: EdgeInsets.all(10),
-                child: ELuiLoadComponent(
-                  type: "line",
-                  size: 20,
-                  lineWidth: 2,
-                  color: Colors.white,
+                    Positioned(
+                      top: 5,
+                      left: 0,
+                      child: Icon(
+                        Icons.message,
+                        size: 100,
+                        color: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.02),
+                      ),
+                    ),
+                  ],
                 ),
-              )
-            : Container(),
-      ],
+              ),
+              onTap: () => _opEnDynamicDetail(i),
+            ),
+          );
+        },
+      ),
     );
   }
 }
@@ -286,6 +349,7 @@ class WidgetStateText extends StatelessWidget {
         // 处理
         // 回复
         return Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
             Text(
               "\u5c06${itemdata!["byUserName"]}\u5904\u7406\u4e3a",
@@ -294,24 +358,10 @@ class WidgetStateText extends StatelessWidget {
                 fontSize: 12,
               ),
             ),
-            Container(
-              padding: const EdgeInsets.only(
-                left: 5,
-                right: 5,
-              ),
-              decoration: BoxDecoration(
-                color: Config.startusIng[(itemdata!["status"] ?? 0)]["c"],
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(2),
-                ),
-              ),
-              child: Text(
-                Config.startusIng[(itemdata!["status"] ?? 0)]["s"].toString(),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white,
-                ),
-              ),
+            EluiTagComponent(
+              size: EluiTagSize.no2,
+              color: EluiTagType.none,
+              value: translate("basic.status.${Util().getCheaterStatusLabel(itemdata!["action"]).toString()}"),
             ),
           ],
         );

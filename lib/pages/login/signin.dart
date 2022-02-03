@@ -11,6 +11,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/userinfo_provider.dart';
@@ -113,13 +114,13 @@ class _SigninPageState extends State<SigninPage> {
   /// 登陆
   void _onLogin() async {
     if (loginStatus.captcha!.value.isEmpty) {
-      EluiMessageComponent.error(context)(child: const Text("请填写验证码"));
+      EluiMessageComponent.error(context)(child: Text(translate("signin.accountId")));
       return;
     } else if (loginStatus.password!.isEmpty) {
-      EluiMessageComponent.error(context)(child: const Text("请填写密码"));
+      EluiMessageComponent.error(context)(child: Text(translate("signin.emptyPassword")));
       return;
     } else if (loginStatus.username!.isEmpty) {
-      EluiMessageComponent.error(context)(child: const Text("请填写用户名"));
+      EluiMessageComponent.error(context)(child: Text(translate("signin.emptyAccount")));
       return;
     }
 
@@ -241,7 +242,7 @@ class _SigninPageState extends State<SigninPage> {
                                 Card(
                                   margin: const EdgeInsets.symmetric(horizontal: 20),
                                   child: EluiInputComponent(
-                                    placeholder: "输入账户ID",
+                                    placeholder: translate("signin.accountId"),
                                     internalstyle: true,
                                     onChange: (data) {
                                       setState(() {
@@ -256,7 +257,7 @@ class _SigninPageState extends State<SigninPage> {
                                 Card(
                                   margin: const EdgeInsets.symmetric(horizontal: 20),
                                   child: EluiInputComponent(
-                                    placeholder: "密码",
+                                    placeholder: translate("signin.password"),
                                     type: TextInputType.visiblePassword,
                                     internalstyle: true,
                                     onChange: (data) {
@@ -275,7 +276,7 @@ class _SigninPageState extends State<SigninPage> {
                                     horizontal: 20,
                                   ),
                                   child: EluiInputComponent(
-                                    placeholder: "验证码",
+                                    placeholder: translate("signin.verificationCode"),
                                     internalstyle: true,
                                     maxLenght: 4,
                                     right: GestureDetector(

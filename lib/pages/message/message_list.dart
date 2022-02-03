@@ -64,9 +64,10 @@ class _MessagePageState extends State<MessageListPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              await providerUtil!.delectLocalMessage();
+              _urlUtil.opEnPage(context, "/my/notice");
+              // await providerUtil!.delectLocalMessage();
             },
-            icon: const Icon(Icons.delete),
+            icon: const Icon(Icons.settings),
           ),
         ],
       ),

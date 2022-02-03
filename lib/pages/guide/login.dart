@@ -1,0 +1,103 @@
+import 'package:bfban/provider/userinfo_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+import 'package:provider/provider.dart';
+
+import '../../utils/provider.dart';
+import '../../utils/url.dart';
+import '../../widgets/wave_border.dart';
+
+class GuideLoginPage extends StatefulWidget {
+  const GuideLoginPage({Key? key}) : super(key: key);
+
+  @override
+  _GuideLoginPageState createState() => _GuideLoginPageState();
+}
+
+class _GuideLoginPageState extends State<GuideLoginPage> {
+  final UrlUtil _urlUtil = UrlUtil();
+
+  late String username = "";
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setState(() {
+      ProviderUtil().ofUser(context).userinfo["username"];
+    });
+
+    return Consumer<UserInfoProvider>(
+      builder: (BuildContext context, data, Widget? child) {
+        return GestureDetector(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              WaveBorder(
+                width: 200,
+                maxWidth: 600,
+                count: 6,
+                borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
+                borderWidth: 2,
+                duration: Duration(seconds: 5),
+                child: Column(
+                  children: [
+                    Text(
+                      translate("guide.login.title"),
+                      style: TextStyle(fontSize: 30),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 10),
+                    Text(
+                      translate("guide.login.label"),
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.subtitle2!.color,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 30),
+                    Card(
+                      margin: EdgeInsets.symmetric(horizontal: 30),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 20,
+                              child: Text(
+                                data.isLogin ? data.userinfo["username"][0].toString() : translate("signin.title")[0],
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Visibility(
+                              visible: true,
+                              child: Text(
+                                !data.isLogin ? translate("signin.title") : data.userinfo["username"].toString(),
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          onTap: () {
+            if (data.isLogin) return;
+
+            // 检查登录状态
+            _urlUtil.opEnPage(context, '/login/panel');
+          },
+        );
+      },
+    );
+  }
+}

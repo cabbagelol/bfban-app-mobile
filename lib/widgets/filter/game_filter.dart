@@ -2,6 +2,7 @@
 
 import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_tag/tag.dart';
 
 import '../../component/_filter/class.dart';
 import '../../component/_filter/framework.dart';
@@ -12,10 +13,10 @@ class GameNameFilterPanel extends FilterPanelWidget {
   }) : super(key: key);
 
   @override
-  _GameNameFilterPanelState createState() => _GameNameFilterPanelState();
+  GameNameFilterPanelState createState() => GameNameFilterPanelState();
 }
 
-class _GameNameFilterPanelState extends State<GameNameFilterPanel> {
+class GameNameFilterPanelState extends State<GameNameFilterPanel> {
   /// 游戏类型
   List gameList = [
     {
@@ -41,6 +42,15 @@ class _GameNameFilterPanelState extends State<GameNameFilterPanel> {
   }
 
   /// [Event]
+  /// 更新数据
+  upData () {
+    gameList = [];
+    setState(() {
+      gameList.addAll(Config.game["child"]);
+    });
+  }
+
+  /// [Event]
   /// 设置单选下标
   void _setIndex(int index) {
     setState(() {
@@ -50,42 +60,63 @@ class _GameNameFilterPanelState extends State<GameNameFilterPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: gameList.asMap().keys.map((index) {
-        Map i = gameList[index];
+    return ListView(
+      children: [
+        Column(
+          children: gameList.asMap().keys.map((index) {
+            Map i = gameList[index];
 
-        return GestureDetector(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            decoration: BoxDecoration(
-              color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
-              image: i["app_assets_bk_file"] == null
-                  ? null
-                  : DecorationImage(
-                      opacity: .06,
-                      fit: BoxFit.cover,
-                      image: AssetImage(i["app_assets_bk_file"]),
-                    ),
-            ),
-            child: Center(
-              child: i["value"] == "all"
-                  ? Center(
-                      child: Text(
-                        "全部",
-                        style: TextStyle(
-                          fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
+            return GestureDetector(
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                decoration: BoxDecoration(
+                  color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
+                  image: i["app_assets_bk_file"] == null
+                      ? null
+                      : DecorationImage(
+                          opacity: .06,
+                          fit: BoxFit.cover,
+                          image: AssetImage(i["app_assets_bk_file"]),
+                        ),
+                ),
+                child: Center(
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      i["value"] == "all"
+                          ? Center(
+                              child: Text(
+                                "全部",
+                                style: TextStyle(
+                                  fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
+                                ),
+                              ),
+                            )
+                          : Image.asset(
+                              i["app_assets_logo_file"],
+                              height: 30,
+                            ),
+                      SizedBox(width: 10),
+                      Visibility(
+                        visible: i["num"] != null,
+                        child: EluiTagComponent(
+                          color: EluiTagType.none,
+                          size: EluiTagSize.no2,
+                          theme: EluiTagTheme(
+                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                          value: i["num"].toString(),
                         ),
                       ),
-                    )
-                  : Image.asset(
-                      i["app_assets_logo_file"],
-                      height: 30,
-                    ),
-            ),
-          ),
-          onTap: () => _setIndex(index),
-        );
-      }).toList(),
+                    ],
+                  ),
+                ),
+              ),
+              onTap: () => _setIndex(index),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }

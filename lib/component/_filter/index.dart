@@ -190,6 +190,12 @@ class FilterState extends State<Filter> {
     _onUpdateItemState(false);
   }
 
+  /// [Event]
+  /// 主动更新
+  void updataFrom () {
+    _getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(

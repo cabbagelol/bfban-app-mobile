@@ -16,29 +16,32 @@ class NetwrokConf with ChangeNotifier {
 
   // 从远程服务获取配置
   NetworkConfData data = NetworkConfData(
-    confList: ["privilege", "gameName", "cheatMethodsGlossary", "action"],
+    confList: ["privilege", "gameName", "cheatMethodsGlossary", "cheaterStatus", "action"],
     privilege: {},
     gameName: {},
     cheatMethodsGlossary: {},
+    cheaterStatus: {},
     action: {},
   );
 
   /// [Event]
   /// 初始化
-  init() async {
+  Future init() async {
     await getConf("gameName");
     await getConf("privilege");
     await getConf("cheatMethodsGlossary");
+    await getConf("cheaterStatus");
     await getConf("action");
 
     // 更新类
     Config.game = data.gameName!;
     Config.privilege = data.privilege!;
     Config.cheatMethodsGlossary = data.cheatMethodsGlossary!;
+    Config.cheaterStatus = data.cheaterStatus!;
     Config.action = data.action!;
 
     notifyListeners();
-    return true;
+    return Config;
   }
 
   /// [Response]
@@ -59,6 +62,9 @@ class NetwrokConf with ChangeNotifier {
         break;
       case "cheatMethodsGlossary":
         data.cheatMethodsGlossary = result.data;
+        break;
+      case "cheaterStatus":
+        data.cheaterStatus = result.data;
         break;
       case "privilege":
         data.privilege = result.data;
@@ -82,6 +88,8 @@ class NetworkConfData {
   // 作弊行为配置
   Map? cheatMethodsGlossary;
 
+  Map? cheaterStatus;
+
   // 判决类型配置
   Map? action;
 
@@ -90,6 +98,7 @@ class NetworkConfData {
     this.privilege,
     this.gameName,
     this.cheatMethodsGlossary,
+    this.cheaterStatus,
     this.action,
   });
 }

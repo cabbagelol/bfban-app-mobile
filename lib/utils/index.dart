@@ -12,3 +12,4 @@ export '../provider/appInfo_provider.dart';
 export 'camera.dart';
 export 'provider.dart';
 export 'i18n.dart';
+export 'util.dart';

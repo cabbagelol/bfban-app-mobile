@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
 
@@ -155,12 +156,9 @@ class UserSpacePageState extends State<UserSpacePage> {
           case ConnectionState.done:
             return Scaffold(
               appBar: AppBar(
+                title: Text(translate("userspace.title")),
                 centerTitle: true,
                 actions: [
-                  IconButton(
-                    onPressed: _openMessage(userinfo.data!["id"].toString()),
-                    icon: const Icon(Icons.message),
-                  ),
                   // PopupMenuButton(
                   //   onSelected: (value) {
                   //     switch (value) {
@@ -199,6 +197,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: Column(
                         children: [
+                          const SizedBox(height: 20),
                           CircleAvatar(
                             radius: 35,
                             child: Text(
@@ -207,16 +206,26 @@ class UserSpacePageState extends State<UserSpacePage> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          Text(
-                            snapshot.data["username"],
-                            style: const TextStyle(fontSize: 20),
+                          Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                snapshot.data["username"],
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                              SizedBox(width: 5),
+                              IconButton(
+                                onPressed: _openMessage(userinfo.data!["id"].toString()),
+                                icon: const Icon(Icons.message),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 10),
                           // 自我描述
                           Card(
                             child: Html(
                               style: {"*": Style(color: Theme.of(context).textTheme.subtitle2!.color, padding: EdgeInsets.zero)},
-                              data: snapshot.data["introduction"] == "" ? "这个人很懒什么都没说" : snapshot.data["introduction"],
+                              data: snapshot.data["introduction"] == "" ? translate("userspace.introduction") : snapshot.data["introduction"],
                             ),
                           ),
                         ],
@@ -252,12 +261,12 @@ class UserSpacePageState extends State<UserSpacePage> {
                                         theme: EluiTagTheme(
                                           backgroundColor: Theme.of(context).appBarTheme.color!.withOpacity(.2),
                                         ),
-                                        value: i.toString(),
+                                        value: translate("basic.privilege.${i}").toString(),
                                       );
                                     }).toList(),
                                   ),
-                                  const Text(
-                                    "身份",
+                                  Text(
+                                    translate("userspace.row.privilege"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -281,8 +290,8 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  const Text(
-                                    "加入时间",
+                                  Text(
+                                    translate("userspace.row.joinTime"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -306,8 +315,8 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  const Text(
-                                    "最后在线时间",
+                                  Text(
+                                    translate("userspace.row.lastOnlineTime"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -331,8 +340,8 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  const Text(
-                                    "举报数",
+                                  Text(
+                                    translate("userspace.row.reportCount"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -406,7 +415,7 @@ class RecordItemCard extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Text(
-            "状态: ${Config.startusIng[item!["status"]]["s"]}",
+            translate("basic.status.${item!["status"]}"),
             style: TextStyle(
               fontSize: 13,
               color: Theme.of(context).textTheme.subtitle2!.color,

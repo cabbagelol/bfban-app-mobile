@@ -1,12 +1,16 @@
 /// 用户数据状态管理
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../data/index.dart';
-import '../utils/url.dart';
+import '../utils/index.dart';
 
 class UserInfoProvider with ChangeNotifier {
   final UrlUtil _urlUtil = UrlUtil();
+
+  String packageName = "com.bfban.login";
 
   BuildContext? context;
 
@@ -30,12 +34,24 @@ class UserInfoProvider with ChangeNotifier {
 
   // 获取用户信息
   Map get userinfo {
-    return _userdata.data!["userinfo"] ?? false;
+    return _userdata.data!["userinfo"] ?? {};
   }
 
   // 获取token
   String get getToken {
-    return _userdata.data!["token"] ?? false;
+    return _userdata.data!["token"] ?? "";
+  }
+
+  /// [Event]
+  /// 初始
+  Future init () async {
+    dynamic userinfo = await Storage().get(packageName);
+
+    if (userinfo != null) {
+      _userdata.data = jsonDecode(userinfo);
+    }
+
+    return _userdata.data;
   }
 
   /// [Event]
@@ -48,9 +64,10 @@ class UserInfoProvider with ChangeNotifier {
 
   /// [Event]
   /// 设置用户数据
-  void setData(value) {
+   setData(value) {
     _userdata.data = value;
     notifyListeners();
+    return true;
   }
 
   /// [Event]

@@ -11,6 +11,13 @@ enum Env {
 class Config {
   static Env env = Env.DEV;
 
+  static Map get jiguan {
+    return {
+      "appKey": "966c3770c8bb47ffcbaacff1",
+      "channel": "developer-default",
+    };
+  }
+
   /// 基础请求
   static Map get apiHost {
     Map d = {
@@ -46,24 +53,10 @@ class Config {
 
   /// 游戏类型
   /// base 配置, 会被远程覆盖
-  static Map game = {
-    "child": [
-      {
-        "value": "bf1",
-        "app_assets_logo_file": "assets/images/report/battlefield-1-png-logo.png",
-      },
-      {
-        "value": "bfv",
-        "app_assets_logo_file": "assets/images/report/battlefield-v-png-logo.png",
-      },
-      {
-        "value": "bf6",
-        "app_assets_logo_file": "assets/images/report/battlefield-2042-logo.png",
-      },
-    ]
-  };
+  static Map game = {"child": []};
   static Map privilege = {};
   static Map cheatMethodsGlossary = {};
+  static Map cheaterStatus = {};
   static Map action = {};
 
   /// 请求接口
@@ -104,53 +97,7 @@ class Config {
       'account_signupVerify': 'user/signupVerify',
     };
 
-    name(String name) {
-      return list[name];
-    }
-
     return list;
-  }
-
-  /// 贴纸状态类型
-  static List get cheaterStatus {
-    return [
-      {
-        "value": -1,
-        "values": [-1]
-      },
-      {
-        "value": 0,
-        "values": ["0", "wallhack"]
-      },
-      {
-        "value": 5,
-        "values": ["5", "gadgetModify", "suspect"]
-      },
-      {
-        "value": 6,
-        "values": ["6", "teleport"]
-      },
-      {
-        "value": 1,
-        "values": ["1", "guilt"],
-        "action": "guilt"
-      },
-      {
-        "value": 2,
-        "values": ["2", "invisable", "discuss"],
-        "action": "discuss"
-      },
-      {
-        "value": 3,
-        "values": ["3", "magicBullet", "innocent"],
-        "action": "innocent"
-      },
-      {
-        "value": 4,
-        "values": ["4", "damageChange", "trash"],
-        "action": "suspect"
-      }
-    ];
   }
 
   static Map<String, String> get cheatingTpyes {

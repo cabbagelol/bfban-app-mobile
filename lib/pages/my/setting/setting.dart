@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../utils/index.dart';
@@ -38,24 +39,38 @@ class _SettingPageState extends State<SettingPage> {
   /// [Event]
   /// 打开主题
   void _opEnTheme() {
-    _urlUtil.opEnPage(context, '/my/theme').then((value) {});
+    _urlUtil.opEnPage(context, '/my/theme');
   }
 
   /// [Event]
   /// 清洁
   void _opEnDestock() {
-    _urlUtil.opEnPage(context, '/my/destock').then((value) {});
+    _urlUtil.opEnPage(context, '/my/destock');
+  }
+
+  /// [Event]
+  /// 语言
+  void _opEnLanguage() {
+    _urlUtil.opEnPage(context, '/my/language');
+  }
+
+  /// [Event]
+  /// 通知
+  void _opEnNotice() {
+    _urlUtil.opEnPage(context, '/my/notice');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(translate("setting.title")),
+      ),
       body: ListView(
         children: [
           EluiCellComponent(
-            title: "版本",
-            label: "程序版本",
+            title: translate("setting.versions.title"),
+            label: translate("setting.versions.describe"),
             islink: true,
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
@@ -66,10 +81,36 @@ class _SettingPageState extends State<SettingPage> {
             cont: Text(ProviderUtil().ofPackage(context).currentVersion.toString()),
             onTap: () => _opEnVersionDowUrl(),
           ),
-          SizedBox(height: 10),
+          const SizedBox(
+            height: 10,
+          ),
           EluiCellComponent(
-            title: "主题",
-            label: "程序主题",
+            title: translate("setting.language.title"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.subtitle1?.color,
+              labelColor: Theme.of(context).textTheme.subtitle2?.color,
+              linkColor: Theme.of(context).textTheme.subtitle1?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _opEnLanguage(),
+          ),
+          const SizedBox(height: 10),
+          EluiCellComponent(
+            title: translate("setting.notice.title"),
+            label: translate("setting.notice.describe"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.subtitle1?.color,
+              labelColor: Theme.of(context).textTheme.subtitle2?.color,
+              linkColor: Theme.of(context).textTheme.subtitle1?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _opEnNotice(),
+          ),
+          EluiCellComponent(
+            title: translate("setting.theme.title"),
+            label: translate("setting.theme.describe"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -80,8 +121,8 @@ class _SettingPageState extends State<SettingPage> {
             onTap: () => _opEnTheme(),
           ),
           EluiCellComponent(
-            title: "清理",
-            label: "清理程序缓存文件",
+            title: translate("setting.cleanManagement.title"),
+            label: translate("setting.cleanManagement.describe"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -92,8 +133,8 @@ class _SettingPageState extends State<SettingPage> {
             onTap: () => _opEnDestock(),
           ),
           EluiCellComponent(
-            title: "应用信息",
-            label: "打开程序应用信息",
+            title: translate("setting.appInfo.title"),
+            label: translate("setting.appInfo.describe"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,

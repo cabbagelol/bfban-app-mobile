@@ -59,8 +59,8 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
                 child: Text(
                   i["name"].toString(),
                   style: TextStyle(
-                    color: widget.data!.value == index ? Theme.of(context).textTheme.bodyText1!.color : Theme.of(context).textTheme.subtitle2!.color,
-                    fontWeight: widget.data!.value == index ? FontWeight.bold : FontWeight.normal,
+                    color: widget.data!.value == i["value"] ? Theme.of(context).textTheme.bodyText1!.color : Theme.of(context).textTheme.subtitle2!.color,
+                    fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
                   ),
                 ),
               ),
