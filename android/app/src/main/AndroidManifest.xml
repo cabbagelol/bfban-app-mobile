@@ -33,16 +33,14 @@
             </intent-filter>
 
             <!-- App Links -->
-            <intent-filter android:autoVerify="true">
+            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
+                <!-- Accepts URIs that begin with YOUR_SCHEME://YOUR_HOST -->
                 <data
                     android:scheme="bfban"
-                    android:host="app.bfban.com"
-                    android:pathPrefix="/links" />
+                    android:host="app"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -53,7 +51,7 @@
                 <data
                     android:scheme="https"
                     android:host="bfban.com"
-                    android:path="/applink" />
+                    android:path="/player" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -63,7 +61,8 @@
 
                 <data
                     android:scheme="https"
-                    android:host="bfban.cabbagelol.net" />
+                    android:host="bfban.cabbagelol.net"
+                    android:path="/player" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -73,7 +72,8 @@
 
                 <data
                     android:scheme="https"
-                    android:host="bfban-app.cabbagelol.net" />
+                    android:host="bfban-app.cabbagelol.net"
+                    android:path="/app" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
