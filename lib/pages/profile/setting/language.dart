@@ -3,6 +3,7 @@
 import 'package:bfban/provider/translation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
@@ -16,47 +17,50 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
-  LocalizationDelegate? localizationDelegate;
+  var langProvider;
+  Locale? currentLang;
 
-  List langList = [
-    {"name": "zh_Hant", "label": "繁体中文", "uri": "/lang/app/zh.json", "main": true, "members": []},
-    {"name": "zh_Hans", "label": "简体中文", "uri": "/lang/app/zh.json", "main": true, "members": []},
-    // {"name": "en_US", "label": "English", "members": []}
-  ];
+  List languages = [];
 
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration.zero, () async {
+      setState(() {
+        currentLang = FlutterI18n.currentLocale(context);
+      });
+    });
 
-    getLang();
+    getLanguageList();
   }
 
   /// [Response]
   /// 获取语言列表
-  void getLang () async {
+  void getLanguageList () async {
     Response result = await Http.request(
-      "/conf/languages.json",
+      "conf/languages.json",
       typeUrl: "app_web_site",
       method: Http.GET,
     );
 
-    if (result.data) {
+    if (result.data.toString().isNotEmpty) {
       setState(() {
-        langList = result.data["child"];
+        languages = result.data["child"];
       });
     }
   }
 
   /// [Event]
   /// 变动语言
-  void setLang(context, String value) async {
-    changeLocale(context, value);
+  void setLanguage(context, String value) async {
+    // changeLocale(context, value);
+    currentLang = Locale(value);
+    await FlutterI18n.refresh(context, currentLang);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    localizationDelegate = LocalizedApp.of(context).delegate;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(translate("setting.language.title")),
@@ -67,7 +71,7 @@ class _LanguagePageState extends State<LanguagePage> {
             // 例子
             EluiCellComponent(
               title: translate("basic.function.auto.title"),
-              label: translate("basic.function.auto.describe") + localizationDelegate!.currentLocale.toString(),
+              label: translate("basic.function.auto.describe"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -85,14 +89,15 @@ class _LanguagePageState extends State<LanguagePage> {
             Opacity(
               opacity: data.autoSwitchLang ? .3 : 1,
               child: Column(
-                children: langList.map((e) {
+                children: languages.map((lang) {
                   return RadioListTile<String>(
-                    value: e["name"].toString(),
+                    value: lang["fileName"].toString(),
                     onChanged: (value) {
-                      setLang(context, value!);
+                      setLanguage(context, value!);
+                      // setLanguage(context, value!);
                     },
-                    groupValue: localizationDelegate!.currentLocale.toString(),
-                    title: Text(e["label"].toString()),
+                    groupValue: currentLang?.languageCode,
+                    title: Text(lang["label"].toString()),
                     selected: true,
                   );
                 }).toList(),

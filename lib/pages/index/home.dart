@@ -2,14 +2,14 @@
 
 import 'dart:ui' as ui;
 
-import 'package:bfban/pages/index/home_bottom_panel.dart';
+import 'package:bfban/pages/index/footerbar_panel.dart';
 import 'package:bfban/widgets/drawer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../data/Theme.dart';
-import 'home_community.dart';
+import 'activitie.dart';
 
 class SearchPage extends StatefulWidget {
   final int num;

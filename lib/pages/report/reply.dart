@@ -99,7 +99,7 @@ class _ReplyPageState extends State<ReplyPage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("com.cabbagelol.richedit", value: replyStatus.data!.content.toString());
+    await Storage().set("com.bfban.richedit", value: replyStatus.data!.content.toString());
 
     _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino).then((data) {
       /// 按下确认储存富文本编写的内容

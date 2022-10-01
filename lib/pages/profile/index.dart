@@ -75,7 +75,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
   /// [Event]
   /// 应用设置
   void _opEnSetting() {
-    _urlUtil.opEnPage(context, '/my/setting');
+    _urlUtil.opEnPage(context, '/profile/setting');
   }
 
   /// [Event]
@@ -292,7 +292,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               islink: true,
-              onTap: () => _urlUtil.opEnPage(context, '/my/support'),
+              onTap: () => _urlUtil.opEnPage(context, '/profile/support'),
             ),
             const SizedBox(
               height: 20,

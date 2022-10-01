@@ -10,9 +10,8 @@ import 'package:provider/provider.dart';
 import 'package:bfban/utils/index.dart';
 
 import '../../widgets/index/search.dart';
-import '../my/my.dart';
+import '../profile/index.dart';
 import 'home.dart';
-import 'players.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
@@ -208,7 +207,7 @@ class _IndexPageState extends State<IndexPage> {
                 },
                 {
                   "index": 2,
-                  "name": "account",
+                  "name": "profile",
                   "icon": const Icon(Icons.person, size: 30),
                 },
               ].map((Map? navitem) {

@@ -1,15 +1,13 @@
-/// 社区
+/// 网站近期活动
 
 import 'dart:core';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_elui_plugin/elui.dart';
-
 import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 
 class HomeCommunityPage extends StatefulWidget {
   const HomeCommunityPage({Key? key}) : super(key: key);
@@ -41,7 +39,7 @@ class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTicker
       "confirmed": 0,
     },
     params: {
-      "reports": "show", // show reports number
+      "reports": true, // show reports number
       "players": true, // show players that is reported number
       "confirmed": true, // show confirmed number
       "registers": true, // show register number
@@ -325,25 +323,26 @@ class WidgetStateText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle textstyle = TextStyle(
+      color: Theme.of(context).primaryTextTheme.headline3!.color,
+      fontSize: 12,
+    );
+
     switch (itemdata!["type"]) {
       case "report":
         // 举报
-        return Text(
-          " \u4e3e\u62a5\u4e86 ${itemdata!["byUserName"]} ${itemdata!["game"]}",
-          style: TextStyle(
-            color: Theme.of(context).primaryTextTheme.headline3!.color,
-            fontSize: 12,
-          ),
+        return Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            I18nText("home.activity.activities.report", child: Text("", style: textstyle)),
+            I18nText("basic.games.${itemdata!["game"]}", child: Text("", style: textstyle)),
+            SizedBox(width: 5),
+            Text(itemdata!["toPlayerName"], style: textstyle)
+          ],
         );
       case "register":
         // 注册
-        return Text(
-          "注册了BFBAN，欢迎",
-          style: TextStyle(
-            color: Theme.of(context).primaryTextTheme.headline3!.color,
-            fontSize: 12,
-          ),
-        );
+        return I18nText("home.activity.activities.join", child: Text("", style: textstyle));
       case "verify":
       case "judgement":
         // 处理
@@ -351,19 +350,9 @@ class WidgetStateText extends StatelessWidget {
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
-            Text(
-              "\u5c06${itemdata!["byUserName"]}\u5904\u7406\u4e3a",
-              style: TextStyle(
-                color: Theme.of(context).primaryTextTheme.headline3!.color,
-                fontSize: 12,
-              ),
-            ),
-            EluiTagComponent(
-              size: EluiTagSize.no2,
-              color: EluiTagType.none,
-              value: translate("basic.action.${itemdata!["action"]}.text"),
-              onTap: () => {},
-            ),
+            I18nText("detail.info.judge", child: Text("", style: textstyle)),
+            Text("${itemdata!["toPlayerName"]}", style: textstyle),
+            I18nText("basic.action.${itemdata!["action"]}.text", child: Text("", style: textstyle)),
           ],
         );
     }

@@ -9,7 +9,7 @@ import '../utils/index.dart';
 
 class LangProvider with ChangeNotifier {
   // 包名
-  String packageName = "com.cabbagelol.language";
+  String packageName = "com.bfban.language";
 
   // 语言字典列表
   List _listDictionaryFrom = [];

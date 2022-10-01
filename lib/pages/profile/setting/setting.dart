@@ -33,31 +33,31 @@ class _SettingPageState extends State<SettingPage> {
   /// [Event]
   /// 前往下载页面
   void _opEnVersionDowUrl() {
-    _urlUtil.opEnPage(context, "/my/version");
+    _urlUtil.opEnPage(context, "/profile/version");
   }
 
   /// [Event]
   /// 打开主题
   void _opEnTheme() {
-    _urlUtil.opEnPage(context, '/my/theme');
+    _urlUtil.opEnPage(context, '/profile/theme');
   }
 
   /// [Event]
   /// 清洁
   void _opEnDestock() {
-    _urlUtil.opEnPage(context, '/my/destock');
+    _urlUtil.opEnPage(context, '/profile/destock');
   }
 
   /// [Event]
   /// 语言
   void _opEnLanguage() {
-    _urlUtil.opEnPage(context, '/my/language');
+    _urlUtil.opEnPage(context, '/profile/language');
   }
 
   /// [Event]
   /// 通知
   void _opEnNotice() {
-    _urlUtil.opEnPage(context, '/my/notice');
+    _urlUtil.opEnPage(context, '/profile/notice');
   }
 
   @override

@@ -1,10 +1,10 @@
 /// 应用路由
 
 import 'package:bfban/pages/detail/user_space.dart';
-import 'package:bfban/pages/my/setting/destock.dart';
-import 'package:bfban/pages/my/setting/language.dart';
-import 'package:bfban/pages/my/setting/notice.dart';
-import 'package:bfban/pages/my/setting/setting.dart';
+import 'package:bfban/pages/profile/setting/destock.dart';
+import 'package:bfban/pages/profile/setting/language.dart';
+import 'package:bfban/pages/profile/setting/notice.dart';
+import 'package:bfban/pages/profile/setting/setting.dart';
 import 'package:fluro/fluro.dart';
 
 // S Pages
@@ -19,8 +19,8 @@ import 'package:bfban/pages/report/drafts.dart';
 import 'package:bfban/pages/report/manage.dart';
 import 'package:bfban/pages/login/signin.dart';
 import 'package:bfban/pages/search/index.dart';
-import 'package:bfban/pages/my/support.dart';
-import 'package:bfban/pages/my/setting/theme.dart';
+import 'package:bfban/pages/profile/support.dart';
+import 'package:bfban/pages/profile/setting/theme.dart';
 import 'package:bfban/pages/rich_edit/index.dart';
 import 'package:bfban/pages/message/message_list.dart';
 import 'package:bfban/pages/message/message_detail.dart';
@@ -29,8 +29,8 @@ import '../pages/camera/index.dart';
 import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
 import '../pages/message/index.dart';
-import '../pages/my/app_network.dart';
-import '../pages/my/app_package.dart';
+import '../pages/profile/app_network.dart';
+import '../pages/profile/app_package.dart';
 import '../pages/splash.dart';
 // E Pages
 
@@ -157,43 +157,43 @@ class Routes {
         }
       },
       {
-        "url": "/my/language",
+        "url": "/profile/language",
         'item': (context, params) {
           return const LanguagePage();
         },
       },
       {
-        "url": "/my/destock",
+        "url": "/profile/destock",
         'item': (context, params) {
           return const DestockPage();
         },
       },
       {
-        "url": "/my/setting",
+        "url": "/profile/setting",
         'item': (context, params) {
           return const SettingPage();
         },
       },
       {
-        "url": "/my/support",
+        "url": "/profile/support",
         'item': (context, params) {
           return const SupportPage();
         },
       },
       {
-        "url": "/my/version",
+        "url": "/profile/version",
         'item': (context, params) {
           return const AppPackagePage();
         },
       },
       {
-        "url": "/my/theme",
+        "url": "/profile/theme",
         'item': (context, params) {
           return const ThemePage();
         },
       },
       {
-        "url": "/my/notice",
+        "url": "/profile/notice",
         'item': (context, params) {
           return NoticePage();
         }

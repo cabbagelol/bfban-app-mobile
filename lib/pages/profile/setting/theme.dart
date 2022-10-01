@@ -3,7 +3,6 @@
 import 'package:bfban/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bfban/utils/index.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';

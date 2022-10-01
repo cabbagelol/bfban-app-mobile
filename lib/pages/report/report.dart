@@ -245,7 +245,7 @@ class _ReportPageState extends State<ReportPage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("com.cabbagelol.richedit", value: reportStatus.param!.data!["description"].toString());
+    await Storage().set("com.bfban.richedit", value: reportStatus.param!.data!["description"].toString());
 
     _urlUtil.opEnPage(context, "/richedit").then((data) {
       /// 按下确认储存富文本编写的内容

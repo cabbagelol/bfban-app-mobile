@@ -1,4 +1,4 @@
-/// 主页面板
+/// 首页活动面板
 
 import 'dart:convert';
 
@@ -28,7 +28,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
       "confirmed": 0,
     },
     params: {
-      "reports": "show", // show reports number
+      "reports": true, // show reports number
       "players": true, // show players that is reported number
       "confirmed": true, // show confirmed number
       "registers": true, // show register number

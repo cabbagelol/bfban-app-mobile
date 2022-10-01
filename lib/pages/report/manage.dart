@@ -185,7 +185,7 @@ class _ManagePageState extends State<ManagePage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("com.cabbagelol.richedit", value: manageStatus.data!.content);
+    await Storage().set("com.bfban.richedit", value: manageStatus.data!.content);
 
     _urlUtil.opEnPage(context, "/richedit").then((data) {
       /// 按下确认储存富文本编写的内容

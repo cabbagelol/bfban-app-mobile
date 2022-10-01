@@ -35,7 +35,7 @@ class _richEditPageState extends State<RichEditPage> {
   }
 
   Future _ready() async {
-    data = await Storage().get("com.cabbagelol.richedit");
+    data = await Storage().get("com.bfban.richedit");
 
     return data;
   }

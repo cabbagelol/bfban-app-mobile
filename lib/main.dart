@@ -14,7 +14,6 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:flutter_i18n/loaders/network_file_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
@@ -89,8 +88,16 @@ class _BfBanAppState extends State<BfBanApp> {
   @override
   Widget build(BuildContext context) {
     // 翻译
-    // LocalizationProvider
-    // var localizationDelegate = LocalizedApp.of(context).delegate;
+    final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
+        translationLoader: NetworkFileTranslationLoader(
+            fallbackFile: 'en',
+            baseUri: Uri.https(
+                Config.apiHost["web_site"].toString().replaceAll("https://", ""),
+                "lang"
+            ),
+            forcedLocale: Locale('zh'),
+        )
+    );
 
     return MultiProvider(
       providers: [
@@ -111,14 +118,7 @@ class _BfBanAppState extends State<BfBanApp> {
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
-              FlutterI18nDelegate(
-                  translationLoader: NetworkFileTranslationLoader(
-                      baseUri: Uri.https(
-                          Config.apiHost["web_site"].toString().replaceAll("https://", ""),
-                          "lang"
-                      )
-                  )
-              )
+              flutterI18nDelegate
             ],
             builder: (BuildContext context, Widget? widget) {
               ErrorWidget.builder = (FlutterErrorDetails errorDetails) {

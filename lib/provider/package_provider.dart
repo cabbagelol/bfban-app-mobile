@@ -115,7 +115,7 @@ class PackageProvider with ChangeNotifier {
               TextButton(
                 child: const Text('前往升级'),
                 onPressed: () {
-                  _urlUtil.opEnPage(context, "/my/version").then((value) {
+                  _urlUtil.opEnPage(context, "/profile/version").then((value) {
                     Navigator.pop(context);
                   });
                 },

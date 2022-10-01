@@ -1,9 +1,10 @@
+/// 玩家列表
+
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../component/_filter/index.dart';
 import '../../data/index.dart';
