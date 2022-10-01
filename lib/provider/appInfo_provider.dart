@@ -49,7 +49,7 @@ class NetwrokConf with ChangeNotifier {
   Future getConf(String fileName) async {
     Response result = await Http.request(
       "/conf/$fileName.json",
-      typeUrl: "bfban_web_site_conf",
+      typeUrl: "web_site",
       method: Http.GET,
     );
 

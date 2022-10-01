@@ -81,6 +81,7 @@ dependencies:
   # 多国语言 https://github.com/Daegalus/flutter_translate
   # https://www.unicode.org/reports/tr35/#Unicode_language_identifier
   flutter_translate: ^3.0.1
+  flutter_i18n: ^0.32.4
 
   # 图片保存
   image_gallery_saver: ^1.2.2

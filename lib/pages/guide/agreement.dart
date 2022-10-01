@@ -34,8 +34,8 @@ class _agreementPageState extends State<GuideAgreementPage> {
   /// 获取协议
   getAgreement() async {
     Response result = await Http.request(
-      Config.apiHost["web_site"] + "/agreement/zh.html",
-      typeUrl: "",
+      "agreement/zh.html",
+      typeUrl: "app_web_site",
       method: Http.GET,
     );
 

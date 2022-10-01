@@ -267,7 +267,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
                 islink: true,
-                onTap: () => _urlUtil.opEnWebView(Config.apiHost["bfban_web_site"] + "/profile/account"),
+                onTap: () => _urlUtil.opEnWebView(Config.apiHost["app_web_site"] + "/profile/account"),
               ),
             ),
             EluiCellComponent(

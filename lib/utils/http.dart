@@ -66,10 +66,13 @@ class Http extends ScaffoldState {
       });
     }
 
+    String _domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl];
+    String _url = "$_domain/$url";
+
     Dio dio = createInstance();
     try {
       Response response = await dio.request(
-        "${typeUrl.isEmpty ? "" : Config.apiHost[typeUrl]}$url",
+        _url,
         data: data,
         queryParameters: parame,
         options: Options(

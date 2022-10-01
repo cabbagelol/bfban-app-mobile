@@ -19,8 +19,8 @@ class _LanguagePageState extends State<LanguagePage> {
   LocalizationDelegate? localizationDelegate;
 
   List langList = [
-    {"name": "zh_Hant", "label": "繁体中文", "uri": "/lang/app/zh_Hans.json", "main": true, "members": []},
-    {"name": "zh_Hans", "label": "简体中文", "uri": "/lang/app/zh_Hans.json", "main": true, "members": []},
+    {"name": "zh_Hant", "label": "繁体中文", "uri": "/lang/app/zh.json", "main": true, "members": []},
+    {"name": "zh_Hans", "label": "简体中文", "uri": "/lang/app/zh.json", "main": true, "members": []},
     // {"name": "en_US", "label": "English", "members": []}
   ];
 
@@ -36,7 +36,7 @@ class _LanguagePageState extends State<LanguagePage> {
   void getLang () async {
     Response result = await Http.request(
       "/conf/languages.json",
-      typeUrl: "bfban_web_site_conf",
+      typeUrl: "app_web_site",
       method: Http.GET,
     );
 

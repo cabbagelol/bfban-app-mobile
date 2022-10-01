@@ -13,9 +13,6 @@ class CheatListCard extends StatelessWidget {
 
   final onTap;
 
-  /// 进度状态
-  final Map startusIng = Config.startusIng;
-
   CheatListCard({
     Key? key,
     required this.item,
@@ -55,10 +52,6 @@ class CheatListCard extends StatelessWidget {
               borderRadius: const BorderRadius.all(
                 Radius.circular(2),
               ),
-            ),
-            child: Text(
-              translate("basic.status.${item["status"]}"),
-              style: TextStyle(fontSize: 12),
             ),
           ),
         ],

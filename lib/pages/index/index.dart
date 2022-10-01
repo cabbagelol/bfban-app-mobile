@@ -4,7 +4,7 @@ import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -202,19 +202,19 @@ class _IndexPageState extends State<IndexPage> {
                 },
                 {
                   "index": 1,
-                  "name": "player",
+                  "name": "player_list",
                   "count": (playerListPage?.currentState?.playersStatus?.list!.length ?? 0).toString(),
                   "icon": const Icon(Icons.view_list_sharp, size: 30),
                 },
                 {
                   "index": 2,
-                  "name": "my",
+                  "name": "account",
                   "icon": const Icon(Icons.person, size: 30),
                 },
               ].map((Map? navitem) {
                 return BottomNavigationBarItem(
                   icon: navitem!["icon"],
-                  label: translate("${navitem["name"]}.title"),
+                  label: FlutterI18n.translate(context, "${navitem["name"]}.title")
                 );
               }).toList(),
               currentIndex: _currentPageIndex,

@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:bfban/data/index.dart';
@@ -70,9 +71,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   /// 导航个体
   List<Tab> cheatersTabs = <Tab>[const Tab(text: "contnet"), const Tab(text: "list")];
-
-  /// 进度状态
-  final Map startusIng = Config.startusIng;
 
   /// 曾用名按钮状态 or 列表状态
   Map userNameList = {
@@ -570,24 +568,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                         flex: 1,
                                         child: Row(
                                           children: <Widget>[
-                                            GestureDetector(
-                                              child: const Icon(
-                                                Icons.code,
-                                              ),
-                                              onTap: () {
-                                                Clipboard.setData(
-                                                  ClipboardData(
-                                                    text: snapshot.data!["originId"],
-                                                  ),
-                                                );
-                                                EluiMessageComponent.success(context)(
-                                                  child: const Text("复制成功"),
-                                                );
-                                              },
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
 
                                             /// 用户名称
                                             Expanded(
@@ -597,6 +577,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 children: [
                                                   SelectableText(
                                                     snapshot.data!["originName"].toString(),
+                                                    onTap: () {
+                                                      Clipboard.setData(
+                                                        ClipboardData(
+                                                          text: snapshot.data!["originId"],
+                                                        ),
+                                                      );
+                                                    },
                                                     style: const TextStyle(
                                                       fontSize: 20,
                                                       shadows: <Shadow>[
@@ -617,6 +604,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 ],
                                               ),
                                             ),
+
                                             const SizedBox(
                                               width: 5,
                                             ),
@@ -628,17 +616,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 right: 5,
                                               ),
                                               decoration: BoxDecoration(
-                                                color: startusIng[snapshot.data!["status"]]["c"],
-                                                borderRadius: const BorderRadius.all(
+                                                borderRadius: BorderRadius.all(
                                                   Radius.circular(2),
                                                 ),
                                               ),
-                                              child: Text(
-                                                startusIng[snapshot.data!["status"]]["s"].toString(),
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: startusIng[snapshot.data!["status"]]["tc"],
-                                                ),
+                                              child: I18nText(
+                                                "basic.status.${snapshot.data!["status"]}",
+                                                child: Text(""),
                                               ),
                                             ),
                                           ],
@@ -648,7 +632,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                   ),
                                 ),
 
-                                // 属性
+                                // Player Attr
                                 Card(
                                   margin: const EdgeInsets.symmetric(horizontal: 10),
                                   child: SizedBox(
@@ -755,12 +739,20 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             return Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
-                                                Text(
-                                                  snapshot.data["games"].toString(),
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                  ),
+                                                Wrap(
+                                                  children: snapshot.data["games"].map<Widget>((i) {
+                                                    return I18nText(
+                                                        "basic.games.$i",
+                                                        child: const Text("",style: TextStyle(fontSize: 16))
+                                                    );
+                                                  }).toList(),
                                                 ),
+                                                // Text(
+                                                //   snapshot.data["games"].toString(),
+                                                //   style: const TextStyle(
+                                                //     fontSize: 16,
+                                                //   ),
+                                                // ),
                                                 const Text(
                                                   "被举报游戏",
                                                   style: TextStyle(

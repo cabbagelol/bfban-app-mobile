@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
@@ -122,13 +123,13 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                        Text(
-                          "\u5df2\u6838\u5b9e\u4f5c\u5f0a\u73a9\u5bb6\u4eba\u6570",
+                        I18nText("home.cover.dataReceived", child: Text(
+                          "",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).textTheme.subtitle2!.color,
                           ),
-                        )
+                        ))
                       ],
                     ),
                     Container(
@@ -150,13 +151,13 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                        Text(
-                          "\u793e\u533a\u5df2\u6536\u5230\u4e3e\u62a5\u6b21\u6570",
+                        I18nText("home.cover.confirmData", child: Text(
+                          "",
                           style: TextStyle(
                             fontSize: 12,
                             color: Theme.of(context).textTheme.subtitle2!.color,
                           ),
-                        )
+                        ))
                       ],
                     ),
                     Container(

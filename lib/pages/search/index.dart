@@ -11,6 +11,7 @@ import 'package:bfban/widgets/index.dart';
 
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_elui_plugin/_vacancy/index.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 
 class SearchPage extends StatefulWidget {
   final data;
@@ -164,11 +165,11 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
             children: [
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 30),
-                child: const Text("现在"),
+                child: I18nText("search.scope.current"),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 30),
-                child: const Text("过去"),
+                child: I18nText("search.scope.history"),
               ),
             ],
             isSelected: isSelected.map((e) => e.value).toList(),
@@ -245,13 +246,6 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
                                 Icons.history,
                                 size: 17,
                               ),
-                              Text(
-                                "搜索历史",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.white54,
-                                ),
-                              )
                             ],
                           ),
                           EluiTagComponent(

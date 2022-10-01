@@ -11,6 +11,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:flutter_i18n/loaders/network_file_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:sentry/sentry.dart';
@@ -28,6 +30,12 @@ void main() async {
 
   // google ads 初始
   // MobileAds.instance.initialize();
+
+  // 翻译
+  // var delegate = await LocalizationDelegate.create(
+  //   fallbackLocale: 'en',
+  //   supportedLocales: ['en', 'zh'],
+  // );
 
   // 极光
   JPush().setup(
@@ -59,7 +67,7 @@ void main() async {
         },
       );
 
-      runApp(LocalizedApp(delegate, const BfBanApp()));
+      runApp(const BfBanApp());
     },
     (exception, stackTrace) async {
       await Sentry.captureException(
@@ -82,7 +90,7 @@ class _BfBanAppState extends State<BfBanApp> {
   Widget build(BuildContext context) {
     // 翻译
     // LocalizationProvider
-    var localizationDelegate = LocalizedApp.of(context).delegate;
+    // var localizationDelegate = LocalizedApp.of(context).delegate;
 
     return MultiProvider(
       providers: [
@@ -96,28 +104,32 @@ class _BfBanAppState extends State<BfBanApp> {
       ],
       child: Consumer<ThemeProvider>(
         builder: (BuildContext? ThemeContext, data, Widget? child) {
-          return LocalizationProvider(
-            state: LocalizationProvider.of(context).state,
-            child: MaterialApp(
-              theme: data.currentThemeData,
-              darkTheme: data.list!["default"]!.themeData!,
-              initialRoute: '/splash',
-              localizationsDelegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                localizationDelegate,
-              ],
-              builder: (BuildContext context, Widget? widget) {
-                ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-                  return CustomError(errorDetails: errorDetails);
-                };
+          return MaterialApp(
+            theme: data.currentThemeData,
+            darkTheme: data.list!["default"]!.themeData!,
+            initialRoute: '/splash',
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              FlutterI18nDelegate(
+                  translationLoader: NetworkFileTranslationLoader(
+                      baseUri: Uri.https(
+                          Config.apiHost["web_site"].toString().replaceAll("https://", ""),
+                          "lang"
+                      )
+                  )
+              )
+            ],
+            builder: (BuildContext context, Widget? widget) {
+              ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                return CustomError(errorDetails: errorDetails);
+              };
 
-                return widget!;
-              },
-              supportedLocales: localizationDelegate.supportedLocales,
-              locale: localizationDelegate.currentLocale,
-              onGenerateRoute: Routes.router!.generator,
-            ),
+              return widget!;
+            },
+            // supportedLocales: localizationDelegate.supportedLocales,
+            // locale: localizationDelegate.currentLocale,
+            onGenerateRoute: Routes.router!.generator,
           );
         },
       ),
@@ -140,7 +152,7 @@ class CustomError extends StatelessWidget {
       child: Padding(
         child: Text(
           errorDetails!.library.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),

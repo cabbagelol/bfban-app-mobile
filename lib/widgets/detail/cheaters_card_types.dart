@@ -13,6 +13,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
 /// 卡片内置公共
@@ -30,22 +31,20 @@ class CardFun {
     return {
       linkMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) => GestureDetector(
-          onTap: () => _urlUtil.onPeUrl(context.tree.element!.attributes["href"].toString()),
+          onTap: () => {
+            _urlUtil.onPeUrl(context.tree.element!.attributes["href"].toString())
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
             decoration: const BoxDecoration(
-              color: Color(0xfff2f2f2),
               borderRadius: BorderRadius.all(Radius.circular(2)),
             ),
             child: Wrap(
               spacing: 5,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                const Icon(
-                  Icons.insert_link,
-                  color: Colors.blue,
-                ),
-                context.parser,
+                const Icon(Icons.insert_link,),
+                Text.rich(TextSpan(text: context.tree.element!.text))
               ],
             ),
           ),
@@ -135,7 +134,7 @@ class CardFun {
   /// 配置html 样式表
   Map<String, Style> styleHtml(BuildContext context) {
     return {
-      "*": Style(fontSize: const FontSize(12), color: Theme.of(context).textTheme.subtitle1!.color),
+      "*": Style(fontSize: FontSize(12), color: Theme.of(context).textTheme.subtitle1!.color),
     };
   }
 
@@ -216,16 +215,8 @@ class CardFun {
     return Wrap(
       spacing: 5,
       runAlignment: WrapAlignment.center,
-      children: getPrivilege(privileges).map((e) {
-        return EluiTagComponent(
-          size: EluiTagSize.no2,
-          color: EluiTagType.none,
-          theme: EluiTagTheme(
-            textColor: e["textColor"],
-            backgroundColor: e["backgroundColor"],
-          ),
-          value: e["name"],
-        );
+      children: privileges.map((e) {
+        return I18nText("basic.privilege.$e", child: Text(""));
       }).toList(),
     );
   }

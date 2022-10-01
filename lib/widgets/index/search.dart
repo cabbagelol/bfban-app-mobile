@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:bfban/router/router.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 
 enum titleSearchTheme {
   white,
@@ -133,13 +134,13 @@ class _searchState extends State<titleSearch> {
                               onSubmitted: (data) => widget.onSubmitted!(data),
                               onChanged: (data) => widget.onChanged!(data),
                             )
-                          : Text(
-                              "搜索作弊者id",
+                          : I18nText("search.placeholder", child: Text(
+                              "",
                               style: TextStyle(
                                 fontSize: 15,
                                 color: titleSearchColor(widget.theme).textColor,
                               ),
-                            ),
+                            )),
                     ),
                   ],
                 ),

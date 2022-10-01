@@ -254,7 +254,7 @@ class _SplashPageState extends State<SplashPage> {
               loadTip.toString(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: FontSize.rem(.8).size,
+                // fontSize: FontSize.rem(.8).size,
                 color: Theme.of(context).textTheme.subtitle2!.color,
               ),
             ),

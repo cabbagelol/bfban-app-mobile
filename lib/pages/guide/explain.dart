@@ -22,7 +22,7 @@ class _explainPageState extends State<GuideExplainPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: NewsComponentPanel(
-        src: Config.apiHost["web_site"] + "/news-app.html",
+        src: Config.apiHost["app_web_site"] + "/news-app.html",
         controller: _controller,
       ),
     );

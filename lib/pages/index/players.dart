@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
 import '../../component/_filter/index.dart';
@@ -44,7 +45,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         "skip": 0,
         "sort": "updateTime",
         "status": -1,
-        "tz": "",
         "limit": 10,
       },
     ),
@@ -261,13 +261,13 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           indicatorWeight: .1,
           labelPadding: const EdgeInsets.symmetric(horizontal: 10),
           onTap: (index) => _onSwitchTab(index),
-          padding: EdgeInsets.symmetric(horizontal: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           tabs: cheaterStatus!.map((i) {
             return Tab(
               child: Stack(
                 clipBehavior: Clip.none,
                 children: <Widget>[
-                  Text(translate("basic.status.${i["value"]}")),
+                  I18nText("basic.status.${ i["value"] == -1 ? 'all' : i["value"] }"),
                   Positioned(
                     top: -7,
                     right: -12,
