@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
@@ -887,8 +888,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                 List<Widget> _cheatMethods = <Widget>[];
 
                                 switch (timeLineItem["type"]) {
-                                  // 评论
                                   case "reply":
+                                    // 评论
                                     return CheatUserCheatersCard(
                                       onReplySucceed: _onReplySucceed,
                                     )

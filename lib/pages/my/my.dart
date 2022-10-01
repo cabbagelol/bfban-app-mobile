@@ -213,6 +213,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Wrap(
+                                      spacing: 5,
                                       children: !data.isLogin
                                           ? [
                                               EluiTagComponent(

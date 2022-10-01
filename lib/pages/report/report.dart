@@ -199,10 +199,11 @@ class _ReportPageState extends State<ReportPage> {
       EluiMessageComponent.warning(context)(
         child: const Text("至少填写描述内容, 有力的证据"),
       );
-    } else if (result.data["error"] == 0) {
+    } else if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
         child: const Text("发布成功"),
       );
+
       UrlUtil().opEnPage(context, "/report/publishResultsPage");
     }
 
@@ -213,10 +214,8 @@ class _ReportPageState extends State<ReportPage> {
 
   /// [Event]
   /// 复选举报游戏作弊行为
-  List<Widget> _setCheckboxIndex() {
+  List<Widget> _reportCheckboxType() {
     List<Widget> list = [];
-    String _value = "";
-    num _valueIndex = 0;
 
     for (var element in _cheatingTpyes) {
       list.add(
@@ -233,12 +232,7 @@ class _ReportPageState extends State<ReportPage> {
                 reportInfoCheatMethods.remove(element["value"]);
               }
 
-              for (var element in reportInfoCheatMethods) {
-                _value += element + (_valueIndex >= reportInfoCheatMethods.length - 1 ? "" : ",");
-                _valueIndex += 1;
-              }
-
-              reportStatus.param!.data!["cheatMethods"] = _value;
+              reportStatus.param!.data!["cheatMethods"] = reportInfoCheatMethods;
             });
           },
         ),
@@ -489,7 +483,7 @@ class _ReportPageState extends State<ReportPage> {
             child: Wrap(
               spacing: 5,
               runSpacing: 5,
-              children: _setCheckboxIndex(),
+              children: _reportCheckboxType(),
             ),
           ),
 

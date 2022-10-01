@@ -44,7 +44,7 @@ class UserInfoProvider with ChangeNotifier {
 
   /// [Event]
   /// 初始
-  Future init () async {
+  Future init() async {
     dynamic userinfo = await Storage().get(packageName);
 
     if (userinfo != null) {
@@ -64,7 +64,7 @@ class UserInfoProvider with ChangeNotifier {
 
   /// [Event]
   /// 设置用户数据
-   setData(value) {
+  setData(value) {
     _userdata.data = value;
     notifyListeners();
     return true;

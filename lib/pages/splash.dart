@@ -49,6 +49,7 @@ class _SplashPageState extends State<SplashPage> {
       _initUniLinks(),
       _onToken(),
       _initNotice(),
+      _initLang(),
       _initUserData(),
     ]).catchError((onError) {
       print("启动失败");
@@ -70,6 +71,14 @@ class _SplashPageState extends State<SplashPage> {
         rootNavigator: true,
       );
     });
+  }
+
+  /// [Event]
+  /// 国际化
+  Future _initLang () async {
+    await ProviderUtil().ofLang(context).init();
+
+    return true;
   }
 
   /// [Event]

@@ -361,7 +361,8 @@ class WidgetStateText extends StatelessWidget {
             EluiTagComponent(
               size: EluiTagSize.no2,
               color: EluiTagType.none,
-              value: translate("basic.status.${Util().getCheaterStatusLabel(itemdata!["action"]).toString()}"),
+              value: translate("basic.action.${itemdata!["action"]}.text"),
+              onTap: () => {},
             ),
           ],
         );

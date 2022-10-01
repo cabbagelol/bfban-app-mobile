@@ -5,14 +5,15 @@ class Util {
   /// [Event]
   /// 将判决类型转换为标签
   getCheaterStatusLabel(String? value) {
-    List _cheaterStatus = Config.cheaterStatus["child"];
+    Map _cheaterStatus = Config.action["child"];
 
     if (_cheaterStatus == null || value!.isEmpty) return '';
 
-    return _cheaterStatus.where((i) {
-      List _values = i["values"];
-      return (value is String) ? _values.contains(value) : value == i["value"];
-    }).toList()[0]["value"];
+    return _cheaterStatus["value"];
+    // return _cheaterStatus.where((i) {
+    //   List _values = i["values"];
+    //   return (value is String) ? _values.contains(value) : value == i["value"];
+    // }).toList()[0]["value"];
   }
 
   /// [Event]

@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:bfban/provider/lang_provider.dart';
 import 'package:bfban/provider/message_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
@@ -32,12 +33,6 @@ void main() async {
   JPush().setup(
     appKey: Config.jiguan["appKey"],
     channel: Config.jiguan["channel"],
-  );
-
-  // 翻译
-  var delegate = await LocalizationDelegate.create(
-    fallbackLocale: 'en_US',
-    supportedLocales: ['en_US', 'zh', 'zh_Hans', 'zh_Hant'],
   );
 
   // 路由初始
@@ -97,6 +92,7 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => PackageProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => TranslationProvider()),
+        ChangeNotifierProvider(create: (context) => LangProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (BuildContext? ThemeContext, data, Widget? child) {

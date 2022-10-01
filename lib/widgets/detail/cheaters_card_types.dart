@@ -13,6 +13,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 /// 卡片内置公共
 class CardFun {
@@ -210,9 +211,10 @@ class CardFun {
   }
 
   /// [Event]
-  /// 身份 返回Widget
+  /// 身份类型 返回Widget
   Widget getPrivilegeWidget(List privileges) {
     return Wrap(
+      spacing: 5,
       runAlignment: WrapAlignment.center,
       children: getPrivilege(privileges).map((e) {
         return EluiTagComponent(
@@ -520,23 +522,33 @@ class CheatReportsCard extends StatelessWidget {
                               ),
                               children: <TextSpan>[
                                 TextSpan(
-                                    text: data["username"],
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      decorationStyle: TextDecorationStyle.dotted,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        _detailApi.openPlayerDetail(context, data["byUserId"]);
-                                      }),
+                                  text: data["username"],
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    decorationStyle: TextDecorationStyle.dotted,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      _detailApi.openPlayerDetail(context, data["byUserId"]);
+                                    },
+                                ),
                                 const TextSpan(
-                                  text: " 举报在 ",
+                                  text: "举报",
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
                                 TextSpan(
-                                  text: data["cheatGame"],
+                                  text: data["toOriginName"],
+                                ),
+                                const TextSpan(
+                                  text: "在",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: translate("cheatMethods." + data['cheatGame'] + ".title"),
                                 ),
                                 const TextSpan(
                                   text: " 作弊",

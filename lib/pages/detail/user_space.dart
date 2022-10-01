@@ -222,12 +222,12 @@ class UserSpacePageState extends State<UserSpacePage> {
                           ),
                           const SizedBox(height: 10),
                           // 自我描述
-                          Card(
-                            child: Html(
-                              style: {"*": Style(color: Theme.of(context).textTheme.subtitle2!.color, padding: EdgeInsets.zero)},
-                              data: snapshot.data["introduction"] == "" ? translate("userspace.introduction") : snapshot.data["introduction"],
-                            ),
-                          ),
+                          // Card(
+                          //   child: Html(
+                          //     style: {"*": Style(color: Theme.of(context).textTheme.subtitle2!.color, padding: EdgeInsets.zero)},
+                          //     data: snapshot.data["introduction"].toString() == "" ? translate("userspace.introduction") : snapshot.data["introduction"].toString() ?? '',
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
