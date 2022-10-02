@@ -1,10 +1,10 @@
 /// 通知
+import 'package:flutter/material.dart';
 
 import 'package:bfban/provider/message_provider.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -25,15 +25,15 @@ class _NoticePageState extends State<NoticePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translate("setting.notice.title")),
+        title: Text(FlutterI18n.translate(context, "app.setting.notice.title")),
       ),
       body: Consumer<MessageProvider>(builder: (BuildContext context, data, Widget? child) {
         return ListView(
           children: [
             // 通知
             EluiCellComponent(
-              title: translate("setting.notice.switch.title"),
-              label: translate("setting.notice.switch.describe"),
+              title: FlutterI18n.translate(context, "app.setting.notice.switch.title"),
+              label: FlutterI18n.translate(context, "app.setting.notice.switch.describe"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -51,8 +51,8 @@ class _NoticePageState extends State<NoticePage> {
 
             // 站内
             EluiCellComponent(
-              title: translate("setting.notice.site.title"),
-              label: translate("setting.notice.site.describe"),
+              title: FlutterI18n.translate(context, "app.setting.notice.site.title"),
+              label: FlutterI18n.translate(context, "app.setting.notice.site.describe"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -70,7 +70,7 @@ class _NoticePageState extends State<NoticePage> {
             SizedBox(height: 10),
 
             EluiCellComponent(
-              title: translate("setting.notice.tagstitle"),
+              title: FlutterI18n.translate(context, "app.setting.notice.tagstitle"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,

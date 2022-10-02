@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'agreement.dart';
 import 'explain.dart';
 import 'login.dart';
@@ -119,13 +119,13 @@ class _GuidePageState extends State<GuidePage> {
                 duration: Duration(milliseconds: 300),
                 child: TextButton(
                   onPressed: _onBacktrack,
-                  child: Text(translate("guide.back")),
+                  child: Text(FlutterI18n.translate(context, "basic.button.prev")),
                 ),
               ),
               Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
               ElevatedButton(
                 onPressed: _onNext,
-                child: guideListPageIndex + 1 < guideListPage.length ? Text(translate("guide.next")) : Text(translate("guide.endNext")),
+                child: guideListPageIndex + 1 < guideListPage.length ? Text(FlutterI18n.translate(context, "basic.button.next")) : Text(FlutterI18n.translate(context, "basic.button.next")),
               ),
             ],
           ),

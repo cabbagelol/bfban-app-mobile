@@ -49,11 +49,10 @@ class Http extends ScaffoldState {
   }) async {
     Response result = Response(data: {}, requestOptions: RequestOptions(path: '/'));
     data = data ?? {};
-    headers = headers ?? {"token": ""};
+    headers = headers ?? {"x-access-token": ""};
     method = method ?? 'GET';
 
-    if (TOKEN != "") {
-      headers["token"] = TOKEN;
+    if (TOKEN!.isNotEmpty) {
       headers["x-access-token"] = TOKEN;
     }
 
@@ -69,6 +68,8 @@ class Http extends ScaffoldState {
     String _domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl];
     String _url = "$_domain/$url";
 
+    print(_url);
+
     Dio dio = createInstance();
     try {
       Response response = await dio.request(
@@ -81,35 +82,33 @@ class Http extends ScaffoldState {
         ),
       );
 
-      print(_url);
-      print(response);
       result = response;
     } on DioError catch (e) {
       switch (e.type) {
         case DioErrorType.receiveTimeout:
           return Response(
             data: {'error': -1},
-            requestOptions: RequestOptions(path: _url),
+            requestOptions: RequestOptions(path: _url, method: method),
           );
         case DioErrorType.response:
           return Response(
-            data: {'error': -2},
-            requestOptions: RequestOptions(path: _url),
+            data: Map.from({'error': -2})..addAll(result.data),
+            requestOptions: RequestOptions(path: _url, method: method),
           );
         case DioErrorType.cancel:
           return Response(
             data: {'error': -3},
-            requestOptions: RequestOptions(path: _url),
+            requestOptions: RequestOptions(path: _url, method: method),
           );
         case DioErrorType.connectTimeout:
           return Response(
             data: {'error': -4},
-            requestOptions: RequestOptions(path: _url),
+            requestOptions: RequestOptions(path: _url, method: method),
           );
         case DioErrorType.sendTimeout:
           return Response(
             data: {'error': -6},
-            requestOptions: RequestOptions(path: _url),
+            requestOptions: RequestOptions(path: _url, method: method),
           );
         case DioErrorType.other:
           // TODO: Handle this case.

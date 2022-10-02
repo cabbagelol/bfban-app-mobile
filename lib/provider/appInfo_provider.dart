@@ -48,7 +48,7 @@ class NetwrokConf with ChangeNotifier {
   /// 请求获取
   Future getConf(String fileName) async {
     Response result = await Http.request(
-      "/conf/$fileName.json",
+      "conf/$fileName.json",
       typeUrl: "web_site",
       method: Http.GET,
     );

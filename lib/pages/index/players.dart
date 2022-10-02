@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_filter/index.dart';
 import '../../data/index.dart';
@@ -214,7 +214,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
       cheaterStatus!.asMap().keys.forEach((itemIndex) {
         if (itemIndex >= 0) {
-          d.forEach((i) {
+          for (var i in d) {
             // 状态统计
             if (i["game"] == "*") {
               if (cheaterStatus![itemIndex]["value"] == i["status"]) {
@@ -236,7 +236,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 }
               });
             }
-          });
+          }
         }
       });
 
@@ -274,7 +274,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     right: -12,
                     child: AnimatedOpacity(
                       opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
-                      duration: Duration(seconds: 1),
+                      duration: const Duration(seconds: 1),
                       child: Container(
                         padding: const EdgeInsets.all(1),
                         decoration: BoxDecoration(
@@ -345,8 +345,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                   child: Container(
                     height: 30,
                     width: 30,
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: const CircularProgressIndicator(strokeWidth: 2),
                   ),
                 );
               }
@@ -372,9 +372,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 buttonPadding: EdgeInsets.zero,
                 children: <Widget>[
                   TextButton(
-                    child: const Text(
-                      "取消",
-                      style: TextStyle(
+                    child: Text(
+                      FlutterI18n.translate(context, "basic.button.cancel"),
+                      style: const TextStyle(
                         color: Colors.white,
                       ),
                     ),
@@ -383,8 +383,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     },
                   ),
                   TextButton(
-                    child: const Text(
-                      "确定",
+                    child: Text(
+                      FlutterI18n.translate(context, "basic.button.submit"),
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -403,9 +403,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         slot: [
           FilterItemWidget(
             title: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                "排序方式",
+                FlutterI18n.translate(context, "list.filters.sortByTitle"),
                 style: TextStyle(
                   color: Theme.of(context).textTheme.subtitle1!.color,
                 ),
@@ -415,9 +415,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           ),
           FilterItemWidget(
             title: Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                "游戏类型",
+                FlutterI18n.translate(context, "report.labels.game"),
                 style: TextStyle(
                   color: Theme.of(context).textTheme.subtitle1!.color,
                 ),

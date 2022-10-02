@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../utils/index.dart';
@@ -64,13 +64,13 @@ class _SettingPageState extends State<SettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translate("setting.title")),
+        title: Text(FlutterI18n.translate(context, "app.setting.title")),
       ),
       body: ListView(
         children: [
           EluiCellComponent(
-            title: translate("setting.versions.title"),
-            label: translate("setting.versions.describe"),
+            title: FlutterI18n.translate(context, "app.setting.versions.title"),
+            label: FlutterI18n.translate(context, "app.setting.versions.describe"),
             islink: true,
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
@@ -85,7 +85,7 @@ class _SettingPageState extends State<SettingPage> {
             height: 10,
           ),
           EluiCellComponent(
-            title: translate("setting.language.title"),
+            title: FlutterI18n.translate(context, "app.setting.language.title"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -97,8 +97,8 @@ class _SettingPageState extends State<SettingPage> {
           ),
           const SizedBox(height: 10),
           EluiCellComponent(
-            title: translate("setting.notice.title"),
-            label: translate("setting.notice.describe"),
+            title: FlutterI18n.translate(context, "app.setting.notice.title"),
+            label: FlutterI18n.translate(context, "app.setting.notice.describe"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -109,8 +109,8 @@ class _SettingPageState extends State<SettingPage> {
             onTap: () => _opEnNotice(),
           ),
           EluiCellComponent(
-            title: translate("setting.theme.title"),
-            label: translate("setting.theme.describe"),
+            title: FlutterI18n.translate(context, "app.setting.theme.title"),
+            label: FlutterI18n.translate(context, "app.setting.theme.describe"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -121,8 +121,8 @@ class _SettingPageState extends State<SettingPage> {
             onTap: () => _opEnTheme(),
           ),
           EluiCellComponent(
-            title: translate("setting.cleanManagement.title"),
-            label: translate("setting.cleanManagement.describe"),
+            title: FlutterI18n.translate(context, "app.setting.cleanManagement.title"),
+            label: FlutterI18n.translate(context, "app.setting.cleanManagement.describe"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -133,8 +133,8 @@ class _SettingPageState extends State<SettingPage> {
             onTap: () => _opEnDestock(),
           ),
           EluiCellComponent(
-            title: translate("setting.appInfo.title"),
-            label: translate("setting.appInfo.describe"),
+            title: FlutterI18n.translate(context, "app.setting.appInfo.title"),
+            label: FlutterI18n.translate(context, "app.setting.appInfo.describe"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,

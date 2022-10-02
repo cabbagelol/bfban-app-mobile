@@ -224,7 +224,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                           // Card(
                           //   child: Html(
                           //     style: {"*": Style(color: Theme.of(context).textTheme.subtitle2!.color, padding: EdgeInsets.zero)},
-                          //     data: snapshot.data["introduction"].toString() == "" ? translate("userspace.introduction") : snapshot.data["introduction"].toString() ?? '',
+                          //     data: snapshot.data["introduction"].toString() == "" ? FlutterI18n.translate(context, "app.userspace.introduction") : snapshot.data["introduction"].toString() ?? '',
                           //   ),
                           // ),
                         ],

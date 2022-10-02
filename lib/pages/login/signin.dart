@@ -8,10 +8,10 @@ import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/userinfo_provider.dart';
@@ -114,13 +114,13 @@ class _SigninPageState extends State<SigninPage> {
   /// 登陆
   void _onLogin() async {
     if (loginStatus.captcha!.value.isEmpty) {
-      EluiMessageComponent.error(context)(child: Text(translate("signin.accountId")));
+      EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.accountId")));
       return;
     } else if (loginStatus.password!.isEmpty) {
-      EluiMessageComponent.error(context)(child: Text(translate("signin.emptyPassword")));
+      EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyPassword")));
       return;
     } else if (loginStatus.username!.isEmpty) {
-      EluiMessageComponent.error(context)(child: Text(translate("signin.emptyAccount")));
+      EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyAccount")));
       return;
     }
 
@@ -242,7 +242,7 @@ class _SigninPageState extends State<SigninPage> {
                                 Card(
                                   margin: const EdgeInsets.symmetric(horizontal: 20),
                                   child: EluiInputComponent(
-                                    placeholder: translate("signin.accountId"),
+                                    placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
                                     internalstyle: true,
                                     onChange: (data) {
                                       setState(() {
@@ -257,7 +257,7 @@ class _SigninPageState extends State<SigninPage> {
                                 Card(
                                   margin: const EdgeInsets.symmetric(horizontal: 20),
                                   child: EluiInputComponent(
-                                    placeholder: translate("signin.password"),
+                                    placeholder: FlutterI18n.translate(context, "app.signin.password"),
                                     type: TextInputType.visiblePassword,
                                     internalstyle: true,
                                     onChange: (data) {
@@ -276,7 +276,7 @@ class _SigninPageState extends State<SigninPage> {
                                     horizontal: 20,
                                   ),
                                   child: EluiInputComponent(
-                                    placeholder: translate("signin.verificationCode"),
+                                    placeholder: FlutterI18n.translate(context, "app.signin.verificationCode"),
                                     internalstyle: true,
                                     maxLenght: 4,
                                     right: GestureDetector(

@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -733,13 +734,13 @@ class _ReportPageState extends State<ReportPage> {
                     : Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: 10,
-                        children: const <Widget>[
+                        children: <Widget>[
                           Icon(
                             Icons.done,
                             color: Colors.orangeAccent,
                           ),
                           Text(
-                            "确认",
+                            FlutterI18n.translate(context, "basic.button.commit"),
                             style: TextStyle(
                               fontSize: 14,
                             ),

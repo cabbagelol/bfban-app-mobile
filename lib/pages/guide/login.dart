@@ -1,6 +1,6 @@
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/provider.dart';
@@ -47,13 +47,13 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                 child: Column(
                   children: [
                     Text(
-                      translate("guide.login.title"),
+                      FlutterI18n.translate(context, "guide.login.title"),
                       style: TextStyle(fontSize: 30),
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 10),
                     Text(
-                      translate("guide.login.label"),
+                      FlutterI18n.translate(context, "guide.login.label"),
                       style: TextStyle(
                         color: Theme.of(context).textTheme.subtitle2!.color,
                       ),
@@ -69,7 +69,7 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                             CircleAvatar(
                               radius: 20,
                               child: Text(
-                                data.isLogin ? data.userinfo["username"][0].toString() : translate("signin.title")[0],
+                                data.isLogin ? data.userinfo["username"][0].toString() : FlutterI18n.translate(context, "signin.title")[0],
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
@@ -77,7 +77,7 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                             Visibility(
                               visible: true,
                               child: Text(
-                                !data.isLogin ? translate("signin.title") : data.userinfo["username"].toString(),
+                                !data.isLogin ? FlutterI18n.translate(context, "signin.title") : data.userinfo["username"].toString(),
                                 style: TextStyle(fontSize: 20),
                               ),
                             )

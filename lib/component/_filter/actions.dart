@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class actionsFilterWidget extends StatelessWidget {
   final Function? onReset;
@@ -26,8 +27,8 @@ class actionsFilterWidget extends StatelessWidget {
         buttonPadding: EdgeInsets.zero,
         children: <Widget>[
           TextButton(
-            child: const Text(
-              "重置",
+            child: Text(
+              FlutterI18n.translate(context, "basic.button.reset"),
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -35,8 +36,8 @@ class actionsFilterWidget extends StatelessWidget {
             onPressed: () => onReset!(),
           ),
           TextButton(
-            child: const Text(
-              "确定",
+            child: Text(
+              FlutterI18n.translate(context, "basic.button.commit"),
               style: const TextStyle(
                 color: Colors.white,
               ),

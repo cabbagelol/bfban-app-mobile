@@ -42,18 +42,18 @@ class _UserCenterPageState extends State<UserCenterPage> {
       method: Http.POST,
     );
 
+    // 擦除持久数据
+    StorageAccount().clearAll(context);
+
     if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
-        child: Text(result.data["message"]),
+        child: Text(result.data!["message"]),
       );
     } else {
       EluiMessageComponent.error(context)(
-        child: Text(result.data["code"]),
+        child: Text(result.data!["code"]),
       );
     }
-
-    // 擦除持久数据
-    StorageAccount().clearAll(context);
   }
 
   /// [Event]
@@ -257,7 +257,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
               height: 20,
             ),
             EluiCellComponent(
-              title: FlutterI18n.translate(context, "setting.title"),
+              title: FlutterI18n.translate(context, "app.setting.title"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,

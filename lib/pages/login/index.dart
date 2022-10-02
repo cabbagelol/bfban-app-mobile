@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:bfban/utils/index.dart';
 import 'package:fluro/fluro.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../provider/userinfo_provider.dart';
 
@@ -71,12 +72,12 @@ class _LoginPanelState extends State<LoginPanelPage> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      translate("signin.panel.title"),
+                      FlutterI18n.translate(context, "app.signin.panel.title"),
                       style: const TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      translate("signin.panel.label"),
+                      FlutterI18n.translate(context, "app.signin.panel.label"),
                       style: TextStyle(
                         color: Theme.of(context).textTheme.subtitle2!.color,
                       ),
@@ -90,7 +91,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       onPressed: () {
                         _openSignin();
                       },
-                      child: Text(translate("signin.panel.BfbanAccountButton")),
+                      child: Text(FlutterI18n.translate(context, "app.signin.panel.BfbanAccountButton")),
                     ),
                     const SizedBox(height: 20),
                     MaterialButton(
@@ -98,7 +99,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       color: Theme.of(context).colorScheme.secondary,
                       elevation: 0,
                       onPressed: () => _pop(),
-                      child: Text(translate("signin.panel.cancelButton")),
+                      child: Text(FlutterI18n.translate(context, "app.signin.panel.cancelButton")),
                     ),
                   ],
                 ),
@@ -127,7 +128,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Text(
-                              translate("signin.panel.signupButton"),
+                              FlutterI18n.translate(context, "app.signin.panel.signupButton"),
                               style: const TextStyle(
                                 color: Colors.white54,
                               ),

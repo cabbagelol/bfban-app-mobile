@@ -12,6 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
+import 'package:bfban/component/_lang/delegate_custom.dart';
+import 'package:flutter_i18n/loaders/file_translation_loader.dart';
+import 'package:flutter_i18n/loaders/namespace_file_translation_loader.dart';
 import 'package:flutter_i18n/loaders/network_file_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry/sentry.dart';
@@ -23,18 +26,14 @@ import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 
+import 'component/_lang/delegate_custom.dart';
+
 // 入口
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // google ads 初始
   // MobileAds.instance.initialize();
-
-  // 翻译
-  // var delegate = await LocalizationDelegate.create(
-  //   fallbackLocale: 'en',
-  //   supportedLocales: ['en', 'zh'],
-  // );
 
   // 极光
   JPush().setup(
@@ -85,20 +84,21 @@ class BfBanApp extends StatefulWidget {
 }
 
 class _BfBanAppState extends State<BfBanApp> {
+  final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
+    translationLoader: NamespaceFileTranslationLoader(
+      namespaces: ["index", "app"],
+      useCountryCode: false,
+      fallbackDir: "en",
+      basePath: "assets/lang",
+      forcedLocale: Locale("en"),
+    ),
+    missingTranslationHandler: (key, locale) {
+      print("--- Missing Key: $key, languageCode: ${locale!.languageCode}");
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
-    // 翻译
-    final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
-        translationLoader: NetworkFileTranslationLoader(
-            fallbackFile: 'en',
-            baseUri: Uri.https(
-                Config.apiHost["web_site"].toString().replaceAll("https://", ""),
-                "lang"
-            ),
-            forcedLocale: Locale('zh'),
-        )
-    );
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => AppInfoProvider()),
@@ -110,7 +110,7 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => LangProvider()),
       ],
       child: Consumer<ThemeProvider>(
-        builder: (BuildContext? ThemeContext, data, Widget? child) {
+        builder: (BuildContext? themeContext, data, Widget? child) {
           return MaterialApp(
             theme: data.currentThemeData,
             darkTheme: data.list!["default"]!.themeData!,
@@ -118,7 +118,16 @@ class _BfBanAppState extends State<BfBanApp> {
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
-              flutterI18nDelegate
+              FlutterI18nDelegate(
+                translationLoader: CustomTranslationLoader(
+                  namespaces: ["index", "app"],
+                  basePath: "assets/lang",
+                  baseUri: Uri.https(Config.apiHost["web_site"].toString().replaceAll("https://", ""), "lang"),
+                  useCountryCode: false,
+                  fallback: "zh",
+                  forcedLocale: Locale("zh")
+                )
+              )
             ],
             builder: (BuildContext context, Widget? widget) {
               ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
@@ -127,8 +136,6 @@ class _BfBanAppState extends State<BfBanApp> {
 
               return widget!;
             },
-            // supportedLocales: localizationDelegate.supportedLocales,
-            // locale: localizationDelegate.currentLocale,
             onGenerateRoute: Routes.router!.generator,
           );
         },

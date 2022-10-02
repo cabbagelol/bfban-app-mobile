@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_elui_plugin/_tip/index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
@@ -30,7 +30,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translate("setting.versions.title")),
+        title: Text(FlutterI18n.translate(context, "app.setting.versions.title")),
         actions: [
           IconButton(
             onPressed: () {
@@ -48,15 +48,15 @@ class _AppPackagePageState extends State<AppPackagePage> {
               children: [
                 Card(
                   child: EluiCellComponent(
-                    title: translate("setting.versions.currentVersion"),
+                    title: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
                     cont: Text(data.currentVersion.toString()),
                   ),
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
                 Card(
                   child: EluiCellComponent(
-                    title: translate("setting.versions.newVersion"),
-                    label: data.isNewVersion ? translate("setting.versions.newVersionDescribe_new") : translate("setting.versions.newVersionDescribe_old"),
+                    title: FlutterI18n.translate(context, "app.setting.versions.newVersion"),
+                    label: data.isNewVersion ? FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_new") : FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_old"),
                     theme: EluiCellTheme(labelColor: Theme.of(context).textTheme.subtitle2!.color),
                     islink: true,
                     cont: data.onlineVersion.isNotEmpty ? Text(data.onlineVersion.toString()) : const CircularProgressIndicator(strokeWidth: 2),
@@ -77,7 +77,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
                         height: 50,
                         child: EluiTipComponent(
                           type: EluiTip.warning,
-                          child: Text(translate("setting.versions.superHairVersionTip")),
+                          child: Text(FlutterI18n.translate(context, "app.setting.versions.superHairVersionTip")),
                         ),
                       )
                     : Container(),
@@ -94,7 +94,7 @@ class _AppPackagePageState extends State<AppPackagePage> {
                             Text(e["version"].toString()),
                             const SizedBox(width: 10),
                             EluiTagComponent(
-                              value: "${translate("setting.versions.type")}: ${e["stage"].toUpperCase()}",
+                              value: "${FlutterI18n.translate(context, "app.setting.versions.type")}: ${e["stage"].toUpperCase()}",
                               color: EluiTagType.none,
                               size: EluiTagSize.no2,
                               theme: EluiTagTheme(

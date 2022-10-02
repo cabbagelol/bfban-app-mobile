@@ -14,8 +14,6 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 /// 卡片内置公共
 class CardFun {

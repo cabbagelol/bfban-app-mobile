@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../constants/api.dart';
 import '../../utils/http.dart';
 
 class GuideAgreementPage extends StatefulWidget {
@@ -60,7 +59,7 @@ class _agreementPageState extends State<GuideAgreementPage> {
             ),
             Card(
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Html(data: agreement["content"] ?? translate("guide.agreement.content")),
+              child: Html(data: agreement["content"]),
             ),
           ],
         ),
@@ -75,7 +74,7 @@ class _agreementPageState extends State<GuideAgreementPage> {
           child: EluiCheckboxComponent(
             color: Theme.of(context).colorScheme.primary,
             child: Text(
-              translate("guide.agree"),
+              FlutterI18n.translate(context, "basic.button.submit"),
             ),
             onChanged: (bool checked) => widget.onChanged(checked),
           ),

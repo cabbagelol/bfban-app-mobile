@@ -1,5 +1,5 @@
-import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_filter/class.dart';
 import '../../component/_filter/framework.dart';
@@ -16,10 +16,10 @@ class SoltFilterPanel extends FilterPanelWidget {
 class _SoltFilterPanelState extends State<SoltFilterPanel> {
   /// solt
   List soltList = [
-    {"value": "createTime", "name": "创建时间"},
-    {"value": "updateTime", "name": "更新时间"},
-    {"value": "viewNum", "name": "围观次数"},
-    {"value": "commentNum", "name": "回复次数"},
+    {"value": "createTime"},
+    {"value": "updateTime"},
+    {"value": "viewNum"},
+    {"value": "commentNum"},
   ];
 
   @override
@@ -57,7 +57,7 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
             child: Center(
               child: Center(
                 child: Text(
-                  i["name"].toString(),
+                  FlutterI18n.translate(context, "list.filters.sortBy.${i["value"]}"),
                   style: TextStyle(
                     color: widget.data!.value == i["value"] ? Theme.of(context).textTheme.bodyText1!.color : Theme.of(context).textTheme.subtitle2!.color,
                     fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,

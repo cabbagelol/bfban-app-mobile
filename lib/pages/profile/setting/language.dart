@@ -4,7 +4,6 @@ import 'package:bfban/provider/translation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/index.dart';
@@ -63,15 +62,15 @@ class _LanguagePageState extends State<LanguagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translate("setting.language.title")),
+        title: Text(FlutterI18n.translate(context, "app.setting.language.title")),
       ),
       body: Consumer<TranslationProvider>(builder: (BuildContext context, data, Widget? child) {
         return ListView(
           children: [
             // 例子
             EluiCellComponent(
-              title: translate("basic.function.auto.title"),
-              label: translate("basic.function.auto.describe"),
+              title: FlutterI18n.translate(context, "app.basic.function.auto.title"),
+              label: FlutterI18n.translate(context, "app.basic.function.auto.describe"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,

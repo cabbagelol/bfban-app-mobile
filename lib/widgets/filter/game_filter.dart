@@ -1,8 +1,10 @@
 /// 筛选 游戏类型选择面板
 
-import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+
+import 'package:bfban/constants/api.dart';
 
 import '../../component/_filter/class.dart';
 import '../../component/_filter/framework.dart';
@@ -86,7 +88,7 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                       i["value"] == "all"
                           ? Center(
                               child: Text(
-                                "全部",
+                                FlutterI18n.translate(context, "basic.games.all"),
                                 style: TextStyle(
                                   fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
                                 ),

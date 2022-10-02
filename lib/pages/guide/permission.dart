@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/_cell/cell.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:permission_handler/permission_handler.dart';
-
 
 class GuidePermissionPage extends StatefulWidget {
   final Function? onChange;
@@ -54,14 +53,14 @@ class _permissionPageState extends State<GuidePermissionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                translate("guide.permission.title"),
+                FlutterI18n.translate(context, "guide.permission.title"),
                 style: const TextStyle(
                   fontSize: 25,
                   color: Colors.white,
                 ),
               ),
               Text(
-                translate("guide.permission.label"),
+                FlutterI18n.translate(context, "guide.permission.label"),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.white54,
@@ -88,7 +87,7 @@ class _permissionPageState extends State<GuidePermissionPage> {
                 color: Colors.yellow,
               ),
               Text(
-                translate("guide.permission.tip"),
+                FlutterI18n.translate(context, "guide.permission.tip"),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.yellow,
@@ -122,43 +121,43 @@ class _PermissionState extends State<PermissionWidget> {
 
   Map permissionName = {
     Permission.camera: {
-      "name": translate("guide.permission.list.0.name"),
-      "describe": translate("guide.permission.list.0.describe"),
+      "name": "guide.permission.list.0.name",
+      "describe": "guide.permission.list.0.describe",
     },
     Permission.photos: {
-      "name": translate("guide.permission.list.1.name"),
-      "describe": translate("guide.permission.list.1.describe"),
+      "name": "guide.permission.list.1.name",
+      "describe": "guide.permission.list.1.describe",
     },
     Permission.storage: {
-      "name": translate("guide.permission.list.2.name"),
-      "describe": translate("guide.permission.list.2.describe"),
+      "name": "guide.permission.list.2.name",
+      "describe": "guide.permission.list.2.describe",
     },
 
     Permission.notification: {
-      "name": translate("guide.permission.list.3.name"),
-      "describe": translate("guide.permission.list.3.describe"),
+      "name": "guide.permission.list.3.name",
+      "describe": "guide.permission.list.3.describe",
     },
   };
 
   Map permissionStatus = {
     PermissionStatus.granted: {
-      "text": translate("guide.permission.status.0"),
+      "text": "guide.permission.status.0",
       "icon": Icons.check_circle,
     },
     PermissionStatus.values: {
-      "text": translate("guide.permission.status.-1"),
+      "text": "guide.permission.status.-1",
       "icon": Icons.remove_circle,
     },
     PermissionStatus.denied: {
-      "text": translate("guide.permission.status.1"),
+      "text": "guide.permission.status.1",
       "icon": Icons.warning,
     },
     PermissionStatus.permanentlyDenied: {
-      "text": translate("guide.permission.status.2"),
+      "text": "guide.permission.status.2",
       "icon": Icons.error,
     },
     PermissionStatus.restricted: {
-      "text": translate("guide.permission.status.3"),
+      "text": "guide.permission.status.3",
       "icon": Icons.info,
     },
   };
@@ -202,7 +201,7 @@ class _PermissionState extends State<PermissionWidget> {
       theme: EluiCellTheme(
         backgroundColor: Colors.black12,
       ),
-      title: "${permissionName[_permission]["name"]} - ${permissionStatus[_permissionStatus]["text"]}",
+      title: "${FlutterI18n.translate(context, permissionName[_permission]["name"])} - ${FlutterI18n.translate(context, permissionStatus[_permissionStatus]["text"])}",
       label: permissionName[_permission]["describe"],
       onTap: () {
         requestPermission(_permission);

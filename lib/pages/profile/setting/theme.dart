@@ -1,11 +1,12 @@
 /// 主题管理
 
-import 'package:bfban/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_elui_plugin/elui.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+
+import 'package:bfban/provider/theme_provider.dart';
+
 import '../../../data/index.dart';
 
 class ThemePage extends StatefulWidget {
@@ -25,7 +26,7 @@ class _ThemePageState extends State<ThemePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translate("setting.theme.title")),
+        title: Text(FlutterI18n.translate(context, "app.setting.theme.title")),
       ),
       body: Consumer<ThemeProvider>(
         builder: (BuildContext context, data, Widget? child) {
@@ -33,8 +34,8 @@ class _ThemePageState extends State<ThemePage> {
             children: [
               // 自动
               EluiCellComponent(
-                title: translate("basic.function.auto.title"),
-                label: translate("basic.function.auto.describe"),
+                title: FlutterI18n.translate(context, "app.basic.function.auto.title"),
+                label: FlutterI18n.translate(context, "app.basic.function.auto.describe"),
                 theme: EluiCellTheme(
                   titleColor: Theme.of(context).textTheme.subtitle1?.color,
                   labelColor: Theme.of(context).textTheme.subtitle2?.color,

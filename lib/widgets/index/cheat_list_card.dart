@@ -6,14 +6,14 @@ import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
 
 import 'package:flutter_elui_plugin/_img/index.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class CheatListCard extends StatelessWidget {
   final item;
 
   final onTap;
 
-  CheatListCard({
+  const CheatListCard({
     Key? key,
     required this.item,
     this.onTap,
@@ -83,7 +83,6 @@ class CheatListCard extends StatelessWidget {
         children: <Widget>[
           cheatersCardIconitem(
             n: item["viewNum"].toString(),
-            e: "查阅次数",
             i: Icons.visibility,
           ),
           Container(
@@ -96,7 +95,6 @@ class CheatListCard extends StatelessWidget {
           ),
           cheatersCardIconitem(
             n: item["commentsNum"].toString(),
-            e: "回复/条",
             i: Icons.add_comment,
           ),
         ],
@@ -152,7 +150,7 @@ class CheatListCard extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          translate("basic.status.${item["status"]}"),
+                          FlutterI18n.translate(context, "app.basic.status.${item["status"]}"),
                           style: TextStyle(fontSize: 12),
                         ),
                       ),
@@ -202,7 +200,6 @@ class CheatListCard extends StatelessWidget {
                       children: <Widget>[
                         cheatersCardIconitem(
                           n: item["viewNum"].toString(),
-                          e: "查阅次数",
                           i: Icons.visibility,
                         ),
                         Container(
@@ -215,7 +212,6 @@ class CheatListCard extends StatelessWidget {
                         ),
                         cheatersCardIconitem(
                           n: item["commentsNum"].toString(),
-                          e: "回复/条",
                           i: Icons.add_comment,
                         ),
                       ],
@@ -233,46 +229,42 @@ class CheatListCard extends StatelessWidget {
 
 class cheatersCardIconitem extends StatelessWidget {
   final String? n;
-  final String? e;
   final IconData? i;
 
   cheatersCardIconitem({
     Key? key,
     this.n,
-    this.e,
     this.i,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Stack(
+      alignment: AlignmentDirectional.center,
       children: <Widget>[
         Column(
           children: <Widget>[
-            Text(
-              n!,
-              style: TextStyle(
-                color: Theme.of(context).primaryTextTheme.headline1!.color,
-                fontSize: 17,
-              ),
-            ),
-            Text(
-              e!,
-              style: TextStyle(
-                color: Theme.of(context).primaryTextTheme.headline4!.color,
-                fontSize: 9,
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Text(
+                n!,
+                style: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.headline1!.color,
+                  fontSize: 17,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
           ],
         ),
         Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Icon(
-            i,
-            color: Theme.of(context).primaryTextTheme.headline6!.color,
-            size: 26,
+          child: Opacity(
+            child: Icon(
+              i,
+              // color: Theme.of(context).primaryTextTheme.headline1!.color,
+              size: 35,
+            ),
+            opacity: .1,
           ),
         ),
       ],

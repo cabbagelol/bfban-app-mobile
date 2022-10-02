@@ -11,7 +11,6 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
