@@ -81,33 +81,35 @@ class Http extends ScaffoldState {
         ),
       );
 
+      print(_url);
+      print(response);
       result = response;
     } on DioError catch (e) {
       switch (e.type) {
         case DioErrorType.receiveTimeout:
           return Response(
             data: {'error': -1},
-            requestOptions: RequestOptions(path: url),
+            requestOptions: RequestOptions(path: _url),
           );
         case DioErrorType.response:
           return Response(
             data: {'error': -2},
-            requestOptions: RequestOptions(path: url),
+            requestOptions: RequestOptions(path: _url),
           );
         case DioErrorType.cancel:
           return Response(
             data: {'error': -3},
-            requestOptions: RequestOptions(path: url),
+            requestOptions: RequestOptions(path: _url),
           );
         case DioErrorType.connectTimeout:
           return Response(
             data: {'error': -4},
-            requestOptions: RequestOptions(path: url),
+            requestOptions: RequestOptions(path: _url),
           );
         case DioErrorType.sendTimeout:
           return Response(
             data: {'error': -6},
-            requestOptions: RequestOptions(path: url),
+            requestOptions: RequestOptions(path: _url),
           );
         case DioErrorType.other:
           // TODO: Handle this case.

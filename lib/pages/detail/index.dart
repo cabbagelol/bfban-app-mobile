@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
@@ -152,9 +153,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       });
     } else {
       EluiMessageComponent.error(context)(
-        child: Text(
-          "获取失败, 结果: " + (result.data["error"] ?? '-1') + result.data.toString(),
-        ),
+        child: Text(result.data.code),
       );
     }
 
@@ -425,13 +424,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     cheatersTabs = <Tab>[
-      const Tab(text: '举报信息'),
+      Tab(text: FlutterI18n.translate(context, "detail.info.cheatersInfo")),
       Tab(
         child: Wrap(
           spacing: 5,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            const Text("审核记录"),
+            Text(FlutterI18n.translate(context, "detail.info.timeLine")),
             playerTimelineStatus.load!
                 ? const SizedBox(
                     width: 15,
@@ -526,7 +525,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                         child: Stack(
                                           children: [
                                             EluiImgComponent(
-                                              src: snapshot.data["avatarLink"],
+                                              src: snapshot.data!["avatarLink"],
                                               width: 150,
                                               height: 150,
                                             ),
@@ -576,11 +575,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   SelectableText(
-                                                    snapshot.data!["originName"].toString(),
+                                                    snapshot.data?["originName"] ?? "User Name",
                                                     onTap: () {
                                                       Clipboard.setData(
                                                         ClipboardData(
-                                                          text: snapshot.data!["originId"],
+                                                          text: snapshot.data!["originName"],
                                                         ),
                                                       );
                                                     },
@@ -596,7 +595,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                     showCursor: true,
                                                   ),
                                                   Text(
-                                                    "${snapshot.data["id"]} / ${snapshot.data["originPersonaId"]}",
+                                                    "${snapshot.data?["id"]} / ${snapshot.data?["originPersonaId"]}",
                                                     style: TextStyle(
                                                       color: Theme.of(context).textTheme.subtitle2!.color,
                                                     ),
@@ -621,7 +620,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 ),
                                               ),
                                               child: I18nText(
-                                                "basic.status.${snapshot.data!["status"]}",
+                                                "basic.status.${snapshot.data?["status"]}",
                                                 child: Text(""),
                                               ),
                                             ),
@@ -774,7 +773,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                   padding: const EdgeInsets.only(left: 10, right: 10, top: 20),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: snapshot.data["games"].map<Widget>((i) {
+                                    children: snapshot.data["games"]?.map<Widget>((i) {
                                       var bf = [
                                         {"f": "bf1,bfv", "n": "battlefieldtracker", "url": "https://battlefieldtracker.com/bf1/profile/pc/${snapshot.data!["originId"]}"},
                                         {

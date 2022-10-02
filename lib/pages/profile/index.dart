@@ -1,7 +1,8 @@
 /// 我
 
+import 'package:bfban/utils/storage_account.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -42,34 +43,17 @@ class _UserCenterPageState extends State<UserCenterPage> {
     );
 
     if (result.data["success"] == 1) {
-      // 擦除持久数据
-      await removeStorage();
-
       EluiMessageComponent.success(context)(
-        child: const Text("\u6ce8\u9500\u6210\u529f"),
+        child: Text(result.data["message"]),
       );
     } else {
       EluiMessageComponent.error(context)(
-        child: const Text("\u6ce8\u518c\u9519\u8bef\u002c\u8bf7\u8054\u7cfb\u5f00\u53d1\u8005"),
+        child: Text(result.data["code"]),
       );
     }
-  }
 
-  /// [Event]
-  /// 擦除
-  Future removeStorage() async {
-    List<Future> Futures = [
-      Storage().remove("com.bfban.cookie"),
-      Storage().remove("com.bfban.token"),
-      Storage().remove("com.bfban.login"),
-    ];
-
-    await Future.wait(Futures);
-
-    // 清空 用户状态管理机
-    ProviderUtil().ofUser(context).clear();
-
-    return true;
+    // 擦除持久数据
+    StorageAccount().clearAll(context);
   }
 
   /// [Event]
@@ -96,7 +80,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
 
       Map userdata = ProviderUtil().ofUser(context).userinfo;
 
-      _urlUtil.opEnPage(context, "/detail/user/${userdata["userId"]}");
+      _urlUtil.opEnPage(context, "/account/${userdata["userId"]}");
     };
   }
 
@@ -133,7 +117,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 Expanded(
                                   flex: 1,
                                   child: textLoad(
-                                    value: data.userinfo["username"] ?? translate("signin.title"),
+                                    value: data.userinfo["username"] ?? FlutterI18n.translate(context, "signin.title"),
                                     fontSize: 20,
                                   ),
                                 ),
@@ -156,31 +140,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      data.isLogin ? "0" : "-",
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 1,
-                                    ),
-                                    const Text(
-                                      "已举报",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                                  height: 30,
-                                  width: 1,
-                                  color: Theme.of(context).dividerTheme.color,
-                                ),
                                 GestureDetector(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -193,8 +152,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
-                                      const Text(
-                                        "消息",
+                                      Text(
+                                        FlutterI18n.translate(context, "profile.message.title"),
                                         style: TextStyle(
                                           fontSize: 12,
                                         ),
@@ -222,7 +181,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                                 theme: EluiTagTheme(
                                                   backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
                                                 ),
-                                                value: translate("basic.privilege.none"),
+                                                value: "-",
                                               )
                                             ]
                                           : data.userinfo["privilege"].map<Widget>((i) {
@@ -232,12 +191,12 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                                 theme: EluiTagTheme(
                                                   backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
                                                 ),
-                                                value: translate("basic.privilege.$i"),
+                                                value: FlutterI18n.translate(context, "basic.privilege.$i"),
                                               );
                                             }).toList(),
                                     ),
                                     Text(
-                                      translate("userspace.row.privilege"),
+                                      FlutterI18n.translate(context, "account.role"),
                                       style: TextStyle(
                                         fontSize: 12,
                                       ),
@@ -267,7 +226,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
                 islink: true,
-                onTap: () => _urlUtil.opEnWebView(Config.apiHost["app_web_site"] + "/profile/account"),
+                onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"] + "/profile/account"),
               ),
             ),
             EluiCellComponent(
@@ -298,7 +257,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
               height: 20,
             ),
             EluiCellComponent(
-              title: translate("setting.title"),
+              title: FlutterI18n.translate(context, "setting.title"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,

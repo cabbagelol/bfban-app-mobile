@@ -91,7 +91,7 @@ class _messageDetailPageState extends State<MessageDetailPage> {
   /// 查看用户ID信息
   openPlayerDetail(id) {
     return () {
-      _urlUtil.opEnPage(context, '/detail/user/$id');
+      _urlUtil.opEnPage(context, '/account/$id');
     };
   }
 

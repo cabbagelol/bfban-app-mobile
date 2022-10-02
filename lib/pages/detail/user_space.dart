@@ -1,18 +1,17 @@
-/// 空间
-/// 站内用户空间
+/// 用户展示页
+/// 站内用户
 
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:flutter_elui_plugin/elui.dart';
-import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+
 import '../../data/index.dart';
 import '../../utils/index.dart';
 
 class UserSpacePage extends StatefulWidget {
-  // 站内用户id
+  // users Db id
   late String? id;
 
   UserSpacePage({
@@ -156,7 +155,7 @@ class UserSpacePageState extends State<UserSpacePage> {
           case ConnectionState.done:
             return Scaffold(
               appBar: AppBar(
-                title: Text(translate("userspace.title")),
+                title: I18nText("account.title", child: Text("")),
                 centerTitle: true,
                 actions: [
                   // PopupMenuButton(
@@ -254,6 +253,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Wrap(
+                                    spacing: 5,
                                     children: snapshot.data["privilege"].map<Widget>((i) {
                                       return EluiTagComponent(
                                         color: EluiTagType.none,
@@ -261,12 +261,12 @@ class UserSpacePageState extends State<UserSpacePage> {
                                         theme: EluiTagTheme(
                                           backgroundColor: Theme.of(context).appBarTheme.color!.withOpacity(.2),
                                         ),
-                                        value: translate("basic.privilege.${i}").toString(),
+                                        value: FlutterI18n.translate(context, "basic.privilege.$i"),
                                       );
                                     }).toList(),
                                   ),
                                   Text(
-                                    translate("userspace.row.privilege"),
+                                    FlutterI18n.translate(context, "account.role"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -291,7 +291,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     maxLines: 1,
                                   ),
                                   Text(
-                                    translate("userspace.row.joinTime"),
+                                    FlutterI18n.translate(context, "account.joinedAt"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -316,7 +316,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     maxLines: 1,
                                   ),
                                   Text(
-                                    translate("userspace.row.lastOnlineTime"),
+                                    FlutterI18n.translate(context, "account.lastOnlineTime"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -341,7 +341,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     maxLines: 1,
                                   ),
                                   Text(
-                                    translate("userspace.row.reportCount"),
+                                    FlutterI18n.translate(context, "account.reportnum"),
                                     style: TextStyle(
                                       fontSize: 12,
                                     ),
@@ -399,7 +399,6 @@ class RecordItemCard extends StatelessWidget {
     _urlUtil.opEnPage(
       context,
       '/detail/player/${item!["originPersonaId"]}',
-      transition: TransitionType.fadeIn,
     );
   }
 
@@ -415,7 +414,7 @@ class RecordItemCard extends StatelessWidget {
       subtitle: Row(
         children: <Widget>[
           Text(
-            translate("basic.status.${item!["status"]}"),
+            FlutterI18n.translate(context, "basic.status.${item!["status"]}"),
             style: TextStyle(
               fontSize: 13,
               color: Theme.of(context).textTheme.subtitle2!.color,

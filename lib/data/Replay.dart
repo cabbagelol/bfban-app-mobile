@@ -11,30 +11,29 @@ class ReplyStatus {
     this.data,
     this.captcha,
   });
+
+  get toMap {
+    return {
+      "data":  {
+        "toPlayerId": data!.toPlayerId,
+        "toCommentId": data!.toCommentId,
+        "content": data!.content
+      },
+      "encryptCaptcha": captcha!.hash,
+      "captcha": captcha!.value
+    };
+  }
 }
 
 /// 回复参数
 class ReplyData {
   num? toPlayerId;
-  num? toCommentId;
+  dynamic? toCommentId;
   String? content;
-  num? toFloor;
 
   ReplyData({
     this.toPlayerId,
     this.toCommentId,
-    this.content,
-    this.toFloor,
+    this.content
   });
-
-  get toMap {
-    return {
-      "data":  {
-        "toPlayerId": toPlayerId,
-        "toCommentId": toCommentId,
-        "content": content,
-        "toFloor": toFloor,
-      },
-    };
-  }
 }

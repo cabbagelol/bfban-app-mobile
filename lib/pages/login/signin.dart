@@ -27,8 +27,8 @@ class _SigninPageState extends State<SigninPage> {
   /// 登录数据
   LoginStatus loginStatus = LoginStatus(
     load: false,
-    username: "cabbagelol_T",
-    password: "zsezse",
+    username: "",
+    password: "",
     captcha: Captcha(
       load: false,
       cookie: "",

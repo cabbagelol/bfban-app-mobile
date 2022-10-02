@@ -34,14 +34,14 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         d.addAll({
-          "network_service_request": "https://bfban.gametools.network/api/",
+          "network_service_request": "https://aedc-217-145-236-143.ap.ngrok.io/api",
         });
         return d;
       case Env.DEV: // 开发
       case Env.LOCAL:
       default:
         d.addAll({
-          "network_service_request": "https://bfban.gametools.network/api/",
+          "network_service_request": "https://bfban.gametools.network/api",
         });
         return d;
     }

@@ -4,12 +4,13 @@ export 'http.dart';
 export 'date.dart';
 export 'state_module.dart';
 export 'storage.dart';
+export 'storage_account.dart';
 export 'share.dart';
 //export 'file.dart';
 export 'version.dart';
 export 'upload.dart';
-export '../provider/appInfo_provider.dart';
 export 'camera.dart';
 export 'provider.dart';
-export 'i18n.dart';
 export 'util.dart';
+
+export '../provider/appInfo_provider.dart';

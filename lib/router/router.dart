@@ -83,7 +83,7 @@ class Routes {
         }
       },
       {
-        "url": "/detail/user/:id",
+        "url": "/account/:id",
         'item': (context, params) {
           return UserSpacePage(id: params["id"][0]);
         }

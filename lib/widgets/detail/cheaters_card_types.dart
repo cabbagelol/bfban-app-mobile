@@ -13,6 +13,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
@@ -145,7 +146,7 @@ class CardFun {
       margin: const EdgeInsets.only(
         right: 5,
       ),
-      child: Text("#$index楼 "),
+      child: Text("#$index "),
     );
   }
 
@@ -154,7 +155,7 @@ class CardFun {
   void openPlayerDetail(context, id) {
     _urlUtil.opEnPage(
       context,
-      '/detail/user/$id',
+      '/account/$id',
       transition: TransitionType.fadeIn,
     );
   }
@@ -264,11 +265,11 @@ class ReplyButtonWidget extends StatelessWidget {
         }
       },
       itemBuilder: (context) {
-        return const [
+        return [
           PopupMenuItem(
             value: 1,
             height: 40,
-            child: Text("回复"),
+            child: I18nText("basic.button.reply", child: Text("")),
           ),
           // PopupMenuItem(
           //   value: 2,
@@ -353,9 +354,6 @@ class CheatUserCheatersCard extends StatelessWidget {
               Wrap(
                 runAlignment: WrapAlignment.center,
                 children: <Widget>[
-                  // 楼层
-                  _detailApi.getFloor(index),
-
                   // 类型
                   Text.rich(
                     TextSpan(
@@ -373,8 +371,8 @@ class CheatUserCheatersCard extends StatelessWidget {
                               ..onTap = () async {
                                 _detailApi.openPlayerDetail(context, data["byUserId"]);
                               }),
-                        const TextSpan(
-                          text: "回复",
+                        TextSpan(
+                          text: FlutterI18n.translate(context, "basic.button.reply"),
                           style: TextStyle(
                             fontWeight: FontWeight.normal,
                           ),
@@ -385,7 +383,7 @@ class CheatUserCheatersCard extends StatelessWidget {
                 ],
               ),
               Text(
-                "发布时间: ${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
                 style: TextStyle(
                   color: Theme.of(context).textTheme.subtitle2!.color,
                   fontSize: 12,
@@ -411,9 +409,6 @@ class CheatUserCheatersCard extends StatelessWidget {
                   runAlignment: WrapAlignment.center,
                   spacing: 5,
                   children: <Widget>[
-                    // 身份
-                    _detailApi.getPrivilegeWidget(data["privilege"]),
-
                     // 名称
                     Text(
                       data["username"],
@@ -427,7 +422,7 @@ class CheatUserCheatersCard extends StatelessWidget {
               Offstage(
                 offstage: data["toFloor"] == null,
                 child: Text(
-                  "#${data["toFloor"]}楼 ",
+                  "#${data["toFloor"]} ",
                   style: const TextStyle(
                     color: Colors.black26,
                   ),
@@ -499,22 +494,14 @@ class CheatReportsCard extends StatelessWidget {
                         runAlignment: WrapAlignment.center,
                         spacing: 5,
                         children: [
-                          // 楼层
-                          _detailApi.getFloor(index!),
-
-                          // 类型
-                          _detailApi.getPrivilegeWidget(data["privilege"]),
-
                           // 标题
                           Text.rich(
                             TextSpan(
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: data["username"],
                                   style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
                                     decoration: TextDecoration.underline,
                                     decorationStyle: TextDecorationStyle.dotted,
                                   ),
@@ -523,74 +510,62 @@ class CheatReportsCard extends StatelessWidget {
                                       _detailApi.openPlayerDetail(context, data["byUserId"]);
                                     },
                                 ),
-                                const TextSpan(
-                                  text: "举报",
+                                TextSpan(
+                                  text: FlutterI18n.translate(context, "detail.info.report"),
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
                                 TextSpan(
                                   text: data["toOriginName"],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                const TextSpan(
-                                  text: "在",
+                                TextSpan(
+                                  text: FlutterI18n.translate(context, "detail.info.inGame"),
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
                                 TextSpan(
-                                  text: translate("cheatMethods." + data['cheatGame'] + ".title"),
+                                  text: FlutterI18n.translate(context, "basic.games.${data['cheatGame']}"),
                                 ),
-                                const TextSpan(
-                                  text: " 作弊",
+                                TextSpan(
+                                  text: FlutterI18n.translate(context, "detail.info.gaming"),
                                   style: TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           ),
+
+                          Wrap(
+                            spacing: 3,
+                            runSpacing: 3,
+                            children: data["cheatMethods"].map<Widget>((i) {
+                              return EluiTagComponent(
+                                color: EluiTagType.none,
+                                round: true,
+                                size: EluiTagSize.no2,
+                                theme: EluiTagTheme(
+                                  backgroundColor: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.2),
+                                  textColor: Theme.of(context).textTheme.subtitle1!.color!,
+                                ),
+                                value: i,
+                              );
+                            }).toList(),
+                          )
                         ],
                       ),
                       Text(
-                        "发布时间: ${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                        "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
                         style: TextStyle(
                           color: Theme.of(context).textTheme.subtitle2!.color,
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "举报行为: ",
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                              color: Theme.of(context).textTheme.subtitle2!.color,
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Wrap(
-                              spacing: 3,
-                              runSpacing: 3,
-                              children: data["cheatMethods"].map<Widget>((i) {
-                                return EluiTagComponent(
-                                  color: EluiTagType.none,
-                                  round: true,
-                                  size: EluiTagSize.no2,
-                                  theme: EluiTagTheme(
-                                    backgroundColor: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.2),
-                                    textColor: Theme.of(context).textTheme.subtitle1!.color!,
-                                  ),
-                                  value: i,
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),
@@ -611,16 +586,11 @@ class CheatReportsCard extends StatelessWidget {
                 color: Theme.of(context).appBarTheme.backgroundColor,
                 shadowColor: Colors.black26,
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      const Text(
-                        "附加",
-                        style: TextStyle(
-                          fontSize: 12,
-                        ),
-                      ),
+                      I18nText("detail.info.videoLink", child: Text("", style: TextStyle(fontSize: 12,))),
                       Container(
                         margin: const EdgeInsets.only(left: 8, right: 10),
                         width: 1,
@@ -702,9 +672,6 @@ class JudgementCard extends StatelessWidget {
               Wrap(
                 runAlignment: WrapAlignment.center,
                 children: <Widget>[
-                  // 楼层
-                  _detailApi.getFloor(index),
-
                   // 类型
                   Text.rich(
                     TextSpan(
@@ -734,7 +701,7 @@ class JudgementCard extends StatelessWidget {
                 ],
               ),
               Text(
-                "发布时间: ${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
                 style: TextStyle(
                   color: Theme.of(context).textTheme.subtitle2!.color,
                   fontSize: 12,
@@ -760,9 +727,6 @@ class JudgementCard extends StatelessWidget {
                   runAlignment: WrapAlignment.center,
                   spacing: 5,
                   children: <Widget>[
-                    // 身份
-                    _detailApi.getPrivilegeWidget(data["privilege"]),
-
                     // 名称
                     Text(
                       data["username"],
@@ -776,7 +740,7 @@ class JudgementCard extends StatelessWidget {
               Offstage(
                 offstage: data["toFloor"] == null,
                 child: Text(
-                  "#${data["toFloor"]}楼 ",
+                  "#${data["toFloor"]} ",
                   style: const TextStyle(
                     color: Colors.black26,
                   ),

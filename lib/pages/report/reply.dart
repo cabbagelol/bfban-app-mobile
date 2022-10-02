@@ -1,14 +1,16 @@
 import 'dart:convert';
 
-import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/data/index.dart';
-import 'package:provider/provider.dart';
+import 'package:bfban/provider/userinfo_provider.dart';
+
+import 'package:bfban/component/_captcha/index.dart';
 
 class ReplyPage extends StatefulWidget {
   dynamic data;
@@ -31,11 +33,14 @@ class _ReplyPageState extends State<ReplyPage> {
   ReplyStatus replyStatus = ReplyStatus(
     load: false,
     data: ReplyData(
-      toCommentId: 0,
       toPlayerId: 0,
-      toFloor: -1,
-      content: "",
+      toCommentId: null,
+      content: ""
     ),
+    captcha: Captcha(
+      load: false,
+      value: ""
+    )
   );
 
   @override
@@ -46,7 +51,6 @@ class _ReplyPageState extends State<ReplyPage> {
     dynamic _data = jsonDecode(widget.data);
     if (_data["toCommentId"] != null) replyStatus.data!.toCommentId = _data["toCommentId"];
     if (_data["toPlayerId"] != null) replyStatus.data!.toPlayerId = _data["toPlayerId"];
-    if (_data["toFloor"] != null) replyStatus.data!.toFloor = _data["toFloor"];
   }
 
   /// [Response]
@@ -59,7 +63,7 @@ class _ReplyPageState extends State<ReplyPage> {
       return;
     }
 
-    if (replyStatus.data!.content == "") {
+    if (replyStatus.data!.content!.isEmpty && replyStatus.captcha!.value.isEmpty) {
       EluiMessageComponent.warning(context)(
         child: const Text("\u8bf7\u586b\u5199\u56de\u590d\u5185\u5bb9"),
       );
@@ -71,23 +75,23 @@ class _ReplyPageState extends State<ReplyPage> {
     });
 
     // 过滤空数据
-    dynamic data = replyStatus.data!.toMap;
+    dynamic data = replyStatus.toMap;
     data["data"].removeWhere((key, value) => value.toString().isEmpty);
 
     Response result = await Http.request(
       Config.httpHost["player_reply"],
-      data: replyStatus.data!.toMap,
+      data: replyStatus.toMap,
       method: Http.POST,
     );
 
     if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
-        child: const Text("\u53d1\u5e03\u6210\u529f"),
+        child: Text(result.data["code"]),
       );
       Navigator.pop(context, "cheatersCardTypes");
     } else {
       EluiMessageComponent.error(context)(
-        child: const Text("\u53d1\u5e03\u5931\u8d25\u4e86 Q^Q"),
+        child: Text(result.data["code"]),
       );
     }
 
@@ -140,7 +144,7 @@ class _ReplyPageState extends State<ReplyPage> {
             children: <Widget>[
               /// S 理由
               EluiCellComponent(
-                title: "理由",
+                title: "",
                 cont: Offstage(
                   // offstage: reportStatus.param!.data!["description"].toString().isNotEmpty,
                   child: Wrap(
@@ -222,6 +226,24 @@ class _ReplyPageState extends State<ReplyPage> {
               ),
 
               /// E 理由
+              const SizedBox(
+                height: 20,
+              ),
+
+              Card(
+                clipBehavior: Clip.none,
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: EluiInputComponent(
+                  internalstyle: true,
+                  maxLenght: 4,
+                  right: CaptchaWidget(
+                    onChange: (Captcha cap) => replyStatus.captcha = cap,
+                  ),
+                  onChange: (data) => replyStatus.captcha!.value = data["value"],
+                ),
+              )
             ],
           ),
         );

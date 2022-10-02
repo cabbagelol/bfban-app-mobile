@@ -211,7 +211,7 @@ class _SplashPageState extends State<SplashPage> {
             break;
           // 打开用户空间
           case "account":
-            _urlUtil.opEnPage(context, '/detail/user/${uri.queryParameters["id"]}');
+            _urlUtil.opEnPage(context, '/account/${uri.queryParameters["id"]}');
         }
         break;
     }
