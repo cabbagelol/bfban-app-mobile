@@ -1,6 +1,3 @@
-/// judgement 判决
-
-import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -58,23 +55,22 @@ class _JudgementPageState extends State<JudgementPage> {
     ),
   );
 
-  final List _cheatingTpyes = [];
+  final List _cheatingTypes = [];
 
   @override
   void initState() {
     super.initState();
+
+    Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf!.data.cheatMethodsGlossary!;
 
     setState(() {
       manageStatus.data!.toPlayerId = widget.id;
       manageStatus.data!.action = ProviderUtil().ofApp(context).conf!.data.action!["child"][0]["value"];
 
       setState(() {
-        Config.cheatingTpyes.forEach((key, value) {
-          _cheatingTpyes.add({
-            "name": value,
-            "value": key,
-            "select": false,
-          });
+        cheatMethodsGlossary["child"].forEach((i) {
+          String _key = Util().queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
+          _cheatingTypes.add({"value": _key, "select": false});
         });
       });
     });
@@ -151,19 +147,19 @@ class _JudgementPageState extends State<JudgementPage> {
     String _value = "";
     num _valueIndex = 0;
 
-    for (var element in _cheatingTpyes) {
+    for (var method in _cheatingTypes) {
       list.add(
         gameTypeRadio(
-          index: element["select"],
-          child: Text(element["name"]),
+          index: method["select"],
+          child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
           onTap: () {
             setState(() {
-              element["select"] = element["select"] != true;
+              method["select"] = method["select"] != true;
 
-              if (element["select"]) {
-                reportInfoCheatMethods.add(element["value"]);
+              if (method["select"]) {
+                reportInfoCheatMethods.add(method["value"]);
               } else {
-                reportInfoCheatMethods.remove(element["value"]);
+                reportInfoCheatMethods.remove(method["value"]);
               }
 
               for (var element in reportInfoCheatMethods) {
@@ -230,7 +226,7 @@ class _JudgementPageState extends State<JudgementPage> {
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   child: Card(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: DropdownButton(
                         isDense: true,
                         isExpanded: true,
@@ -267,7 +263,7 @@ class _JudgementPageState extends State<JudgementPage> {
 
               /// S 作弊方式
               Offstage(
-                offstage: ["kill", "guilt"].indexOf(manageStatus.data!.action!) < 0,
+                offstage: !["kill", "guilt"].contains(manageStatus.data!.action!),
                 child: Column(
                   children: [
                     EluiCellComponent(title: FlutterI18n.translate(context, "detail.judgement.methods")),

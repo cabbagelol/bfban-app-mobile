@@ -25,7 +25,7 @@ class Config {
       "sentry": "https://475f587d2c9a44f38cbe58978c0429c7@o438603.ingest.sentry.io/5403628",
 
       // BFBAN 主站
-      "web_site": "https://bfban.gametools.network",
+      "web_site": "https://bfban.cabbagelol.net",
 
       // BFBAN APP 网站
       "app_web_site": "https://bfban-app.cabbagelol.net",
@@ -34,7 +34,7 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         d.addAll({
-          "network_service_request": "https://3805-217-145-236-143.ap.ngrok.io/api",
+          "network_service_request": "https://a791-217-145-236-143.ap.ngrok.io/api",
         });
         return d;
       case Env.DEV: // 开发
@@ -97,26 +97,5 @@ class Config {
     };
 
     return list;
-  }
-
-  static Map<String, String> get cheatingTpyes {
-    return {
-      "aimbot": "\u81ea\u7784",
-      "wallhack": "\u900f\u89c6",
-      "oneShotKill": "\u79d2\u6740",
-      "damageChange": "\u6539\u4f24",
-      "stealth": "\u9690\u8eab",
-      "gadgetModify": "\u4fee\u6539\u88c5\u5907",
-      "shootingThroughWalls": "\u5b50\u5f39\u7a7f\u5899",
-    };
-  }
-
-  static Map get usetIdentity {
-    return {
-      "admin": ["\u7ba1\u7406\u5458", Colors.white, Colors.redAccent],
-      "normal": ["\u73a9\u5bb6", Colors.black, Colors.amber],
-      "super": ["\u8d85\u7ba1", Colors.white, Colors.blueAccent],
-      "": ["\u672a\u77e5", Colors.black, Colors.white12],
-    };
   }
 }

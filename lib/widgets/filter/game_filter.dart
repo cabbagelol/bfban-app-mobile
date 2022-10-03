@@ -20,12 +20,7 @@ class GameNameFilterPanel extends FilterPanelWidget {
 
 class GameNameFilterPanelState extends State<GameNameFilterPanel> {
   /// 游戏类型
-  List gameList = [
-    {
-      "value": "all",
-      "app_assets_logo_file": "assets/images/report/battlefield-v-png-logo.png",
-    },
-  ];
+  List gameList = [{"value": "all",},];
 
   @override
   void initState() {
@@ -98,7 +93,7 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                               i["app_assets_logo_file"],
                               height: 30,
                             ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Visibility(
                         visible: i["num"] != null,
                         child: EluiTagComponent(

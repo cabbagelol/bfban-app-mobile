@@ -11,8 +11,11 @@ class CaptchaWidget extends StatefulWidget {
   Function(Captcha)? onChange;
   Function(Captcha)? onTap;
 
+  String? id;
+
   CaptchaWidget({
     Key? key,
+    this.id,
     this.onChange,
     this.onTap,
   }) : super(key: key);

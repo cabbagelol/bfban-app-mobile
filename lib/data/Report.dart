@@ -37,32 +37,29 @@ class ReportListParam {
 /// 举报
 class ReportStatus {
   late bool? load;
-  late Captcha? captcha;
   late ReportParam? param;
+  late Captcha? captcha;
 
   ReportStatus({
     this.load,
-    this.captcha,
     this.param,
-  });
-}
-
-class ReportParam {
-  late Map? data;
-  late String? encryptCaptcha;
-  late String? captcha;
-
-  ReportParam({
-    this.data,
-    this.encryptCaptcha,
     this.captcha,
   });
 
   get toMap {
     return {
-      "data": data,
-      "encryptCaptcha": encryptCaptcha,
-      "captcha": captcha,
+      "data": param!.data,
+      "encryptCaptcha": captcha!.hash,
+      "captcha": captcha!.value,
     };
   }
+}
+
+class ReportParam {
+  late Map? data;
+  late String? encryptCaptcha;
+
+  ReportParam({
+    this.data,
+  });
 }

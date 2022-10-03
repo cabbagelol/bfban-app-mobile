@@ -74,12 +74,14 @@ class PlayersParame {
 /// 玩家日历状态
 class PlayerTimelineStatus {
   late List? list;
+  late int? total;
   late bool? load;
   late int index;
   late PlayerTimelineParame? parame;
 
   PlayerTimelineStatus({
     this.list,
+    this.total = 0,
     this.load = false,
     this.index = 0,
     this.parame,

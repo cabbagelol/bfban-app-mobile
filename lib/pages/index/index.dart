@@ -31,7 +31,7 @@ class _IndexPageState extends State<IndexPage> {
   // 首页下标
   int _currentPageIndex = 1;
 
-  // 首页Wiget列表
+  // 首页Widget列表
   List<Widget> _listWidgetPage = [];
 
   DateTime? _lastPressedAt = DateTime(0); //上次点击时间
@@ -106,7 +106,7 @@ class _IndexPageState extends State<IndexPage> {
                           children: <Widget>[
                             AnimatedOpacity(
                               opacity: data.total == 0 ? .3 : 1,
-                              duration: Duration(seconds: 1),
+                              duration: const Duration(seconds: 1),
                               child: IconButton(
                                 icon: const Icon(Icons.add_alert),
                                 onPressed: _openMessage(),
@@ -210,10 +210,10 @@ class _IndexPageState extends State<IndexPage> {
                   "name": "profile",
                   "icon": const Icon(Icons.person, size: 30),
                 },
-              ].map((Map? navitem) {
+              ].map((Map? nav) {
                 return BottomNavigationBarItem(
-                  icon: navitem!["icon"],
-                  label: FlutterI18n.translate(context, "${navitem["name"]}.title")
+                  icon: nav!["icon"],
+                  label: FlutterI18n.translate(context, "${nav["name"]}.title")
                 );
               }).toList(),
               currentIndex: _currentPageIndex,

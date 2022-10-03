@@ -10,31 +10,17 @@ class UrlUtil {
   /// 唤起内置游览器，并访问
   Future<Map> onPeUrl(String url) async {
     try {
-      if (url.length < 0) {
-        return {
-          "code": -2,
-        };
-      }
+      Uri _url = Uri.parse(url);
 
-      if (await canLaunch(url)) {
-        await launch(
-          url,
-          forceSafariVC: false,
-          forceWebView: false,
-          headers: <String, String>{'my_header_key': 'my_header_value'},
-        );
-      } else {
+      if (url.isEmpty) throw "Url empty";
+
+      if (!await launchUrl(_url)) {
         throw 'Could not launch $url';
       }
 
-      return {
-        "code": 0,
-      };
-    } catch (E) {
-      return {
-        "code": -1,
-        "msg": E,
-      };
+      return {"code": 0};
+    } catch (error) {
+      return {"code": -1, "msg": error};
     }
   }
 

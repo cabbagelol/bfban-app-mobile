@@ -1,7 +1,7 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.1.3-beta'
+version: '0.2.1-beta'
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -133,5 +133,7 @@ flutter:
     - assets/lang/zh/
     - assets/video/
     - assets/images/
-    - assets/images/report/
+    - assets/images/games/bf1/
+    - assets/images/games/bf6/
+    - assets/images/games/bfv/
     - assets/splash/

@@ -3,12 +3,11 @@
 import 'dart:core';
 import 'dart:convert';
 
+import 'package:bfban/component/_captcha/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
@@ -45,8 +44,6 @@ class _ReportPageState extends State<ReportPage> {
         "originName": "",
         "description": "",
       },
-      encryptCaptcha: "",
-      captcha: "",
     ),
   );
 
@@ -62,41 +59,34 @@ class _ReportPageState extends State<ReportPage> {
     "links": [
       {
         "value": 0,
-        "s": "https://www.bilibili.com/video/",
-        "content": "原地址",
         "placeholder": "http(s)://",
-      },
-      {
-        "value": 1,
-        "S": "",
-        "content": "BiliBili",
-        "placeholder": "AV/BV",
       },
     ],
   };
 
-  final List _cheatingTpyes = [];
+  final List _cheatingTypes = [];
 
   @override
   void initState() {
     super.initState();
 
-    // 更新id
+    Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf!.data.cheatMethodsGlossary!;
+
+    // Update User Db id
     if (jsonDecode(widget.data)["originName"].toString().isNotEmpty) {
       reportStatus.param!.data!["originName"] = jsonDecode(widget.data)["originName"];
     }
 
     setState(() {
-      Config.cheatingTpyes.forEach((key, value) {
-        _cheatingTpyes.add({
-          "name": value,
-          "value": key,
-          "select": false,
-        });
+      cheatMethodsGlossary["child"].forEach((i) {
+        String _key = Util().queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
+        _cheatingTypes.add({"value": _key, "select": false});
       });
-    });
 
-    _getCaptcha();
+      if (Config.game["child"].isNotEmpty) {
+        reportStatus.param!.data!["game"] = Config.game["child"][0]["value"];
+      }
+    });
   }
 
   @override
@@ -104,37 +94,10 @@ class _ReportPageState extends State<ReportPage> {
     super.dispose();
   }
 
-  /// [Response]
-  /// 更新验证码
-  void _getCaptcha() async {
-    String time = DateTime.now().millisecondsSinceEpoch.toString();
-
-    setState(() {
-      reportStatus.captcha!.load = true;
-    });
-
-    Response result = await Http.request(
-      '${Config.httpHost["captcha"]}?t=$time',
-      method: Http.GET,
-    );
-
-    if (result.data["success"] == 1) {
-      result.headers['set-cookie']?.forEach((i) {
-        reportStatus.captcha!.cookie += i + ';';
-      });
-      reportStatus.captcha!.captchaSvg = result.data["data"]["content"];
-      reportStatus.captcha!.hash = result.data["data"]["hash"];
-    }
-
-    setState(() {
-      reportStatus.captcha!.load = false;
-    });
-  }
-
   /// [Event]
-  /// 提交前验证
+  /// 表单验证
   bool _onVerification() {
-    Map param = reportStatus.param!.toMap!;
+    Map param = reportStatus.toMap;
 
     if (param["game"] == "") {
       EluiMessageComponent.warning(context)(
@@ -170,9 +133,12 @@ class _ReportPageState extends State<ReportPage> {
   /// [Event]
   /// 提交举报
   Future _onSubmit() async {
-    String _token = ProviderUtil().ofUser(context).getToken;
+    if (!_onVerification()) return;
 
-    if (!_onVerification()) {
+    if (reportStatus.captcha!.value.isEmpty) {
+      EluiMessageComponent.warning(context)(
+        child: const Text("请填写验证码"),
+      );
       return;
     }
 
@@ -180,29 +146,22 @@ class _ReportPageState extends State<ReportPage> {
       reportStatus.load = true;
     });
 
-    // 更新验证码hash
-    reportStatus.param!.encryptCaptcha = reportStatus.captcha!.hash;
-    reportStatus.param!.captcha = reportStatus.param!.toMap["captcha"];
-
-    // 更新视频
+    // 处理视频格式
     reportStatus.param!.data!["videoLink"] = videoList.where((data) => data.toString().isNotEmpty).join(",");
 
     Response<dynamic> result = await Http.request(
       Config.httpHost["player_report"],
-      headers: {
-        "token": _token,
-      },
-      data: reportStatus.param!.toMap,
+      data: reportStatus.toMap,
       method: Http.POST,
     );
 
     if (result.data["error"] > 0) {
       EluiMessageComponent.warning(context)(
-        child: const Text("至少填写描述内容, 有力的证据"),
+        child: Text(result.data["code"]),
       );
     } else if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
-        child: const Text("发布成功"),
+        child: Text(result.data["code"]),
       );
 
       UrlUtil().opEnPage(context, "/report/publishResultsPage");
@@ -216,21 +175,20 @@ class _ReportPageState extends State<ReportPage> {
   /// [Event]
   /// 复选举报游戏作弊行为
   List<Widget> _reportCheckboxType() {
-    List<Widget> list = [];
-
-    for (var element in _cheatingTpyes) {
-      list.add(
+    List<Widget> widgets = [];
+    for (var method in _cheatingTypes) {
+      widgets.add(
         gameTypeRadio(
-          index: element["select"],
-          child: Text(element["name"]),
+          index: method["select"],
+          child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
           onTap: () {
             setState(() {
-              element["select"] = element["select"] != true;
+              method["select"] = method["select"] != true;
 
-              if (element["select"]) {
-                reportInfoCheatMethods.add(element["value"]);
+              if (method["select"]) {
+                reportInfoCheatMethods.add(method["value"]);
               } else {
-                reportInfoCheatMethods.remove(element["value"]);
+                reportInfoCheatMethods.remove(method["value"]);
               }
 
               reportStatus.param!.data!["cheatMethods"] = reportInfoCheatMethods;
@@ -239,8 +197,7 @@ class _ReportPageState extends State<ReportPage> {
         ),
       );
     }
-
-    return list;
+    return widgets;
   }
 
   /// [Event]
@@ -258,95 +215,24 @@ class _ReportPageState extends State<ReportPage> {
     });
   }
 
-  /// [Event]
-  /// 打开草稿箱
-  _openDrafts() {
-    _urlUtil.opEnPage(context, "/drafts").then((value) {
-      if (value == null) {
-        return;
-      }
-    });
-  }
-
-  /// [Event]
-  /// 提交
-  void _onSubmitMore() {
-    if (!_onVerification()) {
-      return;
-    }
-
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return SimpleDialog(
-          children: <Widget>[
-            SimpleDialogOption(
-              child: Column(
-                children: <Widget>[
-                  const Text('\u53d1\u5e03'),
-                  Text(
-                    '\u5c06\u4e3e\u62a5\u0049\u0044\u53d1\u5e03\u5230\u0042\u0046\u0042\u0041\u004e\u4e0a',
-                    style: TextStyle(color: Theme.of(context).textTheme.subtitle2!.color),
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ),
-              onPressed: () async {
-                if (reportStatus.param!.captcha == "") {
-                  EluiMessageComponent.warning(context)(
-                    child: const Text("请填写验证码"),
-                  );
-                  return;
-                }
-
-                await _onSubmit();
-                Navigator.pop(context);
-              },
-            ),
-            SimpleDialogOption(
-              child: Column(
-                children: <Widget>[
-                  const Text('草稿箱'),
-                  Text(
-                    '储存到草稿箱,不会被发布',
-                    style: TextStyle(color: Theme.of(context).textTheme.subtitle2!.color),
-                  ),
-                ],
-                crossAxisAlignment: CrossAxisAlignment.start,
-              ),
-              onPressed: () async {
-                // List? _drafts = jsonDecode(await Storage().get("drafts"));
-                // reportInfo["date"] = DateTime.now().millisecondsSinceEpoch;
-                // if (_drafts!.isNotEmpty) {
-                //   List.generate(_drafts.length, (index) {
-                //     if (reportInfo["originName"] == _drafts[index]["originName"]) {
-                //       _drafts.removeAt(index);
-                //     }
-                //   });
-                // }
-                // _drafts.add(reportInfo);
-                // Storage().set(
-                //   "drafts",
-                //   value: jsonEncode(_drafts),
-                // );
-                // Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-            FlutterI18n.translate(context, "report.title")
-        ),
+        title: Text(FlutterI18n.translate(context, "report.title")),
+        actions: <Widget>[
+          TextButton(
+            child: reportStatus.load! ? const CircularProgressIndicator() : const Icon(Icons.done),
+            onPressed: () => _onSubmit(),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                Theme.of(context).appBarTheme.backgroundColor,
+              ),
+            ),
+          )
+        ],
       ),
       body: ListView(
         children: <Widget>[
@@ -402,7 +288,7 @@ class _ReportPageState extends State<ReportPage> {
                         ),
                         Center(
                           child: Text(
-                            FlutterI18n.translate(context, "report.title"),
+                            FlutterI18n.translate(context, "report.info.idNotion1"),
                             style: const TextStyle(color: Colors.white12, fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
@@ -413,7 +299,7 @@ class _ReportPageState extends State<ReportPage> {
                   EluiInputComponent(
                     title: FlutterI18n.translate(context, "report.labels.hackerId"),
                     value: reportStatus.param!.data!["originName"],
-                    placeholder: FlutterI18n.translate(context, "report.labels.idNotion1"),
+                    placeholder: FlutterI18n.translate(context, "report.labels.hackerId"),
                     onChange: (data) {
                       setState(() {
                         reportStatus.param!.data!["originName"] = data["value"].toString();
@@ -429,9 +315,9 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 游戏
           EluiCellComponent(
-            title: "游戏类型",
+            title: FlutterI18n.translate(context, "report.labels.game"),
             theme: EluiCellTheme(backgroundColor: Colors.transparent, labelColor: Theme.of(context).textTheme.subtitle2!.color),
-            label: reportStatus.param!.data!["game"] ?? "请选择举报游戏",
+            label: reportStatus.param!.data!["game"] != null ? FlutterI18n.translate(context, "basic.games.${reportStatus.param!.data!["game"]}") : null,
             cont: PopupMenuButton(
               icon: const Icon(Icons.chevron_right),
               onSelected: (value) {
@@ -443,7 +329,7 @@ class _ReportPageState extends State<ReportPage> {
                 return CheckedPopupMenuItem(
                   value: i["value"],
                   checked: reportStatus.param!.data!["game"] == i["value"],
-                  child: Image.asset(i["app_assets_logo_file"], height: 18),
+                  child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
                 );
               }).toList(),
             ),
@@ -457,27 +343,7 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 作弊方式
           EluiCellComponent(
-            title: "作弊方式",
-            cont: Offstage(
-              offstage: reportStatus.param!.data!["cheatMethods"].toString().isNotEmpty,
-              child: Wrap(
-                spacing: 5,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: const <Widget>[
-                  Icon(
-                    Icons.warning,
-                    color: Colors.yellow,
-                    size: 15,
-                  ),
-                  Text(
-                    "请至少选择一下举报行为",
-                    style: TextStyle(
-                      color: Colors.yellow,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            title: FlutterI18n.translate(context, "report.labels.cheatMethod"),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -496,7 +362,7 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 视频链接
           EluiCellComponent(
-            title: "视频链接 (${videoList.length}/20)",
+            title: "${FlutterI18n.translate(context, "detail.info.videoLink")} (${videoList.length}/20)",
             cont: TextButton(
               child: const Icon(Icons.add),
               onPressed: () {
@@ -567,7 +433,7 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 理由
           EluiCellComponent(
-            title: "理由",
+            title: FlutterI18n.translate(context, "report.labels.description"),
             cont: Offstage(
               offstage: reportStatus.param!.data!["description"].toString().isNotEmpty,
               child: Wrap(
@@ -635,9 +501,9 @@ class _ReportPageState extends State<ReportPage> {
                           child: Center(
                             child: TextButton.icon(
                               icon: const Icon(Icons.edit),
-                              label: Text(
-                                reportStatus.param!.data!["description"].toString().isEmpty ? "填写理由" : "编辑",
-                                style: const TextStyle(fontSize: 18),
+                              label: const Text(
+                                "Edit",
+                                style: TextStyle(fontSize: 18),
                               ),
                               onPressed: () => _opEnRichEdit(),
                             ),
@@ -655,31 +521,17 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 验证码
           EluiInputComponent(
-            title: "验证码",
+            title: FlutterI18n.translate(context, "captcha.title"),
             onChange: (data) {
               setState(() {
-                reportStatus.param!.captcha = data["value"];
+                reportStatus.captcha!.value = data["value"];
               });
             },
-            right: GestureDetector(
-              child: SizedBox(
-                width: 80,
-                height: 40,
-                child: !reportStatus.captcha!.load
-                    ? SvgPicture.string(
-                        reportStatus.captcha!.captchaSvg,
-                        color: Colors.white,
-                      )
-                    : const SizedBox(
-                        child: CircularProgressIndicator(),
-                        width: 10,
-                        height: 10,
-                      ),
-              ),
-              onTap: () => _getCaptcha(),
+            right: CaptchaWidget(
+              onChange: (Captcha cap) => reportStatus.captcha = cap,
             ),
             maxLenght: 4,
-            placeholder: "输入验证码",
+            placeholder: FlutterI18n.translate(context, "captcha.title"),
           ),
 
           /// E 验证码
@@ -688,81 +540,6 @@ class _ReportPageState extends State<ReportPage> {
             height: 100,
           ),
         ],
-      ),
-
-      /// 底部
-      bottomNavigationBar: Container(
-        height: 70,
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          border: Border(
-            top: BorderSide(
-              width: 1.0,
-              color: Colors.black12,
-            ),
-          ),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextButton(
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 10,
-                children: const <Widget>[
-                  Text(
-                    "草稿箱",
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-              onPressed: () {
-                return null;
-                _openDrafts();
-              },
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 1,
-              child: TextButton(
-                child: reportStatus.load!
-                    ? const CircularProgressIndicator()
-                    : Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        spacing: 10,
-                        children: <Widget>[
-                          const Icon(
-                            Icons.done,
-                            color: Colors.orangeAccent,
-                          ),
-                          Text(
-                            FlutterI18n.translate(context, "basic.button.commit"),
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                onPressed: () => _onSubmit(),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(
-                    Theme.of(context).appBarTheme.backgroundColor,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            IconButton(
-              onPressed: () => _onSubmitMore(),
-              icon: const Icon(Icons.add),
-            ),
-          ],
-        ),
       ),
     );
   }

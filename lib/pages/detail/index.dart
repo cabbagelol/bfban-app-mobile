@@ -52,10 +52,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   PlayerTimelineStatus playerTimelineStatus = PlayerTimelineStatus(
     index: 0,
     list: [],
+    total: 0,
     load: false,
     parame: PlayerTimelineParame(
       skip: 0,
-      limit: 10,
+      limit: 100,
       personaId: "",
     ),
   );
@@ -70,7 +71,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   int _tabControllerIndex = 0;
 
   /// 导航个体
-  List<Tab> cheatersTabs = <Tab>[const Tab(text: "contnet"), const Tab(text: "list")];
+  List<Tab> cheatersTabs = <Tab>[const Tab(text: "content"), const Tab(text: "list")];
 
   /// 曾用名按钮状态 or 列表状态
   Map userNameList = {
@@ -104,7 +105,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   }
 
   /// [Response]
-  /// 获取作弊玩家 日历
+  /// 获取时间轴
   Future _getTimeline() async {
     setState(() {
       playerTimelineStatus.load = true;
@@ -117,10 +118,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     );
 
     if (result.data["success"] == 1) {
-      final d = result.data["data"]["result"];
+      final d = result.data["data"];
 
       setState(() {
-        playerTimelineStatus.list = d;
+        playerTimelineStatus.list = d["result"];
+        playerTimelineStatus.total = d["total"];
       });
     }
 
@@ -423,7 +425,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                     child: CircularProgressIndicator(strokeWidth: 1),
                   )
                 : EluiTagComponent(
-                    value: playerTimelineStatus.list!.length.toString(),
+                    value: "${playerTimelineStatus.total ?? 0}",
                     size: EluiTagSize.no2,
                     theme: EluiTagTheme(
                       textColor: _tabControllerIndex == 1 ? Colors.black : Colors.red,
@@ -505,7 +507,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                     Positioned(
                                       child: Opacity(
                                         opacity: .2,
-                                        child: Container(
+                                        child: SizedBox(
                                           child: Image.network(
                                             snapshot.data!["avatarLink"],
                                             fit: BoxFit.fitWidth,
@@ -635,7 +637,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             opacity: .5,
                                             child: Text(
                                               FlutterI18n.translate(context, "detail.info.firstReportTime"),
-                                              style: TextStyle(fontSize: 20),
+                                              style: const TextStyle(fontSize: 20),
                                             ),
                                           ),
                                           const SizedBox(height: 5),
@@ -729,7 +731,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             ),
                                           ),
                                           const SizedBox(height: 5),
-                                          Text("${snapshot.data?["originPersonaId"]}", style: TextStyle(fontSize: 18))
+                                          Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
                                         ],
                                       ),
                                       Column(
@@ -743,12 +745,12 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             ),
                                           ),
                                           const SizedBox(height: 5),
-                                          Text("${snapshot.data?["id"]}", style: TextStyle(fontSize: 18))
+                                          Text("${snapshot.data?["id"]}", style: const TextStyle(fontSize: 18))
                                         ],
                                       ),
                                     ],
                                   ),
-                                  margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 ),
 
                                 Consumer<UserInfoProvider>(
@@ -765,7 +767,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             Icons.refresh,
                                             size: 25,
                                           ),
-                                          label: Text(""),
+                                          label: const Text(""),
                                           onPressed: () => _seUpdateUserNameList(data.isLogin),
                                         ),
                                         alignment: Alignment.centerRight,
@@ -821,18 +823,17 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                       ..data = timeLineItem
                                       ..index = index;
                                   case "judgement":
+                                    // 举报
                                     return JudgementCard()
                                       ..data = timeLineItem
                                       ..index = index;
-                                  // case "3":
-                                  //   return CheatConfirms(
-                                  //     i: timeLineItem,
-                                  //     index: i += 1,
-                                  //     cheatMethods: _cheatMethods,
-                                  //     cheatersInfo: cheatersInfo,
-                                  //     cheatersInfoUser: playerStatus.data,
-                                  //     onReplySucceed: _onReplySucceed,
-                                  //   );
+                                  case "banAppeal":
+                                    // 申诉
+                                    return AppealCard(
+                                      onReplySucceed: _onReplySucceed,
+                                    )
+                                      ..data = timeLineItem
+                                      ..index = index;
                                 }
 
                                 return Container();
@@ -873,9 +874,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                             Expanded(
                               flex: 1,
                               child: TextButton(
-                                child: const Text(
-                                  "补充证据",
-                                  style: TextStyle(
+                                child: Text(
+                                  FlutterI18n.translate(context, "report.title"),
+                                  style: const TextStyle(
                                     fontSize: 14,
                                   ),
                                   textAlign: TextAlign.center,
@@ -895,13 +896,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   spacing: 10,
                                   children: <Widget>[
-                                    Icon(
+                                    const Icon(
                                       Icons.message,
                                       color: Colors.orangeAccent,
                                     ),
                                     I18nText(
                                       "basic.button.reply",
-                                      child: Text(
+                                      child: const Text(
                                         "",
                                         style: TextStyle(fontSize: 14),
                                         textAlign: TextAlign.center,

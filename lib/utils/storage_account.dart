@@ -14,6 +14,7 @@ class StorageAccount extends Storage {
     "name": "com.bfban.login"
   }];
 
+  /// 擦除本地账户数据
   Future clearAll (BuildContext context) async {
     List<Future> Futures = [];
 

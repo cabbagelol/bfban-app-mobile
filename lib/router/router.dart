@@ -13,7 +13,7 @@ import 'package:bfban/pages/guide/guide.dart';
 import 'package:bfban/pages/detail/index.dart';
 import 'package:bfban/pages/report/report.dart';
 import 'package:bfban/pages/report/publish_results.dart';
-import 'package:bfban/pages/report/reply.dart';
+import 'package:bfban/pages/detail/reply.dart';
 import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/pages/report/drafts.dart';
 import 'package:bfban/pages/report/judgement.dart';
