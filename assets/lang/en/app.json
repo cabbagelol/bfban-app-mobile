@@ -3,116 +3,143 @@
     "basic": {
       "function": {
         "auto": {
-          "title": "自动",
-          "describe": "依照系统决定"
+          "title": "automatic",
+          "describe": "as determined by the system"
         }
       },
-      "support": "支援",
-      "web_site": "网站地址",
-      "setting": "设置"
+      "support": "support",
+      "web_site": "Website address",
+      "setting": "Setup"
     },
     "guide": {
-      "next": "下一步",
-      "back": "上一步",
-      "endNext": "完成",
+      "next": "Next step",
+      "back": "Previous Step",
+      "endNext": "Complete",
       "agreement": {
-        "content": "协议内容..",
-        "errorContent": "网络错误无法获取协议内容，请访问:"
+        "content": "The terms of the agreement ..",
+        "errorContent": "Network Error Unable to get protocol content, please visit:"
       },
       "login": {
-        "title": "欢迎您到来",
-        "label": "如果你已经有BFBAN账户，现在既可立即登录."
+        "title": "Welcome.",
+        "label": "if you already have a BFBAN account, you can log in now."
       },
       "permission": {
-        "title": "权限",
-        "label": "请触摸下方单元，授权权限给予应用。并非强制要求",
-        "tip": "如果存在【永久拒绝】选项，可以到设置》应用》权限修改",
+        "title": "Authority",
+        "label": "Please touch the cell below to grant permission to the application. Not mandatory",
+        "tip": "If there is the option of [Permanently Reject], you can modify the permission in Settings Application",
         "list": {
           "0": {
-            "name": "摄像头",
-            "describe": "主要用于拍摄或录制多媒体，媒体内容多为证据为主。"
+            "name": "Camera",
+            "describe": "It is mainly used for shooting or recording multimedia, and the media content is mainly evidence."
           },
           "1": {
-            "name": "相册",
-            "describe": "读取相册内容，用途证据为主"
+            "name": "photo album",
+            "describe": "Read the contents of the album, with the purpose evidence as the main evidence"
           },
           "2": {
-            "name": "本地储存",
-            "describe": "授权应用储存用户数据，其中包含登录信息以及草稿箱。"
+            "name": "local storage",
+            "describe": "The authorization application stores user data, including login information and draft boxes."
           },
           "3": {
-            "name": "通知",
-            "describe": "让程序提供桌面通知"
+            "name": "Notification",
+            "describe": "Let programs provide desktop alerts"
           }
         },
         "status": {
-          "-1": "未知",
-          "0": "授权成功",
-          "1": "未授权",
-          "2": "永久拒绝",
-          "3": "受限制"
+          "0": "Authorization succeeded",
+          "1": "Unauthorized",
+          "2": "Permanent Rejection",
+          "3": "restricted",
+          "-1": "unknown"
         }
       },
-      "agree": "我同意以上内容"
+      "agree": "I agree with the above"
     },
     "setting": {
-      "title": "设置中心",
+      "title": "Set Center",
+      "cell": {
+        "account": {
+          "title": "Accounts",
+          "describe": "Manage BFBAN account information"
+        },
+        "website": {
+          "title": "Website address",
+          "describe": "BAN website"
+        },
+        "resources": {
+          "title": "support",
+          "describe": "the program data is provide by a different service provider"
+        }
+      },
       "versions": {
-        "title": "版本",
-        "describe": "程序版本",
-        "currentVersion": "当前版本",
-        "newVersion": "最新版本",
-        "newVersionDescribe_new": "已经最新",
-        "newVersionDescribe_old": "过时的版本",
-        "type": "类型",
-        "superHairVersionTip": "未找到对应版本，您当前版本可能是超发版本"
+        "title": "Revision",
+        "describe": "Program Version",
+        "currentVersion": "Current Version",
+        "newVersion": "Latest version",
+        "newVersionDescribe_new": "Already up-to-date",
+        "newVersionDescribe_old": "obsolete version",
+        "type": "Type",
+        "superHairVersionTip": "No corresponding version found. Your current version may be the over-issued version"
       },
       "language": {
-        "title": "语言"
+        "title": "language"
       },
       "theme": {
-        "title": "主题",
-        "describe": "设置程序外观"
+        "title": "Themes",
+        "describe": "Set the appearance of the program"
       },
       "cleanManagement": {
-        "title": "清理",
-        "describe": "清理程序持久保存文件，谨慎操作"
+        "title": "clean up",
+        "describe": "Clean up the program to save files persistently, and operate with caution"
       },
       "appInfo": {
-        "title": "应用程序",
-        "describe": "打开程序应用信息"
+        "title": "application program",
+        "describe": "Open Program App Info"
       },
       "notice": {
-        "title": "通知设置",
-        "describe": "应用相应通知管理",
-        "tagstitle": "身份标签",
+        "title": "Notification Settings",
+        "describe": "Apply appropriate notification management",
+        "tagstitle": "identity tag",
         "switch": {
-          "title": "应用推送",
-          "describe": "是否接收来自应用推送信息"
+          "title": "Application push",
+          "describe": "if push information is receive from that application"
         },
         "site": {
-          "title": "站内推送",
-          "describe": "是否接收站内消息推送"
+          "title": "Site Push",
+          "describe": "Receive in-site message push"
         }
       }
     },
     "networkDetection": {
-      "title": "网络监测",
+      "title": "network monitoring",
       "status": {
-        "0": "检查中",
-        "1": "服务正常",
-        "2": "服务异常"
+        "0": "Under inspection",
+        "1": "Normal service",
+        "2": "Service exception"
       }
     },
     "userspace": {
-      "title": "用户控件",
-      "introduction": "这个人很懒什么都没说",
+      "title": "User Controls",
+      "introduction": "This guy's lazy. He didn't say anything.",
       "row": {
-        "privilege": "身份",
-        "joinTime": "加入时间",
-        "lastOnlineTime": "最后在线时间",
-        "reportCount": "举报总数"
+        "privilege": "Identity",
+        "joinTime": "Time of addition",
+        "lastOnlineTime": "Last Online Time",
+        "reportCount": "Total number of reports"
       }
+    },
+    "signin": {
+      "title": "Login",
+      "panel": {
+        "title": "BFBAN",
+        "label": "Welcome to BFBAN App",
+        "BfbanAccountButton": "BFBAN Account Login",
+        "cancelButton": "cancel",
+        "signupButton": "Register a BFBAN account"
+      },
+      "accountId": "Enter Account ID",
+      "password": "cipher",
+      "verificationCode": "Captcha"
     }
   }
 }

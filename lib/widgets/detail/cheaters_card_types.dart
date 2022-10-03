@@ -54,21 +54,20 @@ class CardUtil {
       ),
       imgMatcher(): CustomRender.widget(widget: (RenderContext context, buildChildren) {
         return GestureDetector(
-          child: Card(
-            borderOnForeground: true,
-            elevation: 10,
-            clipBehavior: Clip.hardEdge,
-            margin: const EdgeInsets.symmetric(vertical: 5),
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: Stack(
               children: [
                 EluiImgComponent(
                   src: "${context.tree.element!.attributes['src']}?imageslim",
                   width: double.infinity,
                   fit: BoxFit.fitWidth,
-                  errorWidget: const Icon(
-                    Icons.error,
-                    size: 50,
-                    color: Colors.black54,
+                  errorWidget: Opacity(
+                    opacity: .2,
+                    child: Image.asset(
+                      "assets/images/bfban-logo.png",
+                      fit: BoxFit.fitWidth,
+                    ),
                   ),
                   isPlaceholder: true,
                   placeholder: (BuildContext context, String url) {
@@ -79,11 +78,6 @@ class CardUtil {
                       lineWidth: 2,
                     );
                   },
-                ),
-                Image.network(
-                  context.tree.element!.attributes['src']! + "?imageslim",
-                  fit: BoxFit.cover,
-                  width: double.infinity,
                 ),
                 Positioned(
                   right: 0,
@@ -108,6 +102,7 @@ class CardUtil {
                     ),
                   ),
                 ),
+
                 Positioned(
                   right: 12,
                   bottom: 12,
@@ -136,7 +131,14 @@ class CardUtil {
   /// 配置html 样式表
   Map<String, Style> styleHtml(BuildContext context) {
     return {
-      "*": Style(fontSize: FontSize(15), color: Theme.of(context).textTheme.subtitle1!.color),
+      "img": Style(
+        margin: Margins.symmetric(vertical: 20),
+      ),
+      "p": Style(
+        margin: Margins.symmetric(vertical: 15),
+        fontSize: FontSize(15),
+        color: Theme.of(context).textTheme.subtitle1!.color,
+      ),
     };
   }
 
@@ -175,54 +177,6 @@ class CardUtil {
     ));
   }
 
-  /// [Widget]
-  /// TODO 国际化
-  /// TODO 身份列表应读身份表
-  /// 身份 返回数据结构
-  List getPrivilege(List privileges) {
-    List privilegeList = [];
-    Map privilegeConf = {
-      "admin": {
-        "name": "管理员",
-        "backgroundColor": Colors.redAccent,
-        "textColor": Colors.white,
-      },
-      "normal": {
-        "name": "玩家",
-        "backgroundColor": Colors.black,
-        "textColor": Colors.amber,
-      },
-      "super": {
-        "name": "超级管理",
-        "backgroundColor": Colors.blueAccent,
-        "textColor": Colors.white,
-      },
-      "": {
-        "name": "未知",
-        "backgroundColor": Colors.black,
-        "textColor": Colors.white12,
-      }
-    };
-
-    for (var i in privileges) {
-      privilegeList.add(privilegeConf[i]);
-    }
-
-    return privilegeList;
-  }
-
-  /// [Event]
-  /// 身份类型 返回Widget
-  Widget getPrivilegeWidget(List privileges) {
-    return Wrap(
-      spacing: 5,
-      runAlignment: WrapAlignment.center,
-      children: privileges.map((e) {
-        return I18nText("basic.privilege.$e", child: const Text(""));
-      }).toList(),
-    );
-  }
-
   /// [Event]
   /// 用户回复
   dynamic _setReply(context, {type, floor, toCommentId, toPlayerId}) {
@@ -231,7 +185,6 @@ class CardUtil {
 
     String content = jsonEncode({
       "type": type,
-      "toFloor": floor,
       "toCommentId": toCommentId,
       "toPlayerId": toPlayerId,
     });
@@ -298,7 +251,7 @@ class TimeLineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 2),
+      margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -392,24 +345,26 @@ class CheatUserCheatersCard extends StatelessWidget {
         ),
         ReplyButtonWidget(data: data)..floor = index,
       ],
-      headerSecondary: data["quote"] != null ? Card(
-        margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        color: Theme.of(context).appBarTheme.backgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                data["quote"]["username"].toString(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
+      headerSecondary: data["quote"] != null
+          ? Card(
+              margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              color: Theme.of(context).appBarTheme.backgroundColor,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      data["quote"]["username"].toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ) : const SizedBox(),
+            )
+          : const SizedBox(),
       content: Offstage(
         offstage: data["content"] == "",
         child: Container(

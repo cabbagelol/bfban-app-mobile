@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
@@ -357,11 +358,11 @@ class _MessagePageState extends State<MessagePage> {
                           controller: textFieldcontroller,
                           maxLines: null,
                           maxLength: 10,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             counterText: '',
                             border: InputBorder.none,
                             contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                            hintText: "回复",
+                            hintText: FlutterI18n.translate(context, "basic.button.reply"),
                           ),
                         ),
                       ),
@@ -372,7 +373,7 @@ class _MessagePageState extends State<MessagePage> {
                       child: TextButton(
                         onPressed: _healButton(),
                         child: !messageSendStatus!["load"]
-                            ? const Text("发送")
+                            ? Text(FlutterI18n.translate(context, "basic.button.commit"))
                             : const SizedBox(
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,

@@ -3,6 +3,7 @@
 import 'package:bfban/provider/translation_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
+import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,7 @@ class LanguagePage extends StatefulWidget {
 class _LanguagePageState extends State<LanguagePage> {
   LangProvider? langProvider;
 
-  // Locale? currentLang;
+  bool load = false;
 
   List languages = [];
 
@@ -42,7 +43,11 @@ class _LanguagePageState extends State<LanguagePage> {
 
   /// [Response]
   /// 获取语言列表
-  void getLanguageList () async {
+  void getLanguageList() async {
+    setState(() {
+      load = true;
+    });
+
     Response result = await Http.request(
       "conf/languages.json",
       typeUrl: "app_web_site",
@@ -54,14 +59,25 @@ class _LanguagePageState extends State<LanguagePage> {
         languages = result.data["child"];
       });
     }
+
+    setState(() {
+      load = false;
+    });
   }
 
   /// [Event]
   /// 变动语言
   void setLanguage(context, String value) async {
+    if (load) return;
+
+    setState(() {
+      load = true;
+    });
     await FlutterI18n.refresh(context, Locale(value));
-    langProvider!.currentLang = value;
-    setState(() {});
+    setState(() {
+      langProvider!.currentLang = value;
+      load = false;
+    });
   }
 
   @override
@@ -69,28 +85,23 @@ class _LanguagePageState extends State<LanguagePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(FlutterI18n.translate(context, "app.setting.language.title")),
+        actions: [
+          if (load)
+            Container(
+              height: 40,
+              margin: EdgeInsets.only(right: 10),
+              child: ELuiLoadComponent(
+                type: "line",
+                lineWidth: 2,
+                color: Theme.of(context).textTheme.subtitle1!.color!,
+                size: 25,
+              ),
+            ),
+        ],
       ),
       body: Consumer<TranslationProvider>(builder: (BuildContext context, data, Widget? child) {
         return ListView(
           children: [
-            EluiCellComponent(
-              title: FlutterI18n.translate(context, "app.basic.function.auto.title"),
-              label: FlutterI18n.translate(context, "app.basic.function.auto.describe"),
-              theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
-                backgroundColor: Theme.of(context).cardTheme.color,
-              ),
-              cont: Switch(
-                value: data.autoSwitchLang,
-                onChanged: (bool value) {
-                  data.autoSwitchLang = value;
-                },
-              ),
-            ),
-
-            Text(langProvider!.currentLang.toString()),
             // 语言列表
             Opacity(
               opacity: data.autoSwitchLang ? .3 : 1,
@@ -103,7 +114,12 @@ class _LanguagePageState extends State<LanguagePage> {
                     },
                     groupValue: langProvider!.currentLang,
                     title: Text(lang["label"].toString()),
-                    secondary: Text(lang["name"]),
+                    secondary: Card(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text(lang["name"]),
+                      ),
+                    ),
                     selected: true,
                   );
                 }).toList(),

@@ -2,6 +2,7 @@
 
 import 'package:bfban/provider/message_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/index.dart';
@@ -105,7 +106,9 @@ class _MessagePageState extends State<MessageListPage> {
                   ),
                   leading: ExcludeSemantics(
                     child: CircleAvatar(
-                      child: Text(i["haveRead"] == 0 ? "未读" : "已读"),
+                      child: Text(
+                          FlutterI18n.translate(context, i["haveRead"] == 0 ? "profile.message.tabsList.form.unread" : "profile.message.tabsList.form.read"),
+                      ),
                     ),
                   ),
                   subtitle: Text(
@@ -139,27 +142,22 @@ class _MessagePageState extends State<MessageListPage> {
                       }
                     },
                     itemBuilder: (content) => <PopupMenuEntry>[
-                      const PopupMenuItem(
-                        child: Text("查看"),
+                      PopupMenuItem(
+                        child: Text(FlutterI18n.translate(context, "profile.message.look")),
                         value: 10,
                       ),
-                      const PopupMenuItem(
-                        child: Text("回复"),
+                      PopupMenuItem(
+                        child: Text(FlutterI18n.translate(context, "basic.button.reply")),
                         value: 20,
                       ),
                       const PopupMenuDivider(),
-                      const PopupMenuItem(
-                        child: Text("标记已读"),
+                      PopupMenuItem(
+                        child: Text(FlutterI18n.translate(context, "profile.message.tabsList.form.read")),
                         value: 1,
                       ),
-                      const PopupMenuItem(
-                        child: Text("标记未读"),
+                      PopupMenuItem(
+                        child: Text(FlutterI18n.translate(context, "profile.message.tabsList.form.unread")),
                         value: 2,
-                      ),
-                      const PopupMenuDivider(),
-                      const PopupMenuItem(
-                        child: Text("删除"),
-                        value: 3,
                       ),
                     ],
                   ),

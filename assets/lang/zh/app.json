@@ -7,9 +7,25 @@
           "describe": "依照系统决定"
         }
       },
+      "message": {
+        "saveSuccess": "保存成功",
+        "saveError": "保存失败"
+      },
       "support": "支援",
       "web_site": "网站地址",
       "setting": "设置"
+    },
+    "home": {
+      "scancode": "扫一扫"
+    },
+    "splash": {
+      "guide": "初始引导",
+      "account": "加载账户信息",
+      "token": "用户身份配置",
+      "message": "更新消息",
+      "version": "验证版本服务",
+      "theme": "初始化主题",
+      "appInitial": "初始化程序应用"
     },
     "guide": {
       "next": "下一步",
@@ -67,7 +83,7 @@
           "describe": "联BAN网站"
         },
         "resources": {
-          "title": "资源",
+          "title": "支援",
           "describe": "程序数据由不用服务商提供"
         }
       },

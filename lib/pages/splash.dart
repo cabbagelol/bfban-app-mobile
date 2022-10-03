@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 
@@ -95,14 +96,14 @@ class _SplashPageState extends State<SplashPage> {
     if (user != null) {
       // 数据 更新到状态机内
       setState(() {
-        loadTip = "加载账户信息";
+        loadTip = "app.splash.account";
       });
       ProviderUtil().ofUser(context).setData(jsonDecode(user));
       // sleep(Duration(seconds: 1));
 
       // 消息 更新状态机
       setState(() {
-        loadTip = "更新消息";
+        loadTip = "app.splash.message";
       });
       await ProviderUtil().ofMessage(context).onUpDate();
       // sleep(Duration(seconds: 1));
@@ -110,19 +111,19 @@ class _SplashPageState extends State<SplashPage> {
 
     // 包 更新状态机
     setState(() {
-      loadTip = "验证版本服务";
+      loadTip = "app.splash.version";
     });
     await ProviderUtil().ofPackage(context).init();
 
     // 主题初始
     setState(() {
-      loadTip = "初始化主题";
+      loadTip = "app.splash.theme";
     });
     await ProviderUtil().ofTheme(context).init();
 
     // 配置初始
     setState(() {
-      loadTip = "初始化程序应用";
+      loadTip = "app.splash.appInitial";
     });
     await ProviderUtil().ofApp(context).conf!.init();
 
@@ -133,7 +134,7 @@ class _SplashPageState extends State<SplashPage> {
   /// 处理token
   Future _onToken() async {
     setState(() {
-      loadTip = "用户身份配置";
+      loadTip = "app.splash.token";
     });
 
     // 初始用户数据
@@ -155,7 +156,7 @@ class _SplashPageState extends State<SplashPage> {
     String guideName = "com.bfban.guide";
 
     setState(() {
-      loadTip = "初始引导";
+      loadTip = "app.splash.guide";
     });
 
     dynamic guide = await storage.get(guideName);
@@ -249,7 +250,7 @@ class _SplashPageState extends State<SplashPage> {
               ),
             ),
             Text(
-              loadTip.toString(),
+              FlutterI18n.translate(context, loadTip.toString()),
               textAlign: TextAlign.center,
               style: TextStyle(
                 // fontSize: FontSize.rem(.8).size,

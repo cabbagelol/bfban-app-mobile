@@ -1,6 +1,3 @@
-/// 我
-
-import 'package:bfban/utils/storage_account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -175,7 +172,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Container(
-                                      constraints: BoxConstraints(
+                                      constraints: const BoxConstraints(
                                         maxWidth: 200,
                                       ),
                                       child: Wrap(
@@ -217,8 +214,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
             Visibility(
               visible: data.isLogin,
               child: EluiCellComponent(
-                title: "账户",
-                label: "管理BFBAN的账户信息",
+                title: FlutterI18n.translate(context, "app.setting.cell.account.title"),
+                label: FlutterI18n.translate(context, "app.setting.cell.account.describe"),
                 theme: EluiCellTheme(
                   titleColor: Theme.of(context).textTheme.subtitle1?.color,
                   labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -230,8 +227,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
               ),
             ),
             EluiCellComponent(
-              title: "\u7f51\u7ad9\u5730\u5740",
-              label: "\u0042\u0046\u0042\u0041\u004e\u8054\u76df\u7f51\u7ad9",
+              title: FlutterI18n.translate(context, "app.setting.cell.website.title"),
+              label: FlutterI18n.translate(context, "app.setting.cell.website.describe"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -239,11 +236,11 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               islink: true,
-              onTap: () => _urlUtil.onPeUrl("https://bfban.com"),
+              onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"]),
             ),
             EluiCellComponent(
-              title: "\u652f\u63f4",
-              label: "\u7a0b\u5e8f\u6570\u636e\u7531\u4e0d\u540c\u670d\u52a1\u5546\u63d0\u4f9b",
+              title: FlutterI18n.translate(context, "app.setting.cell.resources.title"),
+              label: FlutterI18n.translate(context, "app.setting.cell.resources.describe"),
               theme: EluiCellTheme(
                 titleColor: Theme.of(context).textTheme.subtitle1?.color,
                 labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -278,9 +275,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
                   bottom: 20,
                 ),
                 child: EluiButtonComponent(
-                  child: const Text(
-                    "\u6ce8\u9500",
-                    style: TextStyle(
+                  child: Text(
+                    FlutterI18n.translate(context, "header.signout"),
+                    style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),

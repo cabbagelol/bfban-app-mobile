@@ -64,7 +64,7 @@ dependencies:
 
   # QR https://pub.flutter-io.cn/packages/flutter_barcode_sdk
   flutter_barcode_sdk: ^1.2.2
-  camera: ^0.9.4+6
+  camera: ^0.10.0+3
 
   # 本地通知x消息 https://pub.flutter-io.cn/packages/flutter_local_notifications
   flutter_local_notifications: ^9.2.0

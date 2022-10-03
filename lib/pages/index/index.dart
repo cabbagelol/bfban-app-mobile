@@ -168,12 +168,12 @@ class _IndexPageState extends State<IndexPage> {
                       PopupMenuItem(
                         value: 1,
                         child: Wrap(
-                          children: const [
-                            Icon(Icons.qr_code),
-                            SizedBox(
+                          children: [
+                            const Icon(Icons.qr_code),
+                            const SizedBox(
                               width: 10,
                             ),
-                            Text("扫一扫"),
+                            Text(FlutterI18n.translate(context, "app.home.scancode")),
                           ],
                         ),
                       ),

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:photo_view/photo_view.dart';
 
@@ -23,7 +24,8 @@ class PhotoViewSimpleScreen extends StatefulWidget {
 
   final Object? heroTag;
 
-   PhotoViewSimpleScreen({Key? key,
+  const PhotoViewSimpleScreen({
+    Key? key,
     this.imageUrl,
     this.imageProvider,
     this.loadingChild,
@@ -41,7 +43,24 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
   // 加载状态
   bool saveImgLoad = false;
 
-  /// [Evnet]
+  // 图片状态
+  bool imgStatus = false;
+
+  // 控制器
+  PhotoViewController? controller;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    controller!.dispose();
+    super.dispose();
+  }
+
+  /// [Event]
   /// 储存图片
   void onSave(BuildContext context, String? src) async {
     if (saveImgLoad) {
@@ -56,10 +75,10 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
 
     result["code"] == 0
         ? EluiMessageComponent.success(context)(
-            child: const Text("保存成功"),
+            child: Text(FlutterI18n.translate(context, "app.basic.message.saveSuccess")),
           )
         : EluiMessageComponent.error(context)(
-            child: const Text("错误保存"),
+            child: Text(FlutterI18n.translate(context, "app.basic.message.saveError")),
           );
 
     setState(() {
@@ -74,86 +93,59 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
       appBar: AppBar(
         elevation: 0,
         title: Text(widget.imageUrl!.toString()),
+        centerTitle: true,
       ),
       body: Stack(
         children: [
-          PhotoView(
-            enablePanAlways: true,
-            loadingBuilder: (BuildContext context, ImageChunkEvent? event) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-            imageProvider: widget.imageProvider,
-            backgroundDecoration: widget.backgroundDecoration,
-            minScale: widget.minScale,
-            maxScale: widget.maxScale,
-            heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag!),
-            enableRotation: true,
+          ClipRect(
+            child: PhotoView(
+              controller: controller,
+              enablePanAlways: true,
+              loadingBuilder: (BuildContext context, ImageChunkEvent? event) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+              imageProvider: widget.imageProvider,
+              backgroundDecoration: widget.backgroundDecoration,
+              minScale: widget.minScale,
+              maxScale: widget.maxScale,
+              heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag!),
+              enableRotation: true,
+            ),
           ),
           Positioned(
             child: Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Opacity(
-                    opacity: saveImgLoad ? .2 : 1,
-                    child: Column(
+              child: SizedBox(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         saveImgLoad
-                            ? const Padding(
-                                padding: EdgeInsets.all(10),
-                                child: ELuiLoadComponent(
-                                  type: "line",
-                                  lineWidth: 3,
-                                  size: 20,
-                                  color: Colors.white,
-                                ),
+                            ? const ELuiLoadComponent(
+                                type: "line",
+                                lineWidth: 2,
+                                size: 25,
+                                color: Colors.white,
                               )
                             : IconButton(
                                 icon: const Icon(
                                   Icons.file_download,
                                   color: Colors.white,
-                                  size: 30,
+                                  size: 25,
                                 ),
                                 onPressed: () {
                                   onSave(context, widget.imageUrl);
                                 },
                               ),
-                        Text(
-                          saveImgLoad ? "写入中" : "保存",
-                          style: const TextStyle(
-                            color: Colors.white54,
-                            fontSize: 14,
-                          ),
-                        ),
                       ],
                     ),
-                  ),
-                  Opacity(
-                    opacity: .2,
-                    child: Column(
-                      children: <Widget>[
-                        IconButton(
-                          icon: const Icon(
-                            Icons.insert_drive_file,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          onPressed: () {},
-                        ),
-                        const Text(
-                          "加入素材库",
-                          style: TextStyle(
-                            color: Colors.white54,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             bottom: 0,
