@@ -45,7 +45,7 @@ void main() async {
   Routes.configureRoutes(FluroRouter());
 
   // 应用版本模式
-  Config.env = Env.PROD;
+  Config.env = Env.DEV;
 
   // 相机初始
   Camera.camera = await availableCameras();
@@ -97,33 +97,36 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => LangProvider()),
       ],
       child: Consumer<ThemeProvider>(
-        builder: (BuildContext? themeContext, data, Widget? child) {
-          return MaterialApp(
-            theme: data.currentThemeData,
-            darkTheme: data.list!["default"]!.themeData!,
-            initialRoute: '/splash',
-            localizationsDelegates: [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              FlutterI18nDelegate(
-                translationLoader: CustomTranslationLoader(
-                  namespaces: ["index", "app"],
-                  basePath: "assets/lang",
-                  baseUri: Uri.https(Config.apiHost["web_site"].toString().replaceAll("https://", ""), "lang"),
-                  useCountryCode: false,
-                  fallback: "zh",
-                  forcedLocale: Locale("zh")
-                )
-              )
-            ],
-            builder: (BuildContext context, Widget? widget) {
-              ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-                return CustomError(errorDetails: errorDetails);
-              };
-
-              return widget!;
+        builder: (BuildContext? themeContext, themeData, Widget? child) {
+          return Consumer<LangProvider>(
+            builder: (BuildContext? context, langData, Widget? child) {
+              return MaterialApp(
+                theme: themeData.currentThemeData,
+                darkTheme: themeData.list!["default"]!.themeData!,
+                initialRoute: '/splash',
+                localizationsDelegates: [
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  FlutterI18nDelegate(
+                      translationLoader: CustomTranslationLoader(
+                          namespaces: ["app"],
+                          basePath: "assets/lang",
+                          baseUri: Uri.https(Config.apiHost["web_site"].toString().replaceAll("https://", ""), "lang"),
+                          useCountryCode: false,
+                          fallback: "zh",
+                          forcedLocale: Locale(langData.currentLang.isEmpty ? "zh" : langData.currentLang)
+                      )
+                  )
+                ],
+                builder: (BuildContext context, Widget? widget) {
+                  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                    return CustomError(errorDetails: errorDetails);
+                  };
+                  return widget!;
+                },
+                onGenerateRoute: Routes.router!.generator,
+              );
             },
-            onGenerateRoute: Routes.router!.generator,
           );
         },
       ),

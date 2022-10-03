@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
@@ -41,7 +42,10 @@ class _ReportPageState extends State<ReportPage> {
     ),
     param: ReportParam(
       data: {
+        "game": "",
         "originName": "",
+        "cheatMethods": [],
+        "videoLink": "",
         "description": "",
       },
     ),
@@ -470,12 +474,7 @@ class _ReportPageState extends State<ReportPage> {
                   padding: EdgeInsets.zero,
                   child: Stack(
                     children: <Widget>[
-                      Text(reportStatus.param!.data!["description"].toString()),
-                      // Html(
-                      //   data: reportStatus.param!.data!["description"],
-                      //   style: _detailApi.styleHtml(context),
-                      //   customRenders: _detailApi.customRenders(context),
-                      // ),
+                      Html(data: reportStatus.param!.data!["description"]),
                       Positioned(
                         left: 0,
                         right: 0,

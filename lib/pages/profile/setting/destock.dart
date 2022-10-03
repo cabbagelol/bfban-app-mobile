@@ -29,12 +29,12 @@ class _DestockPageState extends State<DestockPage> {
   /// [Event]
   /// 获取所有持久数据
   Future _getLoaclAll() async {
+    dynamic _storage = Storage();
     List list = [];
-    Storage().getAll().then((value) {
-      value.forEach((i)  {
-        list.add({
-          "name": i,
-        });
+
+    _storage.getAll().then((value)  {
+      value.forEach((i) async {
+        list.add({"name": i});
       });
 
       setState(() {
@@ -45,7 +45,7 @@ class _DestockPageState extends State<DestockPage> {
 
   /// [Event]
   /// 删除记录
-  _removeLoacl (e) async {
+  _removeLoacl(e) async {
     await Storage().remove(e["name"]);
     _getLoaclAll();
   }
@@ -60,7 +60,7 @@ class _DestockPageState extends State<DestockPage> {
             title: e["name"].toString(),
             cont: TextButton(
               onPressed: () => _removeLoacl(e),
-              child: Icon(Icons.delete),
+              child: const Icon(Icons.delete),
             ),
           );
         }).toList(),

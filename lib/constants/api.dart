@@ -1,12 +1,6 @@
 /// 全局接口配置
 
-import 'package:flutter/material.dart';
-
-enum Env {
-  PROD,
-  DEV,
-  LOCAL,
-}
+enum Env { PROD, DEV, LOCAL }
 
 class Config {
   static Env env = Env.DEV;
@@ -34,17 +28,22 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         d.addAll({
-          "network_service_request": "https://a791-217-145-236-143.ap.ngrok.io/api",
-        });
-        return d;
-      case Env.DEV: // 开发
-      case Env.LOCAL:
-      default:
-        d.addAll({
           "network_service_request": "https://bfban.gametools.network/api",
         });
-        return d;
+        break;
+      case Env.LOCAL:
+        d.addAll({
+          "network_service_request": "https://127.0.0.1:3000/api/"
+        });
+        break;
+      case Env.DEV:
+      default:
+        d.addAll({
+          "network_service_request": "https://a791-217-145-236-143.ap.ngrok.io/api",
+        });
+        break;
     }
+    return d;
   }
 
   /// 游戏类型
@@ -67,7 +66,6 @@ class Config {
       'players': 'players',
       'activities': 'activities',
       'users': 'users',
-
       'user_info': 'user/info',
       'user_me': 'user/me',
       'user_forgetPassword': 'user/forgetPassword',
@@ -79,7 +77,6 @@ class Config {
       'user_reports': 'user/reports',
       'user_changePassword': 'user/changePassword',
       'user_changeName': 'user/changeName',
-
       'player_judgement': 'player/judgement',
       'player_banAppeal': "player/banAppeal",
       'player_viewBanAppeal': "player/viewBanAppeal",
@@ -88,7 +85,6 @@ class Config {
       'player_report': 'player/report',
       'player_update': 'player/update',
       'player_reset': 'reset',
-
       'account_timeline': 'player/timeline',
       'account_signout': 'user/signout',
       'account_signin': 'user/signin',

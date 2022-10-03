@@ -3,7 +3,6 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 
 import '../utils/index.dart';
 
@@ -25,34 +24,31 @@ class LangProvider with ChangeNotifier {
   // 获取当前语言
   String get currentLang => _currentLang;
 
-  var delegate;
+  set currentLang (String value) {
+    _currentLang = value;
+    setLocalLang();
+  }
 
   // 初始化
   Future init() async {
-    Map _loaclLang = await getLocalLang();
+    Map _localLang = await getLocalLang();
 
-    if (_listDictionaryFrom.isEmpty && _loaclLang.isEmpty) {
+    if (_listDictionaryFrom.isEmpty && _localLang.isEmpty) {
       await getLangFrom();
-      await updataLoaclLang();
+      await updateLocalLang();
     }
 
-    // 翻译插件
-    delegate = await LocalizationDelegate.create(
-      fallbackLocale: 'en',
-      supportedLocales: ['en', 'zh'],
-    );
-
-    delegate.supportedLocalesMap = _loaclLang['listConf'];
+    _currentLang = _localLang["currentLang"];
     notifyListeners();
   }
 
   // [Event]
   // 读取本地语言表
   Future<Map> getLocalLang() async {
-    dynamic loacl = await Storage().get(packageName);
+    dynamic local = await Storage().get(packageName);
 
-    if (loacl != null) {
-      return jsonDecode(loacl);
+    if (local != null) {
+      return jsonDecode(local);
     }
 
     return {};
@@ -71,9 +67,8 @@ class LangProvider with ChangeNotifier {
     return true;
   }
 
-
   // 更新国际化配置到本地
-  Future updataLoaclLang() async {
+  Future updateLocalLang() async {
     for (var element in _listDictionaryFrom) {
       // 不需要同步
       await getLangConf(element["fileName"]);
@@ -115,9 +110,4 @@ class LangProvider with ChangeNotifier {
     notifyListeners();
     return result;
   }
-
-  // 获取结果
-  get t => (val, {Map<String, dynamic>? args}) {
-    return translate(val, args: args);
-  };
 }

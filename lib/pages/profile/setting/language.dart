@@ -6,6 +6,7 @@ import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/lang_provider.dart';
 import '../../../utils/index.dart';
 
 class LanguagePage extends StatefulWidget {
@@ -16,19 +17,25 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
-  var langProvider;
-  Locale? currentLang;
+  LangProvider? langProvider;
+
+  // Locale? currentLang;
 
   List languages = [];
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () async {
-      setState(() {
-        currentLang = FlutterI18n.currentLocale(context);
+
+    langProvider = ProviderUtil().ofLang(context);
+
+    if (langProvider!.currentLang.isEmpty) {
+      Future.delayed(Duration.zero, () async {
+        setState(() {
+          langProvider!.currentLang = FlutterI18n.currentLocale(context)!.languageCode;
+        });
       });
-    });
+    }
 
     getLanguageList();
   }
@@ -52,9 +59,8 @@ class _LanguagePageState extends State<LanguagePage> {
   /// [Event]
   /// 变动语言
   void setLanguage(context, String value) async {
-    // changeLocale(context, value);
-    currentLang = Locale(value);
-    await FlutterI18n.refresh(context, currentLang);
+    await FlutterI18n.refresh(context, Locale(value));
+    langProvider!.currentLang = value;
     setState(() {});
   }
 
@@ -67,7 +73,6 @@ class _LanguagePageState extends State<LanguagePage> {
       body: Consumer<TranslationProvider>(builder: (BuildContext context, data, Widget? child) {
         return ListView(
           children: [
-            // 例子
             EluiCellComponent(
               title: FlutterI18n.translate(context, "app.basic.function.auto.title"),
               label: FlutterI18n.translate(context, "app.basic.function.auto.describe"),
@@ -84,6 +89,8 @@ class _LanguagePageState extends State<LanguagePage> {
                 },
               ),
             ),
+
+            Text(langProvider!.currentLang.toString()),
             // 语言列表
             Opacity(
               opacity: data.autoSwitchLang ? .3 : 1,
@@ -93,10 +100,10 @@ class _LanguagePageState extends State<LanguagePage> {
                     value: lang["fileName"].toString(),
                     onChanged: (value) {
                       setLanguage(context, value!);
-                      // setLanguage(context, value!);
                     },
-                    groupValue: currentLang?.languageCode,
+                    groupValue: langProvider!.currentLang,
                     title: Text(lang["label"].toString()),
+                    secondary: Text(lang["name"]),
                     selected: true,
                   );
                 }).toList(),

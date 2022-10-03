@@ -93,9 +93,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
           children: <Widget>[
             /// 用户信息板块
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Card(
-                elevation: 15,
+                elevation: 0,
                 borderOnForeground: true,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -134,12 +134,13 @@ class _UserCenterPageState extends State<UserCenterPage> {
                             ),
                             onTap: _opEnSpace(),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 15),
                           AnimatedOpacity(
                             opacity: data.isLogin ? 1 : .3,
                             duration: const Duration(seconds: 1),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 GestureDetector(
                                   child: Column(
@@ -153,6 +154,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
+                                      const SizedBox(height: 5),
                                       Text(
                                         FlutterI18n.translate(context, "profile.message.title"),
                                         style: const TextStyle(
@@ -172,21 +174,27 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    Wrap(
-                                      spacing: 5,
-                                      children: !data.isLogin
-                                          ? [
-                                              EluiTagComponent(
-                                                color: EluiTagType.none,
-                                                size: EluiTagSize.no2,
-                                                theme: EluiTagTheme(
-                                                  backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
-                                                ),
-                                                value: "-",
-                                              )
-                                            ]
-                                          : [ PrivilegesTagWidget(data: data.userinfo["privilege"]) ],
+                                    Container(
+                                      constraints: BoxConstraints(
+                                        maxWidth: 200,
+                                      ),
+                                      child: Wrap(
+                                        spacing: 5,
+                                        children: !data.isLogin
+                                            ? [
+                                                EluiTagComponent(
+                                                  color: EluiTagType.none,
+                                                  size: EluiTagSize.no2,
+                                                  theme: EluiTagTheme(
+                                                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                                                  ),
+                                                  value: "-",
+                                                )
+                                              ]
+                                            : [PrivilegesTagWidget(data: data.userinfo["privilege"])],
+                                      ),
                                     ),
+                                    const SizedBox(height: 5),
                                     Text(
                                       FlutterI18n.translate(context, "account.role"),
                                       style: const TextStyle(

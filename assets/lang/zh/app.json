@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic": {
+    "basic":  {
       "function": {
         "auto": {
           "title": "自动",
@@ -57,6 +57,20 @@
     },
     "setting": {
       "title": "设置中心",
+      "cell": {
+        "account": {
+          "title": "账户",
+          "describe": "管理BFBAN的账户信息"
+        },
+        "website": {
+          "title": "网站地址",
+          "describe": "联BAN网站"
+        },
+        "resources": {
+          "title": "资源",
+          "describe": "程序数据由不用服务商提供"
+        }
+      },
       "versions": {
         "title": "版本",
         "describe": "程序版本",

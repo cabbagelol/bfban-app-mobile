@@ -116,8 +116,6 @@ class Storage {
   /// 获取所有
   Future getAll() async {
     if (!isInit) await init();
-    print('返回！');
-    print(_prefs!.getKeys());
     return _prefs!.getKeys();
   }
 }
