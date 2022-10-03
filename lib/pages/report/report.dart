@@ -344,8 +344,8 @@ class _ReportPageState extends State<ReportPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          "举报",
+        title: Text(
+            FlutterI18n.translate(context, "report.title")
         ),
       ),
       body: ListView(
@@ -400,10 +400,10 @@ class _ReportPageState extends State<ReportPage> {
                             ],
                           ),
                         ),
-                        const Center(
+                        Center(
                           child: Text(
-                            "检查用户id是否举报正确",
-                            style: TextStyle(color: Colors.white12, fontSize: 12),
+                            FlutterI18n.translate(context, "report.title"),
+                            style: const TextStyle(color: Colors.white12, fontSize: 12),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -411,9 +411,9 @@ class _ReportPageState extends State<ReportPage> {
                     ),
                   ),
                   EluiInputComponent(
-                    title: "游戏ID",
+                    title: FlutterI18n.translate(context, "report.labels.hackerId"),
                     value: reportStatus.param!.data!["originName"],
-                    placeholder: "输入作弊玩家游戏ID",
+                    placeholder: FlutterI18n.translate(context, "report.labels.idNotion1"),
                     onChange: (data) {
                       setState(() {
                         reportStatus.param!.data!["originName"] = data["value"].toString();
@@ -735,13 +735,13 @@ class _ReportPageState extends State<ReportPage> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: 10,
                         children: <Widget>[
-                          Icon(
+                          const Icon(
                             Icons.done,
                             color: Colors.orangeAccent,
                           ),
                           Text(
                             FlutterI18n.translate(context, "basic.button.commit"),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 14,
                             ),
                             textAlign: TextAlign.center,

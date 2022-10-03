@@ -84,19 +84,6 @@ class BfBanApp extends StatefulWidget {
 }
 
 class _BfBanAppState extends State<BfBanApp> {
-  final FlutterI18nDelegate flutterI18nDelegate = FlutterI18nDelegate(
-    translationLoader: NamespaceFileTranslationLoader(
-      namespaces: ["index", "app"],
-      useCountryCode: false,
-      fallbackDir: "en",
-      basePath: "assets/lang",
-      forcedLocale: Locale("en"),
-    ),
-    missingTranslationHandler: (key, locale) {
-      print("--- Missing Key: $key, languageCode: ${locale!.languageCode}");
-    },
-  );
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

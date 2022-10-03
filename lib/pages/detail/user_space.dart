@@ -7,6 +7,7 @@ import 'package:bfban/constants/api.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../component/_privilegesTag/index.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
 
@@ -74,7 +75,6 @@ class UserSpacePageState extends State<UserSpacePage> {
   /// [Response]
   /// 获取用户数据
   Future _getUserInfo() async {
-    print("id:" + userinfo.parame.toString());
 
     setState(() {
       userinfo.load = true;
@@ -86,7 +86,6 @@ class UserSpacePageState extends State<UserSpacePage> {
       method: Http.GET,
     );
 
-    print("result:" + result.toString());
 
     if (result.data["success"] == 1) {
       final d = result.data["data"];
@@ -155,7 +154,7 @@ class UserSpacePageState extends State<UserSpacePage> {
           case ConnectionState.done:
             return Scaffold(
               appBar: AppBar(
-                title: I18nText("account.title", child: Text("")),
+                title: I18nText("account.title", child: const Text("")),
                 centerTitle: true,
                 actions: [
                   // PopupMenuButton(
@@ -212,7 +211,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                 snapshot.data["username"],
                                 style: const TextStyle(fontSize: 20),
                               ),
-                              SizedBox(width: 5),
+                              const SizedBox(width: 5),
                               IconButton(
                                 onPressed: _openMessage(userinfo.data!["id"].toString()),
                                 icon: const Icon(Icons.message),
@@ -252,22 +251,10 @@ class UserSpacePageState extends State<UserSpacePage> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Wrap(
-                                    spacing: 5,
-                                    children: snapshot.data["privilege"].map<Widget>((i) {
-                                      return EluiTagComponent(
-                                        color: EluiTagType.none,
-                                        size: EluiTagSize.no2,
-                                        theme: EluiTagTheme(
-                                          backgroundColor: Theme.of(context).appBarTheme.color!.withOpacity(.2),
-                                        ),
-                                        value: FlutterI18n.translate(context, "basic.privilege.$i"),
-                                      );
-                                    }).toList(),
-                                  ),
+                                  PrivilegesTagWidget(data: snapshot.data["privilege"]),
                                   Text(
                                     FlutterI18n.translate(context, "account.role"),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     ),
                                   )
@@ -292,7 +279,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                   ),
                                   Text(
                                     FlutterI18n.translate(context, "account.joinedAt"),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     ),
                                   )
@@ -317,7 +304,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                   ),
                                   Text(
                                     FlutterI18n.translate(context, "account.lastOnlineTime"),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     ),
                                   )
@@ -342,7 +329,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                   ),
                                   Text(
                                     FlutterI18n.translate(context, "account.reportnum"),
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                     ),
                                   )

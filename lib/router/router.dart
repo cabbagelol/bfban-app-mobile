@@ -16,7 +16,7 @@ import 'package:bfban/pages/report/publish_results.dart';
 import 'package:bfban/pages/report/reply.dart';
 import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/pages/report/drafts.dart';
-import 'package:bfban/pages/report/manage.dart';
+import 'package:bfban/pages/report/judgement.dart';
 import 'package:bfban/pages/login/signin.dart';
 import 'package:bfban/pages/search/index.dart';
 import 'package:bfban/pages/profile/support.dart';
@@ -111,7 +111,7 @@ class Routes {
       {
         "url": "/report/manage/:id",
         'item': (context, params) {
-          return ManagePage(
+          return JudgementPage(
             id: params["id"][0],
           );
         }
@@ -195,7 +195,7 @@ class Routes {
       {
         "url": "/profile/notice",
         'item': (context, params) {
-          return NoticePage();
+          return const NoticePage();
         }
       },
       {
@@ -207,7 +207,6 @@ class Routes {
       {
         "url": "/richedit",
         'item': (context, params) {
-          print(params);
           return const RichEditPage();
         },
       },

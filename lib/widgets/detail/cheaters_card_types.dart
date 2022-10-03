@@ -30,9 +30,7 @@ class CardFun {
     return {
       linkMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) => GestureDetector(
-          onTap: () => {
-            _urlUtil.onPeUrl(context.tree.element!.attributes["href"].toString())
-          },
+          onTap: () => {_urlUtil.onPeUrl(context.tree.element!.attributes["href"].toString())},
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
             decoration: const BoxDecoration(
@@ -42,8 +40,10 @@ class CardFun {
               spacing: 5,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                const Icon(Icons.insert_link,),
-                Text.rich(TextSpan(text: context.tree.element!.text))
+                const Icon(
+                  Icons.insert_link,
+                ),
+                Text.rich(TextSpan(text: context.tree.element!.text), style: const TextStyle(fontSize: 18),)
               ],
             ),
           ),
@@ -215,7 +215,7 @@ class CardFun {
       spacing: 5,
       runAlignment: WrapAlignment.center,
       children: privileges.map((e) {
-        return I18nText("basic.privilege.$e", child: Text(""));
+        return I18nText("basic.privilege.$e", child: const Text(""));
       }).toList(),
     );
   }
@@ -267,7 +267,7 @@ class ReplyButtonWidget extends StatelessWidget {
           PopupMenuItem(
             value: 1,
             height: 40,
-            child: I18nText("basic.button.reply", child: Text("")),
+            child: I18nText("basic.button.reply", child: const Text("")),
           ),
           // PopupMenuItem(
           //   value: 2,
@@ -371,7 +371,7 @@ class CheatUserCheatersCard extends StatelessWidget {
                               }),
                         TextSpan(
                           text: FlutterI18n.translate(context, "basic.button.reply"),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontWeight: FontWeight.normal,
                           ),
                         ),
@@ -495,6 +495,7 @@ class CheatReportsCard extends StatelessWidget {
                           // 标题
                           Text.rich(
                             TextSpan(
+                              style: const TextStyle(fontSize: 18),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: data["username"],
@@ -510,7 +511,7 @@ class CheatReportsCard extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: FlutterI18n.translate(context, "detail.info.report"),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
@@ -522,7 +523,7 @@ class CheatReportsCard extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: FlutterI18n.translate(context, "detail.info.inGame"),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
                                 ),
@@ -531,7 +532,7 @@ class CheatReportsCard extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: FlutterI18n.translate(context, "detail.info.gaming"),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.normal,
                                   ),
                                 )
@@ -588,7 +589,11 @@ class CheatReportsCard extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      I18nText("detail.info.videoLink", child: Text("", style: TextStyle(fontSize: 12,))),
+                      I18nText("detail.info.videoLink",
+                          child: const Text("",
+                              style: TextStyle(
+                                fontSize: 12,
+                              ))),
                       Container(
                         margin: const EdgeInsets.only(left: 8, right: 10),
                         width: 1,
@@ -675,6 +680,7 @@ class JudgementCard extends StatelessWidget {
                     TextSpan(
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
+                          fontSize: 18
                       ),
                       children: <TextSpan>[
                         TextSpan(

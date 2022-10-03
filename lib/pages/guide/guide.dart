@@ -41,7 +41,7 @@ class _GuidePageState extends State<GuidePage> {
           });
         },
       ),
-      GuideLoginPage(),
+      const GuideLoginPage(),
       const GuidePermissionPage(
         onChange: null,
       ),

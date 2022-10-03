@@ -1,6 +1,9 @@
 /// http请求
 
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
@@ -68,8 +71,6 @@ class Http extends ScaffoldState {
     String _domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl];
     String _url = "$_domain/$url";
 
-    print(_url);
-
     Dio dio = createInstance();
     try {
       Response response = await dio.request(
@@ -92,8 +93,8 @@ class Http extends ScaffoldState {
           );
         case DioErrorType.response:
           return Response(
-            data: Map.from({'error': -2})..addAll(result.data),
-            requestOptions: RequestOptions(path: _url, method: method),
+            data: Map.from({'error': -2})..addAll(e.response!.data),
+            requestOptions: e.requestOptions,
           );
         case DioErrorType.cancel:
           return Response(

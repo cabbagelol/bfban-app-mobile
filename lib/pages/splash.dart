@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
-import 'package:flutter_elui_plugin/_tag/tag.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
 import 'package:uni_links/uni_links.dart';
 

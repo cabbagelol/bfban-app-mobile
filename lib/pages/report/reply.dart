@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
@@ -86,7 +88,7 @@ class _ReplyPageState extends State<ReplyPage> {
 
     if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
-        child: Text(result.data["code"]),
+        child: Text(result.data["message"]),
       );
       Navigator.pop(context, "cheatersCardTypes");
     } else {
@@ -131,6 +133,7 @@ class _ReplyPageState extends State<ReplyPage> {
                         type: "line",
                         size: 20,
                         lineWidth: 2,
+                        color: Colors.white,
                       ),
                     )
                   : IconButton(
@@ -150,15 +153,15 @@ class _ReplyPageState extends State<ReplyPage> {
                   child: Wrap(
                     spacing: 5,
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    children: const <Widget>[
-                      Icon(
+                    children: <Widget>[
+                      const Icon(
                         Icons.warning,
                         color: Colors.yellow,
                         size: 15,
                       ),
                       Text(
-                        "请填写有力证据的举报内容",
-                        style: TextStyle(
+                        FlutterI18n.translate(context, "detail.info.giveOpinion"),
+                        style: const TextStyle(
                           color: Colors.yellow,
                         ),
                       ),
@@ -181,7 +184,7 @@ class _ReplyPageState extends State<ReplyPage> {
                       padding: EdgeInsets.zero,
                       child: Stack(
                         children: <Widget>[
-                          Text(replyStatus.data!.content.toString()),
+                          Html(data: replyStatus.data!.content),
                           Positioned(
                             left: 0,
                             right: 0,
@@ -237,6 +240,7 @@ class _ReplyPageState extends State<ReplyPage> {
                 ),
                 child: EluiInputComponent(
                   internalstyle: true,
+                  placeholder: FlutterI18n.translate(context, "captcha.title"),
                   maxLenght: 4,
                   right: CaptchaWidget(
                     onChange: (Captcha cap) => replyStatus.captcha = cap,

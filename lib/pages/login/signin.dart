@@ -3,13 +3,13 @@
 import 'dart:ui' as ui;
 import 'dart:convert';
 
+import 'package:bfban/component/_captcha/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:provider/provider.dart';
@@ -68,46 +68,11 @@ class _SigninPageState extends State<SigninPage> {
   @override
   void initState() {
     super.initState();
-    _getCaptcha();
   }
 
   @override
   void dispose() {
     super.dispose();
-  }
-
-  /// [Response]
-  /// 更新验证码
-  void _getCaptcha() async {
-    String time = DateTime.now().millisecondsSinceEpoch.toString();
-
-    setState(() {
-      loginStatus.captcha!.load = true;
-    });
-
-    Response result = await Http.request(
-      "${Config.httpHost["captcha"]}?t=$time",
-      method: Http.GET,
-    );
-
-    if (result.data["success"] == 1) {
-      final d = result.data["data"];
-
-      result.headers['set-cookie']?.forEach((i) {
-        loginStatus.captcha?.cookie += i + ';';
-      });
-
-      // await ProviderUtil().ofApp(context).Storage_OS.set("com.bfban.cookie", value: loginStatus.captcha?.cookie);
-
-      setState(() {
-        loginStatus.captcha!.hash = d["hash"];
-        loginStatus.captcha!.captchaSvg = d["content"];
-      });
-    }
-
-    setState(() {
-      loginStatus.captcha!.load = false;
-    });
   }
 
   /// [Response]
@@ -166,29 +131,9 @@ class _SigninPageState extends State<SigninPage> {
         );
       }).whenComplete(() => Navigator.pop(context, 'loginBack'));
     } else {
-      switch (result.data["msg"]) {
-        case "invalid captcha":
-          EluiMessageComponent.error(context)(
-            child: const Text("请输入验证码"),
-          );
-          break;
-        case "captcha expires":
-        case "wrong captcha":
-          EluiMessageComponent.error(context)(
-            child: const Text("错误的验证码"),
-          );
-          break;
-        case "User not found or password mismatch":
-          EluiMessageComponent.error(context)(
-            child: const Text("用户名或密码错误"),
-          );
-          break;
-        default:
-          EluiMessageComponent.error(context)(
-            child: Text(result.toString()),
-          );
-      }
-      _getCaptcha();
+      EluiMessageComponent.error(context)(
+        child: Text(result.data["code"]),
+      );
     }
 
     setState(() {
@@ -260,11 +205,7 @@ class _SigninPageState extends State<SigninPage> {
                                     placeholder: FlutterI18n.translate(context, "app.signin.password"),
                                     type: TextInputType.visiblePassword,
                                     internalstyle: true,
-                                    onChange: (data) {
-                                      setState(() {
-                                        loginStatus.password = data["value"];
-                                      });
-                                    },
+                                    onChange: (data) => loginStatus.password = data["value"],
                                   ),
                                 ),
                                 const SizedBox(
@@ -276,30 +217,10 @@ class _SigninPageState extends State<SigninPage> {
                                     horizontal: 20,
                                   ),
                                   child: EluiInputComponent(
-                                    placeholder: FlutterI18n.translate(context, "app.signin.verificationCode"),
+                                    placeholder: FlutterI18n.translate(context, "captcha.title"),
                                     internalstyle: true,
                                     maxLenght: 4,
-                                    right: GestureDetector(
-                                      child: AnimatedContainer(
-                                        duration: const Duration(seconds: 1),
-                                        margin: const EdgeInsets.only(left: 10),
-                                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                                        height: 50,
-                                        width: 100,
-                                        child: loginStatus.captcha!.load
-                                            ? const ELuiLoadComponent(
-                                                type: "line",
-                                                color: Colors.black,
-                                                lineWidth: 2,
-                                                size: 20,
-                                              )
-                                            : SvgPicture.string(
-                                                loginStatus.captcha!.captchaSvg,
-                                                color: Theme.of(context).textTheme.bodyText1!.color,
-                                              ),
-                                      ),
-                                      onTap: () => _getCaptcha(),
-                                    ),
+                                    right: CaptchaWidget( onChange: (Captcha cap) => loginStatus.captcha = cap ),
                                     onChange: (data) {
                                       setState(() {
                                         loginStatus.captcha!.value = data["value"];
@@ -335,10 +256,14 @@ class _SigninPageState extends State<SigninPage> {
                   ),
                   child: TextButton(
                     child: loginStatus.load
-                        ? const SizedBox(
+                        ? SizedBox(
                             height: 40,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            child: ELuiLoadComponent(
+                              type: "line",
+                              lineWidth: 2,
+                              color: Theme.of(context).textTheme.subtitle1!.color!,
+                              size: 25,
+                            ),
                           )
                         : const SizedBox(
                             height: 40,

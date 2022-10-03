@@ -10,6 +10,7 @@ import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 
+import '../../component/_privilegesTag/index.dart';
 import '../../provider/userinfo_provider.dart';
 
 class UserCenterPage extends StatefulWidget {
@@ -154,7 +155,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       ),
                                       Text(
                                         FlutterI18n.translate(context, "profile.message.title"),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 12,
                                         ),
                                       )
@@ -184,20 +185,11 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                                 value: "-",
                                               )
                                             ]
-                                          : data.userinfo["privilege"].map<Widget>((i) {
-                                              return EluiTagComponent(
-                                                color: EluiTagType.none,
-                                                size: EluiTagSize.no2,
-                                                theme: EluiTagTheme(
-                                                  backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
-                                                ),
-                                                value: FlutterI18n.translate(context, "basic.privilege.$i"),
-                                              );
-                                            }).toList(),
+                                          : [ PrivilegesTagWidget(data: data.userinfo["privilege"]) ],
                                     ),
                                     Text(
                                       FlutterI18n.translate(context, "account.role"),
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 12,
                                       ),
                                     )

@@ -66,7 +66,7 @@ class Storage {
         break;
     }
 
-    return result is Null ? null : result;
+    return result;
   }
 
   /// [Event]

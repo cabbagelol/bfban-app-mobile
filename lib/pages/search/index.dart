@@ -11,10 +11,10 @@ import 'package:bfban/widgets/index.dart';
 
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_elui_plugin/_vacancy/index.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SearchPage extends StatefulWidget {
-  final data;
+  final dynamic data;
 
   const SearchPage({
     Key? key,
@@ -32,7 +32,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
   final TextEditingController _searchController = TextEditingController();
 
   // 搜索类型
-  List searchScope = ['current', 'history'];
+  List searchScope = ["current", "history"];
 
   // 搜索参
   SearchStatus searchStatus = SearchStatus(
@@ -76,7 +76,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
   /// [Event]
   /// 初始化
   void _onReady() async {
-    List log = jsonDecode(await Storage().get("com.bfban.serachlog") ?? '[]');
+    List log = jsonDecode(await Storage().get("com.bfban.history") ?? '[]');
 
     log.sort();
 
@@ -134,7 +134,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
         list.removeAt(0);
       }
       list.add(searchStatus.parame!.value);
-      Storage().set("com.bfban.serachlog", value: jsonEncode(list));
+      Storage().set("com.bfban.history", value: jsonEncode(list));
     }
   }
 
@@ -149,7 +149,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
       searchStatus.historyList = list;
     });
 
-    Storage().set("com.bfban.serachlog", value: jsonEncode(list));
+    Storage().set("com.bfban.history", value: jsonEncode(list));
   }
 
   @override
@@ -192,8 +192,8 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
-              left: 20,
-              right: 20,
+              left: 8,
+              right: 8,
               top: 10,
             ),
             child: Column(
@@ -216,7 +216,7 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
                     ),
                     Container(
                       height: 40,
-                      margin: EdgeInsets.only(left: 10),
+                      margin: const EdgeInsets.only(left: 10),
                       child: TextButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
@@ -305,8 +305,8 @@ class _SearchPageState extends State<SearchPage> with RestorationMixin {
                     }).toList(),
                   )
                 : EluiVacancyComponent(
-                    height: 300,
-                    title: "没有检索到结果",
+                    height: 200,
+                    title: FlutterI18n.translate(context, "basic.tip.notcontent"),
                   ),
           ),
         ],

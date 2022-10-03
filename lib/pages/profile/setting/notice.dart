@@ -67,7 +67,7 @@ class _NoticePageState extends State<NoticePage> {
               ),
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             EluiCellComponent(
               title: FlutterI18n.translate(context, "app.setting.notice.tagstitle"),
@@ -79,10 +79,10 @@ class _NoticePageState extends State<NoticePage> {
               ),
               cont: TextButton(
                 onPressed: () {
-                  Uuid uuid = Uuid();
+                  Uuid uuid = const Uuid();
                   data.onJiguanAddTag(uuid.v4(), true);
                 },
-                child: Icon(Icons.add),
+                child: const Icon(Icons.add),
               ),
             ),
             Column(

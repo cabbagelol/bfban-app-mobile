@@ -8,7 +8,7 @@ class DefaultTheme {
     isDefault: true,
     themeData: ThemeData(
       backgroundColor: Colors.black,
-      bottomSheetTheme: BottomSheetThemeData(
+      bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.black,
         modalBackgroundColor: Colors.black,
       ),
@@ -26,7 +26,7 @@ class DefaultTheme {
         onSurface: Colors.white,
       ),
       canvasColor: Colors.yellow,
-      chipTheme: ChipThemeData(
+      chipTheme: const ChipThemeData(
         backgroundColor: Colors.black12,
         secondarySelectedColor: Colors.white,
         checkmarkColor: Colors.black,
@@ -80,7 +80,7 @@ class DefaultTheme {
       popupMenuTheme: const PopupMenuThemeData(
         color: Color(0xff364e80),
       ),
-      dividerTheme: DividerThemeData(
+      dividerTheme: const DividerThemeData(
         color: Colors.black,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -88,7 +88,7 @@ class DefaultTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(TextStyle(
+          textStyle: MaterialStateProperty.all(const TextStyle(
             color: Colors.white,
           )),
           elevation: MaterialStateProperty.all(0.2),

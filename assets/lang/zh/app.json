@@ -113,6 +113,19 @@
         "lastOnlineTime": "最后在线时间",
         "reportCount": "举报总数"
       }
+    },
+    "signin": {
+      "title": "登录",
+      "panel": {
+        "title": "BFBAN",
+        "label": "欢迎使用BFBAN APP",
+        "BfbanAccountButton": "BFBAN 账户登录",
+        "cancelButton": "取消",
+        "signupButton": "注册BFBAN账户"
+      },
+      "accountId": "输入账户ID",
+      "password": "密码",
+      "verificationCode": "验证码"
     }
   }
 }

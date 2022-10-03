@@ -8,7 +8,7 @@ class LightnesTheme {
     isDefault: true,
     themeData: ThemeData(
       backgroundColor: const Color(0xffffffff),
-      bottomSheetTheme: BottomSheetThemeData(
+      bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.black,
         modalBackgroundColor: Colors.black,
       ),
@@ -26,7 +26,7 @@ class LightnesTheme {
         onSurface: Colors.black,
       ),
       canvasColor: Colors.white,
-      primaryColorDark: Color(0xff364e80),
+      primaryColorDark: const Color(0xff364e80),
       textTheme: const TextTheme(
         headline1: TextStyle(color: Colors.black),
         headline2: TextStyle(color: Colors.black),
@@ -45,7 +45,7 @@ class LightnesTheme {
         cursorColor: Colors.black,
       ),
       unselectedWidgetColor: Colors.black,
-      scaffoldBackgroundColor: Color(0xfff7f9fd),
+      scaffoldBackgroundColor: const Color(0xfff7f9fd),
       bottomAppBarColor: Colors.white,
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
@@ -79,7 +79,7 @@ class LightnesTheme {
           color: Colors.black,
         ),
       ),
-      dividerTheme: DividerThemeData(
+      dividerTheme: const DividerThemeData(
         color: Colors.black12,
         space: .4,
         indent: .5,
@@ -115,7 +115,7 @@ class LightnesTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.white,
         labelTextStyle: MaterialStateProperty.all(
-          TextStyle(
+          const TextStyle(
             color: Colors.black45,
           ),
         ),
@@ -135,7 +135,7 @@ class LightnesTheme {
           fontSize: 14,
         ),
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xff283653),
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
@@ -165,11 +165,11 @@ class LightnesTheme {
         color: Colors.white,
         shadowColor: Color(0x39131372),
       ),
-      cardColor: Color(0xfff2f2f2),
+      cardColor: const Color(0xfff2f2f2),
       radioTheme: RadioThemeData(
         mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
-        overlayColor: MaterialStateProperty.all(Color(0xff364e80).withOpacity(.7)),
-        fillColor: MaterialStateProperty.all(Color(0xff364e80)),
+        overlayColor: MaterialStateProperty.all(const Color(0xff364e80).withOpacity(.7)),
+        fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
       ),
       toggleableActiveColor: Colors.black,
       primaryTextTheme: const TextTheme(

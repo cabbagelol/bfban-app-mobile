@@ -74,21 +74,23 @@ class _captchaWidgetState extends State<CaptchaWidget> {
           child: AnimatedContainer(
             duration: const Duration(seconds: 1),
             margin: const EdgeInsets.only(left: 10),
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            height: 50,
+            height: 45,
             width: 100,
             child: Tooltip(
               message: FlutterI18n.translate(context, "captcha.title"),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (captcha.captchaSvg.toString().isEmpty && !captcha.load)
                     Text(FlutterI18n.translate(context, "captcha.get"))
                   else
                     if (captcha.load)
-                      const ELuiLoadComponent(
+                      ELuiLoadComponent(
                         type: "line",
-                        lineWidth: 2,
-                        size: 20,
+                        lineWidth: 1,
+                        color: Theme.of(context).textTheme.subtitle1!.color!,
+                        size: 16,
                       )
                     else
                       SvgPicture.string(

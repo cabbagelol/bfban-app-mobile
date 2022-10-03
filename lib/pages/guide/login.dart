@@ -43,15 +43,15 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                 count: 6,
                 borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
                 borderWidth: 2,
-                duration: Duration(seconds: 5),
+                duration: const Duration(seconds: 5),
                 child: Column(
                   children: [
                     Text(
                       FlutterI18n.translate(context, "guide.login.title"),
-                      style: TextStyle(fontSize: 30),
+                      style: const TextStyle(fontSize: 30),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       FlutterI18n.translate(context, "guide.login.label"),
                       style: TextStyle(
@@ -59,26 +59,26 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 30),
+                    const SizedBox(height: 30),
                     Card(
-                      margin: EdgeInsets.symmetric(horizontal: 30),
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
                       child: Padding(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
                             CircleAvatar(
                               radius: 20,
                               child: Text(
                                 data.isLogin ? data.userinfo["username"][0].toString() : FlutterI18n.translate(context, "signin.title")[0],
-                                style: TextStyle(fontSize: 20),
+                                style: const TextStyle(fontSize: 20),
                               ),
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Visibility(
                               visible: true,
                               child: Text(
                                 !data.isLogin ? FlutterI18n.translate(context, "signin.title") : data.userinfo["username"].toString(),
-                                style: TextStyle(fontSize: 20),
+                                style: const TextStyle(fontSize: 20),
                               ),
                             )
                           ],

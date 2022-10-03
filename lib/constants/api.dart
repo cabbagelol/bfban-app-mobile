@@ -34,7 +34,7 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         d.addAll({
-          "network_service_request": "https://bd37-113-78-165-215.ap.ngrok.io/api",
+          "network_service_request": "https://3805-217-145-236-143.ap.ngrok.io/api",
         });
         return d;
       case Env.DEV: // 开发
@@ -64,28 +64,31 @@ class Config {
       'captcha': 'captcha',
       'statistics': 'statistics',
       'playerStatistics': 'playerStatistics',
-      'users': 'users',
       'players': 'players',
+      'activities': 'activities',
+      'users': 'users',
+
       'user_info': 'user/info',
       'user_me': 'user/me',
-      'player_judgement': 'player/judgement',
-      'user_forgetPassword': 'user/forgetPassword', // 重置请求
-      'user_forgetPasswordVerify': 'user/forgetPasswordVerify', // 重置密码验证
-      'activities': 'activities',
-      'user_bindOrigin': 'user/bindOrigin', // 绑定🍊
-      'user_bindOriginVerify': 'user/bindOriginVerify', // 🍊验证
+      'user_forgetPassword': 'user/forgetPassword',
+      'user_forgetPasswordVerify': 'user/forgetPasswordVerify',
+      'user_bindOrigin': 'user/bindOrigin',
+      'user_bindOriginVerify': 'user/bindOriginVerify',
       'user_message': 'message',
       'user_message_mark': 'message/mark',
       'user_reports': 'user/reports',
-      'user_changePassword': 'user/changePassword', // 修改密码
-      'user_changeName': 'user/changeName', // 修改名称
-      'player_banAppeal': "player/banAppeal", // 申诉
+      'user_changePassword': 'user/changePassword',
+      'user_changeName': 'user/changeName',
+
+      'player_judgement': 'player/judgement',
+      'player_banAppeal': "player/banAppeal",
       'player_viewBanAppeal': "player/viewBanAppeal",
-      'player_unreply': 'player/unreply', // 删除回复
-      'player_reply': 'player/reply', // 回复
+      'player_unreply': 'player/unreply',
+      'player_reply': 'player/reply',
       'player_report': 'player/report',
       'player_update': 'player/update',
       'player_reset': 'reset',
+
       'account_timeline': 'player/timeline',
       'account_signout': 'user/signout',
       'account_signin': 'user/signin',
