@@ -18,9 +18,6 @@ class Config {
       "none": "",
       "sentry": "https://475f587d2c9a44f38cbe58978c0429c7@o438603.ingest.sentry.io/5403628",
 
-      // BFBAN 主站
-      "web_site": "https://bfban.cabbagelol.net",
-
       // BFBAN APP 网站
       "app_web_site": "https://bfban-app.cabbagelol.net",
     };
@@ -28,17 +25,20 @@ class Config {
     switch (env) {
       case Env.PROD: // 生产
         d.addAll({
+          "web_site": "https://bfban.gametools.network",
           "network_service_request": "https://bfban.gametools.network/api",
         });
         break;
       case Env.LOCAL:
         d.addAll({
-          "network_service_request": "https://127.0.0.1:3000/api/"
+          "web_site": "https://bfban.cabbagelol.net",
+          "network_service_request": "http://127.0.0.1:3000/api"
         });
         break;
       case Env.DEV:
       default:
         d.addAll({
+          "web_site": "https://bfban.gametools.network",
           "network_service_request": "https://a791-217-145-236-143.ap.ngrok.io/api",
         });
         break;

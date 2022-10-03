@@ -13,14 +13,11 @@ import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:bfban/component/_lang/delegate_custom.dart';
-import 'package:flutter_i18n/loaders/file_translation_loader.dart';
-import 'package:flutter_i18n/loaders/namespace_file_translation_loader.dart';
-import 'package:flutter_i18n/loaders/network_file_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
+// import 'package:jpush_flutter/jpush_flutter.dart';
 
 import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
@@ -36,16 +33,16 @@ void main() async {
   // MobileAds.instance.initialize();
 
   // 极光
-  JPush().setup(
-    appKey: Config.jiguan["appKey"],
-    channel: Config.jiguan["channel"],
-  );
+  // JPush().setup(
+  //   appKey: Config.jiguan["appKey"],
+  //   channel: Config.jiguan["channel"],
+  // );
 
   // 路由初始
   Routes.configureRoutes(FluroRouter());
 
   // 应用版本模式
-  Config.env = Env.DEV;
+  Config.env = Env.PROD;
 
   // 相机初始
   Camera.camera = await availableCameras();

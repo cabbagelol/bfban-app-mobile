@@ -4,7 +4,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:jpush_flutter/jpush_flutter.dart';
+// import 'package:jpush_flutter/jpush_flutter.dart';
 
 import '../constants/api.dart';
 import '../data/index.dart';
@@ -22,7 +22,7 @@ class MessageProvider with ChangeNotifier {
   String packageName = "com.bfban.message";
 
   // 极光
-  JPush jpush = JPush();
+  // JPush jpush = JPush();
 
   // 通知列表
   List _list = [];
@@ -61,13 +61,13 @@ class MessageProvider with ChangeNotifier {
     if (loaclMessage["autoSwitchAppessage"] != null) messageJiguanStatus.autoSwitchAppMessage = loaclMessage["autoSwitchAppessage"];
     if (loaclMessage["tags"] != null) messageJiguanStatus.AppMessageTags = loaclMessage["tags"];
 
-    jpush.setAlias("bfban.app");
+    // jpush.setAlias("bfban.app");
 
     // 设置身份标签
     if (loaclMessage["tags"] != null) {
       List<String> tags = [];
       messageJiguanStatus.AppMessageTags!.forEach((i) => tags.add(i["value"]));
-      jpush.setTags(tags);
+      // jpush.setTags(tags);
     }
 
     notifyListeners();
@@ -80,7 +80,7 @@ class MessageProvider with ChangeNotifier {
     messageJiguanStatus.AppMessageTags!.add(_tag);
 
     // 极光配置
-    jpush.addTags([name]);
+    // jpush.addTags([name]);
 
     await setLoaclMessage();
 
@@ -100,7 +100,7 @@ class MessageProvider with ChangeNotifier {
   /// 停止推送
   Future stopPush() async {
     messageJiguanStatus.autoSwitchAppMessage = false;
-    await jpush.stopPush();
+    // await jpush.stopPush();
     return true;
   }
 
@@ -109,7 +109,7 @@ class MessageProvider with ChangeNotifier {
   /// 重新接收推送
   Future resumePush() async {
     messageJiguanStatus.autoSwitchAppMessage = true;
-    await jpush.resumePush();
+    // await jpush.resumePush();
     return true;
   }
 

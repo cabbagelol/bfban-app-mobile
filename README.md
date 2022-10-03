@@ -43,6 +43,9 @@
 2. 在Info.plist添加网络、文件储存权限。
 3. 包名com.cabbagelol.bfban, 由于目前还没确认，随便配吧， 对吧~
 
+## 截图
+
+![](https://github.com/cabbagelol/bfban-app-website/blob/main/images/screenshots.png?raw=true)
 
 ## 构建
 
