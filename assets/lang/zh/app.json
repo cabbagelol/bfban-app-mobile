@@ -28,8 +28,6 @@
       "appInitial": "初始化程序应用"
     },
     "guide": {
-      "next": "下一步",
-      "back": "上一步",
       "endNext": "完成",
       "agreement": {
         "content": "协议内容..",

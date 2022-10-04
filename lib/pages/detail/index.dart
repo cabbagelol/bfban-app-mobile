@@ -508,12 +508,12 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                       child: Opacity(
                                         opacity: .2,
                                         child: SizedBox(
-                                          child: Image.network(
-                                            snapshot.data!["avatarLink"],
-                                            fit: BoxFit.fitWidth,
-                                          ),
                                           width: 800,
                                           height: 350,
+                                          child: snapshot.data!["avatarLink"].toString().isNotEmpty ? Image.network(
+                                            snapshot.data!["avatarLink"] ?? "",
+                                            fit: BoxFit.fitWidth,
+                                          ) : Container(),
                                         ),
                                       ),
                                     ),

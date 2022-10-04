@@ -1,23 +1,27 @@
-/// 语言选择器
 import 'package:flutter/material.dart';
 
-import 'package:bfban/provider/translation_provider.dart';
-import 'package:flutter_elui_plugin/_cell/cell.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_elui_plugin/elui.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/lang_provider.dart';
-import '../../../utils/index.dart';
+import '../../provider/lang_provider.dart';
+import '../../provider/translation_provider.dart';
+import '../../utils/http.dart';
+import '../../utils/provider.dart';
 
-class LanguagePage extends StatefulWidget {
-  const LanguagePage({Key? key}) : super(key: key);
+class GuideLanguagePage extends StatefulWidget {
+  final Function? onChanged;
+
+  const GuideLanguagePage({
+    Key? key,
+    this.onChanged,
+  }) : super(key: key);
 
   @override
-  _LanguagePageState createState() => _LanguagePageState();
+  State<GuideLanguagePage> createState() => _GuideLanguagePageState();
 }
 
-class _LanguagePageState extends State<LanguagePage> {
+class _GuideLanguagePageState extends State<GuideLanguagePage> {
   LangProvider? langProvider;
 
   bool load = false;
@@ -78,30 +82,44 @@ class _LanguagePageState extends State<LanguagePage> {
       langProvider!.currentLang = value;
       load = false;
     });
+    widget.onChanged!();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(FlutterI18n.translate(context, "app.setting.language.title")),
-        actions: [
-          if (load)
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(right: 10),
-              child: ELuiLoadComponent(
-                type: "line",
-                lineWidth: 2,
-                color: Theme.of(context).textTheme.subtitle1!.color!,
-                size: 25,
-              ),
-            ),
-        ],
-      ),
       body: Consumer<TranslationProvider>(builder: (BuildContext context, data, Widget? child) {
         return ListView(
           children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 20,
+                right: 20,
+                bottom: 20,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    FlutterI18n.translate(context, "app.setting.language.title"),
+                    style: const TextStyle(
+                      fontSize: 25,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  if (load)
+                    ELuiLoadComponent(
+                      type: "line",
+                      lineWidth: 1,
+                      color: Theme.of(context).textTheme.subtitle1!.color!,
+                      size: 16,
+                    ),
+                ],
+              ),
+            ),
+
             // 语言列表
             Opacity(
               opacity: data.autoSwitchLang ? .3 : 1,

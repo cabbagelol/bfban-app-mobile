@@ -14,10 +14,10 @@ class GuidePermissionPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _permissionPageState createState() => _permissionPageState();
+  _PermissionPageState createState() => _PermissionPageState();
 }
 
-class _permissionPageState extends State<GuidePermissionPage> {
+class _PermissionPageState extends State<GuidePermissionPage> {
   List<Permission> permissions = [
     Permission.camera,
     Permission.photos,
@@ -35,7 +35,8 @@ class _permissionPageState extends State<GuidePermissionPage> {
   /// 查询权限结果
   void _getQueryPermanentlyState() {
     for (var permission in permissions) {
-      print(Permission);
+      // print(permission.value);
+      // TODO
     }
   }
 
@@ -53,14 +54,14 @@ class _permissionPageState extends State<GuidePermissionPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
-                FlutterI18n.translate(context, "guide.permission.title"),
+                FlutterI18n.translate(context, "app.guide.permission.title"),
                 style: const TextStyle(
                   fontSize: 25,
                   color: Colors.white,
                 ),
               ),
               Text(
-                FlutterI18n.translate(context, "guide.permission.label"),
+                FlutterI18n.translate(context, "app.guide.permission.label"),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.white54,
@@ -87,7 +88,7 @@ class _permissionPageState extends State<GuidePermissionPage> {
                 color: Colors.yellow,
               ),
               Text(
-                FlutterI18n.translate(context, "guide.permission.tip"),
+                FlutterI18n.translate(context, "app.guide.permission.tip"),
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.yellow,
@@ -121,43 +122,43 @@ class _PermissionState extends State<PermissionWidget> {
 
   Map permissionName = {
     Permission.camera: {
-      "name": "guide.permission.list.0.name",
-      "describe": "guide.permission.list.0.describe",
+      "name": "app.guide.permission.list.0.name",
+      "describe": "app.guide.permission.list.0.describe",
     },
     Permission.photos: {
-      "name": "guide.permission.list.1.name",
-      "describe": "guide.permission.list.1.describe",
+      "name": "app.guide.permission.list.1.name",
+      "describe": "app.guide.permission.list.1.describe",
     },
     Permission.storage: {
-      "name": "guide.permission.list.2.name",
-      "describe": "guide.permission.list.2.describe",
+      "name": "app.guide.permission.list.2.name",
+      "describe": "app.guide.permission.list.2.describe",
     },
 
     Permission.notification: {
-      "name": "guide.permission.list.3.name",
-      "describe": "guide.permission.list.3.describe",
+      "name": "app.guide.permission.list.3.name",
+      "describe": "app.guide.permission.list.3.describe",
     },
   };
 
   Map permissionStatus = {
     PermissionStatus.granted: {
-      "text": "guide.permission.status.0",
+      "text": "app.guide.permission.status.0",
       "icon": Icons.check_circle,
     },
     PermissionStatus.values: {
-      "text": "guide.permission.status.-1",
+      "text": "app.guide.permission.status.-1",
       "icon": Icons.remove_circle,
     },
     PermissionStatus.denied: {
-      "text": "guide.permission.status.1",
+      "text": "app.guide.permission.status.1",
       "icon": Icons.warning,
     },
     PermissionStatus.permanentlyDenied: {
-      "text": "guide.permission.status.2",
+      "text": "app.guide.permission.status.2",
       "icon": Icons.error,
     },
     PermissionStatus.restricted: {
-      "text": "guide.permission.status.3",
+      "text": "app.guide.permission.status.3",
       "icon": Icons.info,
     },
   };
@@ -202,7 +203,7 @@ class _PermissionState extends State<PermissionWidget> {
         backgroundColor: Colors.black12,
       ),
       title: "${FlutterI18n.translate(context, permissionName[_permission]["name"])} - ${FlutterI18n.translate(context, permissionStatus[_permissionStatus]["text"])}",
-      label: permissionName[_permission]["describe"],
+      label: FlutterI18n.translate(context, permissionName[_permission]["describe"]),
       onTap: () {
         requestPermission(_permission);
       },

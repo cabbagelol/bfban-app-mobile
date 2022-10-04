@@ -11,35 +11,46 @@ import '../../utils/http.dart';
 class GuideAgreementPage extends StatefulWidget {
   final Function onChanged;
 
-  GuideAgreementPage({
+  const GuideAgreementPage({
     Key? key,
     required this.onChanged,
   }) : super(key: key);
 
   @override
-  _agreementPageState createState() => _agreementPageState();
+  _AgreementPageState createState() => _AgreementPageState();
 }
 
-class _agreementPageState extends State<GuideAgreementPage> {
+class _AgreementPageState extends State<GuideAgreementPage> {
   Map agreement = {
+    "load": false,
     "content": "",
   };
 
-  _agreementPageState() {
+  _AgreementPageState() {
     getAgreement();
   }
 
-  ///
+  /// [Response]
   /// 获取协议
   getAgreement() async {
+    setState(() {
+      agreement["load"] = true;
+    });
+
     Response result = await Http.request(
       "agreement/zh.html",
       typeUrl: "app_web_site",
       method: Http.GET,
     );
 
+    if (result.data.toString().isEmpty) {
+      setState(() {
+        agreement["content"] = result.data.toString();
+      });
+    }
+
     setState(() {
-      agreement["content"] = result.data.toString();
+      agreement["load"] = false;
     });
   }
 
@@ -49,17 +60,14 @@ class _agreementPageState extends State<GuideAgreementPage> {
       children: <Widget>[
         Column(
           children: [
-            Image.asset(
-              "assets/images/bfban-logo.png",
-              width: 60,
-              height: 60,
-            ),
-            const SizedBox(
-              height: 40,
-            ),
             Card(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Html(data: agreement["content"]),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Container(
+                constraints: const BoxConstraints(
+                  minHeight: 200,
+                ),
+                child: agreement["load"] ? Text("load") : Html(data: agreement["content"]),
+              ),
             ),
           ],
         ),
@@ -74,7 +82,7 @@ class _agreementPageState extends State<GuideAgreementPage> {
           child: EluiCheckboxComponent(
             color: Theme.of(context).colorScheme.primary,
             child: Text(
-              FlutterI18n.translate(context, "basic.button.submit"),
+              FlutterI18n.translate(context, "app.guide.agree"),
             ),
             onChanged: (bool checked) => widget.onChanged(checked),
           ),

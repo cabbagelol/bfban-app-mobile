@@ -26,7 +26,7 @@ class _SplashPageState extends State<SplashPage> {
   late String? loadTip = "";
 
   // unlink队列
-  late Map unilink = {
+  late Map unlLink = {
     "list": [],
   };
 
@@ -51,17 +51,15 @@ class _SplashPageState extends State<SplashPage> {
       _initLang(),
       _initUserData(),
     ]).catchError((onError) {
-      print("启动失败");
-      print(onError);
     }).whenComplete(() async {
       if (!await _onGuide()) return;
 
-      onMian();
+      onMain();
     });
   }
 
-  void onMian() {
-    Future.delayed(Duration(seconds: 0)).then((value) {
+  void onMain() {
+    Future.delayed(const Duration(seconds: 0)).then((value) {
       _urlUtil.opEnPage(
         context,
         "/",
@@ -142,9 +140,7 @@ class _SplashPageState extends State<SplashPage> {
 
     String token = ProviderUtil().ofUser(context).getToken;
 
-    if (token != null) {
-      Http.setToken(token);
-    }
+    Http.setToken(token);
 
     return true;
   }
@@ -163,7 +159,7 @@ class _SplashPageState extends State<SplashPage> {
 
     if (guide == null) {
       _urlUtil.opEnPage(context, "/guide", transition: TransitionType.fadeIn).then((value) async {
-        onMian();
+        onMain();
         await storage.set(guideName, value: 1);
       });
       return false;
@@ -175,33 +171,33 @@ class _SplashPageState extends State<SplashPage> {
   /// [Event]
   /// unlink
   Future _initUniLinks() async {
-    StreamSubscription? _sub;
+    StreamSubscription? sub;
 
     final initialLink = await getInitialLink();
     if (initialLink != null) {
-      _onUnilink(_unilinkQueryParameters(initialLink));
+      _onUnlLink(_unlLinkQueryParameters(initialLink));
     }
 
-    _sub = linkStream.listen((String? link) {
-      _onUnilink(_unilinkQueryParameters(link));
+    sub = linkStream.listen((String? link) {
+      _onUnlLink(_unlLinkQueryParameters(link));
     }, onError: (err) {
       EluiMessageComponent.warning(context)(
         child: Text(err.toString()),
       );
     });
 
-    return _sub;
+    return sub;
   }
 
   /// [Event]
   /// 处理地址
-  void _onUnilink(Uri uri) {
+  void _onUnlLink(Uri uri) {
     if (!uri.isScheme("bfban") || !uri.isScheme("https")) return;
 
     switch (uri.host) {
       case "app":
-      case "bfban-app.cabbagelol.com":
-      case "bfban.cabbagelol.com":
+      case "bfban.gametools.network":
+      case "bfban.cabbagelol.net":
       case "bfban.com":
         switch (uri.queryParameters["open_app_type"]) {
           // 打开玩家详情
@@ -218,7 +214,7 @@ class _SplashPageState extends State<SplashPage> {
 
   /// [Event]
   /// 分析地址
-  Uri _unilinkQueryParameters(String? link) {
+  Uri _unlLinkQueryParameters(String? link) {
     final decoded = Uri.decodeFull(link!).replaceAll('#', '?');
     final Uri uri = Uri.parse(decoded);
 
@@ -257,27 +253,23 @@ class _SplashPageState extends State<SplashPage> {
                 color: Theme.of(context).textTheme.subtitle2!.color,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             LinearProgressIndicator(
               minHeight: 1,
               color: Theme.of(context).textTheme.subtitle2!.color,
             ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 38),
+              padding: const EdgeInsets.symmetric(vertical: 38),
               color: Theme.of(context).backgroundColor,
               child: Center(
                 child: Consumer<PackageProvider>(
                   builder: (BuildContext context, data, child) {
                     return Column(
                       children: [
-                        Text(data.package!.appName.toString()),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          runAlignment: WrapAlignment.center,
-                          children: [
-                            Text("@"),
-                            Text(data.package!.packageName.toString()),
-                          ],
+                        AnimatedOpacity(
+                          opacity: data.package!.appName!.toString().isEmpty ? 0 : 1,
+                          duration: const Duration(milliseconds: 300),
+                          child:  Text(data.package!.appName.toString()),
                         ),
                       ],
                     );

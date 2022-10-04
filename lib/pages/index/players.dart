@@ -274,7 +274,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     right: -12,
                     child: AnimatedOpacity(
                       opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
-                      duration: const Duration(seconds: 1),
+                      duration: const Duration(milliseconds: 300),
                       child: Container(
                         padding: const EdgeInsets.all(1),
                         decoration: BoxDecoration(

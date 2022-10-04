@@ -6,6 +6,7 @@ import 'package:animations/animations.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'agreement.dart';
+import 'language.dart';
 import 'explain.dart';
 import 'login.dart';
 import 'permission.dart';
@@ -41,11 +42,18 @@ class _GuidePageState extends State<GuidePage> {
           });
         },
       ),
-      const GuideLoginPage(),
+      GuideLanguagePage(
+        onChanged: () {
+          setState(() {
+            // Update Widget, Run setState
+          });
+        },
+      ),
       const GuidePermissionPage(
         onChange: null,
       ),
       const GuideExplainPage(),
+      const GuideLoginPage(),
     ];
   }
 
@@ -53,10 +61,10 @@ class _GuidePageState extends State<GuidePage> {
   /// 下一步
   _onNext() async {
     // 勾选
-    if (!guideAgreementIs) return;
+    if (!guideAgreementIs) return null;
 
     // 完成离开
-    if (guideListPageIndex == guideListPage.length - 1) {
+    if (guideListPageIndex == guideListPage.length) {
       await Storage().set("com.bfban.guide", value: "1");
 
       _urlUtil.popPage(context);
@@ -66,6 +74,8 @@ class _GuidePageState extends State<GuidePage> {
     setState(() {
       guideListPageIndex++;
     });
+
+    return () {};
   }
 
   /// [Event]
@@ -97,7 +107,7 @@ class _GuidePageState extends State<GuidePage> {
           centerTitle: true,
         ),
         body: PageTransitionSwitcher(
-          duration: Duration(milliseconds: 150),
+          duration: const Duration(milliseconds: 150),
           transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
             return SharedAxisTransition(
               fillColor: Theme.of(context).scaffoldBackgroundColor,
@@ -110,13 +120,13 @@ class _GuidePageState extends State<GuidePage> {
           child: guideListPage[guideListPageIndex],
         ),
         bottomSheet: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AnimatedOpacity(
                 opacity: guideListPageIndex == 0 ? 0 : 1,
-                duration: Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 300),
                 child: TextButton(
                   onPressed: _onBacktrack,
                   child: Text(FlutterI18n.translate(context, "basic.button.prev")),
@@ -125,7 +135,7 @@ class _GuidePageState extends State<GuidePage> {
               Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
               ElevatedButton(
                 onPressed: _onNext,
-                child: guideListPageIndex + 1 < guideListPage.length ? Text(FlutterI18n.translate(context, "basic.button.next")) : Text(FlutterI18n.translate(context, "basic.button.next")),
+                child: guideListPageIndex + 1 < guideListPage.length ? Text(FlutterI18n.translate(context, "basic.button.next")) : Text(FlutterI18n.translate(context, "app.guide.endNext")),
               ),
             ],
           ),

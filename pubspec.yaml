@@ -64,7 +64,6 @@ dependencies:
 
   # QR https://pub.flutter-io.cn/packages/flutter_barcode_sdk
   #  flutter_barcode_sdk: ^2.0.3
-  camera: ^0.10.0+3
 
   # 本地通知x消息 https://pub.flutter-io.cn/packages/flutter_local_notifications
   flutter_local_notifications: ^11.0.1
@@ -110,6 +109,11 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.1
+
+  # Camera https://pub.dev/packages/camera
+  # https://pub.dev/packages/camera_web#limitations-on-the-web-platform
+  camera: ^0.10.0+3
+  camera_web: ^0.3.0+1
 
   # 启动屏幕 https://pub.flutter-io.cn/packages/flutter_native_splash
   flutter_native_splash: ^2.2.10+1

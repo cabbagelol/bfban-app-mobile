@@ -8,7 +8,6 @@ import 'package:bfban/pages/profile/setting/setting.dart';
 import 'package:fluro/fluro.dart';
 
 // S Pages
-import 'package:bfban/pages/network-result.dart';
 import 'package:bfban/pages/guide/guide.dart';
 import 'package:bfban/pages/detail/index.dart';
 import 'package:bfban/pages/report/report.dart';
@@ -210,14 +209,6 @@ class Routes {
           return const RichEditPage();
         },
       },
-      {
-        "url": "/network/:data",
-        'item': (context, params) {
-          return NetworkResultPage(
-            data: params["data"][0],
-          );
-        },
-      }
     ];
 
     for (var i in routerList!) {

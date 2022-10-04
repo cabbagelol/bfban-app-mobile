@@ -47,13 +47,13 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                 child: Column(
                   children: [
                     Text(
-                      FlutterI18n.translate(context, "guide.login.title"),
+                      FlutterI18n.translate(context, "app.guide.login.title"),
                       style: const TextStyle(fontSize: 30),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      FlutterI18n.translate(context, "guide.login.label"),
+                      FlutterI18n.translate(context, "app.guide.login.label"),
                       style: TextStyle(
                         color: Theme.of(context).textTheme.subtitle2!.color,
                       ),
