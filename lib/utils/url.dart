@@ -8,13 +8,13 @@ import 'package:bfban/router/router.dart';
 
 class UrlUtil {
   /// 唤起内置游览器，并访问
-  Future<Map> onPeUrl(String url) async {
+  Future<Map> onPeUrl(String url, {LaunchMode mode = LaunchMode.inAppWebView}) async {
     try {
       Uri _url = Uri.parse(url);
 
       if (url.isEmpty) throw "Url empty";
 
-      if (!await launchUrl(_url)) {
+      if (!await launchUrl(_url, mode: mode)) {
         throw 'Could not launch $url';
       }
 

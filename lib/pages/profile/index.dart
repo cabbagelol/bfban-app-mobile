@@ -6,6 +6,7 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../component/_privilegesTag/index.dart';
 import '../../provider/userinfo_provider.dart';
@@ -223,7 +224,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
                 islink: true,
-                onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"] + "/profile/account"),
+                onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"] + "/profile/account", mode: LaunchMode.externalApplication),
               ),
             ),
             EluiCellComponent(
@@ -236,7 +237,10 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               islink: true,
-              onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"]),
+              onTap: () => _urlUtil.onPeUrl(
+                Config.apiHost["web_site"],
+                mode: LaunchMode.externalApplication,
+              ),
             ),
             EluiCellComponent(
               title: FlutterI18n.translate(context, "app.setting.cell.resources.title"),

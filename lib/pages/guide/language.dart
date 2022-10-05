@@ -88,8 +88,9 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<TranslationProvider>(builder: (BuildContext context, data, Widget? child) {
-        return ListView(
+      body: Consumer<TranslationProvider>(
+        builder: (BuildContext context, data, Widget? child) {
+          return ListView(
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -145,7 +146,8 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> {
             ),
           ],
         );
-      }),
+        },
+      ),
     );
   }
 }

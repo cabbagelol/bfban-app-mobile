@@ -99,35 +99,37 @@ class _LanguagePageState extends State<LanguagePage> {
             ),
         ],
       ),
-      body: Consumer<TranslationProvider>(builder: (BuildContext context, data, Widget? child) {
-        return ListView(
-          children: [
-            // 语言列表
-            Opacity(
-              opacity: data.autoSwitchLang ? .3 : 1,
-              child: Column(
-                children: languages.map((lang) {
-                  return RadioListTile<String>(
-                    value: lang["fileName"].toString(),
-                    onChanged: (value) {
-                      setLanguage(context, value!);
-                    },
-                    groupValue: langProvider!.currentLang,
-                    title: Text(lang["label"].toString()),
-                    secondary: Card(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                        child: Text(lang["name"]),
+      body: Consumer<TranslationProvider>(
+        builder: (BuildContext context, data, Widget? child) {
+          return ListView(
+            children: [
+              // 语言列表
+              Opacity(
+                opacity: data.autoSwitchLang ? .3 : 1,
+                child: Column(
+                  children: languages.map((lang) {
+                    return RadioListTile<String>(
+                      value: lang["fileName"].toString(),
+                      onChanged: (value) {
+                        setLanguage(context, value!);
+                      },
+                      groupValue: langProvider!.currentLang,
+                      title: Text(lang["label"].toString()),
+                      secondary: Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Text(lang["name"]),
+                        ),
                       ),
-                    ),
-                    selected: true,
-                  );
-                }).toList(),
+                      selected: true,
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-          ],
-        );
-      }),
+            ],
+          );
+        },
+      ),
     );
   }
 }

@@ -30,7 +30,7 @@ class CustomTranslationLoader extends FileTranslationLoader {
     dynamic result;
 
     // 从远程服务器取得LANG配置单，如果缓存则使用本地
-    if (local.toString().isEmpty) {
+    if (local == null || local.toString().isEmpty) {
       dynamic networkLang = await http.get(resolvedUri);
       result = jsonDecode(utf8.decode(networkLang.bodyBytes));
     } else {

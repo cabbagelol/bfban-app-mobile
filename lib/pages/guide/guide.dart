@@ -61,10 +61,10 @@ class _GuidePageState extends State<GuidePage> {
   /// 下一步
   _onNext() async {
     // 勾选
-    if (!guideAgreementIs) return null;
+    if (!guideAgreementIs) return;
 
     // 完成离开
-    if (guideListPageIndex == guideListPage.length) {
+    if (guideListPageIndex == guideListPage.length - 1) {
       await Storage().set("com.bfban.guide", value: "1");
 
       _urlUtil.popPage(context);
@@ -72,10 +72,9 @@ class _GuidePageState extends State<GuidePage> {
     }
 
     setState(() {
-      guideListPageIndex++;
+      if (guideListPageIndex <= guideListPage.length - 1)
+        guideListPageIndex+=1;
     });
-
-    return () {};
   }
 
   /// [Event]
@@ -83,7 +82,7 @@ class _GuidePageState extends State<GuidePage> {
   _onBacktrack() async {
     if (guideListPageIndex <= 0) return;
     setState(() {
-      guideListPageIndex--;
+      guideListPageIndex-=1;
     });
   }
 

@@ -17,6 +17,7 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../provider/userinfo_provider.dart';
 
@@ -468,16 +469,15 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                       Icons.open_in_new,
                     ),
                     onPressed: () {
-                      Share().text(
-                        title: '联BFBAN分享',
-                        text: '走过路过，不要错过咯~ 快乐围观 ${snapshot.data!["originId"]} 在联BAN举报信息',
-                        linkUrl: 'https://bfban.com/#/cheaters/${snapshot.data!["originUserId"]}',
-                        chooserTitle: '联BFBAN分享',
-                      );
-                      Clipboard.setData(
-                        ClipboardData(
-                          text: 'https://bfban.com/#/cheaters/${snapshot.data!["originUserId"]}',
-                        ),
+                      // Share().text(
+                      //   title: '联BFBAN分享',
+                      //   text: '走过路过，不要错过咯~ 快乐围观 ${snapshot.data!["originId"]} 在联BAN举报信息',
+                      //   linkUrl: 'https://bfban.com/#/cheaters/${snapshot.data!["originUserId"]}',
+                      //   chooserTitle: '联BFBAN分享',
+                      // );
+                      _urlUtil.onPeUrl(
+                        "${Config.apiHost["web_site"]}/player/${snapshot.data!["originUserId"]}/share",
+                        mode: LaunchMode.externalNonBrowserApplication,
                       );
                     },
                   ),
@@ -510,10 +510,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                         child: SizedBox(
                                           width: 800,
                                           height: 350,
-                                          child: snapshot.data!["avatarLink"].toString().isNotEmpty ? Image.network(
-                                            snapshot.data!["avatarLink"] ?? "",
-                                            fit: BoxFit.fitWidth,
-                                          ) : Container(),
+                                          child: EluiImgComponent(
+                                            src: snapshot.data!["avatarLink"] ?? "",
+                                            width: 800,
+                                            height: 350,
+                                          ),
                                         ),
                                       ),
                                     ),

@@ -97,6 +97,7 @@ class _BfBanAppState extends State<BfBanApp> {
         builder: (BuildContext? themeContext, themeData, Widget? child) {
           return Consumer<LangProvider>(
             builder: (BuildContext? context, langData, Widget? child) {
+              print("lang:${langData.currentLang}");
               return MaterialApp(
                 theme: themeData.currentThemeData,
                 darkTheme: themeData.list!["default"]!.themeData!,
@@ -143,7 +144,10 @@ class CustomError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.red,
+      margin: EdgeInsets.zero,
       child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Text(
           errorDetails!.library.toString(),
           style: const TextStyle(
@@ -151,10 +155,7 @@ class CustomError extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        padding: EdgeInsets.all(8.0),
       ),
-      color: Colors.red,
-      margin: EdgeInsets.zero,
     );
   }
 }
