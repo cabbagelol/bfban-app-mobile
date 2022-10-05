@@ -10,7 +10,7 @@
 
     <application
         android:label="BFBAN"
-        android:icon="@drawable/ic_launcher">
+        android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"
