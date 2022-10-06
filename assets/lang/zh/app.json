@@ -30,6 +30,7 @@
     "guide": {
       "endNext": "完成",
       "agreement": {
+        "title": "协议",
         "content": "协议内容..",
         "errorContent": "网络错误无法获取协议内容，请访问:"
       },
