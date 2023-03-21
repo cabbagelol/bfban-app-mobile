@@ -8,12 +8,12 @@
 .buildlog/
 .history
 .svn/
+.idea/
 
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
-.idea/
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -23,6 +23,7 @@
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
+./pubspec.lock
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
@@ -52,5 +53,5 @@ app.*.map.json
 /macos
 /windows
 /web
-
-pubspec.lock
+./main.dev.dart
+./main.prod.dart

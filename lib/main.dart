@@ -7,7 +7,7 @@ import 'package:bfban/provider/message_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
 import 'package:bfban/provider/translation_provider.dart';
-import 'package:camera/camera.dart';
+import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
@@ -16,8 +16,7 @@ import 'package:bfban/component/_lang/delegate_custom.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
-import 'package:bfban/provider/userinfo_provider.dart';
-// import 'package:jpush_flutter/jpush_flutter.dart';
+import 'package:camera/camera.dart';
 
 import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
@@ -26,28 +25,17 @@ import 'package:bfban/utils/index.dart';
 import 'component/_lang/delegate_custom.dart';
 
 // 入口
-void main() async {
+void runMain() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // google ads 初始
-  // MobileAds.instance.initialize();
-
-  // 极光
-  // JPush().setup(
-  //   appKey: Config.jiguan["appKey"],
-  //   channel: Config.jiguan["channel"],
-  // );
 
   // 路由初始
   Routes.configureRoutes(FluroRouter());
 
-  // 应用版本模式
-  Config.env = Env.DEV;
-
   // 相机初始
   Camera.camera = await availableCameras();
 
-  // 设置系统演示
+  // 设置系统状态栏
   SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarBrightness: Brightness.light,

@@ -47,12 +47,24 @@
 
 ![](https://github.com/cabbagelol/bfban-app-website/blob/main/images/screenshots.png?raw=true)
 
+## 运行
+
+具体看`main.example.dart`的例子来创建环境启动，如:
+
+```
+   // 生产环境
+   flutter run (android or ios) ./main.prod.dart
+
+   // 开发环境   
+   flutter run (android or ios) ./main.dev.dart
+```
+
 ## 构建
 
 运行
-`
+```
    flutter build --release
-`
+```
 
 
 ## 分支介绍
