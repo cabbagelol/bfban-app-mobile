@@ -38,15 +38,7 @@ class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTicker
       "reports": 0,
       "confirmed": 0,
     },
-    params: {
-      "reports": true, // show reports number
-      "players": true, // show players that is reported number
-      "confirmed": true, // show confirmed number
-      "registers": true, // show register number
-      "banappeals": true, // show ban appeals number
-      "details": true, // show number of each game, each status
-      "from": Date().getTurnTheTimestamp("2018-01-01")["millisecondsSinceEpoch"],
-    },
+    params: {"reports": true, "players": true, "confirmed": true, "registers": true, "banappeals": true, "details": true, "from": 1514764800000},
   );
 
   // 请求参
@@ -240,16 +232,17 @@ class _HomeCommunityPageState extends State<HomeCommunityPage> with SingleTicker
           // 筛选
           if (index == 0) {
             return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               child: Wrap(
                 spacing: 5,
                 runSpacing: 5,
                 children: _chips(),
               ),
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             );
           }
 
           Map i = activity!.list![index - 1];
+
           return Visibility(
             visible: _isShow(i),
             child: GestureDetector(
@@ -333,12 +326,7 @@ class WidgetStateText extends StatelessWidget {
         // 举报
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            I18nText("home.activity.activities.report", child: Text("", style: textstyle)),
-            I18nText("basic.games.${itemdata!["game"]}", child: Text("", style: textstyle)),
-            SizedBox(width: 5),
-            Text(itemdata!["toPlayerName"], style: textstyle)
-          ],
+          children: [I18nText("home.activity.activities.report", child: Text("", style: textstyle)), I18nText("basic.games.${itemdata!["game"]}", child: Text("", style: textstyle)), SizedBox(width: 5), Text(itemdata!["toPlayerName"], style: textstyle)],
         );
       case "register":
         // 注册

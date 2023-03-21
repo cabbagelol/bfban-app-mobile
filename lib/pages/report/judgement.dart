@@ -8,6 +8,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../../component/_captcha/index.dart';
 import '../../widgets/edit/game_type_radio.dart';
 
 class JudgementPage extends StatefulWidget {
@@ -29,18 +30,7 @@ class _JudgementPageState extends State<JudgementPage> {
 
   Map suggestionInfo = {
     "videoIndex": 0,
-    "child": [
-      {"value": "1", "content": "1"},
-      {"value": "2", "content": "2"},
-      {
-        "value": "3",
-        "content": "再观察",
-      },
-      {
-        "value": "4",
-        "content": "清白",
-      },
-    ],
+    "child": [],
   };
 
   /// 裁判
@@ -112,16 +102,22 @@ class _JudgementPageState extends State<JudgementPage> {
       );
       return;
     }
+    
+    if (!['kill', 'guilt'].contains(manageStatus.data!.cheatMethods)) {
+      manageStatus.data!.cheatMethods = null;
+    }
 
     setState(() {
       manageStatus.load = true;
     });
-
+    print(manageStatus.data!.toMap);
     Response result = await Http.request(
       Config.httpHost["player_judgement"],
       method: Http.POST,
       data: manageStatus.data!.toMap,
     );
+    
+    print(result);
 
     if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
@@ -205,7 +201,6 @@ class _JudgementPageState extends State<JudgementPage> {
               ? const ELuiLoadComponent(
                   type: "line",
                   lineWidth: 2,
-                  color: Colors.black,
                 )
               : IconButton(
                   onPressed: () {
@@ -363,6 +358,23 @@ class _JudgementPageState extends State<JudgementPage> {
               ),
 
               /// E 理由
+
+              /// S 验证码
+              EluiInputComponent(
+                title: FlutterI18n.translate(context, "captcha.title"),
+                onChange: (data) {
+                  setState(() {
+                    manageStatus.data!.captcha!.value = data["value"];
+                  });
+                },
+                right: CaptchaWidget(
+                  onChange: (Captcha cap) => manageStatus.data!.captcha = cap,
+                ),
+                maxLenght: 4,
+                placeholder: FlutterI18n.translate(context, "captcha.title"),
+              ),
+
+              /// E 验证码
             ],
           );
         },

@@ -42,7 +42,7 @@ void main() async {
   Routes.configureRoutes(FluroRouter());
 
   // 应用版本模式
-  Config.env = Env.PROD;
+  Config.env = Env.DEV;
 
   // 相机初始
   Camera.camera = await availableCameras();
@@ -97,7 +97,6 @@ class _BfBanAppState extends State<BfBanApp> {
         builder: (BuildContext? themeContext, themeData, Widget? child) {
           return Consumer<LangProvider>(
             builder: (BuildContext? context, langData, Widget? child) {
-              print("lang:${langData.currentLang}");
               return MaterialApp(
                 theme: themeData.currentThemeData,
                 darkTheme: themeData.list!["default"]!.themeData!,

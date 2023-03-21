@@ -39,7 +39,7 @@ class Config {
       default:
         d.addAll({
           "web_site": "https://bfban.gametools.network",
-          "network_service_request": "https://a791-217-145-236-143.ap.ngrok.io/api",
+          "network_service_request": "https://2343-203-198-116-131.ap.ngrok.io/api",
         });
         break;
     }

@@ -9,6 +9,6 @@ export 'detail/cheaters_card_types.dart';
 
 // S index
 export 'index/cheat_list_card.dart';
-export 'index/search.dart';
+export 'index/search_box.dart';
 export 'index/text_load.dart';
 // E index

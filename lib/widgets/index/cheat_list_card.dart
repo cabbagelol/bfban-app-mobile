@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
-import 'package:bfban/constants/api.dart';
 
 import 'package:flutter_elui_plugin/_img/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -67,7 +66,7 @@ class CheatListCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
-          SizedBox(width: 8),
+          const SizedBox(width: 8),
           Text(
             Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
             style: TextStyle(
@@ -81,7 +80,7 @@ class CheatListCard extends StatelessWidget {
       ),
       trailing: Wrap(
         children: <Widget>[
-          cheatersCardIconitem(
+          CheatersCardIconitem(
             n: item["viewNum"].toString(),
             i: Icons.visibility,
           ),
@@ -93,7 +92,7 @@ class CheatListCard extends StatelessWidget {
             width: 1,
             color: Theme.of(context).dividerColor,
           ),
-          cheatersCardIconitem(
+          CheatersCardIconitem(
             n: item["commentsNum"].toString(),
             i: Icons.add_comment,
           ),
@@ -151,7 +150,7 @@ class CheatListCard extends StatelessWidget {
                         ),
                         child: Text(
                           FlutterI18n.translate(context, "app.basic.status.${item["status"]}"),
-                          style: TextStyle(fontSize: 12),
+                          style: const TextStyle(fontSize: 12),
                         ),
                       ),
                       Wrap(
@@ -198,7 +197,7 @@ class CheatListCard extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        cheatersCardIconitem(
+                        CheatersCardIconitem(
                           n: item["viewNum"].toString(),
                           i: Icons.visibility,
                         ),
@@ -210,7 +209,7 @@ class CheatListCard extends StatelessWidget {
                           width: 1,
                           color: Theme.of(context).dividerColor,
                         ),
-                        cheatersCardIconitem(
+                        CheatersCardIconitem(
                           n: item["commentsNum"].toString(),
                           i: Icons.add_comment,
                         ),
@@ -227,11 +226,11 @@ class CheatListCard extends StatelessWidget {
   }
 }
 
-class cheatersCardIconitem extends StatelessWidget {
+class CheatersCardIconitem extends StatelessWidget {
   final String? n;
   final IconData? i;
 
-  cheatersCardIconitem({
+  const CheatersCardIconitem({
     Key? key,
     this.n,
     this.i,

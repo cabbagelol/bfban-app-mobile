@@ -1,7 +1,7 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.2.1-beta'
+version: '0.2.2-beta'
 
 environment:
   sdk: ">=2.12.0 <3.0.0"

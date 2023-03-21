@@ -55,10 +55,10 @@ class titleSearch extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _searchState createState() => _searchState();
+  searchState createState() => searchState();
 }
 
-class _searchState extends State<titleSearch> {
+class searchState extends State<titleSearch> {
   TextEditingController controller = TextEditingController(text: "");
 
   FocusNode controllerFocus = FocusNode();
@@ -92,18 +92,23 @@ class _searchState extends State<titleSearch> {
     return widget.theme == titleSearchTheme.black ? true : false;
   }
 
+  void unFocus () {
+    controllerFocus.unfocus();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       child: ClipRRect(
         borderRadius: const BorderRadius.all(
-          Radius.circular(5),
+          Radius.circular(50),
         ),
         child: Row(
           children: [
             Expanded(
+              flex: 1,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 color: titleSearchColor(widget.theme).color,
                 child: Row(
                   children: <Widget>[
@@ -145,7 +150,6 @@ class _searchState extends State<titleSearch> {
                   ],
                 ),
               ),
-              flex: 1,
             ),
 
             // 尾部

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
 
-import '../../widgets/index/search.dart';
+import '../../widgets/index/search_box.dart';
 import '../profile/index.dart';
 import 'home.dart';
 
@@ -211,10 +211,7 @@ class _IndexPageState extends State<IndexPage> {
                   "icon": const Icon(Icons.person, size: 30),
                 },
               ].map((Map? nav) {
-                return BottomNavigationBarItem(
-                  icon: nav!["icon"],
-                  label: FlutterI18n.translate(context, "${nav["name"]}.title")
-                );
+                return BottomNavigationBarItem(icon: nav!["icon"], label: FlutterI18n.translate(context, "${nav["name"]}.title"));
               }).toList(),
               currentIndex: _currentPageIndex,
               onTap: (int index) => onTap(index),

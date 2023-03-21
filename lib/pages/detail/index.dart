@@ -276,7 +276,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   /// [Event]
   /// 用户回复
-  dynamic _setReply(num type, {num floor = 0}) {
+  dynamic _setReply(num type) {
     return () {
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return;
@@ -334,7 +334,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data["originPersonaId"]}").then((value) {
+      print(playerStatus.data);
+
+      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data["id"]}").then((value) {
         if (value != null) {
           _getCheatersInfo();
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
@@ -627,6 +629,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
                                 // Player Attr
                                 Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                   child: Wrap(
                                     spacing: 40,
                                     runSpacing: 25,
@@ -751,7 +754,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                       ),
                                     ],
                                   ),
-                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 ),
 
                                 Consumer<UserInfoProvider>(
@@ -763,6 +765,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                         top: 20,
                                       ),
                                       child: Align(
+                                        alignment: Alignment.centerRight,
                                         child: TextButton.icon(
                                           icon: const Icon(
                                             Icons.refresh,
@@ -771,7 +774,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                           label: const Text(""),
                                           onPressed: () => _seUpdateUserNameList(data.isLogin),
                                         ),
-                                        alignment: Alignment.centerRight,
                                       ),
                                     );
                                   },
@@ -783,14 +785,14 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                     right: 10,
                                     bottom: 10,
                                   ),
+                                  margin: const EdgeInsets.only(
+                                    top: 10,
+                                  ),
                                   child: userNameList['listLoad']
                                       ? EluiVacancyComponent(
                                           title: "-",
                                         )
                                       : _updateUserName(context, snapshot.data),
-                                  margin: const EdgeInsets.only(
-                                    top: 10,
-                                  ),
                                 ),
                               ],
                             ),
@@ -868,6 +870,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     child: IndexedStack(
+                      index: _tabControllerIndex,
                       children: [
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -938,7 +941,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                           ],
                         ),
                       ],
-                      index: _tabControllerIndex,
                     ),
                   );
                 },
@@ -1008,6 +1010,7 @@ class detailCheatersCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       child: Container(
         color: type == '0' ? const Color.fromRGBO(0, 0, 0, .3) : const Color.fromRGBO(255, 255, 255, .07),
         padding: const EdgeInsets.all(20),
@@ -1046,7 +1049,6 @@ class detailCheatersCard extends StatelessWidget {
           ],
         ),
       ),
-      onTap: onTap,
     );
   }
 }
