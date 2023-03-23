@@ -107,8 +107,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     child: ListTile(
                       title: Text(
-                        "[${e["statusCode"].toString()}] " +
-                            e["name"].toString().toUpperCase(),
+                        "[${e["statusCode"].toString()}] ${e["name"].toString().toUpperCase()}",
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,

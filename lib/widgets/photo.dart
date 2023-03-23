@@ -56,7 +56,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
 
   @override
   void dispose() {
-    controller!.dispose();
+    if (controller != null) controller!.dispose();
     super.dispose();
   }
 

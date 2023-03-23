@@ -32,18 +32,7 @@ class _ReplyPageState extends State<ReplyPage> {
   dynamic _data;
 
   // 回复
-  ReplyStatus replyStatus = ReplyStatus(
-    load: false,
-    data: ReplyData(
-      toPlayerId: 0,
-      toCommentId: null,
-      content: ""
-    ),
-    captcha: Captcha(
-      load: false,
-      value: ""
-    )
-  );
+  ReplyStatus replyStatus = ReplyStatus(load: false, data: ReplyData(toPlayerId: 0, toCommentId: null, content: ""), captcha: Captcha(load: false, value: ""));
 
   @override
   void initState() {
@@ -60,14 +49,14 @@ class _ReplyPageState extends State<ReplyPage> {
   void _onReply(isLogin) async {
     if (!isLogin) {
       EluiMessageComponent.warning(context)(
-        child: const Text("\u8bf7\u767b\u5f55"),
+        child: Text(FlutterI18n.translate(context, "detail.info.replyManual4")),
       );
       return;
     }
 
     if (replyStatus.data!.content!.isEmpty && replyStatus.captcha!.value.isEmpty) {
       EluiMessageComponent.warning(context)(
-        child: const Text("\u8bf7\u586b\u5199\u56de\u590d\u5185\u5bb9"),
+        child: Text(FlutterI18n.translate(context, "signup.fillIn")),
       );
       return;
     }
@@ -87,19 +76,20 @@ class _ReplyPageState extends State<ReplyPage> {
     );
 
     if (result.data["success"] == 1) {
-      EluiMessageComponent.success(context)(
-        child: Text(result.data["message"]),
-      );
-      Navigator.pop(context, "cheatersCardTypes");
-    } else {
-      EluiMessageComponent.error(context)(
-        child: Text(result.data["code"]),
-      );
+      setState(() {
+        replyStatus.load = false;
+        Navigator.pop(context, "cheatersCardTypes");
+      });
+      return;
     }
 
     setState(() {
       replyStatus.load = false;
     });
+
+    EluiMessageComponent.error(context)(
+      child: Text("${result.data["code"]}:${result.data["message"]}"),
+    );
   }
 
   /// [Event]

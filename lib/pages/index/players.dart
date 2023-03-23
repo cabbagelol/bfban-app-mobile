@@ -52,7 +52,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   );
 
   // 玩家状态
-  List? cheaterStatus = Config.cheaterStatus["child"];
+  List? cheaterStatus = Config.cheaterStatus["child"] ?? [];
 
   // 刷新key
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
@@ -68,7 +68,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     _tabController = TabController(
       vsync: this,
       initialIndex: 0,
-      length: cheaterStatus!.length,
+      length: cheaterStatus?.length ?? 0,
     );
 
     // 滚动视图初始
@@ -304,6 +304,88 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       ),
       body: Filter(
         key: _filterKey,
+        maxHeight: 300,
+        suckTop: false,
+        actions: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              child: ButtonBar(
+                alignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.max,
+                buttonAlignedDropdown: true,
+                overflowButtonSpacing: 10.0,
+                buttonMinWidth: 100,
+                buttonHeight: 100,
+                buttonTextTheme: ButtonTextTheme.primary,
+                buttonPadding: EdgeInsets.zero,
+                children: <Widget>[
+                  TextButton(
+                    child: Text(
+                      FlutterI18n.translate(context, "basic.button.cancel"),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {
+                      _filterKey.currentState!.hidden();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(
+                      FlutterI18n.translate(context, "basic.button.submit"),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {
+                      _filterKey.currentState!.hidden();
+                      _filterKey.currentState!.updataFrom();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        slot: [
+          FilterItemWidget(
+            title: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                FlutterI18n.translate(context, "list.filters.sortByTitle"),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+              ),
+            ),
+            panel: SoltFilterPanel(),
+          ),
+          FilterItemWidget(
+            title: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                FlutterI18n.translate(context, "report.labels.game"),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.subtitle1!.color,
+                ),
+              ),
+            ),
+            panel: GameNameFilterPanel(
+              key: _gameNameFilterKey,
+            ),
+          ),
+        ],
+        onChange: (data) async {
+          resetPlayerParame(game: true, sort: true, data: true);
+
+          playersStatus!.parame!.data["game"] = data[1].value;
+          playersStatus!.parame!.data["sort"] = data[0].value;
+
+          await _onRefresh();
+        },
+        onReset: () => resetPlayerParame(),
         // 内容
         child: RefreshIndicator(
           key: _refreshIndicatorKey,
@@ -355,88 +437,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             },
           ),
         ),
-        maxHeight: 300,
-        suckTop: false,
-        actions: [
-          Expanded(
-            child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: ButtonBar(
-                alignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.max,
-                buttonAlignedDropdown: true,
-                overflowButtonSpacing: 10.0,
-                buttonMinWidth: 100,
-                buttonHeight: 100,
-                buttonTextTheme: ButtonTextTheme.primary,
-                buttonPadding: EdgeInsets.zero,
-                children: <Widget>[
-                  TextButton(
-                    child: Text(
-                      FlutterI18n.translate(context, "basic.button.cancel"),
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {
-                      _filterKey.currentState!.hidden();
-                    },
-                  ),
-                  TextButton(
-                    child: Text(
-                      FlutterI18n.translate(context, "basic.button.submit"),
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () {
-                      _filterKey.currentState!.hidden();
-                      _filterKey.currentState!.updataFrom();
-                    },
-                  ),
-                ],
-              ),
-            ),
-            flex: 1,
-          ),
-        ],
-        slot: [
-          FilterItemWidget(
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                FlutterI18n.translate(context, "list.filters.sortByTitle"),
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
-                ),
-              ),
-            ),
-            panel: SoltFilterPanel(),
-          ),
-          FilterItemWidget(
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                FlutterI18n.translate(context, "report.labels.game"),
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
-                ),
-              ),
-            ),
-            panel: GameNameFilterPanel(
-              key: _gameNameFilterKey,
-            ),
-          ),
-        ],
-        onChange: (data) async {
-          resetPlayerParame(game: true, sort: true, data: true);
-
-          playersStatus!.parame!.data["game"] = data[1].value;
-          playersStatus!.parame!.data["sort"] = data[0].value;
-
-          await _onRefresh();
-        },
-        onReset: () => resetPlayerParame(),
       ),
     );
   }

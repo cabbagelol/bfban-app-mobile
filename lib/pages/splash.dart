@@ -19,7 +19,7 @@ class SplashPage extends StatefulWidget {
   _SplashPageState createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 载入提示
@@ -29,6 +29,8 @@ class _SplashPageState extends State<SplashPage> {
   late Map unlLink = {
     "list": [],
   };
+
+  late double _size = 1;
 
   @override
   void initState() {
@@ -44,14 +46,19 @@ class _SplashPageState extends State<SplashPage> {
   /// [Event]
   /// 初始页面数据
   void _onReady() async {
+    Future.delayed(const Duration(seconds: 1)).then((value) => {
+          setState(() {
+            _size = 2;
+          })
+        });
+
     Future.wait([
       _initUniLinks(),
       _onToken(),
       _initNotice(),
       _initLang(),
       _initUserData(),
-    ]).catchError((onError) {
-    }).whenComplete(() async {
+    ]).catchError((onError) {}).whenComplete(() async {
       if (!await _onGuide()) return;
 
       onMain();
@@ -72,7 +79,7 @@ class _SplashPageState extends State<SplashPage> {
 
   /// [Event]
   /// 国际化
-  Future _initLang () async {
+  Future _initLang() async {
     await ProviderUtil().ofLang(context).init();
 
     return true;
@@ -80,7 +87,7 @@ class _SplashPageState extends State<SplashPage> {
 
   /// [Event]
   /// 通知初始
-  Future _initNotice () async {
+  Future _initNotice() async {
     await ProviderUtil().ofMessage(context).init();
 
     return true;
@@ -236,10 +243,15 @@ class _SplashPageState extends State<SplashPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      "assets/splash/splash_center_logo.png",
-                      width: 50,
-                      height: 50,
+                    AnimatedScale(
+                      scale: _size,
+                      curve: Curves.easeOutBack,
+                      duration: const Duration(milliseconds: 300),
+                      child: Image.asset(
+                        "assets/splash/splash_center_logo.png",
+                        width: 50,
+                        height: 50,
+                      ),
                     ),
                   ],
                 ),
@@ -269,7 +281,7 @@ class _SplashPageState extends State<SplashPage> {
                         AnimatedOpacity(
                           opacity: data.package!.appName!.toString().isEmpty ? 0 : 1,
                           duration: const Duration(milliseconds: 300),
-                          child:  Text(data.package!.appName.toString()),
+                          child: Text(data.package!.appName.toString()),
                         ),
                       ],
                     );

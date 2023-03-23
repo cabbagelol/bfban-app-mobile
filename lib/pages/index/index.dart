@@ -29,7 +29,7 @@ class _IndexPageState extends State<IndexPage> {
   GlobalKey<PlayerListPageState>? playerListPage = GlobalKey();
 
   // 首页下标
-  int _currentPageIndex = 1;
+  int _currentPageIndex = 0;
 
   // 首页Widget列表
   List<Widget> _listWidgetPage = [];
@@ -108,7 +108,7 @@ class _IndexPageState extends State<IndexPage> {
                               opacity: data.total == 0 ? .3 : 1,
                               duration: const Duration(seconds: 1),
                               child: IconButton(
-                                icon: const Icon(Icons.add_alert),
+                                icon: const Icon(Icons.notifications_rounded),
                                 onPressed: _openMessage(),
                               ),
                             ),
@@ -186,8 +186,8 @@ class _IndexPageState extends State<IndexPage> {
               centerTitle: false,
             ),
             body: IndexedStack(
-              children: _listWidgetPage,
               index: _currentPageIndex,
+              children: _listWidgetPage,
             ),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,

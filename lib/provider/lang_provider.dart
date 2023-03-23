@@ -59,9 +59,11 @@ class LangProvider with ChangeNotifier {
   Future<bool> setLocalLang() async {
     Map data = {
       'currentLang': currentLang,
-      'listDictionaryFrom': _listDictionaryFrom,
-      'listConf': _list
+      'listDictionaryFrom': await getLangFrom(),
+      'listConf': await getLangConf(currentLang)
     };
+
+    print(data);
 
     await Storage().set(packageName, value: jsonEncode(data));
     return true;
@@ -91,14 +93,14 @@ class LangProvider with ChangeNotifier {
     }
     notifyListeners();
 
-    return result;
+    return result.data["child"];
   }
 
   // 获取国际化对应的语言文本
   Future getLangConf(currentLang) async {
     notifyListeners();
     Response result = await Http.request(
-      "lang/" + currentLang + ".json",
+      "lang/$currentLang.json",
       typeUrl: "web_site",
       method: Http.GET,
     );
@@ -108,6 +110,6 @@ class LangProvider with ChangeNotifier {
     }
 
     notifyListeners();
-    return result;
+    return result.data;
   }
 }

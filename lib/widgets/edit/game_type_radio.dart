@@ -15,6 +15,7 @@ class gameTypeRadio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
@@ -29,7 +30,6 @@ class gameTypeRadio extends StatelessWidget {
           child: child!,
         ),
       ),
-      onTap: onTap,
     );
   }
 }

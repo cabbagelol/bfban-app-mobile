@@ -328,7 +328,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     maxLines: 1,
                                   ),
                                   Text(
-                                    FlutterI18n.translate(context, "account.reportnum"),
+                                    FlutterI18n.translate(context, "account.reportNum"),
                                     style: const TextStyle(
                                       fontSize: 12,
                                     ),

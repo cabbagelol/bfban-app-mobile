@@ -16,7 +16,12 @@
       "setting": "设置"
     },
     "home": {
-      "scancode": "扫一扫"
+      "scancode": "扫一扫",
+      "tabs": {
+        "activities": "动态",
+        "trace": "追踪",
+        "tourRecord": "游览记录"
+      }
     },
     "splash": {
       "guide": "初始引导",
@@ -155,6 +160,10 @@
       "accountId": "输入账户ID",
       "password": "密码",
       "verificationCode": "验证码"
+    },
+    "search": {
+      "historySearch": "历史搜索",
+      "hotRecommendation": "热门推荐"
     }
   }
 }

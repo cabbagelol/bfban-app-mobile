@@ -17,6 +17,7 @@ import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_elui_plugin/_vacancy/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../component/_empty/index.dart';
 import '../../widgets/index/search_in_user.dart';
 
 class SearchPage extends StatefulWidget {
@@ -66,11 +67,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   List searchTabs = [];
 
+  List searchTrends = [];
+
   int searchTabsIndex = 0;
 
   final GlobalKey<searchState> _titleSearchWidgetKey = GlobalKey<searchState>();
-
-  late titleSearch titleSearchWidget;
 
   @override
   void initState() {
@@ -97,15 +98,16 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Event]
   /// 初始化
   void _onReady() async {
-    List log = jsonDecode(await Storage().get("com.bfban.history") ?? '[]');
+    List history = jsonDecode(await Storage().get("com.bfban.history") ?? '[]');
 
-    log.sort();
+    history.sort();
+    _getTrend();
 
     setState(() {
       /// 序列化
       searchStatus.params.param = jsonDecode(widget.data)["id"];
 
-      searchStatus.historyList = log;
+      searchStatus.historyList = history;
     });
   }
 
@@ -173,7 +175,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _titleSearchWidgetKey.currentState?.unFocus();
     });
 
-    print(searchStatus.params.toMap);
     Response result = await Http.request(
       Config.httpHost["search"],
       method: Http.GET,
@@ -186,7 +187,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         searchStatus.load = false;
         isFirstScreen = false;
 
-        _setSearchLog();
+        _setSearchHistory();
       });
       return;
     }
@@ -202,9 +203,24 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     );
   }
 
+  /// [Response]
+  /// 获取热门案件
+  Future<void> _getTrend() async {
+    Response result = await Http.request(
+      Config.httpHost["trend"],
+      method: Http.GET,
+    );
+
+    if (result.data["success"] == 1) {
+      setState(() {
+        searchTrends = result.data["data"];
+      });
+    }
+  }
+
   /// [Event]
   /// 前往案件详情
-  void _onPenDetail(Map item) {
+  void _onPenPlayerDetail(Map item) {
     _urlUtil.opEnPage(context, "/detail/player/${item["originPersonaId"]}");
   }
 
@@ -216,7 +232,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   /// [Event]
   /// 储存历史
-  void _setSearchLog() {
+  void _setSearchHistory() {
     List? list = searchStatus.historyList;
 
     bool isList = false;
@@ -224,24 +240,22 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     for (var value in list!) {
       if (value == searchStatus.params.param) {
         isList = true;
+        continue;
       }
     }
 
     if (!isList) {
-      if (list.length >= 20) {
-        list.removeAt(0);
-      }
-      list.add(searchStatus.params.param);
+      if (list.length >= 20) list.removeAt(0);
+      list.add({"keyword": searchStatus.params.param, "type": searchTabsType[searchTabsIndex]["text"], "count": searchStatus.list.data(searchTabsType[searchTabsIndex]["text"]).length});
       Storage().set("com.bfban.history", value: jsonEncode(list));
     }
   }
 
   /// [Event]
   /// 删除历史
-  void _deleSearchLog(String value) {
+  void _deleteSearchLog(Map value) {
     List? list = searchStatus.historyList;
-
-    list?.remove(value);
+    list?.removeAt(list.indexOf(value));
 
     setState(() {
       searchStatus.historyList = list;
@@ -276,7 +290,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 ),
               ),
               Container(
-                height: 40,
                 margin: const EdgeInsets.only(left: 5),
                 child: TextButton(
                   style: ButtonStyle(
@@ -316,15 +329,48 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
         body: isFirstScreen
             ? Padding(
-                padding: const EdgeInsets.only(
-                  left: 15,
-                  right: 15,
-                  top: 5,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                child: ListView(
                   children: <Widget>[
                     const SizedBox(height: 20),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Wrap(
+                          spacing: 10,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: <Widget>[
+                            const Icon(Icons.local_fire_department_rounded),
+                            I18nText("app.search.hotRecommendation", child: Text("", style: TextStyle())),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        searchTrends.isNotEmpty ? Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: searchTrends.map((i) {
+                            return InputChip(
+                              label: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  const Icon(Icons.person, size: 16),
+                                  Text(i["originName"]),
+                                  const SizedBox(width: 5),
+                                  const Icon(Icons.local_fire_department_outlined, size: 16),
+                                  Text(i["hot"].toString() ?? "0"),
+                                ],
+                              ),
+                              onSelected: (select) {
+                                _onPenPlayerDetail(i);
+                              },
+                            );
+                          }).toList(),
+                        ) : EmptyWidget(),
+                      ],
+                    ),
+                    const SizedBox(height: 30),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -332,13 +378,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Wrap(
-                              spacing: 5,
+                              spacing: 10,
                               crossAxisAlignment: WrapCrossAlignment.center,
-                              children: const <Widget>[
-                                Icon(
-                                  Icons.history,
-                                  size: 17,
-                                ),
+                              children: <Widget>[
+                                const Icon(Icons.history),
+                                I18nText("app.search.historySearch", child: Text("", style: TextStyle())),
                               ],
                             ),
                             EluiTagComponent(
@@ -351,29 +395,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         const SizedBox(
                           height: 10,
                         ),
-                        Wrap(
+                        searchStatus.historyList!.isNotEmpty ? Wrap(
                           spacing: 10,
                           runSpacing: 5,
-                          children: searchStatus.historyList!.map((value) {
-                            return EluiTagComponent(
-                              value: value,
-                              isClose: true,
-                              theme: EluiTagTheme(
-                                textColor: Colors.white,
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  _searchController.value = TextEditingValue(
-                                    text: value,
-                                  );
-
-                                  _onSearch();
-                                });
+                          children: searchStatus.historyList!.map((i) {
+                            return Chip(
+                              label: Text(i["keyword"]),
+                              onDeleted: () {
+                                _deleteSearchLog(i);
                               },
-                              onClose: () => _deleSearchLog(value),
                             );
                           }).toList(),
-                        ),
+                        ) : EmptyWidget(),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -393,14 +426,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 children: searchStatus.list.data("player").map((i) {
                                   return CheatListCard(
                                     item: i,
-                                    onTap: () => _onPenDetail(i),
+                                    onTap: () => _onPenPlayerDetail(i),
                                   );
                                 }).toList(),
                               )
-                            : EluiVacancyComponent(
-                                height: 200,
-                                title: FlutterI18n.translate(context, "basic.tip.notContent"),
-                              ),
+                            : const EmptyWidget(),
                       ),
                     ],
                   ),
@@ -418,10 +448,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   );
                                 }).toList(),
                               )
-                            : EluiVacancyComponent(
-                                height: 200,
-                                title: FlutterI18n.translate(context, "basic.tip.notContent"),
-                              ),
+                            : const EmptyWidget(),
                       ),
                     ],
                   ),
@@ -439,10 +466,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                   );
                                 }).toList(),
                               )
-                            : EluiVacancyComponent(
-                                height: 200,
-                                title: FlutterI18n.translate(context, "basic.tip.notContent"),
-                              ),
+                            : const EmptyWidget(),
                       ),
                     ],
                   ),
@@ -450,5 +474,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               ),
       ),
     );
+  }
+}
+
+class SearchHotContentWidget extends StatelessWidget {
+  const SearchHotContentWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

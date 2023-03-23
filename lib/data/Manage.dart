@@ -20,7 +20,7 @@ class ManageData {
   late String? action;
 
   // 行为 如透视
-  late String? cheatMethods;
+  late List? cheatMethods;
 
   // 玩家id
   late String? toPlayerId;

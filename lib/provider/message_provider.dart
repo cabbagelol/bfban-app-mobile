@@ -118,6 +118,7 @@ class MessageProvider with ChangeNotifier {
   /// 获取消息
   Future _api() async {
     messageStatus.load = true;
+    _list = [];
 
     Response result = await Http.request(
       Config.httpHost["user_message"],
@@ -126,8 +127,12 @@ class MessageProvider with ChangeNotifier {
 
     if (result.data["success"] == 1) {
       final d = result.data["data"];
+      int total = 0;
       _list = d["messages"];
-      messageStatus.total = d["total"];
+      for (var e in _list) {
+        e["haveRead"] == 1 ? total += 1 : null;
+      }
+      messageStatus.total = total;
     }
 
     messageStatus.load = false;

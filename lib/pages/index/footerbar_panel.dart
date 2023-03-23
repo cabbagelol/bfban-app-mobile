@@ -121,15 +121,15 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                             fontSize: 20,
                           ),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
                         ),
-                        I18nText("home.cover.dataReceived", child: Text(
-                          "",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).textTheme.subtitle2!.color,
-                          ),
-                        ))
+                        I18nText("home.cover.dataReceived",
+                            child: Text(
+                              "0",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.subtitle2!.color,
+                              ),
+                            ))
                       ],
                     ),
                     Container(
@@ -149,15 +149,15 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                             fontSize: 20,
                           ),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
                         ),
-                        I18nText("home.cover.confirmData", child: Text(
-                          "",
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).textTheme.subtitle2!.color,
-                          ),
-                        ))
+                        I18nText("home.cover.confirmData",
+                            child: Text(
+                              "",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.subtitle2!.color,
+                              ),
+                            ))
                       ],
                     ),
                     Container(
@@ -169,11 +169,14 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       width: 1,
                       color: Theme.of(context).dividerColor,
                     ),
-                    Opacity(
-                      opacity: data.isLogin ? 1 : .3,
-                      child: TextButton(
-                        onPressed: data.isLogin ? _openReply() : null,
-                        child: const Icon(Icons.add),
+                    Flexible(
+                      flex: 1,
+                      child: Opacity(
+                        opacity: data.isLogin ? 1 : .3,
+                        child: TextButton(
+                          onPressed: data.isLogin ? _openReply() : null,
+                          child: const Icon(Icons.add),
+                        ),
                       ),
                     ),
                   ],

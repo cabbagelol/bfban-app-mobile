@@ -221,6 +221,9 @@ class FilterState extends State<Filter> {
         ),
         // 筛选头
         Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
           child: Builder(
             builder: (context) => Container(
               key: _containerKey,
@@ -251,9 +254,6 @@ class FilterState extends State<Filter> {
               ),
             ),
           ),
-          top: 0,
-          left: 0,
-          right: 0,
         ),
         // 内容面板
         Visibility(

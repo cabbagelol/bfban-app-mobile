@@ -111,8 +111,16 @@ class _UserCenterPageState extends State<UserCenterPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           GestureDetector(
+                            onTap: _opEnSpace(),
                             child: Row(
                               children: [
+                                if (data.userinfo["userAvatar"] != null)
+                                  EluiImgComponent(
+                                    width: 40,
+                                    height: 40,
+                                    src: data.userinfo["userAvatar"] ?? "",
+                                  ),
+                                  const SizedBox(width: 10),
                                 Expanded(
                                   flex: 1,
                                   child: textLoad(
@@ -130,7 +138,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 const Icon(Icons.chevron_right),
                               ],
                             ),
-                            onTap: _opEnSpace(),
                           ),
                           const SizedBox(height: 15),
                           AnimatedOpacity(
@@ -154,7 +161,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        FlutterI18n.translate(context, "profile.message.title"),
+                                        FlutterI18n.translate(context, "profile.chat.title"),
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ),

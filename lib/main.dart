@@ -13,6 +13,8 @@ import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:bfban/component/_lang/delegate_custom.dart';
+import 'package:flutter_i18n/loaders/file_translation_loader.dart';
+import 'package:flutter_i18n/loaders/local_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +29,6 @@ import 'component/_lang/delegate_custom.dart';
 // 入口
 void runMain() async {
   WidgetsFlutterBinding.ensureInitialized();
-
 
   // 路由初始
   Routes.configureRoutes(FluroRouter());
@@ -93,14 +94,17 @@ class _BfBanAppState extends State<BfBanApp> {
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
                   FlutterI18nDelegate(
-                      translationLoader: CustomTranslationLoader(
-                          namespaces: ["app"],
-                          basePath: "assets/lang",
-                          baseUri: Uri.https(Config.apiHost["web_site"].toString().replaceAll("https://", ""), "lang"),
-                          useCountryCode: false,
-                          fallback: "zh",
-                          forcedLocale: Locale(langData.currentLang.isEmpty ? "zh" : langData.currentLang)
-                      )
+                    missingTranslationHandler: (key, locale) {
+                      print("--- Missing Key: $key, languageCode: ${locale?.languageCode}");
+                    },
+                    translationLoader: CustomTranslationLoader(
+                      namespaces: ["app"],
+                      basePath: "assets/lang",
+                      baseUri: Uri.https(Config.apiHost["web_site"].toString().replaceAll("https://", ""), "lang"),
+                      useCountryCode: false,
+                      fallback: "zh_CN",
+                      forcedLocale: Locale(langData.currentLang.isEmpty ? "zh_CN" : langData.currentLang),
+                    ),
                   )
                 ],
                 builder: (BuildContext context, Widget? widget) {

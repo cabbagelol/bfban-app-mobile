@@ -520,7 +520,6 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 验证码
           EluiInputComponent(
-            title: FlutterI18n.translate(context, "captcha.title"),
             onChange: (data) {
               setState(() {
                 reportStatus.captcha!.value = data["value"];

@@ -111,7 +111,7 @@ class _LanguagePageState extends State<LanguagePage> {
                     return RadioListTile<String>(
                       value: lang["fileName"].toString(),
                       onChanged: (value) {
-                        setLanguage(context, value!);
+                        setLanguage(context, value as String);
                       },
                       groupValue: langProvider!.currentLang,
                       title: Text(lang["label"].toString()),

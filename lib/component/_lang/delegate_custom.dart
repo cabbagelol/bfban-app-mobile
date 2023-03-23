@@ -18,7 +18,7 @@ class CustomTranslationLoader extends FileTranslationLoader {
 
   Map<dynamic, dynamic> _decodedMap = {};
 
-  CustomTranslationLoader({required this.namespaces, required this.baseUri, basePath = "assets/lang", forcedLocale, fallback = "en", useCountryCode = false, useScriptCode = false, decodeStrategies}) : super(fallbackFile: fallback, useCountryCode: useCountryCode, basePath: basePath, forcedLocale: forcedLocale, decodeStrategies: decodeStrategies) {
+  CustomTranslationLoader({required this.namespaces, required this.baseUri, basePath = "assets/lang", forcedLocale, fallback = "zh_CN", useCountryCode = false, useScriptCode = false, decodeStrategies}) : super(fallbackFile: fallback, useCountryCode: useCountryCode, basePath: basePath, forcedLocale: forcedLocale, decodeStrategies: decodeStrategies) {
     assert(namespaces != null);
     assert(namespaces!.isNotEmpty);
   }
@@ -34,7 +34,7 @@ class CustomTranslationLoader extends FileTranslationLoader {
       dynamic networkLang = await http.get(resolvedUri);
       result = jsonDecode(utf8.decode(networkLang.bodyBytes));
     } else {
-      result = jsonDecode(local)["listConf"][fileName];
+      result = jsonDecode(local)["listConf"];
     }
 
     _decodedMap.addAll(jsonDecode(await assetBundle.loadString('$basePath/${composeFileName()}/app.json', cache: false)));

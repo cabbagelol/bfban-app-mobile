@@ -171,6 +171,10 @@ class _SigninPageState extends State<SigninPage> {
               //   ),
               // ),
               BackdropFilter(
+                filter: ui.ImageFilter.blur(
+                  sigmaX: 6.0,
+                  sigmaY: 6.0,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -232,10 +236,6 @@ class _SigninPageState extends State<SigninPage> {
                             ),
                           ),
                   ],
-                ),
-                filter: ui.ImageFilter.blur(
-                  sigmaX: 6.0,
-                  sigmaY: 6.0,
                 ),
               ),
               Positioned(

@@ -2,7 +2,7 @@
 class Statistics {
   late num page;
   late bool load;
-  Map<String, dynamic>? data;
+  Map<String, num>? data;
   Map<String, dynamic>? params;
 
   Statistics({

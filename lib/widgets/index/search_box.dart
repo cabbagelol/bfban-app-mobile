@@ -92,7 +92,7 @@ class searchState extends State<titleSearch> {
     return widget.theme == titleSearchTheme.black ? true : false;
   }
 
-  void unFocus () {
+  void unFocus() {
     controllerFocus.unfocus();
   }
 
@@ -136,16 +136,19 @@ class searchState extends State<titleSearch> {
                                 color: Colors.black45,
                               ),
                               backgroundCursorColor: Colors.white,
-                              onSubmitted: (data) => widget.onSubmitted!(data),
+                              onSubmitted: (data) => widget.onSubmitted! ?? widget.onSubmitted!(data),
                               onChanged: (data) => widget.onChanged!(data),
                             )
-                          : I18nText("search.placeholder", child: Text(
-                              "",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: titleSearchColor(widget.theme).textColor,
+                          : I18nText(
+                              "search.placeholder",
+                              child: Text(
+                                "",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: titleSearchColor(widget.theme).textColor,
+                                ),
                               ),
-                            )),
+                            ),
                     ),
                   ],
                 ),

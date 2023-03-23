@@ -102,7 +102,6 @@ class CardUtil {
                     ),
                   ),
                 ),
-
                 Positioned(
                   right: 12,
                   bottom: 12,
@@ -135,7 +134,7 @@ class CardUtil {
         margin: Margins.symmetric(vertical: 20),
       ),
       "p": Style(
-        margin: Margins.symmetric(vertical: 15),
+        margin: Margins.symmetric(vertical: 5),
         fontSize: FontSize(15),
         color: Theme.of(context).textTheme.subtitle1!.color,
       ),
@@ -146,9 +145,7 @@ class CardUtil {
   /// 楼层
   Widget getFloor(int index) {
     return Container(
-      margin: const EdgeInsets.only(
-        right: 5,
-      ),
+      margin: const EdgeInsets.only(right: 5),
       child: Text("#$index "),
     );
   }
@@ -251,7 +248,7 @@ class TimeLineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -295,6 +292,10 @@ class CheatUserCheatersCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return TimeLineCard(
       header: [
+        CircleAvatar(
+          child: Text(data["username"][0].toString()),
+        ),
+        const SizedBox(width: 8),
         Expanded(
           flex: 1,
           child: Column(
@@ -312,15 +313,16 @@ class CheatUserCheatersCard extends StatelessWidget {
                       ),
                       children: <TextSpan>[
                         TextSpan(
-                            text: data["username"],
-                            style: const TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationStyle: TextDecorationStyle.dotted,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                _detailApi.openPlayerDetail(context, data["byUserId"]);
-                              }),
+                          text: data["username"] + "\t",
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationStyle: TextDecorationStyle.dotted,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              _detailApi.openPlayerDetail(context, data["byUserId"]);
+                            },
+                        ),
                         TextSpan(
                           text: FlutterI18n.translate(context, "basic.button.reply"),
                           style: const TextStyle(
@@ -377,335 +379,5 @@ class CheatUserCheatersCard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-/// 举报
-class CheatReportsCard extends StatelessWidget {
-  // 单条数据
-  late dynamic data;
-
-  // 位置
-  late int? index;
-
-  final UrlUtil _urlUtil = UrlUtil();
-
-  final CardUtil _detailApi = CardUtil();
-
-  final Function onReplySucceed;
-
-  CheatReportsCard({
-    Key? key,
-    required this.onReplySucceed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TimeLineCard(
-      header: [
-        Expanded(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Wrap(
-                      runAlignment: WrapAlignment.center,
-                      spacing: 5,
-                      children: [
-                        // 标题
-                        Text.rich(
-                          TextSpan(
-                            style: const TextStyle(fontSize: 18),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: data["username"],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline,
-                                  decorationStyle: TextDecorationStyle.dotted,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () async {
-                                    _detailApi.openPlayerDetail(context, data["byUserId"]);
-                                  },
-                              ),
-                              TextSpan(
-                                text: FlutterI18n.translate(context, "detail.info.report"),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              TextSpan(
-                                text: data["toOriginName"],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              TextSpan(
-                                text: FlutterI18n.translate(context, "detail.info.inGame"),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              ),
-                              TextSpan(
-                                text: FlutterI18n.translate(context, "basic.games.${data['cheatGame']}"),
-                              ),
-                              TextSpan(
-                                text: FlutterI18n.translate(context, "detail.info.gaming"),
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-
-                        Wrap(
-                          spacing: 3,
-                          runSpacing: 3,
-                          children: data["cheatMethods"].map<Widget>((i) {
-                            return EluiTagComponent(
-                              color: EluiTagType.none,
-                              round: true,
-                              size: EluiTagSize.no2,
-                              theme: EluiTagTheme(
-                                backgroundColor: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.2),
-                                textColor: Theme.of(context).textTheme.subtitle1!.color!,
-                              ),
-                              value: i,
-                            );
-                          }).toList(),
-                        )
-                      ],
-                    ),
-                    Text(
-                      "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle2!.color,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ReplyButtonWidget(data: data)..floor = index,
-            ],
-          ),
-          flex: 1,
-        ),
-      ],
-      headerSecondary: Offstage(
-        offstage: data["videoLink"] == "",
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          child: Card(
-            borderOnForeground: true,
-            elevation: 20,
-            color: Theme.of(context).appBarTheme.backgroundColor,
-            shadowColor: Colors.black26,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  I18nText("detail.info.videoLink",
-                      child: const Text("",
-                          style: TextStyle(
-                            fontSize: 12,
-                          ))),
-                  Container(
-                    margin: const EdgeInsets.only(left: 8, right: 10),
-                    width: 1,
-                    height: 20,
-                    color: Colors.black12,
-                    constraints: const BoxConstraints(
-                      minHeight: 20,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                      data["videoLink"],
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  GestureDetector(
-                    child: const Icon(
-                      Icons.link,
-                      color: Colors.blueAccent,
-                    ),
-                    onTap: () => _urlUtil.onPeUrl(data["videoLink"].toString()),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      content: Offstage(
-        offstage: data["content"] == "",
-        child: Container(
-          color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
-          child: Html(
-            data: data["content"],
-            style: _detailApi.styleHtml(context),
-            customRenders: _detailApi.customRenders(context),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// 裁判
-class JudgementCard extends StatelessWidget {
-  // 单条数据
-  late Map data;
-
-  // 位置
-  late int index = 0;
-
-  final CardUtil _detailApi = CardUtil();
-
-  JudgementCard({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TimeLineCard(
-      header: [
-        Expanded(
-          flex: 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Wrap(
-                runAlignment: WrapAlignment.center,
-                children: <Widget>[
-                  // 类型
-                  Text.rich(
-                    TextSpan(
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: data["username"],
-                            style: const TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationStyle: TextDecorationStyle.dotted,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                _detailApi.openPlayerDetail(context, data["byUserId"]);
-                              }),
-                        const TextSpan(
-                          text: "认为",
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Text(
-                "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.subtitle2!.color,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-        ReplyButtonWidget(data: data)..floor = index,
-      ],
-      headerSecondary: Card(
-        margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        color: Theme.of(context).appBarTheme.backgroundColor,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Wrap(
-                  runAlignment: WrapAlignment.center,
-                  spacing: 5,
-                  children: <Widget>[
-                    // 名称
-                    Text(
-                      data["username"],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Offstage(
-                offstage: data["toFloor"] == null,
-                child: Text(
-                  "#${data["toFloor"]} ",
-                  style: const TextStyle(
-                    color: Colors.black26,
-                  ),
-                ),
-              ),
-              const Icon(
-                Icons.vertical_align_top,
-                color: Colors.black26,
-                size: 15,
-              )
-            ],
-          ),
-        ),
-      ),
-      content: Offstage(
-        offstage: data["content"] == "",
-        child: Container(
-          color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
-          child: Html(
-            data: data["content"],
-            style: _detailApi.styleHtml(context),
-            customRenders: _detailApi.customRenders(context),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// 申诉
-class AppealCard extends StatelessWidget {
-  // 单条数据
-  late Map data;
-
-  // 位置
-  late int index = 0;
-
-  final Function onReplySucceed;
-
-  AppealCard({
-    Key? key,
-    required this.onReplySucceed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

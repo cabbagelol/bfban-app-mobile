@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../data/Theme.dart';
-import 'activitie.dart';
+import 'home_community_activitie.dart';
 
 class SearchPage extends StatefulWidget {
   final int num;
@@ -79,16 +79,32 @@ class _SearchPageState extends State<SearchPage> {
           //       : Container(),
           // ),
           BackdropFilter(
-            child: const HomeCommunityPage(),
             filter: ui.ImageFilter.blur(
               sigmaX: 6.0,
               sigmaY: 6.0,
             ),
+            child: const HomeCommunityPage(),
           ),
         ],
       ),
       dragContainer: DragContainer(
         drawer: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                offset: const Offset(0, -2),
+                spreadRadius: .2,
+                blurRadius: 10,
+              )
+            ],
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+          ),
+          height: _screenBarHeight,
           child: OverscrollNotificationWidget(
             child: Column(
               children: <Widget>[
@@ -114,22 +130,6 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ),
-          decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                offset: const Offset(0, -2),
-                spreadRadius: .2,
-                blurRadius: 10,
-              )
-            ],
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
-            ),
-          ),
-          height: _screenBarHeight,
         ),
         defaultShowHeight: _screenBarHeight + 70,
         height: _screenHeight * .8,

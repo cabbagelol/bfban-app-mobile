@@ -11,6 +11,14 @@
       "web_site": "Website address",
       "setting": "Setup"
     },
+    "home": {
+      "scancode": "Scan Code",
+      "tabs": {
+        "activities": "动态",
+        "trace": "追踪",
+        "tourRecord": "游览记录"
+      }
+    },
     "splash": {
       "guide": "初始引导",
       "account": "加载账户信息",
@@ -149,6 +157,10 @@
       "accountId": "Enter Account ID",
       "password": "cipher",
       "verificationCode": "Captcha"
+    },
+    "search": {
+      "historySearch": "History Search",
+      "hotRecommendation": "Hot Recommendation"
     }
   }
 }

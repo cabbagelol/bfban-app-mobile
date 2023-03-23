@@ -5,6 +5,7 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/data/index.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -40,7 +41,7 @@ class _JudgementPageState extends State<JudgementPage> {
       captcha: Captcha(),
       content: "",
       action: "",
-      cheatMethods: "",
+      cheatMethods: [],
       toPlayerId: "",
     ),
   );
@@ -102,46 +103,42 @@ class _JudgementPageState extends State<JudgementPage> {
       );
       return;
     }
-    
-    if (!['kill', 'guilt'].contains(manageStatus.data!.cheatMethods)) {
-      manageStatus.data!.cheatMethods = null;
-    }
 
     setState(() {
       manageStatus.load = true;
     });
-    print(manageStatus.data!.toMap);
+
     Response result = await Http.request(
       Config.httpHost["player_judgement"],
       method: Http.POST,
       data: manageStatus.data!.toMap,
     );
-    
-    print(result);
 
     if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
         child: Text(FlutterI18n.translate(context, "detail.messages.submitSuccess")),
       );
 
-      Navigator.pop(context);
-    } else {
-      EluiMessageComponent.error(context)(
-        child: Text(result.data["code"]),
-      );
+      setState(() {
+        manageStatus.load = false;
+        Navigator.pop(context);
+      });
+      return;
     }
 
     setState(() {
       manageStatus.load = false;
     });
+
+    EluiMessageComponent.error(context)(
+      child: Text("${result.data["code"]}:${result.data["message"]}"),
+    );
   }
 
   /// [Event]
   /// 复选举报游戏作弊行为
   List<Widget> _setCheckboxIndex() {
     List<Widget> list = [];
-    String _value = "";
-    num _valueIndex = 0;
 
     for (var method in _cheatingTypes) {
       list.add(
@@ -149,21 +146,16 @@ class _JudgementPageState extends State<JudgementPage> {
           index: method["select"],
           child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
           onTap: () {
+            method["select"] = method["select"] != true;
+
+            if (method["select"]) {
+              reportInfoCheatMethods.add(method["value"]);
+            } else {
+              reportInfoCheatMethods.remove(method["value"]);
+            }
+
             setState(() {
-              method["select"] = method["select"] != true;
-
-              if (method["select"]) {
-                reportInfoCheatMethods.add(method["value"]);
-              } else {
-                reportInfoCheatMethods.remove(method["value"]);
-              }
-
-              for (var element in reportInfoCheatMethods) {
-                _value += element + (_valueIndex >= reportInfoCheatMethods.length - 1 ? "" : ",");
-                _valueIndex += 1;
-              }
-
-              manageStatus.data!.cheatMethods = _value;
+              manageStatus.data!.cheatMethods = reportInfoCheatMethods;
             });
           },
         ),
@@ -260,6 +252,7 @@ class _JudgementPageState extends State<JudgementPage> {
               Offstage(
                 offstage: !["kill", "guilt"].contains(manageStatus.data!.action!),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     EluiCellComponent(title: FlutterI18n.translate(context, "detail.judgement.methods")),
                     Container(
@@ -315,7 +308,7 @@ class _JudgementPageState extends State<JudgementPage> {
                       padding: EdgeInsets.zero,
                       child: Stack(
                         children: <Widget>[
-                          Text(manageStatus.data!.content!.toString()),
+                          Html(data: manageStatus.data!.content!.toString()),
                           Positioned(
                             left: 0,
                             right: 0,
@@ -361,7 +354,6 @@ class _JudgementPageState extends State<JudgementPage> {
 
               /// S 验证码
               EluiInputComponent(
-                title: FlutterI18n.translate(context, "captcha.title"),
                 onChange: (data) {
                   setState(() {
                     manageStatus.data!.captcha!.value = data["value"];

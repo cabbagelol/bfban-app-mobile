@@ -20,6 +20,9 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../provider/userinfo_provider.dart';
+import '../../widgets/detail/appeal_card.dart';
+import '../../widgets/detail/cheat_reports_card.dart';
+import '../../widgets/detail/judgement_card.dart';
 
 class PlayerDetailPage extends StatefulWidget {
   /// User Db id
@@ -113,7 +116,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     });
 
     Response result = await Http.request(
-      Config.httpHost["account_timeline"],
+      Config.httpHost["player_timeline"],
       parame: playerTimelineStatus.parame!.toMap,
       method: Http.GET,
     );
@@ -142,7 +145,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     });
 
     Response result = await Http.request(
-      Config.httpHost["player"],
+      Config.httpHost["cheaters"],
       parame: playerStatus.parame?.toMap,
       method: Http.GET,
     );
@@ -305,6 +308,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       _urlUtil.opEnPage(context, "/reply/$parameter", transition: TransitionType.cupertino).then((value) {
         if (value != null) {
           _getCheatersInfo();
+          _getTimeline();
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         }
       });
@@ -321,6 +325,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       _urlUtil.opEnPage(context, '/report/${jsonEncode({"originName": playerStatus.data["originName"]})}', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
         if (value != null) {
           _getCheatersInfo();
+          _getTimeline();
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         }
       });
@@ -334,11 +339,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-      print(playerStatus.data);
-
       _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data["id"]}").then((value) {
         if (value != null) {
           _getCheatersInfo();
+          _getTimeline();
           _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
         }
       });
@@ -374,7 +378,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
               SelectableText(i["originName"]),
             ),
             DataCell(
-              Text(
+              SelectableText(
                 Date().getFriendlyDescriptionTime(i["fromTime"]),
               ),
             ),
@@ -431,8 +435,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                     value: "${playerTimelineStatus.total ?? 0}",
                     size: EluiTagSize.no2,
                     theme: EluiTagTheme(
-                      textColor: _tabControllerIndex == 1 ? Colors.black : Colors.red,
-                      backgroundColor: _tabControllerIndex == 1 ? Colors.red : Colors.transparent,
+                      textColor: _tabControllerIndex == 1 ? Colors.black : Theme.of(context).primaryColor,
+                      backgroundColor: _tabControllerIndex == 1 ? Theme.of(context).primaryColor : Colors.transparent,
                     ),
                   ),
           ],
@@ -513,7 +517,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                           width: 800,
                                           height: 350,
                                           child: EluiImgComponent(
-                                            src: snapshot.data!["avatarLink"] ?? "",
+                                            src: snapshot.data.toString(),
                                             width: 800,
                                             height: 350,
                                           ),
@@ -538,7 +542,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                   children: [
                                                     Positioned(
                                                       top: 0,
-                                                      child: Image.network(snapshot.data!["avatarLink"]),
+                                                      child: Image.network(snapshot.data!["avatarLink"].toString()),
                                                     ),
                                                     EluiImgComponent(
                                                       src: snapshot.data!["avatarLink"],
@@ -595,27 +599,23 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  Wrap(
-                                                    children: [
-                                                      SelectableText(
-                                                        snapshot.data?["originName"] ?? "User Name",
-                                                        onTap: () {
-                                                          Clipboard.setData(
-                                                            ClipboardData(
-                                                              text: snapshot.data!["originName"],
-                                                            ),
-                                                          );
-                                                        },
-                                                        style: const TextStyle(fontSize: 33),
-                                                        showCursor: true,
-                                                      ),
-                                                      const SizedBox(width: 10),
-                                                      EluiTagComponent(
-                                                        size: EluiTagSize.no2,
-                                                        color: EluiTagType.primary,
-                                                        value: FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}"),
-                                                      ),
-                                                    ],
+                                                  SelectableText(
+                                                    snapshot.data?["originName"] ?? "User Name",
+                                                    onTap: () {
+                                                      Clipboard.setData(
+                                                        ClipboardData(
+                                                          text: snapshot.data!["originName"],
+                                                        ),
+                                                      );
+                                                    },
+                                                    style: const TextStyle(fontSize: 33),
+                                                    showCursor: true,
+                                                  ),
+                                                  const SizedBox(height: 2),
+                                                  EluiTagComponent(
+                                                    size: EluiTagSize.no2,
+                                                    color: EluiTagType.primary,
+                                                    value: FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}"),
                                                   ),
                                                 ],
                                               ),
@@ -646,7 +646,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                           ),
                                           const SizedBox(height: 5),
                                           Text(
-                                            snapshot.data!.isNotEmpty ? Date().getFriendlyDescriptionTime(snapshot.data!["createTime"]) : "",
+                                            Date().getFriendlyDescriptionTime(snapshot.data!["createTime"]),
                                             style: const TextStyle(fontSize: 18),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
@@ -808,7 +808,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                               itemCount: playerTimelineStatus.list!.length,
                               itemBuilder: (BuildContext context, int index) {
                                 var timeLineItem = playerTimelineStatus.list![index];
-                                List<Widget> _cheatMethods = <Widget>[];
 
                                 switch (timeLineItem["type"]) {
                                   case "reply":
@@ -878,6 +877,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                             Expanded(
                               flex: 1,
                               child: TextButton(
+                                onPressed: _onReport(),
                                 child: Text(
                                   FlutterI18n.translate(context, "report.title"),
                                   style: const TextStyle(
@@ -885,7 +885,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                onPressed: _onReport(),
                               ),
                             ),
                           ],
@@ -896,6 +895,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                             Expanded(
                               flex: 1,
                               child: TextButton(
+                                onPressed: _setReply(0),
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   spacing: 10,
@@ -914,7 +914,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                     ),
                                   ],
                                 ),
-                                onPressed: _setReply(0),
                               ),
                             ),
 
@@ -926,16 +925,16 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                 : const SizedBox(),
                             data.isAdmin
                                 ? Expanded(
+                                    flex: 1,
                                     child: TextButton(
+                                      onPressed: onJudgement(),
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(FlutterI18n.translate(context, "detail.info.judgement")),
                                         ],
                                       ),
-                                      onPressed: onJudgement(),
                                     ),
-                                    flex: 1,
                                   )
                                 : const SizedBox(),
                           ],
@@ -959,96 +958,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
             );
         }
       },
-    );
-  }
-}
-
-/// WG九宫格
-class detailCellCard extends StatelessWidget {
-  final text;
-  final value;
-
-  const detailCellCard({
-    Key? key,
-    this.text = "",
-    this.value = "",
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    throw Column(
-      children: <Widget>[
-        Text(
-          text ?? "",
-          style: const TextStyle(
-            fontSize: 14,
-            color: Colors.white,
-          ),
-        )
-      ],
-    );
-  }
-}
-
-/// WG单元格
-class detailCheatersCard extends StatelessWidget {
-  final value;
-  final cont;
-  final type;
-  final onTap;
-  final fontSize;
-
-  const detailCheatersCard({
-    Key? key,
-    this.value,
-    this.cont,
-    this.type = '0',
-    this.fontSize,
-    this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        color: type == '0' ? const Color.fromRGBO(0, 0, 0, .3) : const Color.fromRGBO(255, 255, 255, .07),
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    value,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: fontSize ?? 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  '$cont',
-                  style: const TextStyle(
-                    color: Color.fromRGBO(255, 255, 255, .6),
-                    fontSize: 13,
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
     );
   }
 }
