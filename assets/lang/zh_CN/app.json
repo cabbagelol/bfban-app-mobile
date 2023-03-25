@@ -17,8 +17,10 @@
     },
     "home": {
       "scancode": "扫一扫",
+      "needAccount": "此功能需要账户, 请先登录",
       "tabs": {
         "activities": "动态",
+        "trend": "热门案件",
         "trace": "追踪",
         "tourRecord": "游览记录"
       }
@@ -41,7 +43,7 @@
       },
       "login": {
         "title": "欢迎您到来",
-        "label": "如果你已经有BFBAN账户，现在既可立即登录."
+        "label": "如果你已经拥有BFBAN账户，现在就可登录."
       },
       "permission": {
         "title": "权限",

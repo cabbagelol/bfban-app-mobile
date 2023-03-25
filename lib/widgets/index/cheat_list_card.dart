@@ -8,13 +8,22 @@ import 'package:flutter_elui_plugin/_img/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class CheatListCard extends StatelessWidget {
-  final item;
+  final Map item;
 
   final onTap;
+
+  final bool? isIconView;
+
+  final bool? isIconCommendView;
+
+  final bool? isIconHotView;
 
   const CheatListCard({
     Key? key,
     required this.item,
+    this.isIconView = true,
+    this.isIconCommendView = true,
+    this.isIconHotView = false,
     this.onTap,
   }) : super(key: key);
 
@@ -38,7 +47,7 @@ class CheatListCard extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
           Text(
-            item["originName"],
+            item["originName"] ?? "",
             style: TextStyle(
               color: Theme.of(context).primaryTextTheme.headline1!.color,
               fontSize: 20,
@@ -80,22 +89,39 @@ class CheatListCard extends StatelessWidget {
       ),
       trailing: Wrap(
         children: <Widget>[
-          CheatersCardIconitem(
-            n: item["viewNum"].toString(),
-            i: Icons.visibility,
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 12,
+          if (isIconView!)
+            CheatersCardIconitem(
+              n: item["viewNum"].toString(),
+              i: Icons.visibility,
             ),
-            height: 30,
-            width: 1,
-            color: Theme.of(context).dividerColor,
-          ),
-          CheatersCardIconitem(
-            n: item["commentsNum"].toString(),
-            i: Icons.add_comment,
-          ),
+          if (isIconCommendView!)
+            Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 12,
+              ),
+              height: 30,
+              width: 1,
+              color: Theme.of(context).dividerColor,
+            ),
+          if (isIconCommendView!)
+            CheatersCardIconitem(
+              n: item["commentsNum"].toString(),
+              i: Icons.add_comment,
+            ),
+          if (isIconHotView!)
+            Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 12,
+              ),
+              height: 30,
+              width: 1,
+              color: Theme.of(context).dividerColor,
+            ),
+          if (isIconHotView!)
+            CheatersCardIconitem(
+              n: item["hot"].toString(),
+              i: Icons.local_fire_department,
+            ),
         ],
       ),
       onTap: () => onTap(),

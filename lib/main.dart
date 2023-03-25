@@ -13,8 +13,6 @@ import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:bfban/component/_lang/delegate_custom.dart';
-import 'package:flutter_i18n/loaders/file_translation_loader.dart';
-import 'package:flutter_i18n/loaders/local_translation_loader.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
@@ -94,9 +92,6 @@ class _BfBanAppState extends State<BfBanApp> {
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
                   FlutterI18nDelegate(
-                    missingTranslationHandler: (key, locale) {
-                      print("--- Missing Key: $key, languageCode: ${locale?.languageCode}");
-                    },
                     translationLoader: CustomTranslationLoader(
                       namespaces: ["app"],
                       basePath: "assets/lang",

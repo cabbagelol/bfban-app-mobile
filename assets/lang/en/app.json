@@ -13,26 +13,29 @@
     },
     "home": {
       "scancode": "Scan Code",
+      "needAccount": "This function requires an account, please log in first",
       "tabs": {
-        "activities": "动态",
-        "trace": "追踪",
-        "tourRecord": "游览记录"
+        "activities": "Website dynamics",
+        "trend": "Hot case",
+        "trace": "Trace",
+        "tourRecord": "tour Record"
       }
     },
     "splash": {
-      "guide": "初始引导",
-      "account": "加载账户信息",
-      "token": "用户身份配置",
-      "message": "更新消息",
-      "version": "验证版本服务",
-      "theme": "初始化主题",
-      "appInitial": "初始化程序应用"
+      "guide": "Initial boot",
+      "account": "Load account information",
+      "token": "User identity configuration",
+      "message": "Update message",
+      "version": "Versioning service",
+      "theme": "Initialize topic",
+      "appInitial": "Initializes the program application"
     },
     "guide": {
       "next": "Next step",
       "back": "Previous Step",
       "endNext": "Complete",
       "agreement": {
+        "title": "Usage protocol",
         "content": "The terms of the agreement ..",
         "errorContent": "Network Error Unable to get protocol content, please visit:"
       },

@@ -3,7 +3,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_elui_plugin/elui.dart';
 
 import '../../utils/date.dart';
 import '../../utils/url.dart';
@@ -35,7 +34,7 @@ class CheatReportsCard extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               CircleAvatar(
                 child: Text(data["username"][0].toString()),
@@ -113,58 +112,62 @@ class CheatReportsCard extends StatelessWidget {
         ),
       ],
       headerSecondary: Offstage(
-        offstage: data["videoLink"] == "",
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          child: Card(
-            borderOnForeground: true,
-            elevation: 20,
-            color: Theme.of(context).appBarTheme.backgroundColor,
-            shadowColor: Colors.black26,
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        offstage: data["videoLink"].toString().isEmpty,
+        child: Column(
+          children: data["videoLink"].toString().split(",").map((i) {
+            return Container(
+              margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  I18nText(
-                    "detail.info.videoLink",
-                    child: const Text(
-                      "",
-                      style: TextStyle(fontSize: 12),
+                children: [
+                  Card(
+                    borderOnForeground: true,
+                    elevation: 20,
+                    color: Theme.of(context).primaryColorDark.withOpacity(.2),
+                    shadowColor: Colors.black26,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            FlutterI18n.translate(context, "detail.info.videoLink"),
+                            style: TextStyle(fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.only(left: 8, right: 10),
+                    margin: const EdgeInsets.only(left: 2, right: 5),
                     width: 1,
-                    height: 20,
-                    color: Colors.black12,
+                    height: 15,
+                    color: Theme.of(context).dividerColor,
                     constraints: const BoxConstraints(
-                      minHeight: 20,
+                      minHeight: 15,
                     ),
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(
-                      data["videoLink"],
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    child: Wrap(
+                      children: [
+                        GestureDetector(
+                          child: const Icon(Icons.link, size: 15),
+                          onTap: () => _urlUtil.onPeUrl(data["videoLink"].toString()),
+                        ),
+                        Text(
+                          data["videoLink"].toString(),
+                          style: const TextStyle(fontSize: 12),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ),
-                  GestureDetector(
-                    child: const Icon(
-                      Icons.link,
-                      color: Colors.blueAccent,
-                    ),
-                    onTap: () => _urlUtil.onPeUrl(data["videoLink"].toString()),
-                  ),
+                  Text("${index! + 1}"),
                 ],
               ),
-            ),
-          ),
+            );
+          }).toList(),
         ),
       ),
       content: Offstage(

@@ -54,10 +54,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   // 玩家状态
   List? cheaterStatus = Config.cheaterStatus["child"] ?? [];
 
-  // 刷新key
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
-  // 筛选key
   final GlobalKey<FilterState> _filterKey = GlobalKey();
 
   @override
@@ -247,6 +245,15 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     return true;
   }
 
+  /// [Event]
+  /// 前往案件详情
+  void _opEnPlayerDetail (int index) {
+    Routes.router!.navigateTo(
+      context,
+      '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -355,9 +362,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 FlutterI18n.translate(context, "list.filters.sortByTitle"),
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
-                ),
               ),
             ),
             panel: SoltFilterPanel(),
@@ -367,9 +371,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 FlutterI18n.translate(context, "report.labels.game"),
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.subtitle1!.color,
-                ),
               ),
             ),
             panel: GameNameFilterPanel(
@@ -415,10 +416,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 return CheatListCard(
                   item: playersStatus?.list![index],
                   onTap: () {
-                    Routes.router!.navigateTo(
-                      context,
-                      '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
-                    );
+                    _opEnPlayerDetail(index);
                   },
                 );
               } else if (index >= playersStatus!.list!.length && playersStatus!.load!) {

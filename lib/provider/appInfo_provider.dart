@@ -12,7 +12,7 @@ class AppInfoProvider with ChangeNotifier {
 }
 
 class NetwrokConf with ChangeNotifier {
-  String? packageName = "com.bfban.netwrok_conf";
+  String? packageName = "netwrok_conf";
 
   // 从远程服务获取配置
   NetworkConfData data = NetworkConfData(

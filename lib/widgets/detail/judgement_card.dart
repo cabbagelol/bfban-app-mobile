@@ -44,15 +44,16 @@ class JudgementCard extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                       children: [
                         TextSpan(
-                            text: data["username"] + "\t",
-                            style: const TextStyle(
-                              decoration: TextDecoration.underline,
-                              decorationStyle: TextDecorationStyle.dotted,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                _detailApi.openPlayerDetail(context, data["byUserId"]);
-                              }),
+                          text: data["username"] + "\t",
+                          style: const TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationStyle: TextDecorationStyle.dotted,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              _detailApi.openPlayerDetail(context, data["byUserId"]);
+                            },
+                        ),
                         TextSpan(
                           text: "${FlutterI18n.translate(context, "detail.info.judge")}\t",
                           style: const TextStyle(fontWeight: FontWeight.normal),
@@ -95,7 +96,7 @@ class JudgementCard extends StatelessWidget {
       ],
       headerSecondary: Card(
         margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        color: Theme.of(context).appBarTheme.backgroundColor,
+        color: Theme.of(context).primaryColorDark.withOpacity(.2),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
           child: Row(

@@ -111,7 +111,7 @@ class _SigninPageState extends State<SigninPage> {
       Future.wait([
         // 持久存用户信息
         Storage().set(
-          'com.bfban.login',
+          'login',
           value: jsonEncode(d),
         ),
       ]).then((value) {

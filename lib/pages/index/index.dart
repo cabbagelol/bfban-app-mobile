@@ -108,7 +108,7 @@ class _IndexPageState extends State<IndexPage> {
                               opacity: data.total == 0 ? .3 : 1,
                               duration: const Duration(seconds: 1),
                               child: IconButton(
-                                icon: const Icon(Icons.notifications_rounded),
+                                icon: const Icon(Icons.chat),
                                 onPressed: _openMessage(),
                               ),
                             ),

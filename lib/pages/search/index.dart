@@ -40,6 +40,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   late TabController tabController;
 
+  Future? request;
+
   bool isFirstScreen = true;
 
   // 搜索参
@@ -98,9 +100,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Event]
   /// 初始化
   void _onReady() async {
-    List history = jsonDecode(await Storage().get("com.bfban.history") ?? '[]');
+    List history = jsonDecode(await Storage().get("history") ?? '[]');
 
-    history.sort();
     _getTrend();
 
     setState(() {
@@ -114,47 +115,48 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Event]
   /// 切换搜索方式，Tabs
   void _onToggleSearchType(index) {
+    setState(() {
+      searchTabsIndex = index;
+    });
+
     if (searchStatus.params.param.toString().isEmpty) {
       return;
     }
 
     setState(() {
-      searchTabsIndex = index;
+      switch (index) {
+        case 0:
+          searchStatus.params = SearchPlayerParams(
+            param: searchStatus.params.param,
+            game: GameType.all,
+            limit: 40,
+            skip: 0,
+            createTimeTo: null,
+            createTimeFrom: null,
+          );
+          break;
+        case 1:
+          searchStatus.params = SearchInStationUser(
+            param: searchStatus.params.param,
+            gameSort: UserSortType.byDefault,
+            limit: 40,
+            skip: 0,
+            createTimeTo: null,
+            createTimeFrom: null,
+          );
+          break;
+        case 2:
+        default:
+          searchStatus.params = SearchCommentParams(
+            param: searchStatus.params.param,
+            limit: 40,
+            skip: 0,
+            createTimeTo: null,
+            createTimeFrom: null,
+          );
+          break;
+      }
     });
-
-    switch (index) {
-      case 0:
-        searchStatus.params = SearchPlayerParams(
-          param: searchStatus.params.param,
-          game: GameType.all,
-          limit: 40,
-          skip: 0,
-          createTimeTo: null,
-          createTimeFrom: null,
-        );
-        break;
-      case 1:
-        searchStatus.params = SearchInStationUser(
-          param: searchStatus.params.param,
-          gameSort: UserSortType.byDefault,
-          limit: 40,
-          skip: 0,
-          createTimeTo: null,
-          createTimeFrom: null,
-        );
-        break;
-      case 2:
-      default:
-        searchStatus.params = SearchCommentParams(
-          param: searchStatus.params.param,
-          limit: 40,
-          skip: 0,
-          createTimeTo: null,
-          createTimeFrom: null,
-        );
-        break;
-    }
-
     _onSearch(isButtonClick: false);
   }
 
@@ -170,16 +172,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       return;
     }
 
+    if (request != null) request!.ignore();
+
     setState(() {
       searchStatus.load = true;
       _titleSearchWidgetKey.currentState?.unFocus();
     });
 
-    Response result = await Http.request(
+    request = Http.request(
       Config.httpHost["search"],
       method: Http.GET,
       parame: searchStatus.params.toMap,
     );
+    Response result = await request;
 
     if (result.data["success"] == 1) {
       setState(() {
@@ -227,7 +232,29 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Event]
   /// 前往站内用户
   void _onPenInUserDetail(Map item) {
-    _urlUtil.opEnPage(context, "/detail/player/${item["originPersonaId"]}");
+    _urlUtil.opEnPage(context, '/account/${item["dbId"]}');
+  }
+
+  /// [Event]
+  /// 依照类型
+  void _onPenByType(Map item) {
+    setState(() {
+      switch (item["type"]) {
+        case "player":
+          searchTabsIndex = 0;
+          break;
+        case "user":
+          searchTabsIndex = 1;
+          break;
+        case "comment":
+          searchTabsIndex = 2;
+          break;
+      }
+      searchStatus.params.param = item["keyword"];
+      _searchController.text = searchStatus.params.param!;
+      tabController.index = searchTabsIndex;
+    });
+    _onSearch();
   }
 
   /// [Event]
@@ -235,20 +262,23 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   void _setSearchHistory() {
     List? list = searchStatus.historyList;
 
-    bool isList = false;
+    bool isIncluded = false;
 
     for (var value in list!) {
-      if (value == searchStatus.params.param) {
-        isList = true;
+      if (value["keyword"] == searchStatus.params.param && value["type"] == searchTabsType[searchTabsIndex]["text"]) {
+        isIncluded = true;
         continue;
       }
     }
 
-    if (!isList) {
-      if (list.length >= 20) list.removeAt(0);
-      list.add({"keyword": searchStatus.params.param, "type": searchTabsType[searchTabsIndex]["text"], "count": searchStatus.list.data(searchTabsType[searchTabsIndex]["text"]).length});
-      Storage().set("com.bfban.history", value: jsonEncode(list));
-    }
+    if (isIncluded) return;
+    if (list.length >= 20) list.removeAt(0);
+    list.add({
+      "keyword": searchStatus.params.param,
+      "type": searchTabsType[searchTabsIndex]["text"],
+      "count": searchStatus.list.data(searchTabsType[searchTabsIndex]["text"]).length,
+    });
+    Storage().set("history", value: jsonEncode(list));
   }
 
   /// [Event]
@@ -261,7 +291,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       searchStatus.historyList = list;
     });
 
-    Storage().set("com.bfban.history", value: jsonEncode(list));
+    Storage().set("history", value: jsonEncode(list));
   }
 
   @override
@@ -309,7 +339,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             size: 20,
                             lineWidth: 2,
                           )
-                        : Icon(Icons.search),
+                        : const Icon(Icons.search),
                   ),
                 ),
               ),
@@ -341,33 +371,35 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: <Widget>[
                             const Icon(Icons.local_fire_department_rounded),
-                            I18nText("app.search.hotRecommendation", child: Text("", style: TextStyle())),
+                            I18nText("app.search.hotRecommendation", child: const Text("", style: TextStyle())),
                           ],
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        searchTrends.isNotEmpty ? Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
-                          children: searchTrends.map((i) {
-                            return InputChip(
-                              label: Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  const Icon(Icons.person, size: 16),
-                                  Text(i["originName"]),
-                                  const SizedBox(width: 5),
-                                  const Icon(Icons.local_fire_department_outlined, size: 16),
-                                  Text(i["hot"].toString() ?? "0"),
-                                ],
-                              ),
-                              onSelected: (select) {
-                                _onPenPlayerDetail(i);
-                              },
-                            );
-                          }).toList(),
-                        ) : EmptyWidget(),
+                        searchTrends.isNotEmpty
+                            ? Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: searchTrends.map((i) {
+                                  return InputChip(
+                                    label: Wrap(
+                                      crossAxisAlignment: WrapCrossAlignment.center,
+                                      children: [
+                                        const Icon(Icons.person, size: 16),
+                                        Text(i["originName"]),
+                                        const SizedBox(width: 5),
+                                        const Icon(Icons.local_fire_department_outlined, size: 16),
+                                        Text(i["hot"].toString()),
+                                      ],
+                                    ),
+                                    onSelected: (select) {
+                                      _onPenPlayerDetail(i);
+                                    },
+                                  );
+                                }).toList(),
+                              )
+                            : const EmptyWidget(),
                       ],
                     ),
                     const SizedBox(height: 30),
@@ -382,7 +414,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: <Widget>[
                                 const Icon(Icons.history),
-                                I18nText("app.search.historySearch", child: Text("", style: TextStyle())),
+                                I18nText("app.search.historySearch", child: const Text("", style: TextStyle())),
                               ],
                             ),
                             EluiTagComponent(
@@ -395,18 +427,30 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         const SizedBox(
                           height: 10,
                         ),
-                        searchStatus.historyList!.isNotEmpty ? Wrap(
-                          spacing: 10,
-                          runSpacing: 5,
-                          children: searchStatus.historyList!.map((i) {
-                            return Chip(
-                              label: Text(i["keyword"]),
-                              onDeleted: () {
-                                _deleteSearchLog(i);
-                              },
-                            );
-                          }).toList(),
-                        ) : EmptyWidget(),
+                        searchStatus.historyList!.isNotEmpty
+                            ? Wrap(
+                                spacing: 10,
+                                runSpacing: 5,
+                                children: searchStatus.historyList!.map((i) {
+                                  return InputChip(
+                                    label: GestureDetector(
+                                      child: Wrap(
+                                        children: [
+                                          Text("${FlutterI18n.translate(context, "search.tabs.${i['type']}")}:\t"),
+                                          Text(i["keyword"]),
+                                        ],
+                                      ),
+                                      onTap: () {
+                                        _onPenByType(i);
+                                      },
+                                    ),
+                                    onDeleted: () {
+                                      _deleteSearchLog(i);
+                                    },
+                                  );
+                                }).toList(),
+                              )
+                            : const EmptyWidget(),
                       ],
                     ),
                     const SizedBox(height: 15),
@@ -444,7 +488,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                 children: searchStatus.list.data("user").map((i) {
                                   return SearchInUserCard(
                                     item: i,
-                                    onTap: () => _onPenInUserDetail(i),
+                                    onTap: () {
+                                      _onPenInUserDetail(i);
+                                    },
                                   );
                                 }).toList(),
                               )

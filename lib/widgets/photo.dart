@@ -49,6 +49,8 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
   // 控制器
   PhotoViewController? controller;
 
+  MediaManagement mediaManagement = MediaManagement();
+
   @override
   void initState() {
     super.initState();
@@ -71,7 +73,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
       saveImgLoad = true;
     });
 
-    dynamic result = await Storage().saveimg(src);
+    dynamic result = await mediaManagement.saveLocalImages(src);
 
     result["code"] == 0
         ? EluiMessageComponent.success(context)(
@@ -115,6 +117,9 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
             ),
           ),
           Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Card(
               child: SizedBox(
                 height: 50,
@@ -148,9 +153,6 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
                 ),
               ),
             ),
-            bottom: 0,
-            left: 0,
-            right: 0,
           ),
         ],
       ),

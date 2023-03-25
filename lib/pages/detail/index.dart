@@ -42,6 +42,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   final UrlUtil _urlUtil = UrlUtil();
 
+  final Storage storage = Storage();
+
   /// 作弊者参数
   PlayerStatus playerStatus = PlayerStatus(
     data: {},
@@ -63,6 +65,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       limit: 100,
       personaId: "",
     ),
+  );
+
+  ViewedStatus viewedStatus = ViewedStatus(
+    load: false,
+    parame: ViewedStatusParame(),
   );
 
   /// 异步
@@ -155,7 +162,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
       setState(() {
         playerStatus.data = d;
+        viewedStatus.parame!.id = d["id"];
       });
+
+      _onViewd();
     } else {
       EluiMessageComponent.error(context)(
         child: Text(result.data.code),
@@ -167,6 +177,32 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     });
 
     return playerStatus.data;
+  }
+
+  /// [Event]
+  /// 更新游览值
+  Future _onViewd() async {
+    Map? viewed = jsonDecode(await storage.get("viewed")) ?? {};
+    String? id = viewedStatus.parame!.id.toString();
+
+    if (id.isEmpty) return;
+
+    // TODO 校验，包含ID且1天累，则不更新游览值
+    // if (viewed != null) {
+    //   return;
+    // }
+
+    Response result = await Http.request(
+      Config.httpHost["player_viewed"],
+      parame: viewedStatus.parame?.toMap,
+      method: Http.POST,
+    );
+
+    setState(() {
+      viewed![id] = DateTime.now().millisecondsSinceEpoch.toString();
+      storage.set("viewed", value: jsonEncode(viewed));
+      playerStatus.data["viewNum"] += 1;
+    });
   }
 
   /// [Event]
@@ -305,7 +341,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
           break;
       }
 
-      _urlUtil.opEnPage(context, "/reply/$parameter", transition: TransitionType.cupertino).then((value) {
+      _urlUtil.opEnPage(context, "/reply/$parameter", transition: TransitionType.cupertinoFullScreenDialog).then((value) {
         if (value != null) {
           _getCheatersInfo();
           _getTimeline();
@@ -415,6 +451,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     );
   }
 
+  void _onShare(Map i) {
+    _urlUtil.onPeUrl(
+      "${Config.apiHost["web_site"]}/player/${i!["originUserId"]}/share",
+      mode: LaunchMode.externalNonBrowserApplication,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     cheatersTabs = <Tab>[
@@ -471,20 +514,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                 elevation: 0,
                 actions: <Widget>[
                   IconButton(
-                    icon: const Icon(
-                      Icons.open_in_new,
-                    ),
+                    icon: const Icon(Icons.open_in_new),
                     onPressed: () {
-                      // Share().text(
-                      //   title: '联BFBAN分享',
-                      //   text: '走过路过，不要错过咯~ 快乐围观 ${snapshot.data!["originId"]} 在联BAN举报信息',
-                      //   linkUrl: 'https://bfban.com/#/cheaters/${snapshot.data!["originUserId"]}',
-                      //   chooserTitle: '联BFBAN分享',
-                      // );
-                      _urlUtil.onPeUrl(
-                        "${Config.apiHost["web_site"]}/player/${snapshot.data!["originUserId"]}/share",
-                        mode: LaunchMode.externalNonBrowserApplication,
-                      );
+                      _onShare(snapshot.data);
                     },
                   ),
                 ],

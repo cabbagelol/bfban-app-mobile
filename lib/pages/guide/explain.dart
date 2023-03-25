@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/widgets/news/index.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -20,10 +21,13 @@ class GuideExplainPage extends StatefulWidget {
   _ExplainPageState createState() => _ExplainPageState();
 }
 
-class _ExplainPageState extends State<GuideExplainPage> {
+class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveClientMixin {
   bool load = false;
 
   List news = [];
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -92,13 +96,13 @@ class _ExplainPageState extends State<GuideExplainPage> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: news.map((i) {
                     return Padding(
-                      padding: EdgeInsets.only(bottom: 35),
+                      padding: const EdgeInsets.only(bottom: 35),
                       child: Column(
                         children: [
                           Row(
@@ -120,7 +124,14 @@ class _ExplainPageState extends State<GuideExplainPage> {
                             ],
                           ),
                           const SizedBox(height: 5),
-                          Text(i["content"].toString()),
+                          Column(
+                            children: i["content"].map<Widget>((content) {
+                              return Html(
+                                data: content,
+                                style: {"*": Style(margin: Margins.zero)},
+                              );
+                            }).toList(),
+                          )
                         ],
                       ),
                     );

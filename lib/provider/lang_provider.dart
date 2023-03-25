@@ -8,7 +8,7 @@ import '../utils/index.dart';
 
 class LangProvider with ChangeNotifier {
   // 包名
-  String packageName = "com.bfban.language";
+  String packageName = "language";
 
   // 语言字典列表
   List _listDictionaryFrom = [];
@@ -62,8 +62,6 @@ class LangProvider with ChangeNotifier {
       'listDictionaryFrom': await getLangFrom(),
       'listConf': await getLangConf(currentLang)
     };
-
-    print(data);
 
     await Storage().set(packageName, value: jsonEncode(data));
     return true;

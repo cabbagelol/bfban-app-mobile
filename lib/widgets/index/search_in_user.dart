@@ -6,9 +6,9 @@ import '../../component/_privilegesTag/index.dart';
 import '../../utils/date.dart';
 
 class SearchInUserCard extends StatelessWidget {
-  final item;
+  final Map? item;
 
-  final onTap;
+  final Function? onTap;
 
   const SearchInUserCard({
     Key? key,
@@ -27,7 +27,7 @@ class SearchInUserCard extends StatelessWidget {
           child: EluiImgComponent(
             width: 40,
             height: 40,
-            src: item["userAvatar"] ?? "",
+            src: item!["userAvatar"] ?? "",
           ),
         ),
       ),
@@ -36,7 +36,7 @@ class SearchInUserCard extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: <Widget>[
           Text(
-            item["username"],
+            item!["username"] ?? "",
             style: TextStyle(
               color: Theme.of(context).primaryTextTheme.headline1!.color,
               fontSize: 20,
@@ -56,7 +56,7 @@ class SearchInUserCard extends StatelessWidget {
       subtitle: Wrap(
         children: [
           Text(
-            Date().getTimestampTransferCharacter(item["joinTime"])["Y_D_M"],
+            Date().getTimestampTransferCharacter(item!["joinTime"])["Y_D_M"],
             style: TextStyle(
               color: Theme.of(context).textTheme.subtitle2!.color,
               fontSize: 9,
@@ -66,7 +66,7 @@ class SearchInUserCard extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Text(
-            Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
+            Date().getTimestampTransferCharacter(item!["updateTime"])["Y_D_M"],
             style: TextStyle(
               color: Theme.of(context).textTheme.subtitle2!.color,
               fontSize: 9,
@@ -77,10 +77,10 @@ class SearchInUserCard extends StatelessWidget {
         ],
       ),
       trailing: Container(
-        constraints: BoxConstraints(maxWidth: 100),
-        child: PrivilegesTagWidget(data: item["privilege"]),
+        constraints: const BoxConstraints(maxWidth: 200),
+        child: PrivilegesTagWidget(data: item!["privilege"]),
       ),
-      onTap: () => onTap(),
+      onTap: () => onTap!(),
     );
   }
 }

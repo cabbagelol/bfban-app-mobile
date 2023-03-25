@@ -24,48 +24,40 @@ class _GuidePageState extends State<GuidePage> {
   /// 引导下标
   int guideListPageIndex = 0;
 
-  /// 是否同意条约
-  bool guideAgreementIs = false;
-
   /// 引导页面列表
-  late List<Widget> guideListPage = [];
+  late List<Widget> guideListPage = [
+    GuideLanguagePage(
+      onChanged: () {
+        setState(() {
+          // Update Widget, Run setState
+        });
+      },
+    ),
+    GuideAgreementPage(key: _agreementPageKey),
+    const GuidePermissionPage(
+      onChange: null,
+    ),
+    const GuideExplainPage(),
+    const GuideLoginPage(),
+  ];
+
+  late final GlobalKey<AgreementPageState> _agreementPageKey = GlobalKey<AgreementPageState>();
 
   @override
   void initState() {
     super.initState();
-
-    guideListPage = [
-      GuideAgreementPage(
-        onChanged: (checked) {
-          setState(() {
-            guideAgreementIs = checked;
-          });
-        },
-      ),
-      GuideLanguagePage(
-        onChanged: () {
-          setState(() {
-            // Update Widget, Run setState
-          });
-        },
-      ),
-      const GuidePermissionPage(
-        onChange: null,
-      ),
-      const GuideExplainPage(),
-      const GuideLoginPage(),
-    ];
   }
 
   /// [Event]
   /// 下一步
   _onNext() async {
     // 勾选
-    if (!guideAgreementIs) return;
+    bool isAgreement = _agreementPageKey.currentState?.checked ?? false;
+    if (!isAgreement && guideListPageIndex == 1) return;
 
     // 完成离开
     if (guideListPageIndex == guideListPage.length - 1) {
-      await Storage().set("com.bfban.guide", value: "1");
+      await Storage().set("guide", value: "1");
 
       _urlUtil.popPage(context);
       return;

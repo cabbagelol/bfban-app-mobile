@@ -91,7 +91,7 @@ class PackageProvider with ChangeNotifier {
                   left: 0,
                   right: 0,
                   child: Image.asset(
-                    "assets/images/bfban-logo.png",
+                    "assets/images/logo.png",
                     width: 80,
                     height: 80,
                   ),

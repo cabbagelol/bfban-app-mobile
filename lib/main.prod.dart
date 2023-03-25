@@ -10,7 +10,10 @@ void main () async {
       "app_web_site": "https://bfban-app.cabbagelol.net",
       "web_site": "https://bfban.gametools.network",
       "network_service_request": "https://bfban.gametools.network/api",
-    }
+    },
+    jiguan: {
+      "appKey": "966c3770c8bb47ffcbaacff1",
+    },
   );
 
   // google ads 初始

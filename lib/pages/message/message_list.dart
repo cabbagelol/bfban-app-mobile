@@ -107,7 +107,7 @@ class _MessagePageState extends State<MessageListPage> {
                   leading: ExcludeSemantics(
                     child: CircleAvatar(
                       child: Text(
-                          FlutterI18n.translate(context, i["haveRead"] == 0 ? "profile.message.tabsList.form.unread" : "profile.message.tabsList.form.read"),
+                          FlutterI18n.translate(context, i["haveRead"] == 0 ? "profile.chat.tabsList.form.unread" : "profile.chat.tabsList.form.read"),
                       ),
                     ),
                   ),
@@ -143,21 +143,21 @@ class _MessagePageState extends State<MessageListPage> {
                     },
                     itemBuilder: (content) => <PopupMenuEntry>[
                       PopupMenuItem(
-                        child: Text(FlutterI18n.translate(context, "profile.message.look")),
                         value: 10,
+                        child: Text(FlutterI18n.translate(context, "profile.chat.look")),
                       ),
                       PopupMenuItem(
-                        child: Text(FlutterI18n.translate(context, "basic.button.reply")),
                         value: 20,
+                        child: Text(FlutterI18n.translate(context, "basic.button.reply")),
                       ),
                       const PopupMenuDivider(),
                       PopupMenuItem(
-                        child: Text(FlutterI18n.translate(context, "profile.message.tabsList.form.read")),
                         value: 1,
+                        child: Text(FlutterI18n.translate(context, "profile.chat.tabsList.form.read")),
                       ),
                       PopupMenuItem(
-                        child: Text(FlutterI18n.translate(context, "profile.message.tabsList.form.unread")),
                         value: 2,
+                        child: Text(FlutterI18n.translate(context, "profile.chat.tabsList.form.unread")),
                       ),
                     ],
                   ),

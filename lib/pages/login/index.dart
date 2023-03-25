@@ -66,16 +66,18 @@ class _LoginPanelState extends State<LoginPanelPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      radius: 40,
-                      child: Image.asset("assets/images/bfban-logo.png"),
+                    Image.asset(
+                      "assets/splash/splash_center_logo_.png",
+                      width: 80,
+                      height: 80,
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 20),
                     Text(
                       FlutterI18n.translate(context, "app.signin.panel.title"),
                       style: const TextStyle(fontSize: 20),
                       textAlign: TextAlign.center,
                     ),
+                    const SizedBox(height: 5),
                     Text(
                       FlutterI18n.translate(context, "app.signin.panel.label"),
                       style: TextStyle(
@@ -110,35 +112,34 @@ class _LoginPanelState extends State<LoginPanelPage> {
                 bottom: 0,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.transparent,
-                        Colors.black87,
+                        Theme.of(context).bottomAppBarColor,
+                        Theme.of(context).bottomAppBarColor,
                       ],
                     ),
                   ),
                   child: Column(
                     children: [
                       GestureDetector(
-                        child: Wrap(
-                          spacing: 5,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text(
-                              FlutterI18n.translate(context, "app.signin.panel.signupButton"),
-                              style: const TextStyle(
-                                color: Colors.white54,
+                        child: Opacity(
+                          opacity: .8,
+                          child: Wrap(
+                            spacing: 5,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Text(
+                                FlutterI18n.translate(context, "app.signin.panel.signupButton"),
                               ),
-                            ),
-                            const Icon(
-                              Icons.open_in_new,
-                              color: Colors.white54,
-                              size: 18,
-                            ),
-                          ],
+                              const Icon(
+                                Icons.open_in_new,
+                                size: 18,
+                              ),
+                            ],
+                          ),
                         ),
                         onTap: () => _urlUtil.onPeUrl("https://bfban.com/#/signup"),
                       ),

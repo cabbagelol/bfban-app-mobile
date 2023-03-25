@@ -134,16 +134,16 @@ class _DragContainerState extends State<DragContainer>
         child: Stack(
           children: <Widget>[
             SizedBox(
-              child: widget.drawer,
               height: widget.height,
+              child: widget.drawer,
             ),
             Offstage(
+              offstage: offstage,
               child: Container(
                 ///使用图层来解决当抽屉露出头时，上拉抽屉上移。解决的方案最佳
                 color: Colors.transparent,
                 height: widget.height,
               ),
-              offstage: offstage,
             )
           ],
         ),

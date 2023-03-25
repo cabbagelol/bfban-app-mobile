@@ -14,7 +14,7 @@ class ThemeProvider with ChangeNotifier {
   BuildContext? context;
 
   /// 主题包名
-  String? themePackageName = "com.bfban.theme";
+  String? themePackageName = "theme";
 
   /// 主题
   ThemeProviderData theme = ThemeProviderData(

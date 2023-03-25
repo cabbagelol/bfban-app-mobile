@@ -4,13 +4,19 @@ enum Env { PROD, DEV }
 
 class Config {
   static Env env = Env.DEV;
+  static final List _envStringNames = ["production", "development"];
+  static String _envCurrentStringName = "";
   static Map apis = {};
+  static Map jiguans = {};
+
+  /// 当前环境名称
+  /// [_envStringNames] 所有
+  static String get envCurrentName => _envCurrentStringName;
 
   static Map get jiguan {
-    return {
-      "appKey": "966c3770c8bb47ffcbaacff1",
-      "channel": "developer-default",
-    };
+    Map d = {"channel": "developer-default"};
+    d.addAll(jiguans);
+    return d;
   }
 
   /// 基础请求
@@ -43,7 +49,6 @@ class Config {
       "players": "players",
       "activity": "activities",
       "trend": "trend",
-
       "user_message": "message",
       "user_message_mark": "message/mark",
       "user_info": "user/info",
@@ -55,12 +60,10 @@ class Config {
       "user_reports": "user/reports",
       "user_changePassword": "user/changePassword",
       "user_changeName": "user/changeName",
-
       "account_signout": "user/signout",
       "account_signin": "user/signin",
       "account_signup": "user/signup",
       "account_signupVerify": "user/signupVerify",
-
       "player_reset": "reset",
       "player_judgement": "player/judgement",
       "player_judgmentResult": "player/judgmentResult",
@@ -72,13 +75,11 @@ class Config {
       "player_update": "player/update",
       "player_viewed": "player/viewed",
       "player_timeline": "player/timeline",
-
       "service_myStorageQuota": "service/myStorageQuota",
       "service_myFiles": "service/myFiles",
       "service_file": "service/file",
       "service_upload": "service/upload",
       "service_uploadBigFile": "service/uploadBigFile",
-
       "admin_searchUser": "admin/searchUser",
       "admin_setComment": "admin/setComment",
       "admin_commentAll": "admin/commentAll",
@@ -103,13 +104,17 @@ class Config {
     return list;
   }
 
-  Config.dev({required Map api}) {
+  Config.dev({required Map api, Map? jiguan}) {
     Config.apis.addAll(api);
+    if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
     Config.env = Env.DEV;
+    Config._envCurrentStringName = _envStringNames[Config.env.index];
   }
 
-  Config.prod({required Map api}) {
+  Config.prod({required Map api, Map? jiguan}) {
     Config.apis.addAll(api);
+    if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
     Config.env = Env.PROD;
+    Config._envCurrentStringName = _envStringNames[Config.env.index];
   }
 }

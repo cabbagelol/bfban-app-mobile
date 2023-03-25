@@ -11,5 +11,9 @@ export './Manage.dart';
 export './Message.dart';
 export './Network.dart';
 export './Theme.dart';
+export './Trace.dart';
+export './Trend.dart';
+export './TourRecord.dart';
+export './Viewed.dart';
 
 import './DataUtil.dart';

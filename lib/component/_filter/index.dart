@@ -70,7 +70,7 @@ class FilterState extends State<Filter> {
     late int _index = 0;
 
     // 生成key，以便通过key操作
-    widget.slot!.forEach((i) {
+    for (var i in widget.slot!) {
       GlobalKey<_FilterTitleWidgetState> titleKey = GlobalKey();
 
       filterItemKey.add(titleKey);
@@ -88,15 +88,16 @@ class FilterState extends State<Filter> {
           panel: i.panel,
         ),
       );
-    });
+    }
 
     filterItem.asMap().keys.forEach((index) {
       var element = filterItem[index];
-      if (element.panel != null)
+      if (element.panel != null) {
         element.panel!
           ..filterAll = filterItem
           ..show = show
           ..hide = hidden;
+      }
     });
   }
 
@@ -115,7 +116,7 @@ class FilterState extends State<Filter> {
 
   /// [Event]
   /// item.title 内部状态更新
-  _onUpdateItemState(_is, {index = null}) {
+  _onUpdateItemState(_is, {index}) {
     filterItemKey.forEach((key) {
       // 更新内部状态
       key.currentState!.widget.stateSetter_!(() {
@@ -213,7 +214,7 @@ class FilterState extends State<Filter> {
             right: 0,
             bottom: 0,
             child: Container(
-              color: Colors.black.withOpacity(.2),
+              color: Theme.of(context).primaryColor.withOpacity(.2),
               width: double.infinity,
               height: double.infinity,
             ),
@@ -232,7 +233,7 @@ class FilterState extends State<Filter> {
                 minHeight: selectHeight,
               ),
               decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
                 border: Border(
                   bottom: BorderSide(
                     color: Theme.of(context).dividerColor,
@@ -268,6 +269,7 @@ class FilterState extends State<Filter> {
               children: [
                 // 内容卡槽
                 Expanded(
+                  flex: 1,
                   child: Container(
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: IndexedStack(
@@ -276,8 +278,7 @@ class FilterState extends State<Filter> {
                       children: filterItem.asMap().keys.map<Widget>((index) {
                         FilterItem item = filterItem[index];
 
-                        if (item.panel == null)
-                          item.panel = emptyFilter(
+                        item.panel ??= emptyFilter(
                             child: Container(),
                           );
 
@@ -285,7 +286,6 @@ class FilterState extends State<Filter> {
                       }).toList(),
                     ),
                   ),
-                  flex: 1,
                 ),
 
                 // 按钮组
@@ -382,8 +382,8 @@ class _FilterTitleWidgetState extends State<FilterTitleWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Container(
-          child: widget.title,
           margin: const EdgeInsets.only(right: 5),
+          child: widget.title,
         ),
         widget.isIcon
             ? StatefulBuilder(

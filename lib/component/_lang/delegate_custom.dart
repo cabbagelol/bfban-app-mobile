@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class CustomTranslationLoader extends FileTranslationLoader {
   // 包名
   // 与[lang_provider]packageName一致
-  String packageName = "com.bfban.language";
+  String packageName = "language";
 
   final Uri baseUri;
 

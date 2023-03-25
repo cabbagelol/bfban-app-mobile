@@ -202,16 +202,6 @@ class _MessagePageState extends State<MessagePage> {
     // 筛选
     list = list.where((item) {
       var _is = false;
-      print("=================");
-      print({
-        "item.byUserId": item["byUserId"],
-        "item.selfInfo": item["selfInfo"],
-        "widget.id": widget.id,
-        "item.toUserId": item["toUserId"],
-        "selfInfo": selfInfo!["userId"],
-        "item.content": item["content"],
-      });
-
       if (item["byUserId"].toString() == selfInfo!["userId"].toString() && widget.id.toString() == item["toUserId"].toString() || item["byUserId"].toString() == widget.id.toString()) {
         _is = true;
       }

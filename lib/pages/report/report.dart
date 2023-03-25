@@ -159,21 +159,23 @@ class _ReportPageState extends State<ReportPage> {
       method: Http.POST,
     );
 
-    if (result.data["error"] > 0) {
-      EluiMessageComponent.warning(context)(
-        child: Text(result.data["code"]),
-      );
-    } else if (result.data["success"] == 1) {
+    if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(
         child: Text(result.data["code"]),
       );
-
       UrlUtil().opEnPage(context, "/report/publishResultsPage");
+      setState(() {
+        reportStatus.load = false;
+      });
+      return;
     }
 
     setState(() {
       reportStatus.load = false;
     });
+    EluiMessageComponent.warning(context)(
+      child: Text("${result.data["code"]}:${result.data["message"]}"),
+    );
   }
 
   /// [Event]
@@ -207,7 +209,7 @@ class _ReportPageState extends State<ReportPage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("com.bfban.richedit", value: reportStatus.param!.data!["description"].toString());
+    await Storage().set("richedit", value: reportStatus.param!.data!["description"].toString());
 
     _urlUtil.opEnPage(context, "/richedit").then((data) {
       /// 按下确认储存富文本编写的内容
@@ -228,13 +230,21 @@ class _ReportPageState extends State<ReportPage> {
         title: Text(FlutterI18n.translate(context, "report.title")),
         actions: <Widget>[
           TextButton(
-            child: reportStatus.load! ? const CircularProgressIndicator() : const Icon(Icons.done),
             onPressed: () => _onSubmit(),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
                 Theme.of(context).appBarTheme.backgroundColor,
               ),
             ),
+            child: reportStatus.load! ? const Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: ELuiLoadComponent(
+                type: "line",
+                size: 20,
+                lineWidth: 2,
+                color: Colors.white,
+              ),
+            ) : const Icon(Icons.done),
           )
         ],
       ),

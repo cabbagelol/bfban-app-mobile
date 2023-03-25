@@ -17,13 +17,16 @@ class GuidePermissionPage extends StatefulWidget {
   _PermissionPageState createState() => _PermissionPageState();
 }
 
-class _PermissionPageState extends State<GuidePermissionPage> {
+class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeepAliveClientMixin {
   List<Permission> permissions = [
     Permission.camera,
     Permission.photos,
     Permission.storage,
     Permission.notification,
   ];
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -168,6 +171,9 @@ class _PermissionState extends State<PermissionWidget> {
   PermissionStatus _permissionStatus = PermissionStatus.denied;
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     super.initState();
 
@@ -182,7 +188,7 @@ class _PermissionState extends State<PermissionWidget> {
   Color getPermissionColor() {
     switch (_permissionStatus) {
       case PermissionStatus.denied:
-        return Colors.red;
+        return Colors.yellow;
       case PermissionStatus.granted:
         return Colors.green;
       default:

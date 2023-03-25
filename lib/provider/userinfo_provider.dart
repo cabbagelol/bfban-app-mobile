@@ -10,7 +10,7 @@ import '../utils/index.dart';
 class UserInfoProvider with ChangeNotifier {
   final UrlUtil _urlUtil = UrlUtil();
 
-  String packageName = "com.bfban.login";
+  String packageName = "login";
 
   BuildContext? context;
 

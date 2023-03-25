@@ -1,11 +1,50 @@
-
 /// 玩家数据
-class Player {
+abstract class PlayerBaseData {
   num id;
+  String? originName;
+  String? originUserId;
+  String? originPersonaId;
+  List? games;
+  List? cheatMethods;
+  String? avatarLink;
+  int? viewNum;
+  int? commentsNum;
+  int? valid;
+  int? status;
+  String? createTime;
+  String? updateTime;
 
-  Player({
+  PlayerBaseData({
     this.id = 0,
+    this.originName,
+    this.originUserId,
+    this.originPersonaId,
+    this.games,
+    this.cheatMethods,
+    this.avatarLink,
+    this.viewNum,
+    this.commentsNum,
+    this.valid,
+    this.createTime,
+    this.updateTime,
   });
+
+  get toMap {
+    return {
+      "id": id,
+      "originName": originName,
+      "originUserId": originUserId,
+      "originPersonaId": originPersonaId,
+      "games": games,
+      "cheatMethods": cheatMethods,
+      "avatarLink": avatarLink,
+      "viewNum": viewNum,
+      "commentsNum": commentsNum,
+      "valid": valid,
+      "createTime": createTime,
+      "updateTime": updateTime,
+    };
+  }
 }
 
 /// 玩家数据管理
@@ -31,10 +70,11 @@ class PlayerParame {
     this.personaId = "",
   });
 
-  get toMap => {
-    "history": history,
-    "personaId": personaId,
-  };
+  get toMap =>
+      {
+        "history": history,
+        "personaId": personaId,
+      };
 }
 
 /// 作弊玩家列表 Players

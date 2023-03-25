@@ -14,10 +14,13 @@ class GuideLoginPage extends StatefulWidget {
   _GuideLoginPageState createState() => _GuideLoginPageState();
 }
 
-class _GuideLoginPageState extends State<GuideLoginPage> {
+class _GuideLoginPageState extends State<GuideLoginPage> with AutomaticKeepAliveClientMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
   late String username = "";
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

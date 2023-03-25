@@ -88,7 +88,7 @@ class LightnesTheme {
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0.2),
           backgroundColor: MaterialStateProperty.all(const Color(0xff364e80)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
+          foregroundColor: MaterialStateProperty.all(Colors.black),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
           overlayColor: MaterialStateProperty.all(Colors.yellow),
@@ -159,7 +159,7 @@ class LightnesTheme {
       iconTheme: const IconThemeData(
         color: Color(0xff364e80),
       ),
-      dividerColor: Colors.white12,
+      dividerColor: Colors.black12,
       cardTheme: const CardTheme(
         elevation: 2,
         color: Colors.white,

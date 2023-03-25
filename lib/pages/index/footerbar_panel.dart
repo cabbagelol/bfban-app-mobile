@@ -100,7 +100,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
           children: [
             // 统计
             Card(
-              margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
+              margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -204,6 +204,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
 
             // 功能块
             Expanded(
+              flex: 1,
               child: CustomScrollView(
                 primary: false,
                 slivers: <Widget>[
@@ -217,6 +218,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                         Opacity(
                           opacity: data.isLogin ? 1 : .3,
                           child: TextButton(
+                            onPressed: data.isLogin ? _openReply() : null,
                             child: Column(
                               children: const [
                                 Icon(
@@ -226,7 +228,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                 Text("举报玩家")
                               ],
                             ),
-                            onPressed: data.isLogin ? _openReply() : null,
                           ),
                         ),
                         TextButton(
@@ -262,7 +263,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                   ),
                 ],
               ),
-              flex: 1,
             ),
           ],
         );

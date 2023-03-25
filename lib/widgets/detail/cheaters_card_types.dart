@@ -52,77 +52,108 @@ class CardUtil {
           ),
         ),
       ),
-      imgMatcher(): CustomRender.widget(widget: (RenderContext context, buildChildren) {
-        return GestureDetector(
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Stack(
-              children: [
-                EluiImgComponent(
-                  src: "${context.tree.element!.attributes['src']}?imageslim",
-                  width: double.infinity,
-                  fit: BoxFit.fitWidth,
-                  errorWidget: Opacity(
-                    opacity: .2,
-                    child: Image.asset(
-                      "assets/images/bfban-logo.png",
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                  isPlaceholder: true,
-                  placeholder: (BuildContext context, String url) {
-                    return const ELuiLoadComponent(
-                      type: "line",
-                      color: Colors.white12,
-                      size: 20,
-                      lineWidth: 2,
-                    );
-                  },
-                ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Colors.transparent,
-                          Colors.transparent,
-                          Colors.black87,
-                        ],
+      imgMatcher(): CustomRender.widget(
+        widget: (RenderContext context, buildChildren) {
+          return GestureDetector(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Stack(
+                children: [
+                  EluiImgComponent(
+                    src: "${context.tree.element!.attributes['src']}",
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorWidget: const Card(
+                      margin: EdgeInsets.zero,
+                      elevation: 0,
+                      child: Center(
+                        child: Text(":("),
                       ),
                     ),
-                    child: const Icon(
-                      Icons.search,
-                      color: Colors.white70,
-                      size: 30,
+                    isPlaceholder: true,
+                    placeholder: (BuildContext buildContext, String url) {
+                      return Card(
+                        margin: EdgeInsets.zero,
+                        color: Theme.of(buildContext).cardColor,
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Stack(
+                                  clipBehavior: Clip.none,
+                                  children: const [
+                                    Icon(Icons.image, size: 50),
+                                    Positioned(
+                                      top: -10,
+                                      right: -10,
+                                      child: ELuiLoadComponent(
+                                        type: "line",
+                                        color: Colors.white,
+                                        size: 15,
+                                        lineWidth: 2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Opacity(
+                                  opacity: .5,
+                                  child: Text("${context.tree.element!.attributes['src']}", textAlign: TextAlign.center),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.transparent,
+                            Colors.transparent,
+                            Colors.black87,
+                          ],
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white70,
+                        size: 30,
+                      ),
                     ),
                   ),
-                ),
-                Positioned(
-                  right: 12,
-                  bottom: 12,
-                  child: Container(
-                    padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white70,
-                      size: 12,
+                  Positioned(
+                    right: 12,
+                    bottom: 12,
+                    child: Container(
+                      padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white70,
+                        size: 12,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          onTap: () {
-            // 打开图片
-            onImageTap(contextView, context.tree.element!.attributes['src'].toString());
-          },
-        );
-      }),
+            onTap: () {
+              // 打开图片
+              onImageTap(contextView, context.tree.element!.attributes['src'].toString());
+            },
+          );
+        },
+      ),
     };
   }
 
@@ -153,11 +184,7 @@ class CardUtil {
   /// [Event]
   /// 查看用户ID信息
   void openPlayerDetail(context, id) {
-    _urlUtil.opEnPage(
-      context,
-      '/account/$id',
-      transition: TransitionType.fadeIn,
-    );
+    _urlUtil.opEnPage(context, '/account/$id', transition: TransitionType.cupertino);
   }
 
   /// [Event]
@@ -208,6 +235,8 @@ class ReplyButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
+      iconSize: 18,
+      splashRadius: 10,
       onSelected: (value) async {
         switch (value) {
           case 1:
@@ -248,7 +277,7 @@ class TimeLineCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 0,
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -350,9 +379,9 @@ class CheatUserCheatersCard extends StatelessWidget {
       headerSecondary: data["quote"] != null
           ? Card(
               margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              color: Theme.of(context).appBarTheme.backgroundColor,
+              color: Theme.of(context).primaryColorDark.withOpacity(.2),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[

@@ -7,11 +7,11 @@ import "storage.dart";
 
 class StorageAccount extends Storage {
   List ACCOUNTDATA = [{
-    "name": "com.bfban.cookie"
+    "name": "cookie"
   }, {
-    "name": "com.bfban.token"
+    "name": "token"
   }, {
-    "name": "com.bfban.login"
+    "name": "login"
   }];
 
   /// 擦除本地账户数据

@@ -21,12 +21,15 @@ class GuideLanguagePage extends StatefulWidget {
   State<GuideLanguagePage> createState() => _GuideLanguagePageState();
 }
 
-class _GuideLanguagePageState extends State<GuideLanguagePage> {
+class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKeepAliveClientMixin {
   LangProvider? langProvider;
 
   bool load = false;
 
   List languages = [];
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

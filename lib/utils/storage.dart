@@ -1,54 +1,27 @@
-/// 功能：长久储存
-import 'dart:typed_data';
-import 'package:dio/dio.dart';
-
+/// 储存
+import 'package:bfban/constants/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class Storage {
+  PackageInfo? _packageInfo;
+
   SharedPreferences? _prefs;
 
   SharedPreferences? get prefs => _prefs;
 
+  String _preName = "";
+
   /// [Event]
   /// 初始化
   init() async {
+    _packageInfo = await PackageInfo.fromPlatform();
     _prefs = await SharedPreferences.getInstance();
+    _preName = "${_packageInfo!.appName.toLowerCase()}.${Config.envCurrentName}:";
   }
 
   /// 是否初始化
   get isInit => _prefs != null;
-
-  /// [Event]
-  /// 储存图片
-  Future saveimg(
-    url, {
-    fileUrl = "",
-  }) async {
-    var response = await Dio().get(
-      url,
-      options: Options(
-        responseType: ResponseType.bytes,
-      ),
-    );
-
-    final result = await ImageGallerySaver.saveImage(
-      Uint8List.fromList(
-        response.data,
-      ),
-    );
-
-    if (result != "") {
-      return {
-        "src": result,
-        "code": 0,
-      };
-    }
-
-    return {
-      "code": -1,
-    };
-  }
 
   /// [Event]
   /// 获取
@@ -59,10 +32,10 @@ class Storage {
 
     switch (type) {
       case "none":
-        result = _prefs!.get(name);
+        result = _prefs!.get("$_preName$name");
         break;
       case "string":
-        result = _prefs!.getString(name);
+        result = _prefs!.getString("$_preName$name");
         break;
     }
 
@@ -77,14 +50,12 @@ class Storage {
 
       switch (type) {
         case "bool":
-          _prefs!.setBool(name, value);
+          _prefs!.setBool("$_preName$name", value);
           break;
         case "string":
-          await _prefs!.setString(name, value);
+          await _prefs!.setString("$_preName$name", value);
           break;
       }
-
-      String a = await get(name);
 
       return _prefs;
     } catch (E) {
@@ -102,7 +73,7 @@ class Storage {
           _prefs.clear();
           break;
         case "name":
-          _prefs.remove(name); //删除指定键
+          _prefs.remove("$_preName$name"); //删除指定键
           break;
       }
 

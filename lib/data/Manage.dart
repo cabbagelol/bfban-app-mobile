@@ -36,15 +36,18 @@ class ManageData {
   });
 
   get toMap {
-    return {
+    Map map = {
       "data": {
         "content": content,
         "action": action,
-        "cheatMethods": cheatMethods,
         "toPlayerId": toPlayerId,
       },
       "encryptCaptcha": captcha!.hash,
       "captcha": captcha!.value,
     };
+    if (["kill", "guilt"].contains(action)) {
+      map["data"]["cheatMethods"] = cheatMethods;
+    }
+    return map;
   }
 }

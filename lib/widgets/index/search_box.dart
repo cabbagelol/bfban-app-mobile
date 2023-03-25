@@ -136,7 +136,7 @@ class searchState extends State<titleSearch> {
                                 color: Colors.black45,
                               ),
                               backgroundCursorColor: Colors.white,
-                              onSubmitted: (data) => widget.onSubmitted! ?? widget.onSubmitted!(data),
+                              onSubmitted: (data) => widget.onSubmitted!(data),
                               onChanged: (data) => widget.onChanged!(data),
                             )
                           : I18nText(

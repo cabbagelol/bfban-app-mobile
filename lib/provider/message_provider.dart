@@ -19,7 +19,7 @@ enum MessageType {
 
 class MessageProvider with ChangeNotifier {
   // 包名
-  String packageName = "com.bfban.message";
+  String packageName = "message";
 
   // 极光
   // JPush jpush = JPush();

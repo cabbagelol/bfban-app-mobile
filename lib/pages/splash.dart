@@ -48,7 +48,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   void _onReady() async {
     Future.delayed(const Duration(seconds: 1)).then((value) => {
           setState(() {
-            _size = 2;
+            _size = 1.5;
           })
         });
 
@@ -96,7 +96,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 初始用户数据
   Future _initUserData() async {
-    dynamic user = await Storage().get("com.bfban.login");
+    dynamic user = await Storage().get("login");
 
     if (user != null) {
       // 数据 更新到状态机内
@@ -156,7 +156,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// 引导
   Future<bool> _onGuide() async {
     Storage storage = Storage();
-    String guideName = "com.bfban.guide";
+    String guideName = "guide";
 
     setState(() {
       loadTip = "app.splash.guide";
@@ -247,10 +247,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                       scale: _size,
                       curve: Curves.easeOutBack,
                       duration: const Duration(milliseconds: 300),
-                      child: Image.asset(
-                        "assets/splash/splash_center_logo.png",
-                        width: 50,
-                        height: 50,
+                      child: const CircleAvatar(
+                        radius: 30,
+                        backgroundImage: AssetImage("assets/splash/splash_center_logo.png"),
                       ),
                     ),
                   ],
