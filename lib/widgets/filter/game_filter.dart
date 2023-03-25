@@ -96,13 +96,8 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                       const SizedBox(width: 10),
                       Visibility(
                         visible: i["num"] != null,
-                        child: EluiTagComponent(
-                          color: EluiTagType.none,
-                          size: EluiTagSize.no2,
-                          theme: EluiTagTheme(
-                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                          ),
-                          value: i["num"].toString(),
+                        child: Chip(
+                          label: Text(i["num"].toString()),
                         ),
                       ),
                     ],

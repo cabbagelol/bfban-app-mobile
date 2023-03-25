@@ -26,11 +26,6 @@ class DefaultTheme {
         onSurface: Colors.white,
       ),
       canvasColor: Colors.yellow,
-      chipTheme: const ChipThemeData(
-        backgroundColor: Colors.black12,
-        secondarySelectedColor: Colors.white,
-        checkmarkColor: Colors.black,
-      ),
       primaryColorDark: Colors.yellow,
       textTheme: const TextTheme(
         headline1: TextStyle(color: Colors.white),
@@ -139,6 +134,9 @@ class DefaultTheme {
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
         elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
       ),
       primaryColor: const Color(0xff111b2b),
       tabBarTheme: const TabBarTheme(
@@ -176,6 +174,20 @@ class DefaultTheme {
         headline4: TextStyle(color: Colors.white38),
         headline5: TextStyle(color: Colors.white24),
         headline6: TextStyle(color: Colors.white12),
+      ),
+      chipTheme: const ChipThemeData(
+        backgroundColor: Colors.black12,
+        secondarySelectedColor: Colors.white,
+        checkmarkColor: Colors.black,
+        iconTheme: IconThemeData(
+          color: Color(0xff364e80),
+        ),
+        secondaryLabelStyle: TextStyle(
+          color: Colors.black,
+        ),
+        labelStyle: TextStyle(
+          color: Colors.black,
+        ),
       ),
     ),
   );

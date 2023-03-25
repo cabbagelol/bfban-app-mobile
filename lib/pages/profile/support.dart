@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({Key? key}) : super(key: key);
@@ -34,7 +35,7 @@ class _SupportPageState extends State<SupportPage> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: const Text("支援"),
+        title: Text(FlutterI18n.translate(context, "app.setting.support.title")),
         actions: [
           IconButton(
             onPressed: () {
@@ -47,7 +48,7 @@ class _SupportPageState extends State<SupportPage> {
       body: ListView(
         children: <Widget>[
           EluiCellComponent(
-            title: "引导",
+            title: FlutterI18n.translate(context, "app.setting.support.guide"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -59,8 +60,8 @@ class _SupportPageState extends State<SupportPage> {
           ),
           SizedBox(height: 10),
           EluiCellComponent(
-            title: "反馈群 (612949946)",
-            label: "和作者更加接近呢",
+            title: FlutterI18n.translate(context, "app.setting.support.feedbackLinkTitle"),
+            label: FlutterI18n.translate(context, "app.setting.support.feedbackDescription"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -71,8 +72,8 @@ class _SupportPageState extends State<SupportPage> {
             onTap: () => UrlUtil().onPeUrl("https://jq.qq.com/?_wv=1027&k=kXr9z9FE"),
           ),
           EluiCellComponent(
-            title: "Github",
-            label: "开源地址",
+            title: FlutterI18n.translate(context, "app.setting.support.githubTitle"),
+            label: FlutterI18n.translate(context, "app.setting.support.githubDescription"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,
@@ -83,8 +84,8 @@ class _SupportPageState extends State<SupportPage> {
             onTap: () => _urlUtil.onPeUrl("https://github.com/BFBAN/bfban-app"),
           ),
           EluiCellComponent(
-            title: "捐赠",
-            label: "向BFBAN APP开发者捐赠人民币",
+            title: FlutterI18n.translate(context, "app.setting.support.donateTitle"),
+            label: FlutterI18n.translate(context, "app.setting.support.donateDescription"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,
               labelColor: Theme.of(context).textTheme.subtitle2?.color,

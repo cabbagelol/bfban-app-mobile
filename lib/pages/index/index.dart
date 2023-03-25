@@ -68,7 +68,7 @@ class _IndexPageState extends State<IndexPage> {
           _lastPressedAt = DateTime.now();
 
           EluiMessageComponent.warning(context)(
-            child: const Text("再次点击,退出程序"),
+            child: Text(FlutterI18n.translate(context, "app.basic.app_exit")),
           );
           return false;
         }
@@ -197,18 +197,18 @@ class _IndexPageState extends State<IndexPage> {
                 {
                   "index": 0,
                   "name": "home",
-                  "icon": const Icon(Icons.home_rounded, size: 30),
+                  "icon": const Icon(Icons.home_sharp, size: 30),
                 },
                 {
                   "index": 1,
                   "name": "player_list",
                   "count": (playerListPage?.currentState?.playersStatus?.list!.length ?? 0).toString(),
-                  "icon": const Icon(Icons.view_list_sharp, size: 30),
+                  "icon": const Icon(Icons.view_list_outlined, size: 30),
                 },
                 {
                   "index": 2,
                   "name": "profile",
-                  "icon": const Icon(Icons.person, size: 30),
+                  "icon": const Icon(Icons.person_sharp, size: 30),
                 },
               ].map((Map? nav) {
                 return BottomNavigationBarItem(icon: nav!["icon"], label: FlutterI18n.translate(context, "${nav["name"]}.title"));

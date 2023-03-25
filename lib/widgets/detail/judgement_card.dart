@@ -113,6 +113,7 @@ class JudgementCard extends StatelessWidget {
                       data["username"],
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
+                        fontSize: 12,
                       ),
                     ),
                   ],

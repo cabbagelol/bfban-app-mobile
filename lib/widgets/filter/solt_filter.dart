@@ -19,7 +19,7 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
     {"value": "createTime"},
     {"value": "updateTime"},
     {"value": "viewNum"},
-    {"value": "commentNum"},
+    {"value": "commentsNum"},
   ];
 
   @override

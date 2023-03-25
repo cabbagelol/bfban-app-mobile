@@ -317,34 +317,22 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           Expanded(
             flex: 1,
             child: Container(
+              height: 61,
               color: Theme.of(context).scaffoldBackgroundColor,
               child: ButtonBar(
-                alignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.max,
-                buttonAlignedDropdown: true,
-                overflowButtonSpacing: 10.0,
-                buttonMinWidth: 100,
-                buttonHeight: 100,
-                buttonTextTheme: ButtonTextTheme.primary,
-                buttonPadding: EdgeInsets.zero,
+                alignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  TextButton(
+                  OutlinedButton(
                     child: Text(
                       FlutterI18n.translate(context, "basic.button.cancel"),
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
                     ),
                     onPressed: () {
                       _filterKey.currentState!.hidden();
                     },
                   ),
-                  TextButton(
+                  OutlinedButton(
                     child: Text(
                       FlutterI18n.translate(context, "basic.button.submit"),
-                      style: const TextStyle(
-                        color: Colors.white,
-                      ),
                     ),
                     onPressed: () {
                       _filterKey.currentState!.hidden();

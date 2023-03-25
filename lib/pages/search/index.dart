@@ -14,7 +14,6 @@ import 'package:flutter_elui_plugin/_load/index.dart';
 
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
-import 'package:flutter_elui_plugin/_vacancy/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_empty/index.dart';
@@ -335,189 +334,199 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     child: searchStatus.load
                         ? ELuiLoadComponent(
                             type: "line",
-                            color: Theme.of(context).textTheme.subtitle1!.color!,
+                            color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
                             size: 20,
                             lineWidth: 2,
                           )
-                        : const Icon(Icons.search),
+                        : Icon(
+                            Icons.search,
+                            color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
+                          ),
                   ),
                 ),
               ),
             ],
           ),
-          bottom: TabBar(
-            automaticIndicatorColorAdjustment: true,
-            controller: tabController,
-            tabs: searchTabs.map((e) {
-              return Tab(
-                icon: e["icon"],
-                text: e["text"],
-                iconMargin: EdgeInsets.zero,
-              );
-            }).toList(),
-          ),
         ),
-        body: isFirstScreen
-            ? Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                child: ListView(
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Wrap(
-                          spacing: 10,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: <Widget>[
-                            const Icon(Icons.local_fire_department_rounded),
-                            I18nText("app.search.hotRecommendation", child: const Text("", style: TextStyle())),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        searchTrends.isNotEmpty
-                            ? Wrap(
+        body: Column(
+          children: [
+            TabBar(
+              automaticIndicatorColorAdjustment: true,
+              controller: tabController,
+              tabs: searchTabs.map((e) {
+                return Tab(
+                  icon: e["icon"],
+                  text: e["text"],
+                  iconMargin: EdgeInsets.zero,
+                );
+              }).toList(),
+            ),
+            Expanded(
+              flex: 1,
+              child: isFirstScreen
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                      child: ListView(
+                        children: <Widget>[
+                          const SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Wrap(
                                 spacing: 10,
-                                runSpacing: 10,
-                                children: searchTrends.map((i) {
-                                  return InputChip(
-                                    label: Wrap(
-                                      crossAxisAlignment: WrapCrossAlignment.center,
-                                      children: [
-                                        const Icon(Icons.person, size: 16),
-                                        Text(i["originName"]),
-                                        const SizedBox(width: 5),
-                                        const Icon(Icons.local_fire_department_outlined, size: 16),
-                                        Text(i["hot"].toString()),
-                                      ],
-                                    ),
-                                    onSelected: (select) {
-                                      _onPenPlayerDetail(i);
-                                    },
-                                  );
-                                }).toList(),
-                              )
-                            : const EmptyWidget(),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Wrap(
-                              spacing: 10,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: <Widget>[
-                                const Icon(Icons.history),
-                                I18nText("app.search.historySearch", child: const Text("", style: TextStyle())),
-                              ],
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: <Widget>[
+                                  const Icon(Icons.local_fire_department_rounded),
+                                  I18nText("app.search.hotRecommendation", child: const Text("", style: TextStyle())),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              searchTrends.isNotEmpty
+                                  ? Wrap(
+                                      spacing: 10,
+                                      runSpacing: 10,
+                                      children: searchTrends.map((i) {
+                                        return InputChip(
+                                          label: Wrap(
+                                            crossAxisAlignment: WrapCrossAlignment.center,
+                                            children: [
+                                              const Icon(Icons.person, size: 16),
+                                              Text(i["originName"]),
+                                              const SizedBox(width: 5),
+                                              const Icon(Icons.local_fire_department_outlined, size: 16),
+                                              Text(i["hot"].toString()),
+                                            ],
+                                          ),
+                                          onSelected: (select) {
+                                            _onPenPlayerDetail(i);
+                                          },
+                                        );
+                                      }).toList(),
+                                    )
+                                  : const EmptyWidget(),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Wrap(
+                                    spacing: 10,
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    children: <Widget>[
+                                      const Icon(Icons.history),
+                                      I18nText("app.search.historySearch", child: const Text("", style: TextStyle())),
+                                    ],
+                                  ),
+                                  EluiTagComponent(
+                                    color: EluiTagType.none,
+                                    size: EluiTagSize.no2,
+                                    value: "${searchStatus.historyList!.length}/20",
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              searchStatus.historyList!.isNotEmpty
+                                  ? Wrap(
+                                      spacing: 10,
+                                      runSpacing: 5,
+                                      children: searchStatus.historyList!.map((i) {
+                                        return InputChip(
+                                          label: GestureDetector(
+                                            child: Wrap(
+                                              children: [
+                                                Text("${FlutterI18n.translate(context, "search.tabs.${i['type']}")}:\t"),
+                                                Text(i["keyword"]),
+                                              ],
+                                            ),
+                                            onTap: () {
+                                              _onPenByType(i);
+                                            },
+                                          ),
+                                          onDeleted: () {
+                                            _deleteSearchLog(i);
+                                          },
+                                        );
+                                      }).toList(),
+                                    )
+                                  : const EmptyWidget(),
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                        ],
+                      ),
+                    )
+                  : TabBarView(
+                      controller: tabController,
+                      children: [
+                        ListView(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: searchStatus.list.data("player").isNotEmpty
+                                  ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: searchStatus.list.data("player").map((i) {
+                                        return CheatListCard(
+                                          item: i,
+                                          onTap: () => _onPenPlayerDetail(i),
+                                        );
+                                      }).toList(),
+                                    )
+                                  : const EmptyWidget(),
                             ),
-                            EluiTagComponent(
-                              color: EluiTagType.none,
-                              size: EluiTagSize.no2,
-                              value: "${searchStatus.historyList!.length}/20",
-                            )
                           ],
                         ),
-                        const SizedBox(
-                          height: 10,
+                        ListView(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: searchStatus.list.data("user").isNotEmpty
+                                  ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: searchStatus.list.data("user").map((i) {
+                                        return SearchInUserCard(
+                                          item: i,
+                                          onTap: () {
+                                            _onPenInUserDetail(i);
+                                          },
+                                        );
+                                      }).toList(),
+                                    )
+                                  : const EmptyWidget(),
+                            ),
+                          ],
                         ),
-                        searchStatus.historyList!.isNotEmpty
-                            ? Wrap(
-                                spacing: 10,
-                                runSpacing: 5,
-                                children: searchStatus.historyList!.map((i) {
-                                  return InputChip(
-                                    label: GestureDetector(
-                                      child: Wrap(
-                                        children: [
-                                          Text("${FlutterI18n.translate(context, "search.tabs.${i['type']}")}:\t"),
-                                          Text(i["keyword"]),
-                                        ],
-                                      ),
-                                      onTap: () {
-                                        _onPenByType(i);
-                                      },
-                                    ),
-                                    onDeleted: () {
-                                      _deleteSearchLog(i);
-                                    },
-                                  );
-                                }).toList(),
-                              )
-                            : const EmptyWidget(),
+                        ListView(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: searchStatus.list.data("comment").isNotEmpty
+                                  ? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: searchStatus.list.data("comment").map((i) {
+                                        return SearchCommentCard(
+                                          item: i,
+                                          onTap: () => _onPenInUserDetail(i),
+                                        );
+                                      }).toList(),
+                                    )
+                                  : const EmptyWidget(),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 15),
-                  ],
-                ),
-              )
-            : TabBarView(
-                controller: tabController,
-                children: [
-                  ListView(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        child: searchStatus.list.data("player").isNotEmpty
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: searchStatus.list.data("player").map((i) {
-                                  return CheatListCard(
-                                    item: i,
-                                    onTap: () => _onPenPlayerDetail(i),
-                                  );
-                                }).toList(),
-                              )
-                            : const EmptyWidget(),
-                      ),
-                    ],
-                  ),
-                  ListView(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        child: searchStatus.list.data("user").isNotEmpty
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: searchStatus.list.data("user").map((i) {
-                                  return SearchInUserCard(
-                                    item: i,
-                                    onTap: () {
-                                      _onPenInUserDetail(i);
-                                    },
-                                  );
-                                }).toList(),
-                              )
-                            : const EmptyWidget(),
-                      ),
-                    ],
-                  ),
-                  ListView(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(top: 10),
-                        child: searchStatus.list.data("comment").isNotEmpty
-                            ? Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: searchStatus.list.data("comment").map((i) {
-                                  return SearchCommentCard(
-                                    item: i,
-                                    onTap: () => _onPenInUserDetail(i),
-                                  );
-                                }).toList(),
-                              )
-                            : const EmptyWidget(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            ),
+          ],
+        ),
       ),
     );
   }

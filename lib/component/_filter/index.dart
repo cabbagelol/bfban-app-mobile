@@ -193,7 +193,7 @@ class FilterState extends State<Filter> {
 
   /// [Event]
   /// 主动更新
-  void updataFrom () {
+  void updataFrom() {
     _getData();
   }
 
@@ -213,10 +213,15 @@ class FilterState extends State<Filter> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: Container(
-              color: Theme.of(context).primaryColor.withOpacity(.2),
-              width: double.infinity,
-              height: double.infinity,
+            child: GestureDetector(
+              child: Container(
+                color: Theme.of(context).primaryColor.withOpacity(.2),
+                width: double.infinity,
+                height: double.infinity,
+              ),
+              onTap: () {
+                hidden();
+              },
             ),
           ),
         ),
@@ -257,8 +262,9 @@ class FilterState extends State<Filter> {
           ),
         ),
         // 内容面板
-        Visibility(
-          visible: _selectIndex != null,
+        AnimatedOpacity(
+          opacity: _selectIndex != null ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 150),
           child: Container(
             margin: EdgeInsets.only(top: selectHeight),
             constraints: BoxConstraints(
@@ -268,7 +274,7 @@ class FilterState extends State<Filter> {
             child: Column(
               children: [
                 // 内容卡槽
-                Expanded(
+                Flexible(
                   flex: 1,
                   child: Container(
                     color: Theme.of(context).scaffoldBackgroundColor,
@@ -279,29 +285,43 @@ class FilterState extends State<Filter> {
                         FilterItem item = filterItem[index];
 
                         item.panel ??= emptyFilter(
-                            child: Container(),
-                          );
+                          child: Container(),
+                        );
 
                         return item.panel!;
                       }).toList(),
                     ),
                   ),
                 ),
-
                 // 按钮组
-                widget.actions == null
-                    ? actionsFilterWidget(
-                        onChange: () {
-                          _getData();
-                          hidden();
-                        },
-                        onReset: () {
-                          widget.onReset!();
-                        },
-                      )
-                    : Row(
-                        children: widget.actions!,
+                Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                    border: Border(
+                      top: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                        width: 0.5,
                       ),
+                      bottom: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                        width: 0.5,
+                      ),
+                    ),
+                  ),
+                  child: widget.actions == null
+                      ? actionsFilterWidget(
+                    onChange: () {
+                      _getData();
+                      hidden();
+                    },
+                    onReset: () {
+                      widget.onReset!();
+                    },
+                  )
+                      : Row(
+                    children: widget.actions!,
+                  ),
+                )
               ],
             ),
           ),

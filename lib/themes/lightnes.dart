@@ -41,7 +41,7 @@ class LightnesTheme {
       ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),
-        selectionHandleColor: Color(0xff364e80),
+        selectionHandleColor: const Color(0xff364e80),
         cursorColor: Colors.black,
       ),
       unselectedWidgetColor: Colors.black,
@@ -140,6 +140,9 @@ class LightnesTheme {
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
         elevation: 0,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        )
       ),
       primaryColor: Colors.black,
       tabBarTheme: const TabBarTheme(
@@ -179,6 +182,20 @@ class LightnesTheme {
         headline4: TextStyle(color: Colors.black45),
         headline5: TextStyle(color: Colors.black26),
         headline6: TextStyle(color: Colors.black12),
+      ),
+      chipTheme: const ChipThemeData(
+        backgroundColor: Colors.white10,
+        secondarySelectedColor: Colors.black,
+        checkmarkColor: Colors.black,
+        iconTheme: IconThemeData(
+          color: Color(0xff364e80),
+        ),
+        secondaryLabelStyle: TextStyle(
+          color: Colors.black,
+        ),
+        labelStyle: TextStyle(
+          color: Colors.black,
+        ),
       ),
     ),
   );
