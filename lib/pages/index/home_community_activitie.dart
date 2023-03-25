@@ -33,15 +33,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     list: [],
   );
 
-  // 统计数据
-  Statistics statistics = Statistics(
-    data: {
-      "reports": 0,
-      "confirmed": 0,
-    },
-    params: {"reports": true, "players": true, "confirmed": true, "registers": true, "banappeals": true, "details": true, "from": 1514764800000},
-  );
-
   // 请求参
   Map<String, dynamic> playerParame = {};
 
@@ -52,7 +43,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   Map chipCont = {
     "list": [
       {"name": "report", "value": "report", "index": 0},
-      {"name":"appealBan", "value" :"appealBan", "index": 1},
+      {"name": "appealBan", "value": "appealBan", "index": 1},
       {"name": "register", "value": "register", "index": 2},
       {"name": "verify", "value": "verify", "index": 3},
       {"name": "judgement", "value": "judgement", "index": 4}
@@ -87,7 +78,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     });
 
     _getActivity();
-    _getStatisticsInfo();
 
     super.initState();
   }
@@ -97,16 +87,19 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
   @override
   void restoreState(RestorationBucket? oldBucket, bool? initialRestore) {
-    restorablebool.asMap().keys.forEach((index) {
+    restorablebool
+        .asMap()
+        .keys
+        .forEach((index) {
       registerForRestoration(restorablebool[index], index.toString());
     });
   }
 
   @override
   void dispose() {
-    restorablebool.forEach((element) {
+    for (var element in restorablebool) {
       element.dispose();
-    });
+    }
     super.dispose();
   }
 
@@ -150,32 +143,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     return true;
   }
 
-  /// [Response]
-  /// 获取统计数据
-  Future _getStatisticsInfo() async {
-    setState(() {
-      statistics.load = true;
-    });
-
-    Response result = await Http.request(
-      Config.httpHost["statistics"],
-      parame: statistics.params,
-      method: Http.GET,
-    );
-
-    if (result.data["success"] == 1 && result.data["data"] != null) {
-      setState(() {
-        statistics.data = result.data["data"];
-      });
-    }
-
-    setState(() {
-      statistics.load = false;
-    });
-
-    return true;
-  }
-
   /// [Event]
   /// 打开社区动态详情内容i
   /// 区分类型
@@ -189,7 +156,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   /// 下拉刷新方法,为list重新赋值
   Future<void> _onRefresh() async {
     await _getActivity();
-    await _getStatisticsInfo();
   }
 
   /// [Event]
@@ -201,18 +167,24 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     // 消息筛选
     List<Widget> chips() {
       // 筛选标签
       List chips = [];
 
-      chipCont["list"].asMap().keys.forEach((index) {
+      chipCont["list"]
+          .asMap()
+          .keys
+          .forEach((index) {
         chips.add(
           FilterChip(
             padding: EdgeInsets.zero,
             labelStyle: TextStyle(
               fontSize: 13,
-              color: Theme.of(context).primaryColor,
+              color: Theme
+                  .of(context)
+                  .primaryColor,
             ),
             label: Text(chipCont["list"][index]["name"].toString()),
             selected: restorablebool[index].value,
@@ -247,7 +219,10 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               height: 53.0,
-              color: Theme.of(context).primaryColorDark.withOpacity(.1),
+              color: Theme
+                  .of(context)
+                  .primaryColorDark
+                  .withOpacity(.1),
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -322,7 +297,12 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                       child: Icon(
                         iconTypes[i["type"]] ?? Icons.message_outlined,
                         size: 70,
-                        color: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.02),
+                        color: Theme
+                            .of(context)
+                            .textTheme
+                            .subtitle2!
+                            .color!
+                            .withOpacity(.02),
                       ),
                     ),
                   ],
@@ -349,24 +329,28 @@ class WidgetStateText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle textile = TextStyle(
-      color: Theme.of(context).primaryTextTheme.headline3!.color,
+      color: Theme
+          .of(context)
+          .primaryTextTheme
+          .headline3!
+          .color,
       fontSize: 14,
     );
 
     switch (itemData!["type"]) {
       case "report":
-        // 举报
+      // 举报
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [I18nText("home.activity.activities.report", child: Text("", style: textile)), I18nText("basic.games.${itemData!["game"]}", child: Text("", style: textile)), SizedBox(width: 5), Text(itemData!["toPlayerName"], style: textile)],
         );
       case "register":
-        // 注册
+      // 注册
         return I18nText("home.activity.activities.join", child: Text("", style: textile));
       case "verify":
       case "judgement":
-        // 处理
-        // 回复
+      // 处理
+      // 回复
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[

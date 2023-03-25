@@ -106,7 +106,7 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
                 controller: _scrollController,
                 itemCount: trendStatus.list.length,
                 itemBuilder: (BuildContext context, int index) {
-                  if (trendStatus.list!.isEmpty) {
+                  if (trendStatus.list.isEmpty) {
                     return const EmptyWidget();
                   }
 

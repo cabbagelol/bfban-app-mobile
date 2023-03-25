@@ -91,7 +91,7 @@ class DefaultTheme {
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
-          overlayColor: MaterialStateProperty.all(Colors.yellow),
+          overlayColor: MaterialStateProperty.all(const Color(0xff09121e)),
           mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,

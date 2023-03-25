@@ -106,9 +106,7 @@ class _MessagePageState extends State<MessageListPage> {
                   ),
                   leading: ExcludeSemantics(
                     child: CircleAvatar(
-                      child: Text(
-                          FlutterI18n.translate(context, i["haveRead"] == 0 ? "profile.chat.tabsList.form.unread" : "profile.chat.tabsList.form.read"),
-                      ),
+                      child: Icon(i["haveRead"] == 0 ? Icons.visibility : Icons.visibility_off),
                     ),
                   ),
                   subtitle: Text(
