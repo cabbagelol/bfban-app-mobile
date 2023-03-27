@@ -66,25 +66,27 @@ class CheatListCard extends StatelessWidget {
       ),
       subtitle: Wrap(
         children: [
-          Text(
-            Date().getTimestampTransferCharacter(item["createTime"])["Y_D_M"],
-            style: TextStyle(
-              color: Theme.of(context).textTheme.subtitle2!.color,
-              fontSize: 9,
+          if (item["createTime"] != null)
+            Text(
+              Date().getTimestampTransferCharacter(item["createTime"])["Y_D_M"],
+              style: TextStyle(
+                color: Theme.of(context).textTheme.subtitle2!.color,
+                fontSize: 9,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
           const SizedBox(width: 8),
-          Text(
-            Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
-            style: TextStyle(
-              color: Theme.of(context).textTheme.subtitle2!.color,
-              fontSize: 9,
+          if (item["updateTime"] != null)
+            Text(
+              Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
+              style: TextStyle(
+                color: Theme.of(context).textTheme.subtitle2!.color,
+                fontSize: 9,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
         ],
       ),
       trailing: Wrap(

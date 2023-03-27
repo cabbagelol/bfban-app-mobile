@@ -20,7 +20,8 @@
         "trend": "Hot case",
         "trace": "Trace",
         "tourRecord": "tour Record"
-      }
+      },
+      "paging": "{num} Page"
     },
     "splash": {
       "guide": "Initial boot",
@@ -29,7 +30,8 @@
       "message": "Update message",
       "version": "Versioning service",
       "theme": "Initialize topic",
-      "appInitial": "Initializes the program application"
+      "appInitial": "Initializes the program application",
+      "networkError": "The application is not connected to the network, and the program relies on online services"
     },
     "guide": {
       "next": "Next step",

@@ -95,7 +95,7 @@ class CheatReportsCard extends StatelessWidget {
                           ),
                           WidgetSpan(
                             child: CheatMethodsTagWidget(data: data["cheatMethods"]),
-                          )
+                          ),
                         ],
                       ),
                     ),

@@ -43,6 +43,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   bool isFirstScreen = true;
 
+  bool isHotRecommendationLoad = true;
+
   // 搜索参
   SearchStatus searchStatus = SearchStatus(
     load: false,
@@ -86,7 +88,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     searchTabs = [];
     for (var i in searchTabsType) {
       searchTabs.add({
-        "text": FlutterI18n.translate(context, "search.tabs." + i["text"]),
+        "text": FlutterI18n.translate(context, "search.tabs.${i["text"]}"),
         "icon": Icon(i["icon"]),
       });
     }
@@ -106,7 +108,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     setState(() {
       /// 序列化
       searchStatus.params.param = jsonDecode(widget.data)["id"];
-
       searchStatus.historyList = history;
     });
   }
@@ -164,9 +165,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   void _onSearch({isButtonClick = true}) async {
     if (searchStatus.load) return;
     if (isButtonClick && searchStatus.params.param.toString().isEmpty) {
-      // TODO add i18n
       EluiMessageComponent.error(context)(
-        child: Text(FlutterI18n.translate(context, "请检测内容")),
+        child: Text(FlutterI18n.translate(context, "signin.fillEverything")),
       );
       return;
     }
@@ -209,7 +209,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   /// [Response]
   /// 获取热门案件
-  Future<void> _getTrend() async {
+  Future _getTrend() async {
+    setState(() {
+      isHotRecommendationLoad = true;
+    });
+
     Response result = await Http.request(
       Config.httpHost["trend"],
       method: Http.GET,
@@ -220,6 +224,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         searchTrends = result.data["data"];
       });
     }
+
+    setState(() {
+      isHotRecommendationLoad = false;
+    });
   }
 
   /// [Event]
@@ -300,53 +308,44 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                flex: 1,
-                child: titleSearch(
-                  key: _titleSearchWidgetKey,
-                  controller: _searchController,
-                  theme: titleSearchTheme.white,
-                  onChanged: (String value) {
-                    setState(() {
-                      searchStatus.params.param = value;
-                    });
-                  },
-                  onSubmitted: () => _onSearch(isButtonClick: true),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 5),
-                child: TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
-                    backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
-                  ),
-                  onPressed: () => _onSearch(),
-                  child: AnimatedSwitcher(
-                    transitionBuilder: (child, anim) {
-                      return ScaleTransition(scale: anim, child: child);
-                    },
-                    duration: const Duration(milliseconds: 300),
-                    child: searchStatus.load
-                        ? ELuiLoadComponent(
-                            type: "line",
-                            color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
-                            size: 20,
-                            lineWidth: 2,
-                          )
-                        : Icon(
-                            Icons.search,
-                            color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
-                          ),
-                  ),
-                ),
-              ),
-            ],
+          titleSpacing: 0,
+          title: titleSearch(
+            key: _titleSearchWidgetKey,
+            controller: _searchController,
+            theme: titleSearchTheme.white,
+            onChanged: (String value) {
+              setState(() {
+                searchStatus.params.param = value;
+              });
+            },
+            onSubmitted: () => _onSearch(isButtonClick: true),
           ),
+          actions: [
+            TextButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
+                backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
+              ),
+              onPressed: () => _onSearch(),
+              child: AnimatedSwitcher(
+                transitionBuilder: (child, anim) {
+                  return ScaleTransition(scale: anim, child: child);
+                },
+                duration: const Duration(milliseconds: 300),
+                child: searchStatus.load
+                    ? ELuiLoadComponent(
+                        type: "line",
+                        color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
+                        size: 20,
+                        lineWidth: 2,
+                      )
+                    : Icon(
+                        Icons.search,
+                        color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
+                      ),
+              ),
+            ),
+          ],
         ),
         body: Column(
           children: [
@@ -361,6 +360,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 );
               }).toList(),
             ),
+            const Divider(height: 1),
             Expanded(
               flex: 1,
               child: isFirstScreen
@@ -369,46 +369,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                       child: ListView(
                         children: <Widget>[
                           const SizedBox(height: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Wrap(
-                                spacing: 10,
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: <Widget>[
-                                  const Icon(Icons.local_fire_department_rounded),
-                                  I18nText("app.search.hotRecommendation", child: const Text("", style: TextStyle())),
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              searchTrends.isNotEmpty
-                                  ? Wrap(
-                                      spacing: 10,
-                                      runSpacing: 10,
-                                      children: searchTrends.map((i) {
-                                        return InputChip(
-                                          label: Wrap(
-                                            crossAxisAlignment: WrapCrossAlignment.center,
-                                            children: [
-                                              const Icon(Icons.person, size: 16),
-                                              Text(i["originName"]),
-                                              const SizedBox(width: 5),
-                                              const Icon(Icons.local_fire_department_outlined, size: 16),
-                                              Text(i["hot"].toString()),
-                                            ],
-                                          ),
-                                          onSelected: (select) {
-                                            _onPenPlayerDetail(i);
-                                          },
-                                        );
-                                      }).toList(),
-                                    )
-                                  : const EmptyWidget(),
-                            ],
-                          ),
-                          const SizedBox(height: 30),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -446,20 +406,61 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                                 Text(i["keyword"]),
                                               ],
                                             ),
-                                            onTap: () {
-                                              _onPenByType(i);
-                                            },
+                                            onTap: () => _onPenByType(i),
                                           ),
-                                          onDeleted: () {
-                                            _deleteSearchLog(i);
-                                          },
+                                          onDeleted: () => _deleteSearchLog(i),
                                         );
                                       }).toList(),
                                     )
                                   : const EmptyWidget(),
                             ],
                           ),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Wrap(
+                                spacing: 10,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: <Widget>[
+                                  const Icon(Icons.local_fire_department_rounded),
+                                  I18nText("app.search.hotRecommendation", child: const Text("", style: TextStyle())),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              if (isHotRecommendationLoad)
+                                ELuiLoadComponent(
+                                  type: "line",
+                                  color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
+                                  size: 20,
+                                  lineWidth: 2,
+                                )
+                              else
+                                searchTrends.isNotEmpty
+                                    ? Wrap(
+                                        spacing: 10,
+                                        runSpacing: 10,
+                                        children: searchTrends.map((i) {
+                                          return InputChip(
+                                            label: Wrap(
+                                              crossAxisAlignment: WrapCrossAlignment.center,
+                                              children: [
+                                                const Icon(Icons.person, size: 16),
+                                                Text(i["originName"]),
+                                                const SizedBox(width: 5),
+                                                const Icon(Icons.local_fire_department_outlined, size: 16),
+                                                Text(i["hot"].toString()),
+                                              ],
+                                            ),
+                                            onSelected: (select) {
+                                              _onPenPlayerDetail(i);
+                                            },
+                                          );
+                                        }).toList(),
+                                      )
+                                    : const EmptyWidget(),
+                            ],
+                          ),
                         ],
                       ),
                     )

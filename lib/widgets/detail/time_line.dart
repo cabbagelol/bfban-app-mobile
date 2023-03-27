@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
@@ -23,8 +24,10 @@ class TimeLine extends StatefulWidget {
   State<TimeLine> createState() => TimeLineState();
 }
 
-class TimeLineState extends State<TimeLine> {
+class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   final UrlUtil _urlUtil = UrlUtil();
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   ScrollController scrollController = ScrollController();
 
@@ -42,8 +45,11 @@ class TimeLineState extends State<TimeLine> {
   );
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
-    playerTimelineStatus.parame!.personaId = widget.playerStatus.data["originPersonaId"];
+    playerTimelineStatus.parame!.personaId = widget.playerStatus.data.toMap["originPersonaId"];
 
     getTimeline();
 
@@ -54,6 +60,9 @@ class TimeLineState extends State<TimeLine> {
   /// 获取时间轴
   Future getTimeline() async {
     setState(() {
+      Future.delayed(const Duration(seconds: 0), () {
+        _refreshIndicatorKey.currentState!.show();
+      });
       playerTimelineStatus.load = true;
     });
 
@@ -80,42 +89,6 @@ class TimeLineState extends State<TimeLine> {
   }
 
   /// [Event]
-  /// 用户回复
-  dynamic setReply(num type) {
-    return () {
-      // 检查登录状态
-      if (!ProviderUtil().ofUser(context).checkLogin()) return;
-
-      String parameter = "";
-
-      switch (type) {
-        case 0:
-          // 回复
-          parameter = jsonEncode({
-            "type": type,
-            "toCommentId": null,
-            "toPlayerId": widget.playerStatus.data["id"],
-          });
-          break;
-        case 1:
-          // 回复楼层
-          parameter = jsonEncode({
-            "type": type,
-            "toCommentId": widget.playerStatus.data["id"],
-            "toPlayerId": widget.playerStatus.data["toPlayerId"],
-          });
-          break;
-      }
-
-      _urlUtil.opEnPage(context, "/reply/$parameter", transition: TransitionType.cupertinoFullScreenDialog).then((value) {
-        if (value != null) {
-          scrollController.jumpTo(scrollController.position.maxScrollExtent);
-        }
-      });
-    };
-  }
-
-  /// [Event]
   /// 评论内回复
   void _onReplySucceed(value) async {
     if (value == null) {
@@ -133,6 +106,8 @@ class TimeLineState extends State<TimeLine> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
+      key: _refreshIndicatorKey,
+      edgeOffset: MediaQuery.of(context).padding.top,
       onRefresh: _onRefreshTimeline,
       child: ListView.builder(
         controller: scrollController,
@@ -169,7 +144,7 @@ class TimeLineState extends State<TimeLine> {
                 ..index = index;
           }
 
-          return Container();
+          return const EmptyWidget();
         },
       ),
     );

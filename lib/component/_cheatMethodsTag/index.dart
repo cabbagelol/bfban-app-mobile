@@ -36,7 +36,7 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
           round: true,
           size: EluiTagSize.no2,
           theme: EluiTagTheme(
-            backgroundColor: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.2),
+            backgroundColor: Theme.of(context).cardColor,
             textColor: Theme.of(context).textTheme.subtitle1!.color!,
           ),
           value: "N/A",
@@ -48,7 +48,7 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
             color: EluiTagType.none,
             size: EluiTagSize.no2,
             theme: EluiTagTheme(
-              backgroundColor: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.2),
+              backgroundColor: Theme.of(context).cardColor,
               textColor: Theme.of(context).textTheme.subtitle1!.color!,
             ),
             value: FlutterI18n.translate(context, "cheatMethods.$i.title"),

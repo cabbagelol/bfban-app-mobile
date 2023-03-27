@@ -15,7 +15,7 @@ class GamesTagWidget extends StatefulWidget {
     GamesTagSizeConfig(
       height: 14,
       padding: const EdgeInsets.symmetric(
-        vertical: 4,
+        vertical: 2,
         horizontal: 7,
       ),
       border: 3,
@@ -96,8 +96,8 @@ class _GamesTagWidgetState extends State<GamesTagWidget> {
               widget.splitChar!
             else if (widget.splitChar == null && index < gameListWidgets.length)
               Container(
-                child: Text(","),
-                padding: EdgeInsets.symmetric(horizontal: 5),
+                child: const Text(","),
+                padding: const EdgeInsets.symmetric(horizontal: 5),
               ),
           ],
         );

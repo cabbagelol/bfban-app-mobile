@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/_cell/cell.dart';
@@ -18,12 +19,7 @@ class GuidePermissionPage extends StatefulWidget {
 }
 
 class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeepAliveClientMixin {
-  List<Permission> permissions = [
-    Permission.camera,
-    Permission.photos,
-    Permission.storage,
-    Permission.notification,
-  ];
+  List<Permission> permissions = [];
 
   @override
   bool get wantKeepAlive => true;
@@ -31,6 +27,23 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
   @override
   void initState() {
     super.initState();
+
+    switch (Platform.operatingSystem) {
+      case "ios":
+      case "macos":
+        permissions = [
+          Permission.notification,
+        ];
+        break;
+      case "android":
+        permissions = [
+          Permission.camera,
+          Permission.photos,
+          Permission.storage,
+          Permission.notification,
+        ];
+        break;
+    }
 
     _getQueryPermanentlyState();
   }
@@ -82,22 +95,27 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
             right: 20,
             top: 20,
           ),
-          child: Wrap(
-            spacing: 10,
-            children: <Widget>[
-              const Icon(
-                Icons.warning,
-                size: 16,
-                color: Colors.yellow,
-              ),
-              Text(
-                FlutterI18n.translate(context, "app.guide.permission.tip"),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.yellow,
+          child: Text.rich(
+            TextSpan(
+              children: [
+                const WidgetSpan(
+                  child: Icon(
+                    Icons.warning,
+                    size: 16,
+                    color: Colors.yellow,
+                  ),
                 ),
-              ),
-            ],
+                WidgetSpan(
+                  child: Text(
+                    FlutterI18n.translate(context, "app.guide.permission.tip"),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.yellow,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -136,7 +154,6 @@ class _PermissionState extends State<PermissionWidget> {
       "name": "app.guide.permission.list.2.name",
       "describe": "app.guide.permission.list.2.describe",
     },
-
     Permission.notification: {
       "name": "app.guide.permission.list.3.name",
       "describe": "app.guide.permission.list.3.describe",

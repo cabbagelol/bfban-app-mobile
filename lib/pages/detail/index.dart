@@ -45,8 +45,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   /// 作弊者参数
   PlayerStatus playerStatus = PlayerStatus(
-    data: {},
     load: true,
+    data: PlayerStatusData(),
     parame: PlayerParame(
       history: true,
       personaId: "",
@@ -78,6 +78,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   /// 举报记录
   Widget cheatersRecordWidgetList = Container();
+
+  Map subscribes = {
+    "load": false,
+    "isThisUserSubscribes": false,
+  };
 
   @override
   void initState() {
@@ -120,7 +125,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       final d = result.data["data"];
 
       setState(() {
-        playerStatus.data = d;
+        // playerStatus.data = d;
+        playerStatus.data.setData(d);
         viewedStatus.parame!.id = d["id"];
       });
 
@@ -135,7 +141,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       playerStatus.load = false;
     });
 
-    return playerStatus.data;
+    return playerStatus.data.toMap;
   }
 
   /// [Event]
@@ -160,7 +166,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     setState(() {
       viewed![id] = DateTime.now().millisecondsSinceEpoch.toString();
       storage.set("viewed", value: jsonEncode(viewed));
-      playerStatus.data["viewNum"] += 1;
+      playerStatus.data.viewNum = playerStatus.data.viewNum! + 1;
     });
   }
 
@@ -208,7 +214,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       return;
     }
 
-    if (playerStatus.data["originUserId"] == "" || playerStatus.data["originUserId"] == null) {
+    if (playerStatus.data.originUserId == "" || playerStatus.data.originUserId == null) {
       EluiMessageComponent.error(context)(
         child: const Text("无法识别ID"),
       );
@@ -229,7 +235,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     Response result = await Http.request(
       Config.httpHost["player_update"],
       data: {
-        "originUserId": playerStatus.data["originUserId"],
+        "originUserId": playerStatus.data.originUserId,
       },
       method: Http.POST,
     );
@@ -254,7 +260,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return null;
 
-      _urlUtil.opEnPage(context, '/report/${jsonEncode({"originName": playerStatus.data["originName"]})}', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
+      _urlUtil.opEnPage(context, '/report/${jsonEncode({"originName": playerStatus.data.originName})}', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
         if (value != null) {
           _getCheatersInfo();
           timeLineKey.currentState?.getTimeline();
@@ -271,7 +277,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data["id"]}").then((value) {
+      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data.id}").then((value) {
         if (value != null) {
           _getCheatersInfo();
           timeLineKey.currentState?.getTimeline();
@@ -287,8 +293,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (BuildContext context) {
         return PhotoViewSimpleScreen(
-          imageUrl: playerStatus.data["avatarLink"],
-          imageProvider: NetworkImage(playerStatus.data["avatarLink"]),
+          imageUrl: playerStatus.data.avatarLink,
+          imageProvider: NetworkImage(playerStatus.data.avatarLink as String),
           heroTag: 'simple',
         );
       },
@@ -358,15 +364,30 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   /// [Response]
   /// 追踪此玩家
-  void _onSubscribes() async {
+  void _onSubscribes(isLogin) async {
     List? subscribesLocal = await storage.get("subscribes");
     List? subscribesArray = [];
-    bool isSubscribes = false;
 
-    if (subscribesLocal == null) {
-      subscribesLocal = [];
+    subscribesLocal ??= [];
+
+    if (!isLogin) {
+      _urlUtil.opEnPage(context, "login/panel");
+      return;
     }
 
+    setState(() {
+      subscribes["load"] = true;
+    });
+
+    // 取得用户已追踪列表
+    Response userInfoResult = await Http.request(
+      Config.httpHost["user_me"],
+      method: Http.GET,
+    );
+    if (userInfoResult.data["success"] == 1) subscribesArray.addAll(userInfoResult.data["data"]["subscribes"]);
+
+    // 提交
+    subscribesArray.add(playerStatus.parame!.toMap["id"]);
     Response result = await Http.request(
       Config.httpHost["user_me"],
       data: {
@@ -378,6 +399,46 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     if (result.data["success"] == 1) {
       storage.set("subscribes", value: subscribesArray);
     }
+
+    setState(() {
+      subscribes["load"] = false;
+    });
+  }
+
+  /// [Event]
+  /// 用户回复
+  dynamic setReply(num type, {timelineItem}) {
+    return () {
+      // 检查登录状态
+      if (!ProviderUtil().ofUser(context).checkLogin()) return;
+
+      String parameter = "";
+
+      switch (type) {
+        case 0:
+          // 回复
+          parameter = jsonEncode({
+            "type": type,
+            "toCommentId": null,
+            "toPlayerId": playerStatus.data.id,
+          });
+          break;
+        case 1:
+          // 回复楼层
+          parameter = jsonEncode({
+            "type": type,
+            "toCommentId": playerStatus.data.id,
+            "toPlayerId": timelineItem["toPlayerId"],
+          });
+          break;
+      }
+
+      _urlUtil.opEnPage(context, "/reply/$parameter", transition: TransitionType.cupertinoFullScreenDialog).then((value) {
+        if (value != null) {
+          timeLineKey.currentState!.scrollController.jumpTo(timeLineKey.currentState!.scrollController.position.maxScrollExtent);
+        }
+      });
+    };
   }
 
   @override
@@ -390,20 +451,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(FlutterI18n.translate(context, "detail.info.timeLine")),
-            timeLineKey.currentState?.playerTimelineStatus.load ?? false
-                ? const SizedBox(
-                    width: 15,
-                    height: 15,
-                    child: CircularProgressIndicator(strokeWidth: 1),
-                  )
-                : EluiTagComponent(
-                    value: "${timeLineKey.currentState?.playerTimelineStatus.total ?? 0}",
-                    size: EluiTagSize.no2,
-                    theme: EluiTagTheme(
-                      textColor: _tabControllerIndex == 1 ? Colors.black : Theme.of(context).primaryColor,
-                      backgroundColor: _tabControllerIndex == 1 ? Theme.of(context).primaryColor : Colors.transparent,
-                    ),
-                  ),
           ],
         ),
       ),
@@ -428,9 +475,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                   ),
                 ),
                 title: TabBar(
-                  labelStyle: const TextStyle(fontSize: 15),
+                  labelStyle: const TextStyle(fontSize: 16),
                   controller: _tabController,
-                  labelPadding: const EdgeInsets.only(left: 0, right: 0),
                   tabs: cheatersTabs,
                 ),
                 elevation: 0,
@@ -448,323 +494,326 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
               /// 内容
               body: DefaultTabController(
                 length: cheatersTabs.length,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: TabBarView(
-                        controller: _tabController,
-                        children: <Widget>[
-                          RefreshIndicator(
-                            onRefresh: _onRefreshCheatersInfo,
-                            child: ListView(
-                              padding: EdgeInsets.zero,
-                              children: <Widget>[
-                                Stack(
-                                  alignment: AlignmentDirectional.topCenter,
-                                  children: [
-                                    Positioned(
-                                      child: Opacity(
-                                        opacity: .2,
-                                        child: SizedBox(
+                child: Consumer<UserInfoProvider>(
+                  builder: (BuildContext context, UserInfoProvider data, Widget? child) {
+                    return TabBarView(
+                      controller: _tabController,
+                      children: <Widget>[
+                        RefreshIndicator(
+                          onRefresh: _onRefreshCheatersInfo,
+                          child: ListView(
+                            padding: EdgeInsets.zero,
+                            children: <Widget>[
+                              Stack(
+                                alignment: AlignmentDirectional.topCenter,
+                                children: [
+                                  Positioned(
+                                    child: Opacity(
+                                      opacity: .2,
+                                      child: SizedBox(
+                                        width: 800,
+                                        height: 350,
+                                        child: EluiImgComponent(
+                                          src: snapshot.data.toString(),
                                           width: 800,
                                           height: 350,
-                                          child: EluiImgComponent(
-                                            src: snapshot.data.toString(),
-                                            width: 800,
-                                            height: 350,
-                                          ),
                                         ),
                                       ),
                                     ),
-                                    Positioned.fill(
-                                      child: BackdropFilter(
-                                        filter: ui.ImageFilter.blur(
-                                          sigmaX: 0,
-                                          sigmaY: 0,
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () => _onEnImgInfo(context),
-                                          child: Container(
-                                            margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
-                                            child: Center(
-                                              child: Card(
-                                                elevation: 0,
-                                                clipBehavior: Clip.antiAlias,
-                                                child: Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      top: 0,
-                                                      child: Image.network(snapshot.data!["avatarLink"].toString()),
-                                                    ),
-                                                    EluiImgComponent(
-                                                      src: snapshot.data!["avatarLink"],
-                                                      fit: BoxFit.contain,
-                                                      width: 150,
-                                                      height: 150,
-                                                    ),
-                                                    Positioned(
-                                                      right: 0,
-                                                      bottom: 0,
-                                                      child: Container(
-                                                        padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                                                        decoration: const BoxDecoration(
-                                                          gradient: LinearGradient(
-                                                            begin: Alignment.topLeft,
-                                                            end: Alignment.bottomRight,
-                                                            colors: [
-                                                              Colors.transparent,
-                                                              Colors.transparent,
-                                                              Colors.black87,
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        child: const Icon(
-                                                          Icons.search,
-                                                          color: Colors.white70,
-                                                          size: 30,
+                                  ),
+                                  Positioned.fill(
+                                    child: BackdropFilter(
+                                      filter: ui.ImageFilter.blur(
+                                        sigmaX: 0,
+                                        sigmaY: 0,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () => _onEnImgInfo(context),
+                                        child: Container(
+                                          margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
+                                          child: Center(
+                                            child: Card(
+                                              elevation: 0,
+                                              clipBehavior: Clip.antiAlias,
+                                              child: Stack(
+                                                children: [
+                                                  Positioned(
+                                                    top: 0,
+                                                    child: Image.network(snapshot.data!["avatarLink"].toString()),
+                                                  ),
+                                                  EluiImgComponent(
+                                                    src: snapshot.data!["avatarLink"],
+                                                    fit: BoxFit.contain,
+                                                    width: 150,
+                                                    height: 150,
+                                                  ),
+                                                  Positioned(
+                                                    right: 0,
+                                                    bottom: 0,
+                                                    child: Container(
+                                                      padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                                                      decoration: const BoxDecoration(
+                                                        gradient: LinearGradient(
+                                                          begin: Alignment.topLeft,
+                                                          end: Alignment.bottomRight,
+                                                          colors: [
+                                                            Colors.transparent,
+                                                            Colors.transparent,
+                                                            Colors.black87,
+                                                          ],
                                                         ),
                                                       ),
+                                                      child: const Icon(
+                                                        Icons.search,
+                                                        color: Colors.white70,
+                                                        size: 30,
+                                                      ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                  padding: const EdgeInsets.all(10),
-                                  child: Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                        flex: 1,
-                                        child: Row(
-                                          children: <Widget>[
-                                            /// 用户名称
-                                            Expanded(
-                                              flex: 1,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  SelectableText(
-                                                    snapshot.data?["originName"] ?? "User Name",
-                                                    onTap: () {
-                                                      Clipboard.setData(
-                                                        ClipboardData(
-                                                          text: snapshot.data!["originName"],
-                                                        ),
-                                                      );
-                                                    },
-                                                    style: const TextStyle(fontSize: 33),
-                                                    showCursor: true,
-                                                  ),
-                                                  const SizedBox(height: 2),
-                                                  EluiTagComponent(
-                                                    size: EluiTagSize.no2,
-                                                    color: EluiTagType.primary,
-                                                    value: FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}"),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            OutlinedButton(
-                                              onPressed: () {
-                                                _onSubscribes();
-                                              },
-                                              child: Icon(Icons.notifications),
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       ),
-                                    ],
+                                    ),
                                   ),
+                                ],
+                              ),
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 1,
+                                      child: Row(
+                                        children: <Widget>[
+                                          /// 用户名称
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                SelectableText(
+                                                  snapshot.data?["originName"] ?? "User Name",
+                                                  onTap: () {
+                                                    Clipboard.setData(
+                                                      ClipboardData(
+                                                        text: snapshot.data!["originName"],
+                                                      ),
+                                                    );
+                                                  },
+                                                  style: const TextStyle(fontSize: 33),
+                                                  showCursor: true,
+                                                ),
+                                                const SizedBox(height: 2),
+                                                EluiTagComponent(
+                                                  color: EluiTagType.none,
+                                                  size: EluiTagSize.no2,
+                                                  theme: EluiTagTheme(
+                                                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                                                  ),
+                                                  value: FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}"),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          OutlinedButton(
+                                            onPressed: () => _onSubscribes(data.isLogin),
+                                            child: subscribes["load"]
+                                                ? ELuiLoadComponent(
+                                                    type: "line",
+                                                    lineWidth: 1,
+                                                    color: Theme.of(context).textTheme.subtitle1!.color!,
+                                                    size: 16,
+                                                  )
+                                                : const Icon(Icons.notifications),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                              ),
 
-                                // Player Attr
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                  child: Wrap(
-                                    spacing: 40,
-                                    runSpacing: 25,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.firstReportTime"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
+                              // Player Attr
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                child: Wrap(
+                                  spacing: 40,
+                                  runSpacing: 25,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "detail.info.firstReportTime"),
+                                            style: const TextStyle(fontSize: 20),
                                           ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            Date().getFriendlyDescriptionTime(snapshot.data!["createTime"]),
-                                            style: const TextStyle(fontSize: 18),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.recentUpdateTime"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            snapshot.data != null ? Date().getFriendlyDescriptionTime(snapshot.data!["updateTime"]) : "",
-                                            style: const TextStyle(fontSize: 18),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.viewTimes"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "${snapshot.data!["viewNum"]}",
-                                            style: const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "basic.button.reply"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "${snapshot.data["commentsNum"]}",
-                                            style: const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "report.labels.game"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          GamesTagWidget(
-                                            data: snapshot.data["games"],
-                                            size: GamesTagSize.no2,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "signup.form.originId"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          const Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              "ID",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text("${snapshot.data?["id"]}", style: const TextStyle(fontSize: 18))
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-
-                                Consumer<UserInfoProvider>(
-                                  builder: (context, data, child) {
-                                    return Container(
-                                      padding: const EdgeInsets.only(
-                                        left: 10,
-                                        right: 10,
-                                        top: 20,
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: TextButton.icon(
-                                          icon: const Icon(
-                                            Icons.refresh,
-                                            size: 25,
-                                          ),
-                                          label: const Text(""),
-                                          onPressed: () => _seUpdateUserNameList(data.isLogin),
                                         ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          Date().getFriendlyDescriptionTime(snapshot.data!["createTime"]),
+                                          style: const TextStyle(fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "detail.info.recentUpdateTime"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          snapshot.data != null ? Date().getFriendlyDescriptionTime(snapshot.data!["updateTime"]) : "",
+                                          style: const TextStyle(fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "detail.info.viewTimes"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          "${snapshot.data!["viewNum"]}",
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "basic.button.reply"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          "${snapshot.data["commentsNum"]}",
+                                          style: const TextStyle(fontSize: 18),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "report.labels.game"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        GamesTagWidget(
+                                          data: snapshot.data["games"],
+                                          size: GamesTagSize.no2,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "signup.form.originId"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        const Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            "ID",
+                                            style: TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text("${snapshot.data?["id"]}", style: const TextStyle(fontSize: 18))
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              Consumer<UserInfoProvider>(
+                                builder: (context, data, child) {
+                                  return Container(
+                                    padding: const EdgeInsets.only(
+                                      left: 10,
+                                      right: 10,
+                                      top: 20,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: TextButton.icon(
+                                        icon: const Icon(
+                                          Icons.refresh,
+                                          size: 25,
+                                        ),
+                                        label: const Text(""),
+                                        onPressed: () => _seUpdateUserNameList(data.isLogin),
                                       ),
-                                    );
-                                  },
-                                ),
+                                    ),
+                                  );
+                                },
+                              ),
 
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                    left: 10,
-                                    right: 10,
-                                    bottom: 10,
-                                  ),
-                                  margin: const EdgeInsets.only(
-                                    top: 10,
-                                  ),
-                                  child: userNameList['listLoad']
-                                      ? EluiVacancyComponent(
-                                          title: "-",
-                                        )
-                                      : _updateUserName(context, snapshot.data),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 10,
+                                  right: 10,
+                                  bottom: 10,
                                 ),
-                              ],
-                            ),
+                                margin: const EdgeInsets.only(
+                                  top: 10,
+                                ),
+                                child: userNameList['listLoad']
+                                    ? EluiVacancyComponent(
+                                        title: "-",
+                                      )
+                                    : _updateUserName(context, snapshot.data),
+                              ),
+                            ],
                           ),
-                          TimeLine(
-                            key: timeLineKey,
-                            playerStatus: playerStatus,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    /// E 主体框架
-                  ],
+                        ),
+                        TimeLine(
+                          key: timeLineKey,
+                          playerStatus: playerStatus,
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
 
@@ -810,7 +859,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                             Expanded(
                               flex: 1,
                               child: TextButton(
-                                onPressed: timeLineKey.currentState?.setReply(0),
+                                onPressed: setReply(0),
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   spacing: 10,

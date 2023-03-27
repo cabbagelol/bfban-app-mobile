@@ -37,7 +37,7 @@ class CardUtil {
             child: Text.rich(
               TextSpan(
                 children: [
-                  const WidgetSpan(child: Icon(Icons.insert_link,size: 15)),
+                  const WidgetSpan(child: Icon(Icons.insert_link, size: 15)),
                   TextSpan(text: context.tree.element!.text, style: TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.dashed)),
                 ],
               ),
@@ -56,6 +56,7 @@ class CardUtil {
                     imageUrl: "${context.tree.element!.attributes['src']}",
                     width: double.infinity,
                     fit: BoxFit.cover,
+                    placeholderFadeInDuration: const Duration(seconds: 0),
                     placeholder: (BuildContext buildContext, String url) {
                       return Card(
                         margin: EdgeInsets.zero,

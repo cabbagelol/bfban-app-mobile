@@ -130,8 +130,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     setState(() {
       loadTip = "app.splash.appInitial";
     });
-    await ProviderUtil().ofApp(context).conf!.init();
-
+    await ProviderUtil().ofApp(context)
+      ..conf!.init()
+      ..connectivity.init();
     return true;
   }
 
@@ -165,6 +166,15 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     dynamic guide = await storage.get(guideName);
 
     if (guide == null) {
+
+      // if (ProviderUtil().ofApp(context).connectivity.isConnectivity() == true) {
+      //   EluiMessageComponent.error(context)(
+      //     child: Text(FlutterI18n.translate(context, "app.splash.networkError")),
+      //     time: 100000,
+      //   );
+      //   return false;
+      // }
+
       _urlUtil.opEnPage(context, "/guide", transition: TransitionType.fadeIn).then((value) async {
         onMain();
         await storage.set(guideName, value: 1);
@@ -232,64 +242,82 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
-      child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              child: Container(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AnimatedScale(
-                      scale: _size,
-                      curve: Curves.easeOutBack,
-                      duration: const Duration(milliseconds: 300),
-                      child: const CircleAvatar(
-                        radius: 30,
-                        backgroundImage: AssetImage("assets/splash/splash_center_logo.png"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Text(
-              FlutterI18n.translate(context, loadTip.toString()),
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                // fontSize: FontSize.rem(.8).size,
-                color: Theme.of(context).textTheme.subtitle2!.color,
-              ),
-            ),
-            const SizedBox(height: 10),
-            LinearProgressIndicator(
-              minHeight: 1,
-              color: Theme.of(context).textTheme.subtitle2!.color,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 38),
-              color: Theme.of(context).backgroundColor,
-              child: Center(
-                child: Consumer<PackageProvider>(
-                  builder: (BuildContext context, data, child) {
-                    return Column(
+      child: Consumer<AppInfoProvider>(
+        builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
+          return Scaffold(
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        AnimatedOpacity(
-                          opacity: data.package!.appName!.toString().isEmpty ? 0 : 1,
+                        AnimatedScale(
+                          scale: _size,
+                          curve: Curves.easeOutBack,
                           duration: const Duration(milliseconds: 300),
-                          child: Text(data.package!.appName.toString()),
+                          child: const CircleAvatar(
+                            radius: 30,
+                            backgroundImage: AssetImage("assets/splash/splash_center_logo.png"),
+                          ),
                         ),
                       ],
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  children: [
+                    Text(
+                      FlutterI18n.translate(context, loadTip.toString()),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        // fontSize: FontSize.rem(.8).size,
+                        color: Theme.of(context).textTheme.subtitle2!.color,
+                      ),
+                    ),
+                    if (appInfo.connectivity.isConnectivity())
+                      Wrap(
+                        runAlignment: WrapAlignment.center,
+                        children: const [
+                          SizedBox(width: 10),
+                          Icon(Icons.error, size: 18),
+                          Icon(Icons.network_locked, size: 18),
+                        ],
+                      )
+                  ],
+                ),
+                const SizedBox(height: 10),
+                LinearProgressIndicator(
+                  minHeight: 1,
+                  color: Theme.of(context).textTheme.subtitle2!.color,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 38),
+                  color: Theme.of(context).backgroundColor,
+                  child: Center(
+                    child: Consumer<PackageProvider>(
+                      builder: (BuildContext context, data, child) {
+                        return Column(
+                          children: [
+                            AnimatedOpacity(
+                              opacity: data.package!.appName!.toString().isEmpty ? 0 : 1,
+                              duration: const Duration(milliseconds: 300),
+                              child: Text(data.package!.appName.toString()),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

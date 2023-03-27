@@ -49,7 +49,7 @@ abstract class PlayerBaseData {
 
 /// 玩家数据管理
 class PlayerStatus {
-  late Map data;
+  late PlayerStatusData data;
   late bool load;
   late PlayerParame? parame;
 
@@ -58,6 +58,49 @@ class PlayerStatus {
     this.load = false,
     this.parame,
   });
+}
+
+class PlayerStatusData extends PlayerBaseData {
+  late List? history;
+
+  PlayerStatusData({
+    this.history,
+  });
+
+  Map setData(Map i) {
+    id = i["id"];
+    history = i["history"];
+    originName = i["originName"];
+    originUserId = i["originUserId"];
+    originPersonaId = i["originPersonaId"];
+    games = i["games"];
+    cheatMethods = i["cheatMethods"];
+    avatarLink = i["avatarLink"];
+    viewNum = i["viewNum"];
+    commentsNum = i["commentsNum"];
+    status = i["status"];
+    createTime = i["createTime"];
+    updateTime = i["updateTime"];
+    return toMap;
+  }
+
+  get toMap {
+    return {
+      "id": id,
+      "history": history,
+      "originName": originName,
+      "originUserId": originUserId,
+      "originPersonaId": originPersonaId,
+      "games": games,
+      "cheatMethods": cheatMethods,
+      "avatarLink": avatarLink,
+      "viewNum": viewNum,
+      "commentsNum": commentsNum,
+      "status": status,
+      "createTime": createTime,
+      "updateTime": updateTime,
+    };
+  }
 }
 
 /// 玩家请求参数
@@ -70,10 +113,12 @@ class PlayerParame {
     this.personaId = "",
   });
 
-  get toMap => {
-        "history": history,
-        "personaId": personaId,
-      };
+  get toMap {
+    return {
+      "history": history,
+      "personaId": personaId,
+    };
+  }
 }
 
 /// 作弊玩家列表 Players

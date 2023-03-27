@@ -2,6 +2,7 @@
 
 import 'dart:core';
 
+import 'package:bfban/component/_gamesTag/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/data/index.dart';
@@ -87,10 +88,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
   @override
   void restoreState(RestorationBucket? oldBucket, bool? initialRestore) {
-    restorablebool
-        .asMap()
-        .keys
-        .forEach((index) {
+    restorablebool.asMap().keys.forEach((index) {
       registerForRestoration(restorablebool[index], index.toString());
     });
   }
@@ -173,18 +171,13 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
       // 筛选标签
       List chips = [];
 
-      chipCont["list"]
-          .asMap()
-          .keys
-          .forEach((index) {
+      chipCont["list"].asMap().keys.forEach((index) {
         chips.add(
           FilterChip(
             padding: EdgeInsets.zero,
             labelStyle: TextStyle(
               fontSize: 13,
-              color: Theme
-                  .of(context)
-                  .primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
             label: Text(chipCont["list"][index]["name"].toString()),
             selected: restorablebool[index].value,
@@ -219,10 +212,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
               height: 53.0,
-              color: Theme
-                  .of(context)
-                  .primaryColorDark
-                  .withOpacity(.1),
+              color: Theme.of(context).primaryColorDark.withOpacity(.1),
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -297,12 +287,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                       child: Icon(
                         iconTypes[i["type"]] ?? Icons.message_outlined,
                         size: 70,
-                        color: Theme
-                            .of(context)
-                            .textTheme
-                            .subtitle2!
-                            .color!
-                            .withOpacity(.02),
+                        color: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.02),
                       ),
                     ),
                   ],
@@ -329,34 +314,37 @@ class WidgetStateText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle textile = TextStyle(
-      color: Theme
-          .of(context)
-          .primaryTextTheme
-          .headline3!
-          .color,
+      color: Theme.of(context).primaryTextTheme.headline3!.color,
       fontSize: 14,
     );
 
     switch (itemData!["type"]) {
       case "report":
-      // 举报
+        // 举报
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
-          children: [I18nText("home.activity.activities.report", child: Text("", style: textile)), I18nText("basic.games.${itemData!["game"]}", child: Text("", style: textile)), SizedBox(width: 5), Text(itemData!["toPlayerName"], style: textile)],
+          children: [
+            Text("${FlutterI18n.translate(context, "home.activity.activities.report")}\t", style: textile),
+            GamesTagWidget(
+              data: itemData!["game"],
+            ),
+            const SizedBox(width: 5),
+            Text(itemData!["toPlayerName"], style: textile),
+          ],
         );
       case "register":
-      // 注册
-        return I18nText("home.activity.activities.join", child: Text("", style: textile));
+        // 注册
+        return Text("${FlutterI18n.translate(context, "home.activity.activities.join")}\t", style: textile);
       case "verify":
       case "judgement":
-      // 处理
-      // 回复
+        // 处理
+        // 回复
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
-            I18nText("detail.info.judge", child: Text("", style: textile)),
+            Text("${FlutterI18n.translate(context, "detail.info.judge")}\t", style: textile),
             Text("${itemData!["toPlayerName"]}", style: textile),
-            I18nText("basic.action.${itemData!["action"]}.text", child: Text("", style: textile)),
+            Text(FlutterI18n.translate(context, "basic.action.${itemData!["action"]}.text"), style: textile),
           ],
         );
     }

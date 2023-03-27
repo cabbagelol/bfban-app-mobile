@@ -152,7 +152,7 @@ class PackageProvider with ChangeNotifier {
     package!.loadOnline = true;
     notifyListeners();
     Response result = await Http.request(
-      "json/version.json",
+      "config/version.json",
       typeUrl: "app_web_site",
       method: Http.GET,
     );

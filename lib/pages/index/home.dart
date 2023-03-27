@@ -141,7 +141,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 child: Column(
                   children: [
                     TabBar(
-                      automaticIndicatorColorAdjustment: true,
+                      isScrollable: false,
+                      automaticIndicatorColorAdjustment: false,
                       controller: tabController,
                       tabs: homeTabs.map((e) {
                         return Tab(

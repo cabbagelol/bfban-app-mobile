@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/api.dart';
 import '../../provider/userinfo_provider.dart';
@@ -82,6 +83,24 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
     };
   }
 
+  /// [Event]
+  /// 打开支援连接
+  void _openSupport() {
+    _urlUtil.onPeUrl(
+      "https://support.qq.com/products/64038",
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  /// [Event]
+  /// 打开Apps连接
+  void _openApps() {
+    _urlUtil.onPeUrl(
+      "${Config.apiHost["web_site"]}/apps",
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(
@@ -105,15 +124,21 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Flexible(
+                    SizedBox(
+                      width: 100,
                       child: Column(
                         children: <Widget>[
                           statistics.load
-                              ? ELuiLoadComponent(
-                                  type: "line",
-                                  lineWidth: 1,
-                                  color: Theme.of(context).textTheme.subtitle1!.color!,
-                                  size: 18,
+                              ? Column(
+                                  children: [
+                                    ELuiLoadComponent(
+                                      type: "line",
+                                      lineWidth: 1,
+                                      color: Theme.of(context).textTheme.subtitle1!.color!,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(height: 5),
+                                  ],
                                 )
                               : Text(
                                   statistics.data!.reports.toString(),
@@ -122,17 +147,19 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                          I18nText("home.cover.dataReceived",
-                              child: Text(
-                                "0",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).textTheme.subtitle2!.color,
-                                ),
-                              ))
+                          I18nText(
+                            "home.cover.dataReceived",
+                            child: Text(
+                              "0",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.subtitle2!.color,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          )
                         ],
                       ),
-                      flex: 1,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
@@ -143,7 +170,8 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       width: 1,
                       color: Theme.of(context).dividerColor,
                     ),
-                    Flexible(
+                    SizedBox(
+                      width: 100,
                       child: Column(
                         children: <Widget>[
                           statistics.load
@@ -160,17 +188,18 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                          I18nText("home.cover.confirmData",
-                              child: Text(
-                                "",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).textTheme.subtitle2!.color,
-                                ),
-                              ))
+                          I18nText(
+                            "home.cover.confirmData",
+                            child: Text(
+                              "",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.subtitle2!.color,
+                              ),
+                            ),
+                          )
                         ],
                       ),
-                      flex: 1,
                     ),
                     Container(
                       margin: const EdgeInsets.only(
@@ -185,9 +214,9 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       flex: 1,
                       child: Opacity(
                         opacity: data.isLogin ? 1 : .3,
-                        child: TextButton(
+                        child: IconButton(
+                          icon: const Icon(Icons.add),
                           onPressed: data.isLogin ? _openReply() : null,
-                          child: const Icon(Icons.add),
                         ),
                       ),
                     ),
@@ -252,9 +281,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                               Text("应用中心")
                             ],
                           ),
-                          onPressed: () {
-                            _urlUtil.onPeUrl("${Config.apiHost["web_site"]}/apps");
-                          },
+                          onPressed: () => _openApps(),
                         ),
                         TextButton(
                           child: Column(
@@ -266,9 +293,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                               Text("论坛")
                             ],
                           ),
-                          onPressed: () {
-                            _urlUtil.onPeUrl("https://support.qq.com/products/64038");
-                          },
+                          onPressed: () => _openSupport(),
                         ),
                       ],
                     ),

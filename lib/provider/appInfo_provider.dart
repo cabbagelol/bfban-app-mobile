@@ -1,14 +1,41 @@
 /// 全局状态管理
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../constants/api.dart';
 import '../utils/http.dart';
 
 class AppInfoProvider with ChangeNotifier {
   NetwrokConf? conf = NetwrokConf();
+  AppInfoNetwrokStatus connectivity = AppInfoNetwrokStatus();
+}
+
+class AppInfoNetwrokStatus with ChangeNotifier {
+  var _connectivity;
+
+  init() {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      _connectivity = result;
+      print(result);
+      notifyListeners();
+    });
+  }
+
+  get CurrentAppNetwrok => _connectivity;
+
+  /// ConnectivityResult.none
+  /// 获取连接的网络类型
+  Future<ConnectivityResult> getConnectivity() async {
+    notifyListeners();
+    return _connectivity;
+  }
+
+  /// 是否已连接有效网络
+  bool isConnectivity() {
+    if (_connectivity == null) return true;
+    notifyListeners();
+    return !(_connectivity != ConnectivityResult.none);
+  }
 }
 
 class NetwrokConf with ChangeNotifier {
@@ -27,11 +54,9 @@ class NetwrokConf with ChangeNotifier {
   /// [Event]
   /// 初始化
   Future init() async {
-    await getConf("gameName");
-    await getConf("privilege");
-    await getConf("cheatMethodsGlossary");
-    await getConf("cheaterStatus");
-    await getConf("action");
+    for (int index = 0; index < data.confList!.length; index++) {
+      await getConf(data.confList![index]);
+    }
 
     // 更新类
     Config.game = data.gameName!;
@@ -48,7 +73,7 @@ class NetwrokConf with ChangeNotifier {
   /// 请求获取
   Future getConf(String fileName) async {
     Response result = await Http.request(
-      "conf/$fileName.json",
+      "config/$fileName.json",
       typeUrl: "web_site",
       method: Http.GET,
     );

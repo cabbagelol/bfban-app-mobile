@@ -34,7 +34,8 @@
       "message": "更新消息",
       "version": "验证版本服务",
       "theme": "初始化主题",
-      "appInitial": "初始化程序应用"
+      "appInitial": "初始化程序应用",
+      "networkError": "应用未连接网络，程序依赖在线服务"
     },
     "guide": {
       "endNext": "完成",

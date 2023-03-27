@@ -96,6 +96,25 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
         elevation: 0,
         title: Text(widget.imageUrl!.toString()),
         centerTitle: true,
+        actions: [
+          saveImgLoad
+              ? const ELuiLoadComponent(
+                  type: "line",
+                  lineWidth: 2,
+                  size: 25,
+                  color: Colors.white,
+                )
+              : IconButton(
+                  icon: const Icon(
+                    Icons.file_download,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                  onPressed: () {
+                    onSave(context, widget.imageUrl);
+                  },
+                ),
+        ],
       ),
       body: Stack(
         children: [
@@ -114,44 +133,6 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
               maxScale: widget.maxScale,
               heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag!),
               enableRotation: true,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Card(
-              child: SizedBox(
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        saveImgLoad
-                            ? const ELuiLoadComponent(
-                                type: "line",
-                                lineWidth: 2,
-                                size: 25,
-                                color: Colors.white,
-                              )
-                            : IconButton(
-                                icon: const Icon(
-                                  Icons.file_download,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                                onPressed: () {
-                                  onSave(context, widget.imageUrl);
-                                },
-                              ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
             ),
           ),
         ],

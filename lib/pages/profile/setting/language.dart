@@ -49,7 +49,7 @@ class _LanguagePageState extends State<LanguagePage> {
     });
 
     Response result = await Http.request(
-      "conf/languages.json",
+      "config/languages.json",
       typeUrl: "app_web_site",
       method: Http.GET,
     );
