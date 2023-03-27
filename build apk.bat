@@ -1,1 +1,1 @@
-flutter build apk --release
+flutter build apk ./lib/main.prod.dart --release --obfuscate --split-debug-info=build/debug_info

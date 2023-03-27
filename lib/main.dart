@@ -85,12 +85,14 @@ class _BfBanAppState extends State<BfBanApp> {
           return Consumer<LangProvider>(
             builder: (BuildContext? context, langData, Widget? child) {
               return MaterialApp(
+                debugShowCheckedModeBanner: false,
                 theme: themeData.currentThemeData,
                 darkTheme: themeData.list!["default"]!.themeData!,
                 initialRoute: '/splash',
                 localizationsDelegates: [
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
                   FlutterI18nDelegate(
                     translationLoader: CustomTranslationLoader(
                       namespaces: ["app"],

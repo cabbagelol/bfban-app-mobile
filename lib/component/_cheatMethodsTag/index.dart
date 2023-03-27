@@ -42,15 +42,18 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
           value: "N/A",
         )
       ] : methods.map<Widget>((i) {
-        return EluiTagComponent(
-          color: EluiTagType.none,
-          round: true,
-          size: EluiTagSize.no2,
-          theme: EluiTagTheme(
-            backgroundColor: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.2),
-            textColor: Theme.of(context).textTheme.subtitle1!.color!,
+        return Tooltip(
+          message: FlutterI18n.translate(context, "cheatMethods.$i.describe"),
+          child: EluiTagComponent(
+            color: EluiTagType.none,
+            size: EluiTagSize.no2,
+            theme: EluiTagTheme(
+              backgroundColor: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.2),
+              textColor: Theme.of(context).textTheme.subtitle1!.color!,
+            ),
+            value: FlutterI18n.translate(context, "cheatMethods.$i.title"),
+            onTap: () {},
           ),
-          value: FlutterI18n.translate(context, "cheatMethods.$i.title"),
         );
       }).toList(),
     );

@@ -19,10 +19,10 @@ class FilterItem {
 /// 面板返回数据
 class FilterPanelData {
   dynamic value;
-  String? name;
+  String name;
 
   FilterPanelData({
-    this.value,
-    this.name,
+    required this.value,
+    required this.name,
   });
 }

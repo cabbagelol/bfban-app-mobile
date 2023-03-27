@@ -1,7 +1,6 @@
 /// 筛选 游戏类型选择面板
 
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -20,28 +19,33 @@ class GameNameFilterPanel extends FilterPanelWidget {
 
 class GameNameFilterPanelState extends State<GameNameFilterPanel> {
   /// 游戏类型
-  List gameList = [{"value": "all",},];
+  List gameList = [
+    {"value": "all"}
+  ];
 
   @override
   void initState() {
     super.initState();
 
-    if (!widget.isInit) {
+    if (widget.isInit == null || widget.data == null) {
       widget.data = FilterPanelData(
         value: "all",
         name: "game",
       );
     }
 
-    gameList.addAll(Config.game["child"]);
-
-    widget.isInit = true;
+    setState(() {
+      gameList.addAll(Config.game["child"]);
+      widget.isInit = true;
+    });
   }
 
   /// [Event]
   /// 更新数据
-  upData () {
-    gameList = [];
+  upData() {
+    gameList = [
+      {"value": "all"}
+    ];
     setState(() {
       gameList.addAll(Config.game["child"]);
     });
@@ -64,24 +68,30 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
             Map i = gameList[index];
 
             return GestureDetector(
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                decoration: BoxDecoration(
-                  color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
-                  image: i["app_assets_bk_file"] == null
-                      ? null
-                      : DecorationImage(
-                          opacity: .06,
-                          fit: BoxFit.cover,
-                          image: AssetImage(i["app_assets_bk_file"]),
-                        ),
-                ),
-                child: Center(
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      i["value"] == "all"
-                          ? Center(
+              child: Column(
+                children: [
+                  Container(
+                    height: 1,
+                    color: Theme.of(context).dividerColor.withOpacity(.06),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    decoration: BoxDecoration(
+                      color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
+                      image: i["app_assets_bk_file"] == null
+                          ? null
+                          : DecorationImage(
+                              opacity: .06,
+                              fit: BoxFit.cover,
+                              image: AssetImage(i["app_assets_bk_file"]),
+                            ),
+                    ),
+                    child: Center(
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          if (i["value"] == "all")
+                            Center(
                               child: Text(
                                 FlutterI18n.translate(context, "basic.games.all"),
                                 style: TextStyle(
@@ -89,20 +99,26 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                                 ),
                               ),
                             )
-                          : Image.asset(
+                          else
+                            Image.asset(
                               i["app_assets_logo_file"],
                               height: 30,
                             ),
-                      const SizedBox(width: 10),
-                      Visibility(
-                        visible: i["num"] != null,
-                        child: Chip(
-                          label: Text(i["num"].toString()),
-                        ),
+                          const SizedBox(width: 10),
+                          Visibility(
+                            visible: i["num"] != null,
+                            child: Chip(
+                              elevation: 0,
+                              labelStyle: const TextStyle(fontSize: 12),
+                              label: Text(i["num"].toString()),
+                              labelPadding: EdgeInsets.zero,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
               onTap: () => _setIndex(index),
             );

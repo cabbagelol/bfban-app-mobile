@@ -390,7 +390,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     height: 30,
                     child: Center(
                       child: Text(
-                        "第${playersStatus!.list![index]["pageIndex"]}页",
+                        FlutterI18n.translate(context, "app.home.paging", translationParams: {
+                          "num": "${playersStatus!.list![index]["pageIndex"]}"
+                        }),
                         style: TextStyle(
                           fontSize: 12,
                           color: Theme.of(context).textTheme.subtitle2?.color,

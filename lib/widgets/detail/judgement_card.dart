@@ -67,6 +67,7 @@ class JudgementCard extends StatelessWidget {
                               textColor: Theme.of(context).textTheme.subtitle1!.color!,
                             ),
                             value: FlutterI18n.translate(context, "basic.action.${data["judgeAction"]}.text"),
+                            onTap: () {},
                           ),
                         ),
                         TextSpan(
@@ -81,6 +82,7 @@ class JudgementCard extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 5),
               Text(
                 "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
                 style: TextStyle(

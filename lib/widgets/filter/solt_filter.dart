@@ -51,20 +51,28 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
         Map i = soltList[index];
 
         return GestureDetector(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
-            child: Center(
-              child: Center(
-                child: Text(
-                  FlutterI18n.translate(context, "list.filters.sortBy.${i["value"]}"),
-                  style: TextStyle(
-                    color: widget.data!.value == i["value"] ? Theme.of(context).textTheme.bodyText1!.color : Theme.of(context).textTheme.subtitle2!.color,
-                    fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
+          child: Column(
+            children: [
+              Container(
+                height: 1,
+                color: Theme.of(context).dividerColor.withOpacity(.06),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
+                child: Center(
+                  child: Center(
+                    child: Text(
+                      FlutterI18n.translate(context, "list.filters.sortBy.${i["value"]}"),
+                      style: TextStyle(
+                        color: widget.data!.value == i["value"] ? Theme.of(context).textTheme.bodyText1!.color : Theme.of(context).textTheme.subtitle2!.color,
+                        fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+              )
+            ],
           ),
           onTap: () => _setIndex(index),
         );

@@ -3,6 +3,7 @@
 
 import 'dart:convert' show jsonEncode;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -25,52 +26,36 @@ class CardUtil {
     // 链接
     CustomRenderMatcher linkMatcher() => (context) => context.tree.element?.localName == 'a';
     // 图片
-    CustomRenderMatcher imgMatcher() => (context) => context.tree.element?.localName == 'img';
+    CustomRenderMatcher imagesMatcher() => (context) => context.tree.element?.localName == 'img';
 
     return {
       linkMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) => GestureDetector(
           onTap: () => {_urlUtil.onPeUrl(context.tree.element!.attributes["href"].toString())},
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(2)),
-            ),
-            child: Wrap(
-              spacing: 5,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                const Icon(
-                  Icons.insert_link,
-                ),
-                Text.rich(
-                  TextSpan(text: context.tree.element!.text),
-                  style: const TextStyle(fontSize: 18),
-                )
-              ],
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  const WidgetSpan(child: Icon(Icons.insert_link,size: 15)),
+                  TextSpan(text: context.tree.element!.text, style: TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.dashed)),
+                ],
+              ),
             ),
           ),
         ),
       ),
-      imgMatcher(): CustomRender.widget(
+      imagesMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) {
           return GestureDetector(
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 3),
               child: Stack(
                 children: [
-                  EluiImgComponent(
-                    src: "${context.tree.element!.attributes['src']}",
+                  CachedNetworkImage(
+                    imageUrl: "${context.tree.element!.attributes['src']}",
                     width: double.infinity,
                     fit: BoxFit.cover,
-                    errorWidget: const Card(
-                      margin: EdgeInsets.zero,
-                      elevation: 0,
-                      child: Center(
-                        child: Text(":("),
-                      ),
-                    ),
-                    isPlaceholder: true,
                     placeholder: (BuildContext buildContext, String url) {
                       return Card(
                         margin: EdgeInsets.zero,
@@ -86,11 +71,11 @@ class CardUtil {
                                   children: const [
                                     Icon(Icons.image, size: 50),
                                     Positioned(
-                                      top: -10,
-                                      right: -10,
+                                      top: -5,
+                                      right: -5,
                                       child: ELuiLoadComponent(
                                         type: "line",
-                                        color: Colors.white,
+                                        color: Colors.white10,
                                         size: 15,
                                         lineWidth: 2,
                                       ),
@@ -100,7 +85,12 @@ class CardUtil {
                                 const SizedBox(height: 10),
                                 Opacity(
                                   opacity: .5,
-                                  child: Text("${context.tree.element!.attributes['src']}", textAlign: TextAlign.center),
+                                  child: Text(
+                                    "${context.tree.element!.attributes['src']}",
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 )
                               ],
                             ),

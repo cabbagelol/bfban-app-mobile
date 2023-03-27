@@ -262,67 +262,72 @@ class FilterState extends State<Filter> {
           ),
         ),
         // 内容面板
-        AnimatedOpacity(
-          opacity: _selectIndex != null ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 150),
-          child: Container(
-            margin: EdgeInsets.only(top: selectHeight),
-            constraints: BoxConstraints(
-              maxHeight: widget.maxHeight!,
-              minHeight: widget.minHeight!,
-            ),
-            child: Column(
-              children: [
-                // 内容卡槽
-                Flexible(
-                  flex: 1,
-                  child: Container(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    child: IndexedStack(
-                      sizing: StackFit.loose,
-                      index: _selectIndex,
-                      children: filterItem.asMap().keys.map<Widget>((index) {
-                        FilterItem item = filterItem[index];
+        Visibility(
+          visible: _selectIndex != null,
+          maintainState: true,
+          maintainAnimation: true,
+          child: AnimatedOpacity(
+            opacity: _selectIndex != null ? 1.0 : 0,
+            duration: const Duration(milliseconds: 300),
+            child: Container(
+              margin: EdgeInsets.only(top: selectHeight),
+              constraints: BoxConstraints(
+                maxHeight: widget.maxHeight!,
+                minHeight: widget.minHeight!,
+              ),
+              child: Column(
+                children: [
+                  // 内容卡槽
+                  Flexible(
+                    flex: 1,
+                    child: Container(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: IndexedStack(
+                        sizing: StackFit.loose,
+                        index: _selectIndex,
+                        children: filterItem.asMap().keys.map<Widget>((index) {
+                          FilterItem item = filterItem[index];
 
-                        item.panel ??= emptyFilter(
-                          child: Container(),
-                        );
+                          item.panel ??= emptyFilter(
+                            child: Container(),
+                          );
 
-                        return item.panel!;
-                      }).toList(),
-                    ),
-                  ),
-                ),
-                // 按钮组
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                    border: Border(
-                      top: BorderSide(
-                        color: Theme.of(context).dividerColor,
-                        width: 0.5,
-                      ),
-                      bottom: BorderSide(
-                        color: Theme.of(context).dividerColor,
-                        width: 0.5,
+                          return item.panel!;
+                        }).toList(),
                       ),
                     ),
                   ),
-                  child: widget.actions == null
-                      ? actionsFilterWidget(
-                    onChange: () {
-                      _getData();
-                      hidden();
-                    },
-                    onReset: () {
-                      widget.onReset!();
-                    },
+                  // 按钮组
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                      border: Border(
+                        top: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: 0.5,
+                        ),
+                        bottom: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: 0.5,
+                        ),
+                      ),
+                    ),
+                    child: widget.actions == null
+                        ? actionsFilterWidget(
+                            onChange: () {
+                              _getData();
+                              hidden();
+                            },
+                            onReset: () {
+                              widget.onReset!();
+                            },
+                          )
+                        : Row(
+                            children: widget.actions!,
+                          ),
                   )
-                      : Row(
-                    children: widget.actions!,
-                  ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -409,8 +414,8 @@ class _FilterTitleWidgetState extends State<FilterTitleWidget> {
             ? StatefulBuilder(
                 builder: (BuildContext context, StateSetter stateSetter) {
                   widget.stateSetter_ = stateSetter;
-                  IconData? up = Icons.arrow_drop_up;
-                  IconData? down = Icons.arrow_drop_down;
+                  IconData? up = Icons.keyboard_arrow_up;
+                  IconData? down = Icons.keyboard_arrow_down;
 
                   if (widget.icon.up != null) up = widget.icon.up;
                   if (widget.icon.down != null) up = widget.icon.down;

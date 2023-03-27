@@ -24,7 +24,8 @@
         "trend": "热门案件",
         "trace": "追踪",
         "tourRecord": "游览记录"
-      }
+      },
+      "paging": "第{num}页"
     },
     "splash": {
       "guide": "初始引导",

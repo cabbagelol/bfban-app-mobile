@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../component/_gamesTag/index.dart';
 import '../../utils/date.dart';
 import '../../utils/url.dart';
 import 'cheaters_card_types.dart';
@@ -80,11 +81,14 @@ class CheatReportsCard extends StatelessWidget {
                               fontWeight: FontWeight.normal,
                             ),
                           ),
-                          TextSpan(
-                            text: "${FlutterI18n.translate(context, "basic.games.${data['cheatGame']}")}\t",
+                          WidgetSpan(
+                            child: GamesTagWidget(
+                              data: data["cheatGame"],
+                              size: GamesTagSize.no2,
+                            ),
                           ),
                           TextSpan(
-                            text: "${FlutterI18n.translate(context, "detail.info.gaming")}\t",
+                            text: "\t${FlutterI18n.translate(context, "detail.info.gaming")}\t",
                             style: const TextStyle(
                               fontWeight: FontWeight.normal,
                             ),
@@ -95,6 +99,7 @@ class CheatReportsCard extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(height: 5),
                     Text(
                       "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
                       style: TextStyle(

@@ -70,8 +70,7 @@ class PlayerParame {
     this.personaId = "",
   });
 
-  get toMap =>
-      {
+  get toMap => {
         "history": history,
         "personaId": personaId,
       };
@@ -132,15 +131,19 @@ class PlayerTimelineStatus {
 class PlayerTimelineParame {
   late num skip;
   late num limit;
-  late String? personaId;
+  late String personaId;
 
   PlayerTimelineParame({
     this.skip = -1,
     this.limit = 0,
-    this.personaId,
+    required this.personaId,
   });
 
   get toMap {
-    return {"skip": skip, "limit": limit, "personaId": personaId};
+    return {
+      "skip": skip,
+      "limit": limit,
+      "personaId": personaId,
+    };
   }
 }

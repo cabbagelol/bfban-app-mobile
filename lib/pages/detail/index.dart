@@ -19,10 +19,9 @@ import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../component/_gamesTag/index.dart';
 import '../../provider/userinfo_provider.dart';
-import '../../widgets/detail/appeal_card.dart';
-import '../../widgets/detail/cheat_reports_card.dart';
-import '../../widgets/detail/judgement_card.dart';
+import '../../widgets/detail/time_line.dart';
 
 class PlayerDetailPage extends StatefulWidget {
   /// User Db id
@@ -38,7 +37,7 @@ class PlayerDetailPage extends StatefulWidget {
 }
 
 class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerProviderStateMixin {
-  final ScrollController _scrollController = ScrollController();
+  final GlobalKey<TimeLineState> timeLineKey = GlobalKey<TimeLineState>();
 
   final UrlUtil _urlUtil = UrlUtil();
 
@@ -50,19 +49,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     load: true,
     parame: PlayerParame(
       history: true,
-      personaId: "",
-    ),
-  );
-
-  /// 时间轴
-  PlayerTimelineStatus playerTimelineStatus = PlayerTimelineStatus(
-    index: 0,
-    list: [],
-    total: 0,
-    load: false,
-    parame: PlayerTimelineParame(
-      skip: 0,
-      limit: 100,
       personaId: "",
     ),
   );
@@ -98,9 +84,12 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     super.initState();
 
     playerStatus.parame!.personaId = widget.id;
-    playerTimelineStatus.parame!.personaId = playerStatus.parame!.personaId;
+  }
 
+  @override
+  void didChangeDependencies() {
     ready();
+    super.didChangeDependencies();
   }
 
   void ready() async {
@@ -112,36 +101,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       });
 
     futureBuilder = _getCheatersInfo();
-    _getTimeline();
-  }
-
-  /// [Response]
-  /// 获取时间轴
-  Future _getTimeline() async {
-    setState(() {
-      playerTimelineStatus.load = true;
-    });
-
-    Response result = await Http.request(
-      Config.httpHost["player_timeline"],
-      parame: playerTimelineStatus.parame!.toMap,
-      method: Http.GET,
-    );
-
-    if (result.data["success"] == 1) {
-      final d = result.data["data"];
-
-      setState(() {
-        playerTimelineStatus.list = d["result"];
-        playerTimelineStatus.total = d["total"];
-      });
-    }
-
-    setState(() {
-      playerTimelineStatus.load = false;
-    });
-
-    return playerTimelineStatus.list;
   }
 
   /// [Response]
@@ -209,31 +168,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// 作弊玩家信息 刷新
   Future<void> _onRefreshCheatersInfo() async {
     await _getCheatersInfo();
-  }
-
-  /// [Event]
-  /// 作弊玩家日历 刷新
-  Future<void> _onRefreshTimeline() async {
-    await _getTimeline();
-  }
-
-  /// [Event]
-  /// 获取游戏类型
-  String _getGames(List games) {
-    String t = "";
-    for (var element in games) {
-      t += "${element["game"].toString().toUpperCase()} ";
-    }
-    return t;
-  }
-
-  /// [Event]
-  /// 评论内回复
-  void _onReplySucceed(value) async {
-    if (value == null) {
-      return;
-    }
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 
   /// [Response]
@@ -314,44 +248,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   }
 
   /// [Event]
-  /// 用户回复
-  dynamic _setReply(num type) {
-    return () {
-      // 检查登录状态
-      if (!ProviderUtil().ofUser(context).checkLogin()) return;
-
-      String parameter = "";
-
-      switch (type) {
-        case 0:
-          // 回复
-          parameter = jsonEncode({
-            "type": type,
-            "toCommentId": null,
-            "toPlayerId": playerStatus.data["id"],
-          });
-          break;
-        case 1:
-          // 回复楼层
-          parameter = jsonEncode({
-            "type": type,
-            "toCommentId": playerStatus.data["id"],
-            "toPlayerId": playerStatus.data["toPlayerId"],
-          });
-          break;
-      }
-
-      _urlUtil.opEnPage(context, "/reply/$parameter", transition: TransitionType.cupertinoFullScreenDialog).then((value) {
-        if (value != null) {
-          _getCheatersInfo();
-          _getTimeline();
-          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-        }
-      });
-    };
-  }
-
-  /// [Event]
   /// 补充举报用户信息
   dynamic _onReport() {
     return () {
@@ -361,8 +257,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       _urlUtil.opEnPage(context, '/report/${jsonEncode({"originName": playerStatus.data["originName"]})}', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
         if (value != null) {
           _getCheatersInfo();
-          _getTimeline();
-          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          timeLineKey.currentState?.getTimeline();
+          timeLineKey.currentState?.scrollController.jumpTo(timeLineKey.currentState?.scrollController.position.maxScrollExtent as double);
         }
       });
     };
@@ -378,8 +274,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data["id"]}").then((value) {
         if (value != null) {
           _getCheatersInfo();
-          _getTimeline();
-          _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+          timeLineKey.currentState?.getTimeline();
+          timeLineKey.currentState?.scrollController.jumpTo(timeLineKey.currentState?.scrollController.position.maxScrollExtent as double);
         }
       });
     };
@@ -451,11 +347,37 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     );
   }
 
+  /// [Event]
+  /// 分享
   void _onShare(Map i) {
     _urlUtil.onPeUrl(
       "${Config.apiHost["web_site"]}/player/${i["originUserId"]}/share",
       mode: LaunchMode.externalNonBrowserApplication,
     );
+  }
+
+  /// [Response]
+  /// 追踪此玩家
+  void _onSubscribes() async {
+    List? subscribesLocal = await storage.get("subscribes");
+    List? subscribesArray = [];
+    bool isSubscribes = false;
+
+    if (subscribesLocal == null) {
+      subscribesLocal = [];
+    }
+
+    Response result = await Http.request(
+      Config.httpHost["user_me"],
+      data: {
+        "data": {"subscribes": subscribesArray},
+      },
+      method: Http.POST,
+    );
+
+    if (result.data["success"] == 1) {
+      storage.set("subscribes", value: subscribesArray);
+    }
   }
 
   @override
@@ -468,14 +390,14 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(FlutterI18n.translate(context, "detail.info.timeLine")),
-            playerTimelineStatus.load!
+            timeLineKey.currentState?.playerTimelineStatus.load ?? false
                 ? const SizedBox(
                     width: 15,
                     height: 15,
                     child: CircularProgressIndicator(strokeWidth: 1),
                   )
                 : EluiTagComponent(
-                    value: "${playerTimelineStatus.total ?? 0}",
+                    value: "${timeLineKey.currentState?.playerTimelineStatus.total ?? 0}",
                     size: EluiTagSize.no2,
                     theme: EluiTagTheme(
                       textColor: _tabControllerIndex == 1 ? Colors.black : Theme.of(context).primaryColor,
@@ -533,7 +455,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                       child: TabBarView(
                         controller: _tabController,
                         children: <Widget>[
-                          /// S 玩家详情
                           RefreshIndicator(
                             onRefresh: _onRefreshCheatersInfo,
                             child: ListView(
@@ -652,6 +573,12 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 ],
                                               ),
                                             ),
+                                            OutlinedButton(
+                                              onPressed: () {
+                                                _onSubscribes();
+                                              },
+                                              child: Icon(Icons.notifications),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -749,10 +676,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             ),
                                           ),
                                           const SizedBox(height: 5),
-                                          Wrap(
-                                            children: snapshot.data["games"].map<Widget>((i) {
-                                              return I18nText("basic.games.$i", child: const Text("", style: TextStyle(fontSize: 16)));
-                                            }).toList(),
+                                          GamesTagWidget(
+                                            data: snapshot.data["games"],
+                                            size: GamesTagSize.no2,
                                           ),
                                         ],
                                       ),
@@ -829,53 +755,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                               ],
                             ),
                           ),
-
-                          /// E 玩家详情
-
-                          /// S 审核记录
-                          RefreshIndicator(
-                            onRefresh: _onRefreshTimeline,
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: playerTimelineStatus.list!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                var timeLineItem = playerTimelineStatus.list![index];
-
-                                switch (timeLineItem["type"]) {
-                                  case "reply":
-                                    // 评论
-                                    return CheatUserCheatersCard(
-                                      onReplySucceed: _onReplySucceed,
-                                    )
-                                      ..data = timeLineItem
-                                      ..index = index;
-                                  case "report":
-                                    // 举报卡片
-                                    return CheatReportsCard(
-                                      onReplySucceed: _onReplySucceed,
-                                    )
-                                      ..data = timeLineItem
-                                      ..index = index;
-                                  case "judgement":
-                                    // 举报
-                                    return JudgementCard()
-                                      ..data = timeLineItem
-                                      ..index = index;
-                                  case "banAppeal":
-                                    // 申诉
-                                    return AppealCard(
-                                      onReplySucceed: _onReplySucceed,
-                                    )
-                                      ..data = timeLineItem
-                                      ..index = index;
-                                }
-
-                                return Container();
-                              },
-                            ),
+                          TimeLine(
+                            key: timeLineKey,
+                            playerStatus: playerStatus,
                           ),
-
-                          /// E 审核记录
                         ],
                       ),
                     ),
@@ -927,7 +810,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                             Expanded(
                               flex: 1,
                               child: TextButton(
-                                onPressed: _setReply(0),
+                                onPressed: timeLineKey.currentState?.setReply(0),
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   spacing: 10,
