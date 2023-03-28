@@ -10,6 +10,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '../../component/_privilegesTag/index.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
+import '../not_found/index.dart';
 
 class UserSpacePage extends StatefulWidget {
   // users Db id
@@ -32,10 +33,7 @@ class UserSpacePageState extends State<UserSpacePage> {
 
   /// 用户信息
   UserInfoStatuc userinfo = UserInfoStatuc(
-    data: {
-      "username": "username",
-      "introduction": "",
-    },
+    data: null,
     parame: UserInfoParame(
       id: "",
       skip: 0,
@@ -75,7 +73,6 @@ class UserSpacePageState extends State<UserSpacePage> {
   /// [Response]
   /// 获取用户数据
   Future _getUserInfo() async {
-
     setState(() {
       userinfo.load = true;
     });
@@ -85,7 +82,6 @@ class UserSpacePageState extends State<UserSpacePage> {
       parame: userinfo.parame!.toMap,
       method: Http.GET,
     );
-
 
     if (result.data["success"] == 1) {
       final d = result.data["data"];
@@ -152,11 +148,15 @@ class UserSpacePageState extends State<UserSpacePage> {
         /// 数据未加载完成时
         switch (snapshot.connectionState) {
           case ConnectionState.done:
+            if(snapshot.data == null) {
+              return const NotFoundPage();
+            }
+
             return Scaffold(
               appBar: AppBar(
                 title: I18nText("account.title", child: const Text("")),
                 centerTitle: true,
-                actions: [
+                actions: const [
                   // PopupMenuButton(
                   //   onSelected: (value) {
                   //     switch (value) {

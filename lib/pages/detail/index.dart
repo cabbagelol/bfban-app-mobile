@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:bfban/component/_empty/index.dart';
+import 'package:bfban/pages/not_found/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,6 +107,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
         });
       });
 
+    if (ProviderUtil().ofUser(context).isLogin) _getUserInfo();
     futureBuilder = _getCheatersInfo();
   }
 
@@ -177,34 +180,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   }
 
   /// [Response]
-  /// 赞同决议
-  /// data举报者信息 R单条评论
-  void _setConfirm(context, data, R) async {
-    Response result = await Http.request(
-      'api/cheaters/confirm',
-      data: Map.from({
-        "userVerifyCheaterId": data["id"],
-        "cheatMethods": R["cheatMethods"],
-        "userId": R["userId"], //_login["userId"]
-        "originUserId": data["originUserId"],
-      }),
-      method: Http.POST,
-    );
-
-    if (result.data["error"] == 0) {
-      EluiMessageComponent.success(context)(
-        child: const Text("提交成功"),
-      );
-
-      await _getCheatersInfo();
-    } else {
-      EluiMessageComponent.error(context)(
-        child: const Text("提交失败"),
-      );
-    }
-  }
-
-  /// [Response]
   /// 请求更新用户名称列表
   void _seUpdateUserNameList(bool isLogin) async {
     // 检查登录状态
@@ -251,6 +226,86 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     setState(() {
       userNameList["buttonLoad"] = false;
     });
+  }
+
+  /// [Response]
+  /// 追踪此玩家
+  void _onSubscribes(isLogin) async {
+    List? subscribesLocal = jsonDecode(await storage.get("subscribes"));
+    List? subscribesArray = [];
+    subscribesLocal ??= [];
+
+    if (subscribes["load"]) return;
+    if (!isLogin) {
+      _urlUtil.opEnPage(context, "login/panel");
+      return;
+    }
+
+    setState(() {
+      subscribes["load"] = true;
+    });
+
+    // 取得用户已追踪列表
+    if (ProviderUtil().ofUser(context).isLogin) {
+      Response userInfoResult = await _getUserInfo();
+      if (userInfoResult.data["success"] == 1) subscribesArray.addAll(userInfoResult.data["data"]["subscribes"]);
+    }
+
+    // 添加或移除订阅
+    if (!subscribesArray.contains(playerStatus.data.id)) {
+      subscribes["isThisUserSubscribes"] = false;
+      subscribesArray.add(playerStatus.data.id);
+    } else {
+      subscribes["isThisUserSubscribes"] = true;
+      subscribesArray.remove(playerStatus.data.id);
+    }
+
+    // 提交
+    Response result = await Http.request(
+      Config.httpHost["user_me"],
+      data: {
+        "data": {"subscribes": subscribesArray},
+      },
+      method: Http.POST,
+    );
+
+    if (result.data["success"] == 1) {
+      _checkSubscribesStatus(subscribesArray);
+      storage.set("subscribes", value: jsonEncode(subscribesArray));
+    }
+
+    setState(() {
+      subscribes["load"] = false;
+    });
+  }
+
+  /// [Response]
+  /// 获取账户信息
+  Future<Response> _getUserInfo() async {
+    setState(() {
+      subscribes["load"] = true;
+    });
+
+    Response result = await Http.request(
+      Config.httpHost["user_me"],
+      method: Http.GET,
+    );
+
+    if (result.data["success"] == 1) {
+      _checkSubscribesStatus(result.data["data"]["subscribes"]);
+    }
+
+    setState(() {
+      subscribes["load"] = false;
+    });
+
+    return result;
+  }
+
+  /// [Evnet]
+  /// 检查订阅状态，并赋予
+  void _checkSubscribesStatus(List subscribesList) {
+    subscribes["isThisUserSubscribes"] = subscribesList.contains(playerStatus.data.id);
   }
 
   /// [Event]
@@ -362,49 +417,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     );
   }
 
-  /// [Response]
-  /// 追踪此玩家
-  void _onSubscribes(isLogin) async {
-    List? subscribesLocal = await storage.get("subscribes");
-    List? subscribesArray = [];
-
-    subscribesLocal ??= [];
-
-    if (!isLogin) {
-      _urlUtil.opEnPage(context, "login/panel");
-      return;
-    }
-
-    setState(() {
-      subscribes["load"] = true;
-    });
-
-    // 取得用户已追踪列表
-    Response userInfoResult = await Http.request(
-      Config.httpHost["user_me"],
-      method: Http.GET,
-    );
-    if (userInfoResult.data["success"] == 1) subscribesArray.addAll(userInfoResult.data["data"]["subscribes"]);
-
-    // 提交
-    subscribesArray.add(playerStatus.parame!.toMap["id"]);
-    Response result = await Http.request(
-      Config.httpHost["user_me"],
-      data: {
-        "data": {"subscribes": subscribesArray},
-      },
-      method: Http.POST,
-    );
-
-    if (result.data["success"] == 1) {
-      storage.set("subscribes", value: subscribesArray);
-    }
-
-    setState(() {
-      subscribes["load"] = false;
-    });
-  }
-
   /// [Event]
   /// 用户回复
   dynamic setReply(num type, {timelineItem}) {
@@ -462,6 +474,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
         /// 数据未加载完成时
         switch (snapshot.connectionState) {
           case ConnectionState.done:
+            if(snapshot.data == null) {
+              return const NotFoundPage();
+            }
+
             return Scaffold(
               extendBodyBehindAppBar: true,
               appBar: AppBar(
@@ -629,7 +645,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                     color: Theme.of(context).textTheme.subtitle1!.color!,
                                                     size: 16,
                                                   )
-                                                : const Icon(Icons.notifications),
+                                                : subscribes["isThisUserSubscribes"]
+                                                    ? const Icon(Icons.notifications_off)
+                                                    : const Icon(Icons.notifications),
                                           ),
                                         ],
                                       ),

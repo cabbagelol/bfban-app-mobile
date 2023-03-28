@@ -130,9 +130,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     setState(() {
       loadTip = "app.splash.appInitial";
     });
-    await ProviderUtil().ofApp(context)
-      ..conf!.init()
-      ..connectivity.init();
+    AppInfoProvider app = ProviderUtil().ofApp(context);
+    await app.conf.init();
+    await app.connectivity.init(context);
     return true;
   }
 
@@ -166,15 +166,6 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     dynamic guide = await storage.get(guideName);
 
     if (guide == null) {
-
-      // if (ProviderUtil().ofApp(context).connectivity.isConnectivity() == true) {
-      //   EluiMessageComponent.error(context)(
-      //     child: Text(FlutterI18n.translate(context, "app.splash.networkError")),
-      //     time: 100000,
-      //   );
-      //   return false;
-      // }
-
       _urlUtil.opEnPage(context, "/guide", transition: TransitionType.fadeIn).then((value) async {
         onMain();
         await storage.set(guideName, value: 1);
@@ -279,7 +270,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                         color: Theme.of(context).textTheme.subtitle2!.color,
                       ),
                     ),
-                    if (appInfo.connectivity.isConnectivity())
+                    if (!appInfo.connectivity.isConnectivity())
                       Wrap(
                         runAlignment: WrapAlignment.center,
                         children: const [

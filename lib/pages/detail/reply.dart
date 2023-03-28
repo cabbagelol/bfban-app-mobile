@@ -29,8 +29,6 @@ class ReplyPage extends StatefulWidget {
 class _ReplyPageState extends State<ReplyPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  dynamic _data;
-
   // 回复
   ReplyStatus replyStatus = ReplyStatus(load: false, data: ReplyData(toPlayerId: 0, toCommentId: null, content: ""), captcha: Captcha(load: false, value: ""));
 
@@ -38,7 +36,7 @@ class _ReplyPageState extends State<ReplyPage> {
   void initState() {
     super.initState();
 
-    if (widget.data.toString().isEmpty) return;
+    if (jsonDecode(widget.data).isEmpty) return;
     dynamic _data = jsonDecode(widget.data);
     if (_data["toCommentId"] != null) replyStatus.data!.toCommentId = _data["toCommentId"];
     if (_data["toPlayerId"] != null) replyStatus.data!.toPlayerId = _data["toPlayerId"];

@@ -11,14 +11,14 @@ import '../../constants/api.dart';
 import '../../provider/package_provider.dart';
 import '../../utils/index.dart';
 
-class AppPackagePage extends StatefulWidget {
-  const AppPackagePage({Key? key}) : super(key: key);
+class AppVersionPackagePage extends StatefulWidget {
+  const AppVersionPackagePage({Key? key}) : super(key: key);
 
   @override
-  _AppPackagePageState createState() => _AppPackagePageState();
+  _AppVersionPackagePageState createState() => _AppVersionPackagePageState();
 }
 
-class _AppPackagePageState extends State<AppPackagePage> {
+class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   @override
@@ -47,13 +47,14 @@ class _AppPackagePageState extends State<AppPackagePage> {
             child: Column(
               children: [
                 Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
                     cont: Text(data.currentVersion.toString()),
                   ),
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
                 Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.newVersion"),
                     label: data.isNewVersion ? FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_new") : FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_old"),
@@ -64,7 +65,6 @@ class _AppPackagePageState extends State<AppPackagePage> {
                       _urlUtil.onPeUrl(Config.apiHost["web_site"]);
                     },
                   ),
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 ),
                 const SizedBox(height: 10),
                 data.list
@@ -115,7 +115,6 @@ class _AppPackagePageState extends State<AppPackagePage> {
                                 : Container(),
                           ],
                         ),
-                        subtitle: Text(e["describe"].toString()),
                         trailing: const Icon(Icons.chevron_right),
                         onTap: () {
                           _urlUtil.onPeUrl(e["src"]);

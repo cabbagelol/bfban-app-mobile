@@ -1,6 +1,7 @@
 /// 应用路由
 
 import 'package:bfban/pages/detail/user_space.dart';
+import 'package:bfban/pages/not_found/index.dart';
 import 'package:bfban/pages/profile/setting/destock.dart';
 import 'package:bfban/pages/profile/setting/language.dart';
 import 'package:bfban/pages/profile/setting/notice.dart';
@@ -29,7 +30,7 @@ import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
 import '../pages/message/index.dart';
 import '../pages/profile/app_network.dart';
-import '../pages/profile/app_package.dart';
+import '../pages/profile/app_version_package.dart';
 import '../pages/splash.dart';
 // E Pages
 
@@ -43,6 +44,12 @@ class Routes {
         'url': '/',
         'item': (context, params) {
           return const IndexPage();
+        }
+      },
+      {
+        'url': '/notfound',
+        'item': (context, params) {
+          return const NotFoundPage();
         }
       },
       {
@@ -182,7 +189,7 @@ class Routes {
       {
         "url": "/profile/version",
         'item': (context, params) {
-          return const AppPackagePage();
+          return const AppVersionPackagePage();
         },
       },
       {

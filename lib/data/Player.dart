@@ -21,7 +21,7 @@ abstract class PlayerBaseData {
     this.originPersonaId,
     this.games,
     this.cheatMethods,
-    this.avatarLink,
+    this.avatarLink = "",
     this.viewNum,
     this.commentsNum,
     this.valid,
@@ -86,7 +86,7 @@ class PlayerStatusData extends PlayerBaseData {
 
   get toMap {
     return {
-      "id": id,
+      "id": id ,
       "history": history,
       "originName": originName,
       "originUserId": originUserId,

@@ -4,16 +4,18 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../constants/api.dart';
 import '../utils/http.dart';
+import '../utils/index.dart';
 
 class AppInfoProvider with ChangeNotifier {
-  NetwrokConf? conf = NetwrokConf();
+  NetwrokConf conf = NetwrokConf();
   AppInfoNetwrokStatus connectivity = AppInfoNetwrokStatus();
 }
 
 class AppInfoNetwrokStatus with ChangeNotifier {
   var _connectivity;
+  final UrlUtil _urlUtil = UrlUtil();
 
-  init() {
+  Future init(context) async {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       _connectivity = result;
       print(result);
@@ -34,7 +36,7 @@ class AppInfoNetwrokStatus with ChangeNotifier {
   bool isConnectivity() {
     if (_connectivity == null) return true;
     notifyListeners();
-    return !(_connectivity != ConnectivityResult.none);
+    return !(_connectivity == ConnectivityResult.none);
   }
 }
 

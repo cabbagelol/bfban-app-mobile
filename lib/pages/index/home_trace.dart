@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../component/_empty/index.dart';
@@ -32,7 +31,7 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
   StoragePlayer storagePlayer = StoragePlayer();
 
   @override
-  bool get wantKeepAlive => true;
+  bool get wantKeepAlive => false;
 
   @override
   void initState() {

@@ -175,11 +175,16 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       child: Column(
                         children: <Widget>[
                           statistics.load
-                              ? ELuiLoadComponent(
-                                  type: "line",
-                                  lineWidth: 1,
-                                  color: Theme.of(context).textTheme.subtitle1!.color!,
-                                  size: 18,
+                              ? Column(
+                                  children: [
+                                    ELuiLoadComponent(
+                                      type: "line",
+                                      lineWidth: 1,
+                                      color: Theme.of(context).textTheme.subtitle1!.color!,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(height: 5),
+                                  ],
                                 )
                               : Text(
                                   statistics.data!.confirmed.toString(),
