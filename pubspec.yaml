@@ -69,9 +69,6 @@ dependencies:
   # 网络状态 https://pub.flutter-io.cn/packages/connectivity_plus
   connectivity_plus: 3.0.3
 
-  # QR https://pub.flutter-io.cn/packages/flutter_barcode_sdk
-  flutter_barcode_sdk: ^2.0.3
-
   # 本地通知x消息 https://pub.flutter-io.cn/packages/flutter_local_notifications
   flutter_local_notifications: ^11.0.1
 
