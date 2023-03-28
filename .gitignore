@@ -48,7 +48,6 @@ app.*.map.json
 /android/app/src/keystore
 
 # Flutter
-/ios
 /linux
 /macos
 /windows
