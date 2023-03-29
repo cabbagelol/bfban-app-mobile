@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:minimal_html_editor/minimal_html_editor.dart';
 
+import '../not_found/index.dart';
+
 class RichEditPage extends StatefulWidget {
   const RichEditPage({Key? key}) : super(key: key);
 
@@ -79,6 +81,10 @@ class _richEditPageState extends State<RichEditPage> {
       body: FutureBuilder(
         future: futureBuilder,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.data == null) {
+            return const NotFoundPage();
+          }
+
           return ListView(
             controller: _scrollController,
             children: [

@@ -15,6 +15,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// 卡片内置公共
 class CardUtil {
@@ -31,14 +32,19 @@ class CardUtil {
     return {
       linkMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) => GestureDetector(
-          onTap: () => {_urlUtil.onPeUrl(context.tree.element!.attributes["href"].toString())},
+          onTap: () => {
+            _urlUtil.onPeUrl(
+              context.tree.element!.attributes["href"].toString(),
+              mode: LaunchMode.externalNonBrowserApplication,
+            )
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             child: Text.rich(
               TextSpan(
                 children: [
                   const WidgetSpan(child: Icon(Icons.insert_link, size: 15)),
-                  TextSpan(text: context.tree.element!.text, style: TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.dashed)),
+                  TextSpan(text: context.tree.element!.text, style: const TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.dashed)),
                 ],
               ),
             ),
@@ -47,57 +53,93 @@ class CardUtil {
       ),
       imagesMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) {
-          return GestureDetector(
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(6),
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 3),
+              color: context.style.color,
               child: Stack(
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: "${context.tree.element!.attributes['src']}",
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholderFadeInDuration: const Duration(seconds: 0),
-                    placeholder: (BuildContext buildContext, String url) {
-                      return Card(
-                        margin: EdgeInsets.zero,
-                        color: Theme.of(buildContext).cardColor,
-                        elevation: 0,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Stack(
-                                  clipBehavior: Clip.none,
-                                  children: const [
-                                    Icon(Icons.image, size: 50),
-                                    Positioned(
-                                      top: -5,
-                                      right: -5,
-                                      child: ELuiLoadComponent(
-                                        type: "line",
-                                        color: Colors.white10,
-                                        size: 15,
-                                        lineWidth: 2,
-                                      ),
+                  GestureDetector(
+                    child: CachedNetworkImage(
+                      imageUrl: "${context.tree.element!.attributes['src']}",
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
+                        return Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 10),
+                              height: 25,
+                              child: Row(
+                                textBaseline: TextBaseline.ideographic,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      "${context.tree.element!.attributes['src']}",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 12),
+                                      maxLines: 1,
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Opacity(
-                                  opacity: .5,
-                                  child: Text(
-                                    "${context.tree.element!.attributes['src']}",
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                )
-                              ],
+                                  const Icon(
+                                    Icons.link,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Image(image: imageProvider),
+                          ],
+                        );
+                      },
+                      placeholderFadeInDuration: const Duration(seconds: 0),
+                      placeholder: (BuildContext buildContext, String url) {
+                        return Card(
+                          margin: EdgeInsets.zero,
+                          color: Theme.of(buildContext).cardColor,
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Stack(
+                                    clipBehavior: Clip.none,
+                                    children: const [
+                                      Icon(Icons.image, size: 50),
+                                      Positioned(
+                                        top: -5,
+                                        right: -5,
+                                        child: ELuiLoadComponent(
+                                          type: "line",
+                                          color: Colors.white10,
+                                          size: 15,
+                                          lineWidth: 2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Opacity(
+                                    opacity: .5,
+                                    child: Text(
+                                      "${context.tree.element!.attributes['src']}",
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
+                        );
+                      },
+                    ),
+                    onTap: () {
+                      // 打开图片
+                      onImageTap(contextView, context.tree.element!.attributes['src'].toString());
                     },
                   ),
                   Positioned(
@@ -105,20 +147,20 @@ class CardUtil {
                     bottom: 0,
                     child: Container(
                       padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
                             Colors.transparent,
                             Colors.transparent,
-                            Colors.black87,
+                            Colors.black.withOpacity(.4),
                           ],
                         ),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.search,
-                        color: Colors.white70,
+                        color: context.style.color,
                         size: 30,
                       ),
                     ),
@@ -128,9 +170,9 @@ class CardUtil {
                     bottom: 12,
                     child: Container(
                       padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                      child: const Icon(
+                      child: Icon(
                         Icons.add,
-                        color: Colors.white70,
+                        color: context.style.color,
                         size: 12,
                       ),
                     ),
@@ -138,10 +180,6 @@ class CardUtil {
                 ],
               ),
             ),
-            onTap: () {
-              // 打开图片
-              onImageTap(contextView, context.tree.element!.attributes['src'].toString());
-            },
           );
         },
       ),
@@ -152,11 +190,12 @@ class CardUtil {
   /// 配置html 样式表
   Map<String, Style> styleHtml(BuildContext context) {
     return {
-      "img": Style(
-        margin: Margins.symmetric(vertical: 20),
+      "body": Style(
+        padding: EdgeInsets.zero,
+        margin: Margins.zero,
       ),
+      "img": Style(color: Theme.of(context).primaryColorDark, padding: EdgeInsets.symmetric(vertical: 5)),
       "p": Style(
-        margin: Margins.symmetric(vertical: 5),
         fontSize: FontSize(15),
         color: Theme.of(context).textTheme.subtitle1!.color,
       ),
@@ -266,25 +305,33 @@ class TimeLineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          const Divider(height: 1),
+
           // 卡片标题
           Container(
-            margin: const EdgeInsets.only(left: 10, top: 10, bottom: 10),
+            margin: const EdgeInsets.only(top: 10, bottom: 10),
             child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: header!,
             ),
           ),
 
-          headerSecondary!,
+          Container(
+            margin: const EdgeInsets.only(left: 60, right: 10),
+            child: Column(
+              children: [
+                headerSecondary!,
 
-          // 内容
-          content!,
+                // 内容
+                content!
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -312,10 +359,16 @@ class CheatUserCheatersCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return TimeLineCard(
       header: [
-        CircleAvatar(
-          child: Text(data["username"][0].toString()),
+        Container(
+          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: CircleAvatar(
+            backgroundColor: Colors.blue.withOpacity(.2),
+            child: const Icon(
+              Icons.chat_bubble_outlined,
+              color: Colors.blue,
+            ),
+          ),
         ),
-        const SizedBox(width: 8),
         Expanded(
           flex: 1,
           child: Column(
@@ -327,14 +380,12 @@ class CheatUserCheatersCard extends StatelessWidget {
                   // 类型
                   Text.rich(
                     TextSpan(
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                      style: const TextStyle(fontSize: 16),
                       children: <TextSpan>[
                         TextSpan(
                           text: data["username"] + "\t",
                           style: const TextStyle(
+                            fontWeight: FontWeight.bold,
                             decoration: TextDecoration.underline,
                             decorationStyle: TextDecorationStyle.dotted,
                           ),
@@ -349,18 +400,13 @@ class CheatUserCheatersCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                           ),
                         ),
+                        TextSpan(
+                          text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                        )
                       ],
                     ),
                   ),
                 ],
-              ),
-              Text(
-                "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
-                style: TextStyle(
-                  color: Theme.of(context).textTheme.subtitle2!.color,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
               ),
             ],
           ),
@@ -369,7 +415,8 @@ class CheatUserCheatersCard extends StatelessWidget {
       ],
       headerSecondary: data["quote"] != null
           ? Card(
-              margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              elevation: 0,
+              margin: const EdgeInsets.only(right: 10, bottom: 10),
               color: Theme.of(context).primaryColorDark.withOpacity(.2),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -389,13 +436,10 @@ class CheatUserCheatersCard extends StatelessWidget {
           : const SizedBox(),
       content: Offstage(
         offstage: data["content"] == "",
-        child: Container(
-          color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
-          child: Html(
-            data: data["content"],
-            style: _detailApi.styleHtml(context),
-            customRenders: _detailApi.customRenders(context),
-          ),
+        child: Html(
+          data: data["content"],
+          style: _detailApi.styleHtml(context),
+          customRenders: _detailApi.customRenders(context),
         ),
       ),
     );

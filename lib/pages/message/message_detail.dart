@@ -5,6 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 
 import '../../constants/api.dart';
 import '../../provider/message_provider.dart';
+import '../not_found/index.dart';
 
 /// 消息详情
 
@@ -33,11 +34,11 @@ class _messageDetailPageState extends State<MessageDetailPage> {
     data: {},
   );
 
-  /// 用户信息
-  UserInfoStatuc userinfo = UserInfoStatuc(
-    data: {},
-    parame: UserInfoParame(
-      id: "",
+  /// 站内用户信息
+  StationUserInfoStatus userinfo = StationUserInfoStatus(
+    data: StationUserInfoData(),
+    parame: StationUserInfoParame(
+      id: null,
       skip: 0,
       limit: 20,
     ),
@@ -54,7 +55,7 @@ class _messageDetailPageState extends State<MessageDetailPage> {
     messageStatus.data = providerMessage!.list.where((i) => i["id"].toString() == widget.id.toString()).toList()[0];
 
     /// 取发消息用户id
-    userinfo.parame!.id = messageStatus.data["byUserId"].toString();
+    userinfo.parame!.id = int.parse(messageStatus.data["byUserId"].toString());
 
     futureBuilder = _getUserInfo();
   }
@@ -102,23 +103,27 @@ class _messageDetailPageState extends State<MessageDetailPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
+            if(snapshot.data == null) {
+              return const NotFoundPage();
+            }
+
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
-                title: Text(userinfo.data!["username"].toString()),
+                title: Text(userinfo.data!.username.toString()),
               ),
               body: Column(
                 children: [
                   ListTile(
                     leading: ExcludeSemantics(
                       child: CircleAvatar(
-                        child: Text(userinfo.data!["username"][0]),
+                        child: Text(userinfo.data!.username![0]),
                       ),
                     ),
-                    title: Text(userinfo.data!["username"].toString()),
-                    subtitle: Text(userinfo.data!["id"].toString()),
+                    title: Text(userinfo.data!.username.toString()),
+                    subtitle: Text(userinfo.data!.id.toString()),
                     trailing: const Icon(Icons.chevron_right),
-                    onTap: openPlayerDetail(userinfo.data!["id"]),
+                    onTap: openPlayerDetail(userinfo.data!.id),
                   ),
                   const SizedBox(height: 10),
                   Card(

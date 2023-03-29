@@ -91,15 +91,6 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
   }
 
   /// [Event]
-  /// 前往案件详情
-  void _opEnPlayerDetail(int index) {
-    Routes.router!.navigateTo(
-      context,
-      '/detail/player/${traceStatus.list![index]["originPersonaId"]}',
-    );
-  }
-
-  /// [Event]
   /// 获取追踪案件列表
   void getPlayerDetail(String id) async {
     dynamic query = await Storage().get("viewed");
@@ -134,9 +125,6 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
 
                     return CheatListCard(
                       item: traceStatus.list![index],
-                      onTap: () {
-                        _opEnPlayerDetail(index);
-                      },
                     );
                   },
                 ),

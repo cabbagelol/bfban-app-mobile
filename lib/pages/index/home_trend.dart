@@ -85,15 +85,6 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
     await getTrendList();
   }
 
-  /// [Event]
-  /// 前往案件详情
-  void _opEnPlayerDetail(int index) {
-    Routes.router!.navigateTo(
-      context,
-      '/detail/player/${trendStatus.list[index].originPersonaId}',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(builder: (context, data, child) {
@@ -113,9 +104,6 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
                   return CheatListCard(
                     item: trendStatus.list[index].toMap,
                     isIconHotView: true,
-                    onTap: () {
-                      _opEnPlayerDetail(index);
-                    },
                   );
                 },
               ),

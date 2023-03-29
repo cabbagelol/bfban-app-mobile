@@ -77,15 +77,6 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
     await _getTourRecordList();
   }
 
-  /// [Event]
-  /// 前往案件详情
-  void _opEnPlayerDetail(int index) {
-    Routes.router!.navigateTo(
-      context,
-      '/detail/player/${tourRecordStatus.list![index].originPersonaId}',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(builder: (context, data, child) {
@@ -104,9 +95,6 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
 
                   return CheatListCard(
                     item: tourRecordStatus.list![index].toMap,
-                    onTap: () {
-                      _opEnPlayerDetail(index);
-                    },
                   );
                 },
               ),

@@ -58,9 +58,9 @@ class _SupportPageState extends State<SupportPage> {
             islink: true,
             onTap: () => _opEnGuide(),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           EluiCellComponent(
-            title: FlutterI18n.translate(context, "app.setting.support.feedbackLinkTitle"),
+            title: FlutterI18n.translate(context, "app.setting.support.feedbackTitle"),
             label: FlutterI18n.translate(context, "app.setting.support.feedbackDescription"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.subtitle1?.color,

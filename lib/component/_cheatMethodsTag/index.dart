@@ -33,7 +33,6 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
       children: methods.isEmpty ? [
         EluiTagComponent(
           color: EluiTagType.none,
-          round: true,
           size: EluiTagSize.no2,
           theme: EluiTagTheme(
             backgroundColor: Theme.of(context).cardColor,

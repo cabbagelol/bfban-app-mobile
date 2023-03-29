@@ -12,6 +12,7 @@ import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/message_provider.dart';
 import '../../utils/index.dart';
+import '../not_found/index.dart';
 
 class MessagePage extends StatefulWidget {
   /// 用户id
@@ -49,10 +50,10 @@ class _MessagePageState extends State<MessagePage> {
   );
 
   /// Ta用户信息
-  UserInfoStatuc userinfo = UserInfoStatuc(
-    data: {},
-    parame: UserInfoParame(
-      id: "",
+  StationUserInfoStatus userinfo = StationUserInfoStatus(
+    data: StationUserInfoData(),
+    parame: StationUserInfoParame(
+      id: null,
       skip: 0,
       limit: 20,
     ),
@@ -80,7 +81,7 @@ class _MessagePageState extends State<MessagePage> {
     providerMessage = ProviderUtil().ofMessage(context);
 
     /// 取发消息用户id
-    userinfo.parame!.id = widget.id;
+    userinfo.parame!.id = int.parse(widget.id!);
 
     futureBuilder = _getUserInfo();
 
@@ -221,6 +222,10 @@ class _MessagePageState extends State<MessagePage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
+            if(snapshot.data == null) {
+              return const NotFoundPage();
+            }
+
             return Scaffold(
               appBar: AppBar(
                 centerTitle: true,
@@ -229,7 +234,7 @@ class _MessagePageState extends State<MessagePage> {
                     runAlignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      Text("${userinfo.data!["username"]} (${widget.id})"),
+                      Text("${userinfo.data!.username} (${widget.id})"),
                       const SizedBox(width: 10),
                       const Icon(Icons.arrow_drop_down),
                     ],
@@ -249,10 +254,12 @@ class _MessagePageState extends State<MessagePage> {
                             if (e["onLoacl"] != null && e["onLoacl"] == true) {
                               // 我
                               return Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 child: Stack(
                                   alignment: AlignmentDirectional.topEnd,
                                   children: <Widget>[
                                     Container(
+                                      margin: const EdgeInsets.only(right: 60, top: 10),
                                       child: Row(
                                         children: [
                                           Expanded(
@@ -267,7 +274,6 @@ class _MessagePageState extends State<MessagePage> {
                                           ),
                                         ],
                                       ),
-                                      margin: const EdgeInsets.only(right: 60, top: 10),
                                     ),
                                     Container(
                                       margin: const EdgeInsets.only(top: 10),
@@ -277,33 +283,34 @@ class _MessagePageState extends State<MessagePage> {
                                       ),
                                     ),
                                     Card(
+                                      margin: const EdgeInsets.only(right: 60, top: 40),
                                       child: Padding(
                                         padding: const EdgeInsets.all(10),
                                         child: Html(
                                           data: e["content"].toString(),
                                         ),
                                       ),
-                                      margin: const EdgeInsets.only(right: 60, top: 40),
                                     ),
                                   ],
                                 ),
-                                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               );
                             } else {
                               // 对话对方
                               return Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 child: Stack(
                                   children: <Widget>[
                                     CircleAvatar(
-                                      child: Text(userinfo.data!["username"][0].toString()),
+                                      child: Text(userinfo.data!.username![0].toString()),
                                     ),
                                     Container(
+                                      margin: const EdgeInsets.only(left: 60),
                                       child: Row(
                                         children: [
                                           Expanded(
                                             flex: 1,
                                             child: Text(
-                                              userinfo.data!["username"].toString(),
+                                              userinfo.data!.username.toString(),
                                               style: TextStyle(
                                                 color: Theme.of(context).textTheme.subtitle2!.color,
                                               ),
@@ -312,20 +319,18 @@ class _MessagePageState extends State<MessagePage> {
                                           Text(Date().getFriendlyDescriptionTime(e!["createTime"]).toString()),
                                         ],
                                       ),
-                                      margin: const EdgeInsets.only(left: 60),
                                     ),
                                     Card(
+                                      margin: const EdgeInsets.only(left: 60, top: 25),
                                       child: Padding(
                                         padding: const EdgeInsets.all(10),
                                         child: Html(
                                           data: e["content"].toString(),
                                         ),
                                       ),
-                                      margin: const EdgeInsets.only(left: 60, top: 25),
                                     ),
                                   ],
                                 ),
-                                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                               );
                             }
                           }).toList(),
@@ -343,6 +348,7 @@ class _MessagePageState extends State<MessagePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
+                      flex: 1,
                       child: Card(
                         child: TextField(
                           controller: textFieldcontroller,
@@ -356,7 +362,6 @@ class _MessagePageState extends State<MessagePage> {
                           ),
                         ),
                       ),
-                      flex: 1,
                     ),
                     Container(
                       margin: const EdgeInsets.only(top: 5),
@@ -365,11 +370,11 @@ class _MessagePageState extends State<MessagePage> {
                         child: !messageSendStatus!["load"]
                             ? Text(FlutterI18n.translate(context, "basic.button.commit"))
                             : const SizedBox(
+                                height: 20,
+                                width: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                 ),
-                                height: 20,
-                                width: 20,
                               ),
                       ),
                     ),

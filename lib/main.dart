@@ -22,8 +22,6 @@ import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 
-import 'component/_lang/delegate_custom.dart';
-
 // 入口
 void runMain() async {
   WidgetsFlutterBinding.ensureInitialized();

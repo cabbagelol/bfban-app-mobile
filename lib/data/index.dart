@@ -5,6 +5,8 @@ export './Login.dart';
 export './Captcha.dart';
 export './Search.dart';
 export './User.dart';
+export './UserSpace.dart';
+export './UserInfo.dart';
 export './Report.dart';
 export './Replay.dart';
 export './Manage.dart';

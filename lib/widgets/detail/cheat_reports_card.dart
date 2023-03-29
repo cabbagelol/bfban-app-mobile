@@ -37,10 +37,13 @@ class CheatReportsCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              CircleAvatar(
-                child: Text(data["username"][0].toString()),
+              Container(
+                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                child: CircleAvatar(
+                  backgroundColor: Colors.white.withOpacity(.2),
+                  child: Icon(Icons.front_hand),
+                ),
               ),
-              const SizedBox(width: 8),
               Expanded(
                 flex: 1,
                 child: Column(
@@ -49,7 +52,7 @@ class CheatReportsCard extends StatelessWidget {
                     // 标题
                     Text.rich(
                       TextSpan(
-                        style: const TextStyle(fontSize: 18),
+                        style: const TextStyle(fontSize: 16),
                         children: [
                           TextSpan(
                             text: data["username"] + "\t",
@@ -96,16 +99,13 @@ class CheatReportsCard extends StatelessWidget {
                           WidgetSpan(
                             child: CheatMethodsTagWidget(data: data["cheatMethods"]),
                           ),
+                          TextSpan(
+                            text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
                         ],
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      "${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle2!.color,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -120,70 +120,62 @@ class CheatReportsCard extends StatelessWidget {
         offstage: data["videoLink"].toString().isEmpty,
         child: Column(
           children: data["videoLink"].toString().split(",").map((i) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              child: Row(
-                children: [
-                  Card(
-                    borderOnForeground: true,
-                    elevation: 20,
-                    color: Theme.of(context).primaryColorDark.withOpacity(.2),
-                    shadowColor: Colors.black26,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            FlutterI18n.translate(context, "detail.info.videoLink"),
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 2, right: 5),
-                    width: 1,
-                    height: 15,
-                    color: Theme.of(context).dividerColor,
-                    constraints: const BoxConstraints(
-                      minHeight: 15,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Wrap(
-                      children: [
-                        GestureDetector(
-                          child: const Icon(Icons.link, size: 15),
-                          onTap: () => _urlUtil.onPeUrl(data["videoLink"].toString()),
-                        ),
+            return Row(
+              children: [
+                Card(
+                  margin: EdgeInsets.zero,
+                  color: Theme.of(context).primaryColorDark.withOpacity(.2),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
                         Text(
-                          data["videoLink"].toString(),
+                          FlutterI18n.translate(context, "detail.info.videoLink"),
                           style: const TextStyle(fontSize: 12),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
-                  Text("${index! + 1}"),
-                ],
-              ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 2, right: 5),
+                  width: 1,
+                  height: 15,
+                  color: Theme.of(context).dividerColor,
+                  constraints: const BoxConstraints(
+                    minHeight: 15,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: Wrap(
+                    children: [
+                      GestureDetector(
+                        child: const Icon(Icons.link, size: 15),
+                        onTap: () => _urlUtil.onPeUrl(data["videoLink"].toString()),
+                      ),
+                      Text(
+                        data["videoLink"].toString(),
+                        style: const TextStyle(fontSize: 12),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                Text("${index! + 1}"),
+              ],
             );
           }).toList(),
         ),
       ),
       content: Offstage(
         offstage: data["content"] == "",
-        child: Container(
-          color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
-          child: Html(
-            data: data["content"],
-            style: _detailApi.styleHtml(context),
-            customRenders: _detailApi.customRenders(context),
-          ),
+        child: Html(
+          data: data["content"],
+          style: _detailApi.styleHtml(context),
+          customRenders: _detailApi.customRenders(context),
         ),
       ),
     );

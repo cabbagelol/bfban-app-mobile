@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import 'package:flutter/services.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/data/index.dart';
@@ -181,25 +181,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   /// [Response]
   /// 请求更新用户名称列表
-  void _seUpdateUserNameList(bool isLogin) async {
+  void _seUpdateUserNameList() async {
+    UserInfoProvider provider = ProviderUtil().ofUser(context);
+
     // 检查登录状态
-    if (!ProviderUtil().ofUser(context).checkLogin()) return;
+    if (!provider.checkLogin() && provider.isAdmin) return;
 
-    if (userNameList['buttonLoad']) {
-      return;
-    }
-
-    if (playerStatus.data.originUserId == "" || playerStatus.data.originUserId == null) {
-      EluiMessageComponent.error(context)(
-        child: const Text("无法识别ID"),
-      );
-      return;
-    }
-
-    if (isLogin == null) {
-      EluiMessageComponent.error(context)(
-        child: const Text("请先登录BFBAN"),
-      );
+    if (userNameList['buttonLoad'] && playerStatus.data.originUserId == "" || playerStatus.data.originUserId == null) {
       return;
     }
 
@@ -210,18 +198,23 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     Response result = await Http.request(
       Config.httpHost["player_update"],
       data: {
-        "originUserId": playerStatus.data.originUserId,
+        "personaId": playerStatus.data.originPersonaId,
       },
       method: Http.POST,
     );
 
     if (result.data["success"] == 1) {
       _getCheatersInfo();
-    } else {
-      EluiMessageComponent.error(context)(
-        child: const Text("请求异常请联系开发者"),
-      );
+
+      setState(() {
+        userNameList["buttonLoad"] = false;
+      });
+      return;
     }
+
+    EluiMessageComponent.error(context)(
+      child: Text(result.data["message"]),
+    );
 
     setState(() {
       userNameList["buttonLoad"] = false;
@@ -231,15 +224,15 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// [Response]
   /// 追踪此玩家
   void _onSubscribes(isLogin) async {
-    List? subscribesLocal = jsonDecode(await storage.get("subscribes"));
-    List? subscribesArray = [];
-    subscribesLocal ??= [];
-
     if (subscribes["load"]) return;
     if (!isLogin) {
       _urlUtil.opEnPage(context, "login/panel");
       return;
     }
+
+    List? subscribesLocal = jsonDecode(await storage.get("subscribes") ?? "[]");
+    List? subscribesArray = [];
+    subscribesLocal ??= [];
 
     setState(() {
       subscribes["load"] = true;
@@ -474,7 +467,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
         /// 数据未加载完成时
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            if(snapshot.data == null) {
+            if (snapshot.data == null) {
               return const NotFoundPage();
             }
 
@@ -787,41 +780,40 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                               Consumer<UserInfoProvider>(
                                 builder: (context, data, child) {
                                   return Container(
-                                    padding: const EdgeInsets.only(
-                                      left: 10,
-                                      right: 10,
-                                      top: 20,
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: TextButton.icon(
-                                        icon: const Icon(
-                                          Icons.refresh,
-                                          size: 25,
+                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          FlutterI18n.translate(context, "detail.info.historyID"),
+                                          style: TextStyle(
+                                            fontSize: FontSize.xLarge.value,
+                                          ),
                                         ),
-                                        label: const Text(""),
-                                        onPressed: () => _seUpdateUserNameList(data.isLogin),
-                                      ),
+                                        TextButton.icon(
+                                          icon: const Icon(
+                                            Icons.refresh,
+                                            size: 25,
+                                          ),
+                                          label: const Text(""),
+                                          onPressed: () => _seUpdateUserNameList(),
+                                        )
+                                      ],
                                     ),
                                   );
                                 },
                               ),
 
                               Container(
-                                padding: const EdgeInsets.only(
-                                  left: 10,
-                                  right: 10,
-                                  bottom: 10,
-                                ),
-                                margin: const EdgeInsets.only(
-                                  top: 10,
-                                ),
+                                margin: const EdgeInsets.symmetric(horizontal: 20),
                                 child: userNameList['listLoad']
                                     ? EluiVacancyComponent(
                                         title: "-",
                                       )
                                     : _updateUserName(context, snapshot.data),
                               ),
+
+                              const SizedBox(height: 50),
                             ],
                           ),
                         ),

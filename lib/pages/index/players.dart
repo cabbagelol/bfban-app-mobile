@@ -245,15 +245,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     return true;
   }
 
-  /// [Event]
-  /// 前往案件详情
-  void _opEnPlayerDetail (int index) {
-    Routes.router!.navigateTo(
-      context,
-      '/detail/player/${playersStatus?.list![index]["originPersonaId"]}',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -405,9 +396,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 // 内容卡片
                 return CheatListCard(
                   item: playersStatus?.list![index],
-                  onTap: () {
-                    _opEnPlayerDetail(index);
-                  },
                 );
               } else if (index >= playersStatus!.list!.length && playersStatus!.load!) {
                 // 下拉加载

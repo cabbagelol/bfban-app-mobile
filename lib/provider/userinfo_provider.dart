@@ -15,12 +15,10 @@ class UserInfoProvider with ChangeNotifier {
   BuildContext? context;
 
   /// 用户数据
-  final User _userdata = User(
-    data: {
-      "userinfo": {},
-      "token": "",
-    },
-  );
+  late Map _userdata = {
+    "userinfo": {},
+    "token": "",
+  };
 
   // 是否已登录
   bool get isLogin {
@@ -34,12 +32,12 @@ class UserInfoProvider with ChangeNotifier {
 
   // 获取用户信息
   Map get userinfo {
-    return _userdata.data!["userinfo"] ?? {};
+    return _userdata!["userinfo"] ?? {};
   }
 
   // 获取token
   String get getToken {
-    return _userdata.data!["token"] ?? "";
+    return _userdata!["token"] ?? "";
   }
 
   /// [Event]
@@ -48,10 +46,10 @@ class UserInfoProvider with ChangeNotifier {
     dynamic userinfo = await Storage().get(packageName);
 
     if (userinfo != null) {
-      _userdata.data = jsonDecode(userinfo);
+      _userdata = jsonDecode(userinfo);
     }
 
-    return _userdata.data;
+    return _userdata;
   }
 
   /// [Event]
@@ -64,8 +62,8 @@ class UserInfoProvider with ChangeNotifier {
 
   /// [Event]
   /// 设置用户数据
-  setData(value) {
-    _userdata.data = value;
+  setData(Map? value) {
+    _userdata = value!;
     notifyListeners();
     return true;
   }
@@ -73,10 +71,7 @@ class UserInfoProvider with ChangeNotifier {
   /// [Event]
   /// 擦除
   void clear() {
-    _userdata.data = {
-      "userinfo": {},
-      "token": "",
-    };
+    _userdata.clear();
     notifyListeners();
   }
 }

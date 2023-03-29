@@ -29,6 +29,22 @@ abstract class PlayerBaseData {
     this.updateTime,
   });
 
+  Map setData(Map i) {
+    id = i["id"];
+    originName = i["originName"];
+    originUserId = i["originUserId"];
+    originPersonaId = i["originPersonaId"];
+    games = i["games"];
+    cheatMethods = i["cheatMethods"];
+    avatarLink = i["avatarLink"];
+    viewNum = i["viewNum"];
+    commentsNum = i["commentsNum"];
+    status = i["status"];
+    createTime = i["createTime"];
+    updateTime = i["updateTime"];
+    return toMap;
+  }
+
   get toMap {
     return {
       "id": id,

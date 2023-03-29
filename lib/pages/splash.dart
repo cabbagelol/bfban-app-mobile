@@ -284,7 +284,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                 const SizedBox(height: 10),
                 LinearProgressIndicator(
                   minHeight: 1,
-                  color: Theme.of(context).textTheme.subtitle2!.color,
+                  color: Theme.of(context).primaryColorDark,
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 38),

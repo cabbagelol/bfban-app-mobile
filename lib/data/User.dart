@@ -1,44 +1,103 @@
 /// 用户信息
-class User {
-  Map<String, dynamic>? data;
-
-  User({
-    this.data,
-  });
-}
-
-/// 站内用户数据
-class UserInfoStatuc {
-  bool? load;
-  Map? data;
-  UserInfoParame? parame;
-
-  UserInfoStatuc({
-    this.load = false,
-    this.data,
-    this.parame,
-  });
-}
-
-/// 站内用户参数
-class UserInfoParame {
+abstract class StationUserBaseData {
   String? id;
-  int? skip;
-  int? limit;
+  StationUserBaseDataInAttr? attr;
+  String? joinTime;
+  String? lastOnlineTime;
+  Map? origin;
+  List? privilege;
+  int? reportnum;
+  List? subscribes;
+  String? userAvatar;
+  String? username;
 
-  UserInfoParame({
+  StationUserBaseData({
     this.id,
-    this.skip,
-    this.limit,
-  });
+    this.attr,
+    this.joinTime,
+    this.lastOnlineTime,
+    this.origin,
+    this.privilege,
+    this.reportnum,
+    this.subscribes,
+    this.userAvatar,
+    this.username,
+  }) : super() {
+    attr ??= StationUserBaseDataInAttr();
+  }
 
-  set setId (value) => id = value.toString();
+  Map setData(Map i) {
+    try {
+      id = i["id"].toString();
+      attr!.setData(i["attr"]);
+      joinTime = i["joinTime"];
+      lastOnlineTime = i["lastOnlineTime"];
+      origin = i["origin"];
+      privilege = i["privilege"];
+      reportnum = i["reportnum"];
+      subscribes = i["subscribes"];
+      userAvatar = i["userAvatar"];
+      username = i["username"];
+    } catch (err) {
+      print(err);
+    }
+    return toMap;
+  }
 
   get toMap {
     return {
       "id": id,
-      "skip": skip,
-      "limit": limit,
+      "attr": attr!.toMap,
+      "joinTime": joinTime,
+      "lastOnlineTime": lastOnlineTime,
+      "origin": origin,
+      "privilege": privilege,
+      "reportnum": reportnum,
+      "subscribes": subscribes,
+      "userAvatar": userAvatar,
+      "username": username,
+    };
+  }
+}
+
+class StationUserBaseDataInAttr {
+  bool? allowDM;
+  String? avatar;
+  String? certUser;
+  bool? freezeOfNoBinding;
+  String? introduction;
+  bool? showOrigin;
+  String? mute;
+
+  StationUserBaseDataInAttr({
+    this.allowDM,
+    this.avatar,
+    this.certUser,
+    this.freezeOfNoBinding,
+    this.introduction,
+    this.showOrigin,
+    this.mute,
+  });
+
+  Map setData(Map i) {
+    allowDM = i["allowDM"];
+    avatar = i["avatar"];
+    certUser = i["certUser"];
+    freezeOfNoBinding = i["freezeOfNoBinding"];
+    introduction = i["introduction"];
+    showOrigin = i["showOrigin"];
+    mute = i["mute"];
+    return toMap;
+  }
+
+  get toMap {
+    return {
+      "allowDM": allowDM,
+      "avatar": avatar,
+      "certUser": certUser,
+      "freezeOfNoBinding": freezeOfNoBinding,
+      "introduction": introduction,
+      "showOrigin": showOrigin,
     };
   }
 }

@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_privilegesTag/index.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
+import '../../widgets/index.dart';
 import '../not_found/index.dart';
 
 class UserSpacePage extends StatefulWidget {
@@ -31,24 +33,22 @@ class UserSpacePageState extends State<UserSpacePage> {
   /// 异步
   Future? futureBuilder;
 
+  final ScrollController _scrollController = ScrollController();
+
   /// 用户信息
-  UserInfoStatuc userinfo = UserInfoStatuc(
-    data: null,
-    parame: UserInfoParame(
-      id: "",
-      skip: 0,
-      limit: 20,
-    ),
+  StationUserSpaceStatus userSpaceInfo = StationUserSpaceStatus(
+    data: StationUserSpaceData(),
+    parame: StationUserSpaceParame(id: null),
     load: false,
   );
 
   /// 用户举报列表
-  ReportListStatuc reportListStatuc = ReportListStatuc(
+  ReportListStatus reportListStatus = ReportListStatus(
     load: false,
     list: [],
-    param: ReportListParam(
-      id: "",
-      limit: 0,
+    parame: ReportListStatusParame(
+      id: null,
+      limit: 20,
       skip: 0,
     ),
   );
@@ -57,57 +57,64 @@ class UserSpacePageState extends State<UserSpacePage> {
   void initState() {
     super.initState();
 
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _getMore();
+      }
+    });
+
     ready();
   }
 
   void ready() async {
-    // 更新ID
-    userinfo.parame!.setId = widget.id;
+    // Update query id
+    userSpaceInfo.parame.id = widget.id!;
+    reportListStatus.parame.id = int.parse(widget.id!);
 
-    futureBuilder = _getUserInfo();
-    await _getReports();
+    futureBuilder = _getUserSpaceInfo();
   }
 
-  get getReports => _getReports;
+  // get getReports => _getReports;
 
   /// [Response]
-  /// 获取用户数据
-  Future _getUserInfo() async {
+  /// 获取站内用户数据
+  Future _getUserSpaceInfo() async {
     setState(() {
-      userinfo.load = true;
+      userSpaceInfo.load = true;
     });
 
     Response result = await Http.request(
       Config.httpHost["user_info"],
-      parame: userinfo.parame!.toMap,
+      parame: userSpaceInfo.parame.toMap,
       method: Http.GET,
     );
 
     if (result.data["success"] == 1) {
       final d = result.data["data"];
+      _getSiteUserReports();
 
       setState(() {
-        userinfo.data = d;
+        userSpaceInfo.data.setData(d);
       });
     }
 
     setState(() {
-      userinfo.load = false;
+      userSpaceInfo.load = false;
     });
 
-    return userinfo.data;
+    return userSpaceInfo.data.toMap;
   }
 
   /// [Response]
   /// 获取用户举报列表
-  Future _getReports() async {
+  Future _getSiteUserReports() async {
     setState(() {
-      userinfo.load = true;
+      reportListStatus.load = true;
     });
 
     Response result = await Http.request(
       Config.httpHost["user_reports"],
-      parame: userinfo.parame!.toMap,
+      parame: reportListStatus.parame.toMap,
       method: Http.GET,
     );
 
@@ -115,27 +122,47 @@ class UserSpacePageState extends State<UserSpacePage> {
       final d = result.data["data"];
 
       setState(() {
-        reportListStatuc.list = d;
+        reportListStatus.list = d;
       });
     }
 
     setState(() {
-      userinfo.load = false;
+      userSpaceInfo.load = false;
     });
-
-    return userinfo.data;
   }
 
   /// [Event]
   /// 作弊玩家信息 刷新
   Future<void> _onRefresh() async {
-    await _getReports();
+    setState(() {
+      reportListStatus.list = [];
+      reportListStatus.parame.resetPage();
+    });
+
+    await _getSiteUserReports();
+  }
+
+  /// [Event]
+  /// 下拉 追加数据
+  Future _getMore() async {
+    await _getSiteUserReports();
+    reportListStatus.parame.nextPage();
   }
 
   /// [Event]
   /// 聊天
   _openMessage(String id) {
-    return () {
+    return () async {
+      if (await ProviderUtil().ofUser(context).userinfo["id"] == id) {
+        EluiMessageComponent.warning(context)(child: Text(FlutterI18n.translate(context, "account.message.hint.selfTalk")));
+        return;
+      }
+
+      if (userSpaceInfo.data!.attr!.allowDM! == false) {
+        EluiMessageComponent.warning(context)(child: Text(FlutterI18n.translate(context, "account.message.hint.taOffChat")));
+        return;
+      }
+
       _urlUtil.opEnPage(context, "/message/$id");
     };
   }
@@ -148,46 +175,46 @@ class UserSpacePageState extends State<UserSpacePage> {
         /// 数据未加载完成时
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            if(snapshot.data == null) {
+            if (snapshot.data == null) {
               return const NotFoundPage();
             }
 
             return Scaffold(
               appBar: AppBar(
-                title: I18nText("account.title", child: const Text("")),
+                title: snapshot.data["username"] != null ? Text(snapshot.data["username"]) : I18nText("account.title", child: const Text("")),
                 centerTitle: true,
-                actions: const [
-                  // PopupMenuButton(
-                  //   onSelected: (value) {
-                  //     switch (value) {
-                  //       case 1:
-                  //         break;
-                  //       case 2:
-                  //         break;
-                  //     }
-                  //   },
-                  //   itemBuilder: (context) {
-                  //     return [
-                  //       PopupMenuItem(
-                  //         value: 1,
-                  //         child: Wrap(
-                  //           children: const [
-                  //             Icon(Icons.qr_code),
-                  //             SizedBox(
-                  //               width: 10,
-                  //             ),
-                  //             Text("分享"),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ];
-                  //   },
-                  // ),
+                actions: [
+                  PopupMenuButton(
+                    onSelected: (value) {
+                      switch (value) {
+                        case 1:
+                          _openMessage(userSpaceInfo.data!.id.toString());
+                          break;
+                        case 2:
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          value: 2,
+                          child: Wrap(
+                            children: [
+                              const Icon(Icons.message),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "account.message.chat")),
+                            ],
+                          ),
+                        ),
+                      ];
+                    },
+                  ),
                 ],
               ),
               body: RefreshIndicator(
                 onRefresh: _onRefresh,
                 child: ListView(
+                  controller: _scrollController,
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     // 空间用户信息
@@ -203,29 +230,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                               style: const TextStyle(fontSize: 25),
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Text(
-                                snapshot.data["username"],
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                              const SizedBox(width: 5),
-                              IconButton(
-                                onPressed: _openMessage(userinfo.data!["id"].toString()),
-                                icon: const Icon(Icons.message),
-                              ),
-                            ],
-                          ),
                           const SizedBox(height: 10),
-                          // 自我描述
-                          // Card(
-                          //   child: Html(
-                          //     style: {"*": Style(color: Theme.of(context).textTheme.subtitle2!.color, padding: EdgeInsets.zero)},
-                          //     data: snapshot.data["introduction"].toString() == "" ? FlutterI18n.translate(context, "app.userspace.introduction") : snapshot.data["introduction"].toString() ?? '',
-                          //   ),
-                          // ),
                         ],
                       ),
                     ),
@@ -320,7 +325,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    reportListStatuc.list!.length.toString(),
+                                    reportListStatus.list.length.toString(),
                                     style: const TextStyle(
                                       fontSize: 16,
                                     ),
@@ -344,8 +349,13 @@ class UserSpacePageState extends State<UserSpacePage> {
 
                     // 举报列表
                     Column(
-                      children: reportListStatuc.list!.map((item) {
-                        return RecordItemCard(item: item);
+                      children: reportListStatus.list.map((ReportListPlayerData item) {
+                        return CheatListCard(
+                          item: item.toMap,
+                          isIconHotView: false,
+                          isIconCommendView: false,
+                          isIconView: false,
+                        );
                       }).toList(),
                     ),
                   ],
@@ -365,52 +375,6 @@ class UserSpacePageState extends State<UserSpacePage> {
             );
         }
       },
-    );
-  }
-}
-
-/// 举报记录卡片
-class RecordItemCard extends StatelessWidget {
-  final UrlUtil _urlUtil = UrlUtil();
-
-  final Map? item;
-
-  RecordItemCard({
-    Key? key,
-    this.item,
-  }) : super(key: key);
-
-  /// [Event]
-  /// 前往作弊玩家详情
-  _openPlayerDetail(context) {
-    _urlUtil.opEnPage(
-      context,
-      '/detail/player/${item!["originPersonaId"]}',
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        item!["originName"],
-        style: const TextStyle(
-          fontSize: 20,
-        ),
-      ),
-      subtitle: Row(
-        children: <Widget>[
-          Text(
-            FlutterI18n.translate(context, "basic.status.${item!["status"]}"),
-            style: TextStyle(
-              fontSize: 13,
-              color: Theme.of(context).textTheme.subtitle2!.color,
-            ),
-          )
-        ],
-      ),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: () => _openPlayerDetail(context),
     );
   }
 }

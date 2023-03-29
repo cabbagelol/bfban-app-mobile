@@ -145,8 +145,16 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   /// 打开社区动态详情内容i
   /// 区分类型
   void _opEnDynamicDetail(i) {
-    if (i["type"] == "verify" || i["type"] == "judgement" && i["playerOriginPersonaId"] != null) {
-      _urlUtil.opEnPage(context, '/detail/player/${i["playerOriginPersonaId"]}');
+    switch(i["type"]) {
+      case "verify":
+      case "judgement":
+      if (i["playerOriginPersonaId"] != null) {
+        _urlUtil.opEnPage(context, '/detail/player/${i["playerOriginPersonaId"]}');
+      }
+      break;
+      case "register":
+        _urlUtil.opEnPage(context, '/account/${i["id"]}');
+        break;
     }
   }
 
@@ -230,70 +238,72 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
           return Visibility(
             visible: _isShow(i),
-            child: GestureDetector(
-              child: Card(
-                margin: const EdgeInsets.symmetric(vertical: 3),
-                child: Stack(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              if (i["playerAvatarLink"] != null)
-                                EluiImgComponent(
-                                  width: 30,
-                                  height: 30,
-                                  src: i["playerAvatarLink"],
-                                )
-                              else
-                                CircleAvatar(
-                                  radius: 15,
-                                  child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString()),
-                                ),
-                              const SizedBox(width: 10),
-                              Text(
-                                (i["username"] ?? i["byUserName"] ?? i["toPlayerName"]).toString(),
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  Date().getFriendlyDescriptionTime(i["createTime"]),
-                                  style: const TextStyle(
-                                    fontSize: 12,
+            child: Column(
+              children: [
+                GestureDetector(
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                if (i["playerAvatarLink"] != null)
+                                  EluiImgComponent(
+                                    width: 30,
+                                    height: 30,
+                                    src: i["playerAvatarLink"],
+                                  )
+                                else
+                                  CircleAvatar(
+                                    radius: 15,
+                                    child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString()),
                                   ),
-                                  textAlign: TextAlign.end,
+                                const SizedBox(width: 10),
+                                Text(
+                                  (i["username"] ?? i["byUserName"] ?? i["toPlayerName"]).toString(),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          WidgetStateText(itemData: i),
-                        ],
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    Date().getFriendlyDescriptionTime(i["createTime"]),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                    ),
+                                    textAlign: TextAlign.end,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            WidgetStateText(itemData: i),
+                          ],
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: 5,
-                      right: 0,
-                      child: Icon(
-                        iconTypes[i["type"]] ?? Icons.message_outlined,
-                        size: 70,
-                        color: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.02),
+                      Positioned(
+                        top: 5,
+                        right: 0,
+                        child: Icon(
+                          iconTypes[i["type"]] ?? Icons.message_outlined,
+                          size: 70,
+                          color: Theme.of(context).textTheme.subtitle2!.color!.withOpacity(.02),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  onTap: () => _opEnDynamicDetail(i),
                 ),
-              ),
-              onTap: () => _opEnDynamicDetail(i),
+                const Divider(height: 1),
+              ],
             ),
           );
         },

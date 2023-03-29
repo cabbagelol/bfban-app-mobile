@@ -215,7 +215,7 @@ class FilterState extends State<Filter> {
             bottom: 0,
             child: GestureDetector(
               child: Container(
-                color: Theme.of(context).primaryColor.withOpacity(.2),
+                color: Theme.of(context).primaryColor.withOpacity(.5),
                 width: double.infinity,
                 height: double.infinity,
               ),
@@ -238,7 +238,7 @@ class FilterState extends State<Filter> {
                 minHeight: selectHeight,
               ),
               decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
+                color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border(
                   bottom: BorderSide(
                     color: Theme.of(context).dividerColor,

@@ -1,37 +1,69 @@
 import 'Captcha.dart';
+import 'Paging.dart';
+import 'Player.dart';
 
 /// 举报列表
-class ReportListStatuc {
-  late List? list;
+class ReportListStatus {
   late bool? load;
-  late ReportListParam? param;
+  late List<ReportListPlayerData> _list = [];
+  late ReportListStatusParame parame;
 
-  ReportListStatuc({
-    this.list,
+  ReportListStatus({
     this.load = false,
-    this.param,
-  });
+    List<ReportListPlayerData>? list,
+    required this.parame,
+  }) : super() {
+    if (list == null) _list = list!;
+  }
+
+  List<ReportListPlayerData> get list => _list ?? [];
+
+  set list(List<dynamic> array) {
+    for (var i in array) {
+      ReportListPlayerData item = ReportListPlayerData();
+      item.setData(i);
+      _list.add(item);
+    }
+  }
+}
+
+class ReportListPlayerData extends PlayerBaseData {
+  @override
+  Map setData(Map i) {
+    originName = i["originName"];
+    originUserId = i["originUserId"];
+    originPersonaId = i["originPersonaId"];
+    avatarLink = i["avatarLink"];
+    status = i["status"];
+    createTime = i["createTime"];
+    updateTime = i["updateTime"];
+    return toMap;
+  }
 }
 
 /// 举报列表参数
-class ReportListParam {
-  final String? id;
-  final int? skip;
-  final int? limit;
+class ReportListStatusParame extends Paging {
+  int? id;
 
-  ReportListParam({
+  ReportListStatusParame({
     this.id,
-    this.skip,
     this.limit,
+    this.skip,
   });
 
   get toMap {
     return {
       "id": id,
-      "skip": skip,
       "limit": limit,
+      "skip": skip,
     };
   }
+
+  @override
+  int? limit;
+
+  @override
+  int? skip;
 }
 
 /// 举报

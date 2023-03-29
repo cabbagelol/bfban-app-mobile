@@ -28,9 +28,10 @@ class TrendPlayerBaseData extends PlayerBaseData {
     this.hot,
   }) : super();
 
+  @override
   Map setData(Map i) {
     id = i["id"];
-    hot = i["hot"];
+    hot = i["hot"]; // add
     originName = i["originName"];
     originUserId = i["originUserId"];
     originPersonaId = i["originPersonaId"];

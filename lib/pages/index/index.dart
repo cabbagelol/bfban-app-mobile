@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
 
+import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
 import '../profile/index.dart';
+import 'footerbar_panel.dart';
 import 'home.dart';
 
 class IndexPage extends StatefulWidget {
@@ -62,6 +64,9 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenBarHeight = 26.0;
+
     return WillPopScope(
       onWillPop: () async {
         if (_lastPressedAt == null || DateTime.now().difference(_lastPressedAt!) > const Duration(seconds: 1)) {
@@ -185,9 +190,58 @@ class _IndexPageState extends State<IndexPage> {
               titleSpacing: 0.0,
               centerTitle: false,
             ),
-            body: IndexedStack(
-              index: _currentPageIndex,
-              children: _listWidgetPage,
+            body: FlutterPluginDrawer(
+              body: IndexedStack(
+                index: _currentPageIndex,
+                children: _listWidgetPage,
+              ),
+              dragContainer: DragContainer(
+                drawer: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        offset: const Offset(0, -2),
+                        spreadRadius: .2,
+                        blurRadius: 10,
+                      )
+                    ],
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(20.0),
+                    ),
+                  ),
+                  height: screenBarHeight,
+                  child: OverscrollNotificationWidget(
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          height: 6.0,
+                          width: 45.0,
+                          margin: const EdgeInsets.only(top: 10.0, bottom: 10),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 214, 215, 218),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5.0),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: screenHeight * 0.5 - screenBarHeight,
+                          child: MediaQuery.removePadding(
+                            context: context,
+                            removeTop: true,
+                            child: const HomeButtomPanel(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                defaultShowHeight: screenBarHeight + 70,
+                height: screenHeight * .5,
+              ),
             ),
             bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,

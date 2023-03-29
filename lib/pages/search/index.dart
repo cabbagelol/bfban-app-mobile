@@ -93,7 +93,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       });
     }
 
-    tabController = TabController(vsync: this, length: searchTabs.length, initialIndex: 0)..addListener(() => _onToggleSearchType(tabController.index));
+    tabController = TabController(vsync: this, length: searchTabs.length, initialIndex: 0)
+      ..addListener(() {
+        _onToggleSearchType(tabController.index);
+      });
 
     super.didChangeDependencies();
   }
@@ -119,13 +122,14 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       searchTabsIndex = index;
     });
 
-    if (searchStatus.params.param.toString().isEmpty) {
+    if (searchStatus.load && searchStatus.params.param.toString().isEmpty) {
       return;
     }
 
     setState(() {
       switch (index) {
         case 0:
+          searchStatus.list.player.clear();
           searchStatus.params = SearchPlayerParams(
             param: searchStatus.params.param,
             game: GameType.all,
@@ -136,6 +140,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           );
           break;
         case 1:
+          searchStatus.list.user.clear();
           searchStatus.params = SearchInStationUser(
             param: searchStatus.params.param,
             gameSort: UserSortType.byDefault,
@@ -147,6 +152,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           break;
         case 2:
         default:
+          searchStatus.list.comment.clear();
           searchStatus.params = SearchCommentParams(
             param: searchStatus.params.param,
             limit: 40,
@@ -401,6 +407,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                         return InputChip(
                                           label: GestureDetector(
                                             child: Wrap(
+                                              crossAxisAlignment: WrapCrossAlignment.center,
                                               children: [
                                                 Text("${FlutterI18n.translate(context, "search.tabs.${i['type']}")}:\t"),
                                                 Text(i["keyword"]),
@@ -466,6 +473,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     )
                   : TabBarView(
                       controller: tabController,
+                      physics: NeverScrollableScrollPhysics(),
                       children: [
                         ListView(
                           children: [
@@ -477,7 +485,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                       children: searchStatus.list.data("player").map((i) {
                                         return CheatListCard(
                                           item: i,
-                                          onTap: () => _onPenPlayerDetail(i),
                                         );
                                       }).toList(),
                                     )
