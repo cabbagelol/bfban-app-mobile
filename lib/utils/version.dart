@@ -32,7 +32,7 @@ class Version {
 
     return {
       "0": int.parse(s[0].replaceAll(".", "")),
-      "1": s.toString(),
+      "1": (s ?? s[1]).toString(),
     };
   }
 }

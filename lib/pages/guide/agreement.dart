@@ -110,12 +110,22 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                   Card(
                     elevation: 0,
                     margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      child: GestureDetector(
-                        child: Html(data: agreement["content"], shrinkWrap: true),
-                      ),
-                    ),
+                    child: agreement["load"]
+                        ? SizedBox(
+                            height: 100,
+                            child: ELuiLoadComponent(
+                              type: "line",
+                              color: Theme.of(context).appBarTheme.backgroundColor!,
+                              size: 17,
+                              lineWidth: 2,
+                            ),
+                          )
+                        : Container(
+                            padding: const EdgeInsets.all(5),
+                            child: GestureDetector(
+                              child: Html(data: agreement["content"], shrinkWrap: true),
+                            ),
+                          ),
                   ),
                 ],
               ),
@@ -128,7 +138,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                   right: 20,
                 ),
                 child: EluiCheckboxComponent(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).primaryColorDark,
                   child: Text(
                     FlutterI18n.translate(context, "app.guide.agree"),
                   ),
@@ -136,7 +146,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                     checked = checkBoxChecked;
                   },
                 ),
-              ),
+              )
             ],
           );
         },

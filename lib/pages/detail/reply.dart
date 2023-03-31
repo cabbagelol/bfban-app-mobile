@@ -160,7 +160,7 @@ class _ReplyPageState extends State<ReplyPage> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Card(
-                  elevation: 10,
+                  elevation: 0,
                   clipBehavior: Clip.hardEdge,
                   child: GestureDetector(
                     child: Container(
@@ -173,21 +173,6 @@ class _ReplyPageState extends State<ReplyPage> {
                       child: Stack(
                         children: <Widget>[
                           Html(data: replyStatus.data!.content),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              height: 100,
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Colors.transparent, Colors.black54],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                              ),
-                            ),
-                          ),
                           Positioned(
                             top: 0,
                             left: 0,

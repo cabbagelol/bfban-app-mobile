@@ -1,16 +1,13 @@
-import 'dart:convert';
-
 import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
-import 'package:fluro/fluro.dart';
 
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
-import 'appeal_card.dart';
-import 'cheat_reports_card.dart';
-import 'cheaters_card_types.dart';
-import 'judgement_card.dart';
+import '../../widgets/detail/appeal_card.dart';
+import '../../widgets/detail/cheat_reports_card.dart';
+import '../../widgets/detail/cheat_user_cheaters_card.dart';
+import '../../widgets/detail/judgement_card.dart';
 
 class TimeLine extends StatefulWidget {
   PlayerStatus playerStatus;
@@ -25,8 +22,6 @@ class TimeLine extends StatefulWidget {
 }
 
 class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
-  final UrlUtil _urlUtil = UrlUtil();
-
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   ScrollController scrollController = ScrollController();
@@ -117,7 +112,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
           switch (timeLineItem["type"]) {
             case "reply":
-              // 评论
+              // 评论 or 回复
               return CheatUserCheatersCard(
                 onReplySucceed: _onReplySucceed,
               )
@@ -150,3 +145,6 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     );
   }
 }
+
+
+

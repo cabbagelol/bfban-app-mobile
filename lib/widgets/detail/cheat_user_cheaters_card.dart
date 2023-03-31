@@ -1,15 +1,14 @@
-import 'package:bfban/widgets/detail/quote_card.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
 import 'cheaters_card_types.dart';
+import 'quote_card.dart';
 
-/// 申诉
-class AppealCard extends StatelessWidget {
+/// 回复
+class CheatUserCheatersCard extends StatelessWidget {
   // 单条数据
   late Map data;
 
@@ -20,7 +19,7 @@ class AppealCard extends StatelessWidget {
 
   final CardUtil _detailApi = CardUtil();
 
-  AppealCard({
+  CheatUserCheatersCard({
     Key? key,
     required this.onReplySucceed,
   }) : super(key: key);
@@ -28,7 +27,7 @@ class AppealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TimeLineCard(
-      type: TimeLineItemType.banAppeal,
+      type: TimeLineItemType.reply,
       header: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,8 +38,8 @@ class AppealCard extends StatelessWidget {
                 // 类型
                 Text.rich(
                   TextSpan(
-                    style: const TextStyle(fontSize: 16, height: 1.5),
-                    children: [
+                    style: const TextStyle(fontSize: 16),
+                    children: <TextSpan>[
                       TextSpan(
                         text: data["username"] + "\t",
                         style: const TextStyle(
@@ -54,20 +53,9 @@ class AppealCard extends StatelessWidget {
                           },
                       ),
                       TextSpan(
-                        text: "${FlutterI18n.translate(context, "detail.appeal.info.content")}\t",
+                        text: FlutterI18n.translate(context, "basic.button.reply"),
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                      WidgetSpan(
-                        child: EluiTagComponent(
-                          color: EluiTagType.none,
-                          size: EluiTagSize.no2,
-                          theme: EluiTagTheme(
-                            backgroundColor: Theme.of(context).cardColor,
-                            textColor: Theme.of(context).textTheme.subtitle1!.color!,
-                          ),
-                          value: data["appealStatus"],
                         ),
                       ),
                       TextSpan(
@@ -82,8 +70,8 @@ class AppealCard extends StatelessWidget {
         ),
       ],
       content: HtmlWidget(
-          content: data["content"],
-          quote: QuoteCard(),
+        content: data["content"],
+        quote: QuoteCard(data: data),
       ),
       bottom: TimeLineItemBottomBtn(
         data: data,

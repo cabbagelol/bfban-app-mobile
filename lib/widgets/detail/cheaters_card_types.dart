@@ -5,7 +5,6 @@ import 'dart:convert' show jsonEncode;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluro/fluro.dart';
@@ -14,7 +13,6 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// 卡片内置公共
@@ -97,10 +95,52 @@ class CardUtil {
                       placeholder: (BuildContext buildContext, String url) {
                         return Card(
                           margin: EdgeInsets.zero,
-                          color: Theme.of(buildContext).cardColor,
+                          color: context.style.backgroundColor!.withOpacity(.1),
                           elevation: 0,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                            child: Center(
+                              child: Column(
+                                children: [
+                                  Stack(
+                                    clipBehavior: Clip.none,
+                                    children: [
+                                      const Icon(Icons.image, size: 50),
+                                      Positioned(
+                                        top: -2,
+                                        right: -2,
+                                        child: ELuiLoadComponent(
+                                          type: "line",
+                                          color: Theme.of(buildContext).appBarTheme.backgroundColor!,
+                                          size: 17,
+                                          lineWidth: 2,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Opacity(
+                                    opacity: .5,
+                                    child: Text(
+                                      "${context.tree.element!.attributes['src']}",
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      errorWidget: (BuildContext buildContext, String url, dynamic error) {
+                        return Card(
+                          margin: EdgeInsets.zero,
+                          color: context.style.backgroundColor!.withOpacity(.1),
+                          elevation: 0,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                             child: Center(
                               child: Column(
                                 children: [
@@ -111,11 +151,9 @@ class CardUtil {
                                       Positioned(
                                         top: -5,
                                         right: -5,
-                                        child: ELuiLoadComponent(
-                                          type: "line",
-                                          color: Colors.white10,
-                                          size: 15,
-                                          lineWidth: 2,
+                                        child: Icon(
+                                          Icons.error,
+                                          color: Colors.red,
                                         ),
                                       ),
                                     ],
@@ -194,7 +232,7 @@ class CardUtil {
         padding: EdgeInsets.zero,
         margin: Margins.zero,
       ),
-      "img": Style(color: Theme.of(context).primaryColorDark, padding: EdgeInsets.symmetric(vertical: 5)),
+      "img": Style(color: Theme.of(context).primaryColorDark, padding: const EdgeInsets.symmetric(vertical: 5)),
       "p": Style(
         fontSize: FontSize(15),
         color: Theme.of(context).textTheme.subtitle1!.color,
@@ -247,201 +285,180 @@ class CardUtil {
   }
 }
 
-/// 统一回复按钮
-class ReplyButtonWidget extends StatelessWidget {
-  // 单条数据
-  Map? data;
-
-  // 楼层
-  num? floor = 0;
-
-  final CardUtil cardUtil = CardUtil();
-
-  ReplyButtonWidget({
-    Key? key,
-    this.data,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton(
-      iconSize: 18,
-      splashRadius: 10,
-      onSelected: (value) async {
-        switch (value) {
-          case 1:
-            cardUtil._setReply(context, type: 1, floor: floor, toPlayerId: data!["id"], toCommentId: data!["id"]);
-            break;
-        }
-      },
-      itemBuilder: (context) {
-        return [
-          PopupMenuItem(
-            value: 1,
-            height: 40,
-            child: I18nText("basic.button.reply", child: const Text("")),
-          ),
-        ];
-      },
-    );
-  }
+enum TimeLineItemType {
+  none,
+  reply,
+  report,
+  judgement,
+  banAppeal,
 }
 
-/// 时间轴卡片
+/// 时间轴卡
 /// Core Card
 class TimeLineCard extends StatelessWidget {
-  final List<Widget>? header;
-  final Widget? headerSecondary;
-  final Widget? content;
-  final Widget? button;
+  List<Widget>? header;
+  Widget? headerSecondary;
+  Widget? content;
+  TimeLineItemBottomBtn? bottom;
+  Widget? button;
 
-  const TimeLineCard({
+  List? leftIconTypes = [
+    CircleAvatar(
+      backgroundColor: Colors.blue.withOpacity(.2),
+      child: const Icon(
+        Icons.help,
+        color: Colors.red,
+      ),
+    ),
+    CircleAvatar(
+      backgroundColor: Colors.blue.withOpacity(.2),
+      child: const Icon(
+        Icons.chat_bubble_outlined,
+        color: Colors.blue,
+      ),
+    ),
+    CircleAvatar(
+      backgroundColor: Colors.white.withOpacity(.2),
+      child: const Icon(Icons.front_hand),
+    ),
+    CircleAvatar(
+      backgroundColor: const Color(0xFF3d1380).withOpacity(.8),
+      child: const Icon(
+        Icons.chat_rounded,
+        color: Colors.white,
+      ),
+    ),
+    CircleAvatar(
+      backgroundColor: const Color(0xFFeb2f96).withOpacity(.2),
+      child: const Icon(
+        Icons.bookmark,
+        color: Color(0xFFeb2f96),
+      ),
+    )
+  ];
+  Widget? leftIcon;
+
+  TimeLineCard({
     Key? key,
+    TimeLineItemType type = TimeLineItemType.none,
     this.header,
     this.headerSecondary,
     this.content,
     this.button,
-  }) : super(key: key);
+    this.bottom,
+  }) : super(key: key) {
+    leftIcon = leftIconTypes![type.index];
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        children: [
           const Divider(height: 1),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                child: leftIcon!,
+              ),
+              Flexible(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    // 卡片标题
+                    Container(
+                      margin: const EdgeInsets.only(right: 10, top: 20, bottom: 10),
+                      child: Wrap(
+                        children: header!,
+                      ),
+                    ),
 
-          // 卡片标题
-          Container(
-            margin: const EdgeInsets.only(top: 10, bottom: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: header!,
-            ),
+                    Container(
+                      margin: const EdgeInsets.only(right: 10),
+                      child: Column(
+                        children: [
+                          if (headerSecondary != null) headerSecondary!,
+
+                          // 内容
+                          content!,
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-
-          Container(
-            margin: const EdgeInsets.only(left: 60, right: 10),
-            child: Column(
-              children: [
-                headerSecondary!,
-
-                // 内容
-                content!
-              ],
+          if (bottom != null)
+            Container(
+              margin: const EdgeInsets.only(top: 3, left: 50, right: 10),
+              child: Column(
+                children: [
+                  bottom!,
+                ],
+              ),
             ),
-          ),
         ],
       ),
     );
   }
 }
 
-/// 回复
-class CheatUserCheatersCard extends StatelessWidget {
-  // 单条数据
-  late Map data;
+/// 时间轴按钮集
+/// [时间轴卡] 下的按钮集合
+class TimeLineItemBottomBtn extends StatefulWidget {
+  Map? data;
+  num? floor;
+  bool isShowReply;
+  bool isShowShare;
 
-  // 位置
-  late int index = 0;
-
-  final Function onReplySucceed;
-
-  final CardUtil _detailApi = CardUtil();
-
-  CheatUserCheatersCard({
+  TimeLineItemBottomBtn({
     Key? key,
-    required this.onReplySucceed,
+    this.data,
+    this.floor,
+    this.isShowReply = false,
+    this.isShowShare = false,
   }) : super(key: key);
 
   @override
+  State<TimeLineItemBottomBtn> createState() => _TimeLineItemBottomBtnState();
+}
+
+class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
+  final CardUtil cardUtil = CardUtil();
+
+  @override
   Widget build(BuildContext context) {
-    return TimeLineCard(
-      header: [
-        Container(
-          padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-          child: CircleAvatar(
-            backgroundColor: Colors.blue.withOpacity(.2),
-            child: const Icon(
-              Icons.chat_bubble_outlined,
-              color: Colors.blue,
+    return Row(
+      children: [
+        if (widget.isShowReply)
+          IconButton(
+            onPressed: () {
+              cardUtil._setReply(
+                context,
+                type: 1,
+                floor: widget.floor,
+                toPlayerId: widget.data!["id"],
+                toCommentId: widget.data!["id"],
+              );
+            },
+            icon: const Icon(
+              Icons.quickreply_outlined,
             ),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Wrap(
-                runAlignment: WrapAlignment.center,
-                children: <Widget>[
-                  // 类型
-                  Text.rich(
-                    TextSpan(
-                      style: const TextStyle(fontSize: 16),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: data["username"] + "\t",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
-                            decorationStyle: TextDecorationStyle.dotted,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () async {
-                              _detailApi.openPlayerDetail(context, data["byUserId"]);
-                            },
-                        ),
-                        TextSpan(
-                          text: FlutterI18n.translate(context, "basic.button.reply"),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
+        if (widget.isShowShare)
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.share_outlined,
+            ),
           ),
-        ),
-        ReplyButtonWidget(data: data)..floor = index,
       ],
-      headerSecondary: data["quote"] != null
-          ? Card(
-              elevation: 0,
-              margin: const EdgeInsets.only(right: 10, bottom: 10),
-              color: Theme.of(context).primaryColorDark.withOpacity(.2),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      data["quote"]["username"].toString(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : const SizedBox(),
-      content: Offstage(
-        offstage: data["content"] == "",
-        child: Html(
-          data: data["content"],
-          style: _detailApi.styleHtml(context),
-          customRenders: _detailApi.customRenders(context),
-        ),
-      ),
     );
   }
 }

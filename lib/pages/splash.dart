@@ -266,9 +266,10 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                       FlutterI18n.translate(context, loadTip.toString()),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        // fontSize: FontSize.rem(.8).size,
                         color: Theme.of(context).textTheme.subtitle2!.color,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                     if (!appInfo.connectivity.isConnectivity())
                       Wrap(
@@ -298,6 +299,13 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                               opacity: data.package!.appName!.toString().isEmpty ? 0 : 1,
                               duration: const Duration(milliseconds: 300),
                               child: Text(data.package!.appName.toString()),
+                            ),
+                            const Opacity(
+                              opacity: .6,
+                              child: Text(
+                                "Unofficial, community products",
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ],
                         );

@@ -32,6 +32,7 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
       case "ios":
       case "macos":
         permissions = [
+          Permission.storage,
           Permission.notification,
         ];
         break;

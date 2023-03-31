@@ -259,8 +259,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           isScrollable: true,
           indicatorWeight: .1,
           labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-          onTap: (index) => _onSwitchTab(index),
           padding: const EdgeInsets.symmetric(horizontal: 15),
+          onTap: (index) => _onSwitchTab(index),
           tabs: cheaterStatus!.map((i) {
             return Tab(
               child: Stack(

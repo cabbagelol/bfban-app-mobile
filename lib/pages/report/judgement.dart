@@ -27,17 +27,12 @@ class JudgementPage extends StatefulWidget {
 class _JudgementPageState extends State<JudgementPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  List reportInfoCheatMethods = [];
-
-  Map suggestionInfo = {
-    "videoIndex": 0,
-    "child": [],
-  };
+  List _reportInfoCheatMethods = [];
 
   /// 裁判
   ManageStatus manageStatus = ManageStatus(
     load: false,
-    data: ManageData(
+    parame: ManageData(
       captcha: Captcha(),
       content: "",
       action: "",
@@ -55,8 +50,8 @@ class _JudgementPageState extends State<JudgementPage> {
     Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf!.data.cheatMethodsGlossary!;
 
     setState(() {
-      manageStatus.data!.toPlayerId = widget.id;
-      manageStatus.data!.action = ProviderUtil().ofApp(context).conf!.data.action!["child"][0]["value"];
+      manageStatus.parame!.toPlayerId = widget.id;
+      manageStatus.parame!.action = ProviderUtil().ofApp(context).conf!.data.action!["child"][0]["value"];
 
       setState(() {
         cheatMethodsGlossary["child"].forEach((i) {
@@ -70,8 +65,8 @@ class _JudgementPageState extends State<JudgementPage> {
   /// [Event]
   /// 表单验证
   Map _onVerification() {
-    if (manageStatus.data!.action == "1") {
-      if (manageStatus.data!.cheatMethods.toString().isEmpty) {
+    if (manageStatus.parame!.action == "1") {
+      if (manageStatus.parame!.cheatMethods.toString().isEmpty) {
         return {
           "code": -1,
           "msg": "detail.messages.fillEverything",
@@ -79,7 +74,7 @@ class _JudgementPageState extends State<JudgementPage> {
       }
     }
 
-    if (manageStatus.data!.content!.isEmpty || manageStatus.data!.content!.trim().isEmpty) {
+    if (manageStatus.parame!.content!.isEmpty || manageStatus.parame!.content!.trim().isEmpty) {
       return {
         "code": -1,
         "msg": "detail.messages.pleaseExplain",
@@ -95,6 +90,8 @@ class _JudgementPageState extends State<JudgementPage> {
   /// [Response]
   /// 发布判决
   void _onRelease() async {
+    Navigator.pop(context);
+    return;
     dynamic _verification = _onVerification();
 
     if (_verification["code"] != 0) {
@@ -111,7 +108,7 @@ class _JudgementPageState extends State<JudgementPage> {
     Response result = await Http.request(
       Config.httpHost["player_judgement"],
       method: Http.POST,
-      data: manageStatus.data!.toMap,
+      data: manageStatus.parame!.toMap,
     );
 
     if (result.data["success"] == 1) {
@@ -141,25 +138,23 @@ class _JudgementPageState extends State<JudgementPage> {
     List<Widget> list = [];
 
     for (var method in _cheatingTypes) {
-      list.add(
-        gameTypeRadio(
-          index: method["select"],
-          child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
-          onTap: () {
-            method["select"] = method["select"] != true;
+      list.add(GameTypeRadioWidget(
+        index: method["select"],
+        child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
+        onTap: () {
+          method["select"] = method["select"] != true;
 
-            if (method["select"]) {
-              reportInfoCheatMethods.add(method["value"]);
-            } else {
-              reportInfoCheatMethods.remove(method["value"]);
-            }
+          if (method["select"]) {
+            _reportInfoCheatMethods.add(method["value"]);
+          } else {
+            _reportInfoCheatMethods.remove(method["value"]);
+          }
 
-            setState(() {
-              manageStatus.data!.cheatMethods = reportInfoCheatMethods;
-            });
-          },
-        ),
-      );
+          setState(() {
+            manageStatus.parame!.cheatMethods = _reportInfoCheatMethods;
+          });
+        },
+      ));
     }
 
     return list;
@@ -168,13 +163,13 @@ class _JudgementPageState extends State<JudgementPage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("richedit", value: manageStatus.data!.content);
+    await Storage().set("richedit", value: manageStatus.parame!.content);
 
     _urlUtil.opEnPage(context, "/richedit").then((data) {
       /// 按下确认储存富文本编写的内容
       if (data["code"] == 1) {
         setState(() {
-          manageStatus.data!.content = data["html"];
+          manageStatus.parame!.content = data["html"];
         });
       }
     });
@@ -190,14 +185,17 @@ class _JudgementPageState extends State<JudgementPage> {
         title: Text(FlutterI18n.translate(context, "detail.info.judgement")),
         actions: [
           manageStatus.load!
-              ? const ELuiLoadComponent(
-                  type: "line",
-                  lineWidth: 2,
+              ? ElevatedButton(
+                  onPressed: () {},
+                  child: const ELuiLoadComponent(
+                    type: "line",
+                    lineWidth: 2,
+                    size: 25,
+                    color: Colors.white,
+                  ),
                 )
               : IconButton(
-                  onPressed: () {
-                    _onRelease();
-                  },
+                  onPressed: () => _onRelease(),
                   icon: const Icon(Icons.done),
                 ),
         ],
@@ -221,10 +219,10 @@ class _JudgementPageState extends State<JudgementPage> {
                         underline: const SizedBox(),
                         onChanged: (value) {
                           setState(() {
-                            manageStatus.data!.action = value.toString();
+                            manageStatus.parame!.action = value.toString();
                           });
                         },
-                        value: manageStatus.data!.action,
+                        value: manageStatus.parame!.action,
                         items: appInfo.conf!.data.action!["child"].map<DropdownMenuItem<String>>((i) {
                           return DropdownMenuItem<String>(
                             alignment: AlignmentDirectional.topCenter,
@@ -250,7 +248,7 @@ class _JudgementPageState extends State<JudgementPage> {
 
               /// S 作弊方式
               Offstage(
-                offstage: !["kill", "guilt"].contains(manageStatus.data!.action!),
+                offstage: !["kill", "guilt"].contains(manageStatus.parame!.action!),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -273,7 +271,7 @@ class _JudgementPageState extends State<JudgementPage> {
               EluiCellComponent(
                 title: FlutterI18n.translate(context, "detail.judgement.content"),
                 cont: Offstage(
-                  offstage: manageStatus.data!.content!.isNotEmpty,
+                  offstage: manageStatus.parame!.content!.isNotEmpty,
                   child: Wrap(
                     spacing: 5,
                     crossAxisAlignment: WrapCrossAlignment.center,
@@ -296,7 +294,7 @@ class _JudgementPageState extends State<JudgementPage> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Card(
-                  elevation: 10,
+                  elevation: 0,
                   clipBehavior: Clip.hardEdge,
                   child: GestureDetector(
                     child: Container(
@@ -308,22 +306,7 @@ class _JudgementPageState extends State<JudgementPage> {
                       padding: EdgeInsets.zero,
                       child: Stack(
                         children: <Widget>[
-                          Html(data: manageStatus.data!.content!.toString()),
-                          Positioned(
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            child: Container(
-                              height: 100,
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Colors.transparent, Colors.black54],
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                ),
-                              ),
-                            ),
-                          ),
+                          Html(data: manageStatus.parame!.content!.toString()),
                           Positioned(
                             top: 0,
                             left: 0,
@@ -356,11 +339,11 @@ class _JudgementPageState extends State<JudgementPage> {
               EluiInputComponent(
                 onChange: (data) {
                   setState(() {
-                    manageStatus.data!.captcha!.value = data["value"];
+                    manageStatus.parame!.captcha!.value = data["value"];
                   });
                 },
                 right: CaptchaWidget(
-                  onChange: (Captcha cap) => manageStatus.data!.captcha = cap,
+                  onChange: (Captcha cap) => manageStatus.parame!.captcha = cap,
                 ),
                 maxLenght: 4,
                 placeholder: FlutterI18n.translate(context, "captcha.title"),

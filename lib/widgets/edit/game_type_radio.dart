@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 /// 游戏类型单选
-class gameTypeRadio extends StatelessWidget {
+class GameTypeRadioWidget extends StatelessWidget {
   final Widget? child;
   final bool index;
   final GestureTapCallback? onTap;
 
-   const gameTypeRadio({Key? key,
+   const GameTypeRadioWidget({Key? key,
     this.child,
     this.index = false,
     this.onTap,

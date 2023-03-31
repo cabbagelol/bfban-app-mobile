@@ -137,13 +137,27 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               child: Column(
                 children: [
                   TabBar(
-                    automaticIndicatorColorAdjustment: false,
                     controller: tabController,
+                    isScrollable: true,
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     tabs: homeTabs.map((e) {
                       return Tab(
-                        icon: e["icon"],
                         iconMargin: EdgeInsets.zero,
-                        child: e["load"] ?? false ? const Text("-") : Text("${e["text"]}", textAlign: TextAlign.center),
+                        child: e["load"] ?? false
+                            ? const Text("-")
+                            : Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  e["icon"],
+                                  Text(
+                                    "${e["text"]}",
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  )
+                                ],
+                              ),
                       );
                     }).toList(),
                   ),
@@ -153,10 +167,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     child: TabBarView(
                       controller: tabController,
                       children: [
-                        HomeCommunityPage(),
+                        const HomeCommunityPage(),
                         HomeTrendPage(key: _homeTrendPageKey),
                         HomeTracePage(key: _homeTracePageKey),
-                        HomeTourRecordPage(),
+                        const HomeTourRecordPage(),
                       ],
                     ),
                   )

@@ -1,6 +1,7 @@
 /// 包
 
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../utils/http.dart';
@@ -80,40 +81,23 @@ class PackageProvider with ChangeNotifier {
           return AlertDialog(
             elevation: 40,
             clipBehavior: Clip.hardEdge,
-            titlePadding: EdgeInsets.zero,
-            title: Stack(
-              children: [
-                Image.asset(
-                  "assets/images/bk-companion.jpg",
-                ),
-                Positioned(
-                  top: 100,
-                  left: 0,
-                  right: 0,
-                  child: Image.asset(
-                    "assets/images/logo.png",
-                    width: 80,
-                    height: 80,
-                  ),
-                ),
-              ],
-            ),
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  Text(onlineVersion.toString()),
+                  Text("${FlutterI18n.translate(context, "app.setting.versions.currentVersion")}:${currentVersion}"),
+                  Text("${FlutterI18n.translate(context, "app.setting.versions.newVersion")}:${onlineVersion}"),
                 ],
               ),
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('不,谢谢'),
+                child: Text(FlutterI18n.translate(context, "basic.button.cancel")),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
               TextButton(
-                child: const Text('前往升级'),
+                child: Text(FlutterI18n.translate(context, "basic.button.submit")),
                 onPressed: () {
                   _urlUtil.opEnPage(context, "/profile/version").then((value) {
                     Navigator.pop(context);
@@ -159,8 +143,7 @@ class PackageProvider with ChangeNotifier {
 
     if (result.data.toString().length >= 0) {
       package!.list = result.data["list"];
-      package!.onlineVersion =
-          setIssue(package!.list![0]["version"], package!.list![0]["stage"]);
+      package!.onlineVersion = setIssue(package!.list![0]["version"], package!.list![0]["stage"]);
     }
     package!.loadOnline = false;
     notifyListeners();
@@ -191,6 +174,5 @@ class PackageProvider with ChangeNotifier {
   bool get loadOnline => package!.loadOnline!;
 
   /// 是否最新版本
-  bool get isNewVersion =>
-      _version.getContrast(package!.currentVersion!, package!.onlineVersion!);
+  bool get isNewVersion => _version.getContrast(package!.currentVersion!, package!.onlineVersion!);
 }

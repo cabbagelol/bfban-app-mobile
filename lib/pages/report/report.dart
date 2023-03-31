@@ -183,25 +183,23 @@ class _ReportPageState extends State<ReportPage> {
   List<Widget> _reportCheckboxType() {
     List<Widget> widgets = [];
     for (var method in _cheatingTypes) {
-      widgets.add(
-        gameTypeRadio(
-          index: method["select"],
-          child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
-          onTap: () {
-            setState(() {
-              method["select"] = method["select"] != true;
+      widgets.add(GameTypeRadioWidget(
+        index: method["select"],
+        child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
+        onTap: () {
+          setState(() {
+            method["select"] = method["select"] != true;
 
-              if (method["select"]) {
-                reportInfoCheatMethods.add(method["value"]);
-              } else {
-                reportInfoCheatMethods.remove(method["value"]);
-              }
+            if (method["select"]) {
+              reportInfoCheatMethods.add(method["value"]);
+            } else {
+              reportInfoCheatMethods.remove(method["value"]);
+            }
 
-              reportStatus.param!.data!["cheatMethods"] = reportInfoCheatMethods;
-            });
-          },
-        ),
-      );
+            reportStatus.param!.data!["cheatMethods"] = reportInfoCheatMethods;
+          });
+        },
+      ));
     }
     return widgets;
   }
@@ -236,15 +234,17 @@ class _ReportPageState extends State<ReportPage> {
                 Theme.of(context).appBarTheme.backgroundColor,
               ),
             ),
-            child: reportStatus.load! ? const Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: ELuiLoadComponent(
-                type: "line",
-                size: 20,
-                lineWidth: 2,
-                color: Colors.white,
-              ),
-            ) : const Icon(Icons.done),
+            child: reportStatus.load!
+                ? const Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: ELuiLoadComponent(
+                      type: "line",
+                      size: 20,
+                      lineWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Icon(Icons.done),
           )
         ],
       ),
@@ -472,7 +472,7 @@ class _ReportPageState extends State<ReportPage> {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Card(
-              elevation: 10,
+              elevation: 0,
               clipBehavior: Clip.hardEdge,
               child: GestureDetector(
                 child: Container(
@@ -485,21 +485,6 @@ class _ReportPageState extends State<ReportPage> {
                   child: Stack(
                     children: <Widget>[
                       Html(data: reportStatus.param!.data!["description"]),
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                          height: 100,
-                          decoration: const BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.transparent, Colors.black54],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
-                          ),
-                        ),
-                      ),
                       Positioned(
                         top: 0,
                         left: 0,

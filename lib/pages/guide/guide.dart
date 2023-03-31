@@ -81,54 +81,57 @@ class _GuidePageState extends State<GuidePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomRight,
-                colors: [Colors.transparent, Colors.black38],
-              ),
-            ),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-        ),
-        body: PageTransitionSwitcher(
-          duration: const Duration(milliseconds: 150),
-          transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
-            return SharedAxisTransition(
-              fillColor: Theme.of(context).scaffoldBackgroundColor,
-              animation: primaryAnimation,
-              secondaryAnimation: secondaryAnimation,
-              transitionType: SharedAxisTransitionType.horizontal,
-              child: child,
-            );
-          },
-          child: guideListPage[guideListPageIndex],
-        ),
-        bottomSheet: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AnimatedOpacity(
-                opacity: guideListPageIndex == 0 ? 0 : 1,
-                duration: const Duration(milliseconds: 300),
-                child: TextButton(
-                  onPressed: _onBacktrack,
-                  child: Text(FlutterI18n.translate(context, "basic.button.prev")),
+      child: SafeArea(
+        top: false,
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomRight,
+                  colors: [Colors.transparent, Colors.black38],
                 ),
               ),
-              Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
-              ElevatedButton(
-                onPressed: _onNext,
-                child: guideListPageIndex + 1 < guideListPage.length ? Text(FlutterI18n.translate(context, "basic.button.next")) : Text(FlutterI18n.translate(context, "app.guide.endNext")),
-              ),
-            ],
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+          ),
+          body: PageTransitionSwitcher(
+            duration: const Duration(milliseconds: 150),
+            transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
+              return SharedAxisTransition(
+                fillColor: Theme.of(context).scaffoldBackgroundColor,
+                animation: primaryAnimation,
+                secondaryAnimation: secondaryAnimation,
+                transitionType: SharedAxisTransitionType.horizontal,
+                child: child,
+              );
+            },
+            child: guideListPage[guideListPageIndex],
+          ),
+          bottomSheet: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AnimatedOpacity(
+                  opacity: guideListPageIndex == 0 ? 0 : 1,
+                  duration: const Duration(milliseconds: 300),
+                  child: TextButton(
+                    onPressed: _onBacktrack,
+                    child: Text(FlutterI18n.translate(context, "basic.button.prev")),
+                  ),
+                ),
+                Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
+                ElevatedButton(
+                  onPressed: _onNext,
+                  child: guideListPageIndex + 1 < guideListPage.length ? Text(FlutterI18n.translate(context, "basic.button.next")) : Text(FlutterI18n.translate(context, "app.guide.endNext")),
+                ),
+              ],
+            ),
           ),
         ),
       ),

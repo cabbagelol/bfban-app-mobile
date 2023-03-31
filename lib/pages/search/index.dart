@@ -170,7 +170,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// 账户搜索
   void _onSearch({isButtonClick = true}) async {
     if (searchStatus.load) return;
-    if (isButtonClick && searchStatus.params.param.toString().isEmpty) {
+    if (isButtonClick || searchStatus.params.param.toString().isEmpty) {
       EluiMessageComponent.error(context)(
         child: Text(FlutterI18n.translate(context, "signin.fillEverything")),
       );

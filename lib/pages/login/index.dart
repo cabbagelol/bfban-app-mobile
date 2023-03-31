@@ -89,7 +89,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                     MaterialButton(
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       color: Theme.of(context).colorScheme.primary,
-                      elevation: 5,
+                      elevation: 2,
                       onPressed: () {
                         _openSignin();
                       },

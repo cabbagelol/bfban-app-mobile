@@ -265,7 +265,13 @@ class _IndexPageState extends State<IndexPage> {
                   "icon": const Icon(Icons.person_sharp, size: 30),
                 },
               ].map((Map? nav) {
-                return BottomNavigationBarItem(icon: nav!["icon"], label: FlutterI18n.translate(context, "${nav["name"]}.title"));
+                return BottomNavigationBarItem(
+                  icon: nav!["icon"],
+                  label: FlutterI18n.translate(
+                    context,
+                    "${nav["name"]}.title",
+                  ),
+                );
               }).toList(),
               currentIndex: _currentPageIndex,
               onTap: (int index) => onTap(index),

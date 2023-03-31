@@ -41,7 +41,7 @@ class PhotoViewSimpleScreen extends StatefulWidget {
 
 class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
   // 加载状态
-  bool saveImgLoad = false;
+  bool imageSaveStatus = false;
 
   // 图片状态
   bool imgStatus = false;
@@ -65,12 +65,12 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
   /// [Event]
   /// 储存图片
   void onSave(BuildContext context, String? src) async {
-    if (saveImgLoad) {
+    if (imageSaveStatus) {
       return;
     }
 
     setState(() {
-      saveImgLoad = true;
+      imageSaveStatus = true;
     });
 
     dynamic result = await mediaManagement.saveLocalImages(src);
@@ -84,7 +84,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
           );
 
     setState(() {
-      saveImgLoad = false;
+      imageSaveStatus = false;
     });
   }
 
@@ -97,12 +97,15 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
         title: Text(widget.imageUrl!.toString()),
         centerTitle: true,
         actions: [
-          saveImgLoad
-              ? const ELuiLoadComponent(
-                  type: "line",
-                  lineWidth: 2,
-                  size: 25,
-                  color: Colors.white,
+          imageSaveStatus
+              ? ElevatedButton(
+                  onPressed: () {},
+                  child: const ELuiLoadComponent(
+                    type: "line",
+                    lineWidth: 2,
+                    size: 25,
+                    color: Colors.white,
+                  ),
                 )
               : IconButton(
                   icon: const Icon(

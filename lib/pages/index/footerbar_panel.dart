@@ -124,8 +124,10 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    SizedBox(
-                      width: 100,
+                    Container(
+                      constraints: const BoxConstraints(
+                        minWidth: 100,
+                      ),
                       child: Column(
                         children: <Widget>[
                           statistics.load
@@ -170,8 +172,10 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       width: 1,
                       color: Theme.of(context).dividerColor,
                     ),
-                    SizedBox(
-                      width: 100,
+                    Container(
+                      constraints: const BoxConstraints(
+                        minWidth: 100,
+                      ),
                       child: Column(
                         children: <Widget>[
                           statistics.load
@@ -201,6 +205,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                 fontSize: 12,
                                 color: Theme.of(context).textTheme.subtitle2!.color,
                               ),
+                              textAlign: TextAlign.center,
                             ),
                           )
                         ],
@@ -246,65 +251,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                   ),
                 );
               },
-            ),
-
-            // 功能块
-            Expanded(
-              flex: 1,
-              child: CustomScrollView(
-                primary: false,
-                slivers: <Widget>[
-                  SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                    sliver: SliverGrid.count(
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 4,
-                      children: <Widget>[
-                        Opacity(
-                          opacity: data.isLogin ? 1 : .3,
-                          child: TextButton(
-                            onPressed: data.isLogin ? _openReply() : null,
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Icons.list,
-                                  size: 35,
-                                ),
-                                Text("举报玩家")
-                              ],
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          child: Column(
-                            children: const [
-                              Icon(
-                                Icons.list,
-                                size: 35,
-                              ),
-                              Text("应用中心")
-                            ],
-                          ),
-                          onPressed: () => _openApps(),
-                        ),
-                        TextButton(
-                          child: Column(
-                            children: const [
-                              Icon(
-                                Icons.list,
-                                size: 35,
-                              ),
-                              Text("论坛")
-                            ],
-                          ),
-                          onPressed: () => _openSupport(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         );

@@ -2,10 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
+import 'package:flutter_elui_plugin/_popup/index.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_elui_plugin/_tip/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../constants/api.dart';
 import '../../provider/package_provider.dart';
@@ -24,6 +26,66 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
   @override
   initState() {
     super.initState();
+  }
+
+  /// [Event]
+  /// 打开下载链接
+  void _openAppDown(i) {
+    List platform = [];
+    if (i["platform"] == null) return;
+    i["platform"].keys.toList().forEach((i) {
+      platform.add(i);
+    });
+    EluiPopupComponent(context)(
+      placement: EluiPopupPlacement.bottom,
+      theme: EluiPopupTheme(
+        popupBackgroundColor: Theme.of(context).backgroundColor,
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "${i["version"]}",
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(
+              height: 30,
+              child: Divider(height: 1),
+            ),
+            Wrap(
+              children: platform.map((item) {
+                return Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Wrap(
+                        children: [
+                          const Icon(Icons.link_outlined),
+                          const SizedBox(width: 5),
+                          Text(item.toString()),
+                        ],
+                      ),
+                    ),
+                    if (i["platform"][item]["url"] != null || i["platform"][item]["url"] != "")
+                      GestureDetector(
+                        onTap: () {
+                          _urlUtil.onPeUrl(
+                            i["platform"][item]["url"],
+                            mode: LaunchMode.externalNonBrowserApplication,
+                          );
+                        },
+                        child: Icon(Icons.download_for_offline),
+                      ),
+                  ],
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -47,6 +109,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
             child: Column(
               children: [
                 Card(
+                  elevation: 0,
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
@@ -54,6 +117,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                   ),
                 ),
                 Card(
+                  elevation: 0,
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.newVersion"),
@@ -66,7 +130,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                     },
                   ),
                 ),
-                const SizedBox(height: 10),
+                if (data.list.isNotEmpty) const SizedBox(height: 10),
                 data.list
                         .where((i) {
                           return data.setIssue(i["version"], i["stage"]) == data.currentVersion;
@@ -101,6 +165,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                                 backgroundColor: Theme.of(context).backgroundColor,
                                 borderColor: Theme.of(context).backgroundColor,
                               ),
+                              onTap: () {},
                             ),
                             const SizedBox(width: 10),
                             data.setIssue(e["version"], e["stage"]) == data.currentVersion
@@ -111,14 +176,13 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                                     theme: EluiTagTheme(
                                       backgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
                                     ),
+                                    onTap: () {},
                                   )
                                 : Container(),
                           ],
                         ),
                         trailing: const Icon(Icons.chevron_right),
-                        onTap: () {
-                          _urlUtil.onPeUrl(e["src"]);
-                        },
+                        onTap: () => _openAppDown(e),
                       );
                     }).toList(),
                   ),

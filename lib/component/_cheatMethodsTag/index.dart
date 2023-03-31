@@ -28,8 +28,8 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      runSpacing: 5,
-      spacing: 5,
+      runSpacing: 3,
+      spacing: 3,
       children: methods.isEmpty ? [
         EluiTagComponent(
           color: EluiTagType.none,

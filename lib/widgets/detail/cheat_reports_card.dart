@@ -1,13 +1,15 @@
 import 'package:bfban/component/_cheatMethodsTag/index.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_gamesTag/index.dart';
+import '../../component/_html/htmlWidget.dart';
 import '../../utils/date.dart';
 import '../../utils/url.dart';
 import 'cheaters_card_types.dart';
+import 'quote_card.dart';
+import 'video_link.dart';
 
 /// 举报
 class CheatReportsCard extends StatelessWidget {
@@ -17,7 +19,6 @@ class CheatReportsCard extends StatelessWidget {
   // 位置
   late int? index;
 
-  final UrlUtil _urlUtil = UrlUtil();
 
   final CardUtil _detailApi = CardUtil();
 
@@ -31,152 +32,91 @@ class CheatReportsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TimeLineCard(
+      type: TimeLineItemType.report,
       header: [
-        Expanded(
-          flex: 1,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: CircleAvatar(
-                  backgroundColor: Colors.white.withOpacity(.2),
-                  child: Icon(Icons.front_hand),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // 标题
-                    Text.rich(
-                      TextSpan(
-                        style: const TextStyle(fontSize: 16),
-                        children: [
-                          TextSpan(
-                            text: data["username"] + "\t",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                              decorationStyle: TextDecorationStyle.dotted,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () async {
-                                _detailApi.openPlayerDetail(context, data["byUserId"]);
-                              },
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // 标题
+                  Text.rich(
+                    TextSpan(
+                      style: const TextStyle(fontSize: 16, height: 1.5),
+                      children: [
+                        TextSpan(
+                          text: data["username"],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                            decorationStyle: TextDecorationStyle.dotted,
                           ),
-                          TextSpan(
-                            text: "${FlutterI18n.translate(context, "detail.info.report")}\t",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.normal,
-                            ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () async {
+                              _detailApi.openPlayerDetail(context, data["byUserId"]);
+                            },
+                        ),
+                        TextSpan(
+                          text: "\t${FlutterI18n.translate(context, "detail.info.report")}\t",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.normal,
                           ),
-                          TextSpan(
-                            text: data["toOriginName"] + "\t",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        ),
+                        TextSpan(
+                          text: data["toOriginName"] + "\t",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
                           ),
-                          TextSpan(
-                            text: "${FlutterI18n.translate(context, "detail.info.inGame")}\t",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.normal,
-                            ),
+                        ),
+                        TextSpan(
+                          text: "${FlutterI18n.translate(context, "detail.info.inGame")}\t",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.normal,
                           ),
-                          WidgetSpan(
-                            child: GamesTagWidget(
-                              data: data["cheatGame"],
-                              size: GamesTagSize.no2,
-                            ),
+                        ),
+                        WidgetSpan(
+                          child: GamesTagWidget(
+                            data: data["cheatGame"],
+                            size: GamesTagSize.no2,
                           ),
-                          TextSpan(
-                            text: "\t${FlutterI18n.translate(context, "detail.info.gaming")}\t",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.normal,
-                            ),
+                        ),
+                        TextSpan(
+                          text: "\t${FlutterI18n.translate(context, "detail.info.gaming")}\t",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.normal,
                           ),
-                          WidgetSpan(
-                            child: CheatMethodsTagWidget(data: data["cheatMethods"]),
+                        ),
+                        WidgetSpan(
+                          child: CheatMethodsTagWidget(data: data["cheatMethods"]),
+                        ),
+                        TextSpan(
+                          text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.normal,
                           ),
-                          TextSpan(
-                            text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ReplyButtonWidget(data: data)..floor = index,
-            ],
-          ),
-        ),
-      ],
-      headerSecondary: Offstage(
-        offstage: data["videoLink"].toString().isEmpty,
-        child: Column(
-          children: data["videoLink"].toString().split(",").map((i) {
-            return Row(
-              children: [
-                Card(
-                  margin: EdgeInsets.zero,
-                  color: Theme.of(context).primaryColorDark.withOpacity(.2),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          FlutterI18n.translate(context, "detail.info.videoLink"),
-                          style: const TextStyle(fontSize: 12),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 2, right: 5),
-                  width: 1,
-                  height: 15,
-                  color: Theme.of(context).dividerColor,
-                  constraints: const BoxConstraints(
-                    minHeight: 15,
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Wrap(
-                    children: [
-                      GestureDetector(
-                        child: const Icon(Icons.link, size: 15),
-                        onTap: () => _urlUtil.onPeUrl(data["videoLink"].toString()),
-                      ),
-                      Text(
-                        data["videoLink"].toString(),
-                        style: const TextStyle(fontSize: 12),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                Text("${index! + 1}"),
-              ],
-            );
-          }).toList(),
+                ],
+              ),
+            ),
+          ],
         ),
+      ],
+      headerSecondary: VideoLink(data: data),
+      content: HtmlWidget(
+        content: data["content"],
+        quote: QuoteCard(data: data),
       ),
-      content: Offstage(
-        offstage: data["content"] == "",
-        child: Html(
-          data: data["content"],
-          style: _detailApi.styleHtml(context),
-          customRenders: _detailApi.customRenders(context),
-        ),
+      bottom: TimeLineItemBottomBtn(
+        data: data,
+        floor: index,
+        isShowShare: true,
+        isShowReply: true,
       ),
     );
   }

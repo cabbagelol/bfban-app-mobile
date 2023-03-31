@@ -3,11 +3,11 @@ import 'Captcha.dart';
 /// 裁判
 class ManageStatus {
   late bool? load;
-  late ManageData? data;
+  late ManageData? parame;
 
   ManageStatus({
     this.load,
-    this.data,
+    this.parame,
   });
 }
 
@@ -41,13 +41,11 @@ class ManageData {
         "content": content,
         "action": action,
         "toPlayerId": toPlayerId,
+        "cheatMethods": ["kill", "guilt"].contains(action) ? cheatMethods : null
       },
       "encryptCaptcha": captcha!.hash,
       "captcha": captcha!.value,
     };
-    if (["kill", "guilt"].contains(action)) {
-      map["data"]["cheatMethods"] = cheatMethods;
-    }
     return map;
   }
 }
