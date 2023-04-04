@@ -51,7 +51,7 @@ class CheatListCard extends StatelessWidget {
           Text(
             item["originName"] ?? "",
             style: TextStyle(
-              color: Theme.of(context).primaryTextTheme.headline1!.color,
+              color: Theme.of(context).textTheme.headlineMedium!.color,
               fontSize: 20,
             ),
           ),
@@ -63,7 +63,7 @@ class CheatListCard extends StatelessWidget {
             Text(
               Date().getTimestampTransferCharacter(item["createTime"])["Y_D_M"],
               style: TextStyle(
-                color: Theme.of(context).textTheme.subtitle2!.color,
+                color: Theme.of(context).textTheme.displayMedium!.color,
                 fontSize: 9,
               ),
               overflow: TextOverflow.ellipsis,
@@ -74,7 +74,7 @@ class CheatListCard extends StatelessWidget {
             Text(
               Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
               style: TextStyle(
-                color: Theme.of(context).textTheme.subtitle2!.color,
+                color: Theme.of(context).textTheme.displayMedium!.color,
                 fontSize: 9,
               ),
               overflow: TextOverflow.ellipsis,
@@ -83,6 +83,7 @@ class CheatListCard extends StatelessWidget {
         ],
       ),
       trailing: Wrap(
+        runAlignment: WrapAlignment.center,
         children: <Widget>[
           if (isIconView!)
             CheatersCardIconitem(
@@ -117,8 +118,15 @@ class CheatListCard extends StatelessWidget {
               n: item["hot"].toString(),
               i: Icons.local_fire_department,
             ),
-          if (!isIconCommendView! && !isIconHotView! && !isIconHotView!)
-            Icon(Icons.keyboard_arrow_right)
+          const SizedBox(width: 15),
+          Container(
+            width: 5,
+            height: 35,
+            decoration: BoxDecoration(
+              color: item["status"] == 1 ? Colors.red : Colors.green,
+              borderRadius: BorderRadius.circular(3),
+            ),
+          )
         ],
       ),
       onTap: () {

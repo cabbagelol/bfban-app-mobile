@@ -241,7 +241,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                 borderRadius: BorderRadius.circular(50),
                                 child: CircleAvatar(
                                   radius: 25,
-                                  child: snapshot.data["userAvatar"].isNotEmpty
+                                  child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
                                       ? Image.network(snapshot.data["userAvatar"])
                                       : Text(
                                           snapshot.data["username"][0].toString().toUpperCase(),

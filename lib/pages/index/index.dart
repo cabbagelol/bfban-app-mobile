@@ -218,7 +218,7 @@ class _IndexPageState extends State<IndexPage> {
                     boxShadow: [
                       BoxShadow(
                         color: Theme.of(context).scaffoldBackgroundColor,
-                        offset: const Offset(0, -10),
+                        offset: const Offset(0, -2),
                         spreadRadius: .2,
                         blurRadius: 10,
                       )
@@ -265,18 +265,15 @@ class _IndexPageState extends State<IndexPage> {
               showUnselectedLabels: true,
               items: [
                 {
-                  "index": 0,
                   "name": "home",
                   "icon": const Icon(Icons.home_sharp, size: 30),
                 },
                 {
-                  "index": 1,
                   "name": "player_list",
                   "count": (playerListPage?.currentState?.playersStatus?.list!.length ?? 0).toString(),
                   "icon": const Icon(Icons.view_list_outlined, size: 30),
                 },
                 {
-                  "index": 2,
                   "name": "profile",
                   "icon": const Icon(Icons.person_sharp, size: 30),
                 },

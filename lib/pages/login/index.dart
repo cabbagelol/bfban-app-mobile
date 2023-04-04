@@ -81,7 +81,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                     Text(
                       FlutterI18n.translate(context, "app.signin.panel.label"),
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle2!.color,
+                        color: Theme.of(context).textTheme.bodyMedium!.color,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -98,7 +98,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                     const SizedBox(height: 20),
                     MaterialButton(
                       padding: const EdgeInsets.symmetric(vertical: 15),
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
                       elevation: 0,
                       onPressed: () => _pop(),
                       child: Text(FlutterI18n.translate(context, "app.signin.panel.cancelButton")),
@@ -117,8 +117,8 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Theme.of(context).bottomAppBarColor,
-                        Theme.of(context).bottomAppBarColor,
+                        Theme.of(context).bottomAppBarTheme.color!,
+                        Theme.of(context).bottomAppBarTheme.color!,
                       ],
                     ),
                   ),

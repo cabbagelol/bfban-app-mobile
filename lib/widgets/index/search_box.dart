@@ -21,7 +21,7 @@ class titleSearchColor {
   titleSearchColor(titleSearchTheme theme) {
     switch (theme) {
       case titleSearchTheme.black:
-        color = Colors.black38;
+        color = Colors.black26;
         iconColor = Colors.white;
         textColor = Colors.white54;
         break;
@@ -111,14 +111,14 @@ class searchState extends State<titleSearch> {
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 decoration: BoxDecoration(
                   color: titleSearchColor(widget.theme).color,
-                  border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+                  border: Border.all(color: Theme.of(context).dividerTheme.color!, width: 1),
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: Row(
                   children: <Widget>[
                     Icon(
                       Icons.search,
-                      color: titleSearchColor(widget.theme).iconColor,
+                      color: titleSearchColor(widget.theme).textColor,
                       size: 20,
                     ),
                     const SizedBox(
@@ -131,13 +131,13 @@ class searchState extends State<titleSearch> {
                               controller: controller,
                               focusNode: controllerFocus,
                               keyboardType: TextInputType.text,
-                              cursorColor: const Color(0xff364e80),
+                              cursorColor: Theme.of(context).colorScheme.primary,
                               cursorWidth: 3,
                               cursorRadius: const Radius.circular(100),
                               maxLines: 1,
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 fontSize: 15,
-                                color: Colors.black45,
+                                color: titleSearchColor(widget.theme).textColor,
                               ),
                               backgroundCursorColor: Colors.white,
                               onSubmitted: (data) => widget.onSubmitted!(data),

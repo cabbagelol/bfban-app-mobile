@@ -135,7 +135,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
               },
               imageProvider: widget.imageProvider,
               backgroundDecoration: widget.backgroundDecoration ?? BoxDecoration(
-                color: Theme.of(context).backgroundColor
+                color: Theme.of(context).bottomAppBarTheme.color
               ),
               minScale: widget.minScale,
               maxScale: widget.maxScale,

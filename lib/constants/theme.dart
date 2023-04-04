@@ -1,8 +1,12 @@
 import '../data/Theme.dart';
-import '../themes/default.dart';
+import '../themes/dark.dart';
 import '../themes/lightnes.dart';
+import '../themes/pink.dart';
+
+String ThemeDefault = "dark";
 
 Map<String, AppThemeItem>? ThemeList = {
-  "default": DefaultTheme.data,
+  "dark": DarkTheme.data,
   "lightnes": LightnesTheme.data,
+  "pink": PinkTheme.data,
 };

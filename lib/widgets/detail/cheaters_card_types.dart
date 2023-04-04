@@ -54,7 +54,7 @@ class CardUtil {
           return ClipRRect(
             borderRadius: BorderRadius.circular(3),
             child: Container(
-              color: context.style.color,
+              color: context.style.color!.withOpacity(.5),
               child: Stack(
                 children: [
                   GestureDetector(
@@ -97,8 +97,7 @@ class CardUtil {
                       placeholder: (BuildContext buildContext, String url) {
                         return Card(
                           margin: EdgeInsets.zero,
-                          color: context.style.backgroundColor!.withOpacity(.1),
-                          elevation: 0,
+                          color: context.style.backgroundColor!.withOpacity(.5),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                             child: Center(
@@ -113,7 +112,7 @@ class CardUtil {
                                         right: -2,
                                         child: ELuiLoadComponent(
                                           type: "line",
-                                          color: Theme.of(buildContext).appBarTheme.backgroundColor!,
+                                          color: context.style.backgroundColor!,
                                           size: 17,
                                           lineWidth: 2,
                                         ),
@@ -139,8 +138,7 @@ class CardUtil {
                       errorWidget: (BuildContext buildContext, String url, dynamic error) {
                         return Card(
                           margin: EdgeInsets.zero,
-                          color: context.style.backgroundColor!.withOpacity(.1),
-                          elevation: 0,
+                          color: context.style.backgroundColor!.withOpacity(.5),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                             child: Center(

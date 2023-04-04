@@ -85,7 +85,7 @@ class _BfBanAppState extends State<BfBanApp> {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 theme: themeData.currentThemeData,
-                darkTheme: themeData.list!["default"]!.themeData!,
+                // darkTheme: themeData.list!["default"]!.themeData!,
                 initialRoute: '/splash',
                 supportedLocales: const [
                   Locale('zh', 'CH'),

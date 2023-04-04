@@ -205,7 +205,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                               ),
                               textAlign: TextAlign.center,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -225,7 +225,21 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                         child: Opacity(
                           opacity: data.isLogin ? 1 : .3,
                           child: TextButton(
-                            child: const Icon(Icons.add),
+                            child: Column(
+                              children: [
+                                const Icon(Icons.add),
+                                I18nText(
+                                  "report.title",
+                                  child: const Text(
+                                    "",
+                                    style: TextStyle(fontSize: 12),
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
+                            ),
                             onPressed: () => data.isLogin ? _openReply() : null,
                           ),
                         ),
@@ -260,7 +274,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-
                     if (statistics.load)
                       Column(
                         children: [
@@ -308,7 +321,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-
                     if (statistics.load)
                       Column(
                         children: [
@@ -356,7 +368,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-
                     if (statistics.load)
                       Column(
                         children: [

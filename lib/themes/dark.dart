@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../data/index.dart';
 
-class DefaultTheme {
+class DarkTheme {
   static dynamic data = AppThemeItem(
-    name: "default",
+    name: "dark",
     isDefault: true,
     themeData: ThemeData(
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -23,8 +23,8 @@ class DefaultTheme {
       primaryColorDark: Colors.yellow,
       textTheme: const TextTheme(
         displayLarge: TextStyle(color: Colors.white),
-        displayMedium: TextStyle(color: Colors.white),
-        displaySmall: TextStyle(color: Colors.white),
+        displayMedium: TextStyle(color: Colors.white70),
+        displaySmall: TextStyle(color: Colors.white54),
         headlineMedium: TextStyle(color: Colors.white),
         headlineSmall: TextStyle(color: Colors.white),
         titleLarge: TextStyle(color: Colors.white),
@@ -32,6 +32,11 @@ class DefaultTheme {
         titleSmall: TextStyle(color: Colors.white54),
         bodyLarge: TextStyle(color: Colors.white),
         bodyMedium: TextStyle(color: Colors.white),
+        bodySmall: TextStyle(color: Colors.white),
+      ),
+      switchTheme: const SwitchThemeData().copyWith(
+        trackColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.2)),
+        thumbColor: MaterialStateProperty.all(Colors.yellow),
       ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),
@@ -148,7 +153,8 @@ class DefaultTheme {
       cardTheme: const CardTheme(
         color: Color(0xff0d1323),
         shadowColor: Colors.black54,
-        elevation: 2,
+        margin: EdgeInsets.zero,
+        elevation: 0,
       ),
       radioTheme: RadioThemeData(
         mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
@@ -156,12 +162,12 @@ class DefaultTheme {
         fillColor: MaterialStateProperty.all(Colors.yellow),
       ),
       primaryTextTheme: const TextTheme(
-        headline1: TextStyle(color: Colors.white),
-        headline2: TextStyle(color: Colors.white70),
-        headline3: TextStyle(color: Colors.white54),
-        headline4: TextStyle(color: Colors.white38),
-        headline5: TextStyle(color: Colors.white24),
-        headline6: TextStyle(color: Colors.white12),
+        displayLarge: TextStyle(color: Colors.white),
+        displayMedium: TextStyle(color: Colors.white70),
+        displaySmall: TextStyle(color: Colors.white54),
+        headlineMedium: TextStyle(color: Colors.white38),
+        headlineSmall: TextStyle(color: Colors.white24),
+        titleLarge: TextStyle(color: Colors.white12),
       ),
       chipTheme: const ChipThemeData(
         backgroundColor: Colors.black12,

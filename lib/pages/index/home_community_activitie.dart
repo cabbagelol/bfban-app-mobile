@@ -331,7 +331,7 @@ class WidgetStateText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle textile = TextStyle(
-      color: Theme.of(context).primaryTextTheme.headline3!.color,
+      color: Theme.of(context).textTheme.displayMedium!.color,
       fontSize: 14,
     );
 

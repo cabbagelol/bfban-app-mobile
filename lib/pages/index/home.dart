@@ -115,53 +115,58 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: homeTabs.length,
-      child: Stack(
-        fit: StackFit.loose,
-        children: <Widget>[
-          // Positioned(
-          //   top: 0,
-          //   bottom: 0,
-          //   child: _controller!.value.isInitialized
-          //       ? AspectRatio(
-          //           aspectRatio: _controller!.value.aspectRatio,
-          //           child: VideoPlayer(_controller!),
-          //         )
-          //       : Container(),
-          // ),
-          BackdropFilter(
-            filter: ui.ImageFilter.blur(
-              sigmaX: 6.0,
-              sigmaY: 6.0,
-            ),
-            child: SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: false,
+        appBar: AppBar(
+          titleSpacing: 0,
+          centerTitle: true,
+          backgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(.1),
+          title: TabBar(
+            controller: tabController,
+            isScrollable: true,
+            labelPadding: const EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            tabs: homeTabs.map((e) {
+              return Tab(
+                iconMargin: EdgeInsets.zero,
+                child: e["load"] ?? false
+                    ? const Text("-")
+                    : Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          e["icon"],
+                          Text(
+                            "${e["text"]}",
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          )
+                        ],
+                      ),
+              );
+            }).toList(),
+          ),
+        ),
+        body: Stack(
+          fit: StackFit.loose,
+          children: <Widget>[
+            // Positioned(
+            //   top: 0,
+            //   bottom: 0,
+            //   child: _controller!.value.isInitialized
+            //       ? AspectRatio(
+            //           aspectRatio: _controller!.value.aspectRatio,
+            //           child: VideoPlayer(_controller!),
+            //         )
+            //       : Container(),
+            // ),
+            BackdropFilter(
+              filter: ui.ImageFilter.blur(
+                sigmaX: 6.0,
+                sigmaY: 6.0,
+              ),
               child: Column(
                 children: [
-                  TabBar(
-                    controller: tabController,
-                    isScrollable: true,
-                    labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    tabs: homeTabs.map((e) {
-                      return Tab(
-                        iconMargin: EdgeInsets.zero,
-                        child: e["load"] ?? false
-                            ? const Text("-")
-                            : Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  e["icon"],
-                                  Text(
-                                    "${e["text"]}",
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  )
-                                ],
-                              ),
-                      );
-                    }).toList(),
-                  ),
-                  const Divider(height: 1),
                   Expanded(
                     flex: 1,
                     child: TabBarView(
@@ -177,8 +182,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

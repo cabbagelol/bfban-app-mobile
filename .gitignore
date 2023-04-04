@@ -52,5 +52,6 @@ app.*.map.json
 /macos
 /windows
 /web
+./lib/main.*.dart
 ./lib/main.dev.dart
 ./lib/main.prod.dart

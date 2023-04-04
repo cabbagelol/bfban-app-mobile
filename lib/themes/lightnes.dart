@@ -7,37 +7,28 @@ class LightnesTheme {
     name: "lightnes",
     isDefault: true,
     themeData: ThemeData(
-      backgroundColor: const Color(0xffffffff),
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.white,
         modalBackgroundColor: Colors.black,
       ),
-      colorScheme: const ColorScheme(
-        brightness: Brightness.dark,
-        primary: Color(0xff364e80),
-        onPrimary: Color(0xff364e80),
-        secondary: Color(0xff99acd2),
-        onSecondary: Color(0xff99acd2),
-        error: Colors.red,
-        onError: Colors.red,
-        background: Colors.white,
-        onBackground: Colors.white,
-        surface: Colors.black,
-        onSurface: Colors.black,
-      ),
       canvasColor: Colors.white,
       primaryColorDark: const Color(0xff364e80),
       textTheme: const TextTheme(
-        headline1: TextStyle(color: Colors.black),
-        headline2: TextStyle(color: Colors.black),
-        headline3: TextStyle(color: Colors.black),
-        headline4: TextStyle(color: Colors.black),
-        headline5: TextStyle(color: Colors.black),
-        headline6: TextStyle(color: Colors.black),
-        subtitle1: TextStyle(color: Colors.black),
-        subtitle2: TextStyle(color: Colors.black45),
-        bodyText1: TextStyle(color: Colors.black),
-        bodyText2: TextStyle(color: Colors.black),
+        displayLarge: TextStyle(color: Colors.black),
+        displayMedium: TextStyle(color: Colors.black),
+        displaySmall: TextStyle(color: Colors.black),
+        headlineMedium: TextStyle(color: Colors.black),
+        headlineSmall: TextStyle(color: Colors.black),
+        titleLarge: TextStyle(color: Colors.black),
+        titleMedium: TextStyle(color: Colors.black),
+        titleSmall: TextStyle(color: Colors.black45),
+        bodyLarge: TextStyle(color: Colors.black),
+        bodyMedium: TextStyle(color: Colors.black),
+        bodySmall: TextStyle(color: Colors.black),
+      ),
+      switchTheme: const SwitchThemeData().copyWith(
+        trackColor: MaterialStateProperty.all(Color(0xff364e80).withOpacity(.2)),
+        thumbColor: MaterialStateProperty.all(Color(0xff364e80)),
       ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),
@@ -142,7 +133,7 @@ class LightnesTheme {
         elevation: 0,
         iconTheme: IconThemeData(
           color: Color(0xff364e80),
-        )
+        ),
       ),
       primaryColor: Colors.black,
       tabBarTheme: const TabBarTheme(
@@ -186,17 +177,30 @@ class LightnesTheme {
       chipTheme: const ChipThemeData(
         backgroundColor: Colors.white10,
         secondarySelectedColor: Colors.black,
-        checkmarkColor: Colors.black,
+        checkmarkColor: Colors.white,
         iconTheme: IconThemeData(
           color: Color(0xff364e80),
         ),
         secondaryLabelStyle: TextStyle(
-          color: Colors.black,
+          color: Color(0xff364e80),
         ),
         labelStyle: TextStyle(
-          color: Colors.black,
+          color: Color(0xff364e80),
         ),
       ),
+      colorScheme: const ColorScheme(
+        brightness: Brightness.dark,
+        primary: Color(0xff364e80),
+        onPrimary: Color(0xff364e80),
+        secondary: Color(0xff99acd2),
+        onSecondary: Color(0xff99acd2),
+        error: Colors.red,
+        onError: Colors.red,
+        background: Colors.white,
+        onBackground: Colors.white,
+        surface: Colors.black,
+        onSurface: Colors.black,
+      ).copyWith(background: const Color(0xffffffff)),
     ),
   );
 }

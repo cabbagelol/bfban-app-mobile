@@ -111,7 +111,12 @@ class _LanguagePageState extends State<LanguagePage> {
                         setLanguage(context, value as String);
                       },
                       groupValue: langProvider!.currentLang,
-                      title: Text(lang["label"].toString()),
+                      title: Text(
+                        lang["label"].toString(),
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                      ),
                       secondary: Card(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),

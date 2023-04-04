@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
 
-import 'package:bfban/themes/default.dart';
-import 'package:bfban/themes/lightnes.dart';
 import '../constants/theme.dart';
 import '../data/index.dart';
 
@@ -21,7 +19,7 @@ class ThemeProvider with ChangeNotifier {
 
   /// 主题
   ThemeProviderData theme = ThemeProviderData(
-    defaultName: "default",
+    defaultName: "dark",
     current: "",
     autoSwitchTheme: false,
   );

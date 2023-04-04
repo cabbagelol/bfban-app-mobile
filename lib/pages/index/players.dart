@@ -109,6 +109,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     if (playersStatus!.load!) return;
 
     setState(() {
+      Future.delayed(const Duration(seconds: 0), () {
+        _refreshIndicatorKey.currentState!.show();
+      });
       playersStatus!.load = true;
     });
 
@@ -273,7 +276,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 children: <Widget>[
                   I18nText("basic.status.${i["value"] == -1 ? 'all' : i["value"]}"),
                   Positioned(
-                    top: -7,
+                    top: -10,
                     right: -12,
                     child: AnimatedOpacity(
                       opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
@@ -285,15 +288,12 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                           borderRadius: BorderRadius.circular(100),
                         ),
                         constraints: const BoxConstraints(
-                          minWidth: 15,
-                          minHeight: 15,
+                          minWidth: 12,
+                          minHeight: 12,
                         ),
                         child: Text(
                           i["num"].toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
+                          style: const TextStyle(fontSize: 10),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -346,7 +346,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 FlutterI18n.translate(context, "list.filters.sortByTitle"),
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -358,7 +358,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 FlutterI18n.translate(context, "list.colums.updateTime"),
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -382,7 +382,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 FlutterI18n.translate(context, "report.labels.game"),
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -419,7 +419,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           key: _refreshIndicatorKey,
           onRefresh: _onRefresh,
           child: playersStatus!.list!.length <= 0
-              ? EmptyWidget()
+              ? const EmptyWidget()
               : ListView.builder(
                   controller: _scrollController,
                   itemCount: playersStatus!.list!.length + 1,

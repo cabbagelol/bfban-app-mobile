@@ -70,7 +70,7 @@ class _ThemePageState extends State<ThemePage> {
                       return GestureDetector(
                         child: Card(
                           clipBehavior: Clip.hardEdge,
-                          color: _themedata.backgroundColor,
+                          color: _themedata.bottomAppBarTheme.color,
                           child: Stack(
                             children: [
                               Center(

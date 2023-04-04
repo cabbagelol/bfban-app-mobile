@@ -616,7 +616,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                     color: EluiTagType.none,
                                                     size: EluiTagSize.no2,
                                                     theme: EluiTagTheme(
-                                                      backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                                                      backgroundColor: Theme.of(context).cardTheme.color!,
                                                     ),
                                                     value: FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}"),
                                                   ),
@@ -784,12 +784,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                               fontSize: FontSize.xLarge.value,
                                             ),
                                           ),
-                                          TextButton.icon(
+                                          IconButton(
                                             icon: const Icon(
                                               Icons.refresh,
                                               size: 25,
                                             ),
-                                            label: const Text(""),
                                             onPressed: () => _seUpdateUserNameList(),
                                           )
                                         ],
