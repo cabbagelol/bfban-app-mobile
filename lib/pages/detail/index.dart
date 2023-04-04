@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -226,7 +228,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   void _onSubscribes(isLogin) async {
     if (subscribes["load"]) return;
     if (!isLogin) {
-      _urlUtil.opEnPage(context, "login/panel");
+      _urlUtil.opEnPage(context, "/login/panel");
       return;
     }
 
@@ -308,7 +310,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return null;
 
-      _urlUtil.opEnPage(context, '/report/${jsonEncode({"originName": playerStatus.data.originName})}', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
+      String data = jsonEncode({"originName": playerStatus.data.originName});
+
+      _urlUtil.opEnPage(context, '/report/$data', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
         if (value != null) {
           _getCheatersInfo();
           timeLineKey.currentState?.getTimeline();
@@ -362,9 +366,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
               SelectableText(i["originName"]),
             ),
             DataCell(
-              SelectableText(
-                Date().getFriendlyDescriptionTime(i["fromTime"]),
-              ),
+              TimeWidget(data: i["fromTime"]),
             ),
           ],
         ),
@@ -448,15 +450,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   Widget build(BuildContext context) {
     cheatersTabs = <Tab>[
       Tab(text: FlutterI18n.translate(context, "detail.info.cheatersInfo")),
-      Tab(
-        child: Wrap(
-          spacing: 5,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(FlutterI18n.translate(context, "detail.info.timeLine")),
-          ],
-        ),
-      ),
+      Tab(text: FlutterI18n.translate(context, "detail.info.timeLine")),
     ];
 
     return SafeArea(
@@ -476,10 +470,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                 appBar: AppBar(
                   backgroundColor: Colors.transparent,
                   flexibleSpace: Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.bottomRight,
-                        colors: [Colors.transparent, Colors.black54],
+                        colors: ProviderUtil().ofTheme(context).currentThemeName == "default" ? [Colors.transparent, Colors.black54] : [Colors.transparent, Colors.black12],
                       ),
                     ),
                   ),
@@ -667,8 +661,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             ),
                                           ),
                                           const SizedBox(height: 5),
-                                          Text(
-                                            Date().getFriendlyDescriptionTime(snapshot.data!["createTime"]),
+                                          TimeWidget(
+                                            data: snapshot.data!["createTime"],
                                             style: const TextStyle(fontSize: 18),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
@@ -686,8 +680,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             ),
                                           ),
                                           const SizedBox(height: 5),
-                                          Text(
-                                            snapshot.data != null ? Date().getFriendlyDescriptionTime(snapshot.data!["updateTime"]) : "",
+                                          TimeWidget(
+                                            data: snapshot.data!["updateTime"],
                                             style: const TextStyle(fontSize: 18),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
@@ -741,7 +735,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                           const SizedBox(height: 5),
                                           GamesTagWidget(
                                             data: snapshot.data["games"],
-                                            size: GamesTagSize.no2,
+                                            size: GamesTagSize.no3,
                                           ),
                                         ],
                                       ),

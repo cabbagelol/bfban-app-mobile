@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 enum GamesTagSize {
@@ -84,7 +83,7 @@ class _GamesTagWidgetState extends State<GamesTagWidget> {
               child: Container(
                 padding: widget.currentSizeType.padding,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
+                  color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(widget.currentSizeType.border),
                 ),
                 child: Image.asset(
@@ -97,8 +96,8 @@ class _GamesTagWidgetState extends State<GamesTagWidget> {
               widget.splitChar!
             else if (widget.splitChar == null && index < gameListWidgets.length)
               Container(
-                child: const Text(","),
                 padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: const Text(","),
               ),
           ],
         );

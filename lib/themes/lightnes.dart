@@ -9,7 +9,7 @@ class LightnesTheme {
     themeData: ThemeData(
       backgroundColor: const Color(0xffffffff),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.white,
         modalBackgroundColor: Colors.black,
       ),
       colorScheme: const ColorScheme(
@@ -41,7 +41,7 @@ class LightnesTheme {
       ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),
-        selectionHandleColor: const Color(0xff364e80),
+        selectionHandleColor: Color(0xff364e80),
         cursorColor: Colors.black,
       ),
       unselectedWidgetColor: Colors.black,
@@ -88,7 +88,7 @@ class LightnesTheme {
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0.2),
           backgroundColor: MaterialStateProperty.all(const Color(0xff364e80)),
-          foregroundColor: MaterialStateProperty.all(Colors.black),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
           overlayColor: MaterialStateProperty.all(Colors.yellow),
@@ -136,12 +136,12 @@ class LightnesTheme {
         ),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xff283653),
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        foregroundColor: Color(0xff364e80),
         shadowColor: Colors.black26,
         elevation: 0,
         iconTheme: IconThemeData(
-          color: Colors.white,
+          color: Color(0xff364e80),
         )
       ),
       primaryColor: Colors.black,
@@ -164,7 +164,7 @@ class LightnesTheme {
       ),
       dividerColor: Colors.black12,
       cardTheme: const CardTheme(
-        elevation: 2,
+        elevation: 0,
         color: Colors.white,
         shadowColor: Color(0x39131372),
       ),

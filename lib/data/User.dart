@@ -27,20 +27,16 @@ abstract class StationUserBaseData {
   }
 
   Map setData(Map i) {
-    try {
-      id = i["id"].toString();
-      attr!.setData(i["attr"]);
-      joinTime = i["joinTime"];
-      lastOnlineTime = i["lastOnlineTime"];
-      origin = i["origin"];
-      privilege = i["privilege"];
-      reportnum = i["reportnum"];
-      subscribes = i["subscribes"];
-      userAvatar = i["userAvatar"];
-      username = i["username"];
-    } catch (err) {
-      print(err);
-    }
+    id = i["id"].toString();
+    attr!.setData(i["attr"]);
+    joinTime = i["joinTime"];
+    lastOnlineTime = i["lastOnlineTime"];
+    origin = i["origin"];
+    privilege = i["privilege"];
+    reportnum = i["reportnum"];
+    subscribes = i["subscribes"];
+    userAvatar = i["userAvatar"];
+    username = i["username"];
     return toMap;
   }
 

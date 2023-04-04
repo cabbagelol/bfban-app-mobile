@@ -21,7 +21,7 @@ class _PrivilegesTagWidgetState extends State<PrivilegesTagWidget> {
   @override
   void initState() {
     super.initState();
-    dynamic originalPrivilege = ProviderUtil().ofApp(context).conf!.data.privilege!;
+    dynamic originalPrivilege = ProviderUtil().ofApp(context).conf.data.privilege!;
 
     if (originalPrivilege["child"] != null) {
       List privilegeArray = List.from(originalPrivilege!["child"]).where((i) {

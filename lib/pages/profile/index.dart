@@ -93,7 +93,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: Card(
-                elevation: 0,
                 borderOnForeground: true,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
@@ -115,10 +114,13 @@ class _UserCenterPageState extends State<UserCenterPage> {
                             child: Row(
                               children: [
                                 if (data.userinfo["userAvatar"] != null)
-                                  EluiImgComponent(
-                                    width: 40,
-                                    height: 40,
-                                    src: data.userinfo["userAvatar"] ?? "",
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: EluiImgComponent(
+                                      width: 40,
+                                      height: 40,
+                                      src: data.userinfo["userAvatar"] ?? "",
+                                    ),
                                   ),
                                   const SizedBox(width: 10),
                                 Expanded(
@@ -286,16 +288,16 @@ class _UserCenterPageState extends State<UserCenterPage> {
                   bottom: 20,
                 ),
                 child: EluiButtonComponent(
+                  radius: true,
+                  size: ButtonSize.mini,
+                  type: ButtonType.error,
+                  onTap: () => removeUserInfo(data.getToken.toString()),
                   child: Text(
                     FlutterI18n.translate(context, "header.signout"),
                     style: const TextStyle(
                       color: Colors.white,
                     ),
                   ),
-                  radius: true,
-                  size: ButtonSize.mini,
-                  type: ButtonType.error,
-                  onTap: () => removeUserInfo(data.getToken.toString()),
                 ),
               ),
             ),

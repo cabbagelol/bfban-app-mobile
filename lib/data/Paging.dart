@@ -1,6 +1,6 @@
 abstract class Paging {
   int? skip;
-  int? _minskip;
+  int? _minskip = 0;
   int? limit;
 
   Paging({
@@ -8,7 +8,7 @@ abstract class Paging {
     this.skip = 1,
   });
 
-  resetPage () {
+  resetPage() {
     skip = _minskip;
   }
 
@@ -21,7 +21,7 @@ abstract class Paging {
     skip = skip! - count;
   }
 
-  Map get pageToMap => Map.from({
+  get pageToMap => Map.from({
         "skip": skip,
         "limit": limit,
       });

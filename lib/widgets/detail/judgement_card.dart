@@ -60,7 +60,7 @@ class JudgementCard extends StatelessWidget {
                           color: EluiTagType.none,
                           size: EluiTagSize.no2,
                           theme: EluiTagTheme(
-                            backgroundColor: Theme.of(context).cardColor,
+                            backgroundColor: Colors.red,
                             textColor: Theme.of(context).textTheme.subtitle1!.color!,
                           ),
                           value: FlutterI18n.translate(context, "basic.action.${data["judgeAction"]}.text"),

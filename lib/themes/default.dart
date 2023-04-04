@@ -7,37 +7,31 @@ class DefaultTheme {
     name: "default",
     isDefault: true,
     themeData: ThemeData(
-      backgroundColor: Colors.black,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          textStyle: MaterialStateProperty.all(
+            const TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.black,
         modalBackgroundColor: Colors.black,
       ),
-      colorScheme: const ColorScheme(
-        brightness: Brightness.dark,
-        primary: Color(0xff364e80),
-        onPrimary: Color(0xff364e80),
-        secondary: Color(0xff0a111c),
-        onSecondary: Color(0xff0a111c),
-        error: Colors.red,
-        onError: Colors.red,
-        background: Color(0xff111b2b),
-        onBackground: Color(0xff111b2b),
-        surface: Colors.white,
-        onSurface: Colors.white,
-      ),
-      canvasColor: Colors.yellow,
+      canvasColor: Colors.yellow.shade50,
       primaryColorDark: Colors.yellow,
       textTheme: const TextTheme(
-        headline1: TextStyle(color: Colors.white),
-        headline2: TextStyle(color: Colors.white),
-        headline3: TextStyle(color: Colors.white),
-        headline4: TextStyle(color: Colors.white),
-        headline5: TextStyle(color: Colors.white),
-        headline6: TextStyle(color: Colors.white),
-        subtitle1: TextStyle(color: Colors.white),
-        subtitle2: TextStyle(color: Colors.white54),
-        bodyText1: TextStyle(color: Colors.white),
-        bodyText2: TextStyle(color: Colors.white),
+        displayLarge: TextStyle(color: Colors.white),
+        displayMedium: TextStyle(color: Colors.white),
+        displaySmall: TextStyle(color: Colors.white),
+        headlineMedium: TextStyle(color: Colors.white),
+        headlineSmall: TextStyle(color: Colors.white),
+        titleLarge: TextStyle(color: Colors.white),
+        titleMedium: TextStyle(color: Colors.white),
+        titleSmall: TextStyle(color: Colors.white54),
+        bodyLarge: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white),
       ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),
@@ -46,7 +40,6 @@ class DefaultTheme {
       ),
       unselectedWidgetColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xff111b2b),
-      bottomAppBarColor: Colors.black,
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
       dialogTheme: const DialogTheme(
@@ -76,7 +69,7 @@ class DefaultTheme {
         color: Color(0xff364e80),
       ),
       dividerTheme: const DividerThemeData(
-        color: Colors.black,
+        color: Colors.white10,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
@@ -87,7 +80,7 @@ class DefaultTheme {
             color: Colors.white,
           )),
           elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(const Color(0xff111b2b)),
+          backgroundColor: MaterialStateProperty.all(const Color(0xff1a2a44)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
@@ -104,10 +97,6 @@ class DefaultTheme {
       buttonTheme: ButtonThemeData(
         buttonColor: const Color(0xff364e80),
         disabledColor: const Color(0xff364e80).withOpacity(.2),
-      ),
-      bottomAppBarTheme: const BottomAppBarTheme(
-        color: Colors.black,
-        elevation: 0,
       ),
       buttonBarTheme: const ButtonBarThemeData(
         layoutBehavior: ButtonBarLayoutBehavior.constrained,
@@ -166,7 +155,6 @@ class DefaultTheme {
         overlayColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.7)),
         fillColor: MaterialStateProperty.all(Colors.yellow),
       ),
-      toggleableActiveColor: Colors.white,
       primaryTextTheme: const TextTheme(
         headline1: TextStyle(color: Colors.white),
         headline2: TextStyle(color: Colors.white70),
@@ -188,6 +176,25 @@ class DefaultTheme {
         labelStyle: TextStyle(
           color: Colors.black,
         ),
+      ),
+      colorScheme: const ColorScheme(
+        outline: Colors.white10,
+        brightness: Brightness.dark,
+        primary: Color(0xff364e80),
+        onPrimary: Color(0xff364e80),
+        secondary: Color(0xff0a111c),
+        onSecondary: Color(0xff0a111c),
+        error: Colors.red,
+        onError: Colors.red,
+        background: Color(0xff111b2b),
+        onBackground: Color(0xff111b2b),
+        surface: Colors.white,
+        onSurface: Colors.white,
+        // background: Colors.black,
+      ),
+      bottomAppBarTheme: const BottomAppBarTheme(
+        color: Colors.black,
+        elevation: 0,
       ),
     ),
   );

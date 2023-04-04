@@ -1,5 +1,6 @@
 /// 玩家列表
 
+import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -8,9 +9,10 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_filter/index.dart';
 import '../../data/index.dart';
-import '../../router/router.dart';
+import '../../widgets/filter/create_time_filter.dart';
 import '../../widgets/filter/game_filter.dart';
 import '../../widgets/filter/solt_filter.dart';
+import '../../widgets/filter/update_time_filter.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class PlayerListPage extends StatefulWidget {
@@ -38,16 +40,12 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   // 玩家数据
   final PlayersStatus? playersStatus = PlayersStatus(
     load: false,
-    page: 1,
     list: [],
+    pageNumber: 1,
     parame: PlayersParame(
-      data: {
-        "game": "all",
-        "skip": 0,
-        "sort": "updateTime",
-        "status": -1,
-        "limit": 10,
-      },
+      status: -1,
+      limit: 10,
+      skip: 0,
     ),
   );
 
@@ -84,24 +82,23 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   /// [Event]
   /// 初始
-  ready() async {
+  ready() {
     cheaterStatus!.insert(0, {
       "value": -1,
       "values": [-1],
     });
 
     getPlayerList();
-    await getPlayerStatistics();
+    getPlayerStatistics();
   }
 
   /// [Event]
   /// 重置参数
-  bool resetPlayerParame({skip = false, sort = false, game = false, page = false, data = false}) {
-    if (skip) playersStatus!.parame!.data["skip"] = 0;
-    if (sort) playersStatus!.parame!.data["sort"] = "updateTime";
-    if (game) playersStatus!.parame!.data["game"] = "all";
-    if (page) playersStatus!.page = 1;
-    if (data) playersStatus!.list = [];
+  bool onResetPlayerParame({skip = false, sort = false, game = false, page = false, data = false}) {
+    if (skip) playersStatus!.parame!.resetPage();
+    if (sort) playersStatus!.parame!.sortBy = "updateTime";
+    if (game) playersStatus!.parame!.game = "all";
+    if (data) playersStatus!.list!.clear();
 
     return true;
   }
@@ -109,12 +106,11 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// [Response]
   /// 获取作弊玩家列表
   Future getPlayerList() async {
+    if (playersStatus!.load!) return;
+
     setState(() {
       playersStatus!.load = true;
     });
-
-    // 更新页号
-    playersStatus!.parame!.skip = (playersStatus!.page - 1) * playersStatus!.parame!.data["limit"];
 
     Response result = await Http.request(
       Config.httpHost["players"],
@@ -125,17 +121,26 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     if (result.data["success"] == 1) {
       final List d = result.data["data"]["result"];
       setState(() {
-        if (playersStatus!.page <= 1) {
+        if (playersStatus!.parame!.skip! <= 0) {
           playersStatus?.list = d;
         } else {
+          if (playersStatus!.parame!.skip! <= 10) {
+            playersStatus?.list?.add({
+              "pageTip": true,
+              "pageIndex": playersStatus!.pageNumber!,
+            });
+            playersStatus!.pageNumber = playersStatus!.pageNumber! + 1;
+          }
+
           // 追加数据
           if (d.isNotEmpty) {
             playersStatus?.list
               ?..addAll(d)
               ..add({
                 "pageTip": true,
-                "pageIndex": playersStatus!.page,
+                "pageIndex": playersStatus!.pageNumber!,
               });
+            playersStatus!.pageNumber = playersStatus!.pageNumber! + 1;
           }
         }
       });
@@ -151,7 +156,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// [Event]
   /// 下拉刷新方法,为list重新赋值
   Future _onRefresh() async {
-    playersStatus!.page = 1;
+    playersStatus!.parame!.resetPage();
 
     await getPlayerList();
   }
@@ -159,7 +164,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// [Event]
   /// 下拉 追加数据
   Future _getMore() async {
-    playersStatus!.page += 1;
+    playersStatus!.parame!.nextPage(count: playersStatus!.parame!.limit!);
 
     await getPlayerList();
   }
@@ -173,9 +178,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     int _value = cheaterStatus![index]["value"];
 
-    playersStatus!.parame!.data["status"] = _value;
+    playersStatus!.parame!.status = _value;
 
-    resetPlayerParame(skip: true, page: true);
+    onResetPlayerParame(skip: true, page: true);
 
     _scrollController.jumpTo(0);
 
@@ -195,7 +200,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       // 跳过状态 -1 全部
       if (cheaterStatus![index]["value"] >= 0) {
         data["data"].add({
-          "game": playersStatus!.parame!.data["game"] == 'all' ? '*' : cheaterStatus![index]["value"],
+          "game": playersStatus!.parame!.game == 'all' ? '*' : cheaterStatus![index]["value"],
           "status": cheaterStatus![index]["value"],
         });
       }
@@ -253,7 +258,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       appBar: AppBar(
         titleSpacing: 0,
         centerTitle: true,
-        backgroundColor: Theme.of(context).backgroundColor.withOpacity(.1),
+        backgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(.1),
         title: TabBar(
           controller: _tabController,
           isScrollable: true,
@@ -266,7 +271,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               child: Stack(
                 clipBehavior: Clip.none,
                 children: <Widget>[
-                  I18nText("basic.status.${ i["value"] == -1 ? 'all' : i["value"] }"),
+                  I18nText("basic.status.${i["value"] == -1 ? 'all' : i["value"]}"),
                   Positioned(
                     top: -7,
                     right: -12,
@@ -335,12 +340,15 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             ),
           ),
         ],
-        slot: [
+        slot: <FilterItemWidget>[
           FilterItemWidget(
             title: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 FlutterI18n.translate(context, "list.filters.sortByTitle"),
+                style: TextStyle(fontSize: 12),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             panel: SoltFilterPanel(),
@@ -349,7 +357,34 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             title: Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
+                FlutterI18n.translate(context, "list.colums.updateTime"),
+                style: TextStyle(fontSize: 12),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            panel: CreateTimeFilterPanel(),
+          ),
+          FilterItemWidget(
+            title: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                FlutterI18n.translate(context, "list.colums.reportTime"),
+                style: TextStyle(fontSize: 12),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            panel: UpdateTimeFilterPanel(),
+          ),
+          FilterItemWidget(
+            title: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
                 FlutterI18n.translate(context, "report.labels.game"),
+                style: TextStyle(fontSize: 12),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             panel: GameNameFilterPanel(
@@ -358,60 +393,75 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           ),
         ],
         onChange: (data) async {
-          resetPlayerParame(game: true, sort: true, data: true);
+          Map filterData = data;
+          onResetPlayerParame(game: true, sort: true, data: true);
 
-          playersStatus!.parame!.data["game"] = data[1].value;
-          playersStatus!.parame!.data["sort"] = data[0].value;
+          if (data["createTime"] != null) {
+            List createTime = data["createTime"].split(",");
+
+            filterData["createTimeTo"] = DateTime.parse(createTime[0]).millisecondsSinceEpoch;
+            filterData["createTimeFrom"] = DateTime.parse(createTime[1]).millisecondsSinceEpoch;
+          }
+          if (data["updateTime"] != null) {
+            List updateTime = data["updateTime"].split(",");
+
+            filterData["updateTimeTo"] = DateTime.parse(updateTime[0]).millisecondsSinceEpoch;
+            filterData["updateTimeFrom"] = DateTime.parse(updateTime[0]).millisecondsSinceEpoch;
+          }
+
+          playersStatus!.parame!.setData(filterData);
 
           await _onRefresh();
         },
-        onReset: () => resetPlayerParame(),
+        onReset: () => onResetPlayerParame(),
         // 内容
         child: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _onRefresh,
-          child: ListView.builder(
-            controller: _scrollController,
-            itemCount: playersStatus!.list!.length + 1,
-            itemBuilder: (BuildContext context, int index) {
-              if (index < playersStatus!.list!.length) {
-                // 分页提示
-                if (playersStatus!.list![index]["pageTip"] != null) {
-                  return SizedBox(
-                    height: 30,
-                    child: Center(
-                      child: Text(
-                        FlutterI18n.translate(context, "app.home.paging", translationParams: {
-                          "num": "${playersStatus!.list![index]["pageIndex"]}"
-                        }),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).textTheme.subtitle2?.color,
-                        ),
-                      ),
-                    ),
-                  );
-                }
+          child: playersStatus!.list!.length <= 0
+              ? EmptyWidget()
+              : ListView.builder(
+                  controller: _scrollController,
+                  itemCount: playersStatus!.list!.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index < playersStatus!.list!.length) {
+                      // 分页提示
+                      if (playersStatus!.list![index]["pageTip"] != null) {
+                        return SizedBox(
+                          height: 30,
+                          child: Center(
+                            child: Text(
+                              FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.subtitle2?.color,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
 
-                // 内容卡片
-                return CheatListCard(
-                  item: playersStatus?.list![index],
-                );
-              } else if (index >= playersStatus!.list!.length && playersStatus!.load!) {
-                // 下拉加载
-                return Center(
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: const CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
-              }
+                      // 内容卡片
+                      return CheatListCard(
+                        item: playersStatus?.list![index],
+                      );
+                    }
 
-              return Container();
-            },
-          ),
+                    // else if (index >= playersStatus!.list!.length && playersStatus!.load!) {
+                    //   // 下拉加载
+                    //   return Center(
+                    //     child: Container(
+                    //       height: 30,
+                    //       width: 30,
+                    //       margin: const EdgeInsets.symmetric(vertical: 10),
+                    //       child: const CircularProgressIndicator(strokeWidth: 2),
+                    //     ),
+                    //   );
+                    // }
+
+                    return Container();
+                  },
+                ),
         ),
       ),
     );

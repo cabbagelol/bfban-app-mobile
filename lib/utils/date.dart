@@ -1,5 +1,4 @@
 /// 时间
-/// by cabbagelol
 
 class Date {
   /// 补0
@@ -50,31 +49,6 @@ class Date {
     };
   }
 
-  /// 翻译中文
-  String getFriendlyDescriptionTime(String date, {type = "Y_D_M"}) {
-    var time = DateTime.parse(date);
-    var now = DateTime.now();
-    var d = now.difference(time);
-
-    if (d.inDays == 0) {
-      if (d.inSeconds <= 60) {
-        return "${d.inSeconds}秒前";
-      } else if (d.inSeconds > 60 && d.inMinutes <= 1) {
-        return "${d.inMinutes}分钟前";
-      } else if (d.inMinutes > 1 && d.inHours <= 24) {
-        return "${d.inHours}小时前";
-      }
-      return "今天";
-    } else if (d.inDays == 1) {
-      return "昨天";
-    } else if (d.inDays == 2) {
-      return "前天";
-    } else if (d.inDays >= 3 && d.inDays <= 7) {
-      return "${d.inDays}天前";
-    }
-
-    return getTimestampTransferCharacter(date)[type];
-  }
 }
 
 class DateData {

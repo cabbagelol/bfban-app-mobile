@@ -47,11 +47,11 @@ class _JudgementPageState extends State<JudgementPage> {
   void initState() {
     super.initState();
 
-    Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf!.data.cheatMethodsGlossary!;
+    Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf.data.cheatMethodsGlossary!;
 
     setState(() {
       manageStatus.parame!.toPlayerId = widget.id;
-      manageStatus.parame!.action = ProviderUtil().ofApp(context).conf!.data.action!["child"][0]["value"];
+      manageStatus.parame!.action = ProviderUtil().ofApp(context).conf.data.action!["child"][0]["value"];
 
       setState(() {
         cheatMethodsGlossary["child"].forEach((i) {
@@ -203,10 +203,10 @@ class _JudgementPageState extends State<JudgementPage> {
       body: Consumer<AppInfoProvider>(
         builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
           return ListView(
-            children: <Widget>[
+            children: [
               /// S 处理意见
               EluiCellComponent(title: FlutterI18n.translate(context, "detail.judgement.behavior")),
-              if (appInfo.conf!.data.action!["child"].length > 0)
+              if (appInfo.conf.data.action!["child"].length > 0)
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   child: Card(
@@ -223,7 +223,7 @@ class _JudgementPageState extends State<JudgementPage> {
                           });
                         },
                         value: manageStatus.parame!.action,
-                        items: appInfo.conf!.data.action!["child"].map<DropdownMenuItem<String>>((i) {
+                        items: appInfo.conf.data.action!["child"].map<DropdownMenuItem<String>>((i) {
                           return DropdownMenuItem<String>(
                             alignment: AlignmentDirectional.topCenter,
                             value: i["value"].toString(),
@@ -294,8 +294,14 @@ class _JudgementPageState extends State<JudgementPage> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Card(
-                  elevation: 0,
                   clipBehavior: Clip.hardEdge,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3),
+                    side: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1,
+                    ),
+                  ),
                   child: GestureDetector(
                     child: Container(
                       color: Colors.white38,
@@ -334,9 +340,13 @@ class _JudgementPageState extends State<JudgementPage> {
               ),
 
               /// E 理由
+              const SizedBox(
+                height: 20,
+              ),
 
               /// S 验证码
               EluiInputComponent(
+                internalstyle: true,
                 onChange: (data) {
                   setState(() {
                     manageStatus.parame!.captcha!.value = data["value"];

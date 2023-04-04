@@ -27,23 +27,23 @@ class _draftsPageState extends State<draftsPage> {
   }
 
   ready() async {
-    var _value = await Storage().get("drafts");
+    var value = await Storage().get("drafts");
     setState(() {
-      draftsList = jsonDecode(_value);
+      draftsList = jsonDecode(value);
     });
   }
 
   /// 删除
   void _deleDrafts(index) async {
-    List _drafts = jsonDecode(await Storage().get("drafts"));
+    List drafts = jsonDecode(await Storage().get("drafts"));
 
     /// 移除重复
-    _drafts.removeAt(index);
+    drafts.removeAt(index);
 
-    await Storage().set("drafts", value: jsonEncode(_drafts));
+    await Storage().set("drafts", value: jsonEncode(drafts));
 
     setState(() {
-      draftsList = _drafts;
+      draftsList = drafts;
     });
   }
 

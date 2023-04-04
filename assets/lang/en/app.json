@@ -7,6 +7,19 @@
           "describe": "as determined by the system"
         }
       },
+      "message": {
+        "saveSuccess": "保存成功",
+        "saveError": "保存失败"
+      },
+      "time": {
+        "seconds": "{s} seconds ago",
+        "minutes": "{s} minute ago",
+        "hours": "{s} hour ago",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "beforeYesterday": "The day before yesterday",
+        "dayAgo": "{s} days ago"
+      },
       "support": "support",
       "web_site": "Website address",
       "setting": "Setup",
@@ -20,6 +33,13 @@
         "trend": "Hot case",
         "trace": "Trace",
         "tourRecord": "tour Record"
+      },
+      "screen": {
+        "report": "Report",
+        "banAppeal": "Ban Appeal",
+        "signup": "New Users",
+        "verify": "Verify",
+        "judgement": "Judgement"
       },
       "paging": "{num} Page"
     },

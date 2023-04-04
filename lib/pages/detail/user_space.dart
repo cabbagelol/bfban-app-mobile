@@ -1,6 +1,8 @@
 /// 用户展示页
 /// 站内用户
 
+import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -151,18 +153,19 @@ class UserSpacePageState extends State<UserSpacePage> {
 
   /// [Event]
   /// 聊天
-  _openMessage(String id) {
-    return () async {
-      if (await ProviderUtil().ofUser(context).userinfo["id"] == id) {
-        EluiMessageComponent.warning(context)(child: Text(FlutterI18n.translate(context, "account.message.hint.selfTalk")));
-        return;
-      }
+  _openMessage(String id) async {
+    Map localLoginUserInfo = ProviderUtil().ofUser(context).userinfo;
+    if (localLoginUserInfo["userId"].toString() == id) {
+      EluiMessageComponent.warning(context)(child: Text(FlutterI18n.translate(context, "account.message.hint.selfTalk")));
+      return;
+    }
 
-      if (userSpaceInfo.data!.attr!.allowDM! == false) {
-        EluiMessageComponent.warning(context)(child: Text(FlutterI18n.translate(context, "account.message.hint.taOffChat")));
-        return;
-      }
+    if (userSpaceInfo.data.attr!.allowDM! == false) {
+      EluiMessageComponent.warning(context)(child: Text(FlutterI18n.translate(context, "account.message.hint.taOffChat")));
+      return;
+    }
 
+    return () {
       _urlUtil.opEnPage(context, "/message/$id");
     };
   }
@@ -188,7 +191,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                     onSelected: (value) {
                       switch (value) {
                         case 1:
-                          _openMessage(userSpaceInfo.data!.id.toString());
+                          _openMessage(userSpaceInfo.data.id.toString());
                           break;
                         case 2:
                           break;
@@ -197,7 +200,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                     itemBuilder: (context) {
                       return [
                         PopupMenuItem(
-                          value: 2,
+                          value: 1,
                           child: Wrap(
                             children: [
                               const Icon(Icons.message),
@@ -217,28 +220,8 @@ class UserSpacePageState extends State<UserSpacePage> {
                   controller: _scrollController,
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    // 空间用户信息
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 20),
-                          CircleAvatar(
-                            radius: 35,
-                            child: Text(
-                              snapshot.data["username"][0].toString().toUpperCase(),
-                              style: const TextStyle(fontSize: 25),
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
-                    ),
-
-                    // 统计信息
-                    Container(
-                      height: 100,
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         border: Border.all(
@@ -250,94 +233,92 @@ class UserSpacePageState extends State<UserSpacePage> {
                         margin: EdgeInsets.zero,
                         child: Padding(
                           padding: const EdgeInsets.all(20),
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
+                          child: Wrap(
+                            spacing: 40,
+                            runSpacing: 25,
                             children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: CircleAvatar(
+                                  radius: 25,
+                                  child: snapshot.data["userAvatar"].isNotEmpty
+                                      ? Image.network(snapshot.data["userAvatar"])
+                                      : Text(
+                                          snapshot.data["username"][0].toString().toUpperCase(),
+                                          style: const TextStyle(fontSize: 25),
+                                        ),
+                                ),
+                              ),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
+                                  Opacity(
+                                    opacity: .5,
+                                    child: Text(
+                                      FlutterI18n.translate(context, "account.role"),
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
                                   PrivilegesTagWidget(data: snapshot.data["privilege"]),
-                                  Text(
-                                    FlutterI18n.translate(context, "account.role"),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  )
                                 ],
                               ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 20),
-                                height: 30,
-                                width: 1,
-                                color: Theme.of(context).dividerTheme.color,
-                              ),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    Date().getFriendlyDescriptionTime(snapshot.data["joinTime"]).toString(),
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                  Opacity(
+                                    opacity: .5,
+                                    child: Text(
+                                      FlutterI18n.translate(context, "account.joinedAt"),
+                                      style: const TextStyle(fontSize: 20),
                                     ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  TimeWidget(
+                                    data: snapshot.data["joinTime"],
+                                    style: const TextStyle(fontSize: 18),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  Text(
-                                    FlutterI18n.translate(context, "account.joinedAt"),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  )
+
                                 ],
                               ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 20),
-                                height: 30,
-                                width: 1,
-                                color: Theme.of(context).dividerTheme.color,
-                              ),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                    Date().getFriendlyDescriptionTime(snapshot.data["lastOnlineTime"]).toString(),
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                  Opacity(
+                                    opacity: .5,
+                                    child: Text(
+                                      FlutterI18n.translate(context, "account.lastOnlineTime"),
+                                      style: const TextStyle(fontSize: 20),
                                     ),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  TimeWidget(
+                                    data: snapshot.data["lastOnlineTime"],
+                                    style: const TextStyle(fontSize: 18),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  Text(
-                                    FlutterI18n.translate(context, "account.lastOnlineTime"),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  )
                                 ],
                               ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 20),
-                                height: 30,
-                                width: 1,
-                                color: Theme.of(context).dividerTheme.color,
-                              ),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
+                                  Opacity(
+                                    opacity: .5,
+                                    child: Text(
+                                      FlutterI18n.translate(context, "account.reportNum"),
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 5),
                                   Text(
                                     reportListStatus.list.length.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                    ),
+                                    style: const TextStyle(fontSize: 18),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-                                  Text(
-                                    FlutterI18n.translate(context, "account.reportNum"),
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                    ),
-                                  )
                                 ],
                               ),
                             ],
@@ -345,19 +326,21 @@ class UserSpacePageState extends State<UserSpacePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
 
                     // 举报列表
-                    Column(
-                      children: reportListStatus.list.map((ReportListPlayerData item) {
-                        return CheatListCard(
-                          item: item.toMap,
-                          isIconHotView: false,
-                          isIconCommendView: false,
-                          isIconView: false,
-                        );
-                      }).toList(),
-                    ),
+                    if (reportListStatus.list.isNotEmpty)
+                      Column(
+                        children: reportListStatus.list.map((ReportListPlayerData item) {
+                          return CheatListCard(
+                            item: item.toMap,
+                            isIconHotView: false,
+                            isIconCommendView: false,
+                            isIconView: false,
+                          );
+                        }).toList(),
+                      )
+                    else
+                      const EmptyWidget()
                   ],
                 ),
               ),

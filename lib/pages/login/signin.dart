@@ -148,14 +148,6 @@ class _SigninPageState extends State<SigninPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomRight,
-              colors: [Colors.transparent, Colors.black54],
-            ),
-          ),
-        ),
       ),
       body: Consumer<UserInfoProvider>(
         builder: (BuildContext context, data, Widget? child) {
@@ -244,16 +236,6 @@ class _SigninPageState extends State<SigninPage> {
                 bottom: 0,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black87,
-                      ],
-                    ),
-                  ),
                   child: TextButton(
                     child: loginStatus.load
                         ? SizedBox(

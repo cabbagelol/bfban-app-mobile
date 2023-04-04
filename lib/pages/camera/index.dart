@@ -1,15 +1,10 @@
-/// 摄像
-
-import 'dart:convert';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 
-import '../../utils/camera.dart';
 import '../../utils/url.dart';
-import '../../widgets/drawer.dart';
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);

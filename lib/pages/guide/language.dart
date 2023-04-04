@@ -94,61 +94,58 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
       body: Consumer<TranslationProvider>(
         builder: (BuildContext context, data, Widget? child) {
           return ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-                bottom: 20,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    FlutterI18n.translate(context, "app.setting.language.title"),
-                    style: const TextStyle(
-                      fontSize: 25,
-                      color: Colors.white,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      FlutterI18n.translate(context, "app.setting.language.title"),
+                      style: const TextStyle(fontSize: 25),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  if (load)
-                    ELuiLoadComponent(
-                      type: "line",
-                      lineWidth: 1,
-                      color: Theme.of(context).textTheme.subtitle1!.color!,
-                      size: 16,
-                    ),
-                ],
-              ),
-            ),
-
-            // 语言列表
-            Opacity(
-              opacity: data.autoSwitchLang ? .3 : 1,
-              child: Column(
-                children: languages.map((lang) {
-                  return RadioListTile<String>(
-                    value: lang["fileName"].toString(),
-                    onChanged: (value) {
-                      setLanguage(context, value!);
-                    },
-                    groupValue: langProvider!.currentLang,
-                    title: Text(lang["label"].toString()),
-                    secondary: Card(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                        child: Text(lang["name"]),
+                    const SizedBox(width: 10),
+                    if (load)
+                      ELuiLoadComponent(
+                        type: "line",
+                        lineWidth: 1,
+                        color: Theme.of(context).textTheme.subtitle1!.color!,
+                        size: 16,
                       ),
-                    ),
-                    selected: true,
-                  );
-                }).toList(),
+                  ],
+                ),
               ),
-            ),
-          ],
-        );
+
+              // 语言列表
+              Opacity(
+                opacity: data.autoSwitchLang ? .3 : 1,
+                child: Column(
+                  children: languages.map((lang) {
+                    return RadioListTile<String>(
+                      value: lang["fileName"].toString(),
+                      onChanged: (value) {
+                        setLanguage(context, value!);
+                      },
+                      groupValue: langProvider!.currentLang,
+                      title: Text(lang["label"].toString()),
+                      secondary: Card(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Text(lang["name"]),
+                        ),
+                      ),
+                      selected: true,
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          );
         },
       ),
     );

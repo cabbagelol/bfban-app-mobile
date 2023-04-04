@@ -60,18 +60,6 @@ class _SupportPageState extends State<SupportPage> {
           ),
           const SizedBox(height: 10),
           EluiCellComponent(
-            title: FlutterI18n.translate(context, "app.setting.support.feedbackTitle"),
-            label: FlutterI18n.translate(context, "app.setting.support.feedbackDescription"),
-            theme: EluiCellTheme(
-              titleColor: Theme.of(context).textTheme.subtitle1?.color,
-              labelColor: Theme.of(context).textTheme.subtitle2?.color,
-              linkColor: Theme.of(context).textTheme.subtitle1?.color,
-              backgroundColor: Theme.of(context).cardTheme.color,
-            ),
-            islink: true,
-            onTap: () => UrlUtil().onPeUrl("https://jq.qq.com/?_wv=1027&k=kXr9z9FE"),
-          ),
-          EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.support.githubTitle"),
             label: FlutterI18n.translate(context, "app.setting.support.githubDescription"),
             theme: EluiCellTheme(
@@ -83,18 +71,30 @@ class _SupportPageState extends State<SupportPage> {
             islink: true,
             onTap: () => _urlUtil.onPeUrl("https://github.com/BFBAN/bfban-app"),
           ),
-          EluiCellComponent(
-            title: FlutterI18n.translate(context, "app.setting.support.donateTitle"),
-            label: FlutterI18n.translate(context, "app.setting.support.donateDescription"),
-            theme: EluiCellTheme(
-              titleColor: Theme.of(context).textTheme.subtitle1?.color,
-              labelColor: Theme.of(context).textTheme.subtitle2?.color,
-              linkColor: Theme.of(context).textTheme.subtitle1?.color,
-              backgroundColor: Theme.of(context).cardTheme.color,
-            ),
-            islink: true,
-            onTap: () => _urlUtil.onPeUrl("https://cabbagelol.net/%e6%8d%90%e5%8a%a9/"),
-          ),
+          // EluiCellComponent(
+          //   title: FlutterI18n.translate(context, "app.setting.support.feedbackTitle"),
+          //   label: FlutterI18n.translate(context, "app.setting.support.feedbackDescription"),
+          //   theme: EluiCellTheme(
+          //     titleColor: Theme.of(context).textTheme.subtitle1?.color,
+          //     labelColor: Theme.of(context).textTheme.subtitle2?.color,
+          //     linkColor: Theme.of(context).textTheme.subtitle1?.color,
+          //     backgroundColor: Theme.of(context).cardTheme.color,
+          //   ),
+          //   islink: true,
+          //   onTap: () => UrlUtil().onPeUrl("https://jq.qq.com/?_wv=1027&k=kXr9z9FE"),
+          // ),
+          // EluiCellComponent(
+          //   title: FlutterI18n.translate(context, "app.setting.support.donateTitle"),
+          //   label: FlutterI18n.translate(context, "app.setting.support.donateDescription"),
+          //   theme: EluiCellTheme(
+          //     titleColor: Theme.of(context).textTheme.subtitle1?.color,
+          //     labelColor: Theme.of(context).textTheme.subtitle2?.color,
+          //     linkColor: Theme.of(context).textTheme.subtitle1?.color,
+          //     backgroundColor: Theme.of(context).cardTheme.color,
+          //   ),
+          //   islink: true,
+          //   onTap: () => _urlUtil.onPeUrl("https://cabbagelol.net/%e6%8d%90%e5%8a%a9/"),
+          // ),
         ],
       ),
     );

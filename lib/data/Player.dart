@@ -1,3 +1,5 @@
+import 'package:bfban/data/Paging.dart';
+
 /// 玩家数据
 abstract class PlayerBaseData {
   num id;
@@ -102,7 +104,7 @@ class PlayerStatusData extends PlayerBaseData {
 
   get toMap {
     return {
-      "id": id ,
+      "id": id,
       "history": history,
       "originName": originName,
       "originUserId": originUserId,
@@ -139,36 +141,72 @@ class PlayerParame {
 
 /// 作弊玩家列表 Players
 class PlayersStatus {
-  late bool? load;
-  late List? list;
-  late int page;
-  late PlayersParame? parame;
+  bool? load;
+  List? list;
+  int? pageNumber;
+  PlayersParame? parame;
 
   PlayersStatus({
     this.load = false,
     this.list,
-    this.page = 0,
+    this.pageNumber = 1,
     this.parame,
   });
 }
 
 /// 作弊玩家列表 参 Players
-class PlayersParame {
-  dynamic data;
+class PlayersParame extends Paging {
+  String? game;
+  String? sortBy;
+  int? status;
+  num? createTimeFrom;
+  num? createTimeTo;
+  num? updateTimeFrom;
+  num? updateTimeTo;
 
   PlayersParame({
-    this.data,
+    this.game = "all",
+    this.sortBy = "updateTime",
+    this.status = -1,
+    this.createTimeTo,
+    this.createTimeFrom,
+    this.updateTimeFrom,
+    this.updateTimeTo,
+    this.limit = 10,
+    this.skip = 1,
   });
 
+  setData(Map i) {
+    if (i["game"] != null) game = i["game"];
+    if (i["sortBy"] != null) sortBy = i["sortBy"];
+    if (i["status"] != null) status = i["status"];
+    if (i["createTimeFrom"] != null) createTimeFrom = i["createTimeFrom"];
+    if (i["createTimeTo"] != null) createTimeTo = i["createTimeTo"];
+    if (i["updateTimeFrom"] != null) updateTimeFrom = i["updateTimeFrom"];
+    if (i["updateTimeTo"] != null) updateTimeTo = i["updateTimeTo"];
+    return toMap;
+  }
+
   get toMap {
-    return data;
+    Map<String, dynamic>? map = {
+      "game": game,
+      "sortBy": sortBy,
+      "status": status,
+      "skip": skip,
+      "limit": limit,
+    };
+    if (createTimeTo != null) map["createTimeTo"] = createTimeTo;
+    if (createTimeFrom != null) map["createTimeFrom"] = createTimeFrom;
+    if (updateTimeFrom != null) map["updateTimeFrom"] = updateTimeFrom;
+    if (updateTimeTo != null) map["updateTimeTo"] = updateTimeTo;
+    return map;
   }
 
-  set skip(value) {
-    data["skip"] = value;
-  }
+  @override
+  int? limit;
 
-  get skip => data["skip"];
+  @override
+  int? skip;
 }
 
 /// 玩家日历状态

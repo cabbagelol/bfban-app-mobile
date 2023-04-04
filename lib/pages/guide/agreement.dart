@@ -96,8 +96,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                     Text(
                       FlutterI18n.translate(context, "app.guide.agreement.title"),
                       style: const TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
+                        fontSize: 25
                       ),
                     ),
                   ],

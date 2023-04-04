@@ -8,6 +8,7 @@ import 'package:bfban/utils/index.dart';
 
 import 'package:bfban/themes/default.dart';
 import 'package:bfban/themes/lightnes.dart';
+import '../constants/theme.dart';
 import '../data/index.dart';
 
 class ThemeProvider with ChangeNotifier {
@@ -15,6 +16,8 @@ class ThemeProvider with ChangeNotifier {
 
   /// 主题包名
   String? themePackageName = "theme";
+
+  Storage storage = Storage();
 
   /// 主题
   ThemeProviderData theme = ThemeProviderData(
@@ -24,24 +27,21 @@ class ThemeProvider with ChangeNotifier {
   );
 
   /// 主题表
-  Map<String, AppThemeItem>? list = {
-    "default": DefaultTheme.data,
-    "lightnes": LightnesTheme.data,
-  };
+  Map<String, AppThemeItem>? list = ThemeList;
 
   /// [Event]
   /// 初始
   Future<bool> init() async {
     // 本地读取 赋予当前
-    Map loacl = await getLoaclTheme();
+    Map localTheme = await getLocalTheme();
 
-    if (loacl.isEmpty) return false;
+    if (localTheme.isEmpty) return false;
 
     // 读取本地 更新自动主题状态
-    theme.autoSwitchTheme = loacl["autoTheme"];
+    theme.autoSwitchTheme = localTheme["autoTheme"];
 
-    theme.current = loacl["name"];
-
+    theme.current = localTheme["name"];
+    notifyListeners();
     return true;
   }
 
@@ -68,17 +68,17 @@ class ThemeProvider with ChangeNotifier {
     theme.current = name;
 
     // 持久储存
-    setLoaclTheme(name);
+    setLocalTheme(name);
     notifyListeners();
   }
 
   /// [Event]
   /// 获取储存主题
-  Future<Map> getLoaclTheme() async {
-    String? loacl = await Storage().get(themePackageName!);
+  Future<Map> getLocalTheme() async {
+    String? localTheme = await storage.get(themePackageName!);
 
-    if (loacl != null) {
-      Map formjson = jsonDecode(loacl);
+    if (localTheme != null) {
+      Map formjson = jsonDecode(localTheme);
       return formjson;
     }
 
@@ -90,12 +90,14 @@ class ThemeProvider with ChangeNotifier {
 
   /// [Event]
   /// 储存主题
-  void setLoaclTheme(String name) async {
-    await Storage().set(themePackageName!,
-        value: jsonEncode({
-          "name": name,
-          "autoTheme": theme.autoSwitchTheme,
-        }));
+  void setLocalTheme(String name) async {
+    await storage.set(
+      themePackageName!,
+      value: jsonEncode({
+        "name": name,
+        "autoTheme": theme.autoSwitchTheme,
+      }),
+    );
   }
 
   /// 获取主题 ThemeData
@@ -125,7 +127,7 @@ class ThemeProvider with ChangeNotifier {
     theme.autoSwitchTheme = value;
 
     // 更改后更新本地
-    setLoaclTheme(theme.current.toString());
+    setLocalTheme(theme.current.toString());
 
     notifyListeners();
   }

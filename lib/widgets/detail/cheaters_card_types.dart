@@ -52,7 +52,7 @@ class CardUtil {
       imagesMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) {
           return ClipRRect(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(3),
             child: Container(
               color: context.style.color,
               child: Stack(
@@ -62,6 +62,8 @@ class CardUtil {
                       imageUrl: "${context.tree.element!.attributes['src']}",
                       width: double.infinity,
                       fit: BoxFit.cover,
+                      fadeInDuration: const Duration(seconds: 0),
+                      fadeOutDuration: const Duration(seconds: 0),
                       imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
                         return Column(
                           children: [
@@ -176,7 +178,6 @@ class CardUtil {
                       },
                     ),
                     onTap: () {
-                      // 打开图片
                       onImageTap(contextView, context.tree.element!.attributes['src'].toString());
                     },
                   ),
@@ -225,7 +226,7 @@ class CardUtil {
   }
 
   /// [Event]
-  /// 配置html 样式表
+  /// 默认样式表
   Map<String, Style> styleHtml(BuildContext context) {
     return {
       "body": Style(
@@ -238,15 +239,6 @@ class CardUtil {
         color: Theme.of(context).textTheme.subtitle1!.color,
       ),
     };
-  }
-
-  /// [Event]
-  /// 楼层
-  Widget getFloor(int index) {
-    return Container(
-      margin: const EdgeInsets.only(right: 5),
-      child: Text("#$index "),
-    );
   }
 
   /// [Event]
@@ -271,7 +263,7 @@ class CardUtil {
 
   /// [Event]
   /// 用户回复
-  dynamic _setReply(context, {type, floor, toCommentId, toPlayerId}) {
+  dynamic _setReply(context, {type, floor, toCommentId, toPlayerId, callback}) {
     // 检查登录状态
     if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
@@ -281,7 +273,9 @@ class CardUtil {
       "toPlayerId": toPlayerId,
     });
 
-    _urlUtil.opEnPage(context, "/reply/$content");
+    _urlUtil.opEnPage(context, "/reply/$content").then((value) {
+      if (callback) callback(value);
+    });
   }
 }
 
@@ -291,6 +285,7 @@ enum TimeLineItemType {
   report,
   judgement,
   banAppeal,
+  historyName,
 }
 
 /// 时间轴卡
@@ -333,6 +328,13 @@ class TimeLineCard extends StatelessWidget {
       child: const Icon(
         Icons.bookmark,
         color: Color(0xFFeb2f96),
+      ),
+    ),
+    CircleAvatar(
+      backgroundColor: const Color(0xFFffe58f).withOpacity(.2),
+      child: const Icon(
+        Icons.history,
+        color: Color(0xFFffe58f),
       ),
     )
   ];
@@ -436,28 +438,44 @@ class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        if (widget.isShowReply)
-          IconButton(
-            onPressed: () {
-              cardUtil._setReply(
-                context,
-                type: 1,
-                floor: widget.floor,
-                toPlayerId: widget.data!["id"],
-                toCommentId: widget.data!["id"],
-              );
-            },
-            icon: const Icon(
-              Icons.quickreply_outlined,
-            ),
+        Expanded(
+          flex: 1,
+          child: Wrap(
+            children: [
+              if (widget.isShowReply)
+                IconButton(
+                  onPressed: () {
+                    cardUtil._setReply(
+                      context,
+                      type: 1,
+                      floor: widget.floor,
+                      toPlayerId: widget.data!["toPlayerId"],
+                      toCommentId: widget.data!["id"],
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.quickreply_outlined,
+                    size: 17,
+                  ),
+                ),
+              // if (widget.isShowShare)
+              //   IconButton(
+              //     onPressed: () {},
+              //     icon: const Icon(
+              //       Icons.share_outlined,
+              //     ),
+              //   ),
+            ],
           ),
-        if (widget.isShowShare)
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.share_outlined,
-            ),
-          ),
+        ),
+        Text.rich(TextSpan(children: [
+          TextSpan(text: "#${widget.floor}-"),
+          WidgetSpan(
+              child: Opacity(
+            opacity: .5,
+            child: Text("${widget.data!["id"]}"),
+          )),
+        ])),
       ],
     );
   }

@@ -64,8 +64,7 @@ class _GuidePageState extends State<GuidePage> {
     }
 
     setState(() {
-      if (guideListPageIndex <= guideListPage.length - 1)
-        guideListPageIndex+=1;
+      if (guideListPageIndex <= guideListPage.length - 1) guideListPageIndex += 1;
     });
   }
 
@@ -74,7 +73,7 @@ class _GuidePageState extends State<GuidePage> {
   _onBacktrack() async {
     if (guideListPageIndex <= 0) return;
     setState(() {
-      guideListPageIndex-=1;
+      guideListPageIndex -= 1;
     });
   }
 
@@ -88,10 +87,10 @@ class _GuidePageState extends State<GuidePage> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.bottomRight,
-                  colors: [Colors.transparent, Colors.black38],
+                  colors: ProviderUtil().ofTheme(context).currentThemeName == "default" ? [Colors.transparent, Colors.black54] : [Colors.transparent, Colors.black12],
                 ),
               ),
             ),
@@ -128,7 +127,11 @@ class _GuidePageState extends State<GuidePage> {
                 Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
                 ElevatedButton(
                   onPressed: _onNext,
-                  child: guideListPageIndex + 1 < guideListPage.length ? Text(FlutterI18n.translate(context, "basic.button.next")) : Text(FlutterI18n.translate(context, "app.guide.endNext")),
+                  child: guideListPageIndex + 1 < guideListPage.length
+                      ? Text(FlutterI18n.translate(context, "basic.button.next"))
+                      : Text(
+                          FlutterI18n.translate(context, "app.guide.endNext"),
+                        ),
                 ),
               ],
             ),

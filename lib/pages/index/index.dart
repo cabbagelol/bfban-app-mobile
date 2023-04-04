@@ -28,7 +28,9 @@ class _IndexPageState extends State<IndexPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 玩家列表
-  GlobalKey<PlayerListPageState>? playerListPage = GlobalKey();
+  GlobalKey<PlayerListPageState>? playerListPage = GlobalKey<PlayerListPageState>();
+
+  GlobalKey<DragContainerState>? _drawerWidget = GlobalKey<DragContainerState>();
 
   // 首页下标
   int _currentPageIndex = 0;
@@ -38,9 +40,22 @@ class _IndexPageState extends State<IndexPage> {
 
   DateTime? _lastPressedAt = DateTime(0); //上次点击时间
 
+  double screenHeight = 0;
+
+  double screenBarHeight = 26.0;
+
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    setState(() {
+      screenHeight = MediaQuery.of(context).size.height;
+    });
   }
 
   /// [Event]
@@ -64,9 +79,6 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenBarHeight = 26.0;
-
     return WillPopScope(
       onWillPop: () async {
         if (_lastPressedAt == null || DateTime.now().difference(_lastPressedAt!) > const Duration(seconds: 1)) {
@@ -92,10 +104,10 @@ class _IndexPageState extends State<IndexPage> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               flexibleSpace: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.bottomRight,
-                    colors: [Colors.transparent, Colors.black54],
+                    colors: ProviderUtil().ofTheme(context).currentThemeName == "default" ? [Colors.transparent, Colors.black54] : [Colors.transparent, Colors.black12],
                   ),
                 ),
               ),
@@ -191,25 +203,29 @@ class _IndexPageState extends State<IndexPage> {
               centerTitle: false,
             ),
             body: FlutterPluginDrawer(
-              body: IndexedStack(
-                index: _currentPageIndex,
-                children: _listWidgetPage,
+              body: SizedBox(
+                height: screenHeight - (150),
+                child: IndexedStack(
+                  index: _currentPageIndex,
+                  children: _listWidgetPage,
+                ),
               ),
               dragContainer: DragContainer(
+                key: _drawerWidget,
                 drawer: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
+                    color: Theme.of(context).bottomAppBarTheme.color,
                     boxShadow: [
                       BoxShadow(
                         color: Theme.of(context).scaffoldBackgroundColor,
-                        offset: const Offset(0, -2),
+                        offset: const Offset(0, -10),
                         spreadRadius: .2,
                         blurRadius: 10,
                       )
                     ],
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      topRight: Radius.circular(20.0),
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
                     ),
                   ),
                   height: screenBarHeight,

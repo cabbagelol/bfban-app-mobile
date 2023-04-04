@@ -29,7 +29,7 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
     if (!widget.isInit) {
       widget.data = FilterPanelData(
         value: "updateTime",
-        name: "slot",
+        name: "sortBy",
       );
     }
 

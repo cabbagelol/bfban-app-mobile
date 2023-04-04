@@ -6,7 +6,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '../../component/_gamesTag/index.dart';
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/date.dart';
-import '../../utils/url.dart';
 import 'cheaters_card_types.dart';
 import 'quote_card.dart';
 import 'video_link.dart';

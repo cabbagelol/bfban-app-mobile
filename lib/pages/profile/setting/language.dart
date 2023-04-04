@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:bfban/provider/translation_provider.dart';
-import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -87,10 +86,9 @@ class _LanguagePageState extends State<LanguagePage> {
         title: Text(FlutterI18n.translate(context, "app.setting.language.title")),
         actions: [
           if (load)
-            Container(
-              height: 40,
-              margin: EdgeInsets.only(right: 10),
-              child: ELuiLoadComponent(
+            IconButton(
+              onPressed: () {},
+              icon: ELuiLoadComponent(
                 type: "line",
                 lineWidth: 2,
                 color: Theme.of(context).textTheme.subtitle1!.color!,
@@ -103,7 +101,6 @@ class _LanguagePageState extends State<LanguagePage> {
         builder: (BuildContext context, data, Widget? child) {
           return ListView(
             children: [
-              // 语言列表
               Opacity(
                 opacity: data.autoSwitchLang ? .3 : 1,
                 child: Column(
@@ -117,7 +114,7 @@ class _LanguagePageState extends State<LanguagePage> {
                       title: Text(lang["label"].toString()),
                       secondary: Card(
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                           child: Text(lang["name"]),
                         ),
                       ),

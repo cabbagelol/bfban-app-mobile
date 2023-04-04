@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../data/index.dart';
 import '../utils/index.dart';
 
 class UserInfoProvider with ChangeNotifier {
@@ -32,12 +31,12 @@ class UserInfoProvider with ChangeNotifier {
 
   // 获取用户信息
   Map get userinfo {
-    return _userdata!["userinfo"] ?? {};
+    return _userdata["userinfo"] ?? {};
   }
 
   // 获取token
   String get getToken {
-    return _userdata!["token"] ?? "";
+    return _userdata["token"] ?? "";
   }
 
   /// [Event]

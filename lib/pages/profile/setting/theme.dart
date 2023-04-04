@@ -95,10 +95,7 @@ class _ThemePageState extends State<ThemePage> {
                             ],
                           ),
                         ),
-                        onTap: () {
-                          // 设置主题
-                          data.setTheme(_i.name);
-                        },
+                        onTap: () => data.setTheme(_i.name),
                       );
                     },
                   ),

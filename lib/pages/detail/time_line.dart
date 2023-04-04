@@ -7,6 +7,7 @@ import '../../utils/index.dart';
 import '../../widgets/detail/appeal_card.dart';
 import '../../widgets/detail/cheat_reports_card.dart';
 import '../../widgets/detail/cheat_user_cheaters_card.dart';
+import '../../widgets/detail/history_name_card.dart';
 import '../../widgets/detail/judgement_card.dart';
 
 class TimeLine extends StatefulWidget {
@@ -73,6 +74,8 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       setState(() {
         playerTimelineStatus.list = d["result"];
         playerTimelineStatus.total = d["total"];
+
+        onMergeHistoryName();
       });
     }
 
@@ -81,6 +84,60 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     });
 
     return playerTimelineStatus.list;
+  }
+
+  /// 合并时间轴历史名称
+  onMergeHistoryName() {
+    List? _timelineList = List.from(playerTimelineStatus.list!);
+    List? _history = widget.playerStatus.data.history;
+
+    // 处理历史名称，放置对应对应位置
+    for (int hisrotyIndex = 0; hisrotyIndex < _history!.length; hisrotyIndex++) {
+      num nameHistoryTime = DateTime.parse(_history[hisrotyIndex]["fromTime"]).millisecondsSinceEpoch;
+      num prevNameTimeListTime = 0;
+      num nameTimeListTime = 0;
+
+      for (int timeLineIndex = 0; timeLineIndex < _timelineList.length; timeLineIndex++) {
+        if (timeLineIndex > 0 && _timelineList[timeLineIndex - 1].containsKey("createTime")) {
+          prevNameTimeListTime = DateTime.parse(_timelineList[timeLineIndex - 1]["createTime"]).millisecondsSinceEpoch;
+        }
+        nameTimeListTime = DateTime.parse(_timelineList[timeLineIndex]["createTime"]).millisecondsSinceEpoch;
+
+        // 历史名称的记录大于1，history内表示举报提交时初始名称，不应当放进timeline中
+        // 索引自身历史修改日期位置，放入timeline中
+        if (
+            hisrotyIndex >= 1 &&
+            _timelineList[timeLineIndex]["type"] != "historyUsername" &&
+            nameHistoryTime >= prevNameTimeListTime &&
+            nameHistoryTime <= nameTimeListTime
+        ) {
+          _timelineList.insert(timeLineIndex, {
+            "type": "historyUsername",
+            "beforeUsername": _history[hisrotyIndex - 1]["originName"],
+            "nextUsername": _history[hisrotyIndex]["originName"],
+            "fromTime": _history[hisrotyIndex]["fromTime"],
+          });
+          break;
+        } else if (
+            hisrotyIndex >= 1 &&
+            hisrotyIndex == _history.length - 1 &&
+            _timelineList[timeLineIndex]["type"] != 'historyUsername' &&
+            nameHistoryTime >= nameTimeListTime
+        ) {
+          _timelineList.add({
+            "type": "historyUsername",
+            "beforeUsername": _history[hisrotyIndex - 1]["originName"],
+            "nextUsername": _history[hisrotyIndex]["originName"],
+            "fromTime": _history[hisrotyIndex]["fromTime"],
+          });
+          break;
+        }
+      }
+    }
+
+    setState(() {
+      playerTimelineStatus.list = _timelineList;
+    });
   }
 
   /// [Event]
@@ -112,7 +169,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
           switch (timeLineItem["type"]) {
             case "reply":
-              // 评论 or 回复
+              // 回复
               return CheatUserCheatersCard(
                 onReplySucceed: _onReplySucceed,
               )
@@ -137,6 +194,10 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
               )
                 ..data = timeLineItem
                 ..index = index;
+            case "historyUsername":
+              return HistoryNameCard()
+                ..data = timeLineItem
+                ..index = index;
           }
 
           return const EmptyWidget();
@@ -145,6 +206,3 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     );
   }
 }
-
-
-

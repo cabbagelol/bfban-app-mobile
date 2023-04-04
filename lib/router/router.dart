@@ -109,9 +109,11 @@ class Routes {
         }
       },
       {
-        "url": "/report/publishResultsPage",
+        "url": "/report/publish_results/:type",
         'item': (context, params) {
-          return const PublishResultsPage();
+          return PublishResultsPage(
+            type: params["type"][0],
+          );
         }
       },
       {

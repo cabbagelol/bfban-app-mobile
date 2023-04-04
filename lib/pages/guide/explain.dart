@@ -1,16 +1,11 @@
-/// 说明
-
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'package:bfban/widgets/news/index.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/api.dart';
 import '../../provider/translation_provider.dart';
 import '../../utils/http.dart';
 
@@ -79,10 +74,7 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
                   children: <Widget>[
                     Text(
                       FlutterI18n.translate(context, "app.setting.versions.title"),
-                      style: const TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(fontSize: 25),
                     ),
                     const SizedBox(width: 10),
                     if (load)

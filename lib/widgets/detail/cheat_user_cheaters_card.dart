@@ -41,7 +41,7 @@ class CheatUserCheatersCard extends StatelessWidget {
                     style: const TextStyle(fontSize: 16),
                     children: <TextSpan>[
                       TextSpan(
-                        text: data["username"] + "\t",
+                        text: data["username"],
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,
@@ -53,7 +53,7 @@ class CheatUserCheatersCard extends StatelessWidget {
                           },
                       ),
                       TextSpan(
-                        text: FlutterI18n.translate(context, "basic.button.reply"),
+                        text: "\t${FlutterI18n.translate(context, "basic.button.reply")}",
                         style: const TextStyle(
                           fontWeight: FontWeight.normal,
                         ),

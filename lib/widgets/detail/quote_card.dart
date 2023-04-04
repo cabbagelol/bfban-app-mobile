@@ -1,6 +1,6 @@
+import 'package:bfban/component/_html/html.dart';
 import "package:flutter/material.dart";
 
-import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
 
 class QuoteCard extends StatefulWidget {
@@ -16,11 +16,11 @@ class QuoteCard extends StatefulWidget {
 }
 
 class _QuoteCardState extends State<QuoteCard> {
-  Map? quote;
+  Map? quote = null;
 
   @override
   void initState() {
-    quote = widget.data!["quote"];
+    if (widget.data!.containsKey("quote")) quote = widget.data!["quote"];
     super.initState();
   }
 
@@ -30,34 +30,32 @@ class _QuoteCardState extends State<QuoteCard> {
       return Container();
     }
 
-    return Card(
-      elevation: 0,
-      margin: EdgeInsets.zero,
-      color: Theme.of(context).primaryColorDark.withOpacity(.2),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    quote!["username"],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+        borderRadius: BorderRadius.circular(3),
+      ),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Text(
+                  quote!["username"],
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  Date().getTimestampTransferCharacter(quote!['createTime'])["Y_D_M"],
-                )
-              ],
-            ),
-            HtmlWidget(content: quote!["content"]),
-          ],
-        ),
+              ),
+              Text(Date().getTimestampTransferCharacter(quote!['createTime'])["Y_D_M"])
+            ],
+          ),
+          const SizedBox(height: 5),
+          HtmlCore(data: quote!["content"]),
+        ],
       ),
     );
   }

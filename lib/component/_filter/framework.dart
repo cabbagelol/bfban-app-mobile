@@ -10,6 +10,8 @@ abstract class FilterPanelWidget extends StatefulWidget {
 
   bool isInit = false;
 
+  num height = 0;
+
   FilterPanelWidget({
     Key? key,
     this.data,

@@ -1,9 +1,17 @@
-/// 发布结果
-
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
+
+enum PublishResultsType { error, success }
 
 class PublishResultsPage extends StatefulWidget {
-  const PublishResultsPage({Key? key}) : super(key: key);
+  final String? type;
+  List types = ["error", "success"];
+
+  PublishResultsPage({
+    Key? key,
+    this.type,
+  }) : super(key: key);
 
   @override
   _PublishResultsPageState createState() => _PublishResultsPageState();
@@ -16,39 +24,98 @@ class _PublishResultsPageState extends State<PublishResultsPage> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        title: Text(FlutterI18n.translate(context, "report.info.reportHacker")),
         leading: Builder(
           builder: (BuildContext context) {
-            return IconButton(
-              icon: const Icon(Icons.close),
-              onPressed: () {
-                Navigator.of(context).pushReplacementNamed("/");
-              },
-            );
+            return Container();
           },
         ),
-        title: const Text(
-          "完成",
-        ),
       ),
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 40),
+        child: IndexedStack(
+          index: widget.types.indexOf(widget.type),
           children: [
-            Wrap(
-              spacing: 5,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.check_circle_outline,
-                  size: 20,
-                  color: Colors.green,
+                Icon(
+                  Icons.error_outline_sharp,
+                  size: FontSize.larger.value,
+                  color: Theme.of(context).colorScheme.error,
                 ),
                 Text(
-                  "非常感谢您的举报信息",
-                  style: TextStyle(
-                    color: Theme.of(context).primaryTextTheme.headline1!.color ?? Colors.white,
-                  ),
-                )
+                  FlutterI18n.translate(context, "report.messages.failureTitle"),
+                  style: TextStyle(fontSize: FontSize.xxLarge.value),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  FlutterI18n.translate(context, "report.messages.failureSubtitle"),
+                  style: TextStyle(fontSize: FontSize.small.value),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 50),
+                MaterialButton(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  color: Theme.of(context).colorScheme.primary,
+                  elevation: 0,
+                  onPressed: () {
+                    Navigator.pop(context, "continue");
+                  },
+                  child: Text(FlutterI18n.translate(context, "report.button.continue")),
+                ),
+                const SizedBox(height: 20),
+                MaterialButton(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  color: Theme.of(context).colorScheme.secondary,
+                  elevation: 0,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(FlutterI18n.translate(context, "basic.button.prev")),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.check_circle_outline,
+                  size: FontSize.larger.value,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                Text(
+                  FlutterI18n.translate(context, "report.messages.successTitle"),
+                  style: TextStyle(fontSize: FontSize.xxLarge.value),
+                  textAlign: TextAlign.center,
+                ),
+                Text(
+                  FlutterI18n.translate(context, "report.messages.successSubtitle"),
+                  style: TextStyle(fontSize: FontSize.small.value),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 50),
+                MaterialButton(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  color: Theme.of(context).colorScheme.primary,
+                  elevation: 0,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(FlutterI18n.translate(context, "report.button.continue")),
+                ),
+                const SizedBox(height: 20),
+                MaterialButton(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  color: Theme.of(context).colorScheme.secondary,
+                  elevation: 0,
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+                  },
+                  child: Text(FlutterI18n.translate(context, "app.signin.panel.cancelButton")),
+                ),
               ],
             ),
           ],

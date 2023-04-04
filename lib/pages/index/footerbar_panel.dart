@@ -66,13 +66,10 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
 
   /// [Event]
   /// 举报
-  dynamic _openReply() {
-    return () {
-      // 新举报 传空
-      String data = jsonEncode({"originName": ""});
+  void _openReply() {
+    String data = jsonEncode({"originName": ""});
 
-      _urlUtil.opEnPage(context, '/report/$data').then((value) {});
-    };
+    _urlUtil.opEnPage(context, '/report/$data');
   }
 
   /// [Event]
@@ -123,6 +120,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       constraints: const BoxConstraints(
@@ -220,13 +218,16 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       width: 1,
                       color: Theme.of(context).dividerColor,
                     ),
-                    Flexible(
+                    Expanded(
                       flex: 1,
-                      child: Opacity(
-                        opacity: data.isLogin ? 1 : .3,
-                        child: IconButton(
-                          icon: const Icon(Icons.add),
-                          onPressed: data.isLogin ? _openReply() : null,
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: Opacity(
+                          opacity: data.isLogin ? 1 : .3,
+                          child: TextButton(
+                            child: const Icon(Icons.add),
+                            onPressed: () => data.isLogin ? _openReply() : null,
+                          ),
                         ),
                       ),
                     ),
@@ -235,22 +236,149 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
               ),
             ),
 
-            // 登录提示
-            Consumer<UserInfoProvider>(
-              builder: (context, appInfo, child) {
-                return Visibility(
-                  visible: !appInfo.isLogin,
-                  child: MaterialBanner(
-                    content: const Text("登录联ban账户，对作弊玩家提交证据或自我证明功能"),
-                    actions: [
-                      TextButton(
-                        onPressed: _openLogin(),
-                        child: const Text("登录"),
-                      )
-                    ],
+            Card(
+              margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    width: 1,
+                    color: Theme.of(context).dividerTheme.color!,
                   ),
-                );
-              },
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    I18nText(
+                      "sitestats.registers",
+                      child: Text(
+                        "0",
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.subtitle2!.color,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    if (statistics.load)
+                      Column(
+                        children: [
+                          ELuiLoadComponent(
+                            type: "line",
+                            lineWidth: 1,
+                            color: Theme.of(context).textTheme.subtitle1!.color!,
+                            size: 18,
+                          ),
+                        ],
+                      )
+                    else
+                      Text(
+                        statistics.data!.registers.toString(),
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      )
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    width: 1,
+                    color: Theme.of(context).dividerTheme.color!,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    I18nText(
+                      "sitestats.banAppeals",
+                      child: Text(
+                        "0",
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.subtitle2!.color,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    if (statistics.load)
+                      Column(
+                        children: [
+                          ELuiLoadComponent(
+                            type: "line",
+                            lineWidth: 1,
+                            color: Theme.of(context).textTheme.subtitle1!.color!,
+                            size: 18,
+                          ),
+                        ],
+                      )
+                    else
+                      Text(
+                        statistics.data!.banAppeals.toString(),
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      )
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(
+                    width: 1,
+                    color: Theme.of(context).dividerTheme.color!,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    I18nText(
+                      "sitestats.players",
+                      child: Text(
+                        "0",
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.subtitle2!.color,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+
+                    if (statistics.load)
+                      Column(
+                        children: [
+                          ELuiLoadComponent(
+                            type: "line",
+                            lineWidth: 1,
+                            color: Theme.of(context).textTheme.subtitle1!.color!,
+                            size: 18,
+                          ),
+                        ],
+                      )
+                    else
+                      Text(
+                        statistics.data!.players.toString(),
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      )
+                  ],
+                ),
+              ),
             ),
           ],
         );

@@ -289,7 +289,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 38),
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).bottomAppBarTheme.color,
                   child: Center(
                     child: Consumer<PackageProvider>(
                       builder: (BuildContext context, data, child) {

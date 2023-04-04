@@ -65,8 +65,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   List<dynamic> searchTabsType = [
     {"text": "player", "icon": Icons.people},
     {"text": "user", "icon": Icons.person},
-    {"text": "comment", "icon": Icons.comment},
   ];
+  // {"text": "comment", "icon": Icons.comment},
 
   List searchTabs = [];
 
@@ -170,7 +170,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// 账户搜索
   void _onSearch({isButtonClick = true}) async {
     if (searchStatus.load) return;
-    if (isButtonClick || searchStatus.params.param.toString().isEmpty) {
+    if (!isButtonClick && searchStatus.params.param == "") return;
+    if (isButtonClick && searchStatus.params.param == "") {
       EluiMessageComponent.error(context)(
         child: Text(FlutterI18n.translate(context, "signin.fillEverything")),
       );
@@ -267,7 +268,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       _searchController.text = searchStatus.params.param!;
       tabController.index = searchTabsIndex;
     });
-    _onSearch();
+    if (searchStatus.params.param!.isNotEmpty) _onSearch();
   }
 
   /// [Event]
@@ -505,24 +506,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                           onTap: () {
                                             _onPenInUserDetail(i);
                                           },
-                                        );
-                                      }).toList(),
-                                    )
-                                  : const EmptyWidget(),
-                            ),
-                          ],
-                        ),
-                        ListView(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: searchStatus.list.data("comment").isNotEmpty
-                                  ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: searchStatus.list.data("comment").map((i) {
-                                        return SearchCommentCard(
-                                          item: i,
-                                          onTap: () => _onPenInUserDetail(i),
                                         );
                                       }).toList(),
                                     )

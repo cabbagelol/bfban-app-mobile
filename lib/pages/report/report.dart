@@ -4,6 +4,7 @@ import 'dart:core';
 import 'dart:convert';
 
 import 'package:bfban/component/_captcha/index.dart';
+import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
@@ -34,13 +35,13 @@ class _ReportPageState extends State<ReportPage> {
   // 举报
   ReportStatus reportStatus = ReportStatus(
     load: false,
-    captcha: Captcha(
-      value: "",
-      hash: "",
-      captchaSvg: "",
-      load: false,
-    ),
     param: ReportParam(
+      captcha: Captcha(
+        value: "",
+        hash: "",
+        captchaSvg: "",
+        load: false,
+      ),
       data: {
         "game": "",
         "originName": "",
@@ -53,13 +54,14 @@ class _ReportPageState extends State<ReportPage> {
 
   List reportInfoCheatMethods = [];
 
-  // 视频列表
-  List videoList = [];
+  // 视频Widget列表
+  List videoWidgetList = [];
 
   // 视频信息
   Map videoInfo = {
     "value": "",
     "videoIndex": 0,
+    "maxCount": 10,
     "links": [
       {
         "value": 0,
@@ -74,7 +76,7 @@ class _ReportPageState extends State<ReportPage> {
   void initState() {
     super.initState();
 
-    Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf!.data.cheatMethodsGlossary!;
+    Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf.data.cheatMethodsGlossary!;
 
     // Update User Db id
     if (jsonDecode(widget.data)["originName"].toString().isNotEmpty) {
@@ -96,6 +98,61 @@ class _ReportPageState extends State<ReportPage> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  /// [Response]
+  /// 提交举报
+  _onSubmit() async {
+    _urlUtil.opEnPage(context, "/report/publish_results/success").then((value) {
+      switch (value) {
+        case "continue":
+          _onReset();
+          break;
+      }
+    });
+    if (!_onVerification()) return;
+
+    if (reportStatus.param!.captcha!.value.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      reportStatus.load = true;
+    });
+
+    // 处理视频格式
+    reportStatus.param!.data!["videoLink"] = videoWidgetList.where((data) => data.toString().isNotEmpty).join(",");
+
+    Response<dynamic> result = await Http.request(
+      Config.httpHost["player_report"],
+      data: reportStatus.toMap,
+      method: Http.POST,
+    );
+
+    if (result.data["success"] == 1) {
+      EluiMessageComponent.success(context)(
+        child: Text(result.data["code"]),
+      );
+      _urlUtil.opEnPage(context, "/report/publish_results/success").then((value) {
+        switch (value) {
+          case "continue":
+            _onReset();
+            break;
+        }
+      });
+      setState(() {
+        reportStatus.load = false;
+      });
+      return;
+    }
+
+    setState(() {
+      reportStatus.load = false;
+      _urlUtil.opEnPage(context, "/report/publish_results/error");
+    });
+    EluiMessageComponent.warning(context)(
+      child: Text("${result.data["code"]}:${result.data["message"]}"),
+    );
   }
 
   /// [Event]
@@ -135,47 +192,44 @@ class _ReportPageState extends State<ReportPage> {
   }
 
   /// [Event]
-  /// 提交举报
-  Future _onSubmit() async {
-    if (!_onVerification()) return;
-
-    if (reportStatus.captcha!.value.isEmpty) {
-      EluiMessageComponent.warning(context)(
-        child: const Text("请填写验证码"),
-      );
-      return;
-    }
-
+  /// 重置表单
+  _onReset() {
     setState(() {
-      reportStatus.load = true;
-    });
-
-    // 处理视频格式
-    reportStatus.param!.data!["videoLink"] = videoList.where((data) => data.toString().isNotEmpty).join(",");
-
-    Response<dynamic> result = await Http.request(
-      Config.httpHost["player_report"],
-      data: reportStatus.toMap,
-      method: Http.POST,
-    );
-
-    if (result.data["success"] == 1) {
-      EluiMessageComponent.success(context)(
-        child: Text(result.data["code"]),
+      reportStatus = ReportStatus(
+        load: false,
+        param: ReportParam(
+          captcha: Captcha(
+            value: "",
+            hash: "",
+            captchaSvg: "",
+            load: false,
+          ),
+          data: {
+            "game": "",
+            "originName": "",
+            "cheatMethods": [],
+            "videoLink": "",
+            "description": "",
+          },
+        ),
       );
-      UrlUtil().opEnPage(context, "/report/publishResultsPage");
-      setState(() {
-        reportStatus.load = false;
-      });
-      return;
-    }
-
-    setState(() {
-      reportStatus.load = false;
+      reportInfoCheatMethods = [];
+      videoWidgetList = [];
+      videoInfo = {
+        "value": "",
+        "videoIndex": 0,
+        "maxCount": 10,
+        "links": [
+          {
+            "value": 0,
+            "placeholder": "http(s)://",
+          },
+        ],
+      };
+      if (Config.game["child"].isNotEmpty) {
+        reportStatus.param!.data!["game"] = Config.game["child"][0]["value"];
+      }
     });
-    EluiMessageComponent.warning(context)(
-      child: Text("${result.data["code"]}:${result.data["message"]}"),
-    );
   }
 
   /// [Event]
@@ -185,7 +239,10 @@ class _ReportPageState extends State<ReportPage> {
     for (var method in _cheatingTypes) {
       widgets.add(GameTypeRadioWidget(
         index: method["select"],
-        child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
+        child: Tooltip(
+          message: FlutterI18n.translate(context, "cheatMethods.${method["value"]}.describe"),
+          child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
+        ),
         onTap: () {
           setState(() {
             method["select"] = method["select"] != true;
@@ -216,6 +273,34 @@ class _ReportPageState extends State<ReportPage> {
           reportStatus.param!.data!["description"] = data["html"];
         });
       }
+    });
+  }
+
+  /// [Event]
+  /// 添加视频链接
+  _addVideoLink() {
+    return videoWidgetList.length < videoInfo["maxCount"]
+        ? () {
+            setState(() {
+              videoWidgetList.add("");
+            });
+          }
+        : null;
+  }
+
+  /// [Event]
+  /// 删除视频链接
+  void _removeVideoLink(index) {
+    setState(() {
+      videoWidgetList.removeAt(index);
+    });
+  }
+
+  /// [Event]
+  /// 举报用户填写
+  void _changeReportUserInput(dynamic data) {
+    setState(() {
+      reportStatus.param!.data!["originName"] = data["value"].toString();
     });
   }
 
@@ -257,7 +342,7 @@ class _ReportPageState extends State<ReportPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
                 side: BorderSide(
-                  color: Theme.of(context).backgroundColor.withOpacity(.09),
+                  color: Theme.of(context).dividerColor,
                   width: 1,
                 ),
               ),
@@ -314,11 +399,7 @@ class _ReportPageState extends State<ReportPage> {
                     title: FlutterI18n.translate(context, "report.labels.hackerId"),
                     value: reportStatus.param!.data!["originName"],
                     placeholder: FlutterI18n.translate(context, "report.labels.hackerId"),
-                    onChange: (data) {
-                      setState(() {
-                        reportStatus.param!.data!["originName"] = data["value"].toString();
-                      });
-                    },
+                    onChange: (data) => _changeReportUserInput(data),
                   )..setValue = reportStatus.param!.data!["originName"],
                 ],
               ),
@@ -328,32 +409,50 @@ class _ReportPageState extends State<ReportPage> {
           /// E 游戏ID
 
           /// S 游戏
-          EluiCellComponent(
-            title: FlutterI18n.translate(context, "report.labels.game"),
-            theme: EluiCellTheme(backgroundColor: Colors.transparent, labelColor: Theme.of(context).textTheme.subtitle2!.color),
-            label: reportStatus.param!.data!["game"] != null ? FlutterI18n.translate(context, "basic.games.${reportStatus.param!.data!["game"]}") : null,
-            cont: PopupMenuButton(
-              icon: const Icon(Icons.chevron_right),
-              onSelected: (value) {
-                setState(() {
-                  reportStatus.param!.data!["game"] = value;
-                });
-              },
-              itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
-                return CheckedPopupMenuItem(
-                  value: i["value"],
-                  checked: reportStatus.param!.data!["game"] == i["value"],
-                  child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
-                );
-              }).toList(),
+          PopupMenuButton(
+            onSelected: (value) {
+              setState(() {
+                reportStatus.param!.data!["game"] = value;
+              });
+            },
+            itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
+              return CheckedPopupMenuItem(
+                value: i["value"],
+                checked: reportStatus.param!.data!["game"] == i["value"],
+                child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
+              );
+            }).toList(),
+            child: EluiCellComponent(
+              title: FlutterI18n.translate(context, "report.labels.game"),
+              theme: EluiCellTheme(backgroundColor: Colors.transparent, labelColor: Theme.of(context).textTheme.subtitle2!.color),
+              cont: Wrap(
+                runAlignment: WrapAlignment.center,
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  if (reportStatus.param!.data!["game"] != null)
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3),
+                        side: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: 1,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        child: Text(
+                          FlutterI18n.translate(context, "basic.games.${reportStatus.param!.data!["game"]}"),
+                        ),
+                      ),
+                    ),
+                  const Icon(Icons.keyboard_arrow_right),
+                ],
+              ),
             ),
           ),
 
           /// E 游戏
-
-          const SizedBox(
-            height: 10,
-          ),
 
           /// S 作弊方式
           EluiCellComponent(
@@ -362,8 +461,6 @@ class _ReportPageState extends State<ReportPage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Wrap(
-              spacing: 5,
-              runSpacing: 5,
               children: _reportCheckboxType(),
             ),
           ),
@@ -376,21 +473,16 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 视频链接
           EluiCellComponent(
-            title: "${FlutterI18n.translate(context, "detail.info.videoLink")} (${videoList.length}/20)",
+            title: "${FlutterI18n.translate(context, "detail.info.videoLink")} (${videoWidgetList.length}/${videoInfo["maxCount"]})",
             cont: TextButton(
+              onPressed: _addVideoLink(),
               child: const Icon(Icons.add),
-              onPressed: () {
-                if (videoList.length > 19) return;
-                setState(() {
-                  videoList.add("");
-                });
-              },
             ),
           ),
-          videoList.isNotEmpty
+          videoWidgetList.isNotEmpty
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: videoList.asMap().keys.map((index) {
+                  children: videoWidgetList.asMap().keys.map((index) {
                     return Card(
                       margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 20),
                       child: Container(
@@ -401,22 +493,18 @@ class _ReportPageState extends State<ReportPage> {
                               flex: 1,
                               child: EluiInputComponent(
                                 title: "",
-                                value: videoList[index],
+                                value: videoWidgetList[index],
                                 internalstyle: false,
                                 onChange: (data) {
                                   setState(() {
-                                    videoList[index] = data["value"].toString();
+                                    videoWidgetList[index] = data["value"].toString();
                                   });
                                 },
                                 placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
                               ),
                             ),
                             IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  videoList.removeAt(index);
-                                });
-                              },
+                              onPressed: () => _removeVideoLink(index),
                               icon: const Icon(Icons.delete),
                             )
                           ],
@@ -425,19 +513,7 @@ class _ReportPageState extends State<ReportPage> {
                     );
                   }).toList(),
                 )
-              : Card(
-                  margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 20),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    child: Text(
-                      "空",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle2!.color,
-                      ),
-                    ),
-                  ),
-                ),
+              : const EmptyWidget(),
 
           /// E 视频链接
 
@@ -472,8 +548,14 @@ class _ReportPageState extends State<ReportPage> {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 15),
             child: Card(
-              elevation: 0,
               clipBehavior: Clip.hardEdge,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3),
+                side: BorderSide(
+                  color: Theme.of(context).dividerColor,
+                  width: 1,
+                ),
+              ),
               child: GestureDetector(
                 child: Container(
                   color: Colors.white38,
@@ -513,15 +595,20 @@ class _ReportPageState extends State<ReportPage> {
 
           /// E 理由
 
+          const SizedBox(
+            height: 20,
+          ),
+
           /// S 验证码
           EluiInputComponent(
+            internalstyle: true,
             onChange: (data) {
               setState(() {
-                reportStatus.captcha!.value = data["value"];
+                reportStatus.param!.captcha!.value = data["value"];
               });
             },
             right: CaptchaWidget(
-              onChange: (Captcha cap) => reportStatus.captcha = cap,
+              onChange: (Captcha cap) => reportStatus.param!.captcha = cap,
             ),
             maxLenght: 4,
             placeholder: FlutterI18n.translate(context, "captcha.title"),

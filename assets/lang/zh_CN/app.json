@@ -11,6 +11,15 @@
         "saveSuccess": "保存成功",
         "saveError": "保存失败"
       },
+      "time": {
+        "seconds": "{s}秒前",
+        "minutes": "{s}分钟前",
+        "hours": "{s}小时前",
+        "today": "今天",
+        "yesterday": "昨天",
+        "beforeYesterday": "前天",
+        "dayAgo": "{s}天前"
+      },
       "support": "支援",
       "web_site": "网站地址",
       "setting": "设置",
@@ -24,6 +33,13 @@
         "trend": "热门案件",
         "trace": "追踪",
         "tourRecord": "游览记录"
+      },
+      "screen": {
+        "report": "举报",
+        "banAppeal": "申诉",
+        "signup": "新用户",
+        "verify": "verify",
+        "judgement": "判决"
       },
       "paging": "第{num}页"
     },
@@ -139,7 +155,7 @@
         "guide": "应用初始引导",
         "feedbackTitle": "反馈群(612949946)",
         "feedbackDescription": "和作者更加接近呢",
-        "githubLinkTitle": "Github",
+        "githubTitle": "Github",
         "githubDescription": "访问开源仓库",
         "donateTitle": "捐赠",
         "donateDescription": "向BFBAN APP的开发者捐赠"

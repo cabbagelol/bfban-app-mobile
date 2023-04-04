@@ -45,25 +45,26 @@ class VideoLink extends StatelessWidget {
                     const SizedBox(width: 5),
                     Expanded(
                       flex: 1,
-                      child: Wrap(
+                      child: Row(
                         children: [
                           GestureDetector(
                             child: const Icon(Icons.link, size: 15),
                             onTap: () => _urlUtil.onPeUrl(i.value.toString()),
                           ),
-                          GestureDetector(
-                            child: Text(
-                              i.value.toString(),
-                              style: const TextStyle(fontSize: 12),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                          Expanded(
+                            flex: 1,
+                            child: GestureDetector(
+                              child: Text(
+                                i.value.toString(),
+                                style: const TextStyle(fontSize: 12),
+                                softWrap: true,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              onTap: () {
+                                _urlUtil.onPeUrl(i.value.toString());
+                              },
                             ),
-                            onTap: () {
-                              _urlUtil.onPeUrl(
-                                i.value,
-                                mode: LaunchMode.externalNonBrowserApplication,
-                              );
-                            },
                           ),
                         ],
                       ),

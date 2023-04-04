@@ -66,7 +66,9 @@ class MessageProvider with ChangeNotifier {
     // 设置身份标签
     if (loaclMessage["tags"] != null) {
       List<String> tags = [];
-      messageJiguanStatus.AppMessageTags!.forEach((i) => tags.add(i["value"]));
+      for (var i in messageJiguanStatus.AppMessageTags!) {
+        tags.add(i["value"]);
+      }
       // jpush.setTags(tags);
     }
 

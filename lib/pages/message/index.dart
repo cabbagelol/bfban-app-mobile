@@ -2,10 +2,12 @@
 
 import 'dart:convert';
 
+import 'package:bfban/component/_Time/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
@@ -264,7 +266,7 @@ class _MessagePageState extends State<MessagePage> {
                                         children: [
                                           Expanded(
                                             flex: 1,
-                                            child: Text(Date().getFriendlyDescriptionTime(e!["createTime"]).toString()),
+                                            child: TimeWidget(data: e!["createTime"]),
                                           ),
                                           Text(
                                             selfInfo!["username"].toString(),
@@ -316,7 +318,9 @@ class _MessagePageState extends State<MessagePage> {
                                               ),
                                             ),
                                           ),
-                                          Text(Date().getFriendlyDescriptionTime(e!["createTime"]).toString()),
+                                          TimeWidget(
+                                            data: e!["createTime"],
+                                          ),
                                         ],
                                       ),
                                     ),

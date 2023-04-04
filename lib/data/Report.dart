@@ -16,7 +16,7 @@ class ReportListStatus {
     if (list == null) _list = list!;
   }
 
-  List<ReportListPlayerData> get list => _list ?? [];
+  List<ReportListPlayerData> get list => _list;
 
   set list(List<dynamic> array) {
     for (var i in array) {
@@ -70,28 +70,26 @@ class ReportListStatusParame extends Paging {
 class ReportStatus {
   late bool? load;
   late ReportParam? param;
-  late Captcha? captcha;
 
   ReportStatus({
     this.load,
     this.param,
-    this.captcha,
   });
 
   get toMap {
     return {
       "data": param!.data,
-      "encryptCaptcha": captcha!.hash,
-      "captcha": captcha!.value,
     };
   }
 }
 
-class ReportParam {
+class ReportParam extends Captcha {
   late Map? data;
   late String? encryptCaptcha;
+  late Captcha? captcha;
 
   ReportParam({
     this.data,
+    this.captcha,
   });
 }

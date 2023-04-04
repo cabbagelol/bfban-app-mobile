@@ -1,5 +1,6 @@
 /// 消息中心
 
+import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/provider/message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -109,10 +110,8 @@ class _MessagePageState extends State<MessageListPage> {
                       child: Icon(i["haveRead"] == 0 ? Icons.visibility : Icons.visibility_off),
                     ),
                   ),
-                  subtitle: Text(
-                    Date().getFriendlyDescriptionTime(
-                      i["createTime"].toString(),
-                    ),
+                  subtitle: TimeWidget(
+                    data: i["createTime"],
                     style: TextStyle(
                       color: Theme.of(context).textTheme.subtitle2!.color,
                     ),

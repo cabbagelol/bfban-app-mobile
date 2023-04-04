@@ -18,7 +18,7 @@ class StatisticsParame {
   bool players;
   bool confirmed;
   bool registers;
-  bool banappeals;
+  bool banAppeals;
   bool details;
   num? from;
 
@@ -27,7 +27,7 @@ class StatisticsParame {
     this.players = true,
     this.confirmed = true,
     this.registers = true,
-    this.banappeals = true,
+    this.banAppeals = true,
     this.details = true,
     this.from,
   });
@@ -38,7 +38,7 @@ class StatisticsParame {
       "players": players,
       "confirmed": confirmed,
       "registers": registers,
-      "banappeals": banappeals,
+      "banAppeals": banAppeals,
       "details": details,
       "from": from,
     };
@@ -50,7 +50,7 @@ class StatisticsData {
   int? players;
   int? confirmed;
   int? registers;
-  int? banappeals;
+  int? banAppeals;
   int? details;
 
   StatisticsData({
@@ -58,7 +58,7 @@ class StatisticsData {
     this.players,
     this.confirmed,
     this.registers,
-    this.banappeals,
+    this.banAppeals,
     this.details,
   });
 
@@ -67,7 +67,7 @@ class StatisticsData {
     players = i["players"];
     confirmed = i["confirmed"];
     registers = i["registers"];
-    banappeals = i["banappeals"];
+    banAppeals = i["banAppeals"];
     details = i["details"];
     return toMap;
   }
@@ -78,7 +78,7 @@ class StatisticsData {
       "players": players,
       "confirmed": confirmed,
       "registers": registers,
-      "banappeals": banappeals,
+      "banAppeals": banAppeals,
       "details": details,
     };
   }

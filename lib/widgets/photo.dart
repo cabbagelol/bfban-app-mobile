@@ -57,6 +57,11 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     if (controller != null) controller!.dispose();
     super.dispose();
@@ -104,13 +109,11 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
                     type: "line",
                     lineWidth: 2,
                     size: 25,
-                    color: Colors.white,
                   ),
                 )
               : IconButton(
                   icon: const Icon(
                     Icons.file_download,
-                    color: Colors.white,
                     size: 25,
                   ),
                   onPressed: () {
@@ -131,7 +134,9 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
                 );
               },
               imageProvider: widget.imageProvider,
-              backgroundDecoration: widget.backgroundDecoration,
+              backgroundDecoration: widget.backgroundDecoration ?? BoxDecoration(
+                color: Theme.of(context).backgroundColor
+              ),
               minScale: widget.minScale,
               maxScale: widget.maxScale,
               heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag!),

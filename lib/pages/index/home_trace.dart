@@ -5,7 +5,6 @@ import '../../component/_empty/index.dart';
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
-import '../../router/router.dart';
 import '../../utils/index.dart';
 import '../../widgets/detail/home_hint_login.dart';
 import '../../widgets/index/cheat_list_card.dart';

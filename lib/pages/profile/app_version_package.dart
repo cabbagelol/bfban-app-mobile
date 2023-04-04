@@ -39,7 +39,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
     EluiPopupComponent(context)(
       placement: EluiPopupPlacement.bottom,
       theme: EluiPopupTheme(
-        popupBackgroundColor: Theme.of(context).backgroundColor,
+        popupBackgroundColor: Theme.of(context).bottomAppBarTheme.color!,
       ),
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -162,8 +162,8 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                               color: EluiTagType.none,
                               size: EluiTagSize.no2,
                               theme: EluiTagTheme(
-                                backgroundColor: Theme.of(context).backgroundColor,
-                                borderColor: Theme.of(context).backgroundColor,
+                                backgroundColor: Theme.of(context).bottomAppBarTheme.color!,
+                                borderColor: Theme.of(context).bottomAppBarTheme.color!,
                               ),
                               onTap: () {},
                             ),

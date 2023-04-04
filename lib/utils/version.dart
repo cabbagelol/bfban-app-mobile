@@ -1,7 +1,5 @@
 /// 版本管理器
 
-import 'package:bfban/constants/api.dart';
-
 class Version {
   /// [Event]
   /// 对比版本

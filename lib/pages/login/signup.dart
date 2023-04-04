@@ -1,5 +1,3 @@
-/// 注册用户
-
 import 'package:flutter/cupertino.dart';
 
 class SignupPage extends StatefulWidget {

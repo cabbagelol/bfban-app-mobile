@@ -5,9 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
-import '../../router/router.dart';
 import '../../utils/index.dart';
-import '../../widgets/detail/home_hint_login.dart';
 import '../../widgets/index/cheat_list_card.dart';
 import '../../component/_empty/index.dart';
 
@@ -79,26 +77,26 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserInfoProvider>(builder: (context, data, child) {
-      return data.userinfo.isEmpty
-          ? const HomeHintLogin()
-          : RefreshIndicator(
-              key: _refreshIndicatorKey,
-              onRefresh: _onRefresh,
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: tourRecordStatus.list!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (tourRecordStatus.list!.isEmpty) {
-                    return const EmptyWidget();
-                  }
+    return Consumer<UserInfoProvider>(
+      builder: (context, data, child) {
+        return RefreshIndicator(
+          key: _refreshIndicatorKey,
+          onRefresh: _onRefresh,
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: tourRecordStatus.list!.length,
+            itemBuilder: (BuildContext context, int index) {
+              if (tourRecordStatus.list!.isEmpty) {
+                return const EmptyWidget();
+              }
 
-                  return CheatListCard(
-                    item: tourRecordStatus.list![index].toMap,
-                  );
-                },
-              ),
-            );
-    });
+              return CheatListCard(
+                item: tourRecordStatus.list![index].toMap,
+              );
+            },
+          ),
+        );
+      },
+    );
   }
 }

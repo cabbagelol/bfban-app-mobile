@@ -109,7 +109,11 @@ class searchState extends State<titleSearch> {
               flex: 1,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                color: titleSearchColor(widget.theme).color,
+                decoration: BoxDecoration(
+                  color: titleSearchColor(widget.theme).color,
+                  border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+                  borderRadius: BorderRadius.circular(50),
+                ),
                 child: Row(
                   children: <Widget>[
                     Icon(

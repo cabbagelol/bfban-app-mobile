@@ -67,6 +67,25 @@ class FilterState extends State<Filter> {
   void initState() {
     super.initState();
 
+    _updateWidget();
+  }
+
+  @override
+  didUpdateWidget(oldWidget) {
+    // 初始展开的面板
+    if (widget.initialIndex != null) {
+      _selectIndex = widget.initialIndex;
+      _onUpdateItemState(true, index: _selectIndex);
+    }
+
+    selectHeight = _containerKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  /// [Event]
+  /// 更新试图
+  _updateWidget () {
     late int _index = 0;
 
     // 生成key，以便通过key操作
@@ -99,19 +118,6 @@ class FilterState extends State<Filter> {
           ..hide = hidden;
       }
     });
-  }
-
-  @override
-  didUpdateWidget(oldWidget) {
-    // 初始展开的面板
-    if (widget.initialIndex != null) {
-      _selectIndex = widget.initialIndex;
-      _onUpdateItemState(true, index: _selectIndex);
-    }
-
-    selectHeight = _containerKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
-
-    super.didUpdateWidget(oldWidget);
   }
 
   /// [Event]
@@ -162,10 +168,10 @@ class FilterState extends State<Filter> {
   /// [Event]
   /// 获取结果
   void _getData() {
-    List values = [];
+    Map values = {};
 
     filterItem.forEach((element) {
-      values.add(element.panel!.data!);
+      values[element.panel!.data!.name] = element.panel!.data!.value!;
     });
 
     widget.onChange != null ? widget.onChange!(values) : null;
@@ -422,7 +428,7 @@ class _FilterTitleWidgetState extends State<FilterTitleWidget> {
 
                   return Container(
                     padding: const EdgeInsets.only(top: 2),
-                    child: Icon(!showPanel ? up : down),
+                    child: Icon(!showPanel ? up : down, size: 13),
                   );
                 },
               )

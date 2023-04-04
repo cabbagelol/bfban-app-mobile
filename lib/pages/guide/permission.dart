@@ -72,17 +72,11 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
             children: <Widget>[
               Text(
                 FlutterI18n.translate(context, "app.guide.permission.title"),
-                style: const TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
-                ),
+                style: const TextStyle(fontSize: 25),
               ),
               Text(
                 FlutterI18n.translate(context, "app.guide.permission.label"),
-                style: const TextStyle(
-                  fontSize: 12,
-                  color: Colors.white54,
-                ),
+                style: const TextStyle(fontSize: 12),
               ),
             ],
           ),
@@ -224,7 +218,10 @@ class _PermissionState extends State<PermissionWidget> {
         ),
       ),
       theme: EluiCellTheme(
-        backgroundColor: Colors.black12,
+        titleColor: Theme.of(context).textTheme.subtitle1?.color,
+        labelColor: Theme.of(context).textTheme.subtitle2?.color,
+        linkColor: Theme.of(context).textTheme.subtitle1?.color,
+        backgroundColor: Theme.of(context).cardTheme.color,
       ),
       title: "${FlutterI18n.translate(context, permissionName[_permission]["name"])} - ${FlutterI18n.translate(context, permissionStatus[_permissionStatus]["text"])}",
       label: FlutterI18n.translate(context, permissionName[_permission]["describe"]),

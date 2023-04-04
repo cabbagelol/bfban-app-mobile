@@ -117,6 +117,8 @@ class CheatListCard extends StatelessWidget {
               n: item["hot"].toString(),
               i: Icons.local_fire_department,
             ),
+          if (!isIconCommendView! && !isIconHotView! && !isIconHotView!)
+            Icon(Icons.keyboard_arrow_right)
         ],
       ),
       onTap: () {

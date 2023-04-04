@@ -18,7 +18,6 @@ class AppInfoNetwrokStatus with ChangeNotifier {
   Future init(context) async {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       _connectivity = result;
-      print(result);
       notifyListeners();
     });
   }

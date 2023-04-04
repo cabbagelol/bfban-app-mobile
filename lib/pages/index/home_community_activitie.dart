@@ -2,6 +2,7 @@
 
 import 'dart:core';
 
+import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_gamesTag/index.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,6 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 
 class HomeCommunityPage extends StatefulWidget {
   const HomeCommunityPage({Key? key}) : super(key: key);
@@ -43,11 +43,11 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   // 筛选标签配置
   Map chipCont = {
     "list": [
-      {"name": "report", "value": "report", "index": 0},
-      {"name": "appealBan", "value": "appealBan", "index": 1},
-      {"name": "register", "value": "register", "index": 2},
-      {"name": "verify", "value": "verify", "index": 3},
-      {"name": "judgement", "value": "judgement", "index": 4}
+      {"name": "app.home.screen.report", "value": "report", "index": 0},
+      {"name": "app.home.screen.banAppeal", "value": "appealBan", "index": 1},
+      {"name": "app.home.screen.signup", "value": "register", "index": 2},
+      {"name": "app.home.screen.verify", "value": "verify", "index": 3},
+      {"name": "app.home.screen.judgement", "value": "judgement", "index": 4}
     ],
     "tonal": 0
   };
@@ -111,6 +111,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
         _refreshIndicatorKey.currentState!.show();
       });
       activity?.load = true;
+      activity?.list = [];
     });
 
     Response result = await Http.request(
@@ -184,11 +185,13 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
         chips.add(
           FilterChip(
             padding: EdgeInsets.zero,
+            backgroundColor: Theme.of(context).tabBarTheme.labelColor!.withOpacity(.8),
+            selectedColor: Theme.of(context).tabBarTheme.labelColor,
             labelStyle: TextStyle(
               fontSize: 13,
-              color: Theme.of(context).primaryColor,
+              color: Theme.of(context).bottomAppBarTheme.color,
             ),
-            label: Text(chipCont["list"][index]["name"].toString()),
+            label: Text(FlutterI18n.translate(context, chipCont["list"][index]["name"])),
             selected: restorablebool[index].value,
             onSelected: (value) {
               setState(() {
@@ -252,10 +255,13 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                             Row(
                               children: <Widget>[
                                 if (i["playerAvatarLink"] != null)
-                                  EluiImgComponent(
-                                    width: 30,
-                                    height: 30,
-                                    src: i["playerAvatarLink"],
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: EluiImgComponent(
+                                      width: 30,
+                                      height: 30,
+                                      src: i["playerAvatarLink"],
+                                    ),
                                   )
                                 else
                                   CircleAvatar(
@@ -273,8 +279,8 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                                 ),
                                 Expanded(
                                   flex: 1,
-                                  child: Text(
-                                    Date().getFriendlyDescriptionTime(i["createTime"]),
+                                  child: TimeWidget(
+                                    data: i["createTime"],
                                     style: const TextStyle(
                                       fontSize: 12,
                                     ),

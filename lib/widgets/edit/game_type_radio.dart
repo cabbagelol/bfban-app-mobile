@@ -20,10 +20,11 @@ class GameTypeRadioWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: BorderSide(
-            color: Theme.of(context).backgroundColor.withOpacity(.09),
+            color: Theme.of(context).dividerColor,
             width: 1,
           ),
         ),
+        elevation: 0,
         color: index ? const Color(0xff364e80) : Theme.of(context).sliderTheme.disabledActiveTickMarkColor,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),

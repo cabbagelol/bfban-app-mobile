@@ -12,13 +12,11 @@ class Util {
   }
 
   queryCheatMethodsGlossary (String key, List<dynamic> cheatMethodsGlossary) {
-    String _key = key;
-    List _cheatMethodsGlossary = cheatMethodsGlossary;
-    if (_cheatMethodsGlossary.isNotEmpty) {
-      for (int i = 0; i < _cheatMethodsGlossary.length; i++) {
-        if (_cheatMethodsGlossary[i]["values"].contains(key)) _key =_cheatMethodsGlossary[i]["value"];
+    if (cheatMethodsGlossary.isNotEmpty) {
+      for (int i = 0; i < cheatMethodsGlossary.length; i++) {
+        if (cheatMethodsGlossary[i]["values"].contains(key)) key = cheatMethodsGlossary[i]["value"];
       }
     }
-    return _key;
+    return key;
   }
 }

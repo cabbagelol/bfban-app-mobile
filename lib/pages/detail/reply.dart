@@ -130,9 +130,8 @@ class _ReplyPageState extends State<ReplyPage> {
                     ),
             ],
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+          body: ListView(
+            children: [
               /// S 理由
               EluiCellComponent(
                 title: "",
@@ -160,8 +159,14 @@ class _ReplyPageState extends State<ReplyPage> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Card(
-                  elevation: 0,
                   clipBehavior: Clip.hardEdge,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3),
+                    side: BorderSide(
+                      color: Theme.of(context).dividerColor,
+                      width: 1,
+                    ),
+                  ),
                   child: GestureDetector(
                     child: Container(
                       color: Colors.white38,
@@ -206,21 +211,15 @@ class _ReplyPageState extends State<ReplyPage> {
                 height: 20,
               ),
 
-              Card(
-                clipBehavior: Clip.none,
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 20,
+              EluiInputComponent(
+                internalstyle: true,
+                placeholder: FlutterI18n.translate(context, "captcha.title"),
+                maxLenght: 4,
+                right: CaptchaWidget(
+                  onChange: (Captcha cap) => replyStatus.captcha = cap,
                 ),
-                child: EluiInputComponent(
-                  internalstyle: true,
-                  placeholder: FlutterI18n.translate(context, "captcha.title"),
-                  maxLenght: 4,
-                  right: CaptchaWidget(
-                    onChange: (Captcha cap) => replyStatus.captcha = cap,
-                  ),
-                  onChange: (data) => replyStatus.captcha!.value = data["value"],
-                ),
-              )
+                onChange: (data) => replyStatus.captcha!.value = data["value"],
+              ),
             ],
           ),
         );
