@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'dart:async';
 
 import 'package:bfban/utils/index.dart';
@@ -36,18 +34,15 @@ class CaptchaWidget extends StatefulWidget {
 }
 
 class _captchaWidgetState extends State<CaptchaWidget> {
-  Captcha captcha = Captcha(
+  CaptchaStatus captchaStatus = CaptchaStatus(
     load: false,
-    value: "",
-    hash: "",
-    captchaSvg: "",
   );
 
   CaptchaTime captchaTime = CaptchaTime(count: 60, lock: false);
 
-  get hash => captcha.hash;
+  get value => captchaStatus.value;
 
-  get load => captcha.load;
+  get load => captchaStatus.load;
 
   @override
   void initState() {
@@ -62,7 +57,7 @@ class _captchaWidgetState extends State<CaptchaWidget> {
     if (widget.disable! || captchaTime.lock) return;
 
     setState(() {
-      captcha.load = true;
+      captchaStatus.load = true;
     });
 
     Response result = await Http.request(
@@ -75,19 +70,21 @@ class _captchaWidgetState extends State<CaptchaWidget> {
 
       _capthcaTimeout(widget.seconds!);
 
-      result.headers['set-cookie']?.forEach((i) {
-        captcha.cookie += i + ';';
+      result.headers["set-cookie"]?.forEach((i) {
+        captchaStatus.cookie = "${captchaStatus.cookie!}$i;";
       });
 
       setState(() {
-        captcha.hash = d["hash"];
-        captcha.captchaSvg = d["content"];
+        captchaStatus.encryptCaptcha = d["hash"];
+        captchaStatus.captchaSvg = d["content"];
       });
     }
 
     setState(() {
-      widget.onChange!(captcha);
-      captcha.load = false;
+      widget.onChange!(Captcha(
+        encryptCaptcha: captchaStatus.encryptCaptcha,
+      ));
+      captchaStatus.load = false;
     });
   }
 
@@ -129,24 +126,24 @@ class _captchaWidgetState extends State<CaptchaWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (captcha.captchaSvg.toString().isEmpty && !captcha.load)
+                    if (captchaStatus.captchaSvg.isEmpty && !captchaStatus.load!)
                       Text(FlutterI18n.translate(context, "captcha.get"))
-                    else if (captcha.load)
+                    else if (captchaStatus.load!)
                       ELuiLoadComponent(
                         type: "line",
                         lineWidth: 1,
-                        color: Theme.of(context).textTheme.subtitle1!.color!,
+                        color: Theme.of(context).textTheme.displayMedium!.color!,
                         size: 16,
                       )
                     else
                       SvgPicture.string(
-                        captcha.captchaSvg,
-                        color: Theme.of(context).textTheme.bodyText1!.color,
+                        captchaStatus.captchaSvg,
+                        color: Theme.of(context).textTheme.bodyMedium!.color,
                       ),
                   ],
                 ),
                 Visibility(
-                  visible: captchaTime.count > 0 && captcha.captchaSvg.toString().isNotEmpty,
+                  visible: captchaTime.count > 0 && captchaStatus.captchaSvg.toString().isNotEmpty,
                   child: Positioned(
                     top: 5,
                     right: 5,

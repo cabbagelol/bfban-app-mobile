@@ -27,10 +27,9 @@ class _SigninPageState extends State<SigninPage> {
   /// 登录数据
   LoginStatus loginStatus = LoginStatus(
     load: false,
-    username: "",
-    password: "",
-    captcha: Captcha(
-      load: false,
+    parame: LoginStatusParame(
+      username: "",
+      password: "",
       cookie: "",
     ),
   );
@@ -78,13 +77,13 @@ class _SigninPageState extends State<SigninPage> {
   /// [Response]
   /// 登陆
   void _onLogin() async {
-    if (loginStatus.captcha!.value.isEmpty) {
+    if (loginStatus.parame!.value.isEmpty) {
       EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.accountId")));
       return;
-    } else if (loginStatus.password!.isEmpty) {
+    } else if (loginStatus.parame!.password!.isEmpty) {
       EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyPassword")));
       return;
-    } else if (loginStatus.username!.isEmpty) {
+    } else if (loginStatus.parame!.username!.isEmpty) {
       EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyAccount")));
       return;
     }
@@ -96,12 +95,8 @@ class _SigninPageState extends State<SigninPage> {
     Response result = await Http.request(
       Config.httpHost["account_signin"],
       method: Http.POST,
-      headers: {'Cookie': loginStatus.captcha!.cookie},
-      data: {
-        "data": loginStatus.toMap,
-        "encryptCaptcha": loginStatus.captcha!.hash,
-        "captcha": loginStatus.captcha!.value,
-      },
+      headers: {'Cookie': loginStatus.parame!.cookie},
+      data: loginStatus.parame!.toMap,
     );
 
     if (result.data["success"] == 1) {
@@ -184,10 +179,9 @@ class _SigninPageState extends State<SigninPage> {
                                   margin: const EdgeInsets.symmetric(horizontal: 20),
                                   child: EluiInputComponent(
                                     placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
-                                    internalstyle: true,
                                     onChange: (data) {
                                       setState(() {
-                                        loginStatus.username = data["value"];
+                                        loginStatus.parame!.username = data["value"];
                                       });
                                     },
                                   ),
@@ -200,8 +194,7 @@ class _SigninPageState extends State<SigninPage> {
                                   child: EluiInputComponent(
                                     placeholder: FlutterI18n.translate(context, "app.signin.password"),
                                     type: TextInputType.visiblePassword,
-                                    internalstyle: true,
-                                    onChange: (data) => loginStatus.password = data["value"],
+                                    onChange: (data) => loginStatus.parame!.password = data["value"],
                                   ),
                                 ),
                                 const SizedBox(
@@ -216,10 +209,12 @@ class _SigninPageState extends State<SigninPage> {
                                     placeholder: FlutterI18n.translate(context, "captcha.title"),
                                     internalstyle: true,
                                     maxLenght: 4,
-                                    right: CaptchaWidget( onChange: (Captcha cap) => loginStatus.captcha = cap ),
+                                    right: CaptchaWidget(
+                                      onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                    ),
                                     onChange: (data) {
                                       setState(() {
-                                        loginStatus.captcha!.value = data["value"];
+                                        loginStatus.parame!.value = data["value"];
                                       });
                                     },
                                   ),
@@ -237,13 +232,13 @@ class _SigninPageState extends State<SigninPage> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                   child: TextButton(
-                    child: loginStatus.load
+                    child: loginStatus.load!
                         ? SizedBox(
                             height: 40,
                             child: ELuiLoadComponent(
                               type: "line",
                               lineWidth: 2,
-                              color: Theme.of(context).textTheme.subtitle1!.color!,
+                              color: Theme.of(context).textTheme.bodyMedium!.color!,
                               size: 25,
                             ),
                           )

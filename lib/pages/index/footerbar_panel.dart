@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -108,7 +109,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
           children: [
             // 统计
             Card(
-              margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
+              margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
               child: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
@@ -122,10 +123,8 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      constraints: const BoxConstraints(
-                        minWidth: 100,
-                      ),
+                    SizedBox(
+                      height: 40,
                       child: Column(
                         children: <Widget>[
                           statistics.load
@@ -218,31 +217,20 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       width: 1,
                       color: Theme.of(context).dividerColor,
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 10),
-                        child: Opacity(
-                          opacity: data.isLogin ? 1 : .3,
-                          child: TextButton(
-                            child: Column(
-                              children: [
-                                const Icon(Icons.add),
-                                I18nText(
-                                  "report.title",
-                                  child: const Text(
-                                    "",
-                                    style: TextStyle(fontSize: 12),
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                )
-                              ],
+                    Opacity(
+                      opacity: data.isLogin ? 1 : .3,
+                      child: TextButton(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.add),
+                            Text(
+                              FlutterI18n.translate(context, "report.title"),
                             ),
-                            onPressed: () => data.isLogin ? _openReply() : null,
-                          ),
+                          ],
                         ),
+                        onPressed: () => data.isLogin ? _openReply() : null,
                       ),
                     ),
                   ],

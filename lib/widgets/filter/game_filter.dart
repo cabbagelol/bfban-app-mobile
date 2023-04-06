@@ -100,18 +100,14 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                               ),
                             )
                           else
-                            Image.asset(
-                              i["app_assets_logo_file"],
-                              height: 30,
-                            ),
+                            Image.asset(i["app_assets_logo_file"], height: 20),
                           const SizedBox(width: 10),
                           Visibility(
                             visible: i["num"] != null,
-                            child: Chip(
+                            child: RawChip(
                               elevation: 0,
                               labelStyle: const TextStyle(fontSize: 12),
                               label: Text(i["num"].toString()),
-                              labelPadding: EdgeInsets.zero,
                             ),
                           ),
                         ],

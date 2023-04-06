@@ -127,7 +127,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         if (playersStatus!.parame!.skip! <= 0) {
           playersStatus?.list = d;
         } else {
-          if (playersStatus!.parame!.skip! <= 10) {
+          if (playersStatus!.parame!.skip! <= playersStatus!.parame!.limit!) {
             playersStatus?.list?.add({
               "pageTip": true,
               "pageIndex": playersStatus!.pageNumber!,
@@ -282,9 +282,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                       opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
                       duration: const Duration(milliseconds: 300),
                       child: Container(
-                        padding: const EdgeInsets.all(1),
+                        padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: Colors.redAccent,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         constraints: const BoxConstraints(
@@ -293,7 +293,10 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                         ),
                         child: Text(
                           i["num"].toString(),
-                          style: const TextStyle(fontSize: 10),
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Colors.white,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),

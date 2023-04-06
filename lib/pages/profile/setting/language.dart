@@ -92,7 +92,7 @@ class _LanguagePageState extends State<LanguagePage> {
                 type: "line",
                 lineWidth: 2,
                 color: Theme.of(context).textTheme.subtitle1!.color!,
-                size: 25,
+                size: 20,
               ),
             ),
         ],

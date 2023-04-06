@@ -1,5 +1,5 @@
-import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../constants/api.dart';
 import '../../data/index.dart';
@@ -29,13 +29,13 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
   /// 时间轴
   PlayerTimelineStatus playerTimelineStatus = PlayerTimelineStatus(
-    index: 0,
-    list: [],
     total: 0,
+    pageNumber: 1,
+    list: [],
     load: false,
     parame: PlayerTimelineParame(
       skip: 0,
-      limit: 100,
+      limit: 20,
       personaId: "",
     ),
   );
@@ -45,7 +45,17 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
   @override
   void initState() {
-    playerTimelineStatus.parame!.personaId = widget.playerStatus.data.toMap["originPersonaId"];
+    playerTimelineStatus.parame.personaId = widget.playerStatus.data.toMap["originPersonaId"];
+
+    // 滚动视图初始
+    scrollController.addListener(() async {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+        // 非加载状态调用
+        if (!playerTimelineStatus!.load!) {
+          await _getMore();
+        }
+      }
+    });
 
     getTimeline();
 
@@ -55,6 +65,8 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   /// [Response]
   /// 获取时间轴
   Future getTimeline() async {
+    if (playerTimelineStatus.load!) return;
+
     setState(() {
       Future.delayed(const Duration(seconds: 0), () {
         _refreshIndicatorKey.currentState!.show();
@@ -64,30 +76,48 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
     Response result = await Http.request(
       Config.httpHost["player_timeline"],
-      parame: playerTimelineStatus.parame!.toMap,
+      parame: playerTimelineStatus.parame.toMap,
       method: Http.GET,
     );
 
     if (result.data["success"] == 1) {
-      final d = result.data["data"];
+      Map d = result.data["data"];
 
       setState(() {
-        playerTimelineStatus.list = d["result"];
-        playerTimelineStatus.total = d["total"];
+        if (playerTimelineStatus.parame.skip! <= 0) {
+          playerTimelineStatus.list = d["result"];
+        } else {
+          if (playerTimelineStatus.parame.skip! <= playerTimelineStatus.parame.limit!) {
+            playerTimelineStatus.list?.add({
+              "pageTip": true,
+              "pageIndex": playerTimelineStatus.pageNumber!,
+            });
+            playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
+          }
 
+          // 追加数据
+          if (d["result"].isNotEmpty) {
+            playerTimelineStatus.list!
+              ..addAll(d["result"])
+              ..add({
+                "pageTip": true,
+                "pageIndex": playerTimelineStatus.pageNumber!,
+              });
+            playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
+          }
+        }
         onMergeHistoryName();
+        playerTimelineStatus.total = d["total"];
       });
     }
 
     setState(() {
       playerTimelineStatus.load = false;
     });
-
-    return playerTimelineStatus.list;
   }
 
   /// 合并时间轴历史名称
-  onMergeHistoryName() {
+  void onMergeHistoryName() {
     List? _timelineList = List.from(playerTimelineStatus.list!);
     List? _history = widget.playerStatus.data.history;
 
@@ -105,12 +135,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
         // 历史名称的记录大于1，history内表示举报提交时初始名称，不应当放进timeline中
         // 索引自身历史修改日期位置，放入timeline中
-        if (
-            hisrotyIndex >= 1 &&
-            _timelineList[timeLineIndex]["type"] != "historyUsername" &&
-            nameHistoryTime >= prevNameTimeListTime &&
-            nameHistoryTime <= nameTimeListTime
-        ) {
+        if (hisrotyIndex >= 1 && _timelineList[timeLineIndex]["type"] != "historyUsername" && nameHistoryTime >= prevNameTimeListTime && nameHistoryTime <= nameTimeListTime) {
           _timelineList.insert(timeLineIndex, {
             "type": "historyUsername",
             "beforeUsername": _history[hisrotyIndex - 1]["originName"],
@@ -118,12 +143,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
             "fromTime": _history[hisrotyIndex]["fromTime"],
           });
           break;
-        } else if (
-            hisrotyIndex >= 1 &&
-            hisrotyIndex == _history.length - 1 &&
-            _timelineList[timeLineIndex]["type"] != 'historyUsername' &&
-            nameHistoryTime >= nameTimeListTime
-        ) {
+        } else if (hisrotyIndex >= 1 && hisrotyIndex == _history.length - 1 && _timelineList[timeLineIndex]["type"] != 'historyUsername' && nameHistoryTime >= nameTimeListTime) {
           _timelineList.add({
             "type": "historyUsername",
             "beforeUsername": _history[hisrotyIndex - 1]["originName"],
@@ -136,6 +156,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     }
 
     setState(() {
+      _timelineList.add({"type": "button_add"});
       playerTimelineStatus.list = _timelineList;
     });
   }
@@ -150,8 +171,16 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   }
 
   /// [Event]
-  /// 作弊玩家日历 刷新
+  /// 作弊玩家时间轴 刷新
   Future<void> _onRefreshTimeline() async {
+    // playerTimelineStatus.parame.resetPage();
+    await getTimeline();
+  }
+
+  /// [Event]
+  /// 下拉加载
+  Future<void> _getMore() async {
+    playerTimelineStatus!.parame!.nextPage(count: playerTimelineStatus!.parame!.limit!);
     await getTimeline();
   }
 
@@ -165,42 +194,65 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
         controller: scrollController,
         itemCount: playerTimelineStatus.list!.length,
         itemBuilder: (BuildContext context, int index) {
-          var timeLineItem = playerTimelineStatus.list![index];
+          if (index < playerTimelineStatus!.list!.length) {
+            var timeLineItem = playerTimelineStatus.list![index];
 
-          switch (timeLineItem["type"]) {
-            case "reply":
+            // 分页提示
+            if (timeLineItem["pageTip"] != null) {
+              return Column(
+                children: [
+                  const Divider(height: 1),
+                  SizedBox(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${timeLineItem["pageIndex"]}"}),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+
+            switch (timeLineItem["type"]) {
+              case "reply":
               // 回复
-              return CheatUserCheatersCard(
-                onReplySucceed: _onReplySucceed,
-              )
-                ..data = timeLineItem
-                ..index = index;
-            case "report":
+                return CheatUserCheatersCard(
+                  onReplySucceed: _onReplySucceed,
+                )
+                  ..data = timeLineItem
+                  ..index = index;
+              case "report":
               // 举报卡片
-              return CheatReportsCard(
-                onReplySucceed: _onReplySucceed,
-              )
-                ..data = timeLineItem
-                ..index = index;
-            case "judgement":
+                return CheatReportsCard(
+                  onReplySucceed: _onReplySucceed,
+                )
+                  ..data = timeLineItem
+                  ..index = index;
+              case "judgement":
               // 举报
-              return JudgementCard()
-                ..data = timeLineItem
-                ..index = index;
-            case "banAppeal":
+                return JudgementCard()
+                  ..data = timeLineItem
+                  ..index = index;
+              case "banAppeal":
               // 申诉
-              return AppealCard(
-                onReplySucceed: _onReplySucceed,
-              )
-                ..data = timeLineItem
-                ..index = index;
-            case "historyUsername":
-              return HistoryNameCard()
-                ..data = timeLineItem
-                ..index = index;
+                return AppealCard(
+                  onReplySucceed: _onReplySucceed,
+                )
+                  ..data = timeLineItem
+                  ..index = index;
+              case "historyUsername":
+                return HistoryNameCard()
+                  ..data = timeLineItem
+                  ..index = index;
+            }
           }
 
-          return const EmptyWidget();
+          return Container();
         },
       ),
     );

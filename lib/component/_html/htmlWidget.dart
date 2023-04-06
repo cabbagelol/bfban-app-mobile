@@ -115,9 +115,12 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                   children: [
                     if (widget.quote != null) widget.quote!,
                     [
-                      HtmlCore(
-                        data: htmlEscape.convert(widget.content.toString()),
-                        style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: SelectableHtml(
+                          data: htmlEscape.convert(widget.content.toString()),
+                          style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
+                        ),
                       ),
                       HtmlCore(
                         data: widget.content,
@@ -135,10 +138,10 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                           DropdownButton(
                             elevation: 2,
                             underline: Container(),
-                            dropdownColor: Theme.of(context).backgroundColor,
+                            dropdownColor: Theme.of(context).bottomAppBarTheme.color,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context).textTheme.subtitle1!.color,
+                              color: Theme.of(context).textTheme.bodyMedium!.color,
                             ),
                             items: dropdownSizeType.map<DropdownMenuItem<String>>((e) {
                               return DropdownMenuItem(
@@ -161,10 +164,10 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                           DropdownButton(
                             elevation: 2,
                             underline: Container(),
-                            dropdownColor: Theme.of(context).backgroundColor,
+                            dropdownColor: Theme.of(context).bottomAppBarTheme.color,
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context).textTheme.subtitle1!.color,
+                              color: Theme.of(context).textTheme.bodyMedium!.color,
                             ),
                             items: dropdownRenderingMethods.map<DropdownMenuItem<String>>((e) {
                               return DropdownMenuItem(

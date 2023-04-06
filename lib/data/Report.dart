@@ -69,27 +69,40 @@ class ReportListStatusParame extends Paging {
 /// 举报
 class ReportStatus {
   late bool? load;
-  late ReportParam? param;
+  late ReportStatusParam? param;
 
   ReportStatus({
     this.load,
     this.param,
   });
-
-  get toMap {
-    return {
-      "data": param!.data,
-    };
-  }
 }
 
-class ReportParam extends Captcha {
-  late Map? data;
-  late String? encryptCaptcha;
-  late Captcha? captcha;
+class ReportStatusParam extends Captcha {
+  String? videoLink;
+  String? originName;
+  String? game;
+  List? cheatMethods;
+  String? description;
 
-  ReportParam({
-    this.data,
-    this.captcha,
+  ReportStatusParam({
+    this.videoLink,
+    this.originName,
+    this.game = "all",
+    this.cheatMethods,
+    this.description = "",
   });
+
+  get toMap {
+    Map map = {
+      "data": {
+        "videoLink": videoLink,
+        "originName": originName,
+        "game": game,
+        "cheatMethods": cheatMethods,
+        "description": description,
+      }
+    };
+    map.addAll(captchaToMap);
+    return map;
+  }
 }

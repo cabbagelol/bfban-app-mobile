@@ -1,14 +1,15 @@
-/// 富文本页面
-
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
-import 'package:bfban/utils/index.dart';
-import 'package:minimal_html_editor/minimal_html_editor.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
+import '../../utils/index.dart';
 import '../not_found/index.dart';
 
 class RichEditPage extends StatefulWidget {
-  const RichEditPage({Key? key}) : super(key: key);
+  RichEditPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _richEditPageState createState() => _richEditPageState();
@@ -23,16 +24,17 @@ class _richEditPageState extends State<RichEditPage> {
   // 滚动控制器
   final ScrollController? _scrollController = ScrollController();
 
-  // 文本控制器
-  EditorController? _editorController;
+  final QuillEditorController controller = QuillEditorController();
+
+  List<ToolBarStyle> toolBarList = [
+    ToolBarStyle.listBullet,
+    ToolBarStyle.listOrdered,
+    ToolBarStyle.bold,
+  ];
 
   @override
   void initState() {
     super.initState();
-
-    _editorController = EditorController(
-      scrollController: _scrollController,
-    );
     futureBuilder = _ready();
   }
 
@@ -44,13 +46,11 @@ class _richEditPageState extends State<RichEditPage> {
 
   /// 确认
   void _onSubmit() async {
-    dynamic content = await _editorController!.getHtml();
-
     Navigator.pop(
       context,
       {
         "code": 1,
-        "html": content.toString(),
+        "html": await controller.getText(),
       },
     );
   }
@@ -70,7 +70,6 @@ class _richEditPageState extends State<RichEditPage> {
             );
           },
         ),
-        title: const Text("编辑"),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.done),
@@ -78,10 +77,15 @@ class _richEditPageState extends State<RichEditPage> {
           ),
         ],
       ),
+      bottomSheet: ToolBar(
+        controller: controller,
+        toolBarConfig: toolBarList,
+        activeIconColor: Theme.of(context).primaryColor,
+      ),
       body: FutureBuilder(
         future: futureBuilder,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if(snapshot.data == null) {
+          if (snapshot.data == null) {
             return const NotFoundPage();
           }
 
@@ -89,22 +93,19 @@ class _richEditPageState extends State<RichEditPage> {
             controller: _scrollController,
             children: [
               SingleChildScrollView(
-                child: HtmlEditor(
-                  flexibleHeight: true,
-                  autoAdjustScroll: false,
-                  controller: _editorController,
+                child: QuillHtmlEditor(
+                  text: data,
+                  hintText: "",
+                  hintTextStyle: TextStyle(color: Colors.black54, fontSize: 16),
+                  textStyle: TextStyle(color: Colors.black, fontSize: 16),
+                  controller: controller,
+                  isEnabled: true,
                   minHeight: 300,
-                  scaleFactor: 1,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  initialText: data,
-                  placeholder: "",
-                  webViewTitle: "Editor",
-                  printWebViewLog: false,
-                  useAndroidHybridComposition: false,
-                  showLoadingWheel: false,
-                  onChange: (content, height) => print(content),
+                  hintTextAlign: TextAlign.start,
+                  padding: EdgeInsets.all(5),
+                  hintTextPadding: EdgeInsets.all(5),
                 ),
-              ),
+              )
             ],
           );
         },

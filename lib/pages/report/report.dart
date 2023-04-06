@@ -32,23 +32,14 @@ class ReportPage extends StatefulWidget {
 class _ReportPageState extends State<ReportPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  // 举报
   ReportStatus reportStatus = ReportStatus(
     load: false,
-    param: ReportParam(
-      captcha: Captcha(
-        value: "",
-        hash: "",
-        captchaSvg: "",
-        load: false,
-      ),
-      data: {
-        "game": "",
-        "originName": "",
-        "cheatMethods": [],
-        "videoLink": "",
-        "description": "",
-      },
+    param: ReportStatusParam(
+      game: "",
+      originName: "",
+      cheatMethods: [],
+      videoLink: "",
+      description: "",
     ),
   );
 
@@ -80,7 +71,7 @@ class _ReportPageState extends State<ReportPage> {
 
     // Update User Db id
     if (jsonDecode(widget.data)["originName"].toString().isNotEmpty) {
-      reportStatus.param!.data!["originName"] = jsonDecode(widget.data)["originName"];
+      reportStatus.param!.originName = jsonDecode(widget.data)["originName"];
     }
 
     setState(() {
@@ -90,7 +81,7 @@ class _ReportPageState extends State<ReportPage> {
       });
 
       if (Config.game["child"].isNotEmpty) {
-        reportStatus.param!.data!["game"] = Config.game["child"][0]["value"];
+        reportStatus.param!.game = Config.game["child"][0]["value"];
       }
     });
   }
@@ -103,16 +94,9 @@ class _ReportPageState extends State<ReportPage> {
   /// [Response]
   /// 提交举报
   _onSubmit() async {
-    _urlUtil.opEnPage(context, "/report/publish_results/success").then((value) {
-      switch (value) {
-        case "continue":
-          _onReset();
-          break;
-      }
-    });
     if (!_onVerification()) return;
 
-    if (reportStatus.param!.captcha!.value.isEmpty) {
+    if (reportStatus.param!.value.isEmpty) {
       return;
     }
 
@@ -121,11 +105,11 @@ class _ReportPageState extends State<ReportPage> {
     });
 
     // 处理视频格式
-    reportStatus.param!.data!["videoLink"] = videoWidgetList.where((data) => data.toString().isNotEmpty).join(",");
+    reportStatus.param!.videoLink = videoWidgetList.where((data) => data.toString().isNotEmpty).join(",");
 
     Response<dynamic> result = await Http.request(
       Config.httpHost["player_report"],
-      data: reportStatus.toMap,
+      data: reportStatus.param!.toMap,
       method: Http.POST,
     );
 
@@ -148,17 +132,20 @@ class _ReportPageState extends State<ReportPage> {
 
     setState(() {
       reportStatus.load = false;
-      _urlUtil.opEnPage(context, "/report/publish_results/error");
+      _urlUtil.opEnPage(context, "/report/publish_results/error").then((value) {
+        switch (value) {
+          case "continue":
+            _onReset();
+            break;
+        }
+      });
     });
-    EluiMessageComponent.warning(context)(
-      child: Text("${result.data["code"]}:${result.data["message"]}"),
-    );
   }
 
   /// [Event]
   /// 表单验证
   bool _onVerification() {
-    Map param = reportStatus.toMap;
+    Map param = reportStatus.param!.toMap;
 
     if (param["game"] == "") {
       EluiMessageComponent.warning(context)(
@@ -197,20 +184,12 @@ class _ReportPageState extends State<ReportPage> {
     setState(() {
       reportStatus = ReportStatus(
         load: false,
-        param: ReportParam(
-          captcha: Captcha(
-            value: "",
-            hash: "",
-            captchaSvg: "",
-            load: false,
-          ),
-          data: {
-            "game": "",
-            "originName": "",
-            "cheatMethods": [],
-            "videoLink": "",
-            "description": "",
-          },
+        param: ReportStatusParam(
+          game: "",
+          originName: "",
+          cheatMethods: [],
+          videoLink: "",
+          description: "",
         ),
       );
       reportInfoCheatMethods = [];
@@ -227,7 +206,7 @@ class _ReportPageState extends State<ReportPage> {
         ],
       };
       if (Config.game["child"].isNotEmpty) {
-        reportStatus.param!.data!["game"] = Config.game["child"][0]["value"];
+        reportStatus.param!.game = Config.game["child"][0]["value"];
       }
     });
   }
@@ -253,7 +232,7 @@ class _ReportPageState extends State<ReportPage> {
               reportInfoCheatMethods.remove(method["value"]);
             }
 
-            reportStatus.param!.data!["cheatMethods"] = reportInfoCheatMethods;
+            reportStatus.param!.cheatMethods = reportInfoCheatMethods;
           });
         },
       ));
@@ -264,13 +243,13 @@ class _ReportPageState extends State<ReportPage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("richedit", value: reportStatus.param!.data!["description"].toString());
+    await Storage().set("richedit", value: reportStatus.param!.description.toString());
 
     _urlUtil.opEnPage(context, "/richedit").then((data) {
       /// 按下确认储存富文本编写的内容
       if (data["code"] == 1) {
         setState(() {
-          reportStatus.param!.data!["description"] = data["html"];
+          reportStatus.param!.description = data["html"];
         });
       }
     });
@@ -300,7 +279,7 @@ class _ReportPageState extends State<ReportPage> {
   /// 举报用户填写
   void _changeReportUserInput(dynamic data) {
     setState(() {
-      reportStatus.param!.data!["originName"] = data["value"].toString();
+      reportStatus.param!.originName = data["value"].toString();
     });
   }
 
@@ -312,25 +291,20 @@ class _ReportPageState extends State<ReportPage> {
         centerTitle: true,
         title: Text(FlutterI18n.translate(context, "report.title")),
         actions: <Widget>[
-          TextButton(
-            onPressed: () => _onSubmit(),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                Theme.of(context).appBarTheme.backgroundColor,
-              ),
-            ),
-            child: reportStatus.load!
-                ? const Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: ELuiLoadComponent(
-                      type: "line",
-                      size: 20,
-                      lineWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : const Icon(Icons.done),
-          )
+          reportStatus.load!
+              ? ElevatedButton(
+                  onPressed: () {},
+                  child: ELuiLoadComponent(
+                    type: "line",
+                    lineWidth: 2,
+                    size: 20,
+                    color: Theme.of(context).appBarTheme.iconTheme!.color!,
+                  ),
+                )
+              : IconButton(
+                  onPressed: () => _onSubmit(),
+                  icon: const Icon(Icons.done),
+                )
         ],
       ),
       body: ListView(
@@ -340,7 +314,7 @@ class _ReportPageState extends State<ReportPage> {
             margin: const EdgeInsets.only(top: 20, left: 15, right: 15),
             child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(3),
                 side: BorderSide(
                   color: Theme.of(context).dividerColor,
                   width: 1,
@@ -358,33 +332,19 @@ class _ReportPageState extends State<ReportPage> {
                     child: Column(
                       children: <Widget>[
                         Text(
-                          reportStatus.param!.data!["originName"] == "" ? "USER ID" : reportStatus.param!.data!["originName"].toString(),
+                          reportStatus.param!.originName == "" ? "USER ID" : reportStatus.param!.originName.toString(),
                           style: TextStyle(
-                            color: reportStatus.param!.data!["originName"] == "" ? Colors.white12 : Colors.white,
+                            color: reportStatus.param!.originName == "" ? Colors.white12 : Colors.white,
                             fontSize: 30,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        Offstage(
-                          offstage: reportStatus.param!.data!["originName"].toString().isNotEmpty,
-                          child: Wrap(
-                            spacing: 5,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: const <Widget>[
-                              Icon(
-                                Icons.warning,
-                                color: Colors.yellow,
-                                size: 15,
-                              ),
-                              Text(
-                                "请填写作弊者人名称",
-                                style: TextStyle(
-                                  color: Colors.yellow,
-                                ),
-                              ),
-                            ],
+                        if (reportStatus.param!.originName.toString().isEmpty)
+                          const Icon(
+                            Icons.warning,
+                            color: Colors.yellow,
+                            size: 15,
                           ),
-                        ),
                         Center(
                           child: Text(
                             FlutterI18n.translate(context, "report.info.idNotion1"),
@@ -397,10 +357,10 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   EluiInputComponent(
                     title: FlutterI18n.translate(context, "report.labels.hackerId"),
-                    value: reportStatus.param!.data!["originName"],
+                    value: reportStatus.param!.originName,
                     placeholder: FlutterI18n.translate(context, "report.labels.hackerId"),
                     onChange: (data) => _changeReportUserInput(data),
-                  )..setValue = reportStatus.param!.data!["originName"],
+                  )..setValue = reportStatus.param!.originName!,
                 ],
               ),
             ),
@@ -412,13 +372,13 @@ class _ReportPageState extends State<ReportPage> {
           PopupMenuButton(
             onSelected: (value) {
               setState(() {
-                reportStatus.param!.data!["game"] = value;
+                reportStatus.param!.game = value.toString();
               });
             },
             itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
               return CheckedPopupMenuItem(
                 value: i["value"],
-                checked: reportStatus.param!.data!["game"] == i["value"],
+                checked: reportStatus.param!.game == i["value"],
                 child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
               );
             }).toList(),
@@ -430,7 +390,7 @@ class _ReportPageState extends State<ReportPage> {
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  if (reportStatus.param!.data!["game"] != null)
+                  if (reportStatus.param!.game != null)
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3),
@@ -441,8 +401,12 @@ class _ReportPageState extends State<ReportPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        child: Text(
-                          FlutterI18n.translate(context, "basic.games.${reportStatus.param!.data!["game"]}"),
+                        child: Tooltip(
+                          message: FlutterI18n.translate(context, "basic.games.${reportStatus.param!.game}"),
+                          child: Image.asset(
+                            "assets/images/games/${reportStatus.param!.game}/logo.png",
+                            height: 16,
+                          ),
                         ),
                       ),
                     ),
@@ -457,10 +421,19 @@ class _ReportPageState extends State<ReportPage> {
           /// S 作弊方式
           EluiCellComponent(
             title: FlutterI18n.translate(context, "report.labels.cheatMethod"),
+            cont: reportInfoCheatMethods.isEmpty
+                ? const Icon(
+                    Icons.warning,
+                    color: Colors.yellow,
+                    size: 15,
+                  )
+                : Container(),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
             child: Wrap(
+              spacing: 5,
+              runSpacing: 5,
               children: _reportCheckboxType(),
             ),
           ),
@@ -474,27 +447,36 @@ class _ReportPageState extends State<ReportPage> {
           /// S 视频链接
           EluiCellComponent(
             title: "${FlutterI18n.translate(context, "detail.info.videoLink")} (${videoWidgetList.length}/${videoInfo["maxCount"]})",
-            cont: TextButton(
-              onPressed: _addVideoLink(),
-              child: const Icon(Icons.add),
-            ),
+            cont: videoWidgetList.length < videoInfo["maxCount"]
+                ? TextButton(
+                    onPressed: _addVideoLink(),
+                    child: const Icon(Icons.add),
+                  )
+                : Container(),
           ),
           videoWidgetList.isNotEmpty
               ? Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: videoWidgetList.asMap().keys.map((index) {
                     return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 20),
+                      margin: const EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3),
+                        side: BorderSide(
+                          color: Theme.of(context).dividerColor,
+                          width: 1,
+                        ),
+                      ),
                       child: Container(
-                        margin: const EdgeInsets.only(right: 10),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: Row(
                           children: [
                             Expanded(
                               flex: 1,
-                              child: EluiInputComponent(
-                                title: "",
+                              child: Input(
+                                textStyle: TextStyle(fontSize: 15),
+                                contentPadding: EdgeInsets.symmetric(vertical: 10),
                                 value: videoWidgetList[index],
-                                internalstyle: false,
                                 onChange: (data) {
                                   setState(() {
                                     videoWidgetList[index] = data["value"].toString();
@@ -503,9 +485,9 @@ class _ReportPageState extends State<ReportPage> {
                                 placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
                               ),
                             ),
-                            IconButton(
-                              onPressed: () => _removeVideoLink(index),
-                              icon: const Icon(Icons.delete),
+                            GestureDetector(
+                              onTap: () => _removeVideoLink(index),
+                              child: const Icon(Icons.delete),
                             )
                           ],
                         ),
@@ -524,26 +506,13 @@ class _ReportPageState extends State<ReportPage> {
           /// S 理由
           EluiCellComponent(
             title: FlutterI18n.translate(context, "report.labels.description"),
-            cont: Offstage(
-              offstage: reportStatus.param!.data!["description"].toString().isNotEmpty,
-              child: Wrap(
-                spacing: 5,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: const <Widget>[
-                  Icon(
+            cont: reportStatus.param!.description.toString().isEmpty
+                ? const Icon(
                     Icons.warning,
                     color: Colors.yellow,
                     size: 15,
-                  ),
-                  Text(
-                    "请填写有力证据的举报内容",
-                    style: TextStyle(
-                      color: Colors.yellow,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                  )
+                : null,
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -566,7 +535,7 @@ class _ReportPageState extends State<ReportPage> {
                   padding: EdgeInsets.zero,
                   child: Stack(
                     children: <Widget>[
-                      Html(data: reportStatus.param!.data!["description"]),
+                      Html(data: reportStatus.param!.description),
                       Positioned(
                         top: 0,
                         left: 0,
@@ -604,11 +573,11 @@ class _ReportPageState extends State<ReportPage> {
             internalstyle: true,
             onChange: (data) {
               setState(() {
-                reportStatus.param!.captcha!.value = data["value"];
+                reportStatus.param!.value = data["value"];
               });
             },
             right: CaptchaWidget(
-              onChange: (Captcha cap) => reportStatus.param!.captcha = cap,
+              onChange: (Captcha captcha) => reportStatus.param!.setCaptcha(captcha),
             ),
             maxLenght: 4,
             placeholder: FlutterI18n.translate(context, "captcha.title"),

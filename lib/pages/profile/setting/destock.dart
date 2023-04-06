@@ -56,12 +56,17 @@ class _DestockPageState extends State<DestockPage> {
       appBar: AppBar(),
       body: ListView(
         children: destockList.map((e) {
-          return EluiCellComponent(
-            title: e["name"].toString(),
-            cont: TextButton(
-              onPressed: () => _removeLoacl(e),
-              child: const Icon(Icons.delete),
-            ),
+          return Column(
+            children: [
+              EluiCellComponent(
+                title: e["name"].toString(),
+                cont: TextButton(
+                  onPressed: () => _removeLoacl(e),
+                  child: const Icon(Icons.delete),
+                ),
+              ),
+              const Divider(height: 1),
+            ],
           );
         }).toList(),
       ),

@@ -185,6 +185,7 @@ class _IndexPageState extends State<IndexPage> {
                       PopupMenuItem(
                         value: 1,
                         child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             const Icon(Icons.qr_code),
                             const SizedBox(

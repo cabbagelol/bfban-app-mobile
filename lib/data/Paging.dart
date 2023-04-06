@@ -21,7 +21,7 @@ abstract class Paging {
     skip = skip! - count;
   }
 
-  get pageToMap => Map.from({
+  Map<String, dynamic> get pageToMap => Map.from({
         "skip": skip,
         "limit": limit,
       });

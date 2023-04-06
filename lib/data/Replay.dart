@@ -3,37 +3,36 @@ import 'Captcha.dart';
 /// 回复
 class ReplyStatus {
   late bool? load;
-  late ReplyData? data;
-  late Captcha? captcha;
+  late ReplyStatusParame? parame;
 
   ReplyStatus({
     this.load,
-    this.data,
-    this.captcha,
+    this.parame,
   });
 
-  get toMap {
-    return {
-      "data":  {
-        "toPlayerId": data!.toPlayerId,
-        "toCommentId": data!.toCommentId,
-        "content": data!.content
-      },
-      "encryptCaptcha": captcha!.hash,
-      "captcha": captcha!.value
-    };
-  }
 }
 
 /// 回复参数
-class ReplyData {
+class ReplyStatusParame extends Captcha  {
   num? toPlayerId;
-  dynamic? toCommentId;
+  dynamic toCommentId;
   String? content;
 
-  ReplyData({
+  ReplyStatusParame({
     this.toPlayerId,
     this.toCommentId,
     this.content
   });
+
+  get toMap {
+    Map map = {
+      "data":  {
+        "toPlayerId": toPlayerId,
+        "toCommentId": toCommentId,
+        "content": content
+      },
+    };
+    map.addAll(captchaToMap);
+    return map;
+  }
 }

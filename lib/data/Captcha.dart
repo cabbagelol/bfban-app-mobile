@@ -1,26 +1,52 @@
-
 /// 验证码
 class Captcha {
-  // 用户输入的验证
-  late String value;
+  /// Captcha 验证 code
+  String encryptCaptcha;
 
-  // 获取的验证svg
-  late dynamic captchaSvg;
+  /// Svg node
+  String captchaSvg;
 
-  // 验证hash
-  late String hash;
-
-  // 验证cookie
-  late String cookie;
-
-  // 是否加载
-  late bool load;
+  /// 验证hash, 用户输入
+  String value;
 
   Captcha({
+    this.encryptCaptcha = "",
+    this.captchaSvg = "",
     this.value = "",
-    this.captchaSvg,
-    this.hash = "",
-    this.cookie = "",
-    this.load = false,
   });
+
+  /// 设置Captcha
+  setCaptcha(Captcha captcha) {
+    encryptCaptcha = captcha.encryptCaptcha;
+    captchaSvg = captcha.captchaSvg;
+    value = captcha.value;
+    return captchaToMap;
+  }
+
+  get captchaToMap => {
+        "encryptCaptcha": encryptCaptcha,
+        "captcha": value,
+      };
+}
+
+abstract class CaptchaCookie {
+  /// 验证cookie
+  String? cookie;
+
+  CaptchaCookie({
+    this.cookie,
+  });
+}
+
+class CaptchaStatus extends Captcha implements CaptchaCookie {
+  /// 是否加载
+  bool? load;
+
+  CaptchaStatus({
+    this.load = false,
+    this.cookie = "",
+  });
+
+  @override
+  String? cookie;
 }

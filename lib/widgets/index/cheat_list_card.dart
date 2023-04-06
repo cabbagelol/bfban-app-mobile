@@ -1,5 +1,6 @@
 /// 作弊者列表卡片
 
+import 'package:bfban/component/_Time/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -58,10 +59,12 @@ class CheatListCard extends StatelessWidget {
         ],
       ),
       subtitle: Wrap(
+        runAlignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           if (item["createTime"] != null)
-            Text(
-              Date().getTimestampTransferCharacter(item["createTime"])["Y_D_M"],
+            TimeWidget(
+              data: item["createTime"],
               style: TextStyle(
                 color: Theme.of(context).textTheme.displayMedium!.color,
                 fontSize: 9,
@@ -71,8 +74,8 @@ class CheatListCard extends StatelessWidget {
             ),
           const SizedBox(width: 8),
           if (item["updateTime"] != null)
-            Text(
-              Date().getTimestampTransferCharacter(item["updateTime"])["Y_D_M"],
+            TimeWidget(
+              data: item["updateTime"],
               style: TextStyle(
                 color: Theme.of(context).textTheme.displayMedium!.color,
                 fontSize: 9,
@@ -162,7 +165,7 @@ class CheatersCardIconitem extends StatelessWidget {
               child: Text(
                 n!,
                 style: TextStyle(
-                  color: Theme.of(context).primaryTextTheme.headline1!.color,
+                  color: Theme.of(context).textTheme.bodyMedium!.color,
                   fontSize: 17,
                 ),
                 textAlign: TextAlign.center,

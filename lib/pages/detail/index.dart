@@ -503,6 +503,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                         controller: _tabController,
                         children: <Widget>[
                           RefreshIndicator(
+                            edgeOffset: MediaQuery.of(context).padding.top,
                             onRefresh: _onRefreshCheatersInfo,
                             child: ListView(
                               padding: EdgeInsets.zero,

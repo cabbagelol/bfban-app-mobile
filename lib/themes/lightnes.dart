@@ -179,13 +179,13 @@ class LightnesTheme {
         secondarySelectedColor: Colors.black,
         checkmarkColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Color(0xff364e80),
+          color: Colors.black,
         ),
         secondaryLabelStyle: TextStyle(
-          color: Color(0xff364e80),
+          color: Colors.black,
         ),
         labelStyle: TextStyle(
-          color: Color(0xff364e80),
+          color: Colors.black,
         ),
       ),
       colorScheme: const ColorScheme(

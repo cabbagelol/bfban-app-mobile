@@ -43,7 +43,7 @@ class ManageData {
         "toPlayerId": toPlayerId,
         "cheatMethods": ["kill", "guilt"].contains(action) ? cheatMethods : null
       },
-      "encryptCaptcha": captcha!.hash,
+      "encryptCaptcha": captcha!.encryptCaptcha,
       "captcha": captcha!.value,
     };
     return map;

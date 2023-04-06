@@ -90,8 +90,6 @@ class _JudgementPageState extends State<JudgementPage> {
   /// [Response]
   /// 发布判决
   void _onRelease() async {
-    Navigator.pop(context);
-    return;
     dynamic _verification = _onVerification();
 
     if (_verification["code"] != 0) {
@@ -187,11 +185,11 @@ class _JudgementPageState extends State<JudgementPage> {
           manageStatus.load!
               ? ElevatedButton(
                   onPressed: () {},
-                  child: const ELuiLoadComponent(
+                  child: ELuiLoadComponent(
                     type: "line",
                     lineWidth: 2,
-                    size: 25,
-                    color: Colors.white,
+                    size: 20,
+                    color: Theme.of(context).appBarTheme.iconTheme!.color!,
                   ),
                 )
               : IconButton(
@@ -210,13 +208,21 @@ class _JudgementPageState extends State<JudgementPage> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3),
+                      side: BorderSide(
+                        color: Theme.of(context).dividerColor,
+                        width: 1,
+                      ),
+                    ),
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: DropdownButton(
                         isDense: true,
                         isExpanded: true,
-                        elevation: 0,
                         underline: const SizedBox(),
+                        dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                        style: Theme.of(context).dropdownMenuTheme.textStyle,
                         onChanged: (value) {
                           setState(() {
                             manageStatus.parame!.action = value.toString();
@@ -224,15 +230,9 @@ class _JudgementPageState extends State<JudgementPage> {
                         },
                         value: manageStatus.parame!.action,
                         items: appInfo.conf.data.action!["child"].map<DropdownMenuItem<String>>((i) {
-                          return DropdownMenuItem<String>(
-                            alignment: AlignmentDirectional.topCenter,
+                          return DropdownMenuItem(
                             value: i["value"].toString(),
-                            child: Row(
-                              children: [
-                                Text(FlutterI18n.translate(context, "basic.action.${i["value"]}.text")),
-                                // PrivilegesTagWidget(data: i["privilege"]),
-                              ],
-                            ),
+                            child: Text(FlutterI18n.translate(context, "basic.action.${i["value"]}.text")),
                           );
                         }).toList(),
                       ),
@@ -252,7 +252,16 @@ class _JudgementPageState extends State<JudgementPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    EluiCellComponent(title: FlutterI18n.translate(context, "detail.judgement.methods")),
+                    EluiCellComponent(
+                      title: FlutterI18n.translate(context, "detail.judgement.methods"),
+                      cont: _reportInfoCheatMethods.isEmpty
+                          ? const Icon(
+                              Icons.warning,
+                              color: Colors.yellow,
+                              size: 15,
+                            )
+                          : Container(),
+                    ),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                       child: Wrap(
@@ -270,26 +279,13 @@ class _JudgementPageState extends State<JudgementPage> {
               /// S 理由
               EluiCellComponent(
                 title: FlutterI18n.translate(context, "detail.judgement.content"),
-                cont: Offstage(
-                  offstage: manageStatus.parame!.content!.isNotEmpty,
-                  child: Wrap(
-                    spacing: 5,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: <Widget>[
-                      const Icon(
+                cont: manageStatus.parame!.content!.isEmpty
+                    ? const Icon(
                         Icons.warning,
                         color: Colors.yellow,
                         size: 15,
-                      ),
-                      Text(
-                        FlutterI18n.translate(context, "detail.messages.fillEverything"),
-                        style: const TextStyle(
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                      )
+                    : Container(),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -353,7 +349,7 @@ class _JudgementPageState extends State<JudgementPage> {
                   });
                 },
                 right: CaptchaWidget(
-                  onChange: (Captcha cap) => manageStatus.parame!.captcha = cap,
+                  onChange: (Captcha captcha) => manageStatus.parame!.captcha = captcha,
                 ),
                 maxLenght: 4,
                 placeholder: FlutterI18n.translate(context, "captcha.title"),

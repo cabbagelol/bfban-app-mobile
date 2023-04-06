@@ -80,7 +80,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     for (var i in homeTabsType) {
       Map waitMap = {
         "text": FlutterI18n.translate(context, "app.home.tabs.${i["text"]}"),
-        "icon": Icon(i["icon"]),
+        "icon": Icon(i["icon"], size: 16),
       };
       switch (i["text"]) {
         case "activities":

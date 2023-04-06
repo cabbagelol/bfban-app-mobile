@@ -44,7 +44,7 @@ class PinkTheme {
         cursorColor: Colors.pink,
       ),
       unselectedWidgetColor: Colors.white,
-      scaffoldBackgroundColor: Color(0xFFFFF3F6),
+      scaffoldBackgroundColor: const Color(0xFFFFFAFB),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
       dialogTheme: const DialogTheme(
@@ -58,14 +58,14 @@ class PinkTheme {
       toggleButtonsTheme: ToggleButtonsThemeData(
         color: Colors.pink.shade50,
         fillColor: Colors.pink.shade50,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.pink,
         ),
         focusColor: Colors.white60,
         selectedColor: Colors.white,
         selectedBorderColor: Colors.pink.shade800,
         splashColor: Colors.black38,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.white,
@@ -74,7 +74,7 @@ class PinkTheme {
         color: Colors.white,
       ),
       dividerTheme: DividerThemeData(
-        color: Colors.pink.shade100,
+        color: Colors.pink.shade50,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
@@ -152,8 +152,8 @@ class PinkTheme {
       iconTheme: const IconThemeData(
         color: Colors.pink,
       ),
-      cardTheme: CardTheme(
-        color: Colors.pink.shade50,
+      cardTheme: const CardTheme(
+        color: Colors.white,
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
         elevation: 0,

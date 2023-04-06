@@ -205,7 +205,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     switch (uri.host) {
       case "app":
       case "bfban.gametools.network":
-      case "bfban.cabbagelol.net":
+      case "bfban-app.cabbagelol.net":
       case "bfban.com":
         switch (uri.queryParameters["open_app_type"]) {
           // 打开玩家详情

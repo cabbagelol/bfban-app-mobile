@@ -209,40 +209,44 @@ class PlayersParame extends Paging {
   int? skip;
 }
 
-/// 玩家日历状态
+/// 玩家时间轴状态
 class PlayerTimelineStatus {
-  late List? list;
-  late int? total;
-  late bool? load;
-  late int index;
-  late PlayerTimelineParame? parame;
+  List? list;
+  int? total;
+  int? pageNumber;
+  bool? load;
+  PlayerTimelineParame parame;
 
   PlayerTimelineStatus({
     this.list,
     this.total = 0,
+    this.pageNumber = 0,
     this.load = false,
-    this.index = 0,
-    this.parame,
+    required this.parame,
   });
 }
 
-/// 玩家日历参数
-class PlayerTimelineParame {
-  late num skip;
-  late num limit;
-  late String personaId;
+/// 玩家时间轴参数
+class PlayerTimelineParame extends Paging {
+  String personaId;
 
   PlayerTimelineParame({
-    this.skip = -1,
-    this.limit = 0,
     required this.personaId,
+    this.skip = 0,
+    this.limit = 20,
   });
 
-  get toMap {
-    return {
-      "skip": skip,
-      "limit": limit,
+  Map<String, dynamic> get toMap {
+    Map<String, dynamic> map = {
       "personaId": personaId,
     };
+    map.addAll(pageToMap);
+    return map;
   }
+
+  @override
+  int? skip;
+
+  @override
+  int? limit;
 }

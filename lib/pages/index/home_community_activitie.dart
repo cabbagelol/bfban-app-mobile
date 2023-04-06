@@ -46,8 +46,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
       {"name": "app.home.screen.report", "value": "report", "index": 0},
       {"name": "app.home.screen.banAppeal", "value": "appealBan", "index": 1},
       {"name": "app.home.screen.signup", "value": "register", "index": 2},
-      {"name": "app.home.screen.verify", "value": "verify", "index": 3},
-      {"name": "app.home.screen.judgement", "value": "judgement", "index": 4}
+      {"name": "app.home.screen.judgement", "value": "judgement", "index": 3}
     ],
     "tonal": 0
   };
@@ -57,7 +56,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     "report": Icons.message,
     "appealBan": Icons.message,
     "register": Icons.notifications,
-    "verify": Icons.message,
     "judgement": Icons.terminal,
   };
 
@@ -75,7 +73,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
     // 初始筛选
     chipCont["list"].forEach((element) {
-      restorablebool.add(RestorableBool(true));
+      restorablebool.add(RestorableBool(false));
     });
 
     _getActivity();
@@ -208,6 +206,8 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     bool _isShow(i) {
       var item = chipCont["list"].where((element) => element["value"] == i["type"]).toList();
       var is_ = item.length > 0 ? restorablebool[item[0]["index"]].value : false;
+
+      if (restorablebool.where((element) => element.value).isEmpty) is_ = true;
 
       return is_;
     }

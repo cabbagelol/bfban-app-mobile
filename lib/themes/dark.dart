@@ -38,6 +38,18 @@ class DarkTheme {
         trackColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.2)),
         thumbColor: MaterialStateProperty.all(Colors.yellow),
       ),
+
+      dropdownMenuTheme: DropdownMenuThemeData(
+        textStyle: TextStyle(
+          color: Colors.white,
+        ),
+        inputDecorationTheme: InputDecorationTheme(),
+        menuStyle: MenuStyle(
+          elevation: MaterialStateProperty.all(2),
+          backgroundColor: MaterialStateProperty.all(Colors.black),
+          surfaceTintColor: MaterialStateProperty.all(Colors.white),
+        ),
+      ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),
         selectionHandleColor: Color(0xff364e80),
@@ -71,7 +83,11 @@ class DarkTheme {
         color: Colors.white,
       ),
       popupMenuTheme: const PopupMenuThemeData(
-        color: Color(0xff364e80),
+        color: Colors.black,
+        textStyle: TextStyle(
+          color: Colors.white,
+        ),
+        elevation: 2,
       ),
       dividerTheme: const DividerThemeData(
         color: Colors.white10,
@@ -147,9 +163,9 @@ class DarkTheme {
         backgroundColor: Colors.yellow,
         focusColor: Color(0xff364e80),
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.white,
-      ),
+      // iconTheme: const IconThemeData(
+      //   color: Colors.white,
+      // ),
       cardTheme: const CardTheme(
         color: Color(0xff0d1323),
         shadowColor: Colors.black54,
@@ -171,7 +187,7 @@ class DarkTheme {
       ),
       chipTheme: const ChipThemeData(
         backgroundColor: Colors.black12,
-        secondarySelectedColor: Colors.white,
+        secondarySelectedColor: Colors.black,
         checkmarkColor: Colors.black,
         iconTheme: IconThemeData(
           color: Color(0xff364e80),
@@ -194,8 +210,8 @@ class DarkTheme {
         onError: Colors.red,
         background: Color(0xff111b2b),
         onBackground: Color(0xff111b2b),
-        surface: Colors.white,
-        onSurface: Colors.white,
+        surface: Color(0xff364e80),
+        onSurface: Color(0xff364e80),
         // background: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(

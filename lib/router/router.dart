@@ -215,7 +215,7 @@ class Routes {
       {
         "url": "/richedit",
         'item': (context, params) {
-          return const RichEditPage();
+          return RichEditPage();
         },
       },
     ];

@@ -66,6 +66,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     {"text": "player", "icon": Icons.people},
     {"text": "user", "icon": Icons.person},
   ];
+
   // {"text": "comment", "icon": Icons.comment},
 
   List searchTabs = [];
@@ -129,7 +130,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     setState(() {
       switch (index) {
         case 0:
-          searchStatus.list.player.clear();
           searchStatus.params = SearchPlayerParams(
             param: searchStatus.params.param,
             game: GameType.all,
@@ -140,7 +140,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           );
           break;
         case 1:
-          searchStatus.list.user.clear();
           searchStatus.params = SearchInStationUser(
             param: searchStatus.params.param,
             gameSort: UserSortType.byDefault,
@@ -152,7 +151,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           break;
         case 2:
         default:
-          searchStatus.list.comment.clear();
           searchStatus.params = SearchCommentParams(
             param: searchStatus.params.param,
             limit: 40,
@@ -163,7 +161,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           break;
       }
     });
-    _onSearch(isButtonClick: false);
   }
 
   /// [Response]
@@ -453,10 +450,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                             label: Wrap(
                                               crossAxisAlignment: WrapCrossAlignment.center,
                                               children: [
-                                                const Icon(Icons.person, size: 16),
+                                                Icon(
+                                                  Icons.person,
+                                                  size: 16,
+                                                  color: Theme.of(context).chipTheme.iconTheme!.color,
+                                                ),
                                                 Text(i["originName"]),
                                                 const SizedBox(width: 5),
-                                                const Icon(Icons.local_fire_department_outlined, size: 16),
+                                                Icon(
+                                                  Icons.local_fire_department_outlined,
+                                                  size: 16,
+                                                  color: Theme.of(context).chipTheme.iconTheme!.color,
+                                                ),
                                                 Text(i["hot"].toString()),
                                               ],
                                             ),

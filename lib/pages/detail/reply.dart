@@ -30,7 +30,14 @@ class _ReplyPageState extends State<ReplyPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 回复
-  ReplyStatus replyStatus = ReplyStatus(load: false, data: ReplyData(toPlayerId: 0, toCommentId: null, content: ""), captcha: Captcha(load: false, value: ""));
+  ReplyStatus replyStatus = ReplyStatus(
+    load: false,
+    parame: ReplyStatusParame(
+      toPlayerId: 0,
+      toCommentId: null,
+      content: "",
+    ),
+  );
 
   @override
   void initState() {
@@ -38,8 +45,8 @@ class _ReplyPageState extends State<ReplyPage> {
 
     if (jsonDecode(widget.data).isEmpty) return;
     dynamic _data = jsonDecode(widget.data);
-    if (_data["toCommentId"] != null) replyStatus.data!.toCommentId = _data["toCommentId"];
-    if (_data["toPlayerId"] != null) replyStatus.data!.toPlayerId = _data["toPlayerId"];
+    if (_data["toCommentId"] != null) replyStatus.parame!.toCommentId = _data["toCommentId"];
+    if (_data["toPlayerId"] != null) replyStatus.parame!.toPlayerId = _data["toPlayerId"];
   }
 
   /// [Response]
@@ -52,7 +59,7 @@ class _ReplyPageState extends State<ReplyPage> {
       return;
     }
 
-    if (replyStatus.data!.content!.isEmpty && replyStatus.captcha!.value.isEmpty) {
+    if (replyStatus.parame!.content!.isEmpty && replyStatus.parame!.value.isEmpty) {
       EluiMessageComponent.warning(context)(
         child: Text(FlutterI18n.translate(context, "signup.fillIn")),
       );
@@ -64,12 +71,12 @@ class _ReplyPageState extends State<ReplyPage> {
     });
 
     // 过滤空数据
-    dynamic data = replyStatus.toMap;
+    dynamic data = replyStatus.parame!.toMap;
     data["data"].removeWhere((key, value) => value.toString().isEmpty);
 
     Response result = await Http.request(
       Config.httpHost["player_reply"],
-      data: replyStatus.toMap,
+      data: replyStatus.parame!.toMap,
       method: Http.POST,
     );
 
@@ -93,13 +100,13 @@ class _ReplyPageState extends State<ReplyPage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("richedit", value: replyStatus.data!.content.toString());
+    await Storage().set("richedit", value: replyStatus.parame!.content.toString());
 
     _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino).then((data) {
       /// 按下确认储存富文本编写的内容
       if (data["code"] == 1) {
         setState(() {
-          replyStatus.data!.content = data["html"];
+          replyStatus.parame!.content = data["html"];
         });
       }
     });
@@ -115,13 +122,13 @@ class _ReplyPageState extends State<ReplyPage> {
             centerTitle: true,
             actions: <Widget>[
               replyStatus.load!
-                  ? const Padding(
-                      padding: EdgeInsets.only(right: 20),
+                  ? ElevatedButton(
+                      onPressed: () {},
                       child: ELuiLoadComponent(
                         type: "line",
-                        size: 20,
                         lineWidth: 2,
-                        color: Colors.white,
+                        size: 20,
+                        color: Theme.of(context).appBarTheme.iconTheme!.color!,
                       ),
                     )
                   : IconButton(
@@ -132,29 +139,21 @@ class _ReplyPageState extends State<ReplyPage> {
           ),
           body: ListView(
             children: [
+              EluiTipComponent(
+                type: EluiTip.warning,
+                child: Text(FlutterI18n.translate(context, "detail.info.appealManual1")),
+              ),
+
               /// S 理由
               EluiCellComponent(
                 title: "",
-                cont: Offstage(
-                  // offstage: reportStatus.param!.data!["description"].toString().isNotEmpty,
-                  child: Wrap(
-                    spacing: 5,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: <Widget>[
-                      const Icon(
+                cont: replyStatus.parame!.content!.isEmpty
+                    ? const Icon(
                         Icons.warning,
                         color: Colors.yellow,
                         size: 15,
-                      ),
-                      Text(
-                        FlutterI18n.translate(context, "detail.info.giveOpinion"),
-                        style: const TextStyle(
-                          color: Colors.yellow,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                      )
+                    : Container(),
               ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -177,7 +176,7 @@ class _ReplyPageState extends State<ReplyPage> {
                       padding: EdgeInsets.zero,
                       child: Stack(
                         children: <Widget>[
-                          Html(data: replyStatus.data!.content),
+                          Html(data: replyStatus.parame!.content),
                           Positioned(
                             top: 0,
                             left: 0,
@@ -188,9 +187,9 @@ class _ReplyPageState extends State<ReplyPage> {
                               child: Center(
                                 child: TextButton.icon(
                                   icon: const Icon(Icons.edit),
-                                  label: Text(
-                                    replyStatus.data!.content.toString().isEmpty ? "填写回复" : "编辑",
-                                    style: const TextStyle(fontSize: 18),
+                                  label: const Text(
+                                    "Edit",
+                                    style: TextStyle(fontSize: 18),
                                   ),
                                   onPressed: () {
                                     _opEnRichEdit();
@@ -216,9 +215,9 @@ class _ReplyPageState extends State<ReplyPage> {
                 placeholder: FlutterI18n.translate(context, "captcha.title"),
                 maxLenght: 4,
                 right: CaptchaWidget(
-                  onChange: (Captcha cap) => replyStatus.captcha = cap,
+                  onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),
                 ),
-                onChange: (data) => replyStatus.captcha!.value = data["value"],
+                onChange: (data) => replyStatus.parame!.value = data["value"],
               ),
             ],
           ),
