@@ -23,13 +23,11 @@ class Upload extends Http {
     if (file == null) return;
 
     if (await file.readAsBytesSync().length <= FILESIZE) {
-      uploadDateSmallFile(file).then((res) => {
-            if (res["code"] >= 1) {},
-          });
+      var res = await uploadDateSmallFile(file);
+      return res;
     } else {
-      uploadDateLargeFile(file).then((res) => {
-            if (res["code"] >= 1) {},
-          });
+      var res = await uploadDateLargeFile(file);
+      return res;
     }
   }
 
@@ -43,65 +41,71 @@ class Upload extends Http {
       };
     }
 
-    // test
-    return {"code": 1, "url": "https://"};
+    dynamic length = file.readAsBytesSync().length;
+    MultipartFile formdata = await MultipartFile.fromFile(
+      file.path,
+      filename: const Uuid().v4(),
+    );
 
     Response result = await Http.request(
-      Config.apiHost["service_upload"],
+      Config.httpHost["service_upload"],
       method: Http.PUT,
       headers: {
-        ["Content-Type"]: "file/image",
-        ["Content-Length"]: file.readAsBytesSync().length,
-        ['x-access-token']: Http.TOKEN
+        "Content-Type": fileManagement.resolutionFileType(file.path),
+        "Content-Length": length,
       },
-    )
-      ..then((result) {
-        return {
-          "code": 1,
-          "url": "${location()}service/file?filename=${result.data["data"]["name"]}",
-        };
-      })
-      ..catchError((err) {
-        return {
-          "code": -1,
-          "message": err,
-        };
-      });
+      data: formdata,
+    );
+
+    if (result.data["success"] == 1) {
+      return {
+        "code": 1,
+        "url": "${location()}service/file?filename=${result.data["data"]["name"]}",
+        "message": result.data["code"],
+      };
+    }
+
+    return {
+      "code": -1,
+      "message": result.data["code"],
+    };
   }
 
   /// 大文件
   /// 超出2m以上
   Future uploadDateLargeFile(File file) async {
     String fileName = fileManagement.splitFileUrl(file.path)["fileName"];
+    dynamic length = file.readAsBytesSync().length;
 
     Response result = await Http.request(
       Config.apiHost["service_upload"],
       method: Http.POST,
       data: FormData.fromMap({
-        "size": file.readAsBytesSync().length,
-        "mimeType": "file/image",
-        "body": await MultipartFile.fromFile(file.path, filename: fileName)
+        "size": length,
+        "mimeType": fileManagement.resolutionFileType(file.path),
+        "body": await MultipartFile.fromFile(
+          file.path,
+          filename: const Uuid().v4(),
+        ),
       }),
-      headers: {
-        ['x-access-token']: Http.TOKEN,
-      },
-    )
-      ..then((result) {
-        return {
-          "code": 1,
-          "url": "${location()}service/file?filename=${result.data["data"]["name"]}",
-        };
-      })
-      ..catchError((err) {
-        return {
-          "code": -1,
-          "message": err,
-        };
-      });
+    );
+
+    if (result.data["success"] == 1) {
+      return {
+        "code": 1,
+        "url": "${location()}service/file?filename=${result.data["data"]["name"]}",
+        "message": result.data["code"],
+      };
+    }
+
+    return {
+      "code": -1,
+      "message": result.data["code"],
+    };
   }
 
   /// 查询文件详情
-  Future serviceFile (String filename) async {
+  Future serviceFile(String filename) async {
     if (filename == null) return;
 
     Response result = await Http.request(

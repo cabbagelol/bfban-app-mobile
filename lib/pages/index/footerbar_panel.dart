@@ -6,7 +6,6 @@ import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -121,47 +120,51 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                   ),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      constraints: const BoxConstraints(
-                        minWidth: 50,
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          statistics.load
-                              ? Column(
-                                  children: [
-                                    ELuiLoadComponent(
-                                      type: "line",
-                                      lineWidth: 1,
-                                      color: Theme.of(context).textTheme.subtitle1!.color!,
-                                      size: 18,
-                                    ),
-                                    const SizedBox(height: 5),
-                                  ],
-                                )
-                              : Text(
-                                  statistics.data!.reports.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        constraints: const BoxConstraints(
+                          minWidth: 50,
+                          maxWidth: 100,
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            statistics.load
+                                ? Column(
+                              children: [
+                                ELuiLoadComponent(
+                                  type: "line",
+                                  lineWidth: 1,
+                                  color: Theme.of(context).textTheme.subtitle1!.color!,
+                                  size: 18,
                                 ),
-                          I18nText(
-                            "home.cover.dataReceived",
-                            child: Text(
-                              "0",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).textTheme.subtitle2!.color,
+                                const SizedBox(height: 5),
+                              ],
+                            )
+                                : Text(
+                              statistics.data!.reports.toString(),
+                              style: const TextStyle(
+                                fontSize: 20,
                               ),
-                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
-                          )
-                        ],
+                            I18nText(
+                              "home.cover.dataReceived",
+                              child: Text(
+                                "0",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).textTheme.displayMedium!.color,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -169,48 +172,53 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                         left: 7,
                         right: 7,
                       ),
-                      height: 30,
+                      height: 25,
                       width: 1,
                       color: Theme.of(context).dividerColor,
                     ),
-                    Container(
-                      constraints: const BoxConstraints(
-                        minWidth: 50,
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          statistics.load
-                              ? Column(
-                                  children: [
-                                    ELuiLoadComponent(
-                                      type: "line",
-                                      lineWidth: 1,
-                                      color: Theme.of(context).textTheme.subtitle1!.color!,
-                                      size: 18,
-                                    ),
-                                    const SizedBox(height: 5),
-                                  ],
-                                )
-                              : Text(
-                                  statistics.data!.confirmed.toString(),
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        constraints: const BoxConstraints(
+                          minWidth: 50,
+                          maxWidth: 100,
+                        ),
+                        child: Column(
+                          children: <Widget>[
+                            statistics.load
+                                ? Column(
+                              children: [
+                                ELuiLoadComponent(
+                                  type: "line",
+                                  lineWidth: 1,
+                                  color: Theme.of(context).textTheme.subtitle1!.color!,
+                                  size: 18,
                                 ),
-                          I18nText(
-                            "home.cover.confirmData",
-                            child: Text(
-                              "",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).textTheme.subtitle2!.color,
+                                const SizedBox(height: 5),
+                              ],
+                            )
+                                : Text(
+                              statistics.data!.confirmed.toString(),
+                              style: const TextStyle(
+                                fontSize: 20,
                               ),
-                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                             ),
-                          ),
-                        ],
+                            I18nText(
+                              "home.cover.confirmData",
+                              child: Text(
+                                "",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Theme.of(context).textTheme.displayMedium!.color,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -218,24 +226,25 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                         left: 7,
                         right: 7,
                       ),
-                      height: 30,
+                      height: 25,
                       width: 1,
                       color: Theme.of(context).dividerColor,
                     ),
                     Opacity(
                       opacity: data.isLogin ? 1 : .3,
-                      child: TextButton(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.add),
-                            Text(
-                              FlutterI18n.translate(context, "report.title"),
-                            ),
-                          ],
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        child: TextButton(
+                          child: Row(
+                            children: [
+                              const Icon(Icons.add),
+                              Text(
+                                FlutterI18n.translate(context, "report.title"),
+                              ),
+                            ],
+                          ),
+                          onPressed: () => data.isLogin ? _openReply() : null,
                         ),
-                        onPressed: () => data.isLogin ? _openReply() : null,
                       ),
                     ),
                   ],
@@ -280,7 +289,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       )
                     else
                       Text(
-                        statistics.data!.registers.toString(),
+                        statistics.data!.registers.toString() ?? "0",
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -327,7 +336,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       )
                     else
                       Text(
-                        statistics.data!.banAppeals.toString(),
+                        statistics.data!.banAppeals.toString() ?? "0",
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -374,7 +383,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       )
                     else
                       Text(
-                        statistics.data!.players.toString(),
+                        statistics.data!.players.toString() ?? "0",
                         style: const TextStyle(
                           fontSize: 20,
                         ),

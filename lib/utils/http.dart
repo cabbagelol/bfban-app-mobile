@@ -54,7 +54,7 @@ class Http extends ScaffoldState {
     headers = headers ?? {"x-access-token": ""};
     method = method ?? 'GET';
 
-    if (TOKEN!.isNotEmpty) {
+    if (headers != null && TOKEN!.isNotEmpty) {
       headers["x-access-token"] = TOKEN;
     }
 

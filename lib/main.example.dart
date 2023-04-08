@@ -11,6 +11,8 @@ void main () async {
         // bfban website address
         "web_site": "website",
         // Request address
+        // Use the development address in the Android emulator, which should be 10.0.2.2:3000/api
+        // by https://developer.android.google.cn/studio/run/emulator-networking
         "network_service_request": "https://bfban.gametools.network/api",
       }
   );

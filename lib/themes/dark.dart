@@ -38,7 +38,6 @@ class DarkTheme {
         trackColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.2)),
         thumbColor: MaterialStateProperty.all(Colors.yellow),
       ),
-
       dropdownMenuTheme: DropdownMenuThemeData(
         textStyle: TextStyle(
           color: Colors.white,

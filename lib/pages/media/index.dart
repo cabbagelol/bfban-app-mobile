@@ -256,17 +256,26 @@ class _mediaPageState extends State<MediaPage> {
   /// [Event]
   /// 上传文件
   void _onUploadFile(context, File file) async {
-    // 标记
-    Map splitFileUrl = FileManagement().splitFileUrl(file.path);
-    String newPath = "${file.parent.path}/${splitFileUrl["fileName"]}_[Uploaded].${splitFileUrl["fileExtension"]}";
-    file.renameSync(newPath);
-
     // 上传
-    await Upload().on(file);
+    var result = await Upload().on(file);
 
-    EluiMessageComponent.success(context)(child: const Text("上传成功"));
+    if (result["code"] == 1) {
+      // 标记
+      Map splitFileUrl = FileManagement().splitFileUrl(file.path);
+      String newPath = "${file.parent.path}/${splitFileUrl["fileName"]}_[Uploaded].${splitFileUrl["fileExtension"]}";
+      file.renameSync(newPath);
 
-    _getLocalMediaFiles();
+      EluiMessageComponent.success(context)(
+        child: Text(result["message"]),
+      );
+
+      _getLocalMediaFiles();
+      return;
+    }
+
+    EluiMessageComponent.error(context)(
+      child: Text(result["message"]),
+    );
   }
 
   /// [Event]
@@ -361,11 +370,26 @@ class _mediaPageState extends State<MediaPage> {
         child: Column(
           children: [
             TabBar(
+              isScrollable: true,
               labelStyle: const TextStyle(fontSize: 16),
               controller: _tabController,
               tabs: [
                 Tab(text: FlutterI18n.translate(context, "app.media.tab.local")),
-                Tab(text: FlutterI18n.translate(context, "app.media.tab.cloud")),
+                Tab(
+                  child: Row(
+                    children: [
+                      Text(FlutterI18n.translate(context, "app.media.tab.cloud")),
+                      const SizedBox(width: 5),
+                      if (cloudMediaStatus.load!)
+                        ELuiLoadComponent(
+                          type: "line",
+                          lineWidth: 1,
+                          color: Theme.of(context).textTheme.displayMedium!.color!,
+                          size: 16,
+                        ),
+                    ],
+                  ),
+                ),
               ],
             ),
             const Divider(height: 1),
@@ -455,11 +479,24 @@ class _mediaPageState extends State<MediaPage> {
                           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                           child: Row(
                             children: [
-                              const Icon(Icons.info_outline, size: 16),
-                              const SizedBox(width: 5),
-                              Text(
-                                "${cloudMediaInfoStatus.data!["usedStorageQuota"] ?? "0"}",
-                              )
+                              Expanded(
+                                flex: 1,
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.info_outline, size: 16),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      "${cloudMediaInfoStatus.data!["usedStorageQuota"] ?? "0"}",
+                                    )
+                                  ],
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  _getNetworkMediaList();
+                                },
+                                child: const Icon(Icons.restart_alt_rounded),
+                              ),
                             ],
                           ),
                         ),

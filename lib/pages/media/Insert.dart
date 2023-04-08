@@ -4,6 +4,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../utils/index.dart';
@@ -156,6 +157,17 @@ class _InsertSelectState extends State<InsertSelect> {
   ];
 
   /// [Event]
+  /// 选择文件上传文件
+  _onUploadFile() async {
+    ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    var value = await Upload().on(File(image!.path));
+
+   if (widget.onNext != null) widget.onNext!(value);
+  }
+
+  /// [Event]
   /// 媒体库选择
   /// 仅支持媒体库取
   _onMediaPage() {
@@ -221,7 +233,7 @@ class _InsertSelectState extends State<InsertSelect> {
               children: [
                 TextButton(
                   style: ButtonStyle(padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
-                  onPressed: () {},
+                  onPressed: () => _onUploadFile(),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [

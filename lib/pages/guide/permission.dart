@@ -32,6 +32,8 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
       case "ios":
       case "macos":
         permissions = [
+          Permission.camera,
+          Permission.photos,
           Permission.storage,
           Permission.notification,
         ];
@@ -41,6 +43,7 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
           Permission.camera,
           Permission.photos,
           Permission.storage,
+          Permission.videos,
           Permission.notification,
         ];
         break;
@@ -148,6 +151,10 @@ class _PermissionState extends State<PermissionWidget> {
     Permission.storage: {
       "name": "app.guide.permission.list.2.name",
       "describe": "app.guide.permission.list.2.describe",
+    },
+    Permission.videos: {
+      "name": "app.guide.permission.list.videos.name",
+      "describe": "app.guide.permission.list.videos.describe",
     },
     Permission.notification: {
       "name": "app.guide.permission.list.3.name",

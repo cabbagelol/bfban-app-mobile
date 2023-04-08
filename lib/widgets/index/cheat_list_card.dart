@@ -2,11 +2,7 @@
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bfban/utils/index.dart';
-
 import 'package:flutter_elui_plugin/_img/index.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../router/router.dart';
 

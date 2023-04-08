@@ -325,44 +325,36 @@ class _ReportPageState extends State<ReportPage> {
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                      bottom: 5,
-                      right: 20,
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          reportStatus.param!.originName == "" ? "USER ID" : reportStatus.param!.originName.toString(),
-                          style: TextStyle(
-                            color: reportStatus.param!.originName == "" ? Colors.white12 : Colors.white,
-                            fontSize: 30,
-                          ),
-                          textAlign: TextAlign.center,
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: EluiInputComponent(
+                      internalstyle: true,
+                      value: reportStatus.param!.originName,
+                      theme: EluiInputTheme(
+                        textStyle: TextStyle(
+                          fontSize: 25,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
                         ),
-                        if (reportStatus.param!.originName.toString().isEmpty)
-                          const Icon(
-                            Icons.warning,
-                            color: Colors.yellow,
-                            size: 15,
-                          ),
-                        Center(
-                          child: Text(
-                            FlutterI18n.translate(context, "report.info.idNotion1"),
-                            style: const TextStyle(color: Colors.white12, fontSize: 12),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
+                      ),
+                      right: reportStatus.param!.originName.toString().isEmpty
+                          ? const Icon(
+                        Icons.warning,
+                        color: Colors.yellow,
+                        size: 25,
+                      )
+                          : Container(),
+                      placeholder: FlutterI18n.translate(context, "report.labels.hackerId"),
+                      onChange: (data) => _changeReportUserInput(data),
+                    )..setValue = reportStatus.param!.originName!,
+                  ),
+                  const Divider(height: 1),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    child: Text(
+                      FlutterI18n.translate(context, "report.info.idNotion1"),
+                      style: TextStyle(color: Theme.of(context).textTheme.displayMedium!.color, fontSize: 12),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  EluiInputComponent(
-                    title: FlutterI18n.translate(context, "report.labels.hackerId"),
-                    value: reportStatus.param!.originName,
-                    placeholder: FlutterI18n.translate(context, "report.labels.hackerId"),
-                    onChange: (data) => _changeReportUserInput(data),
-                  )..setValue = reportStatus.param!.originName!,
                 ],
               ),
             ),
@@ -482,8 +474,8 @@ class _ReportPageState extends State<ReportPage> {
                             Expanded(
                               flex: 1,
                               child: Input(
-                                textStyle: TextStyle(fontSize: 15),
-                                contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                textStyle: const TextStyle(fontSize: 15),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 10),
                                 value: videoWidgetList[index],
                                 onChange: (data) {
                                   setState(() {
