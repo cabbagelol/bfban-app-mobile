@@ -25,8 +25,19 @@
       "setting": "设置",
       "app_exit": "再次点击,退出程序"
     },
+    "media": {
+      "open": "查看",
+      "delete": "删除",
+      "fileInfo": "详细信息",
+      "uploadFile": "上传文件",
+      "tab": {
+        "local": "本地",
+        "cloud": "云图库"
+      }
+    },
     "home": {
-      "scancode": "扫一扫",
+      "scancode": "拍摄",
+      "takeLook": "随便看看",
       "needAccount": "此功能需要账户, 请先登录",
       "tabs": {
         "activities": "动态",
@@ -102,6 +113,10 @@
         "account": {
           "title": "账户",
           "describe": "管理BFBAN的账户信息"
+        },
+        "media": {
+          "title": "媒体库",
+          "describe": "在BFBAN保存以及创建文件"
         },
         "website": {
           "title": "网站地址",

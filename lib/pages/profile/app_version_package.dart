@@ -73,7 +73,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                         onTap: () {
                           _urlUtil.onPeUrl(
                             i["platform"][item]["url"],
-                            mode: LaunchMode.externalNonBrowserApplication,
+                            mode: LaunchMode.externalApplication,
                           );
                         },
                         child: Icon(Icons.download_for_offline),
@@ -113,7 +113,12 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
-                    cont: Text(data.currentVersion.toString()),
+                    cont: Row(
+                      children: [
+                        Text(data.currentVersion.toString()),
+                        Text("\t(${data.buildNumber.toString()})"),
+                      ],
+                    ),
                   ),
                 ),
                 Card(

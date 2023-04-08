@@ -2,6 +2,25 @@
 
 enum Env { PROD, DEV }
 
+enum BaseUrlProtocol { HTTP, HTTPS }
+
+class BaseUrl {
+  List protocols = ["http", "https"];
+  String? protocol;
+  String? host = "";
+  String? pathname = "";
+
+  BaseUrl({
+    BaseUrlProtocol? protocol = BaseUrlProtocol.HTTP,
+    this.host,
+    this.pathname,
+  }) : super() {
+    this.protocol = protocols[protocol!.index];
+  }
+
+  get url => "$protocol://$host$pathname";
+}
+
 class Config {
   static Env env = Env.DEV;
   static final List _envStringNames = ["production", "development"];
@@ -18,6 +37,12 @@ class Config {
     d.addAll(jiguans);
     return d;
   }
+
+  static BaseUrl apiUpload = BaseUrl(
+      protocol: BaseUrlProtocol.HTTPS,
+      host: "bfban.gametools.network",
+      pathname: "/api/"
+  );
 
   /// 基础请求
   static Map get apiHost {
@@ -104,16 +129,18 @@ class Config {
     return list;
   }
 
-  Config.dev({required Map api, Map? jiguan}) {
+  Config.dev({required Map api, Map? jiguan, BaseUrl? apiUpload}) {
     Config.apis.addAll(api);
     if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
+    if (apiUpload!.host!.isNotEmpty) Config.apiUpload = apiUpload;
     Config.env = Env.DEV;
     Config._envCurrentStringName = _envStringNames[Config.env.index];
   }
 
-  Config.prod({required Map api, Map? jiguan}) {
+  Config.prod({required Map api, Map? jiguan, BaseUrl? apiUpload}) {
     Config.apis.addAll(api);
     if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
+    if (apiUpload!.host!.isNotEmpty) Config.apiUpload = apiUpload;
     Config.env = Env.PROD;
     Config._envCurrentStringName = _envStringNames[Config.env.index];
   }

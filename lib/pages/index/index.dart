@@ -1,5 +1,7 @@
 /// 功能：首页控制器
 
+import 'dart:math';
+
 import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/message_provider.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
 
+import '../../constants/api.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
 import '../profile/index.dart';
@@ -40,6 +43,8 @@ class _IndexPageState extends State<IndexPage> {
 
   DateTime? _lastPressedAt = DateTime(0); //上次点击时间
 
+  num reportsCount = 0;
+
   double screenHeight = 0;
 
   double screenBarHeight = 26.0;
@@ -56,6 +61,22 @@ class _IndexPageState extends State<IndexPage> {
     setState(() {
       screenHeight = MediaQuery.of(context).size.height;
     });
+  }
+
+  /// 获取长度
+  Future _getReportsCount () async {
+    Response result = await Http.request(
+      Config.httpHost["statistics"],
+      parame: {"reports": true},
+      method: Http.GET,
+    );
+
+    if (result.data["success"] == 1) {
+      final d = result.data["data"];
+      reportsCount = d["reports"];
+    }
+
+    return reportsCount;
   }
 
   /// [Event]
@@ -75,6 +96,18 @@ class _IndexPageState extends State<IndexPage> {
 
       _urlUtil.opEnPage(context, "/message/list");
     };
+  }
+
+  /// [Event]
+  /// 随便看看
+  void _takeLook() async {
+    if (reportsCount == 0) {
+      await _getReportsCount();
+    }
+
+    int random = Random().nextInt(reportsCount as int);
+
+    _urlUtil.opEnPage(context, "/player/dbId/$random");
   }
 
   @override
@@ -173,10 +206,14 @@ class _IndexPageState extends State<IndexPage> {
               ),
               actions: <Widget>[
                 PopupMenuButton(
+                  offset: const Offset(0, 45),
                   onSelected: (value) {
                     switch (value) {
                       case 1:
                         _urlUtil.opEnPage(context, '/camera').then((value) {});
+                        break;
+                      case 2:
+                        _takeLook();
                         break;
                     }
                   },
@@ -192,6 +229,19 @@ class _IndexPageState extends State<IndexPage> {
                               width: 10,
                             ),
                             Text(FlutterI18n.translate(context, "app.home.scancode")),
+                          ],
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 2,
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            const Icon(Icons.casino_outlined),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(FlutterI18n.translate(context, "app.home.takeLook")),
                           ],
                         ),
                       ),

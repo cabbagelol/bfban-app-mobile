@@ -16,7 +16,6 @@ import 'package:bfban/component/_lang/delegate_custom.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
-import 'package:camera/camera.dart';
 
 import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
@@ -28,9 +27,6 @@ void runMain() async {
 
   // 路由初始
   Routes.configureRoutes(FluroRouter());
-
-  // 相机初始
-  Camera.camera = await availableCameras();
 
   // 设置系统状态栏
   SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(

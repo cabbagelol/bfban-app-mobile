@@ -29,11 +29,14 @@ import 'time_line.dart';
 
 class PlayerDetailPage extends StatefulWidget {
   /// User Db id
-  final String id;
+  String? dbId;
+  /// EA persona Id
+  String? personaId;
 
-  const PlayerDetailPage({
+  PlayerDetailPage({
     Key? key,
-    required this.id,
+    this.dbId,
+    this.personaId,
   }) : super(key: key);
 
   @override
@@ -92,7 +95,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   void initState() {
     super.initState();
 
-    playerStatus.parame!.personaId = widget.id;
+    if (widget.personaId != null) playerStatus.parame!.personaId = widget.personaId!;
+    if (widget.dbId != null) playerStatus.parame!.dbId = widget.dbId!;
   }
 
   @override
@@ -406,7 +410,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   void _onShare(Map i) {
     _urlUtil.onPeUrl(
       "${Config.apiHost["web_site"]}/player/${i["originUserId"]}/share",
-      mode: LaunchMode.externalNonBrowserApplication,
+      mode: LaunchMode.externalApplication,
     );
   }
 

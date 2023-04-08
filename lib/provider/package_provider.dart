@@ -123,6 +123,7 @@ class PackageProvider with ChangeNotifier {
 
     package!.appName = packageInfo.appName;
     package!.packageName = packageInfo.packageName;
+    package!.buildNumber = packageInfo.buildNumber;
     package!.currentVersion = packageInfo.version.toString();
     package!.loadCurrent = false;
     notifyListeners();
@@ -165,6 +166,8 @@ class PackageProvider with ChangeNotifier {
 
   /// 当前版本
   String get currentVersion => isNull(package!.currentVersion!);
+
+  String get buildNumber => package!.buildNumber;
 
   bool get loadCurrent => package!.loadCurrent!;
 

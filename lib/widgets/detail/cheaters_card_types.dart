@@ -33,7 +33,7 @@ class CardUtil {
           onTap: () => {
             _urlUtil.onPeUrl(
               context.tree.element!.attributes["href"].toString(),
-              mode: LaunchMode.externalNonBrowserApplication,
+              mode: LaunchMode.externalApplication,
             )
           },
           child: Container(

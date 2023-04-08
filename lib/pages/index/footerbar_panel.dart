@@ -111,6 +111,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
             Card(
               margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
               child: Container(
+                height: 70,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -120,11 +121,13 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                   ),
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(
-                      height: 40,
+                    Container(
+                      constraints: const BoxConstraints(
+                        minWidth: 50,
+                      ),
                       child: Column(
                         children: <Widget>[
                           statistics.load
@@ -145,6 +148,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                     fontSize: 20,
                                   ),
                                   overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                           I18nText(
                             "home.cover.dataReceived",
@@ -171,7 +175,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                     ),
                     Container(
                       constraints: const BoxConstraints(
-                        minWidth: 100,
+                        minWidth: 50,
                       ),
                       child: Column(
                         children: <Widget>[
@@ -193,6 +197,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                     fontSize: 20,
                                   ),
                                   overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                 ),
                           I18nText(
                             "home.cover.confirmData",

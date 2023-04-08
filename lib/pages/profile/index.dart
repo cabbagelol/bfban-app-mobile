@@ -122,7 +122,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       src: data.userinfo["userAvatar"] ?? "",
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Expanded(
                                   flex: 1,
                                   child: textLoad(
@@ -234,6 +234,21 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 ),
                 islink: true,
                 onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"] + "/profile/account", mode: LaunchMode.externalApplication),
+              ),
+            ),
+            Visibility(
+              visible: data.isLogin,
+              child: EluiCellComponent(
+                title: FlutterI18n.translate(context, "app.setting.cell.media.title"),
+                label: FlutterI18n.translate(context, "app.setting.cell.media.describe"),
+                theme: EluiCellTheme(
+                  titleColor: Theme.of(context).textTheme.subtitle1?.color,
+                  labelColor: Theme.of(context).textTheme.subtitle2?.color,
+                  linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                  backgroundColor: Theme.of(context).cardTheme.color,
+                ),
+                islink: true,
+                onTap: () => _urlUtil.opEnPage(context, "/account/media/"),
               ),
             ),
             EluiCellComponent(

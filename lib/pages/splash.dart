@@ -210,7 +210,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
         switch (uri.queryParameters["open_app_type"]) {
           // 打开玩家详情
           case "player":
-            _urlUtil.opEnPage(context, "/detail/player/${uri.queryParameters["id"]}");
+            _urlUtil.opEnPage(context, "/player/personaId/${uri.queryParameters["id"]}");
             break;
           // 打开用户空间
           case "account":

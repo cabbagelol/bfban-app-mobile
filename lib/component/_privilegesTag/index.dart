@@ -44,7 +44,7 @@ class _PrivilegesTagWidgetState extends State<PrivilegesTagWidget> {
           color: EluiTagType.none,
           size: EluiTagSize.no2,
           theme: EluiTagTheme(
-            backgroundColor: Theme.of(context).colorScheme.primary!.withOpacity(.2),
+            backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.2),
           ),
           value: FlutterI18n.translate(context, "basic.privilege.${i["value"]}"),
         );

@@ -149,7 +149,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
       case "judgement":
       case "report":
       if (i["playerOriginPersonaId"] != null) {
-        _urlUtil.opEnPage(context, '/detail/player/${i["playerOriginPersonaId"]}');
+        _urlUtil.opEnPage(context, '/player/personaId/${i["playerOriginPersonaId"]}');
       }
       break;
       case "register":

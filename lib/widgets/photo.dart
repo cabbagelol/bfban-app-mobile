@@ -9,29 +9,34 @@ import 'package:photo_view/photo_view.dart';
 
 import 'package:bfban/utils/index.dart';
 
+enum PhotoViewFileType { file, network }
+
 class PhotoViewSimpleScreen extends StatefulWidget {
-  final String? imageUrl;
+  PhotoViewFileType? type;
 
-  final ImageProvider? imageProvider;
+  String? imageUrl;
 
-  final Widget? loadingChild;
+  ImageProvider? imageProvider;
 
-  final BoxDecoration? backgroundDecoration;
+  Widget? loadingChild;
 
-  final double? minScale;
+  BoxDecoration? backgroundDecoration;
 
-  final double? maxScale;
+  double? minScale;
 
-  final Object? heroTag;
+  double? maxScale;
 
-  const PhotoViewSimpleScreen({
+  Object? heroTag;
+
+  PhotoViewSimpleScreen({
     Key? key,
+    this.type,
     this.imageUrl,
     this.imageProvider,
     this.loadingChild,
     this.backgroundDecoration,
-    this.minScale,
-    this.maxScale,
+    this.minScale = 0.05,
+    this.maxScale = 1.5,
     this.heroTag,
   }) : super(key: key);
 
@@ -99,27 +104,28 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
-        title: Text(widget.imageUrl!.toString()),
+        title: widget.imageUrl! != null ? Text(widget.imageUrl!.toString()) : Container(),
         centerTitle: true,
         actions: [
-          imageSaveStatus
-              ? ElevatedButton(
-                  onPressed: () {},
-                  child: const ELuiLoadComponent(
-                    type: "line",
-                    lineWidth: 2,
-                    size: 25,
+          if (widget.type == PhotoViewFileType.network)
+            imageSaveStatus
+                ? ElevatedButton(
+                    onPressed: () {},
+                    child: const ELuiLoadComponent(
+                      type: "line",
+                      lineWidth: 2,
+                      size: 25,
+                    ),
+                  )
+                : IconButton(
+                    icon: const Icon(
+                      Icons.file_download,
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      onSave(context, widget.imageUrl);
+                    },
                   ),
-                )
-              : IconButton(
-                  icon: const Icon(
-                    Icons.file_download,
-                    size: 25,
-                  ),
-                  onPressed: () {
-                    onSave(context, widget.imageUrl);
-                  },
-                ),
         ],
       ),
       body: Stack(
@@ -134,9 +140,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
                 );
               },
               imageProvider: widget.imageProvider,
-              backgroundDecoration: widget.backgroundDecoration ?? BoxDecoration(
-                color: Theme.of(context).bottomAppBarTheme.color
-              ),
+              backgroundDecoration: widget.backgroundDecoration ?? BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
               minScale: widget.minScale,
               maxScale: widget.maxScale,
               heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag!),

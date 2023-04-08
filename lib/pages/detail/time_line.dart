@@ -51,7 +51,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     scrollController.addListener(() async {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         // 非加载状态调用
-        if (!playerTimelineStatus!.load!) {
+        if (!playerTimelineStatus.load!) {
           await _getMore();
         }
       }
@@ -180,7 +180,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   /// [Event]
   /// 下拉加载
   Future<void> _getMore() async {
-    playerTimelineStatus!.parame!.nextPage(count: playerTimelineStatus!.parame!.limit!);
+    playerTimelineStatus.parame.nextPage(count: playerTimelineStatus.parame.limit!);
     await getTimeline();
   }
 
@@ -194,7 +194,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
         controller: scrollController,
         itemCount: playerTimelineStatus.list!.length,
         itemBuilder: (BuildContext context, int index) {
-          if (index < playerTimelineStatus!.list!.length) {
+          if (index < playerTimelineStatus.list!.length) {
             var timeLineItem = playerTimelineStatus.list![index];
 
             // 分页提示

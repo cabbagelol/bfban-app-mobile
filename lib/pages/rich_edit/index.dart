@@ -16,6 +16,8 @@ class RichEditPage extends StatefulWidget {
 }
 
 class _richEditPageState extends State<RichEditPage> {
+  final UrlUtil _urlUtil = UrlUtil();
+
   late String data = "";
 
   // 异步
@@ -55,6 +57,14 @@ class _richEditPageState extends State<RichEditPage> {
     );
   }
 
+  /// [Event]
+  /// 打开媒体插入
+  void _openMediaPage() {
+    _urlUtil.opEnPage(context, "/account/media/insert").then((value) async {
+      if (value.toString().isNotEmpty) await controller.embedImage(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,6 +91,15 @@ class _richEditPageState extends State<RichEditPage> {
         controller: controller,
         toolBarConfig: toolBarList,
         activeIconColor: Theme.of(context).primaryColor,
+        customButtons: [
+          InkWell(
+            onTap: () => _openMediaPage(),
+            child: Icon(
+              Icons.image_outlined,
+              color: Theme.of(context).primaryColor,
+            ),
+          )
+        ],
       ),
       body: FutureBuilder(
         future: futureBuilder,

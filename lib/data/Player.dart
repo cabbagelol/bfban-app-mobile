@@ -123,19 +123,23 @@ class PlayerStatusData extends PlayerBaseData {
 
 /// 玩家请求参数
 class PlayerParame {
-  late bool history;
-  late String personaId;
+  bool history;
+  String personaId;
+  String dbId;
 
   PlayerParame({
     this.history = false,
     this.personaId = "",
+    this.dbId = "",
   });
 
-  get toMap {
-    return {
+  Map<String, dynamic> get toMap {
+    Map<String, dynamic> map = {
       "history": history,
-      "personaId": personaId,
     };
+    if (dbId.isNotEmpty) map.addAll({"dbId": dbId});
+    if (personaId.isNotEmpty) map.addAll({"personaId": personaId});
+    return map;
   }
 }
 

@@ -75,10 +75,12 @@ class _ReportPageState extends State<ReportPage> {
     }
 
     setState(() {
-      cheatMethodsGlossary["child"].forEach((i) {
-        String _key = Util().queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
-        _cheatingTypes.add({"value": _key, "select": false});
-      });
+      if (cheatMethodsGlossary["child"] != null) {
+        cheatMethodsGlossary["child"].forEach((i) {
+          String _key = Util().queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
+          _cheatingTypes.add({"value": _key, "select": false});
+        });
+      }
 
       if (Config.game["child"].isNotEmpty) {
         reportStatus.param!.game = Config.game["child"][0]["value"];
@@ -390,7 +392,7 @@ class _ReportPageState extends State<ReportPage> {
                 alignment: WrapAlignment.center,
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  if (reportStatus.param!.game != null)
+                  if (reportStatus.param!.game != null && reportStatus.param!.game != "")
                     Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3),
@@ -409,6 +411,12 @@ class _ReportPageState extends State<ReportPage> {
                           ),
                         ),
                       ),
+                    ),
+                  if (reportStatus.param!.game == null || reportStatus.param!.game == "")
+                    const Icon(
+                      Icons.warning,
+                      color: Colors.yellow,
+                      size: 15,
                     ),
                   const Icon(Icons.keyboard_arrow_right),
                 ],

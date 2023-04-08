@@ -8,7 +8,7 @@ export 'storage_account.dart';
 export 'storage_player.dart';
 export 'media_management.dart';
 export 'share.dart';
-//export 'file.dart';
+export 'file.dart';
 export 'version.dart';
 export 'upload.dart';
 export 'camera.dart';

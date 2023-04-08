@@ -135,7 +135,7 @@ class CheatListCard extends StatelessWidget {
       onTap: () {
         Routes.router!.navigateTo(
           context,
-          '/detail/player/${item["originPersonaId"]}',
+          '/player/personaId/${item["originPersonaId"]}',
         );
         if (onTap != null) onTap!();
       },

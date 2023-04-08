@@ -237,7 +237,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Event]
   /// 前往案件详情
   void _onPenPlayerDetail(Map item) {
-    _urlUtil.opEnPage(context, "/detail/player/${item["originPersonaId"]}");
+    _urlUtil.opEnPage(context, "/player/personaId/${item["originPersonaId"]}");
   }
 
   /// [Event]

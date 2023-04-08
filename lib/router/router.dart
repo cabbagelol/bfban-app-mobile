@@ -28,6 +28,8 @@ import 'package:bfban/pages/message/message_detail.dart';
 import '../pages/camera/index.dart';
 import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
+import '../pages/media/Insert.dart';
+import '../pages/media/index.dart';
 import '../pages/message/index.dart';
 import '../pages/profile/app_network.dart';
 import '../pages/profile/app_version_package.dart';
@@ -41,68 +43,94 @@ class Routes {
   static void configureRoutes(FluroRouter router) {
     routerList = [
       {
-        'url': '/',
-        'item': (context, params) {
+        "url": '/',
+        "item": (context, params) {
           return const IndexPage();
         }
       },
       {
-        'url': '/notfound',
-        'item': (context, params) {
+        "url": '/notfound',
+        "item": (context, params) {
           return const NotFoundPage();
         }
       },
       {
-        'url': '/splash',
-        'item': (context, params) {
+        "url": '/splash',
+        "item": (context, params) {
           return const SplashPage();
         }
       },
       {
-        'url': '/network',
-        'item': (context, params) {
+        "url": '/network',
+        "item": (context, params) {
           return const AppNetworkPage();
         }
       },
       {
         "url": "/message/list",
-        'item': (context, params) {
+        "item": (context, params) {
           return const MessageListPage();
         }
       },
       {
         "url": "/message/:id",
-        'item': (context, params) {
+        "item": (context, params) {
           return MessagePage(id: params["id"][0]);
         }
       },
       {
         "url": "/message/detail/:id",
-        'item': (context, params) {
+        "item": (context, params) {
           return MessageDetailPage(id: params["id"][0]);
         }
       },
       {
         "url": "/camera",
-        'item': (context, params) {
+        "item": (context, params) {
           return const CameraPage();
         }
       },
       {
         "url": "/account/:id",
-        'item': (context, params) {
+        "item": (context, params) {
           return UserSpacePage(id: params["id"][0]);
         }
       },
       {
-        "url": "/detail/player/:id",
-        'item': (context, params) {
-          return PlayerDetailPage(id: params["id"][0]);
+        "url": "/account/media/",
+        "item": (context, params) {
+          return MediaPage();
+        }
+      },
+      {
+        "url": "/account/media/selectFile",
+        "item": (context, params) {
+          return MediaPage(
+            isSelectFile: true
+          );
+        }
+      },
+      {
+        "url": "/account/media/insert",
+        "item": (context, params) {
+          return InsertMediaPage();
+        }
+      },
+      {
+        "url": "/player/dbId/:dbId",
+        "item": (context, params) {
+          return PlayerDetailPage(dbId: params["dbId"][0]);
+        }
+      },
+      {
+        "url": "/player/personaId/:personaId",
+        "item": (context, params) {
+          return PlayerDetailPage(personaId: params["personaId"][0]);
         }
       },
       {
         "url": "/report/:data",
-        'item': (context, params) {
+        "item": (context, params) {
           return ReportPage(
             data: params["data"][0],
           );
@@ -110,7 +138,7 @@ class Routes {
       },
       {
         "url": "/report/publish_results/:type",
-        'item': (context, params) {
+        "item": (context, params) {
           return PublishResultsPage(
             type: params["type"][0],
           );
@@ -118,7 +146,7 @@ class Routes {
       },
       {
         "url": "/report/manage/:id",
-        'item': (context, params) {
+        "item": (context, params) {
           return JudgementPage(
             id: params["id"][0],
           );
@@ -126,13 +154,13 @@ class Routes {
       },
       {
         "url": "/drafts",
-        'item': (context, params) {
+        "item": (context, params) {
           return const draftsPage();
         }
       },
       {
         "url": "/reply/:id",
-        'item': (context, params) {
+        "item": (context, params) {
           return ReplyPage(
             data: params["id"][0],
           );
@@ -140,25 +168,25 @@ class Routes {
       },
       {
         "url": "/signin",
-        'item': (context, params) {
+        "item": (context, params) {
           return const SigninPage();
         }
       },
       {
         "url": "/signup",
-        'item': (context, params) {
+        "item": (context, params) {
           return const SignupPage();
         }
       },
       {
         "url": "/login/panel",
-        'item': (context, params) {
+        "item": (context, params) {
           return const LoginPanelPage();
         }
       },
       {
         "url": "/search/:data",
-        'item': (context, params) {
+        "item": (context, params) {
           return SearchPage(
             data: params["data"][0],
           );
@@ -166,63 +194,63 @@ class Routes {
       },
       {
         "url": "/profile/language",
-        'item': (context, params) {
+        "item": (context, params) {
           return const LanguagePage();
         },
       },
       {
         "url": "/profile/destock",
-        'item': (context, params) {
+        "item": (context, params) {
           return const DestockPage();
         },
       },
       {
         "url": "/profile/setting",
-        'item': (context, params) {
+        "item": (context, params) {
           return const SettingPage();
         },
       },
       {
         "url": "/profile/support",
-        'item': (context, params) {
+        "item": (context, params) {
           return const SupportPage();
         },
       },
       {
         "url": "/profile/version",
-        'item': (context, params) {
+        "item": (context, params) {
           return const AppVersionPackagePage();
         },
       },
       {
         "url": "/profile/theme",
-        'item': (context, params) {
+        "item": (context, params) {
           return const ThemePage();
         },
       },
       {
         "url": "/profile/notice",
-        'item': (context, params) {
+        "item": (context, params) {
           return const NoticePage();
         }
       },
       {
         "url": "/guide",
-        'item': (context, params) {
+        "item": (context, params) {
           return const GuidePage();
         },
       },
       {
         "url": "/richedit",
-        'item': (context, params) {
+        "item": (context, params) {
           return RichEditPage();
         },
       },
     ];
 
     for (var i in routerList!) {
-      router.define(i['url'], handler: Handler(handlerFunc: (context, Map<String, dynamic> params) {
-        return i['item'](context, params);
+      router.define(i["url"], handler: Handler(handlerFunc: (context, Map<String, dynamic> params) {
+        return i["item"](context, params);
       }));
     }
 
