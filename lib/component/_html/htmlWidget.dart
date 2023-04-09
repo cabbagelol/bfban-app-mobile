@@ -107,7 +107,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardTheme.color,
-                  border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+                  border: Border.all(color: Theme.of(context).dividerTheme.color!, width: 1),
                   borderRadius: BorderRadius.circular(3),
                 ),
                 child: Column(

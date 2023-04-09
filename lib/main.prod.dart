@@ -14,6 +14,11 @@ void main () async {
     jiguan: {
       "appKey": "966c3770c8bb47ffcbaacff1",
     },
+    apiUpload: BaseUrl(
+        protocol: BaseUrlProtocol.HTTPS,
+        host: "bfban.gametools.network",
+        pathname: "/api/"
+    ),
   );
 
   // google ads 初始

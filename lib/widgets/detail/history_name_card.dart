@@ -51,7 +51,7 @@ class HistoryNameCard extends StatelessWidget {
       ],
       content: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+          border: Border.all(color: Theme.of(context).dividerTheme.color!, width: 1),
           borderRadius: BorderRadius.circular(3),
         ),
         child: Padding(

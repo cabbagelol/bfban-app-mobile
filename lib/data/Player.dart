@@ -67,12 +67,12 @@ abstract class PlayerBaseData {
 
 /// 玩家数据管理
 class PlayerStatus {
-  late PlayerStatusData data;
+  late PlayerStatusData? data;
   late bool load;
   late PlayerParame? parame;
 
   PlayerStatus({
-    required this.data,
+    this.data,
     this.load = false,
     this.parame,
   });

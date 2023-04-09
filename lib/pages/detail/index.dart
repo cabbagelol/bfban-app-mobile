@@ -134,8 +134,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       final d = result.data["data"];
 
       setState(() {
-        // playerStatus.data = d;
-        playerStatus.data.setData(d);
+        playerStatus.data!.setData(d);
         viewedStatus.parame!.id = d["id"];
       });
 
@@ -150,7 +149,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       playerStatus.load = false;
     });
 
-    return playerStatus.data.toMap;
+    return playerStatus.data!.toMap;
   }
 
   /// [Event]
@@ -175,7 +174,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     setState(() {
       viewed![id] = DateTime.now().millisecondsSinceEpoch.toString();
       storage.set("viewed", value: jsonEncode(viewed));
-      playerStatus.data.viewNum = playerStatus.data.viewNum! + 1;
+      playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
     });
   }
 
@@ -193,7 +192,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     // 检查登录状态
     if (!provider.checkLogin() && provider.isAdmin) return;
 
-    if (userNameList['buttonLoad'] && playerStatus.data.originUserId == "" || playerStatus.data.originUserId == null) {
+    if (userNameList['buttonLoad'] && playerStatus.data!.originUserId == "" || playerStatus.data!.originUserId == null) {
       return;
     }
 
@@ -204,7 +203,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     Response result = await Http.request(
       Config.httpHost["player_update"],
       data: {
-        "personaId": playerStatus.data.originPersonaId,
+        "personaId": playerStatus.data!.originPersonaId,
       },
       method: Http.POST,
     );
@@ -251,12 +250,12 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     }
 
     // 添加或移除订阅
-    if (!subscribesArray.contains(playerStatus.data.id)) {
+    if (!subscribesArray.contains(playerStatus.data!.id)) {
       subscribes["isThisUserSubscribes"] = false;
-      subscribesArray.add(playerStatus.data.id);
+      subscribesArray.add(playerStatus.data!.id);
     } else {
       subscribes["isThisUserSubscribes"] = true;
-      subscribesArray.remove(playerStatus.data.id);
+      subscribesArray.remove(playerStatus.data!.id);
     }
 
     // 提交
@@ -304,7 +303,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// [Evnet]
   /// 检查订阅状态，并赋予
   void _checkSubscribesStatus(List subscribesList) {
-    subscribes["isThisUserSubscribes"] = subscribesList.contains(playerStatus.data.id);
+    subscribes["isThisUserSubscribes"] = subscribesList.contains(playerStatus.data!.id);
   }
 
   /// [Event]
@@ -314,7 +313,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return null;
 
-      String data = jsonEncode({"originName": playerStatus.data.originName});
+      String data = jsonEncode({"originName": playerStatus.data!.originName});
 
       _urlUtil.opEnPage(context, '/report/$data', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
         if (value != null) {
@@ -333,7 +332,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data.id}").then((value) {
+      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data!.id}").then((value) {
         _getCheatersInfo();
         timeLineKey.currentState?.getTimeline();
         timeLineKey.currentState?.scrollController.jumpTo(timeLineKey.currentState?.scrollController.position.maxScrollExtent as double);
@@ -343,13 +342,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
   /// [Event]
   /// 查看图片
-  void _onEnImgInfo(context) {
+  void _onEnImgInfo(context) async {
+    String avatarLink = playerStatus.data!.avatarLink!.toString();
     Navigator.of(context).push(CupertinoPageRoute(
       builder: (BuildContext context) {
         return PhotoViewSimpleScreen(
-          imageUrl: playerStatus.data.avatarLink,
-          imageProvider: NetworkImage(playerStatus.data.avatarLink as String),
-          heroTag: 'simple',
+          imageUrl: avatarLink,
+          imageProvider: NetworkImage(avatarLink),
         );
       },
     ));
@@ -378,6 +377,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     });
 
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(3),
+        side: BorderSide(
+          color: Theme.of(context).dividerTheme.color!,
+          width: 1,
+        ),
+      ),
       margin: EdgeInsets.zero,
       child: DataTable(
         sortAscending: true,
@@ -429,14 +435,14 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
           parameter = jsonEncode({
             "type": type,
             "toCommentId": null,
-            "toPlayerId": playerStatus.data.id,
+            "toPlayerId": playerStatus.data!.id,
           });
           break;
         case 1:
           // 回复楼层
           parameter = jsonEncode({
             "type": type,
-            "toCommentId": playerStatus.data.id,
+            "toCommentId": playerStatus.data!.id,
             "toPlayerId": timelineItem["toPlayerId"],
           });
           break;
@@ -535,7 +541,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                           sigmaX: 0,
                                           sigmaY: 0,
                                         ),
-                                        child: GestureDetector(
+                                        child: InkWell(
                                           onTap: () => _onEnImgInfo(context),
                                           child: Container(
                                             margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
@@ -605,16 +611,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   SelectableText(
-                                                    snapshot.data?["originName"] ?? "User Name",
-                                                    onTap: () {
-                                                      Clipboard.setData(
-                                                        ClipboardData(
-                                                          text: snapshot.data!["originName"],
-                                                        ),
-                                                      );
-                                                    },
+                                                    snapshot.data["originName"] ?? "User Name",
                                                     style: const TextStyle(fontSize: 33),
-                                                    showCursor: true,
                                                   ),
                                                   const SizedBox(height: 2),
                                                   EluiTagComponent(

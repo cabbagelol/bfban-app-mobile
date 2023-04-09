@@ -45,7 +45,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
   @override
   void initState() {
-    playerTimelineStatus.parame.personaId = widget.playerStatus.data.toMap["originPersonaId"];
+    playerTimelineStatus.parame.personaId = widget.playerStatus.data!.toMap["originPersonaId"];
 
     // 滚动视图初始
     scrollController.addListener(() async {
@@ -69,7 +69,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
     setState(() {
       Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState!.show();
+        _refreshIndicatorKey.currentState!.show(atTop: true);
       });
       playerTimelineStatus.load = true;
     });
@@ -119,7 +119,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   /// 合并时间轴历史名称
   void onMergeHistoryName() {
     List? _timelineList = List.from(playerTimelineStatus.list!);
-    List? _history = widget.playerStatus.data.history;
+    List? _history = widget.playerStatus.data!.history;
 
     // 处理历史名称，放置对应对应位置
     for (int hisrotyIndex = 0; hisrotyIndex < _history!.length; hisrotyIndex++) {

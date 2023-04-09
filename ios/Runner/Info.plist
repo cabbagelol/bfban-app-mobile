@@ -32,6 +32,10 @@
 	<string>The App requires your consent to access the media library</string>
 	<key>NSCameraUsageDescription</key>
 	<string>The app requires your consent to access the camera to upload images</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>To enable microphone access when recording video</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>To enable GPS location access for Exif data</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>App requires your permission to save images to your phone</string>
 	<key>NSPhotoLibraryUsageDescription</key>

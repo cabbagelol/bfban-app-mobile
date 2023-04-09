@@ -304,7 +304,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                             const Opacity(
                               opacity: .6,
                               child: Text(
-                                "Unofficial, community products",
+                                "community products",
                                 style: TextStyle(fontSize: 12),
                               ),
                             ),

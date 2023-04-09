@@ -247,7 +247,7 @@ class FilterState extends State<Filter> {
                 color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border(
                   bottom: BorderSide(
-                    color: Theme.of(context).dividerColor,
+                    color: Theme.of(context).dividerTheme.color!,
                     width: 0.5,
                   ),
                 ),
@@ -309,11 +309,11 @@ class FilterState extends State<Filter> {
                       color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
                       border: Border(
                         top: BorderSide(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).dividerTheme.color!,
                           width: 0.5,
                         ),
                         bottom: BorderSide(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).dividerTheme.color!,
                           width: 0.5,
                         ),
                       ),

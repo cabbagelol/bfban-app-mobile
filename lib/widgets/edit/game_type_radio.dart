@@ -20,7 +20,7 @@ class GameTypeRadioWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: BorderSide(
-            color: Theme.of(context).dividerColor,
+            color: Theme.of(context).dividerTheme.color!,
             width: 1,
           ),
         ),

@@ -34,7 +34,7 @@ class _QuoteCardState extends State<QuoteCard> {
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).dividerColor, width: 1),
+        border: Border.all(color: Theme.of(context).dividerTheme.color!, width: 1),
         borderRadius: BorderRadius.circular(3),
       ),
       child: Column(

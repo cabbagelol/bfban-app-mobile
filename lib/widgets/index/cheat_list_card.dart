@@ -41,18 +41,17 @@ class CheatListCard extends StatelessWidget {
           ),
         ),
       ),
-      title: Wrap(
-        spacing: 5,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: <Widget>[
-          Text(
-            item["originName"] ?? "",
-            style: TextStyle(
-              color: Theme.of(context).textTheme.headlineMedium!.color,
-              fontSize: 20,
-            ),
+      title: Tooltip(
+        message: item["originName"],
+        child: Text(
+          item["originName"] ?? "",
+          style: TextStyle(
+            color: Theme.of(context).textTheme.headlineMedium!.color,
+            fontSize: 20,
           ),
-        ],
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       subtitle: Wrap(
         runAlignment: WrapAlignment.center,
@@ -96,7 +95,7 @@ class CheatListCard extends StatelessWidget {
               ),
               height: 30,
               width: 1,
-              color: Theme.of(context).dividerColor,
+              color: Theme.of(context).dividerTheme.color!,
             ),
           if (isIconCommendView!)
             CheatersCardIconitem(
@@ -110,7 +109,7 @@ class CheatListCard extends StatelessWidget {
               ),
               height: 30,
               width: 1,
-              color: Theme.of(context).dividerColor,
+              color: Theme.of(context).dividerTheme.color!,
             ),
           if (isIconHotView!)
             CheatersCardIconitem(
@@ -172,11 +171,7 @@ class CheatersCardIconitem extends StatelessWidget {
         Positioned(
           child: Opacity(
             opacity: .1,
-            child: Icon(
-              i,
-              // color: Theme.of(context).primaryTextTheme.headline1!.color,
-              size: 35,
-            ),
+            child: Icon(i, size: 30),
           ),
         ),
       ],

@@ -56,15 +56,19 @@ class JudgementCard extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.normal),
                       ),
                       WidgetSpan(
-                        child: EluiTagComponent(
-                          color: EluiTagType.none,
-                          size: EluiTagSize.no2,
-                          theme: EluiTagTheme(
-                            backgroundColor: Colors.red,
-                            textColor: Theme.of(context).textTheme.subtitle1!.color!,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7,
                           ),
-                          value: FlutterI18n.translate(context, "basic.action.${data["judgeAction"]}.text"),
-                          onTap: () {},
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.error,
+                            border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                          child: Text(
+                            FlutterI18n.translate(context, "basic.action.${data["judgeAction"]}.text"),
+                            style: const TextStyle(fontSize: 13),
+                          ),
                         ),
                       ),
                       if (data["cheatMethods"].isNotEmpty)

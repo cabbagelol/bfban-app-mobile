@@ -15,7 +15,7 @@ class GamesTagWidget extends StatefulWidget {
     GamesTagSizeConfig(
       height: 14,
       padding: const EdgeInsets.symmetric(
-        vertical: 2,
+        vertical: 3,
         horizontal: 7,
       ),
       border: 3,
@@ -83,7 +83,10 @@ class _GamesTagWidgetState extends State<GamesTagWidget> {
               child: Container(
                 padding: widget.currentSizeType.padding,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Theme.of(context).cardTheme.color,
+                  border: Border.all(
+                    color: Theme.of(context).dividerTheme.color!
+                  ),
                   borderRadius: BorderRadius.circular(widget.currentSizeType.border),
                 ),
                 child: Image.asset(

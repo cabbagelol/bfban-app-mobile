@@ -37,7 +37,6 @@ class LightnesTheme {
       ),
       unselectedWidgetColor: Colors.black,
       scaffoldBackgroundColor: const Color(0xfff7f9fd),
-      bottomAppBarColor: Colors.white,
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
       dialogTheme: const DialogTheme(
@@ -65,10 +64,10 @@ class LightnesTheme {
       ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Colors.white,
-        elevation: 10,
         textStyle: TextStyle(
           color: Colors.black,
         ),
+        elevation: 2,
       ),
       dividerTheme: const DividerThemeData(
         color: Colors.black12,
@@ -153,7 +152,6 @@ class LightnesTheme {
       iconTheme: const IconThemeData(
         color: Color(0xff364e80),
       ),
-      dividerColor: Colors.black12,
       cardTheme: const CardTheme(
         elevation: 0,
         color: Colors.white,

@@ -9,9 +9,9 @@ class PinkTheme {
     themeData: ThemeData(
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all(Colors.pink),
+          foregroundColor: MaterialStateProperty.all(Colors.pink.shade400),
           textStyle: MaterialStateProperty.all(
-            const TextStyle(color: Colors.pink),
+            TextStyle(color: Colors.pink.shade300),
           ),
         ),
       ),
@@ -19,20 +19,20 @@ class PinkTheme {
         backgroundColor: Colors.pink.withOpacity(.1),
         modalBackgroundColor: Colors.pink.withOpacity(.1),
       ),
-      canvasColor: Colors.pink.shade50,
+      canvasColor: Color(0xFFFFF9FB),
       primaryColorDark: Colors.pink.shade300,
       textTheme: TextTheme(
-        displayLarge: TextStyle(color: Colors.pink.shade300),
-        displayMedium: TextStyle(color: Colors.pink.shade300),
-        displaySmall: TextStyle(color: Colors.pink.shade300),
-        headlineMedium: TextStyle(color: Colors.pink.shade400),
-        headlineSmall: TextStyle(color: Colors.pink.shade400),
-        titleLarge: TextStyle(color: Colors.pink.shade400),
-        titleMedium: TextStyle(color: Colors.pink.shade400),
-        titleSmall: TextStyle(color: Colors.pink.shade400),
-        bodyLarge: TextStyle(color: Colors.pink.shade400),
-        bodyMedium: TextStyle(color: Colors.pink.shade400),
-        bodySmall: TextStyle(color: Colors.pink.shade400),
+        displayLarge: TextStyle(color: Colors.black54),
+        displayMedium: TextStyle(color: Colors.black54),
+        displaySmall: TextStyle(color: Colors.black54),
+        headlineMedium: TextStyle(color: Colors.black),
+        headlineSmall: TextStyle(color: Colors.black),
+        titleLarge: TextStyle(color: Colors.black),
+        titleMedium: TextStyle(color: Colors.black),
+        titleSmall: TextStyle(color: Colors.black),
+        bodyLarge: TextStyle(color: Colors.black),
+        bodyMedium: TextStyle(color: Colors.black),
+        bodySmall: TextStyle(color: Colors.black),
       ),
       switchTheme: const SwitchThemeData().copyWith(
         trackColor: MaterialStateProperty.all(Colors.pink.withOpacity(.2)),
@@ -72,6 +72,10 @@ class PinkTheme {
       ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Colors.white,
+        textStyle: TextStyle(
+          color: Colors.black,
+        ),
+        elevation: 2,
       ),
       dividerTheme: DividerThemeData(
         color: Colors.pink.shade50,
@@ -82,12 +86,12 @@ class PinkTheme {
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           textStyle: MaterialStateProperty.all(
-            const TextStyle(
-              color: Colors.pink,
+            TextStyle(
+              color: Colors.pink.shade400,
             ),
           ),
           elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(Colors.pink),
+          backgroundColor: MaterialStateProperty.all(Colors.pink.shade400),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.transparent),
@@ -102,7 +106,7 @@ class PinkTheme {
         backgroundColor: Colors.pink,
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Colors.pink,
+        buttonColor: Colors.pink.shade400,
         disabledColor: Colors.pink.withOpacity(.2),
       ),
       buttonBarTheme: const ButtonBarThemeData(
@@ -126,12 +130,12 @@ class PinkTheme {
         ),
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.white,
-        foregroundColor: Colors.pink.shade600,
+        color: Colors.pink.shade300,
+        foregroundColor: Colors.white,
         shadowColor: Colors.pink.shade50,
         elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.pink,
+        iconTheme: IconThemeData(
+          color: Colors.pink.shade300,
         ),
       ),
       primaryColor: Colors.pink,
@@ -145,8 +149,8 @@ class PinkTheme {
           ),
         ),
       ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Colors.pink,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.pink.shade400,
         focusColor: Colors.white,
       ),
       iconTheme: const IconThemeData(
@@ -163,14 +167,6 @@ class PinkTheme {
         overlayColor: MaterialStateProperty.all(Colors.pink.withOpacity(.7)),
         fillColor: MaterialStateProperty.all(Colors.pink),
       ),
-      primaryTextTheme: const TextTheme(
-        displayLarge: TextStyle(color: Colors.white),
-        displayMedium: TextStyle(color: Colors.white70),
-        displaySmall: TextStyle(color: Colors.white54),
-        headlineMedium: TextStyle(color: Colors.white38),
-        headlineSmall: TextStyle(color: Colors.white24),
-        titleLarge: TextStyle(color: Colors.white12),
-      ),
       chipTheme: const ChipThemeData(
         backgroundColor: Colors.black12,
         secondarySelectedColor: Colors.white,
@@ -185,11 +181,11 @@ class PinkTheme {
           color: Colors.pink,
         ),
       ),
-      colorScheme: const ColorScheme(
+      colorScheme: ColorScheme(
         outline: Colors.white10,
         brightness: Brightness.dark,
-        primary: Colors.pink,
-        onPrimary: Colors.pink,
+        primary: Colors.pink.shade400,
+        onPrimary: Colors.pink.shade400,
         secondary: Color(0xff0a111c),
         onSecondary: Color(0xff0a111c),
         error: Colors.red,

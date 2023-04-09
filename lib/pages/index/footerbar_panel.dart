@@ -174,7 +174,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       ),
                       height: 25,
                       width: 1,
-                      color: Theme.of(context).dividerColor,
+                      color: Theme.of(context).dividerTheme.color!,
                     ),
                     Expanded(
                       flex: 1,
@@ -228,7 +228,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       ),
                       height: 25,
                       width: 1,
-                      color: Theme.of(context).dividerColor,
+                      color: Theme.of(context).dividerTheme.color!,
                     ),
                     Opacity(
                       opacity: data.isLogin ? 1 : .3,

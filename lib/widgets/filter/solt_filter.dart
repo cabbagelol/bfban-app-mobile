@@ -55,7 +55,7 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
             children: [
               Container(
                 height: 1,
-                color: Theme.of(context).dividerColor.withOpacity(.06),
+                color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 15),

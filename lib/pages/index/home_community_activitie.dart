@@ -144,14 +144,14 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   /// 打开社区动态详情内容i
   /// 区分类型
   void _opEnDynamicDetail(i) {
-    switch(i["type"]) {
+    switch (i["type"]) {
       case "verify":
       case "judgement":
       case "report":
-      if (i["playerOriginPersonaId"] != null) {
-        _urlUtil.opEnPage(context, '/player/personaId/${i["playerOriginPersonaId"]}');
-      }
-      break;
+        if (i["playerOriginPersonaId"] != null) {
+          _urlUtil.opEnPage(context, '/player/personaId/${i["playerOriginPersonaId"]}');
+        }
+        break;
       case "register":
         _urlUtil.opEnPage(context, '/account/${i["id"]}');
         break;
@@ -175,20 +175,20 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   Widget build(BuildContext context) {
     super.build(context);
     // 消息筛选
-    List<Widget> chips() {
+    List<Widget> chipWidgets() {
       // 筛选标签
       List chips = [];
 
       chipCont["list"].asMap().keys.forEach((index) {
         chips.add(
           FilterChip(
-            padding: EdgeInsets.zero,
             backgroundColor: Theme.of(context).tabBarTheme.labelColor!.withOpacity(.8),
             selectedColor: Theme.of(context).tabBarTheme.labelColor,
             labelStyle: TextStyle(
               fontSize: 13,
               color: Theme.of(context).bottomAppBarTheme.color,
             ),
+            visualDensity: const VisualDensity(horizontal: 3, vertical: -4),
             label: Text(FlutterI18n.translate(context, chipCont["list"][index]["name"])),
             selected: restorablebool[index].value,
             onSelected: (value) {
@@ -222,8 +222,8 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
           // 筛选
           if (index == 0) {
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              height: 53.0,
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              height: 35,
               color: Theme.of(context).primaryColorDark.withOpacity(.1),
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -231,7 +231,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                   Wrap(
                     spacing: 5,
                     runSpacing: 5,
-                    children: chips(),
+                    children: chipWidgets(),
                   )
                 ],
               ),

@@ -30,31 +30,37 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
     return Wrap(
       runSpacing: 3,
       spacing: 3,
-      children: methods.isEmpty ? [
-        EluiTagComponent(
-          color: EluiTagType.none,
-          size: EluiTagSize.no2,
-          theme: EluiTagTheme(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            textColor: Theme.of(context).textTheme.subtitle1!.color!,
-          ),
-          value: "N/A",
-        )
-      ] : methods.map<Widget>((i) {
-        return Tooltip(
-          message: FlutterI18n.translate(context, "cheatMethods.$i.describe"),
-          child: EluiTagComponent(
-            color: EluiTagType.none,
-            size: EluiTagSize.no2,
-            theme: EluiTagTheme(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              textColor: Theme.of(context).textTheme.subtitle1!.color!,
-            ),
-            value: FlutterI18n.translate(context, "cheatMethods.$i.title"),
-            onTap: () {},
-          ),
-        );
-      }).toList(),
+      children: methods.isEmpty
+          ? [
+              EluiTagComponent(
+                color: EluiTagType.none,
+                size: EluiTagSize.no2,
+                theme: EluiTagTheme(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).textTheme.subtitle1!.color!,
+                ),
+                value: "N/A",
+              )
+            ]
+          : methods.map<Widget>((i) {
+              return Tooltip(
+                message: FlutterI18n.translate(context, "cheatMethods.$i.describe"),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: Text(
+                    FlutterI18n.translate(context, "cheatMethods.$i.title"),
+                    style: const TextStyle(fontSize: 13),
+                  ),
+                ),
+              );
+            }).toList(),
     );
   }
 }

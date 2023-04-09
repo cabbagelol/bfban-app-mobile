@@ -268,11 +268,15 @@ class _IndexPageState extends State<IndexPage> {
                     color: Theme.of(context).bottomAppBarTheme.color,
                     boxShadow: [
                       BoxShadow(
+                        color: Theme.of(context).dividerTheme.color!,
+                        spreadRadius: 1,
+                        blurRadius: 0,
+                      ),
+                      BoxShadow(
                         color: Theme.of(context).scaffoldBackgroundColor,
-                        offset: const Offset(0, -2),
                         spreadRadius: .2,
-                        blurRadius: 10,
-                      )
+                        blurRadius: 2,
+                      ),
                     ],
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),

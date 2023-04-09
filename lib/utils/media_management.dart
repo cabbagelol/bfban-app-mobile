@@ -1,8 +1,11 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:dio/dio.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class MediaManagement {
   /// [Event]
@@ -18,11 +21,12 @@ class MediaManagement {
       ),
     );
 
-    final result = await ImageGallerySaver.saveImage(
-      Uint8List.fromList(
-        response.data,
-      ),
-    );
+    final Directory extDir = await getApplicationSupportDirectory();
+    final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
+
+    File newFile = File(fileDir.path + "/${Uuid().v4()}.png");
+    newFile.writeAsBytes(Uint8List.fromList(response.data));
+    File result = await newFile.create(recursive: true);
 
     if (result != "") {
       return {

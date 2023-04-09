@@ -39,10 +39,10 @@ class DarkTheme {
         thumbColor: MaterialStateProperty.all(Colors.yellow),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.white,
         ),
-        inputDecorationTheme: InputDecorationTheme(),
+        inputDecorationTheme: const InputDecorationTheme(),
         menuStyle: MenuStyle(
           elevation: MaterialStateProperty.all(2),
           backgroundColor: MaterialStateProperty.all(Colors.black),
@@ -93,6 +93,12 @@ class DarkTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
+      ),
+      dataTableTheme: const DataTableThemeData(
+          horizontalMargin: 10,
+          columnSpacing: 20,
+          headingRowHeight: 40,
+          checkboxHorizontalMargin: 40,
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(

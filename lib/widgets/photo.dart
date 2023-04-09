@@ -30,7 +30,7 @@ class PhotoViewSimpleScreen extends StatefulWidget {
 
   PhotoViewSimpleScreen({
     Key? key,
-    this.type,
+    this.type = PhotoViewFileType.network,
     this.imageUrl,
     this.imageProvider,
     this.loadingChild,
@@ -55,16 +55,6 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
   PhotoViewController? controller;
 
   MediaManagement mediaManagement = MediaManagement();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
 
   @override
   void dispose() {
@@ -143,7 +133,6 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
               backgroundDecoration: widget.backgroundDecoration ?? BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
               minScale: widget.minScale,
               maxScale: widget.maxScale,
-              heroAttributes: PhotoViewHeroAttributes(tag: widget.heroTag!),
               enableRotation: true,
             ),
           ),

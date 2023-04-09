@@ -313,19 +313,19 @@ class _ReportPageState extends State<ReportPage> {
         children: <Widget>[
           /// S 游戏ID
           Container(
-            margin: const EdgeInsets.only(top: 20, left: 15, right: 15),
+            margin: const EdgeInsets.only(top: 30, left: 15, right: 15),
             child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(3),
                 side: BorderSide(
-                  color: Theme.of(context).dividerColor,
+                  color: Theme.of(context).dividerTheme.color!,
                   width: 1,
                 ),
               ),
               child: Column(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                     child: EluiInputComponent(
                       internalstyle: true,
                       value: reportStatus.param!.originName,
@@ -337,10 +337,10 @@ class _ReportPageState extends State<ReportPage> {
                       ),
                       right: reportStatus.param!.originName.toString().isEmpty
                           ? const Icon(
-                        Icons.warning,
-                        color: Colors.yellow,
-                        size: 25,
-                      )
+                              Icons.warning,
+                              color: Colors.yellow,
+                              size: 15,
+                            )
                           : Container(),
                       placeholder: FlutterI18n.translate(context, "report.labels.hackerId"),
                       onChange: (data) => _changeReportUserInput(data),
@@ -364,15 +364,15 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 游戏
           PopupMenuButton(
+            offset: Offset(1, 55),
             onSelected: (value) {
               setState(() {
                 reportStatus.param!.game = value.toString();
               });
             },
             itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
-              return CheckedPopupMenuItem(
+              return PopupMenuItem(
                 value: i["value"],
-                checked: reportStatus.param!.game == i["value"],
                 child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
               );
             }).toList(),
@@ -389,7 +389,7 @@ class _ReportPageState extends State<ReportPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3),
                         side: BorderSide(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).dividerTheme.color!,
                           width: 1,
                         ),
                       ),
@@ -463,7 +463,7 @@ class _ReportPageState extends State<ReportPage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(3),
                         side: BorderSide(
-                          color: Theme.of(context).dividerColor,
+                          color: Theme.of(context).dividerTheme.color!,
                           width: 1,
                         ),
                       ),
@@ -521,7 +521,7 @@ class _ReportPageState extends State<ReportPage> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(3),
                 side: BorderSide(
-                  color: Theme.of(context).dividerColor,
+                  color: Theme.of(context).dividerTheme.color!,
                   width: 1,
                 ),
               ),
