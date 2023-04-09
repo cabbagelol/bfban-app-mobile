@@ -9,7 +9,7 @@ abstract class Paging {
   });
 
   resetPage() {
-    skip = _minskip;
+    skip = _minskip!;
   }
 
   nextPage({int count = 1}) {

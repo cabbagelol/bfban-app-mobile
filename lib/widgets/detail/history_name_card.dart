@@ -11,7 +11,6 @@ class HistoryNameCard extends StatelessWidget {
   // 位置
   late int index = 0;
 
-  final CardUtil _detailApi = CardUtil();
 
   @override
   Widget build(BuildContext context) {

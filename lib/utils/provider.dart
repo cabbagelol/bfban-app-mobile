@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../provider/appInfo_provider.dart';
 import '../provider/userinfo_provider.dart';
 import '../provider/message_provider.dart';
-import '../provider/lang_provider.dart';
+import '../provider/translation_provider.dart';
 
 class ProviderUtil {
   // App 全局
@@ -16,8 +16,8 @@ class ProviderUtil {
   }
 
   // 国际化
-  LangProvider ofLang (BuildContext context) {
-    return Provider.of<LangProvider>(context, listen: false);
+  TranslationProvider ofLang (BuildContext context) {
+    return Provider.of<TranslationProvider>(context, listen: false);
   }
 
   // 用户信息

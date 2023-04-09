@@ -28,14 +28,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   final ScrollController _scrollController = ScrollController();
 
   // 动态数据
-  Activity? activity = Activity(
-    page: 0,
-    load: false,
-    list: [],
-  );
-
-  // 请求参
-  Map<String, dynamic> playerParame = {};
+  ActivityStatus activityStatus = ActivityStatus(load: false, list: [], parame: ActivityParame());
 
   // 筛选标签的值
   late List<RestorableBool> restorablebool = [];
@@ -64,13 +57,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
   @override
   void initState() {
-    // 滚动视图初始
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        _getMore();
-      }
-    });
-
     // 初始筛选
     chipCont["list"].forEach((element) {
       restorablebool.add(RestorableBool(false));
@@ -102,19 +88,15 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   /// [Response]
   /// 获取近期活动
   Future _getActivity() async {
-    if (activity?.load == true) return;
+    if (activityStatus.load) return;
 
     setState(() {
-      Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState!.show();
-      });
-      activity?.load = true;
-      activity?.list = [];
+      activityStatus.load = true;
+      activityStatus.list = [];
     });
 
     Response result = await Http.request(
       Config.httpHost["activity"],
-      parame: playerParame,
       method: Http.GET,
     );
 
@@ -122,19 +104,19 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
       final List d = result.data["data"];
 
       setState(() {
-        if (activity!.page <= 0) {
-          activity?.list = d;
+        if (activityStatus.parame.skip! <= 0) {
+          activityStatus.list = d;
         } else {
           // 追加数据
           if (d.isNotEmpty) {
-            activity?.list?.addAll(d);
+            activityStatus.list?.addAll(d);
           }
         }
       });
     }
 
     setState(() {
-      activity?.load = false;
+      activityStatus.load = false;
     });
 
     return true;
@@ -162,13 +144,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   /// 下拉刷新方法,为list重新赋值
   Future<void> _onRefresh() async {
     await _getActivity();
-  }
-
-  /// [Event]
-  /// 下拉 追加数据
-  Future _getMore() async {
-    await _getActivity();
-    activity!.page += 1;
   }
 
   @override
@@ -217,7 +192,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
       onRefresh: _onRefresh,
       child: ListView.builder(
         controller: _scrollController,
-        itemCount: activity!.list!.length + 1,
+        itemCount: activityStatus.list!.length + 1,
         itemBuilder: (BuildContext context, int index) {
           // 筛选
           if (index == 0) {
@@ -238,14 +213,14 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
             );
           }
 
-          Map i = activity!.list![index - 1];
+          Map i = activityStatus.list![index - 1];
 
           return Visibility(
             visible: _isShow(i),
-            child: Column(
-              children: [
-                GestureDetector(
-                  child: Stack(
+            child: InkWell(
+              child: Column(
+                children: [
+                  Stack(
                     children: [
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -307,10 +282,10 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                       ),
                     ],
                   ),
-                  onTap: () => _opEnDynamicDetail(i),
-                ),
-                const Divider(height: 1),
-              ],
+                  const Divider(height: 1),
+                ],
+              ),
+              onTap: () => _opEnDynamicDetail(i),
             ),
           );
         },

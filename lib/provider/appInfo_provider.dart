@@ -13,7 +13,6 @@ class AppInfoProvider with ChangeNotifier {
 
 class AppInfoNetwrokStatus with ChangeNotifier {
   var _connectivity;
-  final UrlUtil _urlUtil = UrlUtil();
 
   Future init(context) async {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {

@@ -1,13 +1,15 @@
+import 'package:bfban/data/Paging.dart';
+
 import 'Player.dart';
 
 class TrendStatus {
   bool? load;
   List<TrendPlayerBaseData> _list = [];
-  TrendStatusParame? parame;
+  TrendStatusParame parame;
 
   TrendStatus({
     this.load = false,
-    this.parame,
+    required this.parame,
   });
 
   set list(List list) {
@@ -46,6 +48,7 @@ class TrendPlayerBaseData extends PlayerBaseData {
     return toMap;
   }
 
+  @override
   get toMap {
     return {
       "id": id,
@@ -72,23 +75,30 @@ enum TrendStatusParameTime {
   yearly,
 }
 
-class TrendStatusParame {
-  num? limit;
+class TrendStatusParame extends Paging {
   String? time;
 
   final List? _TrendStatusParameTimeList = ["daily", "weekly", "monthly", "yearly"];
 
   TrendStatusParame({
     this.limit = 10,
+    this.skip = 0,
     TrendStatusParameTime time = TrendStatusParameTime.weekly,
   }) : super() {
     this.time = _TrendStatusParameTimeList![time.index];
   }
 
   get toMap {
-    return {
-      "limit": limit,
+    Map map =  {
       "time": time,
     };
+    map.addAll(pageToMap);
+    return map;
   }
+
+  @override
+  int? limit;
+
+  @override
+  int? skip;
 }

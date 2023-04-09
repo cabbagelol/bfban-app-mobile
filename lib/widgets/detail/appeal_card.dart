@@ -65,7 +65,7 @@ class AppealCard extends StatelessWidget {
                           size: EluiTagSize.no2,
                           theme: EluiTagTheme(
                             backgroundColor: Theme.of(context).cardColor,
-                            textColor: Theme.of(context).textTheme.subtitle1!.color!,
+                            textColor: Theme.of(context).textTheme.displayMedium!.color!,
                           ),
                           value: data["appealStatus"],
                         ),

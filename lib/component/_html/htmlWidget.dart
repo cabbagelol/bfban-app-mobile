@@ -31,7 +31,6 @@ class HtmlWidget extends StatefulWidget {
 }
 
 class _HtmlWidgetState extends State<HtmlWidget> {
-  final CardUtil _detailApi = CardUtil();
 
   Future? futureBuilder;
 
@@ -67,7 +66,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
         "img": Style(color: Theme.of(context).primaryColorDark, padding: const EdgeInsets.symmetric(vertical: 5)),
         "p": Style(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.displayMedium!.color,
         ),
       },
       {
@@ -76,7 +75,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
         "img": Style(color: Theme.of(context).primaryColorDark, padding: const EdgeInsets.symmetric(vertical: 5)),
         "p": Style(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.displayMedium!.color,
         ),
       },
       {
@@ -85,7 +84,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
         "img": Style(color: Theme.of(context).primaryColorDark, padding: const EdgeInsets.symmetric(vertical: 5)),
         "p": Style(
-          color: Theme.of(context).textTheme.subtitle1!.color,
+          color: Theme.of(context).textTheme.displayMedium!.color,
         ),
       }
     ];

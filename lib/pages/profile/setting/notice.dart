@@ -35,9 +35,9 @@ class _NoticePageState extends State<NoticePage> {
               title: FlutterI18n.translate(context, "app.setting.notice.switch.title"),
               label: FlutterI18n.translate(context, "app.setting.notice.switch.describe"),
               theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                linkColor: Theme.of(context).textTheme.titleMedium?.color,
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               cont: Switch(
@@ -54,9 +54,9 @@ class _NoticePageState extends State<NoticePage> {
               title: FlutterI18n.translate(context, "app.setting.notice.site.title"),
               label: FlutterI18n.translate(context, "app.setting.notice.site.describe"),
               theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                linkColor: Theme.of(context).textTheme.titleMedium?.color,
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               cont: Switch(
@@ -72,9 +72,9 @@ class _NoticePageState extends State<NoticePage> {
             EluiCellComponent(
               title: FlutterI18n.translate(context, "app.setting.notice.tagstitle"),
               theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                linkColor: Theme.of(context).textTheme.titleMedium?.color,
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               cont: TextButton(

@@ -83,13 +83,14 @@ class DarkTheme {
       ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Colors.black,
+        surfaceTintColor: Colors.white,
         textStyle: TextStyle(
           color: Colors.white,
         ),
         elevation: 2,
       ),
       dividerTheme: const DividerThemeData(
-        color: Colors.white10,
+        color: Colors.white12,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
@@ -114,7 +115,16 @@ class DarkTheme {
           mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
-        ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
+        )
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       bannerTheme: const MaterialBannerThemeData(

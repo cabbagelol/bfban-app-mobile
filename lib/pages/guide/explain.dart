@@ -56,6 +56,7 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Consumer<TranslationProvider>(
@@ -81,7 +82,7 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
                       ELuiLoadComponent(
                         type: "line",
                         lineWidth: 1,
-                        color: Theme.of(context).textTheme.subtitle1!.color!,
+                        color: Theme.of(context).textTheme.displayMedium!.color!,
                         size: 16,
                       ),
                   ],

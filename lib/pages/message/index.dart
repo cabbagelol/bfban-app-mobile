@@ -3,11 +3,10 @@
 import 'dart:convert';
 
 import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
@@ -108,7 +107,7 @@ class _MessagePageState extends State<MessagePage> {
       final d = result.data["data"];
 
       setState(() {
-        userinfo.data = d;
+        userinfo.data!.setData(d);
       });
     }
 
@@ -167,8 +166,8 @@ class _MessagePageState extends State<MessagePage> {
       };
 
       // 完成后发送
-      // Map messageResult = await _setMessage();
-      Map messageResult = {"success": 1};
+      Map messageResult = await _setMessage();
+      // Map messageResult = {"success": 1};
 
       if (messageResult["success"] == 1) {
         // messageResult为true 成功发送并处理:
@@ -224,7 +223,7 @@ class _MessagePageState extends State<MessagePage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            if(snapshot.data == null) {
+            if (snapshot.data == null) {
               return const NotFoundPage();
             }
 
@@ -271,26 +270,33 @@ class _MessagePageState extends State<MessagePage> {
                                           Text(
                                             selfInfo!["username"].toString(),
                                             style: TextStyle(
-                                              color: Theme.of(context).textTheme.subtitle2!.color,
+                                              color: Theme.of(context).textTheme.titleMedium!.color,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 10),
-                                      child: CircleAvatar(
-                                        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-                                        child: Text(selfInfo!["username"][0].toString()),
+                                    if (selfInfo!["userAvatar"] != null)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: EluiImgComponent(
+                                          width: 40,
+                                          height: 40,
+                                          src: selfInfo!["userAvatar"] ?? "",
+                                        ),
+                                      )
+                                    else
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: CircleAvatar(
+                                          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                                          child: Text(selfInfo!["username"][0].toString()),
+                                        ),
                                       ),
-                                    ),
                                     Card(
                                       margin: const EdgeInsets.only(right: 60, top: 40),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Html(
-                                          data: e["content"].toString(),
-                                        ),
+                                      child: HtmlWidget(
+                                        content: e["content"].toString(),
                                       ),
                                     ),
                                   ],
@@ -326,11 +332,8 @@ class _MessagePageState extends State<MessagePage> {
                                     ),
                                     Card(
                                       margin: const EdgeInsets.only(left: 60, top: 25),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Html(
-                                          data: e["content"].toString(),
-                                        ),
+                                      child: HtmlWidget(
+                                        content: e["content"].toString(),
                                       ),
                                     ),
                                   ],
@@ -356,19 +359,20 @@ class _MessagePageState extends State<MessagePage> {
                       child: Card(
                         child: TextField(
                           controller: textFieldcontroller,
-                          maxLines: null,
+                          maxLines: 1,
                           maxLength: 10,
                           decoration: InputDecoration(
                             counterText: '',
                             border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                            isCollapsed: true,
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
                             hintText: FlutterI18n.translate(context, "basic.button.reply"),
                           ),
                         ),
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 5),
+                      margin: const EdgeInsets.only(left: 10),
                       child: TextButton(
                         onPressed: _healButton(),
                         child: !messageSendStatus!["load"]

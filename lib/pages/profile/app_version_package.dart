@@ -76,7 +76,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                             mode: LaunchMode.externalApplication,
                           );
                         },
-                        child: Icon(Icons.download_for_offline),
+                        child: const Icon(Icons.download_for_offline),
                       ),
                   ],
                 );

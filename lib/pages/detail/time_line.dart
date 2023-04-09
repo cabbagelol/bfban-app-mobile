@@ -11,9 +11,9 @@ import '../../widgets/detail/history_name_card.dart';
 import '../../widgets/detail/judgement_card.dart';
 
 class TimeLine extends StatefulWidget {
-  PlayerStatus playerStatus;
+  final PlayerStatus playerStatus;
 
-  TimeLine({
+  const TimeLine({
     Key? key,
     required this.playerStatus,
   }) : super(key: key);
@@ -186,6 +186,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       edgeOffset: MediaQuery.of(context).padding.top,

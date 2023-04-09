@@ -203,6 +203,7 @@ class SearchCommentParams implements SearchBaseParams, SearchPageParams, SearchS
     this.skip = 0,
   });
 
+  @override
   Map<String, dynamic> get toMap {
     Map<String, dynamic> map = {
       "type": type,

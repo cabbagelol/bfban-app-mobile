@@ -8,7 +8,7 @@ class SearchCommentCard extends StatelessWidget {
 
   final onTap;
 
-   SearchCommentCard({
+   const SearchCommentCard({
     Key? key,
     required this.item,
     this.onTap,
@@ -52,7 +52,7 @@ class SearchCommentCard extends StatelessWidget {
         ],
       ),
       subtitle: Wrap(
-        children: [
+        children: const [
 
         ],
       ),

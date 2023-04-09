@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:quill_html_editor/quill_html_editor.dart';
 
@@ -7,7 +6,7 @@ import '../../utils/index.dart';
 import '../not_found/index.dart';
 
 class RichEditPage extends StatefulWidget {
-  RichEditPage({
+  const RichEditPage({
     Key? key,
   }) : super(key: key);
 
@@ -115,14 +114,14 @@ class _richEditPageState extends State<RichEditPage> {
                 child: QuillHtmlEditor(
                   text: data,
                   hintText: "",
-                  hintTextStyle: TextStyle(color: Colors.black54, fontSize: 16),
-                  textStyle: TextStyle(color: Colors.black, fontSize: 16),
+                  hintTextStyle: const TextStyle(color: Colors.black54, fontSize: 16),
+                  textStyle: const TextStyle(color: Colors.black, fontSize: 16),
                   controller: controller,
                   isEnabled: true,
                   minHeight: 300,
                   hintTextAlign: TextAlign.start,
-                  padding: EdgeInsets.all(5),
-                  hintTextPadding: EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  hintTextPadding: const EdgeInsets.all(5),
                 ),
               )
             ],

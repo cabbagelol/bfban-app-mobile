@@ -85,6 +85,7 @@ class PlayerStatusData extends PlayerBaseData {
     this.history,
   });
 
+  @override
   Map setData(Map i) {
     id = i["id"];
     history = i["history"];
@@ -102,6 +103,7 @@ class PlayerStatusData extends PlayerBaseData {
     return toMap;
   }
 
+  @override
   get toMap {
     return {
       "id": id,
@@ -176,8 +178,8 @@ class PlayersParame extends Paging {
     this.createTimeFrom,
     this.updateTimeFrom,
     this.updateTimeTo,
-    this.limit = 10,
-    this.skip = 1,
+    this.limit,
+    this.skip,
   });
 
   setData(Map i) {

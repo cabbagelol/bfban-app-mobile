@@ -37,7 +37,7 @@ class CustomTranslationLoader extends FileTranslationLoader {
       result = jsonDecode(local)["listConf"];
     }
 
-    _decodedMap.addAll(jsonDecode(await assetBundle.loadString('$basePath/${composeFileName()}/app.json', cache: false)));
+    _decodedMap.addAll(jsonDecode(await assetBundle.loadString('$basePath/${composeFileName()}.json', cache: false)));
     _decodedMap.addAll(result);
 
     return jsonEncode(_decodedMap);

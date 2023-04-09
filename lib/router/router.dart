@@ -113,7 +113,7 @@ class Routes {
       {
         "url": "/account/media/insert",
         "item": (context, params) {
-          return InsertMediaPage();
+          return const InsertMediaPage();
         }
       },
       {

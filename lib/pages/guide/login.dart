@@ -29,6 +29,7 @@ class _GuideLoginPageState extends State<GuideLoginPage> with AutomaticKeepAlive
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     setState(() {
       ProviderUtil().ofUser(context).userinfo["username"];
     });

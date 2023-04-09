@@ -20,12 +20,14 @@ class StationUserSpaceParame extends Paging {
 
   StationUserSpaceParame({
     this.id,
-  });
+  }) : super(limit: 0, skip: 0);
 
   get toMap {
-    return {
+    Map map = {
       "id": id,
     };
+    map.addAll(pageToMap);
+    return map;
   }
 }
 

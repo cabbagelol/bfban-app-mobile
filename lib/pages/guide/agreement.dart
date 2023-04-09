@@ -1,6 +1,6 @@
 /// 协议内容
 
-import 'package:bfban/provider/lang_provider.dart';
+import 'package:bfban/provider/translation_provider.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class GuideAgreementPage extends StatefulWidget {
 }
 
 class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAliveClientMixin {
-  LangProvider? langProvider;
+  TranslationProvider? langProvider;
 
   bool checked = false;
 
@@ -77,6 +77,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: Consumer<TranslationProvider>(

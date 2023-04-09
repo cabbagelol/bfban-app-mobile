@@ -34,7 +34,7 @@ class titleSearchColor {
   }
 }
 
-class titleSearch extends StatefulWidget {
+class TitleSearchWidget extends StatefulWidget {
   final titleSearchTheme theme;
 
   final Function? onSubmitted;
@@ -45,7 +45,7 @@ class titleSearch extends StatefulWidget {
 
   final TextEditingController controller;
 
-  titleSearch({
+  const TitleSearchWidget({
     Key? key,
     this.theme = titleSearchTheme.black,
     this.child,
@@ -55,10 +55,10 @@ class titleSearch extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  searchState createState() => searchState();
+  TitleSearchState createState() => TitleSearchState();
 }
 
-class searchState extends State<titleSearch> {
+class TitleSearchState extends State<TitleSearchWidget> {
   TextEditingController controller = TextEditingController(text: "");
 
   FocusNode controllerFocus = FocusNode();

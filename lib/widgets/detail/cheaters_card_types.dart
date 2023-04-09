@@ -234,7 +234,7 @@ class CardUtil {
       "img": Style(color: Theme.of(context).primaryColorDark, padding: const EdgeInsets.symmetric(vertical: 5)),
       "p": Style(
         fontSize: FontSize(15),
-        color: Theme.of(context).textTheme.subtitle1!.color,
+        color: Theme.of(context).textTheme.displayMedium!.color,
       ),
     };
   }

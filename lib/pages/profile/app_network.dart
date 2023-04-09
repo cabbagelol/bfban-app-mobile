@@ -44,17 +44,13 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
 
         _onNetWork(value);
       }
-
-      return value;
     });
   }
 
   /// [Response]
   /// 网络检查
   _onNetWork(String url) async {
-    dynamic item = appNetworkStatus.list!
-        .where((element) => element["url"] == url)
-        .toList()[0];
+    dynamic item = appNetworkStatus.list!.where((element) => element["url"] == url).toList()[0];
 
     setState(() {
       item["load"] = true;
@@ -84,8 +80,8 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
   /// [Event]
   /// 刷新
   Future _onRefresh() async {
-    appNetworkStatus.list = [];
-    return await _onReady();
+    appNetworkStatus.list!.clear();
+    await _onReady();
   }
 
   @override
@@ -119,9 +115,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                           EluiTagComponent(
                             value: FlutterI18n.translate(context, "app.networkDetection.status.0"),
                             theme: EluiTagTheme(
-                              backgroundColor: Theme.of(context)
-                                  .appBarTheme
-                                  .backgroundColor!,
+                              backgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
                             ),
                             color: EluiTagType.none,
                             size: EluiTagSize.no2,

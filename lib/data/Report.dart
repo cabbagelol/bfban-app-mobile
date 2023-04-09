@@ -47,23 +47,23 @@ class ReportListStatusParame extends Paging {
 
   ReportListStatusParame({
     this.id,
-    this.limit,
     this.skip,
+    this.limit,
   });
 
   get toMap {
-    return {
+    Map map = {
       "id": id,
-      "limit": limit,
-      "skip": skip,
     };
+    map.addAll(pageToMap);
+    return map;
   }
 
   @override
-  int? limit;
+  int? skip;
 
   @override
-  int? skip;
+  int? limit;
 }
 
 /// 举报

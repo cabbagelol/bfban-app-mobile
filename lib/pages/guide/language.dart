@@ -4,7 +4,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/lang_provider.dart';
 import '../../provider/translation_provider.dart';
 import '../../utils/http.dart';
 import '../../utils/provider.dart';
@@ -22,7 +21,7 @@ class GuideLanguagePage extends StatefulWidget {
 }
 
 class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKeepAliveClientMixin {
-  LangProvider? langProvider;
+  TranslationProvider? langProvider;
 
   bool load = false;
 
@@ -89,7 +88,8 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build (BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Consumer<TranslationProvider>(
         builder: (BuildContext context, data, Widget? child) {
@@ -114,7 +114,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
                       ELuiLoadComponent(
                         type: "line",
                         lineWidth: 1,
-                        color: Theme.of(context).textTheme.subtitle1!.color!,
+                        color: Theme.of(context).textTheme.titleMedium!.color!,
                         size: 16,
                       ),
                   ],
@@ -122,27 +122,29 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
               ),
 
               // 语言列表
-              Opacity(
-                opacity: data.autoSwitchLang ? .3 : 1,
-                child: Column(
-                  children: languages.map((lang) {
-                    return RadioListTile<String>(
-                      value: lang["fileName"].toString(),
-                      onChanged: (value) {
-                        setLanguage(context, value!);
-                      },
-                      groupValue: langProvider!.currentLang,
-                      title: Text(lang["label"].toString()),
-                      secondary: Card(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text(lang["name"]),
-                        ),
+              Column(
+                children: languages.map((lang) {
+                  return RadioListTile<String>(
+                    value: lang["fileName"].toString(),
+                    onChanged: (value) {
+                      setLanguage(context, value!);
+                    },
+                    groupValue: langProvider!.currentLang,
+                    title: Text(
+                      lang["label"].toString(),
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium!.color,
                       ),
-                      selected: true,
-                    );
-                  }).toList(),
-                ),
+                    ),
+                    secondary: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text(lang["name"]),
+                      ),
+                    ),
+                    selected: true,
+                  );
+                }).toList(),
               ),
             ],
           );

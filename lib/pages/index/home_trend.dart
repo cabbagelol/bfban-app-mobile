@@ -10,7 +10,7 @@ import '../../widgets/detail/home_hint_login.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class HomeTrendPage extends StatefulWidget {
-  HomeTrendPage({Key? key}) : super(key: key);
+  const HomeTrendPage({Key? key}) : super(key: key);
 
   @override
   State<HomeTrendPage> createState() => HomeTrendPageState();
@@ -45,16 +45,17 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
   Future getTrendList() async {
     if (trendStatus.load == true) return;
 
+    Future.delayed(const Duration(seconds: 0), () {
+      if (trendStatus.parame.skip! <= 0) _refreshIndicatorKey.currentState!.show();
+    });
+
     setState(() {
-      Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState!.show();
-      });
       trendStatus.load = true;
     });
 
     Response result = await Http.request(
       Config.httpHost["trend"],
-      parame: trendStatus.parame!.toMap,
+      parame: trendStatus.parame.toMap,
       method: Http.GET,
     );
 
@@ -85,6 +86,7 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<UserInfoProvider>(builder: (context, data, child) {
       return data.userinfo.isEmpty
           ? const HomeHintLogin()

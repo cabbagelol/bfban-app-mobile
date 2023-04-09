@@ -4,11 +4,11 @@ class Util {
   /// [Event]
   /// 将判决类型转换为标签
   getCheaterStatusLabel(String? value) {
-    Map _cheaterStatus = Config.action["child"];
+    Map cheaterStatus = Config.action["child"];
 
     if (value!.isEmpty) return '';
 
-    return _cheaterStatus["value"];
+    return cheaterStatus["value"];
   }
 
   queryCheatMethodsGlossary (String key, List<dynamic> cheatMethodsGlossary) {

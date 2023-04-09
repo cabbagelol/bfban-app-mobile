@@ -67,13 +67,13 @@ class Http extends ScaffoldState {
       });
     }
 
-    String _domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl];
-    String _url = "$_domain/$url";
+    String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl];
+    String path = "$domain/$url";
 
     Dio dio = createInstance();
     try {
       Response response = await dio.request(
-        _url,
+        path,
         data: data,
         queryParameters: parame,
         options: Options(
@@ -88,7 +88,7 @@ class Http extends ScaffoldState {
         case DioErrorType.receiveTimeout:
           return Response(
             data: {'error': -1},
-            requestOptions: RequestOptions(path: _url, method: method),
+            requestOptions: RequestOptions(path: url, method: method),
           );
         case DioErrorType.response:
           return Response(
@@ -98,17 +98,17 @@ class Http extends ScaffoldState {
         case DioErrorType.cancel:
           return Response(
             data: {'error': -3},
-            requestOptions: RequestOptions(path: _url, method: method),
+            requestOptions: RequestOptions(path: url, method: method),
           );
         case DioErrorType.connectTimeout:
           return Response(
             data: {'error': -4},
-            requestOptions: RequestOptions(path: _url, method: method),
+            requestOptions: RequestOptions(path: url, method: method),
           );
         case DioErrorType.sendTimeout:
           return Response(
             data: {'error': -6},
-            requestOptions: RequestOptions(path: _url, method: method),
+            requestOptions: RequestOptions(path: url, method: method),
           );
         case DioErrorType.other:
           // TODO: Handle this case.

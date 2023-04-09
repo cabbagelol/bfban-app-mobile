@@ -2,7 +2,6 @@
 
 import 'dart:async';
 
-import 'package:bfban/provider/lang_provider.dart';
 import 'package:bfban/provider/message_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
@@ -73,11 +72,11 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => PackageProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => TranslationProvider()),
-        ChangeNotifierProvider(create: (context) => LangProvider()),
+        ChangeNotifierProvider(create: (context) => TranslationProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (BuildContext? themeContext, themeData, Widget? child) {
-          return Consumer<LangProvider>(
+          return Consumer<TranslationProvider>(
             builder: (BuildContext? context, langData, Widget? child) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,

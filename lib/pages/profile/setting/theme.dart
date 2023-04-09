@@ -37,9 +37,9 @@ class _ThemePageState extends State<ThemePage> {
                 title: FlutterI18n.translate(context, "app.basic.function.auto.title"),
                 label: FlutterI18n.translate(context, "app.basic.function.auto.describe"),
                 theme: EluiCellTheme(
-                  titleColor: Theme.of(context).textTheme.subtitle1?.color,
+                  titleColor: Theme.of(context).textTheme.titleMedium?.color,
                   labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                  linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                  linkColor: Theme.of(context).textTheme.titleMedium?.color,
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
                 cont: Switch(

@@ -77,6 +77,7 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<UserInfoProvider>(
       builder: (context, data, child) {
         return RefreshIndicator(

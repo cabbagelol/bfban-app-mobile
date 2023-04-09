@@ -44,9 +44,9 @@ class _ReplyPageState extends State<ReplyPage> {
     super.initState();
 
     if (jsonDecode(widget.data).isEmpty) return;
-    dynamic _data = jsonDecode(widget.data);
-    if (_data["toCommentId"] != null) replyStatus.parame!.toCommentId = _data["toCommentId"];
-    if (_data["toPlayerId"] != null) replyStatus.parame!.toPlayerId = _data["toPlayerId"];
+    dynamic data = jsonDecode(widget.data);
+    if (data["toCommentId"] != null) replyStatus.parame!.toCommentId = data["toCommentId"];
+    if (data["toPlayerId"] != null) replyStatus.parame!.toPlayerId = data["toPlayerId"];
   }
 
   /// [Response]

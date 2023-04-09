@@ -64,7 +64,7 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   /// 获取长度
-  Future _getReportsCount () async {
+  Future _getReportsCount() async {
     Response result = await Http.request(
       Config.httpHost["statistics"],
       parame: {"reports": true},
@@ -197,7 +197,7 @@ class _IndexPageState extends State<IndexPage> {
                   // 搜索框
                   Expanded(
                     flex: 1,
-                    child: titleSearch(
+                    child: TitleSearchWidget(
                       controller: TextEditingController(),
                       theme: titleSearchTheme.black,
                     ),

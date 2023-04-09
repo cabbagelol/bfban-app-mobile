@@ -97,7 +97,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                   side: BorderSide(
-                    color: Theme.of(context).dividerTheme.color!.withOpacity(.1),
+                    color: Theme.of(context).dividerTheme.color!,
                     width: 1,
                   ),
                 ),
@@ -227,9 +227,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 title: FlutterI18n.translate(context, "app.setting.cell.account.title"),
                 label: FlutterI18n.translate(context, "app.setting.cell.account.describe"),
                 theme: EluiCellTheme(
-                  titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                  labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                  linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                  titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                  labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                  linkColor: Theme.of(context).textTheme.titleMedium?.color,
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
                 islink: true,
@@ -242,9 +242,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 title: FlutterI18n.translate(context, "app.setting.cell.media.title"),
                 label: FlutterI18n.translate(context, "app.setting.cell.media.describe"),
                 theme: EluiCellTheme(
-                  titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                  labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                  linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                  titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                  labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                  linkColor: Theme.of(context).textTheme.titleMedium?.color,
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
                 islink: true,
@@ -255,9 +255,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
               title: FlutterI18n.translate(context, "app.setting.cell.website.title"),
               label: FlutterI18n.translate(context, "app.setting.cell.website.describe"),
               theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                linkColor: Theme.of(context).textTheme.titleMedium?.color,
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               islink: true,
@@ -270,9 +270,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
               title: FlutterI18n.translate(context, "app.setting.cell.resources.title"),
               label: FlutterI18n.translate(context, "app.setting.cell.resources.describe"),
               theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                linkColor: Theme.of(context).textTheme.titleMedium?.color,
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               islink: true,
@@ -284,9 +284,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
             EluiCellComponent(
               title: FlutterI18n.translate(context, "app.setting.title"),
               theme: EluiCellTheme(
-                titleColor: Theme.of(context).textTheme.subtitle1?.color,
-                labelColor: Theme.of(context).textTheme.subtitle2?.color,
-                linkColor: Theme.of(context).textTheme.subtitle1?.color,
+                titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                linkColor: Theme.of(context).textTheme.titleMedium?.color,
                 backgroundColor: Theme.of(context).cardTheme.color,
               ),
               islink: true,

@@ -67,10 +67,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       length: cheaterStatus?.length ?? 0,
     );
 
-    // 滚动视图初始
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        // 非加载状态调用
         if (!playersStatus!.load!) {
           await _getMore();
         }
@@ -108,10 +106,11 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   Future getPlayerList() async {
     if (playersStatus!.load!) return;
 
+    Future.delayed(const Duration(seconds: 0), () {
+      if (playersStatus!.parame!.skip! <= 0) _refreshIndicatorKey.currentState!.show();
+    });
+
     setState(() {
-      Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState!.show();
-      });
       playersStatus!.load = true;
     });
 
@@ -122,13 +121,13 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     );
 
     if (result.data["success"] == 1) {
-      final List d = result.data["data"]["result"];
+      Map d = result.data["data"];
       setState(() {
         if (playersStatus!.parame!.skip! <= 0) {
-          playersStatus?.list = d;
+          playersStatus?.list = d["result"];
         } else {
           if (playersStatus!.parame!.skip! <= playersStatus!.parame!.limit!) {
-            playersStatus?.list?.add({
+            playersStatus!.list!.add({
               "pageTip": true,
               "pageIndex": playersStatus!.pageNumber!,
             });
@@ -138,7 +137,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           // 追加数据
           if (d.isNotEmpty) {
             playersStatus?.list
-              ?..addAll(d)
+              ?..addAll(d["result"])
               ..add({
                 "pageTip": true,
                 "pageIndex": playersStatus!.pageNumber!,
@@ -176,7 +175,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// tab切换
   _onSwitchTab(int index) async {
     Future.delayed(const Duration(seconds: 0), () {
-      _refreshIndicatorKey.currentState!.show();
+      if (playersStatus!.parame!.skip! <= 0) _refreshIndicatorKey.currentState!.show();
     });
 
     int _value = cheaterStatus![index]["value"];
@@ -373,7 +372,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 FlutterI18n.translate(context, "list.colums.reportTime"),
-                style: TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -421,7 +420,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         child: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _onRefresh,
-          child: playersStatus!.list!.length <= 0
+          child: playersStatus!.list!.isEmpty
               ? const EmptyWidget()
               : ListView.builder(
                   controller: _scrollController,

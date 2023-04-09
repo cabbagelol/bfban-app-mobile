@@ -27,8 +27,8 @@ class LightnesTheme {
         bodySmall: TextStyle(color: Colors.black),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(Color(0xff364e80).withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(Color(0xff364e80)),
+        trackColor: MaterialStateProperty.all(const Color(0xff364e80).withOpacity(.2)),
+        thumbColor: MaterialStateProperty.all(const Color(0xff364e80)),
       ),
       textSelectionTheme: const TextSelectionThemeData(
         selectionColor: Color(0x7a364e80),

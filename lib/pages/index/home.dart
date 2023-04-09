@@ -2,8 +2,6 @@
 
 import 'dart:ui' as ui;
 
-import 'package:bfban/pages/index/footerbar_panel.dart';
-import 'package:bfban/widgets/drawer.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -84,7 +82,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       };
       switch (i["text"]) {
         case "activities":
-          waitMap["load"] = _homeCommunityPageKey.currentState?.activity!.load ?? false;
+          waitMap["load"] = _homeCommunityPageKey.currentState?.activityStatus.load ?? false;
           break;
         case "trend":
           waitMap["load"] = _homeTrendPageKey.currentState?.trendStatus.load ?? false;

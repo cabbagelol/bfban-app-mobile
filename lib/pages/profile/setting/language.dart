@@ -1,12 +1,11 @@
 /// 语言选择器
 import 'package:flutter/material.dart';
 
-import 'package:bfban/provider/translation_provider.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/lang_provider.dart';
+import '../../../provider/translation_provider.dart';
 import '../../../utils/index.dart';
 
 class LanguagePage extends StatefulWidget {
@@ -17,7 +16,7 @@ class LanguagePage extends StatefulWidget {
 }
 
 class _LanguagePageState extends State<LanguagePage> {
-  LangProvider? langProvider;
+  TranslationProvider? langProvider;
 
   bool load = false;
 
@@ -67,7 +66,7 @@ class _LanguagePageState extends State<LanguagePage> {
   /// [Event]
   /// 变动语言
   void setLanguage(context, String value) async {
-    if (load) return;
+    if (load && value == langProvider!.currentLang) return;
 
     setState(() {
       load = true;
@@ -91,7 +90,7 @@ class _LanguagePageState extends State<LanguagePage> {
               icon: ELuiLoadComponent(
                 type: "line",
                 lineWidth: 2,
-                color: Theme.of(context).textTheme.subtitle1!.color!,
+                color: Theme.of(context).textTheme.displayMedium!.color!,
                 size: 20,
               ),
             ),
@@ -100,35 +99,28 @@ class _LanguagePageState extends State<LanguagePage> {
       body: Consumer<TranslationProvider>(
         builder: (BuildContext context, data, Widget? child) {
           return ListView(
-            children: [
-              Opacity(
-                opacity: data.autoSwitchLang ? .3 : 1,
-                child: Column(
-                  children: languages.map((lang) {
-                    return RadioListTile<String>(
-                      value: lang["fileName"].toString(),
-                      onChanged: (value) {
-                        setLanguage(context, value as String);
-                      },
-                      groupValue: langProvider!.currentLang,
-                      title: Text(
-                        lang["label"].toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyMedium!.color,
-                        ),
-                      ),
-                      secondary: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                          child: Text(lang["name"]),
-                        ),
-                      ),
-                      selected: true,
-                    );
-                  }).toList(),
+            children: languages.map((lang) {
+              return RadioListTile<String>(
+                value: lang["fileName"].toString(),
+                onChanged: (value) {
+                  setLanguage(context, value as String);
+                },
+                groupValue: langProvider!.currentLang,
+                title: Text(
+                  lang["label"].toString(),
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyMedium!.color,
+                  ),
                 ),
-              ),
-            ],
+                secondary: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: Text(lang["name"]),
+                  ),
+                ),
+                selected: true,
+              );
+            }).toList(),
           );
         },
       ),

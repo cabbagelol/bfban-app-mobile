@@ -137,7 +137,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                 ELuiLoadComponent(
                                   type: "line",
                                   lineWidth: 1,
-                                  color: Theme.of(context).textTheme.subtitle1!.color!,
+                                  color: Theme.of(context).textTheme.displayMedium!.color!,
                                   size: 18,
                                 ),
                                 const SizedBox(height: 5),
@@ -191,7 +191,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                 ELuiLoadComponent(
                                   type: "line",
                                   lineWidth: 1,
-                                  color: Theme.of(context).textTheme.subtitle1!.color!,
+                                  color: Theme.of(context).textTheme.displayMedium!.color!,
                                   size: 18,
                                 ),
                                 const SizedBox(height: 5),
@@ -233,7 +233,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                     Opacity(
                       opacity: data.isLogin ? 1 : .3,
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: TextButton(
                           child: Row(
                             children: [
@@ -271,7 +271,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       child: Text(
                         "0",
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.subtitle2!.color,
+                          color: Theme.of(context).textTheme.displayMedium!.color,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -282,7 +282,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 1,
-                            color: Theme.of(context).textTheme.subtitle1!.color!,
+                            color: Theme.of(context).textTheme.displayMedium!.color!,
                             size: 18,
                           ),
                         ],
@@ -318,7 +318,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       child: Text(
                         "0",
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.subtitle2!.color,
+                          color: Theme.of(context).textTheme.displayMedium!.color,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -329,7 +329,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 1,
-                            color: Theme.of(context).textTheme.subtitle1!.color!,
+                            color: Theme.of(context).textTheme.titleMedium!.color!,
                             size: 18,
                           ),
                         ],
@@ -365,7 +365,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       child: Text(
                         "0",
                         style: TextStyle(
-                          color: Theme.of(context).textTheme.subtitle2!.color,
+                          color: Theme.of(context).textTheme.displayMedium!.color,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -376,7 +376,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 1,
-                            color: Theme.of(context).textTheme.subtitle1!.color!,
+                            color: Theme.of(context).textTheme.titleMedium!.color!,
                             size: 18,
                           ),
                         ],

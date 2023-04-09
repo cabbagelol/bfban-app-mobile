@@ -5,6 +5,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/data/TimeLine.dart';
 import 'package:bfban/pages/not_found/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,6 +30,7 @@ import 'time_line.dart';
 class PlayerDetailPage extends StatefulWidget {
   /// User Db id
   String? dbId;
+
   /// EA persona Id
   String? personaId;
 
@@ -44,11 +45,11 @@ class PlayerDetailPage extends StatefulWidget {
 }
 
 class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerProviderStateMixin {
-  final GlobalKey<TimeLineState> timeLineKey = GlobalKey<TimeLineState>();
+  GlobalKey<TimeLineState> timeLineKey = GlobalKey<TimeLineState>();
 
-  final UrlUtil _urlUtil = UrlUtil();
+  UrlUtil _urlUtil = UrlUtil();
 
-  final Storage storage = Storage();
+  Storage storage = Storage();
 
   /// 作弊者参数
   PlayerStatus playerStatus = PlayerStatus(
@@ -632,7 +633,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                   ? ELuiLoadComponent(
                                                       type: "line",
                                                       lineWidth: 1,
-                                                      color: Theme.of(context).textTheme.subtitle1!.color!,
+                                                      color: Theme.of(context).textTheme.displayMedium!.color!,
                                                       size: 16,
                                                     )
                                                   : subscribes["isThisUserSubscribes"]

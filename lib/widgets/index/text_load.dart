@@ -7,7 +7,7 @@ class textLoad extends StatefulWidget {
 
   final double? fontSize;
 
-  textLoad({
+  const textLoad({
     Key? key,
     this.value,
     this.fontSize,
@@ -52,9 +52,9 @@ class _textLoadState extends State<textLoad> with TickerProviderStateMixin {
 
         Gradient gradient = LinearGradient(
           colors: [
-            Theme.of(context).textTheme.subtitle1!.color!,
-            Theme.of(context).textTheme.bodyText1!.color!,
-            Theme.of(context).textTheme.subtitle1!.color!,
+            Theme.of(context).textTheme.titleMedium!.color!,
+            Theme.of(context).textTheme.displayMedium!.color!,
+            Theme.of(context).textTheme.titleMedium!.color!,
           ],
           stops: [value - 0.2, value, value + 0.2],
         );

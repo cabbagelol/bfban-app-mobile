@@ -131,8 +131,6 @@ flutter:
   assets:
     - assets/
     - assets/lang/
-    - assets/lang/en/
-    - assets/lang/zh_CN/
     - assets/video/
     - assets/images/
     - assets/images/games/bf1/

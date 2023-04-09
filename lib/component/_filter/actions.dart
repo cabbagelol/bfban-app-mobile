@@ -28,7 +28,7 @@ class actionsFilterWidget extends StatelessWidget {
           TextButton(
             child: Text(
               FlutterI18n.translate(context, "basic.button.reset"),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),

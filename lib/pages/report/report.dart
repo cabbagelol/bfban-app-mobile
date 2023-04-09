@@ -141,6 +141,10 @@ class _ReportPageState extends State<ReportPage> {
             break;
         }
       });
+      EluiMessageComponent.error(context)(
+        child: Text(result.data.toString()),
+        duration: 20000
+      );
     });
   }
 
@@ -348,7 +352,7 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   const Divider(height: 1),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                     child: Text(
                       FlutterI18n.translate(context, "report.info.idNotion1"),
                       style: TextStyle(color: Theme.of(context).textTheme.displayMedium!.color, fontSize: 12),
@@ -364,7 +368,7 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 游戏
           PopupMenuButton(
-            offset: Offset(1, 55),
+            offset: const Offset(1, 55),
             onSelected: (value) {
               setState(() {
                 reportStatus.param!.game = value.toString();

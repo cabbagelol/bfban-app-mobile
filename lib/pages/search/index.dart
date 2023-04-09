@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:bfban/data/Games.dart';
 import 'package:bfban/data/index.dart';
-import 'package:bfban/widgets/index/search_comment.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -75,7 +74,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 
   int searchTabsIndex = 0;
 
-  final GlobalKey<searchState> _titleSearchWidgetKey = GlobalKey<searchState>();
+  final GlobalKey<TitleSearchState> _titleSearchWidgetKey = GlobalKey<TitleSearchState>();
 
   @override
   void initState() {
@@ -313,7 +312,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         appBar: AppBar(
           elevation: 0,
           titleSpacing: 0,
-          title: titleSearch(
+          title: TitleSearchWidget(
             key: _titleSearchWidgetKey,
             controller: _searchController,
             theme: titleSearchTheme.white,
@@ -479,7 +478,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     )
                   : TabBarView(
                       controller: tabController,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       children: [
                         ListView(
                           children: [

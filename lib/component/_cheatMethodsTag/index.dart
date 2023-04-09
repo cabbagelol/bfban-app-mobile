@@ -37,7 +37,7 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
                 size: EluiTagSize.no2,
                 theme: EluiTagTheme(
                   backgroundColor: Theme.of(context).colorScheme.primary,
-                  textColor: Theme.of(context).textTheme.subtitle1!.color!,
+                  textColor: Theme.of(context).textTheme.displayMedium!.color!,
                 ),
                 value: "N/A",
               )

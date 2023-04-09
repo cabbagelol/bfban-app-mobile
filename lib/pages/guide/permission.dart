@@ -41,7 +41,6 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
       case "android":
         permissions = [
           Permission.camera,
-          Permission.photos,
           Permission.storage,
           Permission.videos,
           Permission.notification,
@@ -62,6 +61,7 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return ListView(
       children: <Widget>[
         Padding(
@@ -225,9 +225,9 @@ class _PermissionState extends State<PermissionWidget> {
         ),
       ),
       theme: EluiCellTheme(
-        titleColor: Theme.of(context).textTheme.subtitle1?.color,
-        labelColor: Theme.of(context).textTheme.subtitle2?.color,
-        linkColor: Theme.of(context).textTheme.subtitle1?.color,
+        titleColor: Theme.of(context).textTheme.titleMedium?.color,
+        labelColor: Theme.of(context).textTheme.displayMedium?.color,
+        linkColor: Theme.of(context).textTheme.displayMedium?.color,
         backgroundColor: Theme.of(context).cardTheme.color,
       ),
       title: "${FlutterI18n.translate(context, permissionName[_permission]["name"])} - ${FlutterI18n.translate(context, permissionStatus[_permissionStatus]["text"])}",

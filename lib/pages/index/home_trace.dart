@@ -10,7 +10,7 @@ import '../../widgets/detail/home_hint_login.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class HomeTracePage extends StatefulWidget {
-  HomeTracePage({Key? key}) : super(key: key);
+  const HomeTracePage({Key? key}) : super(key: key);
 
   @override
   State<HomeTracePage> createState() => HomeTracePageState();
@@ -25,6 +25,10 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
   TraceStatus traceStatus = TraceStatus(
     load: false,
     list: [],
+    parame: TraceParame(
+      limit: 10,
+      skip: 0,
+    )
   );
 
   StoragePlayer storagePlayer = StoragePlayer();
@@ -44,10 +48,11 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
   Future getTraceList() async {
     if (traceStatus.load == true) return;
 
+    Future.delayed(const Duration(seconds: 0), () {
+      if (traceStatus.parame.skip! <= 0) _refreshIndicatorKey.currentState!.show();
+    });
+
     setState(() {
-      Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState!.show();
-      });
       traceStatus.load = true;
     });
 
@@ -107,6 +112,7 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Consumer<UserInfoProvider>(
       builder: (context, data, child) {
         return data.userinfo.isEmpty

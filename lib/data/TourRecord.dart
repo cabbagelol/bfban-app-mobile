@@ -11,6 +11,7 @@ class TourRecordStatus {
 }
 
 class TourRecordPlayerBaseData extends PlayerBaseData {
+  @override
   Map setData(Map i) {
     id = i["id"];
     originName = i["originName"];
@@ -24,10 +25,10 @@ class TourRecordPlayerBaseData extends PlayerBaseData {
     status = i["status"];
     createTime = i["createTime"];
     updateTime = i["updateTime"];
-
     return toMap;
   }
 
+  @override
   get toMap {
     return {
       "id": id,

@@ -20,4 +20,3 @@ export './Viewed.dart';
 export './Media.dart';
 export './CloudMedia.dart';
 
-import './DataUtil.dart';

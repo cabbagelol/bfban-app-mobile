@@ -98,12 +98,12 @@ class MediaFileLocalData extends BaseMediaFileData {
     return _file.runtimeType;
   }
 
-  get filename {
-    return fileManagement.splitFileUrl(_file!.path)["fileName"];
+  String get filename {
+    return fileManagement.splitFileUrl(_file!.path)["fileName"] as String;
   }
 
-  get fileExtension {
-    return fileManagement.splitFileUrl(_file!.path)["fileExtension"];
+  String get fileExtension {
+    return fileManagement.splitFileUrl(_file!.path)["fileExtension"] as String;
   }
 }
 

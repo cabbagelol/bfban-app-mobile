@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:html/parser.dart' as htmlparser;
 
 import '../../widgets/index.dart';
 

@@ -37,5 +37,8 @@ class StationUserInfoParame {
 }
 
 class StationUserInfoData extends StationUserBaseData {
-  //
+  @override
+  Map setData(Map i) {
+    return super.setData(i);
+  }
 }
