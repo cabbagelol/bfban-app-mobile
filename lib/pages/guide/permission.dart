@@ -41,6 +41,7 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
       case "android":
         permissions = [
           Permission.camera,
+          Permission.audio,
           Permission.storage,
           Permission.videos,
           Permission.notification,
@@ -141,24 +142,28 @@ class _PermissionState extends State<PermissionWidget> {
 
   Map permissionName = {
     Permission.camera: {
-      "name": "app.guide.permission.list.0.name",
-      "describe": "app.guide.permission.list.0.describe",
+      "name": "app.guide.permission.list.camera.name",
+      "describe": "app.guide.permission.list.camera.describe",
+    },
+    Permission.audio: {
+      "name": "app.guide.permission.list.audio.name",
+      "describe": "app.guide.permission.list.audio.describe",
     },
     Permission.photos: {
-      "name": "app.guide.permission.list.1.name",
-      "describe": "app.guide.permission.list.1.describe",
+      "name": "app.guide.permission.list.photos.name",
+      "describe": "app.guide.permission.list.photos.describe",
     },
     Permission.storage: {
-      "name": "app.guide.permission.list.2.name",
-      "describe": "app.guide.permission.list.2.describe",
+      "name": "app.guide.permission.list.storage.name",
+      "describe": "app.guide.permission.list.storage.describe",
     },
     Permission.videos: {
       "name": "app.guide.permission.list.videos.name",
       "describe": "app.guide.permission.list.videos.describe",
     },
     Permission.notification: {
-      "name": "app.guide.permission.list.3.name",
-      "describe": "app.guide.permission.list.3.describe",
+      "name": "app.guide.permission.list.notification.name",
+      "describe": "app.guide.permission.list.notification.describe",
     },
   };
 
@@ -177,7 +182,7 @@ class _PermissionState extends State<PermissionWidget> {
     },
     PermissionStatus.permanentlyDenied: {
       "text": "app.guide.permission.status.2",
-      "icon": Icons.error,
+      "icon": Icons.error_outlined,
     },
     PermissionStatus.restricted: {
       "text": "app.guide.permission.status.3",
@@ -206,10 +211,14 @@ class _PermissionState extends State<PermissionWidget> {
 
   Color getPermissionColor() {
     switch (_permissionStatus) {
+      case PermissionStatus.restricted:
       case PermissionStatus.denied:
         return Colors.yellow;
       case PermissionStatus.granted:
+      case PermissionStatus.limited:
         return Colors.green;
+      case PermissionStatus.permanentlyDenied:
+        return Colors.redAccent;
       default:
         return Colors.grey;
     }
@@ -217,24 +226,29 @@ class _PermissionState extends State<PermissionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return EluiCellComponent(
-      icons: GestureDetector(
-        child: Icon(
-          permissionStatus[_permissionStatus]["icon"],
-          color: getPermissionColor(),
+    return Column(
+      children: [
+        const Divider(height: 1),
+        EluiCellComponent(
+          icons: GestureDetector(
+            child: Icon(
+              permissionStatus[_permissionStatus]["icon"],
+              color: getPermissionColor(),
+            ),
+          ),
+          theme: EluiCellTheme(
+            titleColor: Theme.of(context).textTheme.titleMedium?.color,
+            labelColor: Theme.of(context).textTheme.displayMedium?.color,
+            linkColor: Theme.of(context).textTheme.displayMedium?.color,
+            backgroundColor: Theme.of(context).cardTheme.color,
+          ),
+          title: "${FlutterI18n.translate(context, permissionName[_permission]["name"])} - ${FlutterI18n.translate(context, permissionStatus[_permissionStatus]["text"])}",
+          label: FlutterI18n.translate(context, permissionName[_permission]["describe"]),
+          onTap: () {
+            requestPermission(_permission);
+          },
         ),
-      ),
-      theme: EluiCellTheme(
-        titleColor: Theme.of(context).textTheme.titleMedium?.color,
-        labelColor: Theme.of(context).textTheme.displayMedium?.color,
-        linkColor: Theme.of(context).textTheme.displayMedium?.color,
-        backgroundColor: Theme.of(context).cardTheme.color,
-      ),
-      title: "${FlutterI18n.translate(context, permissionName[_permission]["name"])} - ${FlutterI18n.translate(context, permissionStatus[_permissionStatus]["text"])}",
-      label: FlutterI18n.translate(context, permissionName[_permission]["describe"]),
-      onTap: () {
-        requestPermission(_permission);
-      },
+      ],
     );
   }
 

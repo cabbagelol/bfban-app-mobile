@@ -13,6 +13,15 @@ class DarkTheme {
           textStyle: MaterialStateProperty.all(
             const TextStyle(color: Colors.white),
           ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
@@ -93,20 +102,41 @@ class DarkTheme {
         color: Colors.white12,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
+          backgroundColor: MaterialStateProperty.all(const Color(0xff1c3762)),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          visualDensity: VisualDensity.comfortable,
+          shadowColor: MaterialStateProperty.all(Colors.black),
+          overlayColor: MaterialStateProperty.all(const Color(0xff09121e)),
+          mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+          enableFeedback: true,
+          splashFactory: NoSplash.splashFactory,
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
+        ),
       ),
       dataTableTheme: const DataTableThemeData(
-          horizontalMargin: 10,
-          columnSpacing: 20,
-          headingRowHeight: 40,
-          checkboxHorizontalMargin: 40,
+        horizontalMargin: 10,
+        columnSpacing: 20,
+        headingRowHeight: 40,
+        checkboxHorizontalMargin: 40,
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(const TextStyle(
-            color: Colors.white,
-          )),
-          elevation: MaterialStateProperty.all(0.2),
+          textStyle: MaterialStateProperty.all(
+            const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          elevation: MaterialStateProperty.all(0),
           backgroundColor: MaterialStateProperty.all(const Color(0xff1a2a44)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
@@ -124,7 +154,7 @@ class DarkTheme {
               ),
             ),
           ),
-        )
+        ),
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       bannerTheme: const MaterialBannerThemeData(
@@ -133,6 +163,13 @@ class DarkTheme {
       buttonTheme: ButtonThemeData(
         buttonColor: const Color(0xff364e80),
         disabledColor: const Color(0xff364e80).withOpacity(.2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3),
+          side: const BorderSide(
+            color: Colors.white12,
+            width: 1,
+          ),
+        ),
       ),
       buttonBarTheme: const ButtonBarThemeData(
         layoutBehavior: ButtonBarLayoutBehavior.constrained,
@@ -181,11 +218,18 @@ class DarkTheme {
       // iconTheme: const IconThemeData(
       //   color: Colors.white,
       // ),
-      cardTheme: const CardTheme(
-        color: Color(0xff0d1323),
+      cardTheme: CardTheme(
+        color: const Color(0xff0d1323),
         shadowColor: Colors.black54,
         margin: EdgeInsets.zero,
         elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3),
+          side: const BorderSide(
+            color: Colors.white10,
+            width: 1,
+          ),
+        ),
       ),
       radioTheme: RadioThemeData(
         mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
@@ -199,6 +243,14 @@ class DarkTheme {
         headlineMedium: TextStyle(color: Colors.white38),
         headlineSmall: TextStyle(color: Colors.white24),
         titleLarge: TextStyle(color: Colors.white12),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all(Colors.white),
+        fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
+        side: const BorderSide(
+          color: Colors.white12,
+          width: 3,
+        ),
       ),
       chipTheme: const ChipThemeData(
         backgroundColor: Colors.black12,

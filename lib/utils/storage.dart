@@ -47,7 +47,6 @@ class Storage {
   Future set(String name, {String type = "string", value = "null"}) async {
     try {
       if (!isInit) await init();
-
       switch (type) {
         case "bool":
           _prefs!.setBool("$_preName$name", value);
@@ -84,9 +83,23 @@ class Storage {
   }
 
   /// [Event]
+  /// 删除所有
+  Future removeAll () async {
+    if (!isInit) await init();
+    _prefs!.clear();
+  }
+
+  /// [Event]
   /// 获取所有
   Future getAll() async {
     if (!isInit) await init();
-    return _prefs!.getKeys();
+    List keys = [];
+    _prefs!.getKeys().forEach((key) {
+      keys.add({
+        "value": _prefs!.get(key),
+        "key": key
+      });
+    });
+    return keys;
   }
 }

@@ -37,7 +37,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   Map chipCont = {
     "list": [
       {"name": "app.home.screen.report", "value": "report", "index": 0},
-      {"name": "app.home.screen.banAppeal", "value": "appealBan", "index": 1},
+      {"name": "app.home.screen.banAppeal", "value": "banAppeal", "index": 1},
       {"name": "app.home.screen.signup", "value": "register", "index": 2},
       {"name": "app.home.screen.judgement", "value": "judgement", "index": 3}
     ],
@@ -47,7 +47,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   // 动态图标
   Map iconTypes = {
     "report": Icons.message,
-    "appealBan": Icons.message,
+    "banAppeal": Icons.contact_mail,
     "register": Icons.notifications,
     "judgement": Icons.terminal,
   };
@@ -203,6 +203,8 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
+                  const Icon(Icons.filter_list_outlined),
+                  const SizedBox(width: 5),
                   Wrap(
                     spacing: 5,
                     runSpacing: 5,
@@ -337,6 +339,12 @@ class WidgetStateText extends StatelessWidget {
             Text("${FlutterI18n.translate(context, "detail.info.judge")}\t", style: textile),
             Text("${itemData!["toPlayerName"]}", style: textile),
             Text(FlutterI18n.translate(context, "basic.action.${itemData!["action"]}.text"), style: textile),
+          ],
+        );
+      case "banAppeal":
+        return Wrap(
+          children: [
+            Text(FlutterI18n.translate(context, "detail.appeal.info.content"), style: textile)
           ],
         );
     }

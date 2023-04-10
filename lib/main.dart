@@ -39,7 +39,7 @@ void runMain() async {
     () async {
       await Sentry.init(
         (options) {
-          options.dsn = Config.apiHost["sentry"];
+          options.dsn = Config.apiHost["sentry"].url;
         },
       );
 
@@ -94,7 +94,7 @@ class _BfBanAppState extends State<BfBanApp> {
                     translationLoader: CustomTranslationLoader(
                       namespaces: ["app"],
                       basePath: "assets/lang",
-                      baseUri: Uri.https(Config.apiHost["web_site"].toString().replaceAll("https://", ""), "lang"),
+                      baseUri: Uri.https(Config.apiHost["web_site"].host, "lang"),
                       useCountryCode: false,
                       fallback: "zh_CN",
                       forcedLocale: Locale(langData.currentLang.isEmpty ? "zh_CN" : langData.currentLang),

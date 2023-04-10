@@ -26,7 +26,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
   /// [Event]
   /// 登录
   dynamic _openSignin() {
-    _urlUtil.opEnPage(context, '/signin', transition: TransitionType.materialFullScreenDialog).then((value) {
+    _urlUtil.opEnPage(context, '/signin', transition: TransitionType.inFromBottom).then((value) {
       if (ProviderUtil().ofUser(context).isLogin) {
         _urlUtil.popPage(context);
       }
@@ -90,9 +90,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       color: Theme.of(context).colorScheme.primary,
                       elevation: 2,
-                      onPressed: () {
-                        _openSignin();
-                      },
+                      onPressed: () => _openSignin(),
                       child: Text(FlutterI18n.translate(context, "app.signin.panel.BfbanAccountButton")),
                     ),
                     const SizedBox(height: 20),

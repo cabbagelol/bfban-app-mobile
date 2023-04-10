@@ -22,17 +22,17 @@ class PinkTheme {
       canvasColor: const Color(0xFFFFFCFC),
       primaryColorDark: Colors.pink.shade300,
       textTheme: const TextTheme(
-        displayLarge: TextStyle(color: Colors.black54),
-        displayMedium: TextStyle(color: Colors.black54),
-        displaySmall: TextStyle(color: Colors.black54),
+        displayLarge: TextStyle(color: Color(0xFF503050)),
+        displayMedium: TextStyle(color: Color(0xFF503050)),
+        displaySmall: TextStyle(color: Color(0xFF503050)),
         headlineMedium: TextStyle(color: Colors.black),
         headlineSmall: TextStyle(color: Colors.black),
-        titleLarge: TextStyle(color: Colors.black),
-        titleMedium: TextStyle(color: Colors.black),
-        titleSmall: TextStyle(color: Colors.black),
-        bodyLarge: TextStyle(color: Colors.black),
-        bodyMedium: TextStyle(color: Colors.black),
-        bodySmall: TextStyle(color: Colors.black),
+        titleLarge: TextStyle(color: Color(0xFF2C1A2C)),
+        titleMedium: TextStyle(color: Color(0xFF2C1A2C)),
+        titleSmall: TextStyle(color: Color(0xFF2C1A2C)),
+        bodyLarge: TextStyle(color: Color(0xFF2C1A2C)),
+        bodyMedium: TextStyle(color: Color(0xFF2C1A2C)),
+        bodySmall: TextStyle(color: Color(0xFF2C1A2C)),
       ),
       switchTheme: const SwitchThemeData().copyWith(
         trackColor: MaterialStateProperty.all(Colors.pink.withOpacity(.2)),
@@ -100,6 +100,15 @@ class PinkTheme {
           mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.black12,
+                width: 1,
+              ),
+            ),
+          ),
         ),
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -124,6 +133,7 @@ class PinkTheme {
           color: Colors.pink,
           fontSize: 14,
         ),
+        elevation: 0,
         unselectedItemColor: Colors.pink.shade200,
         unselectedLabelStyle: TextStyle(
           color: Colors.pink.shade200,
@@ -135,8 +145,8 @@ class PinkTheme {
         foregroundColor: Colors.white,
         shadowColor: Colors.pink.shade50,
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: Colors.pink.shade300,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
         ),
       ),
       primaryColor: Colors.pink,
@@ -157,16 +167,31 @@ class PinkTheme {
       iconTheme: const IconThemeData(
         color: Colors.pink,
       ),
-      cardTheme: const CardTheme(
+      cardTheme: CardTheme(
         color: Colors.white,
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
         elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3),
+          side: BorderSide(
+            color: Colors.pink.shade50,
+            width: 1,
+          ),
+        ),
       ),
       radioTheme: RadioThemeData(
         mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
         overlayColor: MaterialStateProperty.all(Colors.pink.withOpacity(.7)),
         fillColor: MaterialStateProperty.all(Colors.pink),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all(Colors.white),
+        fillColor: MaterialStateProperty.all(Colors.pink),
+        side: const BorderSide(
+          color: Colors.black12,
+          width: 3,
+        ),
       ),
       chipTheme: const ChipThemeData(
         backgroundColor: Colors.black12,

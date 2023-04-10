@@ -139,6 +139,6 @@ class ThemeProviderData {
   ThemeProviderData({
     this.current,
     this.defaultName,
-    this.autoSwitchTheme,
+    this.autoSwitchTheme = false,
   });
 }

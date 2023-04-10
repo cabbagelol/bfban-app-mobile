@@ -94,9 +94,15 @@ class _GuidePageState extends State<GuidePage> {
                 ),
               ),
             ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  _urlUtil.opEnPage(context, "/network");
+                },
+                icon: const Icon(Icons.electrical_services),
+              ),
+            ],
             backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
           ),
           body: PageTransitionSwitcher(
             duration: const Duration(milliseconds: 150),

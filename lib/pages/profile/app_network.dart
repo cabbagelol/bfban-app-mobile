@@ -1,5 +1,6 @@
 /// 网络
 
+import 'package:bfban/data/Url.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -33,16 +34,16 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
   /// 初始网络
   _onReady() async {
     Config.apiHost.forEach((key, value) {
-      if (value.isNotEmpty) {
+      if (value.url.isNotEmpty && key != "none") {
         appNetworkStatus.list!.add({
           "load": false,
           "err": 0,
           "ms": 0,
           "name": key,
-          "url": value,
+          "url": value.url,
         });
 
-        _onNetWork(value);
+        _onNetWork(value.url);
       }
     });
   }

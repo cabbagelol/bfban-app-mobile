@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../constants/api.dart';
 import '../utils/index.dart';
 import "./storage.dart";
@@ -19,7 +21,7 @@ class StoragePlayer extends Storage {
       }
     }
 
-    set(NAME, value: PLAYERDATA);
+    super.set(NAME, value: PLAYERDATA);
   }
 
   // 插入
@@ -29,11 +31,17 @@ class StoragePlayer extends Storage {
 
   // 查询
   query(dynamic key) async {
-    if (PLAYERDATA[key] != null) {
+    if (PLAYERDATA.containsKey(key)) {
       return PLAYERDATA[key];
     }
 
     return await getCheatersInfo(key);
+  }
+
+  // 删除
+  pop (dynamic key) {
+    if (!PLAYERDATA.containsKey(key)) return;
+      PLAYERDATA.remove(key);
   }
 
   // 强制更新

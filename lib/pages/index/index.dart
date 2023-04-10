@@ -158,7 +158,10 @@ class _IndexPageState extends State<IndexPage> {
                               opacity: data.total == 0 ? .3 : 1,
                               duration: const Duration(seconds: 1),
                               child: IconButton(
-                                icon: const Icon(Icons.chat),
+                                icon: Icon(
+                                  Icons.chat,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
                                 onPressed: _openMessage(),
                               ),
                             ),
@@ -206,6 +209,7 @@ class _IndexPageState extends State<IndexPage> {
               ),
               actions: <Widget>[
                 PopupMenuButton(
+                  color: Theme.of(context).iconTheme.color,
                   offset: const Offset(0, 45),
                   onSelected: (value) {
                     switch (value) {

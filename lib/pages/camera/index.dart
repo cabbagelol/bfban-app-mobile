@@ -43,7 +43,7 @@ class _CameraPageState extends State<CameraPage> {
     switch (data["type"]) {
       case "web_site_link":
         // 外部链接
-        _urlUtil.onPeUrl(Config.apiHost["app_web_site"] + "/player/" + data["content"]);
+        _urlUtil.onPeUrl(Config.apiHost["app_web_site"].url + "/player/" + data["content"]);
         break;
       case "app_palyer_link":
         // 内部玩家链接

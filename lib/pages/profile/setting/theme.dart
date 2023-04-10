@@ -1,6 +1,8 @@
 /// 主题管理
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -71,14 +73,76 @@ class _ThemePageState extends State<ThemePage> {
                         child: Card(
                           clipBehavior: Clip.hardEdge,
                           color: _themedata.bottomAppBarTheme.color,
+                          shape: _themedata.cardTheme.shape,
                           child: Stack(
                             children: [
-                              Center(
-                                child: Text(
-                                  _i.name,
-                                  style: TextStyle(
-                                    color: _themedata.textTheme.titleMedium!.color,
-                                  ),
+                              Positioned(
+                                top: 10,
+                                left: 10,
+                                right: 10,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _i.name,
+                                      style: TextStyle(
+                                        fontSize: FontSize.xxLarge.value,
+                                        color: _themedata.textTheme.titleMedium!.color,
+                                      ),
+                                    ),
+                                    Text(
+                                      "test".toString(),
+                                      style: TextStyle(
+                                        fontSize: FontSize.large.value,
+                                        color: _themedata.textTheme.displayMedium!.color,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 1,
+                                left: 1,
+                                child: Wrap(
+                                  spacing: 1,
+                                  runSpacing: 1,
+                                  children: [
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: _themedata.colorScheme.primary,
+                                    ),
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: _themedata.colorScheme.error,
+                                    ),
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: _themedata.colorScheme.outline,
+                                    ),
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: _themedata.colorScheme.surface,
+                                    ),
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: _themedata.colorScheme.background,
+                                    ),
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: _themedata.bottomNavigationBarTheme.backgroundColor,
+                                    ),
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: _themedata.scaffoldBackgroundColor,
+                                    ),
+                                  ],
                                 ),
                               ),
                               Visibility(

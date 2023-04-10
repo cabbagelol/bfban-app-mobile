@@ -88,7 +88,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
       body: Consumer<TranslationProvider>(
@@ -120,6 +120,12 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
                   ],
                 ),
               ),
+
+              if (load)
+                EluiTipComponent(
+                  type: EluiTip.warning,
+                  child: Text(FlutterI18n.translate(context, "app.guide.language.waitDownloadHint")),
+                ),
 
               // 语言列表
               Column(

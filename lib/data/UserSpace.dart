@@ -20,15 +20,23 @@ class StationUserSpaceParame extends Paging {
 
   StationUserSpaceParame({
     this.id,
-  }) : super(limit: 0, skip: 0);
+    this.limit,
+    this.skip,
+  });
 
-  get toMap {
-    Map map = {
+  Map<String, dynamic> get toMap {
+    Map<String, dynamic> map = {
       "id": id,
     };
     map.addAll(pageToMap);
     return map;
   }
+
+  @override
+  int? limit;
+
+  @override
+  int? skip;
 }
 
 class StationUserSpaceData extends StationUserBaseData {

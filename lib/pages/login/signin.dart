@@ -105,10 +105,7 @@ class _SigninPageState extends State<SigninPage> {
 
       Future.wait([
         // 持久存用户信息
-        Storage().set(
-          'login',
-          value: jsonEncode(d),
-        ),
+        Storage().set('login', value: jsonEncode(d)),
       ]).then((value) {
         // 持久储存 -> 状态机 -> HTTP -> Widget
 
@@ -142,7 +139,6 @@ class _SigninPageState extends State<SigninPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
       ),
       body: Consumer<UserInfoProvider>(
         builder: (BuildContext context, data, Widget? child) {
@@ -152,10 +148,7 @@ class _SigninPageState extends State<SigninPage> {
               // Positioned(
               //   top: 0,
               //   bottom: 0,
-              //   child: Image.asset(
-              //     "assets/images/bk-companion.jpg",
-              //     fit: BoxFit.cover,
-              //   ),
+              //   child: Container(),
               // ),
               BackdropFilter(
                 filter: ui.ImageFilter.blur(

@@ -416,7 +416,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// 分享
   void _onShare(Map i) {
     _urlUtil.onPeUrl(
-      "${Config.apiHost["web_site"]}/player/${i["originUserId"]}/share",
+      "${Config.apiHost["web_site"].url}/player/${i["originUserId"]}/share",
       mode: LaunchMode.externalApplication,
     );
   }

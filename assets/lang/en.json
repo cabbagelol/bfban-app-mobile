@@ -8,8 +8,8 @@
         }
       },
       "message": {
-        "saveSuccess": "保存成功",
-        "saveError": "保存失败"
+        "saveSuccess": "Save successfully",
+        "saveError": "Failed to save"
       },
       "time": {
         "seconds": "{s} seconds ago",
@@ -25,8 +25,19 @@
       "setting": "Setup",
       "app_exit": "Click again to exit the program"
     },
+    "media": {
+      "open": "View",
+      "delete": "Delete",
+      "fileInfo": "Detailed information",
+      "uploadFile": "Upload files",
+      "tab": {
+        "local": "Local",
+        "cloud": "Cloud Gallery"
+      }
+    },
     "home": {
       "scancode": "Scan Code",
+      "takeLook": "Take a look",
       "needAccount": "This function requires an account, please log in first",
       "tabs": {
         "activities": "Website dynamics",
@@ -71,19 +82,27 @@
         "label": "Please touch the cell below to grant permission to the application. Not mandatory",
         "tip": "If there is the option of [Permanently Reject], you can modify the permission in Settings Application",
         "list": {
-          "0": {
+          "camera": {
             "name": "Camera",
             "describe": "It is mainly used for shooting or recording multimedia, and the media content is mainly evidence."
           },
-          "1": {
+          "audio": {
+            "name": "Audio",
+            "describe": "Shoot or record multimedia sound"
+          },
+          "videos": {
+            "name": "Video",
+            "describe": "Read external video from the device"
+          },
+          "photos": {
             "name": "photo album",
             "describe": "Read the contents of the album, with the purpose evidence as the main evidence"
           },
-          "2": {
+          "storage": {
             "name": "local storage",
             "describe": "The authorization application stores user data, including login information and draft boxes."
           },
-          "3": {
+          "notification": {
             "name": "Notification",
             "describe": "Let programs provide desktop alerts"
           }
@@ -104,6 +123,10 @@
         "account": {
           "title": "Accounts",
           "describe": "Manage BFBAN account information"
+        },
+        "media": {
+          "title": "Media",
+          "describe": "Save and create files in BFBAN"
         },
         "website": {
           "title": "Website address",

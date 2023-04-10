@@ -67,7 +67,7 @@ class Http extends ScaffoldState {
       });
     }
 
-    String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl];
+    String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl].url;
     String path = "$domain/$url";
 
     Dio dio = createInstance();
@@ -122,7 +122,7 @@ class Http extends ScaffoldState {
     if (dio == null) {
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
       BaseOptions options = BaseOptions(
-        baseUrl: Config.apiHost['url'] + '/',
+        baseUrl: '${Config.apiHost["url"].url}/',
         connectTimeout: CONNECT_TIMEOUT,
         receiveTimeout: RECEIVE_TIMEOUT,
       );

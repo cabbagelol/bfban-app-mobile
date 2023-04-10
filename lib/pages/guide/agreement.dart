@@ -46,6 +46,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
     super.initState();
   }
 
+
   /// [Response]
   /// 获取协议
   getAgreement() async {
@@ -72,7 +73,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
 
   /// [Event]
   openAgreement() {
-    UrlUtil().onPeUrl(Config.apiHost["app_web_site"] + "/agreement/${language}.html");
+    UrlUtil().onPeUrl(Config.apiHost["app_web_site"].url + "/agreement/${language}.html");
   }
 
   @override
@@ -96,9 +97,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                   children: <Widget>[
                     Text(
                       FlutterI18n.translate(context, "app.guide.agreement.title"),
-                      style: const TextStyle(
-                        fontSize: 25
-                      ),
+                      style: const TextStyle(fontSize: 25),
                     ),
                   ],
                 ),
@@ -129,22 +128,27 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
+                  left: 10,
+                  right: 10,
                 ),
-                child: EluiCheckboxComponent(
-                  color: Theme.of(context).primaryColorDark,
-                  child: Text(
-                    FlutterI18n.translate(context, "app.guide.agree"),
-                  ),
-                  onChanged: (bool checkBoxChecked) {
-                    checked = checkBoxChecked;
-                  },
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Checkbox(
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      value: checked,
+                      onChanged: (bool? checkBoxChecked) {
+                        setState(() {
+                          checked = checkBoxChecked!;
+                        });
+                      },
+                    ),
+                    Text(
+                      FlutterI18n.translate(context, "app.guide.agree"),
+                    )
+                  ],
                 ),
               )
             ],

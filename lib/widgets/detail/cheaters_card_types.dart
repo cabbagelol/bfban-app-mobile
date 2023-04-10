@@ -3,6 +3,7 @@
 
 import 'dart:convert' show jsonEncode;
 
+import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,25 +30,7 @@ class CardUtil {
 
     return {
       linkMatcher(): CustomRender.widget(
-        widget: (RenderContext context, buildChildren) => GestureDetector(
-          onTap: () => {
-            _urlUtil.onPeUrl(
-              context.tree.element!.attributes["href"].toString(),
-              mode: LaunchMode.externalApplication,
-            )
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  const WidgetSpan(child: Icon(Icons.insert_link, size: 15)),
-                  TextSpan(text: context.tree.element!.text, style: const TextStyle(decoration: TextDecoration.underline, decorationStyle: TextDecorationStyle.dashed)),
-                ],
-              ),
-            ),
-          ),
-        ),
+        widget: (RenderContext context, buildChildren) => HtmlLink(url: context.tree.element!.attributes["href"])
       ),
       imagesMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) {
@@ -57,7 +40,7 @@ class CardUtil {
               color: context.style.color!.withOpacity(.5),
               child: Stack(
                 children: [
-                  GestureDetector(
+                  InkWell(
                     child: CachedNetworkImage(
                       imageUrl: "${context.tree.element!.attributes['src']}",
                       width: double.infinity,
@@ -65,32 +48,35 @@ class CardUtil {
                       fadeInDuration: const Duration(seconds: 0),
                       fadeOutDuration: const Duration(seconds: 0),
                       imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
-                        return Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10),
-                              height: 25,
-                              child: Row(
-                                textBaseline: TextBaseline.ideographic,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      "${context.tree.element!.attributes['src']}",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(fontSize: 12),
-                                      maxLines: 1,
+                        return Card(
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 10),
+                                height: 25,
+                                child: Row(
+                                  textBaseline: TextBaseline.ideographic,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "${context.tree.element!.attributes['src']}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 12),
+                                        maxLines: 1,
+                                      ),
                                     ),
-                                  ),
-                                  const Icon(
-                                    Icons.link,
-                                    size: 16,
-                                  ),
-                                ],
+                                    const Icon(
+                                      Icons.link,
+                                      size: 16,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Image(image: imageProvider),
-                          ],
+                              Image(image: imageProvider),
+                            ],
+                          ),
                         );
                       },
                       placeholderFadeInDuration: const Duration(seconds: 0),
@@ -112,7 +98,7 @@ class CardUtil {
                                         right: -2,
                                         child: ELuiLoadComponent(
                                           type: "line",
-                                          color: context.style.backgroundColor!,
+                                          color: Theme.of(buildContext).iconTheme.color!,
                                           size: 17,
                                           lineWidth: 2,
                                         ),

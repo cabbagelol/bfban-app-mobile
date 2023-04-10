@@ -135,7 +135,6 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                             child: SizedBox(width: 1),
                           ),
                           DropdownButton(
-                            elevation: 2,
                             underline: Container(),
                             dropdownColor: Theme.of(context).bottomAppBarTheme.color,
                             style: TextStyle(

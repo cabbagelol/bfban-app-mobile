@@ -36,17 +36,22 @@ class _TimeWidgetState extends State<TimeWidget> {
     var d = now.difference(time);
 
     if (d.inDays == 0) {
-      if (d.inSeconds <= 60) {
+      // 一天之内
+
+      if (d.inSeconds >= 0 && d.inSeconds <= 60) {
+        // 60秒内
         return FlutterI18n.translate(context, "app.basic.time.seconds", translationParams: {
           "s": d.inSeconds.toString(),
         });
       } else if (d.inSeconds > 60 && d.inMinutes <= 1) {
+        // 一分钟内
         return FlutterI18n.translate(context, "app.basic.time.minutes", translationParams: {
-          "s": d.inSeconds.toString(),
+          "s": d.inMinutes.toString(),
         });
-      } else if (d.inMinutes > 1 && d.inHours <= 24) {
+      } else if (d.inMinutes >= 1 && d.inHours <= 24) {
+        // 一小时内
         return FlutterI18n.translate(context, "app.basic.time.minutes", translationParams: {
-          "s": d.inHours.toString(),
+          "s": d.inMinutes.toString(),
         });
       }
       return FlutterI18n.translate(context, "app.basic.time.today");

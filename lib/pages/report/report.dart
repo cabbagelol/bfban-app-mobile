@@ -352,7 +352,7 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   const Divider(height: 1),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                     child: Text(
                       FlutterI18n.translate(context, "report.info.idNotion1"),
                       style: TextStyle(color: Theme.of(context).textTheme.displayMedium!.color, fontSize: 12),

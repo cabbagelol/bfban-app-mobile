@@ -78,7 +78,7 @@ class Upload extends Http {
     dynamic length = file.readAsBytesSync().length;
 
     Response result = await Http.request(
-      Config.apiHost["service_upload"],
+      Config.apiHost["service_upload"].url,
       method: Http.POST,
       data: FormData.fromMap({
         "size": length,

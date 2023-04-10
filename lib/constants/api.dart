@@ -1,31 +1,15 @@
 /// 全局接口配置
+import 'package:camerawesome/generated/i18n.dart';
+
+import '../data/Url.dart';
 
 enum Env { PROD, DEV }
-
-enum BaseUrlProtocol { HTTP, HTTPS }
-
-class BaseUrl {
-  List protocols = ["http", "https"];
-  String? protocol;
-  String? host = "";
-  String? pathname = "";
-
-  BaseUrl({
-    BaseUrlProtocol? protocol = BaseUrlProtocol.HTTP,
-    this.host,
-    this.pathname,
-  }) : super() {
-    this.protocol = protocols[protocol!.index];
-  }
-
-  get url => "$protocol://$host$pathname";
-}
 
 class Config {
   static Env env = Env.DEV;
   static final List _envStringNames = ["production", "development"];
   static String _envCurrentStringName = "";
-  static Map apis = {};
+  static Map<String, BaseUrl> apis = {};
   static Map jiguans = {};
 
   /// 当前环境名称
@@ -39,14 +23,14 @@ class Config {
   }
 
   static BaseUrl apiUpload = BaseUrl(
-      protocol: BaseUrlProtocol.HTTPS,
-      host: "bfban.gametools.network",
-      pathname: "/api/"
+    protocol: BaseUrlProtocol.HTTPS,
+    host: "bfban.gametools.network",
+    pathname: "/api/",
   );
 
   /// 基础请求
   static Map get apiHost {
-    Map d = {"none": ""};
+    Map<String, BaseUrl> d = {"none": BaseUrl()};
     d.addAll(apis);
     return d;
   }
@@ -129,7 +113,7 @@ class Config {
     return list;
   }
 
-  Config.dev({required Map api, Map? jiguan, BaseUrl? apiUpload}) {
+  Config.dev({required Map<String, BaseUrl> api, Map? jiguan, BaseUrl? apiUpload}) {
     Config.apis.addAll(api);
     if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
     if (apiUpload!.host!.isNotEmpty) Config.apiUpload = apiUpload;
@@ -137,7 +121,8 @@ class Config {
     Config._envCurrentStringName = _envStringNames[Config.env.index];
   }
 
-  Config.prod({required Map api, Map? jiguan, BaseUrl? apiUpload}) {
+  // <String, BaseUrl>
+  Config.prod({required Map<String, BaseUrl> api, Map? jiguan, BaseUrl? apiUpload}) {
     Config.apis.addAll(api);
     if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
     if (apiUpload!.host!.isNotEmpty) Config.apiUpload = apiUpload;

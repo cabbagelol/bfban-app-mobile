@@ -8,7 +8,7 @@ import 'package:bfban/router/router.dart';
 
 class UrlUtil {
   /// 唤起内置游览器，并访问
-  Future<Map> onPeUrl(String url, {LaunchMode mode = LaunchMode.inAppWebView}) async {
+  Future<Map> onPeUrl(String url, {LaunchMode mode = LaunchMode.externalApplication}) async {
     try {
       Uri _url = Uri.parse(url);
 

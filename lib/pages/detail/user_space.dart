@@ -39,7 +39,11 @@ class UserSpacePageState extends State<UserSpacePage> {
   /// 用户信息
   StationUserSpaceStatus userSpaceInfo = StationUserSpaceStatus(
     data: StationUserSpaceData(),
-    parame: StationUserSpaceParame(id: null),
+    parame: StationUserSpaceParame(
+      id: null,
+      limit: 20,
+      skip: 0,
+    ),
     load: false,
   );
 
@@ -239,7 +243,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: CircleAvatar(
-                                  radius: 25,
+                                  radius: 30,
                                   child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
                                       ? Image.network(snapshot.data["userAvatar"])
                                       : Text(
@@ -279,7 +283,6 @@ class UserSpacePageState extends State<UserSpacePage> {
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                   ),
-
                                 ],
                               ),
                               Column(

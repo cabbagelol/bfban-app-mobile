@@ -6,6 +6,7 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportPage extends StatefulWidget {
   const SupportPage({Key? key}) : super(key: key);
@@ -69,7 +70,7 @@ class _SupportPageState extends State<SupportPage> {
               backgroundColor: Theme.of(context).cardTheme.color,
             ),
             islink: true,
-            onTap: () => _urlUtil.onPeUrl("https://github.com/BFBAN/bfban-app"),
+            onTap: () => _urlUtil.onPeUrl("https://github.com/BFBAN/bfban-app", mode: LaunchMode.externalApplication),
           ),
           // EluiCellComponent(
           //   title: FlutterI18n.translate(context, "app.setting.support.feedbackTitle"),

@@ -93,7 +93,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
   /// 打开Apps连接
   void _openApps() {
     _urlUtil.onPeUrl(
-      "${Config.apiHost["web_site"]}/apps",
+      "${Config.apiHost["web_site"].url}/apps",
       mode: LaunchMode.externalApplication,
     );
   }
@@ -114,10 +114,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    width: 1,
-                    color: Theme.of(context).dividerTheme.color!,
-                  ),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,27 +126,28 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           maxWidth: 100,
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             statistics.load
                                 ? Column(
-                              children: [
-                                ELuiLoadComponent(
-                                  type: "line",
-                                  lineWidth: 1,
-                                  color: Theme.of(context).textTheme.displayMedium!.color!,
-                                  size: 18,
-                                ),
-                                const SizedBox(height: 5),
-                              ],
-                            )
+                                    children: [
+                                      ELuiLoadComponent(
+                                        type: "line",
+                                        lineWidth: 1,
+                                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(height: 5),
+                                    ],
+                                  )
                                 : Text(
-                              statistics.data!.reports.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
+                                    statistics.data!.reports.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
                             I18nText(
                               "home.cover.dataReceived",
                               child: Text(
@@ -184,27 +181,28 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           maxWidth: 100,
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             statistics.load
                                 ? Column(
-                              children: [
-                                ELuiLoadComponent(
-                                  type: "line",
-                                  lineWidth: 1,
-                                  color: Theme.of(context).textTheme.displayMedium!.color!,
-                                  size: 18,
-                                ),
-                                const SizedBox(height: 5),
-                              ],
-                            )
+                                    children: [
+                                      ELuiLoadComponent(
+                                        type: "line",
+                                        lineWidth: 1,
+                                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(height: 5),
+                                    ],
+                                  )
                                 : Text(
-                              statistics.data!.confirmed.toString(),
-                              style: const TextStyle(
-                                fontSize: 20,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
+                                    statistics.data!.confirmed.toString(),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
                             I18nText(
                               "home.cover.confirmData",
                               child: Text(
@@ -256,13 +254,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
               margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
               child: Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    width: 1,
-                    color: Theme.of(context).dividerTheme.color!,
-                  ),
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -303,13 +294,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
               margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
               child: Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    width: 1,
-                    color: Theme.of(context).dividerTheme.color!,
-                  ),
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -350,13 +334,6 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
               margin: const EdgeInsets.only(bottom: 11, left: 15, right: 15),
               child: Container(
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(
-                    width: 1,
-                    color: Theme.of(context).dividerTheme.color!,
-                  ),
-                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[

@@ -69,6 +69,7 @@ class LightnesTheme {
         ),
         elevation: 2,
       ),
+      dividerColor: Colors.black12,
       dividerTheme: const DividerThemeData(
         color: Colors.black12,
         space: .4,
@@ -85,6 +86,15 @@ class LightnesTheme {
           mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.black12,
+                width: 1,
+              ),
+            ),
+          ),
         ),
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -152,10 +162,18 @@ class LightnesTheme {
       iconTheme: const IconThemeData(
         color: Color(0xff364e80),
       ),
-      cardTheme: const CardTheme(
-        elevation: 0,
+      cardTheme: CardTheme(
         color: Colors.white,
         shadowColor: Color(0x39131372),
+        margin: EdgeInsets.zero,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3),
+          side: const BorderSide(
+            color: Colors.black12,
+            width: 1,
+          ),
+        ),
       ),
       cardColor: const Color(0xfff2f2f2),
       radioTheme: RadioThemeData(
@@ -163,14 +181,13 @@ class LightnesTheme {
         overlayColor: MaterialStateProperty.all(const Color(0xff364e80).withOpacity(.7)),
         fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
       ),
-      toggleableActiveColor: Colors.black,
-      primaryTextTheme: const TextTheme(
-        headline1: TextStyle(color: Colors.black),
-        headline2: TextStyle(color: Colors.black87),
-        headline3: TextStyle(color: Colors.black54),
-        headline4: TextStyle(color: Colors.black45),
-        headline5: TextStyle(color: Colors.black26),
-        headline6: TextStyle(color: Colors.black12),
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all(Colors.white),
+        fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
+        side: const BorderSide(
+          color: Colors.black12,
+          width: 3,
+        ),
       ),
       chipTheme: const ChipThemeData(
         backgroundColor: Colors.white10,

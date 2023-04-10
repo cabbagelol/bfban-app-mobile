@@ -233,7 +233,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
                 islink: true,
-                onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"] + "/profile/account", mode: LaunchMode.externalApplication),
+                onTap: () => _urlUtil.onPeUrl(Config.apiHost["web_site"].url + "/profile/account", mode: LaunchMode.externalApplication),
               ),
             ),
             Visibility(
@@ -262,7 +262,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
               ),
               islink: true,
               onTap: () => _urlUtil.onPeUrl(
-                Config.apiHost["web_site"],
+                Config.apiHost["web_site"].url,
                 mode: LaunchMode.externalApplication,
               ),
             ),

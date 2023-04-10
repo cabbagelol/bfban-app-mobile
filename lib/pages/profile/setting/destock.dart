@@ -1,5 +1,6 @@
 /// 清理数据
 
+import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -19,6 +20,8 @@ class _DestockPageState extends State<DestockPage> {
     {"name": "1", "data": 1}
   ];
 
+  Storage storage = Storage();
+
   @override
   void initState() {
     super.initState();
@@ -29,12 +32,11 @@ class _DestockPageState extends State<DestockPage> {
   /// [Event]
   /// 获取所有持久数据
   Future _getLoaclAll() async {
-    dynamic _storage = Storage();
     List list = [];
 
-    _storage.getAll().then((value)  {
-      value.forEach((i) async {
-        list.add({"name": i});
+    storage.getAll().then((storageAll) {
+      storageAll.forEach((i) async {
+        list.add(i);
       });
 
       setState(() {
@@ -45,30 +47,49 @@ class _DestockPageState extends State<DestockPage> {
 
   /// [Event]
   /// 删除记录
-  _removeLoacl(e) async {
-    await Storage().remove(e["name"]);
+  _removeLocal(e) async {
+    String key = e["key"].toString().split(":")[1];
+    await storage.remove(key);
+    _getLoaclAll();
+  }
+
+  /// [Event]
+  /// 删除所有记录
+  _removeAllLocal() {
+    storage.removeAll();
+
     _getLoaclAll();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () => _removeAllLocal(),
+          )
+        ],
+      ),
       body: ListView(
-        children: destockList.map((e) {
-          return Column(
-            children: [
-              EluiCellComponent(
-                title: e["name"].toString(),
-                cont: TextButton(
-                  onPressed: () => _removeLoacl(e),
-                  child: const Icon(Icons.delete),
-                ),
-              ),
-              const Divider(height: 1),
-            ],
-          );
-        }).toList(),
+        children: destockList.isNotEmpty
+            ? destockList.map((e) {
+                return Column(
+                  children: [
+                    EluiCellComponent(
+                      title: e["key"].toString(),
+                      label: "${e["value"].toString().length} k",
+                      cont: TextButton(
+                        onPressed: () => _removeLocal(e),
+                        child: const Icon(Icons.delete),
+                      ),
+                    ),
+                    const Divider(height: 1),
+                  ],
+                );
+              }).toList()
+            : [const EmptyWidget()],
       ),
     );
   }

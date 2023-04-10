@@ -1,12 +1,9 @@
+import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../utils/index.dart';
-
 class VideoLink extends StatelessWidget {
   Map data;
-
-  final UrlUtil _urlUtil = UrlUtil();
 
   VideoLink({
     Key? key,
@@ -44,28 +41,9 @@ class VideoLink extends StatelessWidget {
                     const SizedBox(width: 5),
                     Expanded(
                       flex: 1,
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            child: const Icon(Icons.link, size: 15),
-                            onTap: () => _urlUtil.onPeUrl(i.value.toString()),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: GestureDetector(
-                              child: Text(
-                                i.value.toString(),
-                                style: const TextStyle(fontSize: 12),
-                                softWrap: true,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              onTap: () {
-                                _urlUtil.onPeUrl(i.value.toString());
-                              },
-                            ),
-                          ),
-                        ],
+                      child: HtmlLink(
+                        url: i.value,
+                        style: const TextStyle(fontSize: 12),
                       ),
                     ),
                     Text("${i.key + 1}"),
