@@ -57,20 +57,28 @@ class _LoginPanelState extends State<LoginPanelPage> {
       ),
       body: Consumer<UserInfoProvider>(
         builder: (BuildContext context, data, Widget? child) {
-          return Stack(
-            fit: StackFit.loose,
-            children: <Widget>[
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: 39,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.asset(
+                    "assets/splash/splash_center_logo_.png",
+                    width: 80,
+                    height: 80,
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.high,
+                  ),
+                ),
+              ),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      "assets/splash/splash_center_logo_.png",
-                      width: 80,
-                      height: 80,
-                    ),
                     const SizedBox(height: 20),
                     Text(
                       FlutterI18n.translate(context, "app.signin.panel.title"),
@@ -104,50 +112,33 @@ class _LoginPanelState extends State<LoginPanelPage> {
                   ],
                 ),
               ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Theme.of(context).bottomAppBarTheme.color!,
-                        Theme.of(context).bottomAppBarTheme.color!,
-                      ],
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      GestureDetector(
-                        child: Opacity(
-                          opacity: .8,
-                          child: Wrap(
-                            spacing: 5,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Text(
-                                FlutterI18n.translate(context, "app.signin.panel.signupButton"),
-                              ),
-                              const Icon(
-                                Icons.open_in_new,
-                                size: 18,
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () => _urlUtil.onPeUrl("https://bfban.com/#/signup"),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           );
         },
+      ),
+      bottomSheet: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: GestureDetector(
+          child: Opacity(
+            opacity: .8,
+            child: Wrap(
+              spacing: 5,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(
+                  FlutterI18n.translate(context, "app.signin.panel.signupButton"),
+                ),
+                const Icon(
+                  Icons.open_in_new,
+                  size: 18,
+                ),
+              ],
+            ),
+          ),
+          onTap: () => _urlUtil.onPeUrl("https://bfban.com/#/signup"),
+        ),
       ),
     );
   }

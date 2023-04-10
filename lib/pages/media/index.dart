@@ -775,7 +775,11 @@ class MediaIconCard extends StatelessWidget {
         clipBehavior: Clip.hardEdge,
         children: [
           if (filetype == FileType.IMAGE)
-            Image.file(i.file, scale: .2)
+            Image.file(
+              i.file,
+              scale: .2,
+              filterQuality: FilterQuality.low,
+            )
           else if (filetype == FileType.VIDEO)
             const Icon(
               Icons.video_camera_back_outlined,

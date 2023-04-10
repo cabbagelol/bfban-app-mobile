@@ -32,10 +32,10 @@
 	<string>The App requires your consent to access the media library</string>
 	<key>NSCameraUsageDescription</key>
 	<string>The app requires your consent to access the camera to upload images</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>To enable microphone access when recording video</string>
-    <key>NSLocationWhenInUseUsageDescription</key>
-    <string>To enable GPS location access for Exif data</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To enable microphone access when recording video</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To enable GPS location access for Exif data</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>App requires your permission to save images to your phone</string>
 	<key>NSPhotoLibraryUsageDescription</key>
@@ -65,5 +65,23 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>tel</string>
+      <string>mailto</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+          <key>CFBundleTypeRole</key>
+          <string>Editor</string>
+          <key>CFBundleURLName</key>
+          <string>bfban.gametools.network/player</string>
+          <key>CFBundleURLSchemes</key>
+          <array>
+            <string>https</string>
+          </array>
+        </dict>
+    </array>
 </dict>
 </plist>

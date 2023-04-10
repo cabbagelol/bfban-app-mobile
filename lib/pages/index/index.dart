@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/message_provider.dart';
+import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -154,16 +155,20 @@ class _IndexPageState extends State<IndexPage> {
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: <Widget>[
-                            AnimatedOpacity(
-                              opacity: data.total == 0 ? .3 : 1,
-                              duration: const Duration(seconds: 1),
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.chat,
-                                  color: Theme.of(context).iconTheme.color,
-                                ),
-                                onPressed: _openMessage(),
-                              ),
+                            Consumer<UserInfoProvider>(
+                              builder: (BuildContext context, userdata, Widget? child) {
+                                return AnimatedOpacity(
+                                  opacity: userdata.isLogin ? 1 : .3,
+                                  duration: const Duration(seconds: 1),
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.chat,
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
+                                    onPressed: _openMessage(),
+                                  ),
+                                );
+                              },
                             ),
                             Visibility(
                               visible: data.total != 0,
@@ -209,7 +214,10 @@ class _IndexPageState extends State<IndexPage> {
               ),
               actions: <Widget>[
                 PopupMenuButton(
-                  color: Theme.of(context).iconTheme.color,
+                  icon: Icon(
+                    Icons.adaptive.more,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   offset: const Offset(0, 45),
                   onSelected: (value) {
                     switch (value) {
@@ -228,7 +236,10 @@ class _IndexPageState extends State<IndexPage> {
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            const Icon(Icons.qr_code),
+                            Icon(
+                              Icons.qr_code,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
@@ -241,7 +252,10 @@ class _IndexPageState extends State<IndexPage> {
                         child: Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
-                            const Icon(Icons.casino_outlined),
+                            Icon(
+                              Icons.casino_outlined,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
                             const SizedBox(
                               width: 10,
                             ),

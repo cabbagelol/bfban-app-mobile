@@ -132,7 +132,9 @@ class MessageProvider with ChangeNotifier {
       int total = 0;
       _list = d["messages"];
       for (var e in _list) {
-        e["haveRead"] == 1 ? total += 1 : null;
+        if (e["haveRead"] == 0) {
+          total += 1;
+        }
       }
       messageStatus.total = total;
     }
