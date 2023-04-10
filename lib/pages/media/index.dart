@@ -225,7 +225,7 @@ class _mediaPageState extends State<MediaPage> {
           );
         }
 
-        if (i.extension == FileType.VIDEO && i.extension == FileType.NONE) {
+        if (i.extension == FileType.VIDEO || i.extension == FileType.NONE) {
           widget = Scaffold(
             appBar: AppBar(
               title: Text(i.file.path),
@@ -233,7 +233,10 @@ class _mediaPageState extends State<MediaPage> {
             body: Container(
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Center(
-                child: Text(i.file.path),
+                child: Text(
+                  i.file.path,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           );
@@ -694,7 +697,7 @@ class _MediaCardState extends State<MediaCard> {
                       ],
                     ),
                   ),
-                const PopupMenuDivider(),
+                if (widget.i.type == MediaType.Local) const PopupMenuDivider(),
                 if (widget.i.type == MediaType.Local)
                   PopupMenuItem(
                     value: "upload_file",

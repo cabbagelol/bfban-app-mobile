@@ -8,13 +8,13 @@ import 'package:bfban/router/router.dart';
 
 class UrlUtil {
   /// 唤起内置游览器，并访问
-  Future<Map> onPeUrl(String url, {LaunchMode mode = LaunchMode.externalApplication}) async {
+  Future<Map> onPeUrl(String url, {LaunchMode mode = LaunchMode.externalApplication, WebViewConfiguration? webViewConfiguration}) async {
     try {
       Uri _url = Uri.parse(url);
 
       if (url.isEmpty) throw "Url empty";
 
-      if (!await launchUrl(_url, mode: mode)) {
+      if (!await launchUrl(_url, mode: mode, webViewConfiguration: webViewConfiguration!)) {
         throw 'Could not launch $url';
       }
 
@@ -27,7 +27,7 @@ class UrlUtil {
   /// 唤起内部webview，访问地址
   Future<Map> opEnWebView(String url) async {
     try {
-      if (await canLaunch(url)) {
+      if (await canLaunchUrl(Uri(path: url))) {
         await launch(
           url,
           forceSafariVC: true,

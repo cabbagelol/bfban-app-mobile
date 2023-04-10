@@ -1,6 +1,4 @@
 /// 全局接口配置
-import 'package:camerawesome/generated/i18n.dart';
-
 import '../data/Url.dart';
 
 enum Env { PROD, DEV }
