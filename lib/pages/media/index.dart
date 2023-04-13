@@ -92,19 +92,21 @@ class _mediaPageState extends State<MediaPage> {
 
   /// [Result]
   /// 查询媒体文件详情
-  Future _getNetworkMediaDetail(dynamic filename) async {
+  Future _getNetworkMediaDetail(dynamic i) async {
     if (mediaStatus.load!) return;
 
     setState(() {
       mediaStatus.load = true;
+      i.fileDetailLoad = true;
     });
 
-    Response result = await Upload().serviceFile(filename);
+    Response result = await Upload().serviceFile(i.filename);
 
     if (result.data["success"] == 1) {
       final d = result.data;
       setState(() {
-        openFileDetail[filename] = d["data"];
+        openFileDetail[i.filename] = d["data"];
+        i.fileDetailLoad = false;
         mediaStatus.load = false;
       });
       return;
@@ -115,6 +117,7 @@ class _mediaPageState extends State<MediaPage> {
     );
 
     setState(() {
+      i.fileDetailLoad = false;
       mediaStatus.load = false;
     });
   }
@@ -197,7 +200,7 @@ class _mediaPageState extends State<MediaPage> {
   /// 用于媒体选择，返回
   _onSelectFile(dynamic i) async {
     if (openFileDetail[i.filename] == null) {
-      await _getNetworkMediaDetail(i.filename);
+      await _getNetworkMediaDetail(i);
     }
 
     if (openFileDetail[i.filename]["downloadURL"]) {
@@ -254,7 +257,7 @@ class _mediaPageState extends State<MediaPage> {
         if (i is! MediaFileNetworkData) return;
 
         if (openFileDetail[i.filename] == null) {
-          await _getNetworkMediaDetail(i.filename);
+          await _getNetworkMediaDetail(i);
         }
 
         if (openFileDetail[i.filename]["downloadURL"] == null) return;
@@ -274,23 +277,33 @@ class _mediaPageState extends State<MediaPage> {
 
   /// [Event]
   /// 上传文件
-  void _onUploadFile(context, File file) async {
-    // 上传
-    var result = await Upload().on(file);
+  void _onUploadFile(context, i) async {
+    setState(() {
+      i.updataLoad = true;
+    });
+
+    Map result = await Upload().on(i.file);
 
     if (result["code"] == 1) {
       // 标记
-      Map splitFileUrl = FileManagement().splitFileUrl(file.path);
-      String newPath = "${file.parent.path}/${splitFileUrl["fileName"]}_[Uploaded].${splitFileUrl["fileExtension"]}";
-      file.renameSync(newPath);
+      Map splitFileUrl = FileManagement().splitFileUrl(i.file.path);
+      String newPath = "${i.file.parent.path}/${splitFileUrl["fileName"]}_[Uploaded].${splitFileUrl["fileExtension"]}";
+      i.file.renameSync(newPath);
 
       EluiMessageComponent.success(context)(
         child: Text(result["message"]),
       );
 
       _getLocalMediaFiles();
+      setState(() {
+        i.updataLoad = false;
+      });
       return;
     }
+
+    setState(() {
+      i.updataLoad = false;
+    });
 
     EluiMessageComponent.error(context)(
       child: Text(result["message"]),
@@ -328,7 +341,7 @@ class _mediaPageState extends State<MediaPage> {
 
         // 1 查询
         if (openFileDetail[i.filename] == null) {
-          await _getNetworkMediaDetail(i.filename);
+          await _getNetworkMediaDetail(i);
         }
 
         // 2 再次检查
@@ -479,7 +492,7 @@ class _mediaPageState extends State<MediaPage> {
                                         _onEnFileInfo(context, i);
                                       },
                                       onTapUploadFile: () {
-                                        _onUploadFile(context, i.file);
+                                        _onUploadFile(context, i);
                                       },
                                     );
                                   },
@@ -538,7 +551,6 @@ class _mediaPageState extends State<MediaPage> {
                                   itemCount: cloudMediaStatus.list.length,
                                   itemBuilder: (BuildContext context, int index) {
                                     MediaFileNetworkData i = cloudMediaStatus.list[index];
-
                                     return MediaCard(
                                       i: i,
                                       isSelectFile: widget.isSelectFile,
@@ -697,11 +709,10 @@ class _MediaCardState extends State<MediaCard> {
                       ],
                     ),
                   ),
-                if (widget.i.type == MediaType.Local) const PopupMenuDivider(),
-                if (widget.i.type == MediaType.Local)
+                if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file)) const PopupMenuDivider(),
+                if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file))
                   PopupMenuItem(
                     value: "upload_file",
-                    enabled: !_isUploaded(widget.i.file),
                     child: Wrap(
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
@@ -730,15 +741,30 @@ class _MediaCardState extends State<MediaCard> {
             left: 5,
             right: 5,
             bottom: 2,
-            child: Row(
+            child: Text(
+              widget.i.filename.toString(),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 3,
+            ),
+          ),
+          Positioned(
+            right: 5,
+            bottom: 2,
+            child: Wrap(
+              runSpacing: 2,
+              spacing: 2,
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    widget.i.filename.toString(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
+                if (widget.i.type == MediaType.Local && _isUploaded(widget.i.file))
+                  Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
                   ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                  child: const Icon(Icons.cloud, size: 17),
                 ),
                 EluiTagComponent(
                   value: widget.i.fileExtension.toString(),
@@ -751,6 +777,42 @@ class _MediaCardState extends State<MediaCard> {
               ],
             ),
           ),
+
+          /// 远程获取信息遮盖
+          if (widget.i.type == MediaType.Network && widget.i.fileDetailLoad)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
+                child: ELuiLoadComponent(
+                  type: "line",
+                  lineWidth: 2,
+                  color: Theme.of(context).textTheme.displayMedium!.color!,
+                  size: 30,
+                ),
+              ),
+            ),
+
+          /// 上传遮盖
+          if (widget.i.type == MediaType.Local && widget.i.updataLoad)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
+                child: ELuiLoadComponent(
+                  type: "line",
+                  lineWidth: 2,
+                  color: Theme.of(context).textTheme.displayMedium!.color!,
+                  size: 30,
+                ),
+              ),
+            ),
         ],
       ),
     );

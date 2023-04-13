@@ -73,7 +73,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
 
   /// [Event]
   openAgreement() {
-    UrlUtil().onPeUrl(Config.apiHost["app_web_site"].url + "/agreement/${language}.html");
+    UrlUtil().onPeUrl(Config.apiHost["app_web_site"]!.url + "/agreement/${language}.html");
   }
 
   @override

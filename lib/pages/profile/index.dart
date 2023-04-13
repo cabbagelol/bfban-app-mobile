@@ -127,7 +127,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 Expanded(
                                   flex: 1,
                                   child: textLoad(
-                                    value: data.userinfo["username"] ?? FlutterI18n.translate(context, "signin.title"),
+                                    value: data.userinfo["username"] ??  FlutterI18n.translate(context, "signin.title"),
                                     fontSize: 20,
                                   ),
                                 ),
@@ -238,7 +238,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
               ),
               islink: true,
               onTap: () => _urlUtil.onPeUrl(
-                Config.apiHost["web_site"].url,
+                Config.apiHost["web_site"]!.url,
                 mode: LaunchMode.externalApplication,
               ),
             ),
@@ -285,6 +285,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                       ),
                   onPressed: () => removeUserInfo(data.getToken.toString()),
                   child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       const Icon(Icons.output),
                       Text(

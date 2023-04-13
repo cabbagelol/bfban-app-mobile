@@ -92,6 +92,9 @@ class BaseMediaFileData {
 class MediaFileLocalData extends BaseMediaFileData {
   final MediaType type = MediaType.Local;
 
+  // 本地上传状态
+  bool updataLoad = false;
+
   FileManagement fileManagement = FileManagement();
 
   get createTime {
@@ -110,6 +113,9 @@ class MediaFileLocalData extends BaseMediaFileData {
 /// 网络文件Data
 class MediaFileNetworkData extends BaseMediaFileData {
   final MediaType type = MediaType.Network;
+
+  // 远程获取文件信息状态
+  bool fileDetailLoad = false;
 
   String? createTime;
   String? filename;

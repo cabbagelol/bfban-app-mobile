@@ -27,6 +27,9 @@ dependencies:
   # Dio Cookie 管理器 https://pub.dev/packages/dio_cookie_manager
   dio_cookie_manager: ^2.0.0
 
+  # Dio 请求缓存 https://pub.dev/packages/dio_http_cache
+  dio_http_cache: ^0.3.0
+
   # 状态管理 https://pub.dev/packages/provider
   provider: ^6.0.2
 

@@ -93,7 +93,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
   /// 打开Apps连接
   void _openApps() {
     _urlUtil.onPeUrl(
-      "${Config.apiHost["web_site"].url}/apps",
+      "${Config.apiHost["web_site"]!.url}/apps",
       mode: LaunchMode.externalApplication,
     );
   }

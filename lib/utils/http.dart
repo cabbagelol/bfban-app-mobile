@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:bfban/utils/index.dart';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 
 export 'package:dio/dio.dart';
@@ -67,18 +68,28 @@ class Http extends ScaffoldState {
       });
     }
 
-    String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl].url;
+    String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl]!.url;
     String path = "$domain/$url";
 
     Dio dio = createInstance();
+
+    // 缓存实例
+    dio.interceptors.add(DioCacheManager(CacheConfig(
+      baseUrl: Config.apiHost[typeUrl]!.baseHost.toString(),
+    )).interceptor);
     try {
       Response response = await dio.request(
         path,
         data: data,
         queryParameters: parame,
-        options: Options(
-          method: method,
-          headers: headers,
+        options: buildCacheOptions(
+          const Duration(days: 1),
+          maxStale: const Duration(days: 7),
+          options: Options(
+            method: method,
+            headers: headers,
+          ),
+          forceRefresh: true,
         ),
       );
 
@@ -92,7 +103,7 @@ class Http extends ScaffoldState {
           );
         case DioErrorType.response:
           return Response(
-            data: Map.from({'error': -2})..addAll(e.response!.data),
+            data: Map.from({'error': -2})..addAll(e.response!.data as Map),
             requestOptions: e.requestOptions,
           );
         case DioErrorType.cancel:
@@ -122,7 +133,7 @@ class Http extends ScaffoldState {
     if (dio == null) {
       /// 全局属性：请求前缀、连接超时时间、响应超时时间
       BaseOptions options = BaseOptions(
-        baseUrl: '${Config.apiHost["url"].url}/',
+        baseUrl: '${Config.apiHost["url"]!.url}/',
         connectTimeout: CONNECT_TIMEOUT,
         receiveTimeout: RECEIVE_TIMEOUT,
       );

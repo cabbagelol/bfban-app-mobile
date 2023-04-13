@@ -148,18 +148,18 @@
         "superHairVersionTip": "No corresponding version found. Your current version may be the over-issued version"
       },
       "language": {
-        "title": "language"
+        "title": "Language"
       },
       "theme": {
         "title": "Themes",
         "describe": "Set the appearance of the program"
       },
       "cleanManagement": {
-        "title": "clean up",
+        "title": "Clean up",
         "describe": "Clean up the program to save files persistently, and operate with caution"
       },
       "appInfo": {
-        "title": "application program",
+        "title": "Application program",
         "describe": "Open Program App Info"
       },
       "notice": {

@@ -27,7 +27,7 @@ class Config {
   );
 
   /// 基础请求
-  static Map get apiHost {
+  static Map<String, BaseUrl> get apiHost {
     Map<String, BaseUrl> d = {"none": BaseUrl()};
     d.addAll(apis);
     return d;

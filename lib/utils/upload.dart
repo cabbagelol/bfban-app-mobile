@@ -1,4 +1,5 @@
 /// 上传
+import 'dart:io' as io;
 import 'dart:io';
 
 import 'package:bfban/utils/file.dart';
@@ -19,7 +20,7 @@ class Upload extends Http {
   }
 
   /// On
-  Future on(File file) async {
+  Future on(io.File file) async {
     if (file == null) return;
 
     if (await file.readAsBytesSync().length <= FILESIZE) {
@@ -33,7 +34,7 @@ class Upload extends Http {
 
   /// 小文件
   /// 2m以内
-  Future uploadDateSmallFile(File file) async {
+  Future uploadDateSmallFile(io.File file) async {
     if (file == null) {
       return {
         "code": -1,
@@ -42,19 +43,19 @@ class Upload extends Http {
     }
 
     dynamic length = file.readAsBytesSync().length;
-    MultipartFile formdata = await MultipartFile.fromFile(
-      file.path,
-      filename: const Uuid().v4(),
-    );
+    dynamic name = const Uuid().v4();
+
+    var data = await MultipartFile.fromFile(file.path);
 
     Response result = await Http.request(
       Config.httpHost["service_upload"],
       method: Http.PUT,
       headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
         "Content-Type": fileManagement.resolutionFileType(file.path),
         "Content-Length": length,
       },
-      data: formdata,
+      data: data,
     );
 
     if (result.data["success"] == 1) {
@@ -67,18 +68,19 @@ class Upload extends Http {
 
     return {
       "code": -1,
-      "message": result.data["code"],
+      "message": "error"
+      // "message": result.data["code"],
     };
   }
 
   /// 大文件
   /// 超出2m以上
-  Future uploadDateLargeFile(File file) async {
+  Future uploadDateLargeFile(io.File file) async {
     String fileName = fileManagement.splitFileUrl(file.path)["fileName"];
     dynamic length = file.readAsBytesSync().length;
 
     Response result = await Http.request(
-      Config.apiHost["service_upload"].url,
+      Config.apiHost["service_upload"]!.url,
       method: Http.POST,
       data: FormData.fromMap({
         "size": length,

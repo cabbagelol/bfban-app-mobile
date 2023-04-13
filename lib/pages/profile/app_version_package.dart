@@ -131,7 +131,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                     islink: true,
                     cont: data.onlineVersion.isNotEmpty ? Text(data.onlineVersion.toString()) : const CircularProgressIndicator(strokeWidth: 2),
                     onTap: () {
-                      _urlUtil.onPeUrl(Config.apiHost["web_site"].url);
+                      _urlUtil.onPeUrl(Config.apiHost["web_site"]!.url);
                     },
                   ),
                 ),

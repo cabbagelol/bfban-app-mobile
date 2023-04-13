@@ -14,5 +14,9 @@ class BaseUrl {
     this.protocol = protocols[protocol!.index];
   }
 
-  get url => "${protocol!.isNotEmpty ? "$protocol://" : ""}${host ?? ""}${pathname ?? ""}";
+  String get _protocol => protocol!.isNotEmpty ? "$protocol://" : "";
+
+  String get baseHost => "$_protocol${host ?? ""}";
+
+  String get url => "$_protocol${host ?? ""}${pathname ?? ""}";
 }

@@ -38,129 +38,130 @@ class CardUtil {
               color: context.style.color!.withOpacity(.5),
               child: Stack(
                 children: [
-                  InkWell(
-                    child: CachedNetworkImage(
-                      imageUrl: "${context.tree.element!.attributes['src']}",
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      fadeInDuration: const Duration(seconds: 0),
-                      fadeOutDuration: const Duration(seconds: 0),
-                      imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
-                        return Card(
-                          color: Colors.transparent,
-                          child: Column(
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10),
-                                height: 25,
-                                child: Row(
-                                  textBaseline: TextBaseline.ideographic,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Text(
-                                        "${context.tree.element!.attributes['src']}",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontSize: 12),
-                                        maxLines: 1,
+                  CachedNetworkImage(
+                    imageUrl: "${context.tree.element!.attributes['src']}",
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    fadeInDuration: const Duration(seconds: 0),
+                    fadeOutDuration: const Duration(seconds: 0),
+                    imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
+                      return
+                        InkWell(
+                          child: Card(
+                            color: Colors.transparent,
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                                  height: 25,
+                                  child: Row(
+                                    textBaseline: TextBaseline.ideographic,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          "${context.tree.element!.attributes['src']}",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(fontSize: 12),
+                                          maxLines: 1,
+                                        ),
                                       ),
-                                    ),
-                                    const Icon(
-                                      Icons.link,
-                                      size: 16,
+                                      const Icon(
+                                        Icons.link,
+                                        size: 16,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Image(image: imageProvider),
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            onImageTap(contextView, context.tree.element!.attributes["src"].toString());
+                          },
+                        );
+                    },
+                    placeholderFadeInDuration: const Duration(seconds: 0),
+                    placeholder: (BuildContext buildContext, String url) {
+                      return Card(
+                        margin: EdgeInsets.zero,
+                        color: context.style.backgroundColor!.withOpacity(.5),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    const Icon(Icons.image, size: 50),
+                                    Positioned(
+                                      top: -2,
+                                      right: -2,
+                                      child: ELuiLoadComponent(
+                                        type: "line",
+                                        color: Theme.of(buildContext).iconTheme.color!,
+                                        size: 17,
+                                        lineWidth: 2,
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              Image(image: imageProvider),
-                            ],
-                          ),
-                        );
-                      },
-                      placeholderFadeInDuration: const Duration(seconds: 0),
-                      placeholder: (BuildContext buildContext, String url) {
-                        return Card(
-                          margin: EdgeInsets.zero,
-                          color: context.style.backgroundColor!.withOpacity(.5),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Stack(
-                                    clipBehavior: Clip.none,
-                                    children: [
-                                      const Icon(Icons.image, size: 50),
-                                      Positioned(
-                                        top: -2,
-                                        right: -2,
-                                        child: ELuiLoadComponent(
-                                          type: "line",
-                                          color: Theme.of(buildContext).iconTheme.color!,
-                                          size: 17,
-                                          lineWidth: 2,
-                                        ),
-                                      ),
-                                    ],
+                                const SizedBox(height: 10),
+                                Opacity(
+                                  opacity: .5,
+                                  child: Text(
+                                    "${context.tree.element!.attributes['src']}",
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  const SizedBox(height: 10),
-                                  Opacity(
-                                    opacity: .5,
-                                    child: Text(
-                                      "${context.tree.element!.attributes['src']}",
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  )
-                                ],
-                              ),
+                                )
+                              ],
                             ),
                           ),
-                        );
-                      },
-                      errorWidget: (BuildContext buildContext, String url, dynamic error) {
-                        return Card(
-                          margin: EdgeInsets.zero,
-                          color: context.style.backgroundColor!.withOpacity(.5),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  Stack(
-                                    clipBehavior: Clip.none,
-                                    children: const [
-                                      Icon(Icons.image, size: 50),
-                                      Positioned(
-                                        top: -5,
-                                        right: -5,
-                                        child: Icon(
-                                          Icons.error,
-                                          color: Colors.red,
-                                        ),
+                        ),
+                      );
+                    },
+                    errorWidget: (BuildContext buildContext, String url, dynamic error) {
+                      return Card(
+                        margin: EdgeInsets.zero,
+                        color: context.style.backgroundColor!.withOpacity(.5),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Stack(
+                                  clipBehavior: Clip.none,
+                                  children: const [
+                                    Icon(Icons.image, size: 50),
+                                    Positioned(
+                                      top: -5,
+                                      right: -5,
+                                      child: Icon(
+                                        Icons.error,
+                                        color: Colors.red,
                                       ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Opacity(
-                                    opacity: .5,
-                                    child: Text(
-                                      "${context.tree.element!.attributes['src']}",
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Opacity(
+                                  opacity: .5,
+                                  child: Text(
+                                    "${context.tree.element!.attributes['src']}",
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
-                    onTap: () {
-                      onImageTap(contextView, context.tree.element!.attributes['src'].toString());
+                        ),
+                      );
                     },
                   ),
                   Positioned(

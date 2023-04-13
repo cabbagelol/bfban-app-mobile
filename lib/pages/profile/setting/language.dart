@@ -22,6 +22,8 @@ class _LanguagePageState extends State<LanguagePage> {
 
   List languages = [];
 
+  String currentPageSelectLang = "";
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +37,11 @@ class _LanguagePageState extends State<LanguagePage> {
         });
       });
     }
+
+    setState(() {
+      // 初始页面语言值
+      currentPageSelectLang = langProvider!.currentLang;
+    });
 
     getLanguageList();
   }
@@ -64,16 +71,26 @@ class _LanguagePageState extends State<LanguagePage> {
   }
 
   /// [Event]
+  /// 改变当前页面选择的语言
+  /// 未保存
+  void setCurrentPageSelectLang(String value) {
+    if (value.isEmpty) return;
+    setState(() {
+      currentPageSelectLang = value;
+    });
+  }
+
+  /// [Event]
   /// 变动语言
-  void setLanguage(context, String value) async {
-    if (load && value == langProvider!.currentLang) return;
+  void saveLocalLanguage(BuildContext context) async {
+    if (load && currentPageSelectLang == langProvider!.currentLang) return;
 
     setState(() {
       load = true;
     });
-    await FlutterI18n.refresh(context, Locale(value));
+    await FlutterI18n.refresh(context, Locale(currentPageSelectLang));
     setState(() {
-      langProvider!.currentLang = value;
+      langProvider!.currentLang = currentPageSelectLang;
       load = false;
     });
   }
@@ -93,6 +110,11 @@ class _LanguagePageState extends State<LanguagePage> {
                 color: Theme.of(context).textTheme.displayMedium!.color!,
                 size: 20,
               ),
+            )
+          else if (!load && currentPageSelectLang != langProvider!.currentLang)
+            IconButton(
+              onPressed: () => saveLocalLanguage(context),
+              icon: const Icon(Icons.done),
             ),
         ],
       ),
@@ -102,10 +124,8 @@ class _LanguagePageState extends State<LanguagePage> {
             children: languages.map((lang) {
               return RadioListTile<String>(
                 value: lang["fileName"].toString(),
-                onChanged: (value) {
-                  setLanguage(context, value as String);
-                },
-                groupValue: langProvider!.currentLang,
+                onChanged: (value) => setCurrentPageSelectLang(value as String),
+                groupValue: currentPageSelectLang,
                 title: Text(
                   lang["label"].toString(),
                   style: TextStyle(
