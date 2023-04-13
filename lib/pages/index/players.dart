@@ -49,6 +49,11 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     ),
   );
 
+  Statistics? statisticsStatus = Statistics(
+    load: false,
+    data: StatisticsData(),
+  );
+
   // 玩家状态
   List? cheaterStatus = Config.cheaterStatus["child"] ?? [];
 
@@ -160,7 +165,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   Future _onRefresh() async {
     playersStatus!.parame!.resetPage();
 
-    await getPlayerList();
+    getPlayerList();
   }
 
   /// [Event]
@@ -178,9 +183,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       if (playersStatus!.parame!.skip! <= 0) _refreshIndicatorKey.currentState!.show();
     });
 
-    int _value = cheaterStatus![index]["value"];
+    int value = cheaterStatus![index]["value"];
 
-    playersStatus!.parame!.status = _value;
+    playersStatus!.parame!.status = value;
 
     onResetPlayerParame(skip: true, page: true);
 
@@ -192,6 +197,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// [Response]
   /// 取得数量统计
   Future getPlayerStatistics() async {
+    if (statisticsStatus!.load) return;
+
+    // 生成查询条件
     Map data = {"data": []};
 
     Config.game["child"].forEach((i) {
@@ -202,10 +210,14 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       // 跳过状态 -1 全部
       if (cheaterStatus![index]["value"] >= 0) {
         data["data"].add({
-          "game": playersStatus!.parame!.game == 'all' ? '*' : cheaterStatus![index]["value"],
+          "game": playersStatus!.parame!.game == "all" ? "*" : playersStatus!.parame!.game,
           "status": cheaterStatus![index]["value"],
         });
       }
+    });
+
+    setState(() {
+      statisticsStatus!.load = true;
     });
 
     Response result = await Http.request(
@@ -216,23 +228,22 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     if (result.data["success"] == 1) {
       final List d = result.data["data"];
+      List tabStatusData = cheaterStatus!;
 
       cheaterStatus!.asMap().keys.forEach((itemIndex) {
         if (itemIndex >= 0) {
           for (var i in d) {
             // 状态统计
-            if (i["game"] == "*") {
-              if (cheaterStatus![itemIndex]["value"] == i["status"]) {
-                setState(() {
-                  // +1 是跳过 [全部] 标题不计入统计
-                  cheaterStatus![itemIndex]["num"] = i["count"];
-                });
+            if (i["status"] >= 0) {
+              if (tabStatusData[itemIndex]["value"] == i["status"]) {
+                // +1 是跳过 [全部] 标题不计入统计
+                tabStatusData[itemIndex]["num"] = i["count"];
               }
             }
 
             // 游戏类型统计
             // 游戏类i["status"]是-1
-            if (i["game"] != "*") {
+            if (i["game"] != "*" && i["status"] == -1) {
               Config.game["child"].asMap().keys.forEach((index) {
                 var gameNameItem = Config.game["child"][index];
 
@@ -245,9 +256,18 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         }
       });
 
-      // 重新渲染筛选控件内部数据
+      // 渲染[TAB]不同状态统计
+      setState(() {
+        cheaterStatus = tabStatusData;
+      });
+
+      // 渲染[筛选]控件内部数据
       _gameNameFilterKey.currentState!.upData();
     }
+
+    setState(() {
+      statisticsStatus!.load = false;
+    });
 
     return true;
   }
@@ -273,7 +293,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               child: Stack(
                 clipBehavior: Clip.none,
                 children: <Widget>[
-                  I18nText("basic.status.${i["value"] == -1 ? 'all' : i["value"]}"),
+                  I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}"),
                   Positioned(
                     top: -10,
                     right: -12,
@@ -413,7 +433,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
           playersStatus!.parame!.setData(filterData);
 
-          await _onRefresh();
+          _onRefresh();
+          getPlayerStatistics();
         },
         onReset: () => onResetPlayerParame(),
         // 内容
@@ -436,7 +457,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                               FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
                               style: TextStyle(
                                 fontSize: 12,
-                                color: Theme.of(context).textTheme.subtitle2?.color,
+                                color: Theme.of(context).textTheme.titleSmall?.color,
                               ),
                             ),
                           ),

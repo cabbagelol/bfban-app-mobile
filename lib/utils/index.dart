@@ -13,5 +13,6 @@ export 'upload.dart';
 export 'camera.dart';
 export 'provider.dart';
 export 'util.dart';
+export 'regular.dart';
 
 export '../provider/appInfo_provider.dart';

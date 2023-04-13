@@ -75,7 +75,7 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                     color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
                       color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
                       image: i["app_assets_bk_file"] == null
@@ -104,8 +104,8 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                           const SizedBox(width: 10),
                           Visibility(
                             visible: i["num"] != null,
-                            child: RawChip(
-                              elevation: 0,
+                            child: Chip(
+                              visualDensity: const VisualDensity(horizontal: 3, vertical: -4),
                               labelStyle: const TextStyle(fontSize: 12),
                               label: Text(i["num"].toString()),
                             ),

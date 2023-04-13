@@ -75,6 +75,34 @@ class LightnesTheme {
         space: .4,
         indent: .5,
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
+          backgroundColor: MaterialStateProperty.all(const Color(0xff1c3762)),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          visualDensity: VisualDensity.comfortable,
+          shadowColor: MaterialStateProperty.all(Colors.black),
+          overlayColor: MaterialStateProperty.all(const Color(0xff09121e)),
+          mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+          enableFeedback: true,
+          splashFactory: NoSplash.splashFactory,
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
+        ),
+      ),
+      dataTableTheme: const DataTableThemeData(
+        horizontalMargin: 10,
+        columnSpacing: 20,
+        headingRowHeight: 40,
+        checkboxHorizontalMargin: 40,
+      ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0.2),

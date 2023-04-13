@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -56,7 +55,10 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
                   ),
                   child: Text(
                     FlutterI18n.translate(context, "cheatMethods.$i.title"),
-                    style: const TextStyle(fontSize: 13),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Theme.of(context).hintColor,
+                    ),
                   ),
                 ),
               );

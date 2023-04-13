@@ -31,7 +31,6 @@ class HtmlWidget extends StatefulWidget {
 }
 
 class _HtmlWidgetState extends State<HtmlWidget> {
-
   Future? futureBuilder;
 
   List htmlStyle = [];
@@ -121,9 +120,11 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                           style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
                         ),
                       ),
-                      HtmlCore(
-                        data: widget.content,
-                        style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
+                      SelectionArea(
+                        child: HtmlCore(
+                          data: widget.content,
+                          style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
+                        ),
                       ),
                     ][int.parse(dropdownRenderingSelectedValue)],
                     const Divider(height: 1),

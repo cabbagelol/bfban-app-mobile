@@ -48,11 +48,12 @@ class _UserCenterPageState extends State<UserCenterPage> {
       EluiMessageComponent.success(context)(
         child: Text(result.data!["message"]),
       );
-    } else {
-      EluiMessageComponent.error(context)(
-        child: Text(result.data!["code"]),
-      );
+      return;
     }
+
+    EluiMessageComponent.error(context)(
+      child: Text(result.data!["code"]),
+    );
   }
 
   /// [Event]
@@ -141,78 +142,68 @@ class _UserCenterPageState extends State<UserCenterPage> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 15),
-                          AnimatedOpacity(
-                            opacity: data.isLogin ? 1 : .3,
-                            duration: const Duration(seconds: 1),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  child: Column(
+                          if (data.isLogin) const SizedBox(height: 15),
+                          if (data.isLogin)
+                            AnimatedOpacity(
+                              opacity: data.isLogin ? 1 : .3,
+                              duration: const Duration(seconds: 1),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  GestureDetector(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          data.isLogin ? ProviderUtil().ofMessage(context).total.toString() : "-",
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          FlutterI18n.translate(context, "profile.chat.title"),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    onTap: () => _opEnMessage(),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                                    height: 30,
+                                    width: 1,
+                                    color: Theme.of(context).dividerTheme.color,
+                                  ),
+                                  Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Text(
-                                        data.isLogin ? ProviderUtil().ofMessage(context).total.toString() : "-",
-                                        style: const TextStyle(
-                                          fontSize: 16,
+                                      Container(
+                                        constraints: const BoxConstraints(
+                                          maxWidth: 200,
                                         ),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
+                                        child: Wrap(
+                                          spacing: 5,
+                                          children: [PrivilegesTagWidget(data: data.userinfo["privilege"])],
+                                        ),
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        FlutterI18n.translate(context, "profile.chat.title"),
+                                        FlutterI18n.translate(context, "account.role"),
                                         style: const TextStyle(
                                           fontSize: 12,
                                         ),
                                       )
                                     ],
                                   ),
-                                  onTap: () => _opEnMessage(),
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                                  height: 30,
-                                  width: 1,
-                                  color: Theme.of(context).dividerTheme.color,
-                                ),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Container(
-                                      constraints: const BoxConstraints(
-                                        maxWidth: 200,
-                                      ),
-                                      child: Wrap(
-                                        spacing: 5,
-                                        children: !data.isLogin
-                                            ? [
-                                                EluiTagComponent(
-                                                  color: EluiTagType.none,
-                                                  size: EluiTagSize.no2,
-                                                  theme: EluiTagTheme(
-                                                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
-                                                  ),
-                                                  value: "-",
-                                                )
-                                              ]
-                                            : [PrivilegesTagWidget(data: data.userinfo["privilege"])],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      FlutterI18n.translate(context, "account.role"),
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -282,21 +273,27 @@ class _UserCenterPageState extends State<UserCenterPage> {
               offstage: !data.isLogin,
               child: Padding(
                 padding: const EdgeInsets.only(
-                  top: 30,
+                  top: 20,
                   left: 20,
                   right: 20,
-                  bottom: 20,
+                  bottom: 30,
                 ),
-                child: EluiButtonComponent(
-                  radius: true,
-                  size: ButtonSize.mini,
-                  type: ButtonType.error,
-                  onTap: () => removeUserInfo(data.getToken.toString()),
-                  child: Text(
-                    FlutterI18n.translate(context, "header.signout"),
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
+                child: ElevatedButton(
+                  style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
+                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+                        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                      ),
+                  onPressed: () => removeUserInfo(data.getToken.toString()),
+                  child: Wrap(
+                    children: [
+                      const Icon(Icons.output),
+                      Text(
+                        FlutterI18n.translate(context, "header.signout"),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -141,10 +141,7 @@ class _ReportPageState extends State<ReportPage> {
             break;
         }
       });
-      EluiMessageComponent.error(context)(
-        child: Text(result.data.toString()),
-        duration: 20000
-      );
+      EluiMessageComponent.error(context)(child: Text(result.data.toString()), duration: 20000);
     });
   }
 
@@ -452,7 +449,7 @@ class _ReportPageState extends State<ReportPage> {
           EluiCellComponent(
             title: "${FlutterI18n.translate(context, "detail.info.videoLink")} (${videoWidgetList.length}/${videoInfo["maxCount"]})",
             cont: videoWidgetList.length < videoInfo["maxCount"]
-                ? TextButton(
+                ? OutlinedButton(
                     onPressed: _addVideoLink(),
                     child: const Icon(Icons.add),
                   )

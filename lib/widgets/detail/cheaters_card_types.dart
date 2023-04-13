@@ -29,9 +29,7 @@ class CardUtil {
     CustomRenderMatcher imagesMatcher() => (context) => context.tree.element?.localName == 'img';
 
     return {
-      linkMatcher(): CustomRender.widget(
-        widget: (RenderContext context, buildChildren) => HtmlLink(url: context.tree.element!.attributes["href"])
-      ),
+      linkMatcher(): CustomRender.widget(widget: (RenderContext context, buildChildren) => HtmlLink(url: context.tree.element!.attributes["href"])),
       imagesMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) {
           return ClipRRect(
@@ -359,8 +357,10 @@ class TimeLineCard extends StatelessWidget {
                     // 卡片标题
                     Container(
                       margin: const EdgeInsets.only(right: 10, top: 20, bottom: 10),
-                      child: Wrap(
-                        children: header!,
+                      child: SelectionArea(
+                        child: Wrap(
+                          children: header!,
+                        ),
                       ),
                     ),
 

@@ -33,6 +33,7 @@ class HtmlLink extends StatelessWidget {
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.dotted,
               ),
+
             ),
           ],
         ),

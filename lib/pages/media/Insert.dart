@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:animations/animations.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -23,6 +24,10 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
 
   int insertListPageIndex = 0;
 
+  bool insertCheckStatus = false;
+
+  bool insertCheckLoad = false;
+
   @override
   void initState() {
     super.initState();
@@ -30,10 +35,10 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
 
   /// [Event]
   /// 设置值
-  Future _setUrl(val) async {
-    if (val == null) return;
+  Future _setUrl(String value) async {
+    if (value.isEmpty) return;
     setState(() {
-      imageUrl = val;
+      imageUrl = value;
     });
   }
 
@@ -47,7 +52,23 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
 
     // 完成离开
     if (insertListPageIndex == insertListPage.length - 1 && imageUrl.isNotEmpty) {
-      Navigator.pop(context, imageUrl);
+
+      setState(() {
+        insertCheckLoad = true;
+      });
+
+      // 检查图片是否可访问
+      if (await Regular().authImage(imageUrl)) {
+        setState(() {
+          insertCheckStatus = true;
+        });
+      }
+
+      setState(() {
+        insertCheckLoad = false;
+      });
+
+      if (insertCheckStatus) Navigator.pop(context, imageUrl);
       return;
     }
 
@@ -83,7 +104,7 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
           await _setUrl(imageUrl);
         },
       ),
-      // InsertCrop(),
+      // InsertCrop(url: imageUrl, insertTypes: insertListPageIndex),
       InsertPreview(url: imageUrl),
     ];
 
@@ -164,7 +185,7 @@ class _InsertSelectState extends State<InsertSelect> {
 
     var value = await Upload().on(File(image!.path));
 
-   if (widget.onNext != null) widget.onNext!(value);
+    if (widget.onNext != null) widget.onNext!(value);
   }
 
   /// [Event]
@@ -281,13 +302,31 @@ class _InsertSelectState extends State<InsertSelect> {
   }
 }
 
+enum MediaInsertIndexType {
+  None,
+  Start,
+  Crop,
+  Preview,
+}
+
+abstract class MediaBaseInsertPage extends StatefulWidget {
+  MediaInsertIndexType mediaInsertIndexType;
+
+  MediaBaseInsertPage({
+    Key? key,
+    this.mediaInsertIndexType = MediaInsertIndexType.None,
+  }) : super(key: key);
+}
+
 /// 裁剪
-class InsertCrop extends StatefulWidget {
-  dynamic file;
+class InsertCrop extends MediaBaseInsertPage {
+  String? url;
+  int? insertTypes;
 
   InsertCrop({
     Key? key,
-    this.file,
+    this.url,
+    this.insertTypes = -1,
   }) : super(key: key);
 
   @override
@@ -295,28 +334,52 @@ class InsertCrop extends StatefulWidget {
 }
 
 class _InsertCropState extends State<InsertCrop> {
+  final GlobalKey<ExtendedImageEditorState> editorKey = GlobalKey<ExtendedImageEditorState>();
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text("333"),
-        Expanded(
-          flex: 1,
-          child: Image.network("http://baidu.com"),
-        ),
-        SizedBox(
-          height: 100,
-          child: EluiCheckboxComponent(
-            child: Text(widget.file.toString()),
-          ),
-        )
-      ],
+    Widget ne = ExtendedImage.network(widget.url.toString(), fit: BoxFit.contain, mode: ExtendedImageMode.editor, extendedImageEditorKey: editorKey, initEditorConfigHandler: (ExtendedImageState? state) {
+      return EditorConfig(
+          maxScale: 4.0,
+          cropRectPadding: const EdgeInsets.all(20.0),
+          hitTestSize: 20.0,
+          initCropRectType: InitCropRectType.imageRect,
+          cropAspectRatio: CropAspectRatios.ratio4_3,
+          editActionDetailsIsChanged: (EditActionDetails? details) {
+            //print(details?.totalScale);
+          });
+    });
+    Widget lo = ExtendedImage.asset(
+      'assets/image.jpg',
+      fit: BoxFit.contain,
+      mode: ExtendedImageMode.editor,
+      enableLoadState: true,
+      extendedImageEditorKey: editorKey,
+      initEditorConfigHandler: (ExtendedImageState? state) {
+        return EditorConfig(
+          maxScale: 8.0,
+          cropRectPadding: const EdgeInsets.all(20.0),
+          hitTestSize: 20.0,
+          // cropLayerPainter: _cropLayerPainter!,
+          initCropRectType: InitCropRectType.imageRect,
+          // cropAspectRatio: _aspectRatio!.value,
+        );
+      },
+      cacheRawData: true,
     );
+    Map editWidget = {
+      -1: Text("Not image"),
+      0: lo,
+      1: ne,
+      2: ne,
+    };
+
+    return editWidget[widget.insertTypes];
   }
 }
 
-/// 预览
-class InsertPreview extends StatelessWidget {
+/// 预览InsertPreview
+class InsertPreview extends MediaBaseInsertPage {
   String? url;
 
   InsertPreview({
@@ -324,6 +387,11 @@ class InsertPreview extends StatelessWidget {
     this.url = "",
   }) : super(key: key);
 
+  @override
+  State<InsertPreview> createState() => _InsertPreviewState();
+}
+
+class _InsertPreviewState extends State<InsertPreview> {
   @override
   Widget build(BuildContext context) {
     return ClipRect(
@@ -334,7 +402,7 @@ class InsertPreview extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         },
-        imageProvider: NetworkImage(url!),
+        imageProvider: NetworkImage(widget.url!),
         backgroundDecoration: BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
         enableRotation: true,
       ),

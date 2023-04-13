@@ -14,6 +14,8 @@ dependencies:
   flutter_cupertino_localizations: ^1.0.1
   flutter_math_fork: ^0.6.1
   cupertino_icons: ^1.0.2
+
+  # 时间选择器 https://pub.dev/packages/syncfusion_flutter_datepicker
   syncfusion_flutter_datepicker: any
 
   # cached_network_image https://pub.dev/packages/cached_network_image
@@ -58,6 +60,9 @@ dependencies:
   # 图片查看 https://pub.flutter-io.cn/packages/photo_view
   photo_view: ^0.14.0
 
+  # 图片扩展(裁剪) https://pub.flutter-io.cn/packages/extended_image
+  extended_image: ^4.0.0
+
   # 权限 https://pub.flutter-io.cn/packages/permission_handler
   permission_handler: ^10.0.2
 
@@ -97,6 +102,7 @@ dependencies:
   # 视频 https://pub.flutter-io.cn/packages/video_player
   video_player: ^2.1.1
 
+  # 动画
   animations: ^2.0.0
 
   # 极光 https://pub.flutter-io.cn/packages/jpush_flutter
@@ -104,7 +110,7 @@ dependencies:
   #  jpush_flutter: ^2.3.8
 
   # 广告
-  #  google_mobile_ads: ^1.0.1
+  # google_mobile_ads: ^1.0.1
 
 dev_dependencies:
   flutter_test:

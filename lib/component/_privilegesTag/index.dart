@@ -39,16 +39,27 @@ class _PrivilegesTagWidgetState extends State<PrivilegesTagWidget> {
     return Wrap(
       runSpacing: 5,
       spacing: 5,
-      children: privileges!.map<Widget>((i) {
-        return EluiTagComponent(
-          color: EluiTagType.none,
-          size: EluiTagSize.no2,
-          theme: EluiTagTheme(
-            backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.2),
-          ),
-          value: FlutterI18n.translate(context, "basic.privilege.${i["value"]}"),
-        );
-      }).toList(),
+      children: privileges!.isNotEmpty
+          ? privileges!.map<Widget>((i) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 7,
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                child: Text(
+                  FlutterI18n.translate(context, "basic.privilege.${i["value"]}"),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Theme.of(context).hintColor,
+                  ),
+                ),
+              );
+            }).toList()
+          : [],
     );
   }
 }

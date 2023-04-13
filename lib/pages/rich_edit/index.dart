@@ -89,6 +89,7 @@ class _richEditPageState extends State<RichEditPage> {
       bottomSheet: ToolBar(
         controller: controller,
         toolBarConfig: toolBarList,
+        iconColor: Theme.of(context).primaryColor.withOpacity(.5),
         activeIconColor: Theme.of(context).primaryColor,
         customButtons: [
           InkWell(
@@ -107,24 +108,22 @@ class _richEditPageState extends State<RichEditPage> {
             return const NotFoundPage();
           }
 
-          return ListView(
-            controller: _scrollController,
-            children: [
-              SingleChildScrollView(
-                child: QuillHtmlEditor(
-                  text: data,
-                  hintText: "",
-                  hintTextStyle: const TextStyle(color: Colors.black54, fontSize: 16),
-                  textStyle: const TextStyle(color: Colors.black, fontSize: 16),
-                  controller: controller,
-                  isEnabled: true,
-                  minHeight: 300,
-                  hintTextAlign: TextAlign.start,
-                  padding: const EdgeInsets.all(5),
-                  hintTextPadding: const EdgeInsets.all(5),
-                ),
-              )
-            ],
+          return Container(
+            margin: const EdgeInsets.all(10),
+            child: SingleChildScrollView(
+              child: QuillHtmlEditor(
+                text: data,
+                hintText: "",
+                hintTextStyle: const TextStyle(color: Colors.black54, fontSize: 16),
+                textStyle: const TextStyle(color: Colors.black, fontSize: 16),
+                controller: controller,
+                isEnabled: true,
+                minHeight: 300,
+                hintTextAlign: TextAlign.start,
+                padding: EdgeInsets.zero,
+                hintTextPadding: EdgeInsets.zero,
+              ),
+            ),
           );
         },
       ), // bottomNavigationBar: ,

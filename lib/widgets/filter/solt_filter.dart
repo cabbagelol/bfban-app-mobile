@@ -58,7 +58,7 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
                 color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 15),
+                padding: const EdgeInsets.symmetric(vertical: 10),
                 color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
                 child: Center(
                   child: Center(

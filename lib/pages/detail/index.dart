@@ -648,130 +648,132 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                 ),
 
                                 // Player Attr
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                  child: Wrap(
-                                    spacing: 40,
-                                    runSpacing: 25,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.firstReportTime"),
-                                              style: const TextStyle(fontSize: 20),
+                                SelectionArea(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                    child: Wrap(
+                                      spacing: 40,
+                                      runSpacing: 25,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "detail.info.firstReportTime"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          TimeWidget(
-                                            data: snapshot.data!["createTime"],
-                                            style: const TextStyle(fontSize: 18),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.recentUpdateTime"),
-                                              style: const TextStyle(fontSize: 20),
+                                            const SizedBox(height: 5),
+                                            TimeWidget(
+                                              data: snapshot.data!["createTime"],
+                                              style: const TextStyle(fontSize: 18),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          TimeWidget(
-                                            data: snapshot.data!["updateTime"],
-                                            style: const TextStyle(fontSize: 18),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.viewTimes"),
-                                              style: const TextStyle(fontSize: 20),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "detail.info.recentUpdateTime"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "${snapshot.data!["viewNum"]}",
-                                            style: const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "basic.button.reply"),
-                                              style: const TextStyle(fontSize: 20),
+                                            const SizedBox(height: 5),
+                                            TimeWidget(
+                                              data: snapshot.data!["updateTime"],
+                                              style: const TextStyle(fontSize: 18),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "${snapshot.data["commentsNum"]}",
-                                            style: const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "report.labels.game"),
-                                              style: const TextStyle(fontSize: 20),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "detail.info.viewTimes"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          GamesTagWidget(
-                                            data: snapshot.data["games"],
-                                            size: GamesTagSize.no3,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "signup.form.originId"),
-                                              style: const TextStyle(fontSize: 20),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "${snapshot.data!["viewNum"]}",
+                                              style: const TextStyle(fontSize: 18),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          const Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              "ID",
-                                              style: TextStyle(fontSize: 20),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "basic.button.reply"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text("${snapshot.data?["id"]}", style: const TextStyle(fontSize: 18))
-                                        ],
-                                      ),
-                                    ],
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "${snapshot.data["commentsNum"]}",
+                                              style: const TextStyle(fontSize: 18),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "report.labels.game"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            GamesTagWidget(
+                                              data: snapshot.data["games"],
+                                              size: GamesTagSize.no3,
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "signup.form.originId"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            const Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                "ID",
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text("${snapshot.data?["id"]}", style: const TextStyle(fontSize: 18))
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
 
