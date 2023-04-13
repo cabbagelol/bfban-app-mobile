@@ -9,7 +9,7 @@ class PinkTheme {
     themeData: ThemeData(
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all(Colors.pink.shade400),
+          foregroundColor: MaterialStateProperty.all(Colors.pink.shade300),
           textStyle: MaterialStateProperty.all(
             TextStyle(color: Colors.pink.shade300),
           ),
@@ -35,22 +35,22 @@ class PinkTheme {
         bodySmall: TextStyle(color: Color(0xFF2C1A2C)),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(Colors.pink.withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(Colors.pink),
+        trackColor: MaterialStateProperty.all(Colors.pink.shade300.withOpacity(.2)),
+        thumbColor: MaterialStateProperty.all(Colors.pink.shade300),
       ),
-      textSelectionTheme: const TextSelectionThemeData(
-        selectionColor: Colors.pink,
-        selectionHandleColor: Colors.pink,
-        cursorColor: Colors.pink,
+      textSelectionTheme: TextSelectionThemeData(
+        selectionColor: Colors.pink.shade300.withOpacity(.1),
+        selectionHandleColor: Colors.pink.shade300.withOpacity(.1),
+        cursorColor: Colors.pink.shade300,
       ),
       unselectedWidgetColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xFFFFFAFB),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
-      dialogTheme: const DialogTheme(
+      dialogTheme: DialogTheme(
         elevation: 10,
-        backgroundColor: Colors.pink,
-        titleTextStyle: TextStyle(
+        backgroundColor: Colors.pink.shade300,
+        titleTextStyle: const TextStyle(
           color: Colors.white,
         ),
       ),
@@ -58,8 +58,8 @@ class PinkTheme {
       toggleButtonsTheme: ToggleButtonsThemeData(
         color: Colors.pink.shade50,
         fillColor: Colors.pink.shade50,
-        textStyle: const TextStyle(
-          color: Colors.pink,
+        textStyle: TextStyle(
+          color: Colors.pink.shade300,
         ),
         focusColor: Colors.white60,
         selectedColor: Colors.white,
@@ -112,12 +112,12 @@ class PinkTheme {
         ),
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      bannerTheme: const MaterialBannerThemeData(
-        backgroundColor: Colors.pink,
+      bannerTheme: MaterialBannerThemeData(
+        backgroundColor: Colors.pink.shade300,
       ),
       buttonTheme: ButtonThemeData(
         buttonColor: Colors.pink.shade400,
-        disabledColor: Colors.pink.withOpacity(.2),
+        disabledColor: Colors.pink.shade300.withOpacity(.2),
       ),
       buttonBarTheme: const ButtonBarThemeData(
         layoutBehavior: ButtonBarLayoutBehavior.constrained,
@@ -126,17 +126,17 @@ class PinkTheme {
         backgroundColor: Colors.pink.shade50,
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFFFFDFD),
         landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-        selectedItemColor: Colors.pink,
-        selectedLabelStyle: const TextStyle(
-          color: Colors.pink,
+        selectedItemColor: Colors.pink.shade300,
+        selectedLabelStyle: TextStyle(
+          color: Colors.pink.shade300,
           fontSize: 14,
         ),
         elevation: 0,
-        unselectedItemColor: Colors.pink.shade200,
+        unselectedItemColor: Colors.pink.shade100,
         unselectedLabelStyle: TextStyle(
-          color: Colors.pink.shade200,
+          color: Colors.pink.shade100,
           fontSize: 14,
         ),
       ),
@@ -164,8 +164,8 @@ class PinkTheme {
         backgroundColor: Colors.pink.shade400,
         focusColor: Colors.white,
       ),
-      iconTheme: const IconThemeData(
-        color: Colors.pink,
+      iconTheme: IconThemeData(
+        color: Colors.pink.shade300,
       ),
       cardTheme: CardTheme(
         color: Colors.white,
@@ -187,24 +187,24 @@ class PinkTheme {
       ),
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(Colors.white),
-        fillColor: MaterialStateProperty.all(Colors.pink),
+        fillColor: MaterialStateProperty.all(Colors.pink.shade300),
         side: const BorderSide(
           color: Colors.black12,
           width: 3,
         ),
       ),
-      chipTheme: const ChipThemeData(
+      chipTheme: ChipThemeData(
         backgroundColor: Colors.black12,
         secondarySelectedColor: Colors.white,
         checkmarkColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Colors.pink,
+          color: Colors.pink.shade300,
         ),
         secondaryLabelStyle: TextStyle(
-          color: Colors.pink,
+          color: Colors.pink.shade300,
         ),
         labelStyle: TextStyle(
-          color: Colors.pink,
+          color: Colors.pink.shade300,
         ),
       ),
       colorScheme: ColorScheme(
@@ -223,7 +223,7 @@ class PinkTheme {
         // background: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
-        color: Colors.white,
+        color: Color(0xFFFFFDFD),
         elevation: 0,
       ),
     ),

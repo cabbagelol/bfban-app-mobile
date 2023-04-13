@@ -30,10 +30,10 @@ class LightnesTheme {
         trackColor: MaterialStateProperty.all(const Color(0xff364e80).withOpacity(.2)),
         thumbColor: MaterialStateProperty.all(const Color(0xff364e80)),
       ),
-      textSelectionTheme: const TextSelectionThemeData(
-        selectionColor: Color(0x7a364e80),
-        selectionHandleColor: Color(0xff364e80),
-        cursorColor: Colors.black,
+      textSelectionTheme:  TextSelectionThemeData(
+        selectionColor: const Color(0x7a364e80).withOpacity(.3),
+        selectionHandleColor: const Color(0xff364e80).withOpacity(.3),
+        cursorColor: const Color(0x7a364e80),
       ),
       unselectedWidgetColor: Colors.black,
       scaffoldBackgroundColor: const Color(0xfff7f9fd),
@@ -192,7 +192,7 @@ class LightnesTheme {
       ),
       cardTheme: CardTheme(
         color: Colors.white,
-        shadowColor: Color(0x39131372),
+        shadowColor: const Color(0x39131372),
         margin: EdgeInsets.zero,
         elevation: 0,
         shape: RoundedRectangleBorder(

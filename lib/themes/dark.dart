@@ -58,10 +58,10 @@ class DarkTheme {
           surfaceTintColor: MaterialStateProperty.all(Colors.white),
         ),
       ),
-      textSelectionTheme: const TextSelectionThemeData(
-        selectionColor: Color(0x7a364e80),
-        selectionHandleColor: Color(0xff364e80),
-        cursorColor: Colors.white,
+      textSelectionTheme: TextSelectionThemeData(
+        selectionColor: const Color(0x7a364e80).withOpacity(.3),
+        selectionHandleColor: const Color(0xff364e80).withOpacity(.3),
+        cursorColor: const Color(0xff364e80),
       ),
       unselectedWidgetColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xff111b2b),

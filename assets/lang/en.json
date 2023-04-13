@@ -20,7 +20,6 @@
         "beforeYesterday": "The day before yesterday",
         "dayAgo": "{s} days ago"
       },
-      "support": "support",
       "web_site": "Website address",
       "setting": "Setup",
       "app_exit": "Click again to exit the program"
@@ -133,7 +132,7 @@
           "describe": "BAN website"
         },
         "resources": {
-          "title": "support",
+          "title": "Support",
           "describe": "the program data is provide by a different service provider"
         }
       },

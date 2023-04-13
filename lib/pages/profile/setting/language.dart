@@ -115,6 +115,17 @@ class _LanguagePageState extends State<LanguagePage> {
             IconButton(
               onPressed: () => saveLocalLanguage(context),
               icon: const Icon(Icons.done),
+            )
+          else if (!load && currentPageSelectLang == langProvider!.currentLang)
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                const Icon(Icons.warning, size: 15, color: Colors.yellow),
+                IconButton(
+                  onPressed: () => saveLocalLanguage(context),
+                  icon: const Icon(Icons.download),
+                ),
+              ],
             ),
         ],
       ),
