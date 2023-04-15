@@ -43,9 +43,6 @@ class Upload extends Http {
     }
 
     dynamic length = file.readAsBytesSync().length;
-    dynamic name = const Uuid().v4();
-
-    var data = await MultipartFile.fromFile(file.path);
 
     Response result = await Http.request(
       Config.httpHost["service_upload"],
@@ -55,7 +52,7 @@ class Upload extends Http {
         "Content-Type": fileManagement.resolutionFileType(file.path),
         "Content-Length": length,
       },
-      data: data,
+      data: await file.readAsBytesSync(),
     );
 
     if (result.data["success"] == 1) {
@@ -68,8 +65,8 @@ class Upload extends Http {
 
     return {
       "code": -1,
-      "message": "error"
-      // "message": result.data["code"],
+      // "message": "error"
+      "message": result.data["code"],
     };
   }
 

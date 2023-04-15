@@ -65,9 +65,8 @@ class FilterState extends State<Filter> {
 
   @override
   void initState() {
-    super.initState();
-
     _updateWidget();
+    super.initState();
   }
 
   @override
@@ -77,16 +76,21 @@ class FilterState extends State<Filter> {
       _selectIndex = widget.initialIndex;
       _onUpdateItemState(true, index: _selectIndex);
     }
-
     selectHeight = _containerKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
-
     super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  didChangeDependencies () {
+    _updateWidget();
+    super.didChangeDependencies();
   }
 
   /// [Event]
   /// 更新试图
-  _updateWidget () {
+  _updateWidget() {
     late int _index = 0;
+    filterItem.clear();
 
     // 生成key，以便通过key操作
     for (var i in widget.slot!) {
@@ -123,18 +127,19 @@ class FilterState extends State<Filter> {
   /// [Event]
   /// item.title 内部状态更新
   _onUpdateItemState(_is, {index}) {
-    filterItemKey.forEach((key) {
+    for (var key in filterItemKey) {
       // 更新内部状态
+      if (key.currentState == null) continue;
       key.currentState!.widget.stateSetter_!(() {
         // 没有对应index（对象）, 则都收起状态
         if (index == null) {
           key.currentState!.showPanel = false;
-          return;
+          // continue;
         }
 
         key.currentState!.showPanel = !_is ? _is : index == key.currentState!.widget.index;
       });
-    });
+    }
   }
 
   /// [Event]

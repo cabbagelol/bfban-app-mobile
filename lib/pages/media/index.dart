@@ -92,7 +92,7 @@ class _mediaPageState extends State<MediaPage> {
 
   /// [Result]
   /// 查询媒体文件详情
-  Future _getNetworkMediaDetail(dynamic i) async {
+  Future _getNetworkMediaDetail(MediaFileNetworkData i) async {
     if (mediaStatus.load!) return;
 
     setState(() {
@@ -100,12 +100,12 @@ class _mediaPageState extends State<MediaPage> {
       i.fileDetailLoad = true;
     });
 
-    Response result = await Upload().serviceFile(i.filename);
+    Response result = await Upload().serviceFile(i.filename!);
 
     if (result.data["success"] == 1) {
       final d = result.data;
       setState(() {
-        openFileDetail[i.filename] = d["data"];
+        openFileDetail.addAll({d["data"]["filename"]: d["data"]});
         i.fileDetailLoad = false;
         mediaStatus.load = false;
       });
@@ -176,7 +176,7 @@ class _mediaPageState extends State<MediaPage> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
 
-    await File(image!.path).copy("${fileDir.path}/${image.name}");
+    if (image != null) await File(image!.path).copy("${fileDir.path}/${image.name}");
   }
 
   /// [Event]
@@ -203,7 +203,7 @@ class _mediaPageState extends State<MediaPage> {
       await _getNetworkMediaDetail(i);
     }
 
-    if (openFileDetail[i.filename]["downloadURL"]) {
+    if (openFileDetail[i.filename]["downloadURL"] != null) {
       Navigator.pop(context, openFileDetail[i.filename]["downloadURL"]);
     } else {
       EluiMessageComponent.warning(context)(child: const Text("No file information was obtained"));
@@ -260,14 +260,15 @@ class _mediaPageState extends State<MediaPage> {
           await _getNetworkMediaDetail(i);
         }
 
-        if (openFileDetail[i.filename]["downloadURL"] == null) return;
+        if (openFileDetail.isEmpty) return;
+        if (openFileDetail[i.filename ?? ""]["downloadURL"] == null) return;
 
         Navigator.of(context).push(CupertinoPageRoute(
           builder: (BuildContext context) {
             return PhotoViewSimpleScreen(
               imageUrl: openFileDetail[i.filename]["downloadURL"],
               imageProvider: NetworkImage(openFileDetail[i.filename]["downloadURL"]),
-              heroTag: 'simple',
+              heroTag: "simple",
             );
           },
         ));
@@ -469,7 +470,7 @@ class _mediaPageState extends State<MediaPage> {
                           child: mediaStatus.list.isNotEmpty
                               ? GridView.builder(
                                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
+                                    crossAxisCount: 2,
                                     mainAxisSpacing: 20.0,
                                     crossAxisSpacing: 10.0,
                                     childAspectRatio: 1.0,
@@ -542,7 +543,7 @@ class _mediaPageState extends State<MediaPage> {
                               ? GridView.builder(
                                   controller: _scrollNetworkController,
                                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
+                                    crossAxisCount: 2,
                                     mainAxisSpacing: 20.0,
                                     crossAxisSpacing: 10.0,
                                     childAspectRatio: 1.0,
@@ -635,184 +636,194 @@ class _MediaCardState extends State<MediaCard> {
         ),
       ),
       color: Theme.of(context).bottomAppBarTheme.color,
-      child: Stack(
+      child: Column(
         children: [
-          if (widget.i.type == MediaType.Local)
-            MediaIconCard(
-              i: widget.i,
-              filetype: _filetype,
-            )
-          else
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Center(
-                child: Icon(Icons.file_present, size: 40),
-              ),
-            ),
-
-          /// 选择模式文件选择
-          if (widget.i.type == MediaType.Network && widget.isSelectFile!)
-            Positioned(
-              top: 0,
-              left: 0,
-              child: IconButton(
-                icon: const Icon(Icons.done),
-                onPressed: () {
-                  if (widget.onTagSelectFile != null) widget.onTagSelectFile!();
-                },
-              ),
-            ),
-
-          /// 标准模式下拉窗口
-          Positioned(
-            top: 0,
-            right: 0,
-            child: PopupMenuButton(
-              offset: const Offset(0, 45),
-              onSelected: (value) {
-                switch (value) {
-                  case "open_file":
-                    if (widget.onTapOpenFile != null) widget.onTapOpenFile!();
-                    break;
-                  case "delete":
-                    if (widget.onTapDelete != null) widget.onTapDelete!();
-                    break;
-                  case "see_file_info":
-                    if (widget.onTapFileInfo != null) widget.onTapFileInfo!();
-                    break;
-                  case "upload_file":
-                    if (widget.onTapUploadFile != null) widget.onTapUploadFile!();
-                    break;
-                }
-              },
-              itemBuilder: (content) => <PopupMenuEntry>[
-                PopupMenuItem(
-                  value: "open_file",
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      const Icon(Icons.file_open_rounded),
-                      const SizedBox(width: 10),
-                      Text(FlutterI18n.translate(context, "app.media.open")),
-                    ],
-                  ),
-                ),
-                if (widget.i.type == MediaType.Local)
-                  PopupMenuItem(
-                    value: "delete",
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        const Icon(Icons.delete),
-                        const SizedBox(width: 10),
-                        Text(FlutterI18n.translate(context, "app.media.delete")),
-                      ],
-                    ),
-                  ),
-                if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file)) const PopupMenuDivider(),
-                if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file))
-                  PopupMenuItem(
-                    value: "upload_file",
-                    child: Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        const Icon(Icons.upload_file_rounded),
-                        const SizedBox(width: 10),
-                        Text(FlutterI18n.translate(context, "app.media.uploadFile")),
-                      ],
-                    ),
-                  ),
-                const PopupMenuDivider(),
-                PopupMenuItem(
-                  value: "see_file_info",
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      const Icon(Icons.info),
-                      const SizedBox(width: 10),
-                      Text(FlutterI18n.translate(context, "app.media.fileInfo")),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            left: 5,
-            right: 5,
-            bottom: 2,
-            child: Text(
-              widget.i.filename.toString(),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 3,
-            ),
-          ),
-          Positioned(
-            right: 5,
-            bottom: 2,
-            child: Wrap(
-              runSpacing: 2,
-              spacing: 2,
+          Flexible(
+            flex: 1,
+            child: Stack(
               children: [
-                if (widget.i.type == MediaType.Local && _isUploaded(widget.i.file))
-                  Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
+                if (widget.i.type == MediaType.Local)
+                  MediaIconCard(
+                    i: widget.i,
+                    filetype: _filetype,
+                  )
+                else
+                  const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Center(
+                      child: Icon(Icons.file_present, size: 40),
+                    ),
                   ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    border: Border.all(color: Theme.of(context).dividerTheme.color!),
-                    borderRadius: BorderRadius.circular(3),
+
+                /// 选择模式文件选择
+                if (widget.i.type == MediaType.Network && widget.isSelectFile!)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: IconButton(
+                      icon: const Icon(Icons.done),
+                      onPressed: () {
+                        if (widget.onTagSelectFile != null) widget.onTagSelectFile!();
+                      },
+                    ),
                   ),
-                  child: const Icon(Icons.cloud, size: 17),
+
+                /// 标准模式下拉窗口
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: PopupMenuButton(
+                    offset: const Offset(0, 45),
+                    onSelected: (value) {
+                      switch (value) {
+                        case "open_file":
+                          if (widget.onTapOpenFile != null) widget.onTapOpenFile!();
+                          break;
+                        case "delete":
+                          if (widget.onTapDelete != null) widget.onTapDelete!();
+                          break;
+                        case "see_file_info":
+                          if (widget.onTapFileInfo != null) widget.onTapFileInfo!();
+                          break;
+                        case "upload_file":
+                          if (widget.onTapUploadFile != null) widget.onTapUploadFile!();
+                          break;
+                      }
+                    },
+                    itemBuilder: (content) => <PopupMenuEntry>[
+                      PopupMenuItem(
+                        value: "open_file",
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            const Icon(Icons.file_open_rounded),
+                            const SizedBox(width: 10),
+                            Text(FlutterI18n.translate(context, "app.media.open")),
+                          ],
+                        ),
+                      ),
+                      if (widget.i.type == MediaType.Local)
+                        PopupMenuItem(
+                          value: "delete",
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Icon(Icons.delete),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.media.delete")),
+                            ],
+                          ),
+                        ),
+                      if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file)) const PopupMenuDivider(),
+                      if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file))
+                        PopupMenuItem(
+                          value: "upload_file",
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Icon(Icons.upload_file_rounded),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.media.uploadFile")),
+                            ],
+                          ),
+                        ),
+                      const PopupMenuDivider(),
+                      PopupMenuItem(
+                        value: "see_file_info",
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            const Icon(Icons.info),
+                            const SizedBox(width: 10),
+                            Text(FlutterI18n.translate(context, "app.media.fileInfo")),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                EluiTagComponent(
-                  value: widget.i.fileExtension.toString(),
-                  theme: EluiTagTheme(
-                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
+
+                /// 远程获取信息遮盖
+                if (widget.i.type == MediaType.Network && widget.i.fileDetailLoad)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
+                      child: ELuiLoadComponent(
+                        type: "line",
+                        lineWidth: 2,
+                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                        size: 30,
+                      ),
+                    ),
                   ),
-                  color: EluiTagType.none,
-                  size: EluiTagSize.no2,
-                ),
+
+                /// 上传遮盖
+                if (widget.i.type == MediaType.Local && widget.i.updataLoad)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
+                      child: ELuiLoadComponent(
+                        type: "line",
+                        lineWidth: 2,
+                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                        size: 30,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
-
-          /// 远程获取信息遮盖
-          if (widget.i.type == MediaType.Network && widget.i.fileDetailLoad)
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
-                child: ELuiLoadComponent(
-                  type: "line",
-                  lineWidth: 2,
-                  color: Theme.of(context).textTheme.displayMedium!.color!,
-                  size: 30,
+          const Divider(height: 1),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(
+                    widget.i.filename.toString(),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                  ),
                 ),
-              ),
-            ),
-
-          /// 上传遮盖
-          if (widget.i.type == MediaType.Local && widget.i.updataLoad)
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
-                child: ELuiLoadComponent(
-                  type: "line",
-                  lineWidth: 2,
-                  color: Theme.of(context).textTheme.displayMedium!.color!,
-                  size: 30,
+                Wrap(
+                  runSpacing: 2,
+                  spacing: 2,
+                  children: [
+                    if (widget.i.type == MediaType.Local && _isUploaded(widget.i.file))
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 7,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary,
+                          border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: const Icon(Icons.cloud, size: 17),
+                      ),
+                    EluiTagComponent(
+                      value: widget.i.fileExtension.toString(),
+                      theme: EluiTagTheme(
+                        backgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
+                      ),
+                      color: EluiTagType.none,
+                      size: EluiTagSize.no2,
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
+          )
         ],
       ),
     );
@@ -832,28 +843,25 @@ class MediaIconCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Wrap(
-        clipBehavior: Clip.hardEdge,
-        children: [
-          if (filetype == FileType.IMAGE)
-            Image.file(
-              i.file,
-              scale: .2,
-              filterQuality: FilterQuality.low,
-            )
-          else if (filetype == FileType.VIDEO)
-            const Icon(
-              Icons.video_camera_back_outlined,
-              size: 40,
-            )
-          else
-            const Icon(
-              Icons.file_present,
-              size: 40,
-            ),
-        ],
-      ),
+    return Wrap(
+      children: [
+        if (filetype == FileType.IMAGE)
+          Image.file(
+            i.file,
+            fit: BoxFit.fill,
+            filterQuality: FilterQuality.low,
+          )
+        else if (filetype == FileType.VIDEO)
+          const Icon(
+            Icons.video_camera_back_outlined,
+            size: 40,
+          )
+        else
+          const Icon(
+            Icons.file_present,
+            size: 40,
+          ),
+      ],
     );
   }
 }

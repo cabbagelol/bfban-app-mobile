@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/index.dart';
 
@@ -7,17 +8,20 @@ class HtmlLink extends StatelessWidget {
 
   String? url;
 
+  String? text;
+
   TextStyle? style;
 
   HtmlLink({
     Key? key,
     required this.url,
+    this.text,
     this.style,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       child: Text.rich(
         TextSpan(
           children: [
@@ -28,7 +32,7 @@ class HtmlLink extends StatelessWidget {
               ),
             ),
             TextSpan(
-              text: url.toString().trim(),
+              text: text ?? url.toString().trim(),
               style: (style ?? const TextStyle()).copyWith(
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.dotted,
@@ -39,7 +43,10 @@ class HtmlLink extends StatelessWidget {
         ),
       ),
       onTap: () {
-        _urlUtil.onPeUrl(url!);
+        _urlUtil.onPeUrl(
+          "https://baidu.com" ?? url!,
+          mode: LaunchMode.externalApplication,
+        );
       },
     );
   }

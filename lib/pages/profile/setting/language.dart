@@ -91,7 +91,9 @@ class _LanguagePageState extends State<LanguagePage> {
     await FlutterI18n.refresh(context, Locale(currentPageSelectLang));
     setState(() {
       langProvider!.currentLang = currentPageSelectLang;
-      load = false;
+      Future.delayed(const Duration(milliseconds: 300), () {
+        load = false;
+      });
     });
   }
 

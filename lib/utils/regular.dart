@@ -28,12 +28,12 @@ class Regular {
 
   /// 图片验证
   /// 检查在线图片是否可访问
-  Future<bool> authImage (String url) async {
+  Future<bool> authImage(String url) async {
     if (url.isEmpty) return false;
 
-    Response result = await Http.request(url);
+    Response result = await Http.dio.head(url);
 
-    if (result.statusCode == 400) {
+    if (result.statusCode == 200) {
       return true;
     }
 

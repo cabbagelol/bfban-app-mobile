@@ -15,8 +15,7 @@
 | [开发计划进展](https://trello.com/b/ZECQnnEz/bfban-app) |
 [联Ban网站](https://bfban.com) |
 [应用网站](http://bfban-app.cabbagelol.net) |
-[App网站仓库](https://github.com/cabbagelol/bfbanAppWebsite) |
-[BFBANApp交流群(612949946)](https://jq.qq.com/?_wv=1027&k=kXr9z9FE)
+[App网站仓库](https://github.com/cabbagelol/bfbanAppWebsite)
 
 避免在第三方模拟器中使用，它可能导致某些内置Api无法使用。关于此问题继续追踪修复方案。
 

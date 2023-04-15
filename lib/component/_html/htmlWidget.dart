@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/component/_html/html.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import '../../widgets/detail/cheaters_card_types.dart';
@@ -113,9 +115,8 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                   children: [
                     if (widget.quote != null) widget.quote!,
                     [
-                      Container(
-                        margin: const EdgeInsets.all(10),
-                        child: SelectableHtml(
+                      SelectionArea(
+                        child: HtmlCore(
                           data: htmlEscape.convert(widget.content.toString()),
                           style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
                         ),

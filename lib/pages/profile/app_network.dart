@@ -57,21 +57,28 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
       item["load"] = true;
     });
 
-    Response result = await Http.request(
-      url,
-      typeUrl: "none",
-      method: Http.GET,
-    );
+    // 超时
+    Future.delayed(const Duration(seconds: 2)).then((result) {
+      // 如果依旧是load true，则超时
+      if (item["load"]) {
+        setState(() {
+          item["err"] = 3;
+          item["load"] = false;
+        });
+      }
+    });
+
+    Response result = await Http.dio.head(url);
 
     setState(() {
-      if (result.data.toString().isNotEmpty) {
+      if (result.statusCode == 200) {
         item["err"] = 2;
       } else {
         item["err"] = 1;
       }
 
       // load
-      item["statusCode"] = result.statusMessage ?? "NONE";
+      item["statusCode"] = result.statusCode ?? "NONE";
       item["load"] = false;
     });
 
@@ -103,13 +110,19 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                   return Card(
                     margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
                     child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                       title: Text(
-                        "[${e["statusCode"].toString()}] ${e["name"].toString().toUpperCase()}",
+                        e["name"].toString().toUpperCase(),
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
-                      subtitle: Text(e["url"].toString()),
+                      subtitle: Text(
+                        e["url"].toString(),
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.displayMedium!.color,
+                        ),
+                      ),
                       leading: IndexedStack(
                         index: e["err"],
                         children: [
@@ -130,12 +143,21 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                             value: FlutterI18n.translate(context, "app.networkDetection.status.1"),
                             color: EluiTagType.succeed,
                             size: EluiTagSize.no2,
+                          ),
+                          EluiTagComponent(
+                            value: FlutterI18n.translate(context, "app.networkDetection.status.3"),
+                            color: EluiTagType.warning,
+                            size: EluiTagSize.no2,
                           )
                         ],
                       ),
                       trailing: e["load"]
-                          ? const CircularProgressIndicator(
-                              strokeWidth: 2,
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
                             )
                           : null,
                       onTap: () {

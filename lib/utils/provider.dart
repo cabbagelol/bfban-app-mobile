@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../provider/appInfo_provider.dart';
 import '../provider/userinfo_provider.dart';
-import '../provider/message_provider.dart';
+import '../provider/chat_provider.dart';
 import '../provider/translation_provider.dart';
 
 class ProviderUtil {
@@ -25,9 +25,9 @@ class ProviderUtil {
     return Provider.of<UserInfoProvider>(context, listen: false)..context = context;
   }
 
-  // 消息
-  MessageProvider ofMessage (BuildContext context) {
-    return Provider.of<MessageProvider>(context, listen: false);
+  // 聊天
+  ChatProvider ofChat (BuildContext context) {
+    return Provider.of<ChatProvider>(context, listen: false);
   }
 
   // 包

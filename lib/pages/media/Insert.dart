@@ -51,22 +51,21 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
     }
 
     // 完成离开
-    if (insertListPageIndex == insertListPage.length - 1 && imageUrl.isNotEmpty) {
-
+    if (insertListPageIndex == (insertListPage.length - 1)) {
       setState(() {
         insertCheckLoad = true;
       });
 
       // 检查图片是否可访问
-      if (await Regular().authImage(imageUrl)) {
+      if (await Regular().authImage(imageUrl) && imageUrl.isNotEmpty) {
         setState(() {
           insertCheckStatus = true;
         });
+      } else {
+        setState(() {
+          insertCheckLoad = false;
+        });
       }
-
-      setState(() {
-        insertCheckLoad = false;
-      });
 
       if (insertCheckStatus) Navigator.pop(context, imageUrl);
       return;
@@ -123,28 +122,30 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
         },
         child: insertListPage[insertListPageIndex],
       ),
-      bottomSheet: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            AnimatedOpacity(
-              opacity: insertListPage == 0 ? 0 : 1,
-              duration: const Duration(milliseconds: 300),
-              child: TextButton(
-                onPressed: _onBacktrack,
-                child: Text(FlutterI18n.translate(context, "basic.button.prev")),
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AnimatedOpacity(
+                opacity: insertListPage == 0 ? 0 : 1,
+                duration: const Duration(milliseconds: 300),
+                child: TextButton(
+                  onPressed: _onBacktrack,
+                  child: Text(FlutterI18n.translate(context, "basic.button.prev")),
+                ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: _onNext,
-              child: insertListPageIndex + 1 < insertListPage.length
-                  ? Text(FlutterI18n.translate(context, "basic.button.next"))
-                  : Text(
-                      FlutterI18n.translate(context, "app.guide.endNext"),
-                    ),
-            ),
-          ],
+              ElevatedButton(
+                onPressed: _onNext,
+                child: insertListPageIndex + 1 < insertListPage.length
+                    ? Text(FlutterI18n.translate(context, "basic.button.next"))
+                    : Text(
+                  FlutterI18n.translate(context, "app.guide.endNext"),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -173,7 +174,7 @@ class _InsertSelectState extends State<InsertSelect> {
 
   List insertTypes = [
     {"name": "textarea.type.url", "value": "0"},
-    {"name": "textarea.type.upload", "value": "1"},
+    // {"name": "textarea.type.upload", "value": "1"},
     {"name": "textarea.type.media", "value": "2"},
   ];
 
@@ -243,6 +244,7 @@ class _InsertSelectState extends State<InsertSelect> {
                 type: TextInputType.text,
                 placeholder: "http(s)://",
                 internalstyle: true,
+                theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
                 onChange: (data) {
                   if (widget.onValue != null) widget.onValue!(data["value"]);
                 },
@@ -271,8 +273,20 @@ class _InsertSelectState extends State<InsertSelect> {
                   child: Text.rich(TextSpan(children: [TextSpan(text: FlutterI18n.translate(context, "report.info.uploadPic2")), const TextSpan(text: "https://sm.ms"), TextSpan(text: FlutterI18n.translate(context, "report.info.uploadPic3"))])),
                 ),
                 const SizedBox(height: 5),
-                Text("-\t${FlutterI18n.translate(context, "report.info.uploadPic1")}"),
-                Text("-\t${FlutterI18n.translate(context, "report.info.uploadPic4")}"),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text("*\t", style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                    Text(FlutterI18n.translate(context, "report.info.uploadPic1")),
+                  ],
+                ),
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text("*\t", style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                    Text(FlutterI18n.translate(context, "report.info.uploadPic4")),
+                  ],
+                )
               ],
             )
           else if (insertValue == "2")

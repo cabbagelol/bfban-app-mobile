@@ -26,7 +26,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
   /// [Event]
   /// 登录
   dynamic _openSignin() {
-    _urlUtil.opEnPage(context, '/signin', transition: TransitionType.inFromBottom).then((value) {
+    _urlUtil.opEnPage(context, '/signin', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
       if (ProviderUtil().ofUser(context).isLogin) {
         _urlUtil.popPage(context);
       }
@@ -67,7 +67,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: Image.asset(
-                      "assets/splash/splash_center_logo_.png",
+                      "assets/splash/splash_center_logo.png",
                       width: 80,
                       height: 80,
                       fit: BoxFit.cover,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:quill_html_editor/quill_html_editor.dart';
 
@@ -67,7 +68,6 @@ class _richEditPageState extends State<RichEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
@@ -86,21 +86,6 @@ class _richEditPageState extends State<RichEditPage> {
           ),
         ],
       ),
-      bottomSheet: ToolBar(
-        controller: controller,
-        toolBarConfig: toolBarList,
-        iconColor: Theme.of(context).primaryColor.withOpacity(.5),
-        activeIconColor: Theme.of(context).primaryColor,
-        customButtons: [
-          InkWell(
-            onTap: () => _openMediaPage(),
-            child: Icon(
-              Icons.image_outlined,
-              color: Theme.of(context).primaryColor,
-            ),
-          )
-        ],
-      ),
       body: FutureBuilder(
         future: futureBuilder,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -113,20 +98,42 @@ class _richEditPageState extends State<RichEditPage> {
             child: SingleChildScrollView(
               child: QuillHtmlEditor(
                 text: data,
-                hintText: "",
-                hintTextStyle: const TextStyle(color: Colors.black54, fontSize: 16),
-                textStyle: const TextStyle(color: Colors.black, fontSize: 16),
+                hintText: FlutterI18n.translate(context, "app.richedit.placeholder"),
+                hintTextStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
+                textStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
                 controller: controller,
                 isEnabled: true,
-                minHeight: 300,
+                minHeight: 0,
                 hintTextAlign: TextAlign.start,
                 padding: EdgeInsets.zero,
                 hintTextPadding: EdgeInsets.zero,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               ),
             ),
           );
         },
-      ), // bottomNavigationBar: ,
+      ), // bo
+      bottomSheet: Container(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom
+        ),
+        child: ToolBar(
+          controller: controller,
+          toolBarConfig: toolBarList,
+          toolBarColor: Theme.of(context).scaffoldBackgroundColor,
+          iconColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
+          activeIconColor: Theme.of(context).colorScheme.primary,
+          customButtons: [
+            InkWell(
+              onTap: () => _openMediaPage(),
+              child: Icon(
+                Icons.image_outlined,
+                color: Theme.of(context).primaryColor,
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }

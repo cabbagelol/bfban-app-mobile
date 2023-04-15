@@ -190,7 +190,8 @@
       "status": {
         "0": "Under inspection",
         "1": "Normal service",
-        "2": "Service exception"
+        "2": "Service exception",
+        "3": "service not"
       }
     },
     "userspace": {

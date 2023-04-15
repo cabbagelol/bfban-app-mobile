@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
 import '../../data/index.dart';
-import '../../provider/message_provider.dart';
+import '../../provider/chat_provider.dart';
 import '../../utils/index.dart';
 import '../not_found/index.dart';
 
@@ -34,7 +34,7 @@ class _MessagePageState extends State<MessagePage> {
   GlobalKey buttonGlobalKey = GlobalKey();
 
   /// 消息状态机
-  MessageProvider? providerMessage;
+  ChatProvider? providerMessage;
 
   /// 滚动视图控制器
   ScrollController? listViewController = ScrollController();
@@ -47,6 +47,7 @@ class _MessagePageState extends State<MessagePage> {
 
   /// 消息详情
   MessageStatus messageStatus = MessageStatus(
+    load: false,
     data: {},
   );
 
@@ -79,7 +80,7 @@ class _MessagePageState extends State<MessagePage> {
     H = buttonGlobalKey.currentContext?.findRenderObject()!.semanticBounds.size.height;
     textFieldcontroller = TextEditingController();
     selfInfo = ProviderUtil().ofUser(context).userinfo;
-    providerMessage = ProviderUtil().ofMessage(context);
+    providerMessage = ProviderUtil().ofChat(context);
 
     /// 取发消息用户id
     userinfo.parame!.id = int.parse(widget.id!);
@@ -197,7 +198,7 @@ class _MessagePageState extends State<MessagePage> {
   /// [Event]
   /// 对消息列表数据处理
   /// 排序 and 筛选
-  _getData(MessageProvider data) {
+  _getData(ChatProvider data) {
     Date date = Date();
     List list = data.list;
 
@@ -243,7 +244,7 @@ class _MessagePageState extends State<MessagePage> {
                   onPressed: () {},
                 ),
               ),
-              body: Consumer<MessageProvider>(
+              body: Consumer<ChatProvider>(
                 builder: (BuildContext context, data, Widget? child) {
                   return Column(
                     children: [

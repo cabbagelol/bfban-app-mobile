@@ -1,34 +1,37 @@
 /// 消息中心
 
 import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/provider/message_provider.dart';
+import 'package:bfban/provider/chat_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/index.dart';
 
-class MessageListPage extends StatefulWidget {
-  const MessageListPage({Key? key}) : super(key: key);
+class ChatListPage extends StatefulWidget {
+  const ChatListPage({Key? key}) : super(key: key);
 
   @override
-  _MessagePageState createState() => _MessagePageState();
+  _ChatPageState createState() => _ChatPageState();
 }
 
-class _MessagePageState extends State<MessageListPage> {
+class _ChatPageState extends State<ChatListPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   /// 消息转让
-  MessageProvider? providerUtil;
+  ChatProvider? providerUtil;
 
   /// 自身信息
   Map? selfInfo;
+
+  bool chatRequestLoad = false;
 
   @override
   void initState() {
     super.initState();
 
-    providerUtil = ProviderUtil().ofMessage(context);
+    providerUtil = ProviderUtil().ofChat(context);
     selfInfo = ProviderUtil().ofUser(context).userinfo;
 
     _onRefresh();
@@ -37,7 +40,15 @@ class _MessagePageState extends State<MessageListPage> {
   /// [Event]
   /// 刷新
   Future<void> _onRefresh() async {
+    setState(() {
+      chatRequestLoad = true;
+    });
+
     await providerUtil!.onUpDate();
+
+    setState(() {
+      chatRequestLoad = false;
+    });
   }
 
   /// [Evnet]
@@ -54,7 +65,7 @@ class _MessagePageState extends State<MessageListPage> {
 
   /// [Evnet]
   /// 未读
-  onunReadMessage(num id) {
+  onUnReadChat(num id) {
     providerUtil!.onUnread(id);
   }
 
@@ -67,27 +78,21 @@ class _MessagePageState extends State<MessageListPage> {
           IconButton(
             onPressed: () async {
               _urlUtil.opEnPage(context, "/profile/notice");
-              // await providerUtil!.delectLocalMessage();
             },
             icon: const Icon(Icons.settings),
           ),
         ],
       ),
       body: RefreshIndicator(
+        displacement: 120,
+        edgeOffset: MediaQuery.of(context).viewInsets.top,
         onRefresh: _onRefresh,
-        child: Consumer<MessageProvider>(
+        child: Consumer<ChatProvider>(
           builder: (BuildContext context, data, Widget? child) {
             return ListView.builder(
-              itemCount: data.list
-                  .where(
-                      (element) => element["byUserId"] != selfInfo!["userId"])
-                  .length
-                  .toInt(),
+              itemCount: data.list.where((element) => element["byUserId"] != selfInfo!["userId"]).length.toInt(),
               itemBuilder: (BuildContext context, int index) {
-                Map i = data.list
-                    .where(
-                        (element) => element["byUserId"] != selfInfo!["userId"])
-                    .toList()[index];
+                Map i = data.list.where((element) => element["byUserId"] != selfInfo!["userId"]).toList()[index];
 
                 return ListTile(
                   horizontalTitleGap: 10,
@@ -123,18 +128,16 @@ class _MessagePageState extends State<MessageListPage> {
                           onReadMessage(i["id"]);
                           break;
                         case 2:
-                          onunReadMessage(i["id"]);
+                          onUnReadChat(i["id"]);
                           break;
                         case 3:
                           onDeleteMessage(i["id"]);
                           break;
                         case 10:
-                          _urlUtil.opEnPage(
-                              context, "/message/detail/${i["id"]}");
+                          _urlUtil.opEnPage(context, "/chat/detail/${i["id"]}");
                           break;
                         case 20:
-                          _urlUtil.opEnPage(
-                              context, "/message/${i["byUserId"]}");
+                          _urlUtil.opEnPage(context, "/chat/${i["byUserId"]}");
                           break;
                       }
                     },
@@ -159,7 +162,7 @@ class _MessagePageState extends State<MessageListPage> {
                     ],
                   ),
                   onTap: () {
-                    _urlUtil.opEnPage(context, "/message/${i["byUserId"]}");
+                    _urlUtil.opEnPage(context, "/chat/${i["byUserId"]}");
                   },
                 );
               },

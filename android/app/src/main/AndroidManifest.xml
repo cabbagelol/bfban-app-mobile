@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:label="BFBAN"
+        android:label="BFBAN Assistants"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

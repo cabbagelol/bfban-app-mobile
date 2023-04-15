@@ -1,7 +1,7 @@
 /// 通知
 import 'package:flutter/material.dart';
 
-import 'package:bfban/provider/message_provider.dart';
+import 'package:bfban/provider/chat_provider.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
@@ -27,7 +27,7 @@ class _NoticePageState extends State<NoticePage> {
       appBar: AppBar(
         title: Text(FlutterI18n.translate(context, "app.setting.notice.title")),
       ),
-      body: Consumer<MessageProvider>(builder: (BuildContext context, data, Widget? child) {
+      body: Consumer<ChatProvider>(builder: (BuildContext context, data, Widget? child) {
         return ListView(
           children: [
             // 通知

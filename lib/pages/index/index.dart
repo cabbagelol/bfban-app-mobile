@@ -3,7 +3,7 @@
 import 'dart:math';
 
 import 'package:bfban/pages/index/players.dart';
-import 'package:bfban/provider/message_provider.dart';
+import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
@@ -95,7 +95,7 @@ class _IndexPageState extends State<IndexPage> {
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-      _urlUtil.opEnPage(context, "/message/list");
+      _urlUtil.opEnPage(context, "/chat/list");
     };
   }
 
@@ -148,7 +148,7 @@ class _IndexPageState extends State<IndexPage> {
               title: Row(
                 children: [
                   // 消息
-                  Consumer<MessageProvider>(
+                  Consumer<ChatProvider>(
                     builder: (BuildContext context, data, Widget? child) {
                       return SizedBox(
                         width: 50,

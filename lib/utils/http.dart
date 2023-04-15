@@ -60,7 +60,7 @@ class Http extends ScaffoldState {
     }
 
     /// restful 请求处理
-    if (data is Map || data is List) {
+    if (data is Map && data.isNotEmpty) {
       data.forEach((key, value) {
         if (url.contains(key)) {
           url = url.replaceAll(':$key', value.toString());
@@ -71,12 +71,15 @@ class Http extends ScaffoldState {
     String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl]!.url;
     String path = "$domain/$url";
 
-    Dio dio = createInstance();
+    if (dio == null) {
+      Dio dio = createInstance();
 
-    // 缓存实例
-    dio.interceptors.add(DioCacheManager(CacheConfig(
-      baseUrl: Config.apiHost[typeUrl]!.baseHost.toString(),
-    )).interceptor);
+      // 缓存实例
+      dio.interceptors.add(DioCacheManager(CacheConfig(
+        baseUrl: Config.apiHost[typeUrl]!.baseHost.toString(),
+      )).interceptor);
+    }
+
     try {
       Response response = await dio.request(
         path,

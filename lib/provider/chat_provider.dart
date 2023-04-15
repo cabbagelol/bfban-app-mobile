@@ -17,7 +17,7 @@ enum MessageType {
   del,
 }
 
-class MessageProvider with ChangeNotifier {
+class ChatProvider with ChangeNotifier {
   // 包名
   String packageName = "message";
 

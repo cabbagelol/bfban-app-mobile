@@ -68,7 +68,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
     // 检查登录状态
     if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-    _urlUtil.opEnPage(context, "/message/list");
+    _urlUtil.opEnPage(context, "/chat/list");
   }
 
   /// [Event]
@@ -156,7 +156,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget>[
                                         Text(
-                                          data.isLogin ? ProviderUtil().ofMessage(context).total.toString() : "-",
+                                          data.isLogin ? ProviderUtil().ofChat(context).total.toString() : "-",
                                           style: const TextStyle(
                                             fontSize: 16,
                                           ),

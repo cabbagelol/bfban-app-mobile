@@ -22,15 +22,15 @@ import 'package:bfban/pages/search/index.dart';
 import 'package:bfban/pages/profile/support.dart';
 import 'package:bfban/pages/profile/setting/theme.dart';
 import 'package:bfban/pages/rich_edit/index.dart';
-import 'package:bfban/pages/message/message_list.dart';
-import 'package:bfban/pages/message/message_detail.dart';
+import 'package:bfban/pages/chat/chat_list.dart';
+import 'package:bfban/pages/chat/chat_detail.dart';
 
 import '../pages/camera/index.dart';
 import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
 import '../pages/media/Insert.dart';
 import '../pages/media/index.dart';
-import '../pages/message/index.dart';
+import '../pages/chat/index.dart';
 import '../pages/profile/app_network.dart';
 import '../pages/profile/app_version_package.dart';
 import '../pages/splash.dart';
@@ -67,21 +67,21 @@ class Routes {
         }
       },
       {
-        "url": "/message/list",
+        "url": "/chat/list",
         "item": (context, params) {
-          return const MessageListPage();
+          return const ChatListPage();
         }
       },
       {
-        "url": "/message/:id",
+        "url": "/chat/:id",
         "item": (context, params) {
           return MessagePage(id: params["id"][0]);
         }
       },
       {
-        "url": "/message/detail/:id",
+        "url": "/chat/detail/:id",
         "item": (context, params) {
-          return MessageDetailPage(id: params["id"][0]);
+          return ChatDetailPage(id: params["id"][0]);
         }
       },
       {

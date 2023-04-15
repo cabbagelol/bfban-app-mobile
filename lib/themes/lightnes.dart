@@ -9,7 +9,7 @@ class LightnesTheme {
     themeData: ThemeData(
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.white,
-        modalBackgroundColor: Colors.black,
+        modalBackgroundColor: Colors.white,
       ),
       canvasColor: Colors.white,
       primaryColorDark: const Color(0xff364e80),
@@ -30,12 +30,23 @@ class LightnesTheme {
         trackColor: MaterialStateProperty.all(const Color(0xff364e80).withOpacity(.2)),
         thumbColor: MaterialStateProperty.all(const Color(0xff364e80)),
       ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        textStyle: const TextStyle(
+          color: Colors.black,
+        ),
+        inputDecorationTheme: const InputDecorationTheme(),
+        menuStyle: MenuStyle(
+          elevation: MaterialStateProperty.all(2),
+          backgroundColor: MaterialStateProperty.all(Colors.black),
+          surfaceTintColor: MaterialStateProperty.all(Colors.black),
+        ),
+      ),
       textSelectionTheme:  TextSelectionThemeData(
         selectionColor: const Color(0x7a364e80).withOpacity(.3),
-        selectionHandleColor: const Color(0xff364e80).withOpacity(.3),
+        selectionHandleColor: const Color(0xff364e80),
         cursorColor: const Color(0x7a364e80),
       ),
-      unselectedWidgetColor: Colors.black,
+      unselectedWidgetColor: const Color(0xfff7f9fd),
       scaffoldBackgroundColor: const Color(0xfff7f9fd),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,

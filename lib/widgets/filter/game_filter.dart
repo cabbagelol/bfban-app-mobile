@@ -74,46 +74,47 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                     height: 1,
                     color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    decoration: BoxDecoration(
-                      color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
-                      image: i["app_assets_bk_file"] == null
-                          ? null
-                          : DecorationImage(
-                              opacity: .06,
-                              fit: BoxFit.cover,
-                              image: AssetImage(i["app_assets_bk_file"]),
-                            ),
-                    ),
-                    child: Center(
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          if (i["value"] == "all")
-                            Center(
-                              child: Text(
-                                FlutterI18n.translate(context, "basic.games.all"),
-                                style: TextStyle(
-                                  fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
-                                ),
+                  if (widget.data != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
+                        image: i["app_assets_bk_file"] == null
+                            ? null
+                            : DecorationImage(
+                                opacity: .06,
+                                fit: BoxFit.cover,
+                                image: AssetImage(i["app_assets_bk_file"]),
                               ),
-                            )
-                          else
-                            Image.asset(i["app_assets_logo_file"], height: 20),
-                          const SizedBox(width: 10),
-                          Visibility(
-                            visible: i["num"] != null,
-                            child: Chip(
-                              visualDensity: const VisualDensity(horizontal: 3, vertical: -4),
-                              labelStyle: const TextStyle(fontSize: 12),
-                              label: Text(i["num"].toString()),
+                      ),
+                      child: Center(
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            if (i["value"] == "all")
+                              Center(
+                                child: Text(
+                                  FlutterI18n.translate(context, "basic.games.all"),
+                                  style: TextStyle(
+                                    fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
+                                  ),
+                                ),
+                              )
+                            else
+                              Image.asset(i["app_assets_logo_file"], height: 20),
+                            const SizedBox(width: 10),
+                            Visibility(
+                              visible: i["num"] != null,
+                              child: Chip(
+                                visualDensity: const VisualDensity(horizontal: 3, vertical: -4),
+                                labelStyle: const TextStyle(fontSize: 12),
+                                label: Text(i["num"].toString()),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
               onTap: () => _setIndex(index),

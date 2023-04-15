@@ -48,7 +48,7 @@ class _TimeWidgetState extends State<TimeWidget> {
         return FlutterI18n.translate(context, "app.basic.time.minutes", translationParams: {
           "s": d.inMinutes.toString(),
         });
-      } else if (d.inMinutes >= 1 && d.inHours <= 24) {
+      } else if (d.inMinutes >= 1 && d.inMinutes <= 60 && d.inHours <= 24) {
         // 一小时内
         return FlutterI18n.translate(context, "app.basic.time.minutes", translationParams: {
           "s": d.inMinutes.toString(),

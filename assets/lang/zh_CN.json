@@ -48,7 +48,6 @@
         "report": "举报",
         "banAppeal": "申诉",
         "signup": "新用户",
-        "verify": "verify",
         "judgement": "判决"
       },
       "paging": "第{num}页"
@@ -191,7 +190,8 @@
       "status": {
         "0": "检查中",
         "1": "服务正常",
-        "2": "服务异常"
+        "2": "服务异常",
+        "3": "服务未知"
       }
     },
     "userspace": {
@@ -220,6 +220,9 @@
     "search": {
       "historySearch": "历史搜索",
       "hotRecommendation": "热门推荐"
+    },
+    "richedit": {
+      "placeholder": "写点什么?"
     }
   }
 }

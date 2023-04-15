@@ -57,21 +57,22 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
                 height: 1,
                 color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
-                child: Center(
+              if (widget.data != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  color: widget.data!.value == i["value"] ? Theme.of(context).textSelectionTheme.selectionColor : Theme.of(context).scaffoldBackgroundColor.withOpacity(.9),
                   child: Center(
-                    child: Text(
-                      FlutterI18n.translate(context, "list.filters.sortBy.${i["value"]}"),
-                      style: TextStyle(
-                        color: widget.data!.value == i["value"] ? Theme.of(context).textTheme.bodyText1!.color : Theme.of(context).textTheme.subtitle2!.color,
-                        fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
+                    child: Center(
+                      child: Text(
+                        FlutterI18n.translate(context, "list.filters.sortBy.${i["value"]}"),
+                        style: TextStyle(
+                          color: widget.data!.value == i["value"] ? Theme.of(context).textTheme.bodyText1!.color : Theme.of(context).textTheme.subtitle2!.color,
+                          fontWeight: widget.data!.value == i["value"] ? FontWeight.bold : FontWeight.normal,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              )
+                )
             ],
           ),
           onTap: () => _setIndex(index),

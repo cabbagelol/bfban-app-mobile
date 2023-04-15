@@ -2,7 +2,8 @@
 
 import 'dart:async';
 
-import 'package:bfban/provider/message_provider.dart';
+import 'package:bfban/provider/captcha_provider.dart';
+import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
 import 'package:bfban/provider/translation_provider.dart';
@@ -13,6 +14,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:bfban/component/_lang/delegate_custom.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +24,8 @@ import 'package:bfban/utils/index.dart';
 
 // 入口
 void runMain() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // 路由初始
   Routes.configureRoutes(FluroRouter());
@@ -44,6 +47,8 @@ void runMain() async {
       );
 
       runApp(const BfBanApp());
+
+      FlutterNativeSplash.remove();
     },
     (exception, stackTrace) async {
       await Sentry.captureException(
@@ -68,11 +73,11 @@ class _BfBanAppState extends State<BfBanApp> {
       providers: [
         ChangeNotifierProvider(create: (context) => AppInfoProvider()),
         ChangeNotifierProvider(create: (context) => UserInfoProvider()),
-        ChangeNotifierProvider(create: (context) => MessageProvider()),
+        ChangeNotifierProvider(create: (context) => ChatProvider()),
         ChangeNotifierProvider(create: (context) => PackageProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => TranslationProvider()),
-        ChangeNotifierProvider(create: (context) => TranslationProvider()),
+        ChangeNotifierProvider(create: (context) => CaptchaProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (BuildContext? themeContext, themeData, Widget? child) {

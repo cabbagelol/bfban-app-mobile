@@ -116,7 +116,7 @@ class _SigninPageState extends State<SigninPage> {
         Http.setToken(result.data["data"]["token"]);
 
         // 更新消息
-        ProviderUtil().ofMessage(context).onUpDate();
+        ProviderUtil().ofChat(context).onUpDate();
       }).catchError((E) {
         EluiMessageComponent.error(context)(
           child: Text("$E"),
@@ -171,6 +171,9 @@ class _SigninPageState extends State<SigninPage> {
                                 Card(
                                   margin: const EdgeInsets.symmetric(horizontal: 20),
                                   child: EluiInputComponent(
+                                    theme: EluiInputTheme(
+                                      textStyle: Theme.of(context).textTheme.bodyMedium
+                                    ),
                                     placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
                                     onChange: (data) {
                                       setState(() {
@@ -185,6 +188,9 @@ class _SigninPageState extends State<SigninPage> {
                                 Card(
                                   margin: const EdgeInsets.symmetric(horizontal: 20),
                                   child: EluiInputComponent(
+                                    theme: EluiInputTheme(
+                                        textStyle: Theme.of(context).textTheme.bodyMedium
+                                    ),
                                     placeholder: FlutterI18n.translate(context, "app.signin.password"),
                                     type: TextInputType.visiblePassword,
                                     onChange: (data) => loginStatus.parame!.password = data["value"],
@@ -202,7 +208,12 @@ class _SigninPageState extends State<SigninPage> {
                                     placeholder: FlutterI18n.translate(context, "captcha.title"),
                                     internalstyle: true,
                                     maxLenght: 4,
+                                    theme: EluiInputTheme(
+                                        textStyle: Theme.of(context).textTheme.bodyMedium
+                                    ),
                                     right: CaptchaWidget(
+                                      context: context,
+                                      seconds: 5,
                                       onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
                                     ),
                                     onChange: (data) {

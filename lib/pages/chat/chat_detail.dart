@@ -4,30 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import '../../constants/api.dart';
-import '../../provider/message_provider.dart';
+import '../../provider/chat_provider.dart';
 import '../not_found/index.dart';
 
 /// 消息详情
 
-class MessageDetailPage extends StatefulWidget {
+class ChatDetailPage extends StatefulWidget {
   // 消息id
   final String? id;
 
-  const MessageDetailPage({
+  const ChatDetailPage({
     Key? key,
     required this.id,
   }) : super(key: key);
 
   @override
-  _messageDetailPageState createState() => _messageDetailPageState();
+  _chatDetailPageState createState() => _chatDetailPageState();
 }
 
-class _messageDetailPageState extends State<MessageDetailPage> {
+class _chatDetailPageState extends State<ChatDetailPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   Future? futureBuilder;
 
-  MessageProvider? providerMessage;
+  ChatProvider? providerMessage;
 
   /// 消息详情
   MessageStatus messageStatus = MessageStatus(
@@ -48,7 +48,7 @@ class _messageDetailPageState extends State<MessageDetailPage> {
   @override
   void initState() {
     super.initState();
-    providerMessage = ProviderUtil().ofMessage(context);
+    providerMessage = ProviderUtil().ofChat(context);
 
     /// TODO 暂无查询详情接口
     /// 现在从本地状态中查询

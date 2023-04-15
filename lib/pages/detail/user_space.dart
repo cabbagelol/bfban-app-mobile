@@ -169,7 +169,7 @@ class UserSpacePageState extends State<UserSpacePage> {
     }
 
     return () {
-      _urlUtil.opEnPage(context, "/message/$id");
+      _urlUtil.opEnPage(context, "/chat/$id");
     };
   }
 

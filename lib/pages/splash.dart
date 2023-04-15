@@ -88,7 +88,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 通知初始
   Future _initNotice() async {
-    await ProviderUtil().ofMessage(context).init();
+    await ProviderUtil().ofChat(context).init();
 
     return true;
   }
@@ -110,7 +110,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       setState(() {
         loadTip = "app.splash.message";
       });
-      await ProviderUtil().ofMessage(context).onUpDate();
+      await ProviderUtil().ofChat(context).onUpDate();
       // sleep(Duration(seconds: 1));
     }
 

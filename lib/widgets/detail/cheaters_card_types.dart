@@ -29,7 +29,12 @@ class CardUtil {
     CustomRenderMatcher imagesMatcher() => (context) => context.tree.element?.localName == 'img';
 
     return {
-      linkMatcher(): CustomRender.widget(widget: (RenderContext context, buildChildren) => HtmlLink(url: context.tree.element!.attributes["href"])),
+      linkMatcher(): CustomRender.widget(
+        widget: (RenderContext context, buildChildren) => HtmlLink(
+          url: context.tree.element!.attributes["href"],
+          text: context.tree.element!.text,
+        ),
+      ),
       imagesMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) {
           return ClipRRect(
@@ -45,42 +50,41 @@ class CardUtil {
                     fadeInDuration: const Duration(seconds: 0),
                     fadeOutDuration: const Duration(seconds: 0),
                     imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
-                      return
-                        InkWell(
-                          child: Card(
-                            color: Colors.transparent,
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                                  height: 25,
-                                  child: Row(
-                                    textBaseline: TextBaseline.ideographic,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                          "${context.tree.element!.attributes['src']}",
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 12),
-                                          maxLines: 1,
-                                        ),
+                      return InkWell(
+                        child: Card(
+                          color: Colors.transparent,
+                          child: Column(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 10),
+                                height: 25,
+                                child: Row(
+                                  textBaseline: TextBaseline.ideographic,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        "${context.tree.element!.attributes['src']}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(fontSize: 12),
+                                        maxLines: 1,
                                       ),
-                                      const Icon(
-                                        Icons.link,
-                                        size: 16,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                    const Icon(
+                                      Icons.link,
+                                      size: 16,
+                                    ),
+                                  ],
                                 ),
-                                Image(image: imageProvider),
-                              ],
-                            ),
+                              ),
+                              Image(image: imageProvider),
+                            ],
                           ),
-                          onTap: () {
-                            onImageTap(contextView, context.tree.element!.attributes["src"].toString());
-                          },
-                        );
+                        ),
+                        onTap: () {
+                          onImageTap(contextView, context.tree.element!.attributes["src"].toString());
+                        },
+                      );
                     },
                     placeholderFadeInDuration: const Duration(seconds: 0),
                     placeholder: (BuildContext buildContext, String url) {

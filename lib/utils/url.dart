@@ -10,11 +10,11 @@ class UrlUtil {
   /// 唤起内置游览器，并访问
   Future<Map> onPeUrl(String url, {LaunchMode mode = LaunchMode.externalApplication, WebViewConfiguration? webViewConfiguration}) async {
     try {
-      Uri _url = Uri.parse(url);
+      Uri uri = Uri.parse(url);
 
       if (url.isEmpty) throw "Url empty";
 
-      if (!await launchUrl(_url, mode: mode, webViewConfiguration: webViewConfiguration!)) {
+      if (!await launchUrl(uri, mode: mode)) {
         throw 'Could not launch $url';
       }
 
@@ -45,10 +45,10 @@ class UrlUtil {
       return {
         "code": 0,
       };
-    } catch (E) {
+    } catch (err) {
       return {
         "code": -1,
-        "msg": E,
+        "msg": err,
       };
     }
   }
