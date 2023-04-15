@@ -103,9 +103,11 @@ class _SigninPageState extends State<SigninPage> {
       late Map d = result.data["data"];
       d["time"] = DateTime.now().millisecondsSinceEpoch;
 
+      TextInput.finishAutofillContext();
+
       Future.wait([
         // 持久存用户信息
-        Storage().set('login', value: jsonEncode(d)),
+        Storage().set("login", value: jsonEncode(d)),
       ]).then((value) {
         // 持久储存 -> 状态机 -> HTTP -> Widget
 
@@ -175,6 +177,7 @@ class _SigninPageState extends State<SigninPage> {
                                       textStyle: Theme.of(context).textTheme.bodyMedium
                                     ),
                                     placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
+                                    autofillHints: [AutofillHints.username],
                                     onChange: (data) {
                                       setState(() {
                                         loginStatus.parame!.username = data["value"];
@@ -192,6 +195,7 @@ class _SigninPageState extends State<SigninPage> {
                                         textStyle: Theme.of(context).textTheme.bodyMedium
                                     ),
                                     placeholder: FlutterI18n.translate(context, "app.signin.password"),
+                                    autofillHints: const [AutofillHints.password],
                                     type: TextInputType.visiblePassword,
                                     onChange: (data) => loginStatus.parame!.password = data["value"],
                                   ),

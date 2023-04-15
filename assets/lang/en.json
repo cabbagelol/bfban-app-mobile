@@ -214,7 +214,7 @@
         "signupButton": "Register a BFBAN account"
       },
       "accountId": "Enter Account ID",
-      "password": "cipher",
+      "password": "Account password",
       "verificationCode": "Captcha"
     },
     "search": {
