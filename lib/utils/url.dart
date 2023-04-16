@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
 import 'package:fluro/fluro.dart';
@@ -7,10 +8,27 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:bfban/router/router.dart';
 
 class UrlUtil {
+  /// default mode
+  LaunchMode get defaultMode {
+    switch (Platform.operatingSystem) {
+      case "ios":
+      case "macos":
+        // Circumventing IOS audits, Guideline 4.0
+        return LaunchMode.inAppWebView;
+      default:
+        return LaunchMode.externalApplication;
+    }
+  }
+
   /// 唤起内置游览器，并访问
-  Future<Map> onPeUrl(String url, {LaunchMode mode = LaunchMode.externalApplication, WebViewConfiguration? webViewConfiguration}) async {
+  Future<Map> onPeUrl(
+    String url, {
+    LaunchMode? mode,
+    WebViewConfiguration? webViewConfiguration,
+  }) async {
     try {
       Uri uri = Uri.parse(url);
+      mode ??= defaultMode;
 
       if (url.isEmpty) throw "Url empty";
 

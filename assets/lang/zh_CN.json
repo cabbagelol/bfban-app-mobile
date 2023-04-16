@@ -182,7 +182,9 @@
         "githubTitle": "Github",
         "githubDescription": "访问开源仓库",
         "donateTitle": "捐赠",
-        "donateDescription": "向BFBAN APP的开发者捐赠"
+        "donateDescription": "向BFBAN APP的开发者捐赠",
+        "licenseTitle": "许可证",
+        "licenseDescription": "列出程序许可证",
       }
     },
     "networkDetection": {

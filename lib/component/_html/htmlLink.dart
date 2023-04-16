@@ -44,7 +44,7 @@ class HtmlLink extends StatelessWidget {
       ),
       onTap: () {
         _urlUtil.onPeUrl(
-          "https://baidu.com" ?? url!,
+          url!,
           mode: LaunchMode.externalApplication,
         );
       },

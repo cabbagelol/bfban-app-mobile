@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_license_page/flutter_custom_license_page.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
@@ -127,7 +128,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 Expanded(
                                   flex: 1,
                                   child: textLoad(
-                                    value: data.userinfo["username"] ??  FlutterI18n.translate(context, "signin.title"),
+                                    value: data.userinfo["username"] ?? FlutterI18n.translate(context, "signin.title"),
                                     fontSize: 20,
                                   ),
                                 ),

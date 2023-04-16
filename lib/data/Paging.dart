@@ -1,7 +1,13 @@
+import 'dart:ffi';
+import 'dart:io';
+
+import 'package:camerawesome/generated/i18n.dart';
+
 abstract class Paging {
   int? skip;
-  int? _minskip = 0;
+  int? _minSkip = 0;
   int? limit;
+  bool? _isAuto = true;
 
   Paging({
     this.limit = 40,
@@ -9,21 +15,36 @@ abstract class Paging {
   });
 
   resetPage() {
-    skip = _minskip!;
+    skip = _minSkip!;
   }
 
+  /// 下一页
   nextPage({int count = 1}) {
     skip = skip! + count;
   }
 
+  /// 上一页
   prevPage({int count = 1}) {
-    if (skip! <= _minskip!) return;
+    if (skip! <= _minSkip!) return;
     skip = skip! - count;
+  }
+
+  bool isMultiplier() {
+    if (!_isAuto!) return false;
+
+    switch (Platform.operatingSystem) {
+      case "macos":
+      case "windows":
+      case "linux":
+        return true;
+      default:
+        return false;
+    }
   }
 
   Map<String, dynamic> get pageToMap => Map.from({
         "skip": skip,
-        "limit": limit,
+        "limit": isMultiplier() ? limit! * 2 : limit ,
       });
 }
 

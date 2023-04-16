@@ -182,7 +182,9 @@
         "githubTitle": "Github",
         "githubDescription": "Access open source repository",
         "donateTitle": "donate",
-        "donateDescription": "Donate to the developers of the BFBAN APP"
+        "donateDescription": "Donate to the developers of the BFBAN APP",
+        "licenseTitle": "Licenses",
+        "licenseDescription": "list program licenses"
       }
     },
     "networkDetection": {

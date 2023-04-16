@@ -198,13 +198,12 @@ class PlayersParame extends Paging {
       "game": game,
       "sortBy": sortBy,
       "status": status,
-      "skip": skip,
-      "limit": limit,
     };
     if (createTimeTo != null) map["createTimeTo"] = createTimeTo;
     if (createTimeFrom != null) map["createTimeFrom"] = createTimeFrom;
     if (updateTimeFrom != null) map["updateTimeFrom"] = updateTimeFrom;
     if (updateTimeTo != null) map["updateTimeTo"] = updateTimeTo;
+    map.addAll(pageToMap);
     return map;
   }
 

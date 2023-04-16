@@ -44,7 +44,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     pageNumber: 1,
     parame: PlayersParame(
       status: -1,
-      limit: 10,
+      limit: 20,
       skip: 0,
     ),
   );
@@ -189,7 +189,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     onResetPlayerParame(skip: true, page: true);
 
-    _scrollController.jumpTo(0);
+    if (_scrollController.initialScrollOffset > 0 && _scrollController.position.pixels > 0) {
+      _scrollController.jumpTo(0);
+    }
 
     await getPlayerList();
   }

@@ -1,6 +1,7 @@
 /// 应用路由
 
 import 'package:bfban/pages/detail/user_space.dart';
+import 'package:bfban/pages/license/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
 import 'package:bfban/pages/profile/setting/destock.dart';
 import 'package:bfban/pages/profile/setting/language.dart';
@@ -244,6 +245,12 @@ class Routes {
         "url": "/richedit",
         "item": (context, params) {
           return RichEditPage();
+        },
+      },
+      {
+        "url": "/license",
+        "item": (context, params) {
+          return LicensePage();
         },
       },
     ];

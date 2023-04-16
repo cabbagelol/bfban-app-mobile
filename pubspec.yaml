@@ -115,6 +115,9 @@ dependencies:
   # 广告
   # google_mobile_ads: ^1.0.1
 
+  # 许可证页 https://pub.flutter-io.cn/packages/flutter_custom_license_page
+  flutter_custom_license_page: ^0.0.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

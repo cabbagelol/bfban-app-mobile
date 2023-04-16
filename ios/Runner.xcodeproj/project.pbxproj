@@ -364,7 +364,7 @@
 				DEVELOPMENT_TEAM = 37LRT27FW9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BFBAN;
+				INFOPLIST_KEY_CFBundleDisplayName = "BFBAN Assistants";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -501,7 +501,7 @@
 				DEVELOPMENT_TEAM = 37LRT27FW9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BFBAN;
+				INFOPLIST_KEY_CFBundleDisplayName = "BFBAN Assistants";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -532,7 +532,7 @@
 				DEVELOPMENT_TEAM = 37LRT27FW9;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = BFBAN;
+				INFOPLIST_KEY_CFBundleDisplayName = "BFBAN Assistants";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
