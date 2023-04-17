@@ -33,28 +33,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
 
   /// [Response]
   /// 注销用户信息
-  Future<void> removeUserInfo(token) async {
-    Response result = await Http.request(
-      Config.httpHost["account_signout"],
-      headers: {
-        "x-access-token": token,
-      },
-      method: Http.POST,
-    );
-
-    // 擦除持久数据
-    StorageAccount().clearAll(context);
-
-    if (result.data["success"] == 1) {
-      EluiMessageComponent.success(context)(
-        child: Text(result.data!["message"]),
-      );
-      return;
-    }
-
-    EluiMessageComponent.error(context)(
-      child: Text(result.data!["code"]),
-    );
+  Future<void> removeUserInfo(UserInfoProvider userProvider) async {
+    userProvider.accountQuit(context);
   }
 
   /// [Event]
@@ -88,7 +68,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(
-      builder: (context, data, child) {
+      builder: (context,UserInfoProvider data, child) {
         return ListView(
           children: <Widget>[
             /// 用户信息板块
@@ -284,7 +264,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                         padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
                         backgroundColor: MaterialStateProperty.all(Colors.redAccent),
                       ),
-                  onPressed: () => removeUserInfo(data.getToken.toString()),
+                  onPressed: () => removeUserInfo(data),
                   child: Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [

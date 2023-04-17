@@ -105,8 +105,8 @@
         },
         "status": {
           "-1": "未知",
-          "0": "授权成功",
-          "1": "未授权",
+          "0": "准许",
+          "1": "被拒绝",
           "2": "永久拒绝",
           "3": "受限制"
         }
@@ -184,7 +184,7 @@
         "donateTitle": "捐赠",
         "donateDescription": "向BFBAN APP的开发者捐赠",
         "licenseTitle": "许可证",
-        "licenseDescription": "列出程序许可证",
+        "licenseDescription": "列出程序许可证"
       }
     },
     "networkDetection": {

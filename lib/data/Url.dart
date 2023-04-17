@@ -1,7 +1,7 @@
 enum BaseUrlProtocol { HTTP, HTTPS }
 
 class BaseUrl {
-  List protocols = ["http", "https"];
+  List<String> protocols = ["http", "https"];
   String? protocol;
   String? host = "";
   String? pathname = "";
@@ -19,4 +19,11 @@ class BaseUrl {
   String get baseHost => "$_protocol${host ?? ""}";
 
   String get url => "$_protocol${host ?? ""}${pathname ?? ""}";
+
+  set url (String url) {
+    Uri uri = Uri.parse(url);
+    protocol = uri.scheme;
+    pathname = uri.path;
+    host = uri.host;
+  }
 }

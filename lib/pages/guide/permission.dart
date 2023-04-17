@@ -47,6 +47,9 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
           Permission.notification,
         ];
         break;
+      default:
+        permissions = [];
+        break;
     }
 
     _getQueryPermanentlyState();
@@ -178,11 +181,11 @@ class _PermissionState extends State<PermissionWidget> {
     },
     PermissionStatus.denied: {
       "text": "app.guide.permission.status.1",
-      "icon": Icons.warning,
+      "icon": Icons.remove_circle,
     },
     PermissionStatus.permanentlyDenied: {
       "text": "app.guide.permission.status.2",
-      "icon": Icons.error_outlined,
+      "icon": Icons.remove_circle,
     },
     PermissionStatus.restricted: {
       "text": "app.guide.permission.status.3",
@@ -211,14 +214,13 @@ class _PermissionState extends State<PermissionWidget> {
 
   Color getPermissionColor() {
     switch (_permissionStatus) {
+      case PermissionStatus.permanentlyDenied:
       case PermissionStatus.restricted:
       case PermissionStatus.denied:
-        return Colors.yellow;
+        return Colors.redAccent;
       case PermissionStatus.granted:
       case PermissionStatus.limited:
         return Colors.green;
-      case PermissionStatus.permanentlyDenied:
-        return Colors.redAccent;
       default:
         return Colors.grey;
     }

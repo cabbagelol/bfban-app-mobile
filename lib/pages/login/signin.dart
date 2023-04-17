@@ -217,7 +217,7 @@ class _SigninPageState extends State<SigninPage> {
                                     ),
                                     right: CaptchaWidget(
                                       context: context,
-                                      seconds: 5,
+                                      seconds: 25,
                                       onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
                                     ),
                                     onChange: (data) {

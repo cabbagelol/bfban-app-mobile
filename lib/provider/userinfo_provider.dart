@@ -3,11 +3,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/elui.dart';
 
+import '../constants/api.dart';
 import '../utils/index.dart';
 
 class UserInfoProvider with ChangeNotifier {
   final UrlUtil _urlUtil = UrlUtil();
+
+  final StorageAccount _storageAccount = StorageAccount();
 
   String packageName = "login";
 
@@ -61,10 +65,40 @@ class UserInfoProvider with ChangeNotifier {
 
   /// [Event]
   /// 设置用户数据
-  setData(Map? value) {
+  void setData(Map? value) {
     _userdata = value!;
     notifyListeners();
-    return true;
+  }
+
+  /// [Event]
+  /// 账户注销
+  Future accountQuit (BuildContext context) async {
+    Response result = await Http.request(
+      Config.httpHost["account_signout"],
+      headers: {
+        "x-access-token": Http.TOKEN,
+      },
+      method: Http.POST,
+    );
+
+    _storageAccount.clearAll(context); // 擦除持久数据账户相关key
+    clear(); // 擦除状态机的账户信息
+
+    notifyListeners();
+
+
+    if (result.data["success"] == 1) {
+      EluiMessageComponent.success(context)(
+        child: Text(result.data!["message"]),
+      );
+      return result;
+    }
+
+    EluiMessageComponent.error(context)(
+      child: Text(result.data!["code"]),
+    );
+
+    return result;
   }
 
   /// [Event]

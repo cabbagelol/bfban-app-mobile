@@ -14,13 +14,10 @@ class GuideLoginPage extends StatefulWidget {
   _GuideLoginPageState createState() => _GuideLoginPageState();
 }
 
-class _GuideLoginPageState extends State<GuideLoginPage> with AutomaticKeepAliveClientMixin {
+class _GuideLoginPageState extends State<GuideLoginPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   late String username = "";
-
-  @override
-  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -29,11 +26,6 @@ class _GuideLoginPageState extends State<GuideLoginPage> with AutomaticKeepAlive
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    setState(() {
-      ProviderUtil().ofUser(context).userinfo["username"];
-    });
-
     return Consumer<UserInfoProvider>(
       builder: (BuildContext context, data, Widget? child) {
         return GestureDetector(
@@ -63,33 +55,38 @@ class _GuideLoginPageState extends State<GuideLoginPage> with AutomaticKeepAlive
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 30),
-                    Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 20,
-                              child: Text(
-                                data.isLogin ? data.userinfo["username"][0].toString() : FlutterI18n.translate(context, "signin.title")[0],
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Visibility(
-                              visible: true,
-                              child: Text(
-                                !data.isLogin ? FlutterI18n.translate(context, "signin.title") : data.userinfo["username"].toString(),
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            )
-                          ],
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              Card(
+                margin: const EdgeInsets.symmetric(horizontal: 30),
+                child: Padding(
+                  padding:  const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 20,
+                        child: Text(
+                          data.isLogin ? data.userinfo["username"][0].toString() : FlutterI18n.translate(context, "signin.title")[0],
+                          style: const TextStyle(fontSize: 20),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 10),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          !data.isLogin ? FlutterI18n.translate(context, "signin.title") : data.userinfo["username"].toString(),
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ),
+                      if (data.isLogin)
+                        TextButton(
+                          onPressed: () => data.accountQuit(context),
+                          child: Text(FlutterI18n.translate(context, "header.signout")),
+                        )
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -98,7 +95,10 @@ class _GuideLoginPageState extends State<GuideLoginPage> with AutomaticKeepAlive
             if (data.isLogin) return;
 
             // 检查登录状态
-            _urlUtil.opEnPage(context, '/login/panel');
+            _urlUtil.opEnPage(context, '/login/panel').then((value) {
+              // update state
+              setState(() {});
+            });
           },
         );
       },

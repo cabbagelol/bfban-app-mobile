@@ -64,8 +64,8 @@ class PackageProvider with ChangeNotifier {
   Future init() async {
     await getPackage();
     await getOnlinePackage();
-
     await openUpPanel();
+
     notifyListeners();
     return true;
   }

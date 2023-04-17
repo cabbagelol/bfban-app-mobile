@@ -128,28 +128,35 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
+              InkWell(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Checkbox(
+                        materialTapTargetSize: MaterialTapTargetSize.padded,
+                        value: checked,
+                        onChanged: (bool? checkBoxChecked) {
+                          setState(() {
+                            checked = checkBoxChecked!;
+                          });
+                        },
+                      ),
+                      Text(
+                        FlutterI18n.translate(context, "app.guide.agree"),
+                      )
+                    ],
+                  ),
                 ),
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Checkbox(
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      value: checked,
-                      onChanged: (bool? checkBoxChecked) {
-                        setState(() {
-                          checked = checkBoxChecked!;
-                        });
-                      },
-                    ),
-                    Text(
-                      FlutterI18n.translate(context, "app.guide.agree"),
-                    )
-                  ],
-                ),
+                onTap: () {
+                  setState(() {
+                    checked = !checked;
+                  });
+                },
               )
             ],
           );

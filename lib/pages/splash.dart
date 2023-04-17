@@ -32,6 +32,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   late double _size = 1;
 
+  Storage storage = Storage();
+
   @override
   void initState() {
     super.initState();
@@ -96,7 +98,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 初始用户数据
   Future _initUserData() async {
-    dynamic user = await Storage().get("login");
+    dynamic user = await storage.get("login");
 
     if (user != null) {
       // 数据 更新到状态机内
@@ -156,7 +158,6 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 引导
   Future<bool> _onGuide() async {
-    Storage storage = Storage();
     String guideName = "guide";
 
     setState(() {
