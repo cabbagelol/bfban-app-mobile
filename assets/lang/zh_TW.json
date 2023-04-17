@@ -1,0 +1,229 @@
+{
+  "app": {
+    "basic":  {
+      "function": {
+        "auto": {
+          "title": "自動",
+          "describe": "依照系統決定"
+        }
+      },
+      "message": {
+        "saveSuccess": "保存成功",
+        "saveError": "保存失敗"
+      },
+      "time": {
+        "seconds": "{s}秒前",
+        "minutes": "{s}分鐘前",
+        "hours": "{s}小時前",
+        "today": "今天",
+        "yesterday": "昨天",
+        "beforeYesterday": "前天",
+        "dayAgo": "{s}天前"
+      },
+      "web_site": "網站地址",
+      "setting": "設置",
+      "app_exit": "再次點擊,退出程序"
+    },
+    "media": {
+      "open": "查看",
+      "delete": "刪除",
+      "fileInfo": "詳細信息",
+      "uploadFile": "上傳文件",
+      "tab": {
+        "local": "本地",
+        "cloud": "雲圖庫"
+      }
+    },
+    "home": {
+      "scancode": "拍攝",
+      "takeLook": "隨便看看",
+      "needAccount": "此功能需要賬戶, 請先登錄",
+      "tabs": {
+        "activities": "動態",
+        "trend": "熱門案件",
+        "trace": "追踪",
+        "tourRecord": "遊覽記錄"
+      },
+      "screen": {
+        "report": "舉報",
+        "banAppeal": "申訴",
+        "signup": "新用戶",
+        "judgement": "判決"
+      },
+      "paging": "第{num}頁"
+    },
+    "splash": {
+      "guide": "初始引導",
+      "account": "加載賬戶信息",
+      "token": "用戶身份配置",
+      "message": "更新消息",
+      "version": "驗證版本服務",
+      "theme": "初始化主題",
+      "appInitial": "初始化程序應用",
+      "networkError": "應用未連接網絡，程序依賴在線服務"
+    },
+    "guide": {
+      "endNext": "完成",
+      "agreement": {
+        "title": "協議",
+        "content": "協議內容..",
+        "errorContent": "網絡錯誤無法獲取協議內容，請訪問:"
+      },
+      "login": {
+        "title": "歡迎您到來",
+        "label": "如果你已經擁有BFBAN賬戶，現在就可登錄."
+      },
+      "permission": {
+        "title": "權限",
+        "label": "依照您需求觸摸下方單元，預先授權應用權限;此處並非強制要求,在需要特定功能下程序會提示您未授權的權限詢問;一些功能不授權不影響整體APP使用",
+        "tip": "如果存在【永久拒絕】選項，可以到設置>應用>權限隨時修改",
+        "list": {
+          "camera": {
+            "name": "攝像頭",
+            "describe": "拍攝或錄製多媒體，媒體內容多為證據"
+          },
+          "audio": {
+            "name": "聲音",
+            "describe": "拍攝或錄製多媒體聲音"
+          },
+          "videos": {
+            "name": "視頻",
+            "describe": "讀取設備外部視頻"
+          },
+          "photos": {
+            "name": "相冊",
+            "describe": "讀取相冊內容，用途證據為主"
+          },
+          "storage": {
+            "name": "本地儲存",
+            "describe": "由用戶在APP內生成數據"
+          },
+          "notification": {
+            "name": "通知",
+            "describe": "程序提供外部通知"
+          }
+        },
+        "status": {
+          "-1": "未知",
+          "0": "授權成功",
+          "1": "未授權",
+          "2": "永久拒絕",
+          "3": "受限制"
+        }
+      },
+      "language": {
+        "waitDownloadHint": "請等待從遠程服務下載翻譯文件"
+      },
+      "agree": "我同意以上內容"
+    },
+    "setting": {
+      "title": "設置中心",
+      "cell": {
+        "account": {
+          "title": "賬戶",
+          "describe": "管理BFBAN的賬戶信息"
+        },
+        "media": {
+          "title": "媒體庫",
+          "describe": "在BFBAN保存以及創建文件"
+        },
+        "website": {
+          "title": "網站地址",
+          "describe": "聯BAN網站"
+        },
+        "resources": {
+          "title": "支援",
+          "describe": "程序數據由不用服務商提供"
+        }
+      },
+      "versions": {
+        "title": "版本",
+        "describe": "程序版本",
+        "currentVersion": "當前版本",
+        "newVersion": "最新版本",
+        "newVersionDescribe_new": "已經最新",
+        "newVersionDescribe_old": "過時的版本",
+        "type": "類型",
+        "superHairVersionTip": "未找到對應版本，您當前版本可能是超發版本"
+      },
+      "language": {
+        "title": "語言"
+      },
+      "theme": {
+        "title": "主題",
+        "describe": "設置程序外觀"
+      },
+      "cleanManagement": {
+        "title": "清理",
+        "describe": "清理程序持久保存文件，謹慎操作"
+      },
+      "appInfo": {
+        "title": "應用程序",
+        "describe": "打開程序應用信息"
+      },
+      "notice": {
+        "title": "通知設置",
+        "describe": "應用相應通知管理",
+        "tagstitle": "身份標籤",
+        "switch": {
+          "title": "應用推送",
+          "describe": "是否接收來自應用推送信息"
+        },
+        "site": {
+          "title": "站內推送",
+          "describe": "是否接收站內消息推送"
+        }
+      },
+      "support": {
+        "title": "支持",
+        "guide": "應用初始引導",
+        "feedbackTitle": "反饋群(612949946)",
+        "feedbackDescription": "和作者更加接近呢",
+        "githubTitle": "Github",
+        "githubDescription": "訪問開源倉庫",
+        "donateTitle": "捐贈",
+        "donateDescription": "向BFBAN APP的開發者捐贈"
+      }
+    },
+    "networkDetection": {
+      "title": "網絡監測",
+      "status": {
+        "0": "檢查中",
+        "1": "服務正常",
+        "2": "服務異常",
+        "3": "服務未知"
+      }
+    },
+    "userspace": {
+      "title": "用戶控件",
+      "introduction": "這個人很懶什麼都沒說",
+      "row": {
+        "privilege": "身份",
+        "joinTime": "加入時間",
+        "lastOnlineTime": "最後在線時間",
+        "reportCount": "舉報總數"
+      }
+    },
+    "signin": {
+      "title": "登錄",
+      "panel": {
+        "title": "BFBAN",
+        "label": "歡迎使用BFBAN APP",
+        "BfbanAccountButton": "BFBAN 賬戶登錄",
+        "cancelButton": "取消",
+        "signupButton": "註冊BFBAN賬戶"
+      },
+      "accountId": "輸入賬戶ID",
+      "password": "密碼",
+      "verificationCode": "驗證碼"
+    },
+    "search": {
+      "historySearch": "歷史搜索",
+      "hotRecommendation": "熱門推薦"
+    },
+    "richedit": {
+      "placeholder": "寫點什麼?"
+    }
+  }
+}
+
