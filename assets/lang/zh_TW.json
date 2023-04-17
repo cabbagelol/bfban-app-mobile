@@ -45,7 +45,7 @@
         "tourRecord": "遊覽記錄"
       },
       "screen": {
-        "report": "舉報",
+        "report": "檢舉",
         "banAppeal": "申訴",
         "signup": "新用戶",
         "judgement": "判決"
@@ -201,7 +201,7 @@
         "privilege": "身份",
         "joinTime": "加入時間",
         "lastOnlineTime": "最後在線時間",
-        "reportCount": "舉報總數"
+        "reportCount": "檢舉總數"
       }
     },
     "signin": {
