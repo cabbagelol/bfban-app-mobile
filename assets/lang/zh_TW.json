@@ -87,7 +87,7 @@
             "describe": "拍攝或錄製多媒體聲音"
           },
           "videos": {
-            "name": "視頻",
+            "name": "影片",
             "describe": "讀取設備外部視頻"
           },
           "photos": {
