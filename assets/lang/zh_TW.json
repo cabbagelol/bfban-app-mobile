@@ -88,7 +88,7 @@
           },
           "videos": {
             "name": "影片",
-            "describe": "讀取設備外部視頻"
+            "describe": "讀取設備外部影片"
           },
           "photos": {
             "name": "相冊",
