@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic": {
+    "basic":  {
       "function": {
         "auto": {
           "title": "automatic",
@@ -64,8 +64,6 @@
       "networkError": "The application is not connected to the network, and the program relies on online services"
     },
     "guide": {
-      "next": "Next step",
-      "back": "Previous Step",
       "endNext": "Complete",
       "agreement": {
         "title": "Usage protocol",
@@ -107,12 +105,15 @@
           }
         },
         "status": {
+          "-1": "unknown",
           "0": "Authorization succeeded",
           "1": "Unauthorized",
           "2": "Permanent Rejection",
-          "3": "restricted",
-          "-1": "unknown"
+          "3": "restricted"
         }
+      },
+      "language": {
+        "waitDownloadHint": "Please wait for the translation files to download from the remote service."
       },
       "agree": "I agree with the above"
     },
@@ -230,3 +231,4 @@
     }
   }
 }
+
