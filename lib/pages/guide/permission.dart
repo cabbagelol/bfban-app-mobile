@@ -58,7 +58,7 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
   /// 查询权限结果
   void _getQueryPermanentlyState() {
     for (var permission in permissions) {
-      // print(permission.value);
+      // !.url(permission.value);
       // TODO
     }
   }

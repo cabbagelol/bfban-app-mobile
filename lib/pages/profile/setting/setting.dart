@@ -31,7 +31,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   /// [Event]
-  /// 前往下载页面
+  /// 前往版本
   void _opEnVersionDowUrl() {
     _urlUtil.opEnPage(context, "/profile/version");
   }
@@ -43,7 +43,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   /// [Event]
-  /// 清洁
+  /// 擦除
   void _opEnDestock() {
     _urlUtil.opEnPage(context, '/profile/destock');
   }

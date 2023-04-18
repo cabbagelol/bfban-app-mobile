@@ -19,8 +19,8 @@ class Http extends ScaffoldState {
   static Dio dio = Dio();
 
   /// default options
-  static const int CONNECT_TIMEOUT = 20000;
-  static const int RECEIVE_TIMEOUT = 20000;
+  static const int CONNECT_TIMEOUT = 10000;
+  static const int RECEIVE_TIMEOUT = 10000;
 
   /// http request methods
   static const String GET = 'get';

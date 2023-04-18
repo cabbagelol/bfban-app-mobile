@@ -103,7 +103,7 @@ class _richEditPageState extends State<RichEditPage> {
                 textStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
                 controller: controller,
                 isEnabled: true,
-                minHeight: 0,
+                minHeight: 100,
                 hintTextAlign: TextAlign.start,
                 padding: EdgeInsets.zero,
                 hintTextPadding: EdgeInsets.zero,
@@ -120,7 +120,7 @@ class _richEditPageState extends State<RichEditPage> {
         child: ToolBar(
           controller: controller,
           toolBarConfig: toolBarList,
-          toolBarColor: Theme.of(context).scaffoldBackgroundColor,
+          toolBarColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(.2),
           iconColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
           activeIconColor: Theme.of(context).colorScheme.primary,
           customButtons: [
@@ -128,7 +128,7 @@ class _richEditPageState extends State<RichEditPage> {
               onTap: () => _openMediaPage(),
               child: Icon(
                 Icons.image_outlined,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).colorScheme.primary,
               ),
             )
           ],

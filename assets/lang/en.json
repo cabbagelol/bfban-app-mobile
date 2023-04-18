@@ -184,7 +184,9 @@
         "donateTitle": "donate",
         "donateDescription": "Donate to the developers of the BFBAN APP",
         "licenseTitle": "Licenses",
-        "licenseDescription": "list program licenses"
+        "licenseDescription": "list program licenses",
+        "appDocumentationTitle": "Application Documentation",
+        "appDocumentationDescription": "Help file address"
       }
     },
     "networkDetection": {
@@ -222,6 +224,9 @@
     "search": {
       "historySearch": "History Search",
       "hotRecommendation": "Hot Recommendation"
+    },
+    "richedit": {
+      "placeholder": "Write something?"
     }
   }
 }

@@ -122,6 +122,8 @@ class _ReportPageState extends State<ReportPage> {
       _urlUtil.opEnPage(context, "/report/publish_results/success").then((value) {
         switch (value) {
           case "continue":
+            break;
+          default:
             _onReset();
             break;
         }
@@ -137,6 +139,8 @@ class _ReportPageState extends State<ReportPage> {
       _urlUtil.opEnPage(context, "/report/publish_results/error").then((value) {
         switch (value) {
           case "continue":
+            break;
+          default:
             _onReset();
             break;
         }

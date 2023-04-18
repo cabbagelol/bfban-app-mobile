@@ -51,8 +51,8 @@ class LightnesTheme {
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
       dialogTheme: const DialogTheme(
-        elevation: 10,
-        backgroundColor: Color(0xff364e80),
+        elevation: 2,
+        backgroundColor: Colors.white,
         titleTextStyle: TextStyle(
           color: Colors.black,
         ),

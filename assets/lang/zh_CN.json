@@ -184,7 +184,9 @@
         "donateTitle": "捐赠",
         "donateDescription": "向BFBAN APP的开发者捐赠",
         "licenseTitle": "许可证",
-        "licenseDescription": "列出程序许可证"
+        "licenseDescription": "列出程序许可证",
+        "appDocumentationTitle": "应用文档",
+        "appDocumentationDescription": "帮助文档地址"
       }
     },
     "networkDetection": {

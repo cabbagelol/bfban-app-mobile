@@ -6,6 +6,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../provider/userinfo_provider.dart';
+import '../../widgets/wave_border.dart';
 
 class LoginPanelPage extends StatefulWidget {
   const LoginPanelPage({Key? key}) : super(key: key);
@@ -62,16 +63,24 @@ class _LoginPanelState extends State<LoginPanelPage> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 39,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image.asset(
-                      "assets/splash/splash_center_logo.png",
-                      width: 80,
-                      height: 80,
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.high,
+                WaveBorder(
+                  width: 80,
+                  maxWidth: 600,
+                  count: 6,
+                  borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
+                  borderWidth: 2,
+                  duration: const Duration(seconds: 5),
+                  child: CircleAvatar(
+                    radius: 39,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image.asset(
+                        "assets/splash/splash_center_logo.png",
+                        width: 80,
+                        height: 80,
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.high,
+                      ),
                     ),
                   ),
                 ),

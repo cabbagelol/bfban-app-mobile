@@ -113,73 +113,86 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                TextField(
-                  controller: TextEditingController(text: i.name),
-                  decoration: InputDecoration(hintText: i.name),
-                  onChanged: (data) {
-                    setState(() {
-                      i.name = data;
-                    });
-                  },
+        return StatefulBuilder(
+          builder: (context, onState) {
+            return AlertDialog(
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    TextField(
+                      controller: TextEditingController(text: i.name),
+                      decoration: InputDecoration(
+                        hintText: i.name,
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (data) {
+                        setState(() {
+                          i.name = data;
+                        });
+                      },
+                    ),
+                    DropdownButton(
+                      isExpanded: true,
+                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                      style: Theme.of(context).dropdownMenuTheme.textStyle,
+                      value: i.protocol.toString(),
+                      items: i.protocols
+                          .map((protocol) => DropdownMenuItem(
+                                value: protocol,
+                                child: Text(protocol),
+                              ))
+                          .toList(),
+                      onChanged: (currentProtocol) {
+                        onState(() {
+                          i.protocol = currentProtocol.toString();
+                        });
+                      },
+                    ),
+                    TextField(
+                      controller: TextEditingController(text: i.host),
+                      decoration: InputDecoration(
+                        hintText: i.host,
+                        border: InputBorder.none,
+                      ),
+                      minLines: 1,
+                      maxLines: 3,
+                      onChanged: (data) {
+                        setState(() {
+                          i.host = data;
+                        });
+                      },
+                    ),
+                    TextField(
+                      controller: TextEditingController(text: i.pathname),
+                      decoration: const InputDecoration(
+                        hintText: "path",
+                        border: InputBorder.none,
+                      ),
+                      minLines: 2,
+                      maxLines: 5,
+                      onChanged: (data) {
+                        setState(() {
+                          i.pathname = data;
+                        });
+                      },
+                    ),
+                  ],
                 ),
-                DropdownButton(
-                  isExpanded: true,
-                  dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                  style: Theme.of(context).dropdownMenuTheme.textStyle,
-                  value: i.protocol.toString(),
-                  items: i.protocols
-                      .map((protocol) => DropdownMenuItem(
-                            value: protocol,
-                            child: Text(protocol),
-                          ))
-                      .toList(),
-                  onChanged: (currentProtocol) {
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
                     setState(() {
-                      i.protocol = currentProtocol.toString();
+                      Config.apis.addAll({i.name: i.toBaseUrl});
                     });
+                    _onRefresh();
+                    Navigator.of(context).pop();
                   },
-                ),
-                TextField(
-                  controller: TextEditingController(text: i.host),
-                  decoration: InputDecoration(hintText: i.host),
-                  minLines: 1,
-                  maxLines: 3,
-                  onChanged: (data) {
-                    setState(() {
-                      i.host = data;
-                    });
-                  },
-                ),
-                TextField(
-                  controller: TextEditingController(text: i.pathname),
-                  decoration: const InputDecoration(hintText: "path"),
-                  minLines: 2,
-                  maxLines: 5,
-                  onChanged: (data) {
-                    setState(() {
-                      i.pathname = data;
-                    });
-                  },
+                  child: const Text('OK'),
                 ),
               ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  Config.apis.addAll({i.name: i.toBaseUrl});
-                });
-                _onRefresh();
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
+            );
+          },
         );
       },
     );
@@ -214,7 +227,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                                 EluiTagComponent(
                                   value: FlutterI18n.translate(context, "app.networkDetection.status.0"),
                                   theme: EluiTagTheme(
-                                    backgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
                                   ),
                                   color: EluiTagType.none,
                                   size: EluiTagSize.no2,

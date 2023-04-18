@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bfban/utils/index.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -101,9 +102,7 @@ class _CameraPageState extends State<CameraPage> {
               bottomActions: AwesomeBottomActions(
                 state: state,
                 onMediaTap: (mediaCapture) {
-                  print(mediaCapture.filePath);
-
-
+                  logger.i(mediaCapture.filePath);
                 },
               ),
             ),

@@ -66,10 +66,9 @@ class DarkTheme {
       unselectedWidgetColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xff111b2b),
       splashColor: Colors.transparent,
-      dialogBackgroundColor: Colors.white,
       dialogTheme: const DialogTheme(
-        elevation: 10,
-        backgroundColor: Color(0xff364e80),
+        elevation: 2,
+        backgroundColor: Color(0xff405d98),
         titleTextStyle: TextStyle(
           color: Colors.white,
         ),

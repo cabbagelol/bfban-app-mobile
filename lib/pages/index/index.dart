@@ -111,6 +111,12 @@ class _IndexPageState extends State<IndexPage> {
     _urlUtil.opEnPage(context, "/player/dbId/$random");
   }
 
+  /// [Event]
+  /// 打开网络状态
+  void _opEnNetwork () {
+    _urlUtil.opEnPage(context, "/network");
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -227,6 +233,9 @@ class _IndexPageState extends State<IndexPage> {
                       case 2:
                         _takeLook();
                         break;
+                      case 3:
+                        _opEnNetwork();
+                        break;
                     }
                   },
                   itemBuilder: (context) {
@@ -237,12 +246,10 @@ class _IndexPageState extends State<IndexPage> {
                           crossAxisAlignment: WrapCrossAlignment.center,
                           children: [
                             Icon(
-                              Icons.qr_code,
+                              Icons.camera,
                               color: Theme.of(context).iconTheme.color,
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            const SizedBox(width: 10),
                             Text(FlutterI18n.translate(context, "app.home.scancode")),
                           ],
                         ),
@@ -256,10 +263,26 @@ class _IndexPageState extends State<IndexPage> {
                               Icons.casino_outlined,
                               color: Theme.of(context).iconTheme.color,
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            const SizedBox(width: 10),
                             Text(FlutterI18n.translate(context, "app.home.takeLook")),
+                          ],
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        height: 10,
+                        child: Divider(height: 1),
+                      ),
+                      PopupMenuItem(
+                        value: 3,
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.language,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(FlutterI18n.translate(context, "app.networkDetection.title")),
                           ],
                         ),
                       ),

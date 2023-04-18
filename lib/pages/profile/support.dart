@@ -29,6 +29,12 @@ class _SupportPageState extends State<SupportPage> {
     _urlUtil.opEnPage(context, '/guide');
   }
 
+  /// [Event]
+  /// 打开网络状态
+  void _opEnNetwork () {
+    _urlUtil.opEnPage(context, "/network");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,9 +45,7 @@ class _SupportPageState extends State<SupportPage> {
         title: Text(FlutterI18n.translate(context, "app.setting.support.title")),
         actions: [
           IconButton(
-            onPressed: () {
-              _urlUtil.opEnPage(context, "/network");
-            },
+            onPressed: () => _opEnNetwork(),
             icon: const Icon(Icons.electrical_services),
           ),
         ],
@@ -98,18 +102,18 @@ class _SupportPageState extends State<SupportPage> {
           //   islink: true,
           //   onTap: () => UrlUtil().onPeUrl("https://jq.qq.com/?_wv=1027&k=kXr9z9FE"),
           // ),
-          // EluiCellComponent(
-          //   title: FlutterI18n.translate(context, "app.setting.support.donateTitle"),
-          //   label: FlutterI18n.translate(context, "app.setting.support.donateDescription"),
-          //   theme: EluiCellTheme(
-          //     titleColor: Theme.of(context).textTheme.subtitle1?.color,
-          //     labelColor: Theme.of(context).textTheme.subtitle2?.color,
-          //     linkColor: Theme.of(context).textTheme.subtitle1?.color,
-          //     backgroundColor: Theme.of(context).cardTheme.color,
-          //   ),
-          //   islink: true,
-          //   onTap: () => _urlUtil.onPeUrl("https://cabbagelol.net/%e6%8d%90%e5%8a%a9/"),
-          // ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, "app.setting.support.appDocumentationTitle"),
+            label: FlutterI18n.translate(context, "app.setting.support.appDocumentationDescription"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.subtitle1?.color,
+              labelColor: Theme.of(context).textTheme.subtitle2?.color,
+              linkColor: Theme.of(context).textTheme.subtitle1?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _urlUtil.onPeUrl("https://cabbagelol.net/%e6%8d%90%e5%8a%a9/"),
+          ),
         ],
       ),
     );
