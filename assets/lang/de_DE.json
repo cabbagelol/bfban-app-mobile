@@ -1,0 +1,233 @@
+{
+  "app": {
+    "basic":  {
+      "function": {
+        "auto": {
+          "title": "automatisch",
+          "describe": "nach System"
+        }
+      },
+      "message": {
+        "saveSuccess": "Erfolgreich gespeichert",
+        "saveError": "Speichern fehlgeschlagen"
+      },
+      "time": {
+        "seconds": "vor {s} Sekunden",
+        "minutes": "vor {s} Minuten",
+        "hours": "vor {s} Stunden",
+        "today": "Heute",
+        "yesterday": "gestern",
+        "beforeYesterday": "Vorgestern",
+        "dayAgo": "vor {s} Tagen"
+      },
+      "web_site": "Webseitenadressse",
+      "setting": "aufstellen",
+      "app_exit": "Klicken Sie erneut, um das Programm zu beenden"
+    },
+    "media": {
+      "open": "Überprüfen",
+      "delete": "löschen",
+      "fileInfo": "Einzelheiten",
+      "uploadFile": "Daten hochladen",
+      "tab": {
+        "local": "lokal",
+        "cloud": "Wolkenfotogalerie"
+      }
+    },
+    "home": {
+      "scancode": "schießen",
+      "takeLook": "nur herumschauen",
+      "needAccount": "Diese Funktion erfordert ein Konto, bitte melden Sie sich zuerst an",
+      "tabs": {
+        "activities": "dynamisch",
+        "trend": "Heiße Fälle",
+        "trace": "Schiene",
+        "tourRecord": "Browser-Verlauf"
+      },
+      "screen": {
+        "report": "Bericht",
+        "banAppeal": "appellieren",
+        "signup": "neuer Benutzer",
+        "judgement": "Beurteilung"
+      },
+      "paging": "Seite {num}"
+    },
+    "splash": {
+      "guide": "Erststart",
+      "account": "Kontoinformationen laden",
+      "token": "Konfiguration der Benutzeridentität",
+      "message": "Nachricht aktualisieren",
+      "version": "Überprüfen Sie den Versionsdienst",
+      "theme": "Initialisieren Sie das Design",
+      "appInitial": "Initialisierungsanwendung",
+      "networkError": "Die Anwendung ist nicht mit dem Netzwerk verbunden und das Programm ist auf Onlinedienste angewiesen"
+    },
+    "guide": {
+      "endNext": "Beenden",
+      "agreement": {
+        "title": "Protokoll",
+        "content": "Vereinbarung..",
+        "errorContent": "Netzwerkfehler Protokollinhalt kann nicht abgerufen werden, besuchen Sie bitte:"
+      },
+      "login": {
+        "title": "Willkommen",
+        "label": "Wenn Sie bereits ein BFBAN-Konto haben, können Sie sich jetzt anmelden."
+      },
+      "permission": {
+        "title": "Berechtigungen",
+        "label": "Berühren Sie die Einheit unten, um Anwendungsberechtigungen gemäß Ihren Anforderungen vorzuautorisieren; dies ist keine zwingende Anforderung, und das Programm fordert Sie zur Eingabe nicht autorisierter Berechtigungen auf, wenn bestimmte Funktionen erforderlich sind; einige Funktionen autorisieren nicht und wirken sich nicht auf die gesamte APP-Nutzung aus",
+        "tip": "Wenn es eine Option 【Permanent Deny】gibt, können Sie zu Einstellungen > Anwendung > Berechtigungen gehen, um sie jederzeit zu ändern",
+        "list": {
+          "camera": {
+            "name": "Kamera",
+            "describe": "Schießen oder nehmen Sie Multimedia auf, von denen die meisten Beweise sind"
+          },
+          "audio": {
+            "name": "Klang",
+            "describe": "Erfassen oder zeichnen Sie Multimedia-Sound auf"
+          },
+          "videos": {
+            "name": "Video",
+            "describe": "Lesen Sie das externe Video des Geräts"
+          },
+          "photos": {
+            "name": "Fotoalbum",
+            "describe": "Lesen Sie den Inhalt des Fotoalbums, verwenden Sie hauptsächlich Beweise"
+          },
+          "storage": {
+            "name": "lokaler Speicher",
+            "describe": "Vom Benutzer innerhalb der App generierte Daten"
+          },
+          "notification": {
+            "name": "benachrichtigen",
+            "describe": "Programm bietet externe Benachrichtigung"
+          }
+        },
+        "status": {
+          "-1": "Unbekannt",
+          "0": "erlauben",
+          "1": "Abgelehnt werden",
+          "2": "dauerhafte Ablehnung",
+          "3": "Eingeschränkt"
+        }
+      },
+      "language": {
+        "waitDownloadHint": "Bitte warten Sie, bis die Übersetzungsdateien vom Remote-Service heruntergeladen wurden"
+      },
+      "agree": "Ich stimme dem oben genannten zu"
+    },
+    "setting": {
+      "title": "Zentrum setzen",
+      "cell": {
+        "account": {
+          "title": "Konto",
+          "describe": "Verwalten Sie BFBAN-Kontoinformationen"
+        },
+        "media": {
+          "title": "Medienbibliothek",
+          "describe": "Speichern und erstellen Sie Dateien in BFBAN"
+        },
+        "website": {
+          "title": "Webseitenadressse",
+          "describe": "United BAN-Website"
+        },
+        "resources": {
+          "title": "Unterstützung",
+          "describe": "Programmdaten werden von verschiedenen Dienstanbietern bereitgestellt"
+        }
+      },
+      "versions": {
+        "title": "Ausführung",
+        "describe": "Programmversion",
+        "currentVersion": "aktuelle Version",
+        "newVersion": "Die neueste version",
+        "newVersionDescribe_new": "Bereits aktuell",
+        "newVersionDescribe_old": "veraltete Version",
+        "type": "Typ",
+        "superHairVersionTip": "Die entsprechende Version wurde nicht gefunden, Ihre aktuelle Version ist möglicherweise eine überveröffentlichte Version"
+      },
+      "language": {
+        "title": "Sprache"
+      },
+      "theme": {
+        "title": "Thema",
+        "describe": "das Erscheinungsbild des Programms festlegen"
+      },
+      "cleanManagement": {
+        "title": "Aufräumen",
+        "describe": "Cleaner speichert Dateien dauerhaft, gehen Sie mit Vorsicht vor"
+      },
+      "appInfo": {
+        "title": "Anwendung",
+        "describe": "Öffnen Sie Programmanwendungsinformationen"
+      },
+      "notice": {
+        "title": "Benachrichtigungseinstellungen",
+        "describe": "App Responsive Benachrichtigungsverwaltung",
+        "tagstitle": "Identitätskennzeichen",
+        "switch": {
+          "title": "Anwendungsschub",
+          "describe": "Ob Push-Informationen von der Anwendung empfangen werden sollen"
+        },
+        "site": {
+          "title": "Drücken Sie die Station ein",
+          "describe": "Ob Nachrichtenempfang in der Station erfolgen soll"
+        }
+      },
+      "support": {
+        "title": "Unterstützung",
+        "guide": "Erster Start der App",
+        "feedbackTitle": "Feedback-Gruppe (612949946)",
+        "feedbackDescription": "näher am Autor",
+        "githubTitle": "Github",
+        "githubDescription": "Besuchen Sie das Open-Source-Repository",
+        "donateTitle": "spenden",
+        "donateDescription": "Spende an den Entwickler der BFBAN APP",
+        "licenseTitle": "Lizenz",
+        "licenseDescription": "Programmlizenzen auflisten",
+        "appDocumentationTitle": "Bewerbungsunterlagen",
+        "appDocumentationDescription": "Adresse des Hilfedokuments"
+      }
+    },
+    "networkDetection": {
+      "title": "Netzwerküberwachung",
+      "status": {
+        "0": "Bei der Inspektion",
+        "1": "normaler Dienst",
+        "2": "Abnormaler Dienst",
+        "3": "Dienst unbekannt"
+      }
+    },
+    "userspace": {
+      "title": "Nutzerkontrolle",
+      "introduction": "Dieser Typ ist faul und sagt nichts",
+      "row": {
+        "privilege": "Identität",
+        "joinTime": "Identität",
+        "lastOnlineTime": "letzte Onlinezeit",
+        "reportCount": "Gesamtzahl der Berichte"
+      }
+    },
+    "signin": {
+      "title": "Anmeldung",
+      "panel": {
+        "title": "BFBAN",
+        "label": "Willkommen bei der BFBAN-APP",
+        "BfbanAccountButton": "Willkommen bei der BFBAN-APP",
+        "cancelButton": "Stornieren",
+        "signupButton": "BFBAN-Konto registrieren"
+      },
+      "accountId": "Konto-ID eingeben",
+      "password": "Passwort",
+      "verificationCode": "Bestätigungs-Code"
+    },
+    "search": {
+      "historySearch": "Geschichtssuche",
+      "hotRecommendation": "beliebte Empfehlung"
+    },
+    "richedit": {
+      "placeholder": "schreibe etwas"
+    }
+  }
+}
+
