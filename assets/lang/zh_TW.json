@@ -105,8 +105,8 @@
         },
         "status": {
           "-1": "未知",
-          "0": "授權成功",
-          "1": "未授權",
+          "0": "准許",
+          "1": "被拒絕",
           "2": "永久拒絕",
           "3": "受限制"
         }
@@ -182,7 +182,11 @@
         "githubTitle": "Github",
         "githubDescription": "訪問開源倉庫",
         "donateTitle": "捐贈",
-        "donateDescription": "向BFBAN APP的開發者捐贈"
+        "donateDescription": "向BFBAN APP的開發者捐贈",
+        "licenseTitle": "許可證",
+        "licenseDescription": "列出程序許可證",
+        "appDocumentationTitle": "應用文檔",
+        "appDocumentationDescription": "幫助文檔地址"
       }
     },
     "networkDetection": {
