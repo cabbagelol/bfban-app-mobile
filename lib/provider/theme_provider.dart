@@ -73,10 +73,10 @@ class ThemeProvider with ChangeNotifier {
   /// [Event]
   /// 获取储存主题
   Future<Map> getLocalTheme() async {
-    String? localTheme = await storage.get(themePackageName!);
+    StorageData? localTheme = await storage.get(themePackageName!);
 
-    if (localTheme != null) {
-      Map formjson = jsonDecode(localTheme);
+    if (localTheme.value != null) {
+      Map formjson = jsonDecode(localTheme.value);
       return formjson;
     }
 

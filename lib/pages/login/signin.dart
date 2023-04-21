@@ -107,7 +107,7 @@ class _SigninPageState extends State<SigninPage> {
 
       Future.wait([
         // 持久存用户信息
-        Storage().set("login", value: jsonEncode(d)),
+        Storage().set("login", value: d),
       ]).then((value) {
         // 持久储存 -> 状态机 -> HTTP -> Widget
 

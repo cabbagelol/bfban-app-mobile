@@ -30,6 +30,8 @@ class TranslationProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Storage storage = Storage();
+
   // 初始化
   Future init() async {
     Map _localLang = await getLocalLang();
@@ -43,24 +45,14 @@ class TranslationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // /// [Event]
-  // /// 设置语言
-  // set currentLang(value) {
-  //   data.currentLang = value;
-  //   notifyListeners();
-  // }
-  //
-  // /// [Event]
-  // /// 获取语言
-  // get currentLang => data.currentLang;
-
   // [Event]
   // 读取本地语言表
   Future<Map> getLocalLang() async {
-    dynamic local = await Storage().get(packageName);
+    StorageData languageData = await storage.get(packageName);
+    dynamic local = languageData.value;
 
     if (local != null) {
-      return jsonDecode(local);
+      return local;
     }
 
     return {};
@@ -75,7 +67,7 @@ class TranslationProvider with ChangeNotifier {
       'listConf': await getLangConf(currentLang)
     };
 
-    await Storage().set(packageName, value: jsonEncode(data));
+    await storage.set(packageName, value: data);
     return true;
   }
 

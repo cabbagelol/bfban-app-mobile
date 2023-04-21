@@ -116,6 +116,13 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
         return StatefulBuilder(
           builder: (context, onState) {
             return AlertDialog(
+              title: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: const [
+                  Icon(Icons.info),
+                  Text("\tEdit")
+                ],
+              ),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: [
@@ -126,7 +133,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                         border: InputBorder.none,
                       ),
                       onChanged: (data) {
-                        setState(() {
+                        onState(() {
                           i.name = data;
                         });
                       },

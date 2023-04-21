@@ -343,6 +343,7 @@ class _JudgementPageState extends State<JudgementPage> {
               /// S 验证码
               EluiInputComponent(
                 internalstyle: true,
+                theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
                 onChange: (data) {
                   setState(() {
                     manageStatus.parame!.captcha!.value = data["value"];

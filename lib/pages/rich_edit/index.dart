@@ -41,7 +41,8 @@ class _richEditPageState extends State<RichEditPage> {
   }
 
   Future _ready() async {
-    data = await Storage().get("richedit");
+    StorageData richeditData = await Storage().get("richedit");
+    data = richeditData.value;
 
     return data;
   }

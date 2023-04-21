@@ -26,6 +26,8 @@ import 'package:bfban/pages/rich_edit/index.dart';
 import 'package:bfban/pages/chat/chat_list.dart';
 import 'package:bfban/pages/chat/chat_detail.dart';
 
+import '../component/_customReply/customReplyEdit.dart';
+import '../component/_customReply/customReplyList.dart';
 import '../pages/camera/index.dart';
 import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
@@ -106,9 +108,7 @@ class Routes {
       {
         "url": "/account/media/selectFile",
         "item": (context, params) {
-          return MediaPage(
-            isSelectFile: true
-          );
+          return MediaPage(isSelectFile: true);
         }
       },
       {
@@ -150,6 +150,31 @@ class Routes {
         "item": (context, params) {
           return JudgementPage(
             id: params["id"][0],
+          );
+        }
+      },
+      {
+        "url": "/report/customReply/page",
+        "item": (context, params) {
+          return const CustomReplyListPage();
+        }
+      },
+      {
+        "url": "/report/customReply/edit/:data",
+        "item": (context, params) {
+          print("222222222222");
+          print(params);
+          return CustomReplyEditPage(
+            isEdit: true,
+            data: params["data"][0],
+          );
+        }
+      },
+      {
+        "url": "/report/customReply/add/",
+        "item": (context, params) {
+          return CustomReplyEditPage(
+            isEdit: false,
           );
         }
       },
@@ -244,13 +269,13 @@ class Routes {
       {
         "url": "/richedit",
         "item": (context, params) {
-          return RichEditPage();
+          return const RichEditPage();
         },
       },
       {
         "url": "/license",
         "item": (context, params) {
-          return LicensePage();
+          return const LicensePage();
         },
       },
     ];

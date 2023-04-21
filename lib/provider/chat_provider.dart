@@ -242,7 +242,7 @@ class ChatProvider with ChangeNotifier {
     data["onSwitchSiteMessage"] = messageJiguanStatus.onSwitchSiteMessage;
     data["tags"] = messageJiguanStatus.AppMessageTags;
 
-    await Storage().set(packageName, value: jsonEncode(data));
+    await Storage().set(packageName, value: data);
 
     notifyListeners();
     return true;

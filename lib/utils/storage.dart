@@ -1,4 +1,6 @@
 /// 储存
+import 'dart:convert';
+
 import 'package:bfban/constants/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -25,17 +27,17 @@ class Storage {
 
   /// [Event]
   /// 获取
-  Future<dynamic> get(String name, {type = "string", backNullValue = "none"}) async {
+  Future<StorageData> get(String name, {type = "string", backNullValue = "none"}) async {
     if (!isInit) await init();
 
-    dynamic result;
+    StorageData result = StorageData();
 
     switch (type) {
       case "none":
-        result = _prefs!.get("$_preName$name");
+        result.setData(_prefs!.get("$_preName$name"));
         break;
       case "string":
-        result = _prefs!.getString("$_preName$name");
+        result.setData(_prefs!.getString("$_preName$name"));
         break;
     }
 
@@ -52,7 +54,13 @@ class Storage {
           _prefs!.setBool("$_preName$name", value);
           break;
         case "string":
-          await _prefs!.setString("$_preName$name", value);
+          await _prefs!.setString(
+            "$_preName$name",
+            jsonEncode({
+              "time": DateTime.now().millisecondsSinceEpoch,
+              "value": value,
+            }),
+          );
           break;
       }
 
@@ -84,7 +92,7 @@ class Storage {
 
   /// [Event]
   /// 删除所有
-  Future removeAll () async {
+  Future removeAll() async {
     if (!isInit) await init();
     _prefs!.clear();
   }
@@ -95,11 +103,43 @@ class Storage {
     if (!isInit) await init();
     List keys = [];
     _prefs!.getKeys().forEach((key) {
-      keys.add({
-        "value": _prefs!.get(key),
-        "key": key
-      });
+      keys.add({"value": _prefs!.get(key), "key": key});
     });
     return keys;
+  }
+}
+
+class StorageData {
+  int? code;
+  num? time;
+  dynamic value;
+
+  StorageData({
+    this.code = 0,
+    this.time,
+    this.value,
+  });
+
+  setData(dynamic data) {
+    if (data != null) {
+      Map map = jsonDecode(data);
+      if (map["time"] != null) time = map["time"];
+      if (map["value"] != null) value = map["value"];
+    }
+    return toMap;
+  }
+
+  get toMap {
+    Map map = {"code": 0};
+    if (time == null && value == null) {
+      map["code"] = -1;
+      return map;
+    }
+
+    map.addAll({
+      "time": time,
+      "value": value,
+    });
+    return map;
   }
 }

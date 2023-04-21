@@ -214,6 +214,9 @@ class _ReplyPageState extends State<ReplyPage> {
                 internalstyle: true,
                 placeholder: FlutterI18n.translate(context, "captcha.title"),
                 maxLenght: 4,
+                theme: EluiInputTheme(
+                    textStyle: Theme.of(context).textTheme.bodyMedium
+                ),
                 right: CaptchaWidget(
                   onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),
                 ),

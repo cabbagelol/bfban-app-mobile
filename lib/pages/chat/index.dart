@@ -192,7 +192,7 @@ class _MessagePageState extends State<MessagePage> {
       loaclList["child"] = [];
     }
     loaclList["child"].add(data);
-    await Storage().set(providerMessage!.packageName, value: jsonEncode(loaclList));
+    await Storage().set(providerMessage!.packageName, value: loaclList);
   }
 
   /// [Event]

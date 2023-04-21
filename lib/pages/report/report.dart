@@ -15,6 +15,7 @@ import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/widgets/edit/game_type_radio.dart';
 
+import '../../component/_customReply/customReply.dart';
 import '../../data/index.dart';
 
 class ReportPage extends StatefulWidget {
@@ -530,39 +531,51 @@ class _ReportPageState extends State<ReportPage> {
                   width: 1,
                 ),
               ),
-              child: GestureDetector(
-                child: Container(
-                  color: Colors.white38,
-                  constraints: const BoxConstraints(
-                    minHeight: 150,
-                    maxHeight: 280,
-                  ),
-                  padding: EdgeInsets.zero,
-                  child: Stack(
-                    children: <Widget>[
-                      Html(data: reportStatus.param!.description),
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                          color: const Color.fromRGBO(0, 0, 0, 0.2),
-                          child: Center(
-                            child: TextButton.icon(
-                              icon: const Icon(Icons.edit),
-                              label: const Text(
-                                "Edit",
-                                style: TextStyle(fontSize: 18),
+              child: Column(
+                children: [
+                  Container(
+                    color: Colors.white38,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(
+                      minHeight: 100,
+                      maxHeight: 180,
+                    ),
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Html(data: reportStatus.param!.description),
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            color: const Color.fromRGBO(0, 0, 0, 0.2),
+                            child: Center(
+                              child: TextButton.icon(
+                                icon: const Icon(Icons.edit),
+                                label: const Text(
+                                  "Edit",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                onPressed: () => _opEnRichEdit(),
                               ),
-                              onPressed: () => _opEnRichEdit(),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                  const Divider(height: 1),
+                  CustomReplyWidget(
+                    onChange: (String selectTemp) {
+                      setState(() {
+                        print(selectTemp);
+                        reportStatus.param!.description = selectTemp;
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
           ),
@@ -576,6 +589,7 @@ class _ReportPageState extends State<ReportPage> {
           /// S 验证码
           EluiInputComponent(
             internalstyle: true,
+            theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
             onChange: (data) {
               setState(() {
                 reportStatus.param!.value = data["value"];

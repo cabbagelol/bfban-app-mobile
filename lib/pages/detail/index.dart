@@ -155,7 +155,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// [Event]
   /// 更新游览值
   Future _onViewd() async {
-    Map? viewed = jsonDecode(await storage.get("viewed") ?? "{}");
+    StorageData? viewed = await storage.get("viewed");
     String? id = viewedStatus.parame!.id.toString();
 
     if (id.isEmpty) return;
@@ -172,8 +172,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     );
 
     setState(() {
-      viewed![id] = DateTime.now().millisecondsSinceEpoch.toString();
-      storage.set("viewed", value: jsonEncode(viewed));
+      viewed.value[id] = DateTime.now().millisecondsSinceEpoch.toString();
+      storage.set("viewed", value: viewed);
       playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
     });
   }
@@ -235,7 +235,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       return;
     }
 
-    List? subscribesLocal = jsonDecode(await storage.get("subscribes") ?? "[]");
+    StorageData subscribeData = await storage.get("subscribes");
+    List? subscribesLocal = subscribeData.value;
     List? subscribesArray = [];
     subscribesLocal ??= [];
 
@@ -269,7 +270,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
 
     if (result.data["success"] == 1) {
       _checkSubscribesStatus(subscribesArray);
-      storage.set("subscribes", value: jsonEncode(subscribesArray));
+      storage.set("subscribes", value: subscribesArray);
     }
 
     setState(() {
@@ -617,9 +618,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                                   decoration: BoxDecoration(
                                                     color: Theme.of(context).cardTheme.color,
-                                                    border: Border.all(
-                                                        color: Theme.of(context).dividerTheme.color!
-                                                    ),
+                                                    border: Border.all(color: Theme.of(context).dividerTheme.color!),
                                                     borderRadius: BorderRadius.circular(3),
                                                   ),
                                                   child: Text(FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}")),
@@ -631,14 +630,14 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                             onPressed: () => _onSubscribes(data.isLogin),
                                             child: subscribes["load"]
                                                 ? ELuiLoadComponent(
-                                              type: "line",
-                                              lineWidth: 1,
-                                              color: Theme.of(context).textTheme.displayMedium!.color!,
-                                              size: 16,
-                                            )
+                                                    type: "line",
+                                                    lineWidth: 1,
+                                                    color: Theme.of(context).textTheme.displayMedium!.color!,
+                                                    size: 16,
+                                                  )
                                                 : subscribes["isThisUserSubscribes"]
-                                                ? const Icon(Icons.notifications_off)
-                                                : const Icon(Icons.notifications),
+                                                    ? const Icon(Icons.notifications_off)
+                                                    : const Icon(Icons.notifications),
                                           ),
                                         ],
                                       ),
@@ -807,8 +806,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                 margin: const EdgeInsets.symmetric(horizontal: 20),
                                 child: userNameList['listLoad']
                                     ? EluiVacancyComponent(
-                                  title: "-",
-                                )
+                                        title: "-",
+                                      )
                                     : _updateUserName(context, snapshot.data),
                               ),
 
@@ -895,22 +894,22 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                               // 管理员 判决
                               data.isAdmin
                                   ? const SizedBox(
-                                width: 10,
-                              )
+                                      width: 10,
+                                    )
                                   : const SizedBox(),
                               data.isAdmin
                                   ? Expanded(
-                                flex: 1,
-                                child: TextButton(
-                                  onPressed: onJudgement(),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(FlutterI18n.translate(context, "detail.info.judgement")),
-                                    ],
-                                  ),
-                                ),
-                              )
+                                      flex: 1,
+                                      child: TextButton(
+                                        onPressed: onJudgement(),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(FlutterI18n.translate(context, "detail.info.judgement")),
+                                          ],
+                                        ),
+                                      ),
+                                    )
                                   : const SizedBox(),
                             ],
                           ),

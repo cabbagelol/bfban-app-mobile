@@ -104,7 +104,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Event]
   /// 初始化
   void _onReady() async {
-    List history = jsonDecode(await Storage().get("search.history") ?? '[]');
+    StorageData searchHistoryData = await Storage().get("search.history");
+    List history = searchHistoryData.value;
 
     _getTrend();
 
@@ -288,7 +289,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       "type": searchTabsType[searchTabsIndex]["text"],
       "count": searchStatus.list.data(searchTabsType[searchTabsIndex]["text"]).length,
     });
-    Storage().set("search.history", value: jsonEncode(list));
+    Storage().set("search.history", value: list);
   }
 
   /// [Event]
@@ -301,7 +302,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       searchStatus.historyList = list;
     });
 
-    Storage().set("search.history", value: jsonEncode(list));
+    Storage().set("search.history", value: list);
   }
 
   @override

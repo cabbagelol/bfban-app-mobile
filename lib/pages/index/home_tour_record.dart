@@ -53,7 +53,8 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
   Future _getTourRecordList() async {
     if (tourRecordStatus.load!) return;
 
-    Map viewed = jsonDecode(await storage.get("viewed")) ?? {};
+    StorageData viewedData = await storage.get("viewed");
+    Map viewed = viewedData.value;
     List<TourRecordPlayerBaseData>? viewedWidgets = [];
     tourRecordStatus.list!.clear();
 
@@ -112,7 +113,8 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
   /// 选择删除
   void _selectDeleteItem() async {
     if (isEdit && selectMap.isNotEmpty) {
-      Map viewed = jsonDecode(await storage.get("viewed") ?? "{}");
+      StorageData viewedData = await storage.get("viewed");
+      Map viewed = viewedData.value;
 
       for (var i in selectMap.entries) {
         if (i.value) {
@@ -120,7 +122,7 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
         }
       }
 
-      storage.set("viewed", value: jsonEncode(viewed));
+      storage.set("viewed", value: viewed);
 
       await _getTourRecordList();
     }

@@ -20,6 +20,8 @@ class draftsPage extends StatefulWidget {
 class _draftsPageState extends State<draftsPage> {
   List draftsList = [];
 
+  Storage storage = Storage();
+
   @override
   void initState() {
     super.initState();
@@ -27,20 +29,21 @@ class _draftsPageState extends State<draftsPage> {
   }
 
   ready() async {
-    var value = await Storage().get("drafts");
+    StorageData draftsData = await storage.get("drafts");
     setState(() {
-      draftsList = jsonDecode(value);
+      draftsList = draftsData.value;
     });
   }
 
   /// 删除
   void _deleDrafts(index) async {
-    List drafts = jsonDecode(await Storage().get("drafts"));
+    StorageData draftsData = await storage.get("drafts");
+    List drafts = draftsData.value;
 
     /// 移除重复
     drafts.removeAt(index);
 
-    await Storage().set("drafts", value: jsonEncode(drafts));
+    await storage.set("drafts", value: drafts);
 
     setState(() {
       draftsList = drafts;

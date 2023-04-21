@@ -98,7 +98,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 初始用户数据
   Future _initUserData() async {
-    dynamic user = await storage.get("login");
+    StorageData loginData = await storage.get("login");
+    dynamic user = loginData.value;
 
     if (user != null) {
       // 数据 更新到状态机内
@@ -164,7 +165,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       loadTip = "app.splash.guide";
     });
 
-    dynamic guide = await storage.get(guideName);
+    StorageData guideData = await storage.get(guideName);
+    dynamic guide = guideData.value;
 
     if (guide == null) {
       _urlUtil.opEnPage(context, "/guide", transition: TransitionType.fadeIn).then((value) async {
