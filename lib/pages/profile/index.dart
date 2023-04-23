@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_license_page/flutter_custom_license_page.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
@@ -206,6 +205,21 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 ),
                 islink: true,
                 onTap: () => _urlUtil.opEnPage(context, "/account/media/"),
+              ),
+            ),
+            Visibility(
+              visible: data.isLogin,
+              child: EluiCellComponent(
+                title: FlutterI18n.translate(context, "app.setting.cell.customReply.title"),
+                label: FlutterI18n.translate(context, "app.setting.cell.customReply.describe"),
+                theme: EluiCellTheme(
+                  titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                  labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                  linkColor: Theme.of(context).textTheme.titleMedium?.color,
+                  backgroundColor: Theme.of(context).cardTheme.color,
+                ),
+                islink: true,
+                onTap: () => _urlUtil.opEnPage(context, "/report/customReply/page"),
               ),
             ),
             EluiCellComponent(

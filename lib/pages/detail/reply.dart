@@ -29,6 +29,10 @@ class ReplyPage extends StatefulWidget {
 class _ReplyPageState extends State<ReplyPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final Storage _storage = Storage();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   // 回复
   ReplyStatus replyStatus = ReplyStatus(
     load: false,
@@ -51,7 +55,10 @@ class _ReplyPageState extends State<ReplyPage> {
 
   /// [Response]
   /// 回复
-  void _onReply(isLogin) async {
+  void _onReply() async {
+    ReplyStatusParame parame = replyStatus.parame!;
+    bool isLogin = ProviderUtil().ofUser(context).isLogin;
+
     if (!isLogin) {
       EluiMessageComponent.warning(context)(
         child: Text(FlutterI18n.translate(context, "detail.info.replyManual4")),
@@ -59,7 +66,7 @@ class _ReplyPageState extends State<ReplyPage> {
       return;
     }
 
-    if (replyStatus.parame!.content!.isEmpty && replyStatus.parame!.value.isEmpty) {
+    if (parame.content!.isEmpty && parame.value.isEmpty) {
       EluiMessageComponent.warning(context)(
         child: Text(FlutterI18n.translate(context, "signup.fillIn")),
       );
@@ -100,7 +107,7 @@ class _ReplyPageState extends State<ReplyPage> {
   /// [Event]
   /// 打开编辑页面
   _opEnRichEdit() async {
-    await Storage().set("richedit", value: replyStatus.parame!.content.toString());
+    await _storage.set("richedit", value: replyStatus.parame!.content.toString());
 
     _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino).then((data) {
       /// 按下确认储存富文本编写的内容
@@ -133,96 +140,97 @@ class _ReplyPageState extends State<ReplyPage> {
                     )
                   : IconButton(
                       icon: const Icon(Icons.done),
-                      onPressed: () => _onReply(data.isLogin),
+                      onPressed: () => _onReply(),
                     ),
             ],
           ),
-          body: ListView(
-            children: [
-              EluiTipComponent(
-                type: EluiTip.warning,
-                child: Text(FlutterI18n.translate(context, "detail.info.appealManual1")),
-              ),
+          body: Form(
+            key: _formKey,
+            child: ListView(
+              children: [
+                EluiTipComponent(
+                  type: EluiTip.warning,
+                  child: Text(FlutterI18n.translate(context, "detail.info.appealManual1")),
+                ),
 
-              /// S 理由
-              EluiCellComponent(
-                title: "",
-                cont: replyStatus.parame!.content!.isEmpty
-                    ? const Icon(
-                        Icons.warning,
-                        color: Colors.yellow,
-                        size: 15,
-                      )
-                    : Container(),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                child: Card(
-                  clipBehavior: Clip.hardEdge,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(3),
-                    side: BorderSide(
-                      color: Theme.of(context).dividerTheme.color!,
-                      width: 1,
-                    ),
-                  ),
-                  child: GestureDetector(
-                    child: Container(
-                      color: Colors.white38,
-                      constraints: const BoxConstraints(
-                        minHeight: 150,
-                        maxHeight: 280,
+                /// S 理由
+                EluiCellComponent(
+                  title: "",
+                  cont: replyStatus.parame!.content!.isEmpty
+                      ? const Icon(
+                          Icons.warning,
+                          color: Colors.yellow,
+                          size: 15,
+                        )
+                      : Container(),
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Card(
+                    clipBehavior: Clip.hardEdge,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(3),
+                      side: BorderSide(
+                        color: Theme.of(context).dividerTheme.color!,
+                        width: 1,
                       ),
-                      padding: EdgeInsets.zero,
-                      child: Stack(
-                        children: <Widget>[
-                          Html(data: replyStatus.parame!.content),
-                          Positioned(
-                            top: 0,
-                            left: 0,
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              color: const Color.fromRGBO(0, 0, 0, 0.2),
-                              child: Center(
-                                child: TextButton.icon(
-                                  icon: const Icon(Icons.edit),
-                                  label: const Text(
-                                    "Edit",
-                                    style: TextStyle(fontSize: 18),
+                    ),
+                    child: GestureDetector(
+                      child: Container(
+                        color: Colors.white38,
+                        constraints: const BoxConstraints(
+                          minHeight: 150,
+                          maxHeight: 280,
+                        ),
+                        padding: EdgeInsets.zero,
+                        child: Stack(
+                          children: <Widget>[
+                            Html(data: replyStatus.parame!.content),
+                            Positioned(
+                              top: 0,
+                              left: 0,
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                color: const Color.fromRGBO(0, 0, 0, 0.2),
+                                child: Center(
+                                  child: TextButton.icon(
+                                    icon: const Icon(Icons.edit),
+                                    label: const Text(
+                                      "Edit",
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                    onPressed: () {
+                                      _opEnRichEdit();
+                                    },
                                   ),
-                                  onPressed: () {
-                                    _opEnRichEdit();
-                                  },
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
 
-              /// E 理由
-              const SizedBox(
-                height: 20,
-              ),
+                /// E 理由
+                const SizedBox(
+                  height: 20,
+                ),
 
-              EluiInputComponent(
-                internalstyle: true,
-                placeholder: FlutterI18n.translate(context, "captcha.title"),
-                maxLenght: 4,
-                theme: EluiInputTheme(
-                    textStyle: Theme.of(context).textTheme.bodyMedium
+                EluiInputComponent(
+                  internalstyle: true,
+                  placeholder: FlutterI18n.translate(context, "captcha.title"),
+                  maxLenght: 4,
+                  theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                  right: CaptchaWidget(
+                    onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),
+                  ),
+                  onChange: (data) => replyStatus.parame!.value = data["value"],
                 ),
-                right: CaptchaWidget(
-                  onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),
-                ),
-                onChange: (data) => replyStatus.parame!.value = data["value"],
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

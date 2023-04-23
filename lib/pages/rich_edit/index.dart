@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:quill_html_editor/quill_html_editor.dart';
@@ -18,7 +21,11 @@ class RichEditPage extends StatefulWidget {
 class _richEditPageState extends State<RichEditPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final Storage _storage = Storage();
+
   late String data = "";
+
+  bool richeditLoad = true;
 
   // 异步
   Future? futureBuilder;
@@ -38,12 +45,17 @@ class _richEditPageState extends State<RichEditPage> {
   void initState() {
     super.initState();
     futureBuilder = _ready();
+
+    Future.delayed(const Duration(seconds: 1)).then((value) {
+      setState(() {
+        richeditLoad = false;
+      });
+    });
   }
 
   Future _ready() async {
-    StorageData richeditData = await Storage().get("richedit");
+    StorageData richeditData = await _storage.get("richedit");
     data = richeditData.value;
-
     return data;
   }
 
@@ -94,30 +106,44 @@ class _richEditPageState extends State<RichEditPage> {
             return const NotFoundPage();
           }
 
-          return Container(
-            margin: const EdgeInsets.all(10),
-            child: SingleChildScrollView(
-              child: QuillHtmlEditor(
-                text: data,
-                hintText: FlutterI18n.translate(context, "app.richedit.placeholder"),
-                hintTextStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
-                textStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
-                controller: controller,
-                isEnabled: true,
-                minHeight: 100,
-                hintTextAlign: TextAlign.start,
-                padding: EdgeInsets.zero,
-                hintTextPadding: EdgeInsets.zero,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          return Stack(
+            children: [
+              Container(
+                margin: const EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: QuillHtmlEditor(
+                    text: data,
+                    hintText: FlutterI18n.translate(context, "app.richedit.placeholder"),
+                    hintTextStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
+                    textStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
+                    controller: controller,
+                    isEnabled: true,
+                    minHeight: 100,
+                    hintTextAlign: TextAlign.start,
+                    padding: EdgeInsets.zero,
+                    hintTextPadding: EdgeInsets.zero,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                ),
               ),
-            ),
+              if (richeditLoad)
+                Positioned.fill(
+                  child: Container(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: ELuiLoadComponent(
+                      type: "line",
+                      lineWidth: 1,
+                      color: Theme.of(context).textTheme.displayMedium!.color!,
+                      size: 16,
+                    ),
+                  ),
+                ),
+            ],
           );
         },
       ), // bo
       bottomSheet: Container(
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom
-        ),
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         child: ToolBar(
           controller: controller,
           toolBarConfig: toolBarList,

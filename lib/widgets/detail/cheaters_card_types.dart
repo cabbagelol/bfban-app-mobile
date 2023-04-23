@@ -7,6 +7,7 @@ import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -14,7 +15,8 @@ import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../constants/api.dart';
 
 /// 卡片内置公共
 class CardUtil {
@@ -24,9 +26,19 @@ class CardUtil {
   /// 自定义控件
   customRenders(contextView) {
     // 链接
-    CustomRenderMatcher linkMatcher() => (context) => context.tree.element?.localName == 'a';
+    CustomRenderMatcher linkMatcher() => (context) => context.tree.element?.localName == "a";
     // 图片
-    CustomRenderMatcher imagesMatcher() => (context) => context.tree.element?.localName == 'img';
+    CustomRenderMatcher imagesMatcher() => (context) => context.tree.element?.localName == "img";
+    // hr
+    CustomRenderMatcher dividerMatcher() => (context) => context.tree.element?.localName == "app-hr";
+    // app-icon
+    CustomRenderMatcher appIconMatcher() => (context) => context.tree.element?.localName == "app-icon";
+    // app-player
+    CustomRenderMatcher appPlayerMatcher() => (context) => context.tree.element?.localName == "app-player";
+    // app-user
+    CustomRenderMatcher appUserMatcher() => (context) => context.tree.element?.localName == "app-user";
+    // app-floor
+    CustomRenderMatcher appFloorMatcher() => (context) => context.tree.element?.localName == "app-floor";
 
     return {
       linkMatcher(): CustomRender.widget(
@@ -208,6 +220,111 @@ class CardUtil {
             ),
           );
         },
+      ),
+      dividerMatcher(): CustomRender.widget(
+        widget: (RenderContext context, buildChildren) => const Divider(height: 10),
+      ),
+      appIconMatcher(): CustomRender.widget(
+        widget: (RenderContext context, buildChildren) => Tooltip(
+          message: "APP does not support ICON rendering",
+          child: Card(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+              child: const Icon(Icons.error, size: 16),
+            ),
+          ),
+        ),
+      ),
+      appPlayerMatcher(): CustomRender.widget(
+        widget: (RenderContext context, buildChildren) {
+          String url = "${Config.apiHost["web_site"]!.url}/player/${context.tree.element!.attributes['id']}/share/card?full=true&theme=default&lang=zh-CN";
+          WebViewController webViewController = WebViewController()
+            ..setJavaScriptMode(JavaScriptMode.unrestricted)
+            ..setBackgroundColor(context.style.color!)
+            ..loadRequest(Uri.parse(url));
+
+          return ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: Container(
+              constraints: const BoxConstraints(
+                minHeight: 200,
+                maxHeight: 350,
+              ),
+              color: context.style.color!.withOpacity(.5),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 25,
+                    child: Row(
+                      textBaseline: TextBaseline.ideographic,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            url,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 12),
+                            maxLines: 1,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.widgets_outlined,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: WebViewWidget(controller: webViewController),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      appUserMatcher(): CustomRender.widget(
+        widget: (RenderContext context, buildChildren) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                child: Text("@${context.tree.element!.attributes['id']}"),
+              ),
+            ),
+            const SizedBox(height: 5),
+            EluiTipComponent(
+              type: EluiTip.warning,
+              child: const Text("APP does not support User module at the moment"),
+            )
+          ],
+        ),
+      ),
+      appFloorMatcher(): CustomRender.widget(
+        widget: (RenderContext context, buildChildren) => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Card(
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                child: Wrap(
+                  children: [
+                    const Icon(Icons.person, size: 18),
+                    Text("${context.tree.element!.attributes['id']}"),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            EluiTipComponent(
+              type: EluiTip.warning,
+              child: const Text("APP does not support floor module at the moment"),
+            )
+          ],
+        ),
       ),
     };
   }
@@ -457,14 +574,21 @@ class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
             ],
           ),
         ),
-        Text.rich(TextSpan(children: [
-          TextSpan(text: "#${widget.floor}-"),
-          WidgetSpan(
-              child: Opacity(
-            opacity: .5,
-            child: Text("${widget.data!["id"]}"),
-          )),
-        ])),
+        Text.rich(
+          TextSpan(
+            children: [
+              TextSpan(text: "#${widget.floor}"),
+              if (widget.data!["id"] != null) const TextSpan(text: "-"),
+              if (widget.data!["id"] != null)
+                WidgetSpan(
+                  child: Opacity(
+                    opacity: .5,
+                    child: Text("${widget.data!["id"]}"),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ],
     );
   }

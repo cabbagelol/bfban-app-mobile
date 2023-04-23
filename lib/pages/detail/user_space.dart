@@ -79,8 +79,6 @@ class UserSpacePageState extends State<UserSpacePage> {
     futureBuilder = _getUserSpaceInfo();
   }
 
-  // get getReports => _getReports;
-
   /// [Response]
   /// 获取站内用户数据
   Future _getUserSpaceInfo() async {
@@ -187,7 +185,17 @@ class UserSpacePageState extends State<UserSpacePage> {
 
             return Scaffold(
               appBar: AppBar(
-                title: snapshot.data["username"] != null ? Text(snapshot.data["username"]) : I18nText("account.title", child: const Text("")),
+                title: snapshot.data["username"] != null
+                    ? Column(
+                        children: [
+                          Text(snapshot.data["username"]),
+                          Text(
+                            snapshot.data["id"],
+                            style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.displayMedium!.color),
+                          ),
+                        ],
+                      )
+                    : I18nText("account.title", child: const Text("")),
                 centerTitle: true,
                 actions: [
                   PopupMenuButton(
@@ -225,13 +233,6 @@ class UserSpacePageState extends State<UserSpacePage> {
                   children: <Widget>[
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(
-                          width: 1,
-                          color: Theme.of(context).dividerTheme.color!.withOpacity(.1),
-                        ),
-                      ),
                       child: Card(
                         margin: EdgeInsets.zero,
                         child: Padding(
@@ -316,7 +317,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                   ),
                                   const SizedBox(height: 5),
                                   Text(
-                                    reportListStatus.list.length.toString(),
+                                    snapshot.data["reportnum"].toString(),
                                     style: const TextStyle(fontSize: 18),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,

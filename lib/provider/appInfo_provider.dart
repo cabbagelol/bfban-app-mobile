@@ -55,7 +55,7 @@ class NetwrokConf with ChangeNotifier {
   /// 初始化
   Future init() async {
     for (int index = 0; index < data.confList!.length; index++) {
-      await getConf(data.confList![index]);
+      await getRemoteConfiguration(data.confList![index]);
     }
 
     // 更新类
@@ -70,8 +70,8 @@ class NetwrokConf with ChangeNotifier {
   }
 
   /// [Response]
-  /// 请求获取
-  Future getConf(String fileName) async {
+  /// 获取远程配置
+  Future getRemoteConfiguration(String fileName) async {
     Response result = await Http.request(
       "config/$fileName.json",
       typeUrl: "web_site",

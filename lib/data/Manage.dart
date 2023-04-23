@@ -3,7 +3,7 @@ import 'Captcha.dart';
 /// 裁判
 class ManageStatus {
   late bool? load;
-  late ManageData? parame;
+  late ManageParame? parame;
 
   ManageStatus({
     this.load,
@@ -12,7 +12,7 @@ class ManageStatus {
 }
 
 /// 裁判参数
-class ManageData {
+class ManageParame extends Captcha {
   // 描述内容
   late String? content;
 
@@ -25,27 +25,23 @@ class ManageData {
   // 玩家id
   late String? toPlayerId;
 
-  late Captcha? captcha;
-
-  ManageData({
-    this.captcha,
+  ManageParame({
     this.content,
     this.action,
     this.cheatMethods,
     this.toPlayerId,
   });
 
-  get toMap {
-    Map map = {
+  Map<String, dynamic> get toMap {
+    Map<String, dynamic> map = {
       "data": {
         "content": content,
         "action": action,
         "toPlayerId": toPlayerId,
         "cheatMethods": ["kill", "guilt"].contains(action) ? cheatMethods : null
       },
-      "encryptCaptcha": captcha!.encryptCaptcha,
-      "captcha": captcha!.value,
     };
+    map.addAll(captchaToMap);
     return map;
   }
 }

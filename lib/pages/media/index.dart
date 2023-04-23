@@ -529,6 +529,7 @@ class _mediaPageState extends State<MediaPage> {
                               ),
                               TextButton(
                                 onPressed: () async {
+                                  _getNetworkMediaInfo();
                                   _getNetworkMediaList();
                                 },
                                 child: const Icon(Icons.restart_alt_rounded),

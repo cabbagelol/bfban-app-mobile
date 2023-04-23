@@ -19,7 +19,7 @@ enum MessageType {
 
 class ChatProvider with ChangeNotifier {
   // 包名
-  String packageName = "message";
+  String packageName = "user.chat";
 
   // 极光
   // JPush jpush = JPush();
@@ -48,6 +48,8 @@ class ChatProvider with ChangeNotifier {
     ),
     total: 0,
   );
+
+  final Storage _storage = Storage();
 
   init() {
     initJIGUANG();
@@ -217,10 +219,11 @@ class ChatProvider with ChangeNotifier {
   /// [Event]
   /// 读取本地消息内容
   Future<Map> getLocalMessage() async {
-    dynamic loacl = await Storage().get(packageName);
+    StorageData userChatData = await _storage.get(packageName);
+    dynamic localChat = userChatData.value;
 
-    if (loacl != null) {
-      return jsonDecode(loacl);
+    if (userChatData.code == 0) {
+      return localChat;
     }
 
     return {};

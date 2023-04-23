@@ -123,6 +123,10 @@
           "title": "账户",
           "describe": "管理BFBAN的账户信息"
         },
+        "customReply": {
+          "title": "自定义模板",
+          "describe": "管理自定义回复的模板"
+        },
         "media": {
           "title": "媒体库",
           "describe": "在BFBAN保存以及创建文件"

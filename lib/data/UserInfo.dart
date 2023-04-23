@@ -1,3 +1,4 @@
+import 'Paging.dart';
 import 'User.dart';
 
 /// 站内用户数据
@@ -14,10 +15,8 @@ class StationUserInfoStatus {
 }
 
 /// 站内用户参数
-class StationUserInfoParame {
+class StationUserInfoParame extends Paging {
   int? id;
-  int? skip;
-  int? limit;
 
   StationUserInfoParame({
     this.id,
@@ -25,15 +24,21 @@ class StationUserInfoParame {
     this.limit,
   });
 
-  set setId (dynamic value) => id = int.parse(value);
+  set setId(dynamic value) => id = int.parse(value);
 
-  get toMap {
-    return {
+  Map<String, dynamic> get toMap {
+    Map<String, dynamic> map = {
       "id": id,
-      "skip": skip,
-      "limit": limit,
     };
+    map.addAll(pageToMap);
+    return map;
   }
+
+  @override
+  int? skip;
+
+  @override
+  int? limit;
 }
 
 class StationUserInfoData extends StationUserBaseData {

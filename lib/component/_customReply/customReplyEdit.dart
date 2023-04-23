@@ -30,6 +30,8 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
 
   final Storage storage = Storage();
 
+  Map templateData = {};
+
   CustomReplyItem data = CustomReplyItem(
     title: "",
     content: "",
@@ -43,7 +45,6 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
   void initState() {
     if (widget.data != null) {
       _initialEditTemplate();
-      // data.mapAsObject = jsonDecode(widget.data!);
     }
     super.initState();
   }
@@ -52,11 +53,12 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
   /// 编辑模式: 初始内容
   void _initialEditTemplate() async {
     StorageData customReplyData = await storage.get("customReply");
-    List array = customReplyData.value;
+    List array = customReplyData.value ?? [];
     CustomReplyItem item = CustomReplyItem();
 
     if (widget.data == null) return;
-    item.mapAsObject = array.where(( i) => i.title == widget.data["id"]).last;
+    templateData = jsonDecode(widget.data);
+    item.mapAsObject = array.where((i) => i["title"] == templateData["id"]).last;
 
     setState(() {
       data = item;
@@ -66,43 +68,61 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
   /// [Event]
   /// 添加模板
   void _addTemplate() async {
-    dynamic p = ProviderUtil().ofLang(context);
-    List languageFrom = await p.getLangFrom();
+    dynamic ofLang = ProviderUtil().ofLang(context);
+    List languageFrom = await ofLang.getLangFrom();
 
     // 从bfban-app网站配置清单中换取与bfban网站一致的lang语言
-    data.language = languageFrom.where((i) => i["fileName"] == p.currentLang).last["name"];
+    data.language = languageFrom.where((i) => i["fileName"] == ofLang.currentLang).last["name"];
 
+    StorageData customReplyData = await storage.get("customReply");
+    List customReplyList = customReplyData.value ?? [];
+    List list = customReplyList.where((i) => i["template"] == false).toList();
+
+    // 校验是否空
     if (data.title!.isEmpty || data.content!.isEmpty) {
-      EluiMessageComponent.error(context)(child: Text("error"));
+      EluiMessageComponent.error(context)(child: const Text("Not empty"));
       return;
     }
 
-    // 编辑
-    if (widget.isEdit) {}
-
-    // 添加
-    if (!widget.isEdit) {
-      StorageData customReplyData = await storage.get("customReply");
-      List customReplyList = customReplyData.value;
-      List list = customReplyList.where((i) => i.template == true).toList();
-
-      /// 转义JSON格式，对齐bfban导出导入格式统一
-      list.add(data.objectAsMap);
-      storage.set("customReply", value: list);
-
-      EluiMessageComponent.success(context)(child: const Text("Success"));
-      Navigator.pop(context);
+    // 校验是否已有
+    if (list.where((i) => i["title"] == data.title).isNotEmpty) {
+      EluiMessageComponent.error(context)(child: const Text("Available templates"));
+      return;
     }
+
+    data.creationTime = DateTime.now().millisecondsSinceEpoch;
+
+    /// 转义JSON格式，对齐bfban导出导入格式统一
+    list.add(data.objectAsMap);
+    storage.set("customReply", value: list);
+
+    EluiMessageComponent.success(context)(child: const Text("Success"));
+    Navigator.pop(context);
   }
 
   /// [Event]
   /// 编辑模板
-  void _editTemplate() {}
+  void _editTemplate() async {
+    StorageData customReplyData = await storage.get("customReply");
+    List customReplyList = customReplyData.value ?? [];
+
+    data.mapAsObject = customReplyList.where((i) => i["title"] == templateData["id"]).last; // 继承模板内容
+    data.updateTime = DateTime.now().millisecondsSinceEpoch; // 更新时间
+
+    int index = customReplyList.indexWhere((i) => i["title"] == templateData["id"]); // 编辑模板下标
+    customReplyList.insert(index, data.objectAsMap); // 新增
+    customReplyList.removeAt(index + 1); // 删除原有
+
+    storage.set("customReply", value: customReplyList);
+
+    EluiMessageComponent.success(context)(child: const Text("Success"));
+    Navigator.pop(context);
+  }
 
   /// [Event]
   /// 确认模板
   void _done() async {
-    widget.isEdit ? _addTemplate() : _editTemplate();
+    widget.isEdit ? _editTemplate() : _addTemplate();
   }
 
   /// [Event]
@@ -139,8 +159,8 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
             child: EluiInputComponent(
               internalstyle: true,
               theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-              title: "Title",
               placeholder: "Template Title",
+              value: data.title,
               onChange: (data) {
                 setState(() {
                   this.data.title = data["value"];

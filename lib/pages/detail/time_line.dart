@@ -48,12 +48,9 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     playerTimelineStatus.parame.personaId = widget.playerStatus.data!.toMap["originPersonaId"];
 
     // 滚动视图初始
-    scrollController.addListener(() async {
+    scrollController.addListener(() {
       if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        // 非加载状态调用
-        if (!playerTimelineStatus.load!) {
-          await _getMore();
-        }
+        _getMore();
       }
     });
 
@@ -67,10 +64,11 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   Future getTimeline() async {
     if (playerTimelineStatus.load!) return;
 
+    // Future.delayed(const Duration(seconds: 0), () {
+    //   _refreshIndicatorKey.currentState!.show();
+    // });
+
     setState(() {
-      Future.delayed(const Duration(seconds: 0), () {
-        _refreshIndicatorKey.currentState!.show(atTop: true);
-      });
       playerTimelineStatus.load = true;
     });
 
@@ -97,12 +95,11 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
           // 追加数据
           if (d["result"].isNotEmpty) {
-            playerTimelineStatus.list!
-              ..addAll(d["result"])
-              ..add({
-                "pageTip": true,
-                "pageIndex": playerTimelineStatus.pageNumber!,
-              });
+            playerTimelineStatus.list!.addAll(d["result"]);
+            playerTimelineStatus.list!.add({
+              "pageTip": true,
+              "pageIndex": playerTimelineStatus.pageNumber!,
+            });
             playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
           }
         }
@@ -173,7 +170,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   /// [Event]
   /// 作弊玩家时间轴 刷新
   Future<void> _onRefreshTimeline() async {
-    // playerTimelineStatus.parame.resetPage();
+    playerTimelineStatus.parame.resetPage();
     await getTimeline();
   }
 

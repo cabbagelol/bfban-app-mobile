@@ -130,9 +130,9 @@ class StorageData {
   }
 
   get toMap {
-    Map map = {"code": 0};
+    Map map = {"code": code};
     if (time == null && value == null) {
-      map["code"] = -1;
+      code = -1;
       return map;
     }
 

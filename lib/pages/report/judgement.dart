@@ -1,3 +1,4 @@
+import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -27,13 +28,14 @@ class JudgementPage extends StatefulWidget {
 class _JudgementPageState extends State<JudgementPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final Util _util = Util();
+
   List _reportInfoCheatMethods = [];
 
   /// 裁判
   ManageStatus manageStatus = ManageStatus(
     load: false,
-    parame: ManageData(
-      captcha: Captcha(),
+    parame: ManageParame(
       content: "",
       action: "",
       cheatMethods: [],
@@ -46,19 +48,21 @@ class _JudgementPageState extends State<JudgementPage> {
   @override
   void initState() {
     super.initState();
-
-    Map cheatMethodsGlossary = ProviderUtil().ofApp(context).conf.data.cheatMethodsGlossary!;
+    AppInfoProvider app = ProviderUtil().ofApp(context);
+    Map cheatMethodsGlossary = app.conf.data.cheatMethodsGlossary!;
 
     setState(() {
       manageStatus.parame!.toPlayerId = widget.id;
-      manageStatus.parame!.action = ProviderUtil().ofApp(context).conf.data.action!["child"][0]["value"];
+      if (app.conf.data.action!["child"] != null) manageStatus.parame!.action = app.conf.data.action!["child"][0]["value"];
 
-      setState(() {
+      if (cheatMethodsGlossary["child"] != null) {
         cheatMethodsGlossary["child"].forEach((i) {
-          String _key = Util().queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
-          _cheatingTypes.add({"value": _key, "select": false});
+          setState(() {
+            String key = _util.queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
+            _cheatingTypes.add({"value": key, "select": false});
+          });
         });
-      });
+      }
     });
   }
 
@@ -81,6 +85,13 @@ class _JudgementPageState extends State<JudgementPage> {
       };
     }
 
+    if (manageStatus.parame!.value.isEmpty) {
+      return {
+        "code": -1,
+        "msg": "signin.fillEverything",
+      };
+    }
+
     return {
       "code": 0,
       "msg": "detail.messages.fillEverything",
@@ -90,11 +101,11 @@ class _JudgementPageState extends State<JudgementPage> {
   /// [Response]
   /// 发布判决
   void _onRelease() async {
-    dynamic _verification = _onVerification();
+    dynamic verification = _onVerification();
 
-    if (_verification["code"] != 0) {
+    if (verification["code"] != 0) {
       EluiMessageComponent.error(context)(
-        child: Text(FlutterI18n.translate(context, _verification["msg"])),
+        child: Text(FlutterI18n.translate(context, verification["msg"])),
       );
       return;
     }
@@ -184,24 +195,25 @@ class _JudgementPageState extends State<JudgementPage> {
         actions: [
           manageStatus.load!
               ? ElevatedButton(
-                  onPressed: () {},
-                  child: ELuiLoadComponent(
-                    type: "line",
-                    lineWidth: 2,
-                    size: 20,
-                    color: Theme.of(context).appBarTheme.iconTheme!.color!,
-                  ),
-                )
+            onPressed: () {},
+            child: ELuiLoadComponent(
+              type: "line",
+              lineWidth: 2,
+              size: 20,
+              color: Theme.of(context).appBarTheme.iconTheme!.color!,
+            ),
+          )
               : IconButton(
-                  onPressed: () => _onRelease(),
-                  icon: const Icon(Icons.done),
-                ),
+            onPressed: () => _onRelease(),
+            icon: const Icon(Icons.done),
+          ),
         ],
       ),
       body: Consumer<AppInfoProvider>(
         builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
           return ListView(
             children: [
+
               /// S 处理意见
               EluiCellComponent(title: FlutterI18n.translate(context, "detail.judgement.behavior")),
               if (appInfo.conf.data.action!["child"].length > 0)
@@ -218,7 +230,7 @@ class _JudgementPageState extends State<JudgementPage> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       child: DropdownButton(
-                        isDense: true,
+                        isDense: false,
                         isExpanded: true,
                         underline: const SizedBox(),
                         dropdownColor: Theme.of(context).bottomAppBarTheme.color,
@@ -232,7 +244,29 @@ class _JudgementPageState extends State<JudgementPage> {
                         items: appInfo.conf.data.action!["child"].map<DropdownMenuItem<String>>((i) {
                           return DropdownMenuItem(
                             value: i["value"].toString(),
-                            child: Text(FlutterI18n.translate(context, "basic.action.${i["value"]}.text")),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        FlutterI18n.translate(context, "basic.action.${i["value"]}.text"),
+                                        style: TextStyle(fontSize: FontSize.large.value),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      PrivilegesTagWidget(data: i["privilege"]),
+                                    ],
+                                  ),
+                                ),
+                                Tooltip(
+                                  message: FlutterI18n.translate(context, "basic.action.${i["value"]}.describe"),
+                                  child: const Icon(Icons.help),
+                                )
+                              ],
+                            ),
                           );
                         }).toList(),
                       ),
@@ -256,10 +290,10 @@ class _JudgementPageState extends State<JudgementPage> {
                       title: FlutterI18n.translate(context, "detail.judgement.methods"),
                       cont: _reportInfoCheatMethods.isEmpty
                           ? const Icon(
-                              Icons.warning,
-                              color: Colors.yellow,
-                              size: 15,
-                            )
+                        Icons.warning,
+                        color: Colors.yellow,
+                        size: 15,
+                      )
                           : Container(),
                     ),
                     Container(
@@ -281,10 +315,10 @@ class _JudgementPageState extends State<JudgementPage> {
                 title: FlutterI18n.translate(context, "detail.judgement.content"),
                 cont: manageStatus.parame!.content!.isEmpty
                     ? const Icon(
-                        Icons.warning,
-                        color: Colors.yellow,
-                        size: 15,
-                      )
+                  Icons.warning,
+                  color: Colors.yellow,
+                  size: 15,
+                )
                     : Container(),
               ),
               Container(
@@ -346,11 +380,11 @@ class _JudgementPageState extends State<JudgementPage> {
                 theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
                 onChange: (data) {
                   setState(() {
-                    manageStatus.parame!.captcha!.value = data["value"];
+                    manageStatus.parame!.value = data["value"];
                   });
                 },
                 right: CaptchaWidget(
-                  onChange: (Captcha captcha) => manageStatus.parame!.captcha = captcha,
+                  onChange: (Captcha captcha) => manageStatus.parame!.setCaptcha(captcha),
                 ),
                 maxLenght: 4,
                 placeholder: FlutterI18n.translate(context, "captcha.title"),

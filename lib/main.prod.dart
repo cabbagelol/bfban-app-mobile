@@ -14,7 +14,8 @@ void main() async {
       "network_service_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.gametools.network", pathname: "/api"),
     },
     jiguan: {
-      "appKey": "966c3770c8bb47ffcbaacff1",
+      // In Disuse
+      "appKey": "",
     },
     apiUpload: BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.gametools.network", pathname: "/api/"),
   );

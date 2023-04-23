@@ -101,12 +101,12 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     StorageData loginData = await storage.get("login");
     dynamic user = loginData.value;
 
-    if (user != null) {
+    if (loginData.code == 0) {
       // 数据 更新到状态机内
       setState(() {
         loadTip = "app.splash.account";
       });
-      ProviderUtil().ofUser(context).setData(jsonDecode(user));
+      ProviderUtil().ofUser(context).setData(user);
       // sleep(Duration(seconds: 1));
 
       // 消息 更新状态机

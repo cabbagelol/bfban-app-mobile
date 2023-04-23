@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../utils/index.dart';
@@ -34,7 +35,7 @@ class _customReplyPageState extends State<CustomReplyListPage> {
   /// 获取自定义模板列表
   void getCustomReplyList() async {
     StorageData customReplyData = await storage.get("customReply");
-    List localReplyList = customReplyData.value;
+    List localReplyList = customReplyData.value ?? [];
     list.clear();
     list.addAll([
       CustomReplyItem(
@@ -73,7 +74,9 @@ class _customReplyPageState extends State<CustomReplyListPage> {
     String data = jsonEncode({
       "id": i.title,
     });
-    _urlUtil.opEnPage(context, "/report/customReply/edit/$data");
+    _urlUtil.opEnPage(context, "/report/customReply/edit/$data").then((value) {
+      getCustomReplyList();
+    });
   }
 
   /// [Event]
@@ -93,18 +96,30 @@ class _customReplyPageState extends State<CustomReplyListPage> {
     });
 
     /// 转义JSON格式，对齐bfban导出导入格式统一
-    List _l = [];
+    List<Map> array = [];
     for (var i in list) {
-      _l.add(i.objectAsMap);
+      if (!i.template!) array.add(i.objectAsMap);
     }
-    storage.set("customReply", value: _l);
+    storage.set("customReply", value: array);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${list.length}/$countMax"),
+        centerTitle: true,
+        title: Column(
+          children: [
+            Text(
+              FlutterI18n.translate(context, "app.setting.cell.customReply.title"),
+              style: TextStyle(fontSize: FontSize.large.value),
+            ),
+            Text(
+              "${list.length}/$countMax",
+              style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.displayMedium!.color),
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             onPressed: () => _addTemplate(),
@@ -134,7 +149,11 @@ class _customReplyPageState extends State<CustomReplyListPage> {
                                     fontSize: 18,
                                   ),
                                 ),
-                                TextSpan(text: "${i.template! ? "\t${i.content}" : "[${i.language}]"} ${i.template! ? "" : i.creationTime}")
+                                TextSpan(text: i.template! ? "\t${i.content}\t" : "\t[${i.language}]\t"),
+                                if (i.creationTime != null && i.creationTime! > 0)
+                                  WidgetSpan(
+                                    child: TimeWidget(data: DateTime.fromMillisecondsSinceEpoch(i.creationTime as int).toString()),
+                                  )
                               ]),
                             ),
                           ),
@@ -148,7 +167,7 @@ class _customReplyPageState extends State<CustomReplyListPage> {
                               PopupMenuItem(
                                 value: 2,
                                 enabled: !i.template!,
-                                child: const Text("Dele"),
+                                child: const Text("Delete"),
                               ),
                             ],
                             onSelected: (index) {

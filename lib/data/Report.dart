@@ -51,8 +51,8 @@ class ReportListStatusParame extends Paging {
     this.limit,
   });
 
-  get toMap {
-    Map map = {
+  Map<String, dynamic> get toMap {
+    Map<String, dynamic> map = {
       "id": id,
     };
     map.addAll(pageToMap);

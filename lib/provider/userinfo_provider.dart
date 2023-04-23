@@ -13,12 +13,14 @@ class UserInfoProvider with ChangeNotifier {
 
   final StorageAccount _storageAccount = StorageAccount();
 
+  final Storage _storage = Storage();
+
   String packageName = "login";
 
   BuildContext? context;
 
   /// 用户数据
-  late Map _userdata = {
+  Map _userdata = {
     "userinfo": {},
     "token": "",
   };
@@ -46,10 +48,11 @@ class UserInfoProvider with ChangeNotifier {
   /// [Event]
   /// 初始
   Future init() async {
-    dynamic userinfo = await Storage().get(packageName);
+    StorageData loginData = await _storage.get(packageName);
+    dynamic userinfo = loginData.value;
 
     if (userinfo != null) {
-      _userdata = jsonDecode(userinfo);
+      _userdata = userinfo;
     }
 
     return _userdata;
@@ -72,7 +75,7 @@ class UserInfoProvider with ChangeNotifier {
 
   /// [Event]
   /// 账户注销
-  Future accountQuit (BuildContext context) async {
+  Future accountQuit(BuildContext context) async {
     Response result = await Http.request(
       Config.httpHost["account_signout"],
       headers: {
@@ -85,7 +88,6 @@ class UserInfoProvider with ChangeNotifier {
     clear(); // 擦除状态机的账户信息
 
     notifyListeners();
-
 
     if (result.data["success"] == 1) {
       EluiMessageComponent.success(context)(

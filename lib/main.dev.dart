@@ -11,13 +11,11 @@ void main() async {
       "web_github": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "github.com"),
       "app_web_site": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban-app.cabbagelol.net"),
       "web_site": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.gametools.network"),
-      "network_service_request": {
-        "ios": BaseUrl(protocol: BaseUrlProtocol.HTTP, host: "127.0.0.1:3000", pathname: "/api"),
-        "android": BaseUrl(protocol: BaseUrlProtocol.HTTP, host: "10.0.2.2:3000", pathname: "/api")
-      }[Platform.operatingSystem] as BaseUrl,
+      "network_service_request": {"macos": BaseUrl(protocol: BaseUrlProtocol.HTTP, host: "127.0.0.1:3000", pathname: "/api"), "ios": BaseUrl(protocol: BaseUrlProtocol.HTTP, host: "127.0.0.1:3000", pathname: "/api"), "android": BaseUrl(protocol: BaseUrlProtocol.HTTP, host: "10.0.2.2:3000", pathname: "/api")}[Platform.operatingSystem] as BaseUrl,
     },
     jiguan: {
-      "appKey": "966c3770c8bb47ffcbaacff1",
+      // In Disuse
+      "appKey": "",
     },
     apiUpload: BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.gametools.network", pathname: "/api/"),
   );

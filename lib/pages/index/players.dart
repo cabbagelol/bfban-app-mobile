@@ -165,7 +165,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   Future _onRefresh() async {
     playersStatus!.parame!.resetPage();
 
-    getPlayerList();
+    await getPlayerList();
   }
 
   /// [Event]
@@ -179,10 +179,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// [Event]
   /// tab切换
   _onSwitchTab(int index) async {
-    Future.delayed(const Duration(seconds: 0), () {
-      if (playersStatus!.parame!.skip! <= 0) _refreshIndicatorKey.currentState!.show();
-    });
-
     int value = cheaterStatus![index]["value"];
 
     playersStatus!.parame!.status = value;

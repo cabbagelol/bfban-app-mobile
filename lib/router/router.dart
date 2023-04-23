@@ -162,8 +162,6 @@ class Routes {
       {
         "url": "/report/customReply/edit/:data",
         "item": (context, params) {
-          print("222222222222");
-          print(params);
           return CustomReplyEditPage(
             isEdit: true,
             data: params["data"][0],

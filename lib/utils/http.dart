@@ -16,7 +16,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:bfban/constants/api.dart';
 
 class Http extends ScaffoldState {
-  static Dio dio = Dio();
+  static Dio dio = createInstance();
 
   /// default options
   static const int CONNECT_TIMEOUT = 10000;
@@ -71,15 +71,6 @@ class Http extends ScaffoldState {
     String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl]!.url;
     String path = "$domain/$url";
 
-    if (dio == null) {
-      Dio dio = createInstance();
-
-      // 缓存实例
-      dio.interceptors.add(DioCacheManager(CacheConfig(
-        baseUrl: Config.apiHost[typeUrl]!.baseHost.toString(),
-      )).interceptor);
-    }
-
     try {
       Response response = await dio.request(
         path,
@@ -133,18 +124,22 @@ class Http extends ScaffoldState {
   }
 
   static Dio createInstance() {
-    if (dio == null) {
-      /// 全局属性：请求前缀、连接超时时间、响应超时时间
-      BaseOptions options = BaseOptions(
-        baseUrl: '${Config.apiHost["url"]!.url}/',
-        connectTimeout: CONNECT_TIMEOUT,
-        receiveTimeout: RECEIVE_TIMEOUT,
-      );
-      dio = Dio(options);
-      dio.interceptors.add(
-        CookieManager(CookieJar()),
-      );
-    }
+    /// 全局属性：请求前缀、连接超时时间、响应超时时间
+    BaseOptions options = BaseOptions(
+      connectTimeout: CONNECT_TIMEOUT,
+      receiveTimeout: RECEIVE_TIMEOUT,
+    );
+    dio = Dio(options);
+
+    // Cookie管理
+    dio.interceptors.add(CookieManager(CookieJar()));
+
+    // 缓存实例
+    Config.apiHost.forEach((key, value) {
+      dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: value.baseHost)).interceptor);
+    });
+    // dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: Config.apiHost[typeUrl]!.baseHost)).interceptor);
+
     return dio;
   }
 

@@ -142,127 +142,123 @@ class _SigninPageState extends State<SigninPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      body: Consumer<UserInfoProvider>(
-        builder: (BuildContext context, data, Widget? child) {
-          return Stack(
-            fit: StackFit.loose,
-            children: <Widget>[
-              // Positioned(
-              //   top: 0,
-              //   bottom: 0,
-              //   child: Container(),
-              // ),
-              BackdropFilter(
-                filter: ui.ImageFilter.blur(
-                  sigmaX: 6.0,
-                  sigmaY: 6.0,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    data.isLogin
-                        ? const Center(
-                            child: Text("已登录"),
-                          )
-                        : Expanded(
-                            flex: 1,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Card(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: EluiInputComponent(
-                                    theme: EluiInputTheme(
-                                      textStyle: Theme.of(context).textTheme.bodyMedium
+      body: ClipRect(
+        child: Consumer<UserInfoProvider>(
+          builder: (BuildContext context, data, Widget? child) {
+            return Stack(
+              fit: StackFit.loose,
+              children: <Widget>[
+                // Positioned(
+                //   top: 0,
+                //   bottom: 0,
+                //   child: Container(),
+                // ),
+                BackdropFilter(
+                  filter: ui.ImageFilter.blur(
+                    sigmaX: 6.0,
+                    sigmaY: 6.0,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      data.isLogin
+                          ? const Center(
+                              child: Text("已登录"),
+                            )
+                          : Expanded(
+                              flex: 1,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Card(
+                                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                                    child: EluiInputComponent(
+                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                      placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
+                                      autofillHints: [AutofillHints.username],
+                                      onChange: (data) {
+                                        setState(() {
+                                          loginStatus.parame!.username = data["value"];
+                                        });
+                                      },
                                     ),
-                                    placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
-                                    autofillHints: [AutofillHints.username],
-                                    onChange: (data) {
-                                      setState(() {
-                                        loginStatus.parame!.username = data["value"];
-                                      });
-                                    },
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Card(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: EluiInputComponent(
-                                    theme: EluiInputTheme(
-                                        textStyle: Theme.of(context).textTheme.bodyMedium
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Card(
+                                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                                    child: EluiInputComponent(
+                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                      placeholder: FlutterI18n.translate(context, "app.signin.password"),
+                                      autofillHints: const [AutofillHints.password],
+                                      type: TextInputType.visiblePassword,
+                                      onChange: (data) => loginStatus.parame!.password = data["value"],
                                     ),
-                                    placeholder: FlutterI18n.translate(context, "app.signin.password"),
-                                    autofillHints: const [AutofillHints.password],
-                                    type: TextInputType.visiblePassword,
-                                    onChange: (data) => loginStatus.parame!.password = data["value"],
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Card(
-                                  clipBehavior: Clip.none,
-                                  margin: const EdgeInsets.symmetric(
-                                    horizontal: 20,
+                                  const SizedBox(
+                                    height: 20,
                                   ),
-                                  child: EluiInputComponent(
-                                    placeholder: FlutterI18n.translate(context, "captcha.title"),
-                                    internalstyle: true,
-                                    maxLenght: 4,
-                                    theme: EluiInputTheme(
-                                        textStyle: Theme.of(context).textTheme.bodyMedium
+                                  Card(
+                                    clipBehavior: Clip.none,
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 20,
                                     ),
-                                    right: CaptchaWidget(
-                                      context: context,
-                                      seconds: 25,
-                                      onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                    child: EluiInputComponent(
+                                      placeholder: FlutterI18n.translate(context, "captcha.title"),
+                                      internalstyle: true,
+                                      maxLenght: 4,
+                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                      right: CaptchaWidget(
+                                        context: context,
+                                        seconds: 25,
+                                        onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                      ),
+                                      onChange: (data) {
+                                        setState(() {
+                                          loginStatus.parame!.value = data["value"];
+                                        });
+                                      },
                                     ),
-                                    onChange: (data) {
-                                      setState(() {
-                                        loginStatus.parame!.value = data["value"];
-                                      });
-                                    },
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  child: TextButton(
-                    child: loginStatus.load!
-                        ? SizedBox(
-                            height: 40,
-                            child: ELuiLoadComponent(
-                              type: "line",
-                              lineWidth: 2,
-                              color: Theme.of(context).textTheme.bodyMedium!.color!,
-                              size: 25,
-                            ),
-                          )
-                        : const SizedBox(
-                            height: 40,
-                            child: Icon(
-                              Icons.done,
-                            ),
-                          ),
-                    onPressed: () => _onLogin(),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          );
-        },
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                    child: TextButton(
+                      child: loginStatus.load!
+                          ? SizedBox(
+                              height: 40,
+                              child: ELuiLoadComponent(
+                                type: "line",
+                                lineWidth: 2,
+                                color: Theme.of(context).textTheme.bodyMedium!.color!,
+                                size: 25,
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 40,
+                              child: Icon(
+                                Icons.done,
+                              ),
+                            ),
+                      onPressed: () => _onLogin(),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

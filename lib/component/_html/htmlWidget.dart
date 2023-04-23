@@ -62,6 +62,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
   Future onReady() async {
     htmlStyle = [
       {
+        "app-hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 5)),
         "body": Style(
           fontSize: FontSize(12),
         ),
@@ -71,6 +72,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
       },
       {
+        "app-hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 10)),
         "body": Style(
           fontSize: FontSize(15),
         ),
@@ -80,6 +82,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
       },
       {
+        "app-hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 15)),
         "body": Style(
           fontSize: FontSize(20),
         ),
@@ -133,9 +136,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                       height: 20,
                       child: Row(
                         children: [
-                          const Expanded(
-                            child: SizedBox(width: 1),
-                          ),
+                          const Expanded(child: SizedBox(width: 1)),
                           DropdownButton(
                             underline: Container(),
                             dropdownColor: Theme.of(context).bottomAppBarTheme.color,

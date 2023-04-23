@@ -6,6 +6,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../router/router.dart';
 import '../../utils/index.dart';
+import '../_empty/index.dart';
 import 'customReplyList.dart';
 
 class CustomReplyWidget extends StatefulWidget {
@@ -29,14 +30,6 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
 
   List<CustomReplyItem> useTemplates = [];
 
-  String useTemplatesAsString() {
-    String tmpContent = "";
-    for (var element in useTemplates) {
-      tmpContent = "$tmpContent${element.content!},";
-    }
-    return tmpContent;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -49,10 +42,20 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
   }
 
   /// [Event]
+  /// 使用模板转字符串
+  String useTemplatesAsString() {
+    String tmpContent = "";
+    for (var element in useTemplates) {
+      tmpContent = "$tmpContent${element.content!},";
+    }
+    return tmpContent;
+  }
+
+  /// [Event]
   /// 获取模板
   void _upTemplateData() async {
     StorageData customReplyData = await storage.get("customReply");
-    List localReplyList = customReplyData.value;
+    List localReplyList = customReplyData.value ?? [];
     list.clear();
     list.addAll([
       CustomReplyItem(
@@ -95,37 +98,40 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 2),
-        Container(
-          margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
-          child: Wrap(
-            runSpacing: 5,
-            spacing: 5,
-            children: list.map((i) {
-              return InkWell(
-                child: Container(
-                  constraints: const BoxConstraints(
-                    maxWidth: 150,
-                    minWidth: 80,
+        if (list.isNotEmpty)
+          Container(
+            margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
+            child: Wrap(
+              runSpacing: 5,
+              spacing: 5,
+              children: list.map((i) {
+                return InkWell(
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      maxWidth: 165,
+                      minWidth: 80,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
+                          value: useTemplates.where((element) => element.title == i.title).isNotEmpty,
+                          onChanged: (checkbox) => onCheckboxTemp(i),
+                        ),
+                        HtmlWidget(content: i.content),
+                      ],
+                    ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Checkbox(
-                        visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-                        value: useTemplates.where((element) => element.title == i.title).isNotEmpty,
-                        onChanged: (checkbox) => onCheckboxTemp(i),
-                      ),
-                      HtmlWidget(content: i.content),
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  onCheckboxTemp(i);
-                },
-              );
-            }).toList(),
-          ),
-        ),
+                  onTap: () {
+                    onCheckboxTemp(i);
+                  },
+                );
+              }).toList(),
+            ),
+          )
+        else
+          const EmptyWidget(),
         const Divider(height: 1),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -178,11 +184,11 @@ class CustomReplyItem {
       };
 
   set mapAsObject(Map data) {
-    if (data["title"]) title = data["title"];
-    if (data["content"]) content = data["content"];
-    if (data["template"]) template = data["template"];
-    if (data["updateTime"]) updateTime = data["updateTime"];
-    if (data["creationTime"]) creationTime = data["creationTime"];
-    if (data["language"]) language = data["language"];
+    if (data["title"] != null) title = data["title"];
+    if (data["content"] != null) content = data["content"];
+    if (data["template"] != null) template = data["template"];
+    if (data["updateTime"] != null) updateTime = data["updateTime"];
+    if (data["creationTime"] != null) creationTime = data["creationTime"];
+    if (data["language"] != null) language = data["language"];
   }
 }
