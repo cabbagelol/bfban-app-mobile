@@ -1,0 +1,233 @@
+{
+  "app": {
+    "basic":  {
+      "function": {
+        "auto": {
+          "title": "automatico",
+          "describe": "secondo il sistema"
+        }
+      },
+      "message": {
+        "saveSuccess": "Salvato con successo",
+        "saveError": "salvataggio fallito"
+      },
+      "time": {
+        "seconds": "{s} secondi fa",
+        "minutes": "{s} minuti fa",
+        "hours": "{s} ore fa",
+        "today": "Oggi",
+        "yesterday": "Ieri",
+        "beforeYesterday": "l'altro ieri",
+        "dayAgo": "{s} giorni fa"
+      },
+      "web_site": "indirizzo Web",
+      "setting": "impostare",
+      "app_exit": "Fare nuovamente clic per uscire dal programma"
+    },
+    "media": {
+      "open": "Controllo",
+      "delete": "eliminare",
+      "fileInfo": "dettagli",
+      "uploadFile": "caricare files",
+      "tab": {
+        "local": "Locale",
+        "cloud": "galleria fotografica nuvola"
+      }
+    },
+    "home": {
+      "scancode": "sparare",
+      "takeLook": "do solo un'occhiata",
+      "needAccount": "Questa funzione richiede un account, per favore accedi prima",
+      "tabs": {
+        "activities": "dinamico",
+        "trend": "Casi caldi",
+        "trace": "traccia",
+        "tourRecord": "cronologia di navigazione"
+      },
+      "screen": {
+        "report": "rapporto",
+        "banAppeal": "appello",
+        "signup": "nuovo utente",
+        "judgement": "giudizio"
+      },
+      "paging": "Pagina {num}"
+    },
+    "splash": {
+      "guide": "avvio iniziale",
+      "account": "Carica le informazioni sull'account",
+      "token": "Configurazione dell'identità dell'utente",
+      "message": "messaggio di aggiornamento",
+      "version": "Verifica versione servizio",
+      "theme": "Inizializza il tema",
+      "appInitial": "applicazione inizializzatore",
+      "networkError": "L'applicazione non è connessa alla rete e il programma si basa su servizi online"
+    },
+    "guide": {
+      "endNext": "Fine",
+      "agreement": {
+        "title": "protocollo",
+        "content": "Accordo..",
+        "errorContent": "Errore di rete Impossibile ottenere il contenuto del protocollo, visitare:"
+      },
+      "login": {
+        "title": "Benvenuto",
+        "label": "Se hai già un account BFBAN, puoi accedere ora."
+      },
+      "permission": {
+        "title": "autorizzazioni",
+        "label": "Toccare l'unità sottostante per pre-autorizzare le autorizzazioni dell'applicazione in base alle proprie esigenze; ​​questo non è un requisito obbligatorio e il programma richiederà autorizzazioni non autorizzate quando sono richieste funzioni specifiche; alcune funzioni non autorizzano e non influiscono sull'utilizzo complessivo dell'APP",
+        "tip": "Se è presente un'opzione【Rifiuto permanente】, puoi andare su Impostazioni > Applicazione > Autorizzazioni per modificarla in qualsiasi momento",
+        "list": {
+          "camera": {
+            "name": "Telecamera",
+            "describe": "Riprendi o registra contenuti multimediali, la maggior parte dei quali sono prove"
+          },
+          "audio": {
+            "name": "suono",
+            "describe": "Cattura o registra suoni multimediali"
+          },
+          "videos": {
+            "name": "video",
+            "describe": "Leggi il video esterno del dispositivo"
+          },
+          "photos": {
+            "name": "album di foto",
+            "describe": "Leggi il contenuto dell'album fotografico, usa principalmente prove"
+          },
+          "storage": {
+            "name": "memoria locale",
+            "describe": "Dati generati dall'utente all'interno dell'app"
+          },
+          "notification": {
+            "name": "notificare",
+            "describe": "Il programma fornisce una notifica esterna"
+          }
+        },
+        "status": {
+          "-1": "sconosciuto",
+          "0": "permesso",
+          "1": "essere rifiutato",
+          "2": "rifiuto definitivo",
+          "3": "Limitato"
+        }
+      },
+      "language": {
+        "waitDownloadHint": "Attendere il download dei file di traduzione dal servizio remoto"
+      },
+      "agree": "Sono d'accordo con quanto sopra"
+    },
+    "setting": {
+      "title": "impostare il centro",
+      "cell": {
+        "account": {
+          "title": "account",
+          "describe": "Gestisci le informazioni sull'account BFBAN"
+        },
+        "media": {
+          "title": "Libreria multimediale",
+          "describe": "Salva e crea file in BFBAN"
+        },
+        "website": {
+          "title": "indirizzo Web",
+          "describe": "Sito web United BAN"
+        },
+        "resources": {
+          "title": "supporto",
+          "describe": "I dati del programma sono forniti da diversi fornitori di servizi"
+        }
+      },
+      "versions": {
+        "title": "Versione",
+        "describe": "Versione del programma",
+        "currentVersion": "Versione attuale",
+        "newVersion": "L'ultima versione",
+        "newVersionDescribe_new": "Già aggiornato",
+        "newVersionDescribe_old": "versione obsoleta",
+        "type": "tipo",
+        "superHairVersionTip": "La versione corrispondente non è stata trovata, la versione corrente potrebbe essere una versione superata"
+      },
+      "language": {
+        "title": "lingua"
+      },
+      "theme": {
+        "title": "tema",
+        "describe": "impostare l'aspetto del programma"
+      },
+      "cleanManagement": {
+        "title": "pulire",
+        "describe": "Cleaner salva i file in modo persistente, procedere con cautela"
+      },
+      "appInfo": {
+        "title": "applicazione",
+        "describe": "Apri Informazioni sull'applicazione del programma"
+      },
+      "notice": {
+        "title": "impostazioni di notifica",
+        "describe": "Gestione delle notifiche reattiva dell'app",
+        "tagstitle": "etichetta di identità",
+        "switch": {
+          "title": "spinta dell'applicazione",
+          "describe": "Indica se ricevere informazioni push dall'applicazione"
+        },
+        "site": {
+          "title": "Spingi nella stazione",
+          "describe": "Se ricevere il messaggio push nella stazione"
+        }
+      },
+      "support": {
+        "title": "supporto",
+        "guide": "Avvio iniziale dell'app",
+        "feedbackTitle": "Gruppo di feedback (612949946)",
+        "feedbackDescription": "più vicino all'autore",
+        "githubTitle": "Github",
+        "githubDescription": "Visita il repository open source",
+        "donateTitle": "donare",
+        "donateDescription": "Dona allo sviluppatore dell'APP BFBAN",
+        "licenseTitle": "licenza",
+        "licenseDescription": "Elenca le licenze del programma",
+        "appDocumentationTitle": "documentazione della domanda",
+        "appDocumentationDescription": "Aiuto documento indirizzo"
+      }
+    },
+    "networkDetection": {
+      "title": "monitoraggio della rete",
+      "status": {
+        "0": "In ispezione",
+        "1": "servizio normale",
+        "2": "Servizio anomalo",
+        "3": "servizio sconosciuto"
+      }
+    },
+    "userspace": {
+      "title": "controllo dell'utente",
+      "introduction": "Questo ragazzo è pigro e non dice niente",
+      "row": {
+        "privilege": "identità",
+        "joinTime": "unire il tempo",
+        "lastOnlineTime": "l'ultima volta online",
+        "reportCount": "numero totale di segnalazioni"
+      }
+    },
+    "signin": {
+      "title": "Login",
+      "panel": {
+        "title": "BFBAN",
+        "label": "Benvenuto nell'APP BFBAN",
+        "BfbanAccountButton": "Accesso all'account BFBAN",
+        "cancelButton": "Annulla",
+        "signupButton": "Registra un conto BFBAN"
+      },
+      "accountId": "Inserisci l'ID account",
+      "password": "parola d'ordine",
+      "verificationCode": "codice di verifica"
+    },
+    "search": {
+      "historySearch": "Ricerca della cronologia",
+      "hotRecommendation": "raccomandazione popolare"
+    },
+    "richedit": {
+      "placeholder": "Scrivi qualcosa"
+    }
+  }
+}
+

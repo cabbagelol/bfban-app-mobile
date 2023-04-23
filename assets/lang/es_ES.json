@@ -1,0 +1,233 @@
+{
+  "app": {
+    "basic":  {
+      "function": {
+        "auto": {
+          "title": "automático",
+          "describe": "según el sistema"
+        }
+      },
+      "message": {
+        "saveSuccess": "Guardado exitosamente",
+        "saveError": "Error al guardar"
+      },
+      "time": {
+        "seconds": "hace {s} segundos",
+        "minutes": "hace {s} minutos",
+        "hours": "hace {s} horas",
+        "today": "hoy",
+        "yesterday": "ayer",
+        "beforeYesterday": "antier",
+        "dayAgo": "Hace {s} días"
+      },
+      "web_site": "dirección web",
+      "setting": "configuración",
+      "app_exit": "Haga clic de nuevo para salir del programa."
+    },
+    "media": {
+      "open": "Controlar",
+      "delete": "borrar",
+      "fileInfo": "detalles",
+      "uploadFile": "subir archivos",
+      "tab": {
+        "local": "local",
+        "cloud": "galería de fotos de nubes"
+      }
+    },
+    "home": {
+      "scancode": "para disparar",
+      "takeLook": "sólo mirando alrededor",
+      "needAccount": "Esta función requiere una cuenta, inicie sesión primero",
+      "tabs": {
+        "activities": "dinámica",
+        "trend": "Casos calientes",
+        "trace": "pista",
+        "tourRecord": "récord de gira"
+      },
+      "screen": {
+        "report": "informe",
+        "banAppeal": "apelar",
+        "signup": "Nuevo Usuario",
+        "judgement": "juicio"
+      },
+      "paging": "Página {núm}"
+    },
+    "splash": {
+      "guide": "arranque inicial",
+      "account": "Cargar información de la cuenta",
+      "token": "Configuración de identidad de usuario",
+      "message": "mensaje de actualización",
+      "version": "Verificar servicio de versión",
+      "theme": "Inicializar el tema",
+      "appInitial": "aplicación de inicialización",
+      "networkError": "La aplicación no está conectada a la red y el programa depende de los servicios en línea."
+    },
+    "guide": {
+      "endNext": "Finalizar",
+      "agreement": {
+        "title": "protocolo",
+        "content": "Acuerdo..",
+        "errorContent": "Error de red No se puede obtener el contenido del protocolo, visite:"
+      },
+      "login": {
+        "title": "bienvenido",
+        "label": "Si ya tiene una cuenta BFBAN, puede iniciar sesión ahora."
+      },
+      "permission": {
+        "title": "permisos",
+        "label": "Toque la unidad a continuación para preautorizar los permisos de la aplicación de acuerdo con sus necesidades; este no es un requisito obligatorio y el programa le pedirá permisos no autorizados cuando se requieran funciones específicas; algunas funciones no autorizan y no afectan el uso general de la APLICACIÓN",
+        "tip": "Si hay una opción 【Denegación permanente】, puede ir a Configuración > Aplicación > Permisos para modificarla en cualquier momento.",
+        "list": {
+          "camera": {
+            "name": "Cámara",
+            "describe": "Dispara o graba multimedia, la mayoría de los cuales son evidencia"
+          },
+          "audio": {
+            "name": "sonido",
+            "describe": "Captura o graba sonido multimedia"
+          },
+          "videos": {
+            "name": "video",
+            "describe": "Leer video externo del dispositivo"
+          },
+          "photos": {
+            "name": "album de fotos",
+            "describe": "Lea el contenido del álbum de fotos, principalmente use evidencia"
+          },
+          "storage": {
+            "name": "almacenamiento local",
+            "describe": "Datos generados por el usuario dentro de la aplicación"
+          },
+          "notification": {
+            "name": "notificar",
+            "describe": "El programa proporciona una notificación externa"
+          }
+        },
+        "status": {
+          "-1": "desconocido",
+          "0": "permiso",
+          "1": "ser rechazado",
+          "2": "rechazo permanente",
+          "3": "Restringido"
+        }
+      },
+      "language": {
+        "waitDownloadHint": "Espere a que se descarguen los archivos de traducción desde el servicio remoto"
+      },
+      "agree": "Estoy de acuerdo con lo anterior"
+    },
+    "setting": {
+      "title": "establecer el centro",
+      "cell": {
+        "account": {
+          "title": "cuenta",
+          "describe": "Administrar la información de la cuenta BFBAN"
+        },
+        "media": {
+          "title": "Mediateca",
+          "describe": "Guardar y crear archivos en BFBAN"
+        },
+        "website": {
+          "title": "dirección web",
+          "describe": "Sitio web de United BAN"
+        },
+        "resources": {
+          "title": "apoyo",
+          "describe": "Los datos del programa son proporcionados por diferentes proveedores de servicios."
+        }
+      },
+      "versions": {
+        "title": "Versión",
+        "describe": "Versión del programa",
+        "currentVersion": "versión actual",
+        "newVersion": "La última versión",
+        "newVersionDescribe_new": "Ya está actualizado",
+        "newVersionDescribe_old": "versión obsoleta",
+        "type": "tipo",
+        "superHairVersionTip": "No se encontró la versión correspondiente, su versión actual puede ser una versión sobreeditada"
+      },
+      "language": {
+        "title": "idioma"
+      },
+      "theme": {
+        "title": "tema",
+        "describe": "establecer la apariencia del programa"
+      },
+      "cleanManagement": {
+        "title": "limpiar",
+        "describe": "Cleaner guarda archivos de forma persistente, proceda con precaución"
+      },
+      "appInfo": {
+        "title": "solicitud",
+        "describe": "Información de la solicitud del programa abierto"
+      },
+      "notice": {
+        "title": "configuración de las notificaciones",
+        "describe": "Gestión de notificaciones sensibles a la aplicación",
+        "tagstitle": "etiqueta de identidad",
+        "switch": {
+          "title": "empuje de la aplicación",
+          "describe": "Ya sea para recibir información push de la aplicación"
+        },
+        "site": {
+          "title": "Empuje en la estación",
+          "describe": "Ya sea para recibir mensajes push en la estación"
+        }
+      },
+      "support": {
+        "title": "apoyo",
+        "guide": "Arranque inicial de la aplicación",
+        "feedbackTitle": "Grupo de comentarios (612949946)",
+        "feedbackDescription": "más cerca del autor",
+        "githubTitle": "Github",
+        "githubDescription": "Visite el repositorio de código abierto",
+        "donateTitle": "donar",
+        "donateDescription": "Donar al desarrollador de la aplicación BFBAN",
+        "licenseTitle": "licencia",
+        "licenseDescription": "Lista de licencias de programas",
+        "appDocumentationTitle": "documentación de la aplicación",
+        "appDocumentationDescription": "Dirección del documento de ayuda"
+      }
+    },
+    "networkDetection": {
+      "title": "monitoreo de red",
+      "status": {
+        "0": "en inspección",
+        "1": "servicio normal",
+        "2": "servicio anormal",
+        "3": "servicio desconocido"
+      }
+    },
+    "userspace": {
+      "title": "control de usuario",
+      "introduction": "Este tipo es flojo y no dice nada.",
+      "row": {
+        "privilege": "identidad",
+        "joinTime": "unirse a tiempo",
+        "lastOnlineTime": "última vez en línea",
+        "reportCount": "número total de informes"
+      }
+    },
+    "signin": {
+      "title": "Acceso",
+      "panel": {
+        "title": "BFBAN",
+        "label": "Bienvenido a la APLICACIÓN BFBAN",
+        "BfbanAccountButton": "Iniciar sesión en la cuenta BFBAN",
+        "cancelButton": "Cancelar",
+        "signupButton": "Registrar cuenta BFBAN"
+      },
+      "accountId": "Ingrese la identificación de la cuenta",
+      "password": "contraseña",
+      "verificationCode": "código de verificación"
+    },
+    "search": {
+      "historySearch": "Búsqueda de historial",
+      "hotRecommendation": "recomendación popular"
+    },
+    "richedit": {
+      "placeholder": "escribe algo"
+    }
+  }
+}
+
