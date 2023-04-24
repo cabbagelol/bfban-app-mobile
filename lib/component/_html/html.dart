@@ -1,9 +1,7 @@
+import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
-
-import '../../widgets/index.dart';
 
 class HtmlCore extends StatefulWidget {
   String? data;
@@ -28,12 +26,14 @@ class _HtmlCoreState extends State<HtmlCore> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((Duration time) {
+      packagingRender(context);
+    });
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    packagingRender(context);
     super.didChangeDependencies();
   }
 
@@ -43,18 +43,13 @@ class _HtmlCoreState extends State<HtmlCore> {
     String view = widget.data.toString();
     if (widget.data!.isEmpty) return;
 
-    // links
-    Iterable<RegExpMatch> links = _regular.getCheckText(RegularType.Link, widget.data);
-    for (var i in links) {
-      view = view.replaceRange(i.start, i.end, "<a href='${i.group(0)}'>${i.group(0)}</a>");
-    }
-
     // p
     Iterable<RegExpMatch> p = _regular.getCheckText(RegularType.P, widget.data);
 
     for (var i in p) {
       Iterable<RegExpMatch> abbreviations = RegExp(r'{(\S*)}').allMatches(i.group(0)!);
 
+      // p child -> hrs
       if (i.group(0).toString().contains("----")) {
         view = view.replaceFirst("<p>----</p>", "<app-hr></app-hr>");
       }
@@ -66,19 +61,26 @@ class _HtmlCoreState extends State<HtmlCore> {
 
         switch (commend) {
           case "icon":
-            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-icon icon='$value'></app-icon>");
+            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-icon icon=$value></app-icon>");
             break;
           case "player":
-            print(FlutterI18n.currentLocale(context)!.languageCode);
-            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-player id='$value' lang='zh-CN'></app-player>");
+            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-player id=$value lang=zh-CN></app-player>");
             break;
           case "user":
-            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-user id='$value'></app-user>");
+            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-user id=$value></app-user>");
             break;
           case "floor":
-            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-floor id='$value'></app-floor>");
+            view = view.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-floor id=$value></app-floor>");
             break;
         }
+      }
+    }
+
+    Iterable<RegExpMatch> links = _regular.getCheckText(RegularType.Link, widget.data);
+    for (var i in links) {
+      // Rude check if the link is from the marker
+      if (view[i.start - 2] != "=") {
+        view = view.replaceAll(RegExp(i.group(0).toString()), "<a href=${i.group(0)}>${i.group(0)}</a>");
       }
     }
 

@@ -1,12 +1,7 @@
-#
-# 下发打包
-#
-
-
 # Android
 # flutter build apk ./lib/main.prod.dart --release --obfuscate --split-debug-info=build/debug_info
 # (Google) :
-# flutter build appbundle ./lib/main.prod.dart --release --build-number 6
+# flutter build appbundle ./lib/main.prod.dart --release --build-number 13
 
 # Ios
 # (Apple) :

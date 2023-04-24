@@ -11,6 +11,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../component/_captcha/index.dart';
+import '../../component/_customReply/customReply.dart';
 import '../../widgets/edit/game_type_radio.dart';
 
 class JudgementPage extends StatefulWidget {
@@ -58,7 +59,7 @@ class _JudgementPageState extends State<JudgementPage> {
       if (cheatMethodsGlossary["child"] != null) {
         cheatMethodsGlossary["child"].forEach((i) {
           setState(() {
-            String key = _util.queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
+            String key = _util.queryCheatMethodsGlossary(i["value"]);
             _cheatingTypes.add({"value": key, "select": false});
           });
         });
@@ -149,7 +150,7 @@ class _JudgementPageState extends State<JudgementPage> {
     for (var method in _cheatingTypes) {
       list.add(GameTypeRadioWidget(
         index: method["select"],
-        child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
+        child: Text(FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.title")),
         onTap: () {
           method["select"] = method["select"] != true;
 
@@ -195,25 +196,24 @@ class _JudgementPageState extends State<JudgementPage> {
         actions: [
           manageStatus.load!
               ? ElevatedButton(
-            onPressed: () {},
-            child: ELuiLoadComponent(
-              type: "line",
-              lineWidth: 2,
-              size: 20,
-              color: Theme.of(context).appBarTheme.iconTheme!.color!,
-            ),
-          )
+                  onPressed: () {},
+                  child: ELuiLoadComponent(
+                    type: "line",
+                    lineWidth: 2,
+                    size: 20,
+                    color: Theme.of(context).appBarTheme.iconTheme!.color!,
+                  ),
+                )
               : IconButton(
-            onPressed: () => _onRelease(),
-            icon: const Icon(Icons.done),
-          ),
+                  onPressed: () => _onRelease(),
+                  icon: const Icon(Icons.done),
+                ),
         ],
       ),
       body: Consumer<AppInfoProvider>(
         builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
           return ListView(
             children: [
-
               /// S 处理意见
               EluiCellComponent(title: FlutterI18n.translate(context, "detail.judgement.behavior")),
               if (appInfo.conf.data.action!["child"].length > 0)
@@ -253,7 +253,7 @@ class _JudgementPageState extends State<JudgementPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        FlutterI18n.translate(context, "basic.action.${i["value"]}.text"),
+                                        FlutterI18n.translate(context, "basic.action.${_util.queryAction(i["value"])}.text"),
                                         style: TextStyle(fontSize: FontSize.large.value),
                                       ),
                                       const SizedBox(height: 2),
@@ -262,8 +262,8 @@ class _JudgementPageState extends State<JudgementPage> {
                                   ),
                                 ),
                                 Tooltip(
-                                  message: FlutterI18n.translate(context, "basic.action.${i["value"]}.describe"),
-                                  child: const Icon(Icons.help),
+                                  message: FlutterI18n.translate(context, "basic.action.${_util.queryAction(i["value"])}.describe"),
+                                  child: const Icon(Icons.help, size: 14),
                                 )
                               ],
                             ),
@@ -290,10 +290,10 @@ class _JudgementPageState extends State<JudgementPage> {
                       title: FlutterI18n.translate(context, "detail.judgement.methods"),
                       cont: _reportInfoCheatMethods.isEmpty
                           ? const Icon(
-                        Icons.warning,
-                        color: Colors.yellow,
-                        size: 15,
-                      )
+                              Icons.warning,
+                              color: Colors.yellow,
+                              size: 15,
+                            )
                           : Container(),
                     ),
                     Container(
@@ -315,10 +315,10 @@ class _JudgementPageState extends State<JudgementPage> {
                 title: FlutterI18n.translate(context, "detail.judgement.content"),
                 cont: manageStatus.parame!.content!.isEmpty
                     ? const Icon(
-                  Icons.warning,
-                  color: Colors.yellow,
-                  size: 15,
-                )
+                        Icons.warning,
+                        color: Colors.yellow,
+                        size: 15,
+                      )
                     : Container(),
               ),
               Container(
@@ -334,33 +334,50 @@ class _JudgementPageState extends State<JudgementPage> {
                   ),
                   child: GestureDetector(
                     child: Container(
-                      color: Colors.white38,
-                      constraints: const BoxConstraints(
-                        minHeight: 150,
-                        maxHeight: 280,
-                      ),
                       padding: EdgeInsets.zero,
-                      child: Stack(
-                        children: <Widget>[
-                          Html(data: manageStatus.parame!.content!.toString()),
-                          Positioned(
-                            top: 0,
-                            left: 0,
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              color: const Color.fromRGBO(0, 0, 0, 0.2),
-                              child: Center(
-                                child: TextButton.icon(
-                                  icon: const Icon(Icons.edit),
-                                  label: const Text(
-                                    "Edit",
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  onPressed: () => _opEnRichEdit(),
-                                ),
-                              ),
+                      child: Column(
+                        children: [
+                          Container(
+                            color: Colors.white38,
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(
+                              minHeight: 100,
+                              maxHeight: 180,
                             ),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: <Widget>[
+                                Html(data: manageStatus.parame!.content!.toString()),
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  bottom: 0,
+                                  right: 0,
+                                  child: Container(
+                                    color: const Color.fromRGBO(0, 0, 0, 0.2),
+                                    child: Center(
+                                      child: TextButton.icon(
+                                        icon: const Icon(Icons.edit),
+                                        label: const Text(
+                                          "Edit",
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        onPressed: () => _opEnRichEdit(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(height: 1),
+                          CustomReplyWidget(
+                            type: CustomReplyType.Judgement,
+                            onChange: (String selectTemp) {
+                              setState(() {
+                                manageStatus.parame!.content = selectTemp;
+                              });
+                            },
                           ),
                         ],
                       ),

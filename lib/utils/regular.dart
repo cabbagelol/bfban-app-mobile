@@ -5,12 +5,12 @@ enum RegularType { None, Link, Image, Video, Date, Mobile, P }
 class Regular {
   Map<RegularType, RegularMapItem> REGULARTYPE = {
     RegularType.Link: RegularMapItem(v: RegExp(r'(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?')),
-    RegularType.Image: RegularMapItem(v: RegExp(r'')),
     RegularType.Video: RegularMapItem(v: RegExp(r'')),
     // yyyy-MM-dd HH:mm:ss
     RegularType.Date: RegularMapItem(v: RegExp(r'/^(?:19|20)[0-9][0-9]-(?:(?:0[1-9])|(?:1[0-2]))-(?:(?:[0-2][1-9])|(?:[1-3][0-1])) (?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]:[0-5][0-9]$/')),
     RegularType.Mobile: RegularMapItem(v: RegExp(r'/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i')),
-    RegularType.P: RegularMapItem(v: RegExp(r'<p(([\s\S])*?)</p>'))
+    RegularType.P: RegularMapItem(v: RegExp(r'<p(([\s\S])*?)</p>')),
+    RegularType.Image: RegularMapItem(v: RegExp(r'<img(([\s\S])*?)</img>')),
   };
 
   /// 正则验证

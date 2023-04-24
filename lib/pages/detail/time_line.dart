@@ -85,7 +85,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
         if (playerTimelineStatus.parame.skip! <= 0) {
           playerTimelineStatus.list = d["result"];
         } else {
-          if (playerTimelineStatus.parame.skip! <= playerTimelineStatus.parame.limit!) {
+          if (d["result"].isNotEmpty && playerTimelineStatus.parame.skip! <= playerTimelineStatus.parame.limit!) {
             playerTimelineStatus.list?.add({
               "pageTip": true,
               "pageIndex": playerTimelineStatus.pageNumber!,
@@ -102,10 +102,19 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
             });
             playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
           }
+
+          // 没有更多数据
+          if (d["result"].isEmpty) {
+            int first = playerTimelineStatus.list!.length;
+            playerTimelineStatus.list!.insert(first, {
+              "pageNotContent": true,
+            });
+          }
         }
-        onMergeHistoryName();
         playerTimelineStatus.total = d["total"];
       });
+
+      _onMergeHistoryName();
     }
 
     setState(() {
@@ -113,39 +122,42 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     });
   }
 
+  /// [Event]
   /// 合并时间轴历史名称
-  void onMergeHistoryName() {
-    List? _timelineList = List.from(playerTimelineStatus.list!);
-    List? _history = widget.playerStatus.data!.history;
+  void _onMergeHistoryName() {
+    List? timelineList = List.from(playerTimelineStatus.list!);
+    List? history = widget.playerStatus.data!.history;
+
+    if (timelineList.isEmpty) return;
 
     // 处理历史名称，放置对应对应位置
-    for (int hisrotyIndex = 0; hisrotyIndex < _history!.length; hisrotyIndex++) {
-      num nameHistoryTime = DateTime.parse(_history[hisrotyIndex]["fromTime"]).millisecondsSinceEpoch;
+    for (int hisrotyIndex = 0; hisrotyIndex < history!.length; hisrotyIndex++) {
+      num nameHistoryTime = DateTime.parse(history[hisrotyIndex]["fromTime"]).millisecondsSinceEpoch;
       num prevNameTimeListTime = 0;
       num nameTimeListTime = 0;
 
-      for (int timeLineIndex = 0; timeLineIndex < _timelineList.length; timeLineIndex++) {
-        if (timeLineIndex > 0 && _timelineList[timeLineIndex - 1].containsKey("createTime")) {
-          prevNameTimeListTime = DateTime.parse(_timelineList[timeLineIndex - 1]["createTime"]).millisecondsSinceEpoch;
+      for (int timeLineIndex = 0; timeLineIndex < timelineList.length; timeLineIndex++) {
+        if (timeLineIndex > 0 && timelineList[timeLineIndex - 1].containsKey("createTime")) {
+          prevNameTimeListTime = DateTime.parse(timelineList[timeLineIndex - 1]["createTime"]).millisecondsSinceEpoch;
         }
-        nameTimeListTime = DateTime.parse(_timelineList[timeLineIndex]["createTime"]).millisecondsSinceEpoch;
+        nameTimeListTime = DateTime.parse(timelineList[timeLineIndex]["createTime"]).millisecondsSinceEpoch;
 
         // 历史名称的记录大于1，history内表示举报提交时初始名称，不应当放进timeline中
         // 索引自身历史修改日期位置，放入timeline中
-        if (hisrotyIndex >= 1 && _timelineList[timeLineIndex]["type"] != "historyUsername" && nameHistoryTime >= prevNameTimeListTime && nameHistoryTime <= nameTimeListTime) {
-          _timelineList.insert(timeLineIndex, {
+        if (hisrotyIndex >= 1 && timelineList[timeLineIndex]["type"] != "historyUsername" && nameHistoryTime >= prevNameTimeListTime && nameHistoryTime <= nameTimeListTime) {
+          timelineList.insert(timeLineIndex, {
             "type": "historyUsername",
-            "beforeUsername": _history[hisrotyIndex - 1]["originName"],
-            "nextUsername": _history[hisrotyIndex]["originName"],
-            "fromTime": _history[hisrotyIndex]["fromTime"],
+            "beforeUsername": history[hisrotyIndex - 1]["originName"],
+            "nextUsername": history[hisrotyIndex]["originName"],
+            "fromTime": history[hisrotyIndex]["fromTime"],
           });
           break;
-        } else if (hisrotyIndex >= 1 && hisrotyIndex == _history.length - 1 && _timelineList[timeLineIndex]["type"] != 'historyUsername' && nameHistoryTime >= nameTimeListTime) {
-          _timelineList.add({
+        } else if (hisrotyIndex >= 1 && hisrotyIndex == history.length - 1 && timelineList[timeLineIndex]["type"] != 'historyUsername' && nameHistoryTime >= nameTimeListTime) {
+          timelineList.add({
             "type": "historyUsername",
-            "beforeUsername": _history[hisrotyIndex - 1]["originName"],
-            "nextUsername": _history[hisrotyIndex]["originName"],
-            "fromTime": _history[hisrotyIndex]["fromTime"],
+            "beforeUsername": history[hisrotyIndex - 1]["originName"],
+            "nextUsername": history[hisrotyIndex]["originName"],
+            "fromTime": history[hisrotyIndex]["fromTime"],
           });
           break;
         }
@@ -153,8 +165,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     }
 
     setState(() {
-      _timelineList.add({"type": "button_add"});
-      playerTimelineStatus.list = _timelineList;
+      playerTimelineStatus.list = timelineList;
     });
   }
 
@@ -188,12 +199,13 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       key: _refreshIndicatorKey,
       edgeOffset: MediaQuery.of(context).padding.top,
       onRefresh: _onRefreshTimeline,
-      child: ListView.builder(
+      child: ListView(
         controller: scrollController,
-        itemCount: playerTimelineStatus.list!.length,
-        itemBuilder: (BuildContext context, int index) {
-          if (index < playerTimelineStatus.list!.length) {
-            var timeLineItem = playerTimelineStatus.list![index];
+        children: playerTimelineStatus.list!.asMap().entries.map((data) {
+          int index = data.key;
+
+          if (data.key < playerTimelineStatus.list!.length) {
+            var timeLineItem = data.value;
 
             // 分页提示
             if (timeLineItem["pageTip"] != null) {
@@ -216,16 +228,37 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
               );
             }
 
+            // 无更多数据
+            if (timeLineItem["pageNotContent"] != null) {
+              return Column(
+                children: [
+                  const Divider(height: 1),
+                  SizedBox(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        FlutterI18n.translate(context, "basic.tip.notContent"),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            }
+
             switch (timeLineItem["type"]) {
               case "reply":
-              // 回复
+                // 回复
                 return CheatUserCheatersCard(
                   onReplySucceed: _onReplySucceed,
                 )
                   ..data = timeLineItem
                   ..index = index;
               case "report":
-              // 举报卡片
+                // 举报卡片
                 return CheatReportsCard(
                   onReplySucceed: _onReplySucceed,
                 )
@@ -251,7 +284,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
           }
 
           return Container();
-        },
+        }).toList(),
       ),
     );
   }

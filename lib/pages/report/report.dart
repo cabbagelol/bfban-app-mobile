@@ -33,6 +33,8 @@ class ReportPage extends StatefulWidget {
 class _ReportPageState extends State<ReportPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final Util _util = Util();
+
   ReportStatus reportStatus = ReportStatus(
     load: false,
     param: ReportStatusParam(
@@ -78,7 +80,7 @@ class _ReportPageState extends State<ReportPage> {
     setState(() {
       if (cheatMethodsGlossary["child"] != null) {
         cheatMethodsGlossary["child"].forEach((i) {
-          String _key = Util().queryCheatMethodsGlossary(i["value"], cheatMethodsGlossary["child"]);
+          String _key = Util().queryCheatMethodsGlossary(i["value"]);
           _cheatingTypes.add({"value": _key, "select": false});
         });
       }
@@ -227,8 +229,8 @@ class _ReportPageState extends State<ReportPage> {
       widgets.add(GameTypeRadioWidget(
         index: method["select"],
         child: Tooltip(
-          message: FlutterI18n.translate(context, "cheatMethods.${method["value"]}.describe"),
-          child: Text(FlutterI18n.translate(context, "cheatMethods.${method["value"]}.title")),
+          message: FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.describe"),
+          child: Text(FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.title")),
         ),
         onTap: () {
           setState(() {
@@ -568,9 +570,9 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                   const Divider(height: 1),
                   CustomReplyWidget(
+                    type: CustomReplyType.General,
                     onChange: (String selectTemp) {
                       setState(() {
-                        print(selectTemp);
                         reportStatus.param!.description = selectTemp;
                       });
                     },

@@ -300,7 +300,9 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 class WidgetStateText extends StatelessWidget {
   final Map? itemData;
 
-  const WidgetStateText({
+  final Util _util = Util();
+
+  WidgetStateText({
     Key? key,
     this.itemData,
   }) : super(key: key);
@@ -338,14 +340,12 @@ class WidgetStateText extends StatelessWidget {
           children: <Widget>[
             Text("${FlutterI18n.translate(context, "detail.info.judge")}\t", style: textile),
             Text("${itemData!["toPlayerName"]}", style: textile),
-            Text(FlutterI18n.translate(context, "basic.action.${itemData!["action"]}.text"), style: textile),
+            Text(FlutterI18n.translate(context, "basic.action.${_util.queryAction(itemData!["action"])}.text"), style: textile),
           ],
         );
       case "banAppeal":
         return Wrap(
-          children: [
-            Text(FlutterI18n.translate(context, "detail.appeal.info.content"), style: textile)
-          ],
+          children: [Text(FlutterI18n.translate(context, "detail.appeal.info.content"), style: textile)],
         );
     }
 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/index.dart';
 
 class HtmlLink extends StatelessWidget {
   final UrlUtil _urlUtil = UrlUtil();
+
+  RenderContext? renderContext;
 
   String? url;
 
@@ -14,10 +17,26 @@ class HtmlLink extends StatelessWidget {
 
   HtmlLink({
     Key? key,
+    this.renderContext,
     required this.url,
     this.text,
     this.style,
   }) : super(key: key);
+
+  /// [Event]
+  Widget linkIcon() {
+    switch (Uri(path: url).scheme) {
+      case "http":
+      case "https":
+        return const Icon(Icons.link, size: 15);
+      case "mailto":
+        return const Icon(Icons.email, size: 15);
+      case "sms":
+        return const Icon(Icons.sms, size: 15);
+      default:
+        return const Icon(Icons.link, size: 15);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,16 +47,16 @@ class HtmlLink extends StatelessWidget {
             WidgetSpan(
               child: Container(
                 padding: const EdgeInsets.only(right: 5),
-                child: const Icon(Icons.link, size: 15),
+                child: linkIcon(),
               ),
             ),
             TextSpan(
-              text: text ?? url.toString().trim(),
+              text: (text ?? url).toString().trim(),
               style: (style ?? const TextStyle()).copyWith(
+                color: renderContext?.style.color ?? Colors.blue,
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.dotted,
               ),
-
             ),
           ],
         ),

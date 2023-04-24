@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../utils/index.dart';
+
 class CheatMethodsTagWidget extends StatefulWidget {
   late List data;
 
@@ -15,6 +17,8 @@ class CheatMethodsTagWidget extends StatefulWidget {
 }
 
 class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
+  final Util _util = Util();
+
   List methods = [];
 
   @override
@@ -31,19 +35,19 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
       spacing: 3,
       children: methods.isEmpty
           ? [
-              EluiTagComponent(
-                color: EluiTagType.none,
-                size: EluiTagSize.no2,
-                theme: EluiTagTheme(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  textColor: Theme.of(context).textTheme.displayMedium!.color!,
-                ),
-                value: "N/A",
-              )
-            ]
+        EluiTagComponent(
+          color: EluiTagType.none,
+          size: EluiTagSize.no2,
+          theme: EluiTagTheme(
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            textColor: Theme.of(context).textTheme.displayMedium!.color!,
+          ),
+          value: "N/A",
+        )
+      ]
           : methods.map<Widget>((i) {
-              return Tooltip(
-                message: FlutterI18n.translate(context, "cheatMethods.$i.describe"),
+        return Tooltip(
+          message: FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(i)}.describe"),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 7,
@@ -54,15 +58,15 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
                     borderRadius: BorderRadius.circular(3),
                   ),
                   child: Text(
-                    FlutterI18n.translate(context, "cheatMethods.$i.title"),
+                    FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(i)}.title"),
                     style: TextStyle(
                       fontSize: 13,
                       color: Theme.of(context).hintColor,
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+          ),
+        );
+      }).toList(),
     );
   }
 }

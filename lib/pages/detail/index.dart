@@ -171,11 +171,16 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       method: Http.POST,
     );
 
-    setState(() {
-      viewed.value[id] = DateTime.now().millisecondsSinceEpoch.toString();
-      storage.set("viewed", value: viewed);
-      playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
-    });
+    if (result.data["success"] == 1) {
+      if (viewed.value[id] != null) {
+        viewed.value[id] = DateTime.now().millisecondsSinceEpoch.toString();
+        storage.set("viewed", value: viewed);
+      }
+
+      setState(() {
+        playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
+      });
+    }
   }
 
   /// [Event]
@@ -333,7 +338,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
       // 检查登录状态
       if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data!.id}").then((value) {
+      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data!.id}", transition: TransitionType.cupertinoFullScreenDialog).then((value) {
         _getCheatersInfo();
         timeLineKey.currentState?.getTimeline();
         timeLineKey.currentState?.scrollController.jumpTo(timeLineKey.currentState?.scrollController.position.maxScrollExtent as double);

@@ -11,6 +11,9 @@ class HistoryNameCard extends StatelessWidget {
   // 位置
   late int index = 0;
 
+  HistoryNameCard({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

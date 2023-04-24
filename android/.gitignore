@@ -13,5 +13,6 @@ key.properties
 **/*.keystore
 **/*.jks
 
-# huiwei
+# services
 agconnect-services.json
+google-services.json

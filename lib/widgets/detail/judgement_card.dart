@@ -5,11 +5,14 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/date.dart';
+import '../../utils/index.dart';
 import 'quote_card.dart';
 import 'cheaters_card_types.dart';
 
 /// 裁判
 class JudgementCard extends StatelessWidget {
+  final Util _util = Util();
+
   // 单条数据
   late Map data;
 
@@ -65,7 +68,7 @@ class JudgementCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(3),
                           ),
                           child: Text(
-                            FlutterI18n.translate(context, "basic.action.${data["judgeAction"]}.text"),
+                            FlutterI18n.translate(context, "basic.action.${_util.queryAction(data["judgeAction"])}.text"),
                             style: const TextStyle(fontSize: 13),
                           ),
                         ),

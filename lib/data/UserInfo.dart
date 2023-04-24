@@ -42,8 +42,5 @@ class StationUserInfoParame extends Paging {
 }
 
 class StationUserInfoData extends StationUserBaseData {
-  @override
-  Map setData(Map i) {
-    return super.setData(i);
-  }
+  //
 }

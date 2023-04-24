@@ -50,7 +50,6 @@ class _chatDetailPageState extends State<ChatDetailPage> {
     super.initState();
     providerMessage = ProviderUtil().ofChat(context);
 
-    /// TODO 暂无查询详情接口
     /// 现在从本地状态中查询
     messageStatus.data = providerMessage!.list.where((i) => i["id"].toString() == widget.id.toString()).toList()[0];
 
@@ -77,7 +76,7 @@ class _chatDetailPageState extends State<ChatDetailPage> {
       final d = result.data["data"];
 
       setState(() {
-        userinfo.data = d;
+        userinfo.data!.setData(d);
       });
     }
 
@@ -85,7 +84,7 @@ class _chatDetailPageState extends State<ChatDetailPage> {
       userinfo.load = false;
     });
 
-    return userinfo.data;
+    return userinfo.data!.toMap;
   }
 
   /// [Event]

@@ -1,20 +1,20 @@
-import 'dart:convert';
-
 import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../router/router.dart';
 import '../../utils/index.dart';
 import '../_empty/index.dart';
-import 'customReplyList.dart';
+
+enum CustomReplyType { General, Judgement }
 
 class CustomReplyWidget extends StatefulWidget {
   Function? onChange;
+  CustomReplyType type;
 
   CustomReplyWidget({
     Key? key,
     this.onChange,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -32,12 +32,13 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
 
   @override
   void initState() {
+    _upTemplateData();
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    _upTemplateData();
+    // _upTemplateData();
     super.didChangeDependencies();
   }
 
@@ -56,30 +57,41 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
   void _upTemplateData() async {
     StorageData customReplyData = await storage.get("customReply");
     List localReplyList = customReplyData.value ?? [];
-    list.clear();
-    list.addAll([
-      CustomReplyItem(
-        title: "stats",
-        template: true,
-        content: FlutterI18n.translate(context, "detail.info.fastReplies.stats"),
-      ),
-      CustomReplyItem(
-        title: "evidencePic",
-        template: true,
-        content: FlutterI18n.translate(context, "detail.info.fastReplies.evidencePic"),
-      ),
-      CustomReplyItem(
-        title: "evidenceVid",
-        template: true,
-        content: FlutterI18n.translate(context, "detail.info.fastReplies.evidenceVid"),
-      ),
-    ]);
-    localReplyList.forEach((i) {
-      CustomReplyItem item = CustomReplyItem();
-      item.mapAsObject = i;
-      list.add(item);
-    });
-    setState(() {});
+
+    if (customReplyData.code == 0) {
+      list.clear();
+      switch (widget.type) {
+        case CustomReplyType.Judgement:
+          list.addAll([
+            CustomReplyItem(
+              title: "stats",
+              template: true,
+              content: FlutterI18n.translate(context, "detail.info.fastReplies.stats"),
+              scopeUse: [CustomReplyType.Judgement],
+            ),
+            CustomReplyItem(
+              title: "evidencePic",
+              template: true,
+              content: FlutterI18n.translate(context, "detail.info.fastReplies.evidencePic"),
+              scopeUse: [CustomReplyType.Judgement],
+            ),
+            CustomReplyItem(
+              title: "evidenceVid",
+              template: true,
+              content: FlutterI18n.translate(context, "detail.info.fastReplies.evidenceVid"),
+              scopeUse: [CustomReplyType.Judgement],
+            ),
+          ]);
+          break;
+      }
+
+      for (var i in localReplyList) {
+        CustomReplyItem item = CustomReplyItem();
+        item.mapAsObject = i;
+        list.add(item);
+      }
+      setState(() {});
+    }
   }
 
   /// [Event]
@@ -129,26 +141,27 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
                 );
               }).toList(),
             ),
-          )
-        else
-          const EmptyWidget(),
-        const Divider(height: 1),
+          ),
+        if (list.isNotEmpty) const Divider(height: 1),
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             children: [
               const Expanded(flex: 1, child: SizedBox()),
-              IconButton(
-                onPressed: () {
+              InkWell(
+                onTap: () {
                   _urlUtil.opEnPage(context, "/report/customReply/page").then((value) {
                     _upTemplateData();
                   });
                 },
-                icon: const Icon(
-                  Icons.settings,
-                  size: 16,
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                  child: const Icon(
+                    Icons.settings,
+                    size: 16,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -164,6 +177,7 @@ class CustomReplyItem {
   int? updateTime;
   int? creationTime;
   String? language;
+  List<CustomReplyType>? scopeUse;
 
   CustomReplyItem({
     this.title = "",
@@ -172,15 +186,18 @@ class CustomReplyItem {
     this.updateTime = 0,
     this.creationTime = 0,
     this.language = "",
+    this.scopeUse,
   });
 
-  Map get objectAsMap => {
+  Map get objectAsMap =>
+      {
         "title": title,
         "content": content,
         "template": template,
         "updateTime": updateTime,
         "creationTime": creationTime,
         "language": language,
+        "scopeUse": scopeUse,
       };
 
   set mapAsObject(Map data) {
@@ -190,5 +207,6 @@ class CustomReplyItem {
     if (data["updateTime"] != null) updateTime = data["updateTime"];
     if (data["creationTime"] != null) creationTime = data["creationTime"];
     if (data["language"] != null) language = data["language"];
+    if (data["scopeUse"] != null) scopeUse = data["scopeUse"];
   }
 }

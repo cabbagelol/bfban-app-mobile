@@ -1,5 +1,6 @@
 import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class VideoLink extends StatelessWidget {
