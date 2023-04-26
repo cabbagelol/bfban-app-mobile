@@ -31,14 +31,8 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
   List<CustomReplyItem> useTemplates = [];
 
   @override
-  void initState() {
-    _upTemplateData();
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
-    // _upTemplateData();
+    _upTemplateData();
     super.didChangeDependencies();
   }
 
@@ -58,33 +52,33 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
     StorageData customReplyData = await storage.get("customReply");
     List localReplyList = customReplyData.value ?? [];
 
-    if (customReplyData.code == 0) {
-      list.clear();
-      switch (widget.type) {
-        case CustomReplyType.Judgement:
-          list.addAll([
-            CustomReplyItem(
-              title: "stats",
-              template: true,
-              content: FlutterI18n.translate(context, "detail.info.fastReplies.stats"),
-              scopeUse: [CustomReplyType.Judgement],
-            ),
-            CustomReplyItem(
-              title: "evidencePic",
-              template: true,
-              content: FlutterI18n.translate(context, "detail.info.fastReplies.evidencePic"),
-              scopeUse: [CustomReplyType.Judgement],
-            ),
-            CustomReplyItem(
-              title: "evidenceVid",
-              template: true,
-              content: FlutterI18n.translate(context, "detail.info.fastReplies.evidenceVid"),
-              scopeUse: [CustomReplyType.Judgement],
-            ),
-          ]);
-          break;
-      }
+    list.clear();
+    switch (widget.type) {
+      case CustomReplyType.Judgement:
+        list.addAll([
+          CustomReplyItem(
+            title: "stats",
+            template: true,
+            content: FlutterI18n.translate(context, "detail.info.fastReplies.stats"),
+            scopeUse: [CustomReplyType.Judgement],
+          ),
+          CustomReplyItem(
+            title: "evidencePic",
+            template: true,
+            content: FlutterI18n.translate(context, "detail.info.fastReplies.evidencePic"),
+            scopeUse: [CustomReplyType.Judgement],
+          ),
+          CustomReplyItem(
+            title: "evidenceVid",
+            template: true,
+            content: FlutterI18n.translate(context, "detail.info.fastReplies.evidenceVid"),
+            scopeUse: [CustomReplyType.Judgement],
+          ),
+        ]);
+        break;
+    }
 
+    if (customReplyData.code == 0) {
       for (var i in localReplyList) {
         CustomReplyItem item = CustomReplyItem();
         item.mapAsObject = i;
@@ -101,6 +95,14 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
       bool t = useTemplates.where((element) => element.title == i.title).isNotEmpty;
       t ? useTemplates.remove(i) : useTemplates.add(i);
       if (widget.onChange != null) widget.onChange!(useTemplatesAsString());
+    });
+  }
+
+  /// [Event]
+  /// 打开自定义模板
+  void _openCustomReply() {
+    _urlUtil.opEnPage(context, "/report/customReply/page").then((value) {
+      _upTemplateData();
     });
   }
 
@@ -149,11 +151,7 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
             children: [
               const Expanded(flex: 1, child: SizedBox()),
               InkWell(
-                onTap: () {
-                  _urlUtil.opEnPage(context, "/report/customReply/page").then((value) {
-                    _upTemplateData();
-                  });
-                },
+                onTap: () => _openCustomReply(),
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: const Icon(

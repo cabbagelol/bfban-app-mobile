@@ -274,6 +274,7 @@ class DarkTheme {
         onSecondary: Color(0xff476ab2),
         error: Colors.red,
         onError: Colors.red,
+        errorContainer: Colors.white,
         background: Color(0xff111b2b),
         onBackground: Color(0xff111b2b),
         surface: Color(0xff364e80),

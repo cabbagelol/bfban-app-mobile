@@ -250,6 +250,7 @@ class LightnesTheme {
         onSecondary: Color(0xff99acd2),
         error: Colors.red,
         onError: Colors.red,
+        errorContainer: Colors.white,
         background: Colors.white,
         onBackground: Colors.white,
         surface: Colors.black,

@@ -69,7 +69,7 @@ class JudgementCard extends StatelessWidget {
                           ),
                           child: Text(
                             FlutterI18n.translate(context, "basic.action.${_util.queryAction(data["judgeAction"])}.text"),
-                            style: const TextStyle(fontSize: 13),
+                            style: TextStyle(fontSize: 13, color: Theme.of(context).colorScheme.errorContainer),
                           ),
                         ),
                       ),

@@ -1,7 +1,7 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.2.4-beta'
+version: '0.2.5-beta'
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -83,6 +83,7 @@ dependencies:
 
   # https://pub.flutter-io.cn/packages/quill_html_editor
   quill_html_editor: ^2.1.8
+  super_editor: ^0.2.0
 
   # uuid https://github.com/Daegalus/dart-uuid
   uuid: ^3.0.4
@@ -123,7 +124,7 @@ dev_dependencies:
     sdk: flutter
 
   logger: ^1.3.0
-  flutter_lints: ^2.0.1
+  #  flutter_lints: ^2.0.1
 
   # 启动屏幕 https://pub.flutter-io.cn/packages/flutter_native_splash
   flutter_native_splash: ^2.2.10+1

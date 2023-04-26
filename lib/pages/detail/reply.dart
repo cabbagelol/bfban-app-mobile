@@ -14,6 +14,8 @@ import 'package:bfban/provider/userinfo_provider.dart';
 
 import 'package:bfban/component/_captcha/index.dart';
 
+import '../../component/_customReply/customReply.dart';
+
 class ReplyPage extends StatefulWidget {
   dynamic data;
 
@@ -175,41 +177,53 @@ class _ReplyPageState extends State<ReplyPage> {
                         width: 1,
                       ),
                     ),
-                    child: GestureDetector(
-                      child: Container(
-                        color: Colors.white38,
-                        constraints: const BoxConstraints(
-                          minHeight: 150,
-                          maxHeight: 280,
-                        ),
-                        padding: EdgeInsets.zero,
-                        child: Stack(
-                          children: <Widget>[
-                            Html(data: replyStatus.parame!.content),
-                            Positioned(
-                              top: 0,
-                              left: 0,
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                color: const Color.fromRGBO(0, 0, 0, 0.2),
-                                child: Center(
-                                  child: TextButton.icon(
-                                    icon: const Icon(Icons.edit),
-                                    label: const Text(
-                                      "Edit",
-                                      style: TextStyle(fontSize: 18),
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.white38,
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(
+                            minHeight: 100,
+                            maxHeight: 180,
+                          ),
+                          child: Stack(
+                            fit: StackFit.expand,
+                            children: <Widget>[
+                              Html(data: replyStatus.parame!.content),
+                              Positioned(
+                                top: 0,
+                                left: 0,
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  color: const Color.fromRGBO(0, 0, 0, 0.2),
+                                  child: Center(
+                                    child: TextButton.icon(
+                                      icon: const Icon(Icons.edit),
+                                      label: const Text(
+                                        "Edit",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      onPressed: () {
+                                        _opEnRichEdit();
+                                      },
                                     ),
-                                    onPressed: () {
-                                      _opEnRichEdit();
-                                    },
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
+                        const Divider(height: 1),
+                        CustomReplyWidget(
+                          type: CustomReplyType.General,
+                          onChange: (String selectTemp) {
+                            setState(() {
+                              replyStatus.parame!.content = selectTemp;
+                            });
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),

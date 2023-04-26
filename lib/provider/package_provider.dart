@@ -109,8 +109,7 @@ class PackageProvider with ChangeNotifier {
         },
       );
     }
-
-    return;
+    return true;
   }
 
   /// [Event]

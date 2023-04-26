@@ -78,7 +78,7 @@ class _HtmlImageState extends State<HtmlImage> {
                     ),
                     Container(
                       width: double.infinity,
-                      color: Theme.of(context).cardTheme.color,
+                      color: Theme.of(context).cardTheme.color!.withOpacity(.2),
                       child: Image(image: imageProvider, fit: BoxFit.fitWidth),
                     ),
                   ],
@@ -93,7 +93,7 @@ class _HtmlImageState extends State<HtmlImage> {
           placeholder: (BuildContext buildContext, String url) {
             return Card(
               margin: EdgeInsets.zero,
-              color: widget.backgroundColor!.withOpacity(.5),
+              color: widget.backgroundColor!.withOpacity(.1),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                 child: Center(
@@ -134,7 +134,7 @@ class _HtmlImageState extends State<HtmlImage> {
           errorWidget: (BuildContext buildContext, String url, dynamic error) {
             return Card(
               margin: EdgeInsets.zero,
-              color: widget.backgroundColor!.withOpacity(.5),
+              color: widget.backgroundColor!.withOpacity(.1),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                 child: Center(

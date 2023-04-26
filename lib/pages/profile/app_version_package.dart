@@ -108,6 +108,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
             onRefresh: data.getOnlinePackage,
             child: Column(
               children: [
+                const SizedBox(height: 10),
                 Card(
                   elevation: 0,
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

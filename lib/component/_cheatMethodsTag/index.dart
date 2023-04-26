@@ -35,19 +35,19 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
       spacing: 3,
       children: methods.isEmpty
           ? [
-        EluiTagComponent(
-          color: EluiTagType.none,
-          size: EluiTagSize.no2,
-          theme: EluiTagTheme(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            textColor: Theme.of(context).textTheme.displayMedium!.color!,
-          ),
-          value: "N/A",
-        )
-      ]
+              EluiTagComponent(
+                color: EluiTagType.none,
+                size: EluiTagSize.no2,
+                theme: EluiTagTheme(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  textColor: Theme.of(context).textTheme.displayMedium!.color!,
+                ),
+                value: "N/A",
+              )
+            ]
           : methods.map<Widget>((i) {
-        return Tooltip(
-          message: FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(i)}.describe"),
+              return Tooltip(
+                message: FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(i)}.describe"),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 7,
@@ -64,9 +64,9 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
                       color: Theme.of(context).hintColor,
                     ),
                   ),
-          ),
-        );
-      }).toList(),
+                ),
+              );
+            }).toList(),
     );
   }
 }

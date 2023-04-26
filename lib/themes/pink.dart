@@ -88,11 +88,11 @@ class PinkTheme {
         style: ButtonStyle(
           textStyle: MaterialStateProperty.all(
             TextStyle(
-              color: Colors.pink.shade400,
+              color: Colors.pink.shade300,
             ),
           ),
           elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(Colors.pink.shade400),
+          backgroundColor: MaterialStateProperty.all(Colors.pink.shade300),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.transparent),
@@ -116,7 +116,7 @@ class PinkTheme {
         backgroundColor: Colors.pink.shade300,
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Colors.pink.shade400,
+        buttonColor: Colors.pink.shade300,
         disabledColor: Colors.pink.shade300.withOpacity(.2),
       ),
       buttonBarTheme: const ButtonBarThemeData(
@@ -161,7 +161,7 @@ class PinkTheme {
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Colors.pink.shade400,
+        backgroundColor: Colors.pink.shade300,
         focusColor: Colors.white,
       ),
       iconTheme: IconThemeData(
@@ -210,12 +210,13 @@ class PinkTheme {
       colorScheme: ColorScheme(
         outline: Colors.white10,
         brightness: Brightness.dark,
-        primary: Colors.pink.shade400,
-        onPrimary: Colors.pink.shade400,
+        primary: Colors.pink.shade300,
+        onPrimary: Colors.pink.shade300,
         secondary: const Color(0xff0a111c),
         onSecondary: const Color(0xff0a111c),
-        error: Colors.red,
-        onError: Colors.red,
+        error: Colors.redAccent,
+        onError: Colors.redAccent,
+        errorContainer: Colors.white,
         background: const Color(0xff111b2b),
         onBackground: const Color(0xff111b2b),
         surface: Colors.white,

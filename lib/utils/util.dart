@@ -18,7 +18,7 @@ class Util {
   /// [Event]
   /// 将判决类型转换为标签
   getCheaterStatusLabel(String? value) {
-    Map cheaterStatus = Config.action["child"];
+    Map cheaterStatus = Config.action["child"] ?? {};
 
     if (value!.isEmpty) return "";
 
@@ -28,7 +28,7 @@ class Util {
   /// [Event]
   /// 查询作弊方法词汇
   queryCheatMethodsGlossary(String key) {
-    List cheatMethodsGlossary = Config.cheatMethodsGlossary["child"];
+    List cheatMethodsGlossary = Config.cheatMethodsGlossary["child"] ?? [];
     if (cheatMethodsGlossary.isNotEmpty) {
       for (int i = 0; i < cheatMethodsGlossary.length; i++) {
         if (cheatMethodsGlossary[i]["values"].contains(key)) key = cheatMethodsGlossary[i]["value"];
