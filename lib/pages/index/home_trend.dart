@@ -93,23 +93,23 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
       return data.userinfo.isEmpty
           ? const HomeHintLogin()
           : RefreshIndicator(
-        key: _refreshIndicatorKey,
-        onRefresh: _onRefresh,
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: trendStatus.list.length,
-          itemBuilder: (BuildContext context, int index) {
-            if (trendStatus.list.isEmpty) {
-              return const EmptyWidget();
-            }
+              key: _refreshIndicatorKey,
+              onRefresh: _onRefresh,
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: trendStatus.list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (trendStatus.list.isEmpty) {
+                    return const EmptyWidget();
+                  }
 
-            return CheatListCard(
-              item: trendStatus.list[index].toMap,
-              isIconHotView: true,
+                  return CheatListCard(
+                    item: trendStatus.list[index].toMap,
+                    isIconHotView: true,
+                  );
+                },
+              ),
             );
-          },
-        ),
-      );
     });
   }
 }

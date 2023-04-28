@@ -275,7 +275,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 ),
                 child: ElevatedButton(
                   style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
                         backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.error),
                       ),
                   onPressed: () => removeUserInfo(data),

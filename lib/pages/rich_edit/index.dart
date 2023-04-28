@@ -1,9 +1,5 @@
-import 'dart:io';
-
+import 'package:bfban/component/_richEdit/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
-
 import 'package:quill_html_editor/quill_html_editor.dart';
 
 import '../../utils/index.dart';
@@ -19,9 +15,9 @@ class RichEditPage extends StatefulWidget {
 }
 
 class _richEditPageState extends State<RichEditPage> {
-  final UrlUtil _urlUtil = UrlUtil();
-
   final Storage _storage = Storage();
+
+  final GlobalKey<RichEditCoreState> _richEditCoreKey = GlobalKey<RichEditCoreState>();
 
   late String data = "";
 
@@ -29,9 +25,6 @@ class _richEditPageState extends State<RichEditPage> {
 
   // 异步
   Future? futureBuilder;
-
-  // 滚动控制器
-  final ScrollController? _scrollController = ScrollController();
 
   final QuillEditorController controller = QuillEditorController();
 
@@ -44,6 +37,7 @@ class _richEditPageState extends State<RichEditPage> {
   @override
   void initState() {
     super.initState();
+    data = 'Hello world!<img src="https://secure.download.dm.origin.com/production/avatar/prod/userAvatar/43705278/208x208.JPEG" />';
     futureBuilder = _ready();
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
@@ -61,21 +55,14 @@ class _richEditPageState extends State<RichEditPage> {
 
   /// 确认
   void _onSubmit() async {
+    String html = await _richEditCoreKey.currentState!.controllerContent;
     Navigator.pop(
       context,
       {
         "code": 1,
-        "html": await controller.getText(),
+        "html": html,
       },
     );
-  }
-
-  /// [Event]
-  /// 打开媒体插入
-  void _openMediaPage() {
-    _urlUtil.opEnPage(context, "/account/media/insert").then((value) async {
-      if (value.toString().isNotEmpty) await controller.embedImage(value);
-    });
   }
 
   @override
@@ -106,60 +93,11 @@ class _richEditPageState extends State<RichEditPage> {
             return const NotFoundPage();
           }
 
-          return Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.all(10),
-                child: SingleChildScrollView(
-                  child: QuillHtmlEditor(
-                    text: data,
-                    hintText: FlutterI18n.translate(context, "app.richedit.placeholder"),
-                    hintTextStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
-                    textStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 16),
-                    controller: controller,
-                    isEnabled: true,
-                    minHeight: 100,
-                    hintTextAlign: TextAlign.start,
-                    padding: EdgeInsets.zero,
-                    hintTextPadding: EdgeInsets.zero,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  ),
-                ),
-              ),
-              if (richeditLoad)
-                Positioned.fill(
-                  child: Container(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    child: ELuiLoadComponent(
-                      type: "line",
-                      lineWidth: 1,
-                      color: Theme.of(context).textTheme.displayMedium!.color!,
-                      size: 16,
-                    ),
-                  ),
-                ),
-            ],
+          return RichEditCore(
+            key: _richEditCoreKey,
+            data: data,
           );
         },
-      ), // bo
-      bottomSheet: Container(
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-        child: ToolBar(
-          controller: controller,
-          toolBarConfig: toolBarList,
-          toolBarColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(.2),
-          iconColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
-          activeIconColor: Theme.of(context).colorScheme.primary,
-          customButtons: [
-            InkWell(
-              onTap: () => _openMediaPage(),
-              child: Icon(
-                Icons.image_outlined,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            )
-          ],
-        ),
       ),
     );
   }

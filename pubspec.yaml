@@ -78,7 +78,6 @@ dependencies:
 
   # https://pub.flutter-io.cn/packages/quill_html_editor
   quill_html_editor: ^2.1.8
-  super_editor: ^0.2.0
 
   # uuid https://github.com/Daegalus/dart-uuid
   uuid: ^3.0.4
@@ -91,8 +90,11 @@ dependencies:
   # 图片保存
   image_gallery_saver: ^1.2.2
 
-  # https://pub.dev/packages/sentry
+  # 哨兵 https://pub.dev/packages/sentry
   sentry: ^6.11.2
+
+  # 富文本扩展
+  flutter_rte: ^0.4.13
 
   # UI库
   flutter_elui_plugin:

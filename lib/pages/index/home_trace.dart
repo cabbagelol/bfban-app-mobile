@@ -30,8 +30,7 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
       parame: TraceParame(
         limit: 10,
         skip: 0,
-      )
-  );
+      ));
 
   StoragePlayer storagePlayer = StoragePlayer();
 
@@ -120,22 +119,22 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
         return data.userinfo.isEmpty
             ? const HomeHintLogin()
             : RefreshIndicator(
-          key: _refreshIndicatorKey,
-          onRefresh: _onRefresh,
-          child: ListView.builder(
-            controller: _scrollController,
-            itemCount: traceStatus.list!.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (traceStatus.list!.isEmpty) {
-                return const EmptyWidget();
-              }
+                key: _refreshIndicatorKey,
+                onRefresh: _onRefresh,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: traceStatus.list!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (traceStatus.list!.isEmpty) {
+                      return const EmptyWidget();
+                    }
 
-              return CheatListCard(
-                item: traceStatus.list![index],
+                    return CheatListCard(
+                      item: traceStatus.list![index],
+                    );
+                  },
+                ),
               );
-            },
-          ),
-        );
       },
     );
   }

@@ -177,7 +177,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                             const SizedBox(width: 10),
                             e["version"] == data.currentVersion
                                 ? EluiTagComponent(
-                              value: "Current Version",
+                                    value: "Current Version",
                                     color: EluiTagType.none,
                                     size: EluiTagSize.no2,
                                     theme: EluiTagTheme(

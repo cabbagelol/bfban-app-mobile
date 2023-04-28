@@ -16,6 +16,7 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/widgets/edit/game_type_radio.dart';
 
 import '../../component/_customReply/customReply.dart';
+import '../../component/_richEdit/index.dart';
 import '../../data/index.dart';
 
 class ReportPage extends StatefulWidget {
@@ -482,7 +483,7 @@ class _ReportPageState extends State<ReportPage> {
                             Expanded(
                               flex: 1,
                               child: Input(
-                                textStyle: const TextStyle(fontSize: 15),
+                                textStyle: Theme.of(context).textTheme.bodyMedium,
                                 contentPadding: const EdgeInsets.symmetric(vertical: 10),
                                 value: videoWidgetList[index],
                                 onChange: (data) {

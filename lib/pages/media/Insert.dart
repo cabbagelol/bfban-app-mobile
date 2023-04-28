@@ -351,8 +351,13 @@ class _InsertCropState extends State<InsertCrop> {
 
   @override
   Widget build(BuildContext context) {
-    Widget ne = ExtendedImage.network(widget.url.toString(), fit: BoxFit.contain, mode: ExtendedImageMode.editor, extendedImageEditorKey: editorKey, initEditorConfigHandler: (ExtendedImageState? state) {
-      return EditorConfig(
+    Widget network = ExtendedImage.network(
+      widget.url.toString(),
+      fit: BoxFit.contain,
+      mode: ExtendedImageMode.editor,
+      extendedImageEditorKey: editorKey,
+      initEditorConfigHandler: (ExtendedImageState? state) {
+        return EditorConfig(
           maxScale: 4.0,
           cropRectPadding: const EdgeInsets.all(20.0),
           hitTestSize: 20.0,
@@ -360,8 +365,10 @@ class _InsertCropState extends State<InsertCrop> {
           cropAspectRatio: CropAspectRatios.ratio4_3,
           editActionDetailsIsChanged: (EditActionDetails? details) {
             //print(details?.totalScale);
-          });
-    });
+          },
+        );
+      },
+    );
     Widget lo = ExtendedImage.asset(
       'assets/image.jpg',
       fit: BoxFit.contain,
@@ -383,10 +390,9 @@ class _InsertCropState extends State<InsertCrop> {
     Map editWidget = {
       -1: Text("Not image"),
       0: lo,
-      1: ne,
-      2: ne,
+      1: network,
+      2: network,
     };
-
     return editWidget[widget.insertTypes];
   }
 }
@@ -407,11 +413,13 @@ class InsertPreview extends MediaBaseInsertPage {
 class _InsertPreviewState extends State<InsertPreview> {
   @override
   Widget build(BuildContext context) {
-    return ExtendedImage.network(
-      widget.url!,
-      fit: BoxFit.contain,
-      mode: ExtendedImageMode.gesture,
-      cache: true,
+    return Center(
+      child: ExtendedImage.network(
+        widget.url!,
+        fit: BoxFit.contain,
+        mode: ExtendedImageMode.gesture,
+        cache: true,
+      ),
     );
   }
 }
