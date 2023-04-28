@@ -349,12 +349,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// [Event]
   /// 查看图片
   void _onEnImgInfo(context) async {
-    String avatarLink = playerStatus.data!.avatarLink!.toString();
-    Navigator.of(context).push(CupertinoPageRoute(
+    String imageUrl = playerStatus.data!.avatarLink!.toString();
+    if (imageUrl.isEmpty) return;
+    Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) {
         return PhotoViewSimpleScreen(
-          imageUrl: avatarLink,
-          imageProvider: NetworkImage(avatarLink),
+          type: PhotoViewFileType.network,
+          imageUrl: imageUrl,
         );
       },
     ));
@@ -557,7 +558,12 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                 children: [
                                                   Positioned(
                                                     top: 0,
-                                                    child: Image.network(snapshot.data!["avatarLink"].toString()),
+                                                    child: Image.asset(
+                                                      "assets/images/default-player-avatar.jpg",
+                                                      fit: BoxFit.contain,
+                                                      width: 150,
+                                                      height: 150,
+                                                    ),
                                                   ),
                                                   EluiImgComponent(
                                                     src: snapshot.data!["avatarLink"],

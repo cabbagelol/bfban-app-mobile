@@ -155,7 +155,8 @@
       },
       "theme": {
         "title": "主题",
-        "describe": "设置程序外观"
+        "describe": "设置程序外观",
+        "textScaleFactor": "字体大小"
       },
       "cleanManagement": {
         "title": "清理",

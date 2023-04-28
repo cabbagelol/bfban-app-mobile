@@ -7,6 +7,11 @@ class DarkTheme {
     name: "dark",
     isDefault: true,
     themeData: ThemeData(
+      sliderTheme: const SliderThemeData(
+        valueIndicatorTextStyle: TextStyle(
+          color: Colors.white,
+        ),
+      ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all(Colors.white),

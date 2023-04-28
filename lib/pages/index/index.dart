@@ -184,7 +184,7 @@ class _IndexPageState extends State<IndexPage> {
                                 child: Container(
                                   padding: const EdgeInsets.all(1),
                                   decoration: BoxDecoration(
-                                    color: Colors.red,
+                                    color: Theme.of(context).colorScheme.error,
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                   constraints: const BoxConstraints(

@@ -110,7 +110,10 @@ class _BfBanAppState extends State<BfBanApp> {
                   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
                     return CustomError(errorDetails: errorDetails);
                   };
-                  return widget!;
+                  return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(textScaleFactor: themeData.theme.textScaleFactor),
+                    child: widget!,
+                  );
                 },
                 onGenerateRoute: Routes.router!.generator,
               );
@@ -134,7 +137,7 @@ class CustomError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.red,
+      color: Theme.of(context).colorScheme.error,
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(8.0),

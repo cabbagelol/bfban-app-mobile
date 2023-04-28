@@ -22,6 +22,7 @@ class ThemeProvider with ChangeNotifier {
     defaultName: "dark",
     current: "",
     autoSwitchTheme: false,
+    textScaleFactor: 1,
   );
 
   /// 主题表
@@ -37,8 +38,9 @@ class ThemeProvider with ChangeNotifier {
 
     // 读取本地 更新自动主题状态
     theme.autoSwitchTheme = localTheme["autoTheme"];
-
     theme.current = localTheme["name"];
+    theme.textScaleFactor = localTheme["textScaleFactor"] ?? 1;
+
     notifyListeners();
     return true;
   }
@@ -75,9 +77,9 @@ class ThemeProvider with ChangeNotifier {
   Future<Map> getLocalTheme() async {
     StorageData? localTheme = await storage.get(themePackageName!);
 
-    if (localTheme.value != null) {
-      Map formjson = jsonDecode(localTheme.value);
-      return formjson;
+    if (localTheme.code == 0) {
+      Map formJson = localTheme.value;
+      return formJson;
     }
 
     return {
@@ -88,14 +90,24 @@ class ThemeProvider with ChangeNotifier {
 
   /// [Event]
   /// 储存主题
-  void setLocalTheme(String name) async {
+  void setLocalTheme([String? name]) async {
     await storage.set(
       themePackageName!,
-      value: jsonEncode({
-        "name": name,
+      value: {
+        "name": name ?? theme.current,
         "autoTheme": theme.autoSwitchTheme,
-      }),
+        "textScaleFactor": theme.textScaleFactor,
+      },
     );
+  }
+
+  /// [Event]
+  /// 设置字体大小
+  void setTextScaleFactor(double value) {
+    if (value.isNaN) return;
+    theme.textScaleFactor = value;
+    setLocalTheme();
+    notifyListeners();
   }
 
   /// 获取主题 ThemeData
@@ -135,10 +147,12 @@ class ThemeProviderData {
   String? current;
   String? defaultName;
   bool? autoSwitchTheme;
+  double? textScaleFactor;
 
   ThemeProviderData({
     this.current,
     this.defaultName,
     this.autoSwitchTheme = false,
+    this.textScaleFactor = 1,
   });
 }

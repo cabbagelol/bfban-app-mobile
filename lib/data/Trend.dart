@@ -88,8 +88,8 @@ class TrendStatusParame extends Paging {
     this.time = _TrendStatusParameTimeList![time.index];
   }
 
-  get toMap {
-    Map map =  {
+  Map<String, dynamic> get toMap {
+    Map<String, dynamic> map = {
       "time": time,
     };
     map.addAll(pageToMap);

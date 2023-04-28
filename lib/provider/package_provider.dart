@@ -49,7 +49,7 @@ class PackageProvider with ChangeNotifier {
   PackageStatus? package = PackageStatus(
     appName: "",
     packageName: "",
-    currentVersion: "0.0.0",
+    currentVersion: "0.0.0-beta",
     loadCurrent: false,
     onlineVersion: "",
     loadOnline: false,
@@ -73,7 +73,7 @@ class PackageProvider with ChangeNotifier {
   /// [Event]
   /// 打开app升级面板
   Future openUpPanel() async {
-    if (!isNewVersion) {
+    if (isNewVersion) {
       await showDialog(
         context: context!,
         barrierDismissible: false,
@@ -109,7 +109,6 @@ class PackageProvider with ChangeNotifier {
         },
       );
     }
-    return true;
   }
 
   /// [Event]
@@ -143,18 +142,12 @@ class PackageProvider with ChangeNotifier {
 
     if (result.data.toString().length >= 0) {
       package!.list = result.data["list"];
-      package!.onlineVersion = setIssue(package!.list![0]["version"], package!.list![0]["stage"]);
+      package!.onlineVersion = package!.list![0]["version"];
     }
     package!.loadOnline = false;
     notifyListeners();
 
     return result;
-  }
-
-  /// [Event]
-  /// 装载发行号
-  String setIssue(String version, issue) {
-    return "$version-$issue";
   }
 
   /// 检查是否空，如果空者触发更新
@@ -176,5 +169,5 @@ class PackageProvider with ChangeNotifier {
   bool get loadOnline => package!.loadOnline!;
 
   /// 是否最新版本
-  bool get isNewVersion => _version.getContrast(package!.currentVersion!, package!.onlineVersion!);
+  bool get isNewVersion => _version.compareVersions(currentVersion, package!.onlineVersion!);
 }

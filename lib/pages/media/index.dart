@@ -222,9 +222,8 @@ class _mediaPageState extends State<MediaPage> {
 
         if (i.extension == FileType.IMAGE) {
           widget = PhotoViewSimpleScreen(
+            type: PhotoViewFileType.file,
             imageUrl: i.file.path,
-            imageProvider: FileImage(i.file),
-            heroTag: 'simple',
           );
         }
 
@@ -266,9 +265,8 @@ class _mediaPageState extends State<MediaPage> {
         Navigator.of(context).push(CupertinoPageRoute(
           builder: (BuildContext context) {
             return PhotoViewSimpleScreen(
+              type: PhotoViewFileType.network,
               imageUrl: openFileDetail[i.filename]["downloadURL"],
-              imageProvider: NetworkImage(openFileDetail[i.filename]["downloadURL"]),
-              heroTag: "simple",
             );
           },
         ));
@@ -644,9 +642,11 @@ class _MediaCardState extends State<MediaCard> {
             child: Stack(
               children: [
                 if (widget.i.type == MediaType.Local)
-                  MediaIconCard(
-                    i: widget.i,
-                    filetype: _filetype,
+                  ClipPath(
+                    child: MediaIconCard(
+                      i: widget.i,
+                      filetype: _filetype,
+                    ),
                   )
                 else
                   const Padding(
@@ -849,7 +849,7 @@ class MediaIconCard extends StatelessWidget {
         if (filetype == FileType.IMAGE)
           Image.file(
             i.file,
-            fit: BoxFit.fill,
+            fit: BoxFit.cover,
             filterQuality: FilterQuality.low,
           )
         else if (filetype == FileType.VIDEO)

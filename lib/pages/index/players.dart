@@ -301,7 +301,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                       child: Container(
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                          color: Colors.redAccent,
+                          color: Theme.of(context).colorScheme.error,
                           borderRadius: BorderRadius.circular(100),
                         ),
                         constraints: const BoxConstraints(

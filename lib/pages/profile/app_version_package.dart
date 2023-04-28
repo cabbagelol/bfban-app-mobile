@@ -128,18 +128,19 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.newVersion"),
                     label: data.isNewVersion ? FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_new") : FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_old"),
-                    theme: EluiCellTheme(labelColor: Theme.of(context).textTheme.subtitle2!.color),
+                    theme: EluiCellTheme(labelColor: Theme.of(context).textTheme.displayMedium!.color),
                     islink: true,
                     cont: data.onlineVersion.isNotEmpty ? Text(data.onlineVersion.toString()) : const CircularProgressIndicator(strokeWidth: 2),
-                    onTap: () {
-                      _urlUtil.onPeUrl(Config.apiHost["web_site"]!.url);
-                    },
+                    onTap: () => _urlUtil.onPeUrl(Config.apiHost["app_web_site"]!.url),
                   ),
                 ),
-                if (data.list.isNotEmpty) const SizedBox(height: 10),
+                const SizedBox(
+                  height: 20,
+                  child: Divider(height: 1),
+                ),
                 data.list
                         .where((i) {
-                          return data.setIssue(i["version"], i["stage"]) == data.currentVersion;
+                          return i["version"] == data.currentVersion;
                         })
                         .toList()
                         .isEmpty
@@ -174,9 +175,9 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                               onTap: () {},
                             ),
                             const SizedBox(width: 10),
-                            data.setIssue(e["version"], e["stage"]) == data.currentVersion
+                            e["version"] == data.currentVersion
                                 ? EluiTagComponent(
-                                    value: "当前版本",
+                              value: "Current Version",
                                     color: EluiTagType.none,
                                     size: EluiTagSize.no2,
                                     theme: EluiTagTheme(

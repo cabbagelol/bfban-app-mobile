@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:bfban/utils/index.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
@@ -22,14 +22,23 @@ class HtmlImage extends StatefulWidget {
 }
 
 class _HtmlImageState extends State<HtmlImage> {
+  double turns = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   /// [Event]
   /// 查看图片
-  void onImageTap(context, String img) {
-    Navigator.of(context).push(CupertinoPageRoute(
+  void onImageTap(context, String imageUrl) {
+    if (imageUrl.isEmpty) return;
+    Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) {
+        logger.i(imageUrl);
         return PhotoViewSimpleScreen(
-          imageUrl: img,
-          imageProvider: NetworkImage(img),
+          type: PhotoViewFileType.network,
+          imageUrl: imageUrl,
         );
       },
     ));
@@ -37,63 +46,17 @@ class _HtmlImageState extends State<HtmlImage> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      clipBehavior: Clip.hardEdge,
-      borderRadius: BorderRadius.circular(3),
-      child: Container(
-        color: widget.color!.withOpacity(.5),
-        child: CachedNetworkImage(
-          imageUrl: "${widget.src}",
-          width: double.infinity,
-          fit: BoxFit.cover,
-          fadeInDuration: const Duration(seconds: 0),
-          fadeOutDuration: const Duration(seconds: 0),
-          imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
-            return InkWell(
-              child: Card(
-                color: Colors.transparent,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      height: 25,
-                      child: Row(
-                        textBaseline: TextBaseline.ideographic,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text(
-                              "${widget.src}",
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 12),
-                              maxLines: 1,
-                            ),
-                          ),
-                          const Icon(
-                            Icons.link,
-                            size: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      color: Theme.of(context).cardTheme.color!.withOpacity(.2),
-                      child: Image(image: imageProvider, fit: BoxFit.fitWidth),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: () {
-                onImageTap(context, widget.src.toString());
-              },
-            );
-          },
-          placeholderFadeInDuration: const Duration(seconds: 0),
-          placeholder: (BuildContext buildContext, String url) {
+    return ExtendedImage.network(
+      widget.src!,
+      fit: BoxFit.fitWidth,
+      mode: ExtendedImageMode.editor,
+      cache: true,
+      loadStateChanged: (ExtendedImageState state) {
+        switch (state.extendedImageLoadState) {
+          case LoadState.loading:
             return Card(
               margin: EdgeInsets.zero,
-              color: widget.backgroundColor!.withOpacity(.1),
+              color: widget.color!.withOpacity(.5),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                 child: Center(
@@ -108,7 +71,7 @@ class _HtmlImageState extends State<HtmlImage> {
                             right: -2,
                             child: ELuiLoadComponent(
                               type: "line",
-                              color: Theme.of(buildContext).iconTheme.color!,
+                              color: Theme.of(context).iconTheme.color!,
                               size: 17,
                               lineWidth: 2,
                             ),
@@ -130,11 +93,10 @@ class _HtmlImageState extends State<HtmlImage> {
                 ),
               ),
             );
-          },
-          errorWidget: (BuildContext buildContext, String url, dynamic error) {
+          case LoadState.failed:
             return Card(
               margin: EdgeInsets.zero,
-              color: widget.backgroundColor!.withOpacity(.1),
+              color: widget.color!.withOpacity(.5),
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
                 child: Center(
@@ -142,14 +104,14 @@ class _HtmlImageState extends State<HtmlImage> {
                     children: [
                       Stack(
                         clipBehavior: Clip.none,
-                        children: const [
-                          Icon(Icons.image, size: 50),
+                        children: [
+                          const Icon(Icons.image, size: 50),
                           Positioned(
                             top: -5,
                             right: -5,
                             child: Icon(
                               Icons.error,
-                              color: Colors.red,
+                              color: Theme.of(context).colorScheme.error,
                             ),
                           ),
                         ],
@@ -169,9 +131,103 @@ class _HtmlImageState extends State<HtmlImage> {
                 ),
               ),
             );
-          },
-        ),
-      ),
+          case LoadState.completed:
+            return Card(
+              color: widget.color!.withOpacity(.5),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+                    height: 25,
+                    child: Row(
+                      textBaseline: TextBaseline.ideographic,
+                      children: [
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (turns <= -1 + .25) {
+                                    turns = 0;
+                                    return;
+                                  }
+                                  turns -= .25;
+                                });
+                              },
+                              child: const SizedBox(
+                                child: Icon(Icons.turn_slight_left, size: 15),
+                                width: 25,
+                              ),
+                            ),
+                            const VerticalDivider(width: 1),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  if (turns >= 1 - .25) {
+                                    turns = 0;
+                                    return;
+                                  }
+                                  turns += .25;
+                                });
+                              },
+                              child: const SizedBox(
+                                child: Icon(Icons.turn_slight_right, size: 15),
+                                width: 25,
+                              ),
+                            ),
+                            if (turns != 0) const VerticalDivider(width: 1),
+                            if (turns != 0)
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    turns = 0;
+                                  });
+                                },
+                                child: const SizedBox(
+                                  child: Icon(Icons.rotate_left, size: 15),
+                                  width: 35,
+                                ),
+                              ),
+                          ],
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          flex: 1,
+                          child: Text(
+                            "${widget.src}",
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 12),
+                            maxLines: 1,
+                          ),
+                        ),
+                        const Icon(
+                          Icons.link,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                  ClipRect(
+                    child: InkWell(
+                      child: Container(
+                        width: double.infinity,
+                        color: widget.backgroundColor!.withOpacity(.2),
+                        child: AnimatedRotation(
+                          turns: turns,
+                          duration: const Duration(milliseconds: 0),
+                          child: Image(image: state.imageProvider, fit: BoxFit.fitWidth),
+                        ),
+                      ),
+                      onTap: () {
+                        onImageTap(context, widget.src.toString());
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+        }
+      },
     );
   }
 }

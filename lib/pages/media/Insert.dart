@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photo_view/photo_view.dart';
 
 import '../../utils/index.dart';
 
@@ -141,8 +140,8 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
                 child: insertListPageIndex + 1 < insertListPage.length
                     ? Text(FlutterI18n.translate(context, "basic.button.next"))
                     : Text(
-                  FlutterI18n.translate(context, "app.guide.endNext"),
-                ),
+                        FlutterI18n.translate(context, "app.guide.endNext"),
+                      ),
               ),
             ],
           ),
@@ -408,18 +407,11 @@ class InsertPreview extends MediaBaseInsertPage {
 class _InsertPreviewState extends State<InsertPreview> {
   @override
   Widget build(BuildContext context) {
-    return ClipRect(
-      child: PhotoView(
-        enablePanAlways: true,
-        loadingBuilder: (BuildContext context, ImageChunkEvent? event) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        imageProvider: NetworkImage(widget.url!),
-        backgroundDecoration: BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
-        enableRotation: true,
-      ),
+    return ExtendedImage.network(
+      widget.url!,
+      fit: BoxFit.contain,
+      mode: ExtendedImageMode.gesture,
+      cache: true,
     );
   }
 }

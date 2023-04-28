@@ -1,11 +1,10 @@
 /// 图片查看
 
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-
-import 'package:photo_view/photo_view.dart';
 
 import 'package:bfban/utils/index.dart';
 
@@ -16,50 +15,36 @@ class PhotoViewSimpleScreen extends StatefulWidget {
 
   String? imageUrl;
 
-  ImageProvider? imageProvider;
-
-  Widget? loadingChild;
-
-  BoxDecoration? backgroundDecoration;
-
-  double? minScale;
-
-  double? maxScale;
-
-  Object? heroTag;
-
   PhotoViewSimpleScreen({
     Key? key,
     this.type = PhotoViewFileType.network,
     this.imageUrl,
-    this.imageProvider,
-    this.loadingChild,
-    this.backgroundDecoration,
-    this.minScale = 0.05,
-    this.maxScale = 1.5,
-    this.heroTag,
   }) : super(key: key);
 
   @override
   _PhotoViewSimpleScreenState createState() => _PhotoViewSimpleScreenState();
 }
 
-class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
+typedef DoubleClickAnimationListener = void Function();
+
+class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with TickerProviderStateMixin {
   // 加载状态
   bool imageSaveStatus = false;
 
   // 图片状态
   bool imgStatus = false;
 
-  // 控制器
-  PhotoViewController? controller;
-
   MediaManagement mediaManagement = MediaManagement();
 
+  late AnimationController _doubleClickAnimationController;
+  late DoubleClickAnimationListener _doubleClickAnimationListener;
+  List<double> doubleTapScales = <double>[1.0, 2.0];
+  Animation<double>? _doubleClickAnimation;
+
   @override
-  void dispose() {
-    if (controller != null) controller!.dispose();
-    super.dispose();
+  void initState() {
+    _doubleClickAnimationController = AnimationController(duration: const Duration(milliseconds: 150), vsync: this);
+    super.initState();
   }
 
   /// [Event]
@@ -88,10 +73,78 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
     });
   }
 
+  GestureConfig initGestureConfigHandler(state) {
+    return GestureConfig(
+      minScale: 0.3,
+      animationMinScale: 0.1,
+      maxScale: 10.0,
+      animationMaxScale: 10.2,
+      speed: 1.0,
+      inertialSpeed: 100.0,
+      initialScale: 1.0,
+      inPageView: false,
+      initialAlignment: InitialAlignment.center,
+      reverseMousePointerScrollDirection: true,
+      gestureDetailsIsChanged: (GestureDetails? details) {
+        //print(details?.totalScale);
+      },
+    );
+  }
+
+  Center? loadStateChanged(ExtendedImageState state) {
+    if (state.extendedImageLoadState == LoadState.loading) {
+      final ImageChunkEvent? loadingProgress = state.loadingProgress;
+      final double? progress = loadingProgress?.expectedTotalBytes != null ? loadingProgress!.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes! : null;
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              width: 150.0,
+              child: LinearProgressIndicator(
+                value: progress,
+              ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text('${((progress ?? 0.0) * 100).toInt()}%'),
+          ],
+        ),
+      );
+    }
+    return null;
+  }
+
+  DoubleTap? onDoubleTap(ExtendedImageGestureState state) {
+    final Offset? pointerDownPosition = state.pointerDownPosition;
+    final double? begin = state.gestureDetails!.totalScale;
+    double end;
+
+    _doubleClickAnimation?.removeListener(_doubleClickAnimationListener);
+    _doubleClickAnimationController.stop();
+    _doubleClickAnimationController.reset();
+
+    if (begin == doubleTapScales[0]) {
+      end = doubleTapScales[1];
+    } else {
+      end = doubleTapScales[0];
+    }
+
+    _doubleClickAnimationListener = () {
+      state.handleDoubleTap(scale: _doubleClickAnimation!.value, doubleTapPosition: pointerDownPosition);
+    };
+    _doubleClickAnimation = _doubleClickAnimationController.drive(Tween<double>(begin: begin, end: end));
+
+    _doubleClickAnimation!.addListener(_doubleClickAnimationListener);
+
+    _doubleClickAnimationController.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         title: widget.imageUrl! != null ? Text(widget.imageUrl!.toString()) : Container(),
@@ -118,24 +171,30 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> {
                   ),
         ],
       ),
-      body: Stack(
+      body: Column(
         children: [
-          ClipRect(
-            child: PhotoView(
-              controller: controller,
-              enablePanAlways: true,
-              loadingBuilder: (BuildContext context, ImageChunkEvent? event) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-              imageProvider: widget.imageProvider,
-              backgroundDecoration: widget.backgroundDecoration ?? BoxDecoration(color: Theme.of(context).bottomAppBarTheme.color),
-              minScale: widget.minScale,
-              maxScale: widget.maxScale,
-              enableRotation: true,
-            ),
-          ),
+          Expanded(
+            child: [
+              ExtendedImage.file(
+                File(widget.imageUrl!),
+                fit: BoxFit.contain,
+                mode: ExtendedImageMode.gesture,
+                initGestureConfigHandler: initGestureConfigHandler,
+                loadStateChanged: loadStateChanged,
+                onDoubleTap: onDoubleTap,
+              ),
+              ExtendedImage.network(
+                widget.imageUrl!,
+                fit: BoxFit.contain,
+                mode: ExtendedImageMode.gesture,
+                cache: true,
+                initGestureConfigHandler: initGestureConfigHandler,
+                loadStateChanged: loadStateChanged,
+                onDoubleTap: onDoubleTap,
+              )
+            ][widget.type!.index],
+            flex: 1,
+          )
         ],
       ),
     );

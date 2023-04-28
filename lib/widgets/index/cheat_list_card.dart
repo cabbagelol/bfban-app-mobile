@@ -137,7 +137,7 @@ class CheatListCard extends StatelessWidget {
             width: 5,
             height: 35,
             decoration: BoxDecoration(
-              color: item["status"] == 1 ? Colors.red : Colors.green,
+              color: item["status"] == 1 ? Theme.of(context).colorScheme.error : Colors.green,
               borderRadius: BorderRadius.circular(3),
             ),
           )

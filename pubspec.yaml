@@ -1,7 +1,7 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.2.5-beta'
+version: '0.2.5'
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -17,9 +17,6 @@ dependencies:
 
   # 时间选择器 https://pub.dev/packages/syncfusion_flutter_datepicker
   syncfusion_flutter_datepicker: any
-
-  # cached_network_image https://pub.dev/packages/cached_network_image
-  cached_network_image: ^3.2.0
 
   # 请求模块 https://pub.dev/packages/dio
   dio: ^4.0.4
@@ -59,9 +56,7 @@ dependencies:
 
   # (图像or文件)选择器 https://pub.flutter-io.cn/packages/image_picker
   image_picker: ^0.8.1
-
-  # 图片查看 https://pub.flutter-io.cn/packages/photo_view
-  photo_view: ^0.14.0
+  image: any
 
   # 图片扩展(裁剪) https://pub.flutter-io.cn/packages/extended_image
   extended_image: ^4.0.0
@@ -122,7 +117,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   logger: ^1.3.0
   #  flutter_lints: ^2.0.1
 

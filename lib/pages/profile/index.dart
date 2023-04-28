@@ -67,7 +67,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(
-      builder: (context,UserInfoProvider data, child) {
+      builder: (context, UserInfoProvider data, child) {
         return ListView(
           children: <Widget>[
             /// 用户信息板块
@@ -275,8 +275,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 ),
                 child: ElevatedButton(
                   style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
-                        backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+                        backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.error),
                       ),
                   onPressed: () => removeUserInfo(data),
                   child: Wrap(

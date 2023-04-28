@@ -7,6 +7,9 @@ class PinkTheme {
     name: "pink",
     isDefault: false,
     themeData: ThemeData(
+      sliderTheme: SliderThemeData(
+        valueIndicatorColor: Colors.pink.shade50,
+      ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.all(Colors.pink.shade300),

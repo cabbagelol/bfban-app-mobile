@@ -1,36 +1,64 @@
+import 'package:bfban/utils/index.dart';
+
 /// 版本管理器
 
+enum VersionReleaseType { None, Beta, Release }
+
 class Version {
+  // 发布类型权重
+  final Map _releaseTypeWeights = {
+    VersionReleaseType.Beta: 0,
+    VersionReleaseType.None: 1,
+    VersionReleaseType.Release: 1,
+  };
+
   /// [Event]
   /// 对比版本
   /// 通常格式 0.0.1-beta
-  bool getContrast(String v1, String v2) {
-    Map _vs = {
-      "beta": 0,
-      "release": 1,
-    };
-    Map _v1 = _setSplitfactory(v1);
-    Map _v2 = _setSplitfactory(v2);
+  bool compareVersions(String v1, String v2) {
+    VersionData _version_1 = _setSplitFactory(v1);
+    VersionData _version_2 = _setSplitFactory(v2);
 
-    if (_v1["0"] > _v2["0"]) {
+    if (_version_1.number > _version_2.number) {
       return true;
-    } else if (_v1["0"] == _v2["0"]) {
-      if (_vs[_v1["1"]] > _vs[_v2["1"]]) {
-        return true;
-      } else {
-        return false;
-      }
+    } else if (_version_1.number == _version_2.number) {
+      return _releaseTypeWeights[_version_1.releaseType] > _releaseTypeWeights[_version_2.releaseType];
     } else {
       return false;
     }
   }
 
-  Map _setSplitfactory(v) {
-    List s = v.split("-");
+  VersionData _setSplitFactory(String version) {
+    List s = version.split("-");
+    VersionReleaseType releaseType = VersionReleaseType.None;
 
-    return {
-      "0": int.parse(s[0].replaceAll(".", "")),
-      "1": s[1].toString() ?? "beta",
-    };
+    if (s.length >= 2) {
+      switch (s[1]) {
+        case "beta":
+          releaseType = VersionReleaseType.Beta;
+          break;
+        case "release":
+          releaseType = VersionReleaseType.Release;
+          break;
+        default:
+          releaseType = VersionReleaseType.None;
+          break;
+      }
+    }
+
+    return VersionData(
+      number: int.parse(s[0].replaceAll(".", "")),
+      releaseType: releaseType,
+    );
   }
+}
+
+class VersionData {
+  num number;
+  VersionReleaseType releaseType;
+
+  VersionData({
+    this.number = -1,
+    this.releaseType = VersionReleaseType.Beta,
+  });
 }

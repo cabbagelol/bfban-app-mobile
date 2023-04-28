@@ -217,7 +217,7 @@ class _PermissionState extends State<PermissionWidget> {
       case PermissionStatus.permanentlyDenied:
       case PermissionStatus.restricted:
       case PermissionStatus.denied:
-        return Colors.redAccent;
+        return Theme.of(context).colorScheme.error;
       case PermissionStatus.granted:
       case PermissionStatus.limited:
         return Colors.green;

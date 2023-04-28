@@ -7,6 +7,28 @@ class LightnesTheme {
     name: "lightnes",
     isDefault: true,
     themeData: ThemeData(
+      sliderTheme: const SliderThemeData(
+        valueIndicatorTextStyle: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.all(Color(0xff364e80)),
+          textStyle: MaterialStateProperty.all(
+            const TextStyle(color: Color(0xff364e80)),
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
+        ),
+      ),
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.white,
         modalBackgroundColor: Colors.white,

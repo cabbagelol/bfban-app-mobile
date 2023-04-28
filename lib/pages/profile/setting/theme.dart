@@ -51,6 +51,34 @@ class _ThemePageState extends State<ThemePage> {
                   },
                 ),
               ),
+
+              const SizedBox(height: 5),
+
+              // 字体
+              Container(
+                color: Theme.of(context).cardTheme.color,
+                child: Column(
+                  children: [
+                    EluiCellComponent(
+                      title: FlutterI18n.translate(context, "app.setting.theme.textScaleFactor"),
+                      label: data.theme.textScaleFactor.toString(),
+                      cont: Slider(
+                        value: data.theme.textScaleFactor!,
+                        min: 0.8,
+                        max: 1.2,
+                        divisions: 2,
+                        label: '${data.theme.textScaleFactor}',
+                        onChanged: (value) {
+                          setState(() {
+                            data.setTextScaleFactor(value);
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               // 主题列表
               Expanded(
                 flex: 1,
