@@ -1,14 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
-import 'package:uni_links/uni_links.dart';
+import 'package:app_links/app_links.dart';
 
 import '../provider/package_provider.dart';
 
@@ -22,6 +20,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final Storage storage = Storage();
+
   // 载入提示
   late String? loadTip = "";
 
@@ -32,22 +32,20 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   late double _size = 1;
 
-  Storage storage = Storage();
-
   @override
   void initState() {
     super.initState();
-    _onReady();
   }
 
   @override
-  void activate() {
-    super.activate();
+  void didChangeDependencies() {
+    _onReady(context);
+    super.didChangeDependencies();
   }
 
   /// [Event]
   /// 初始页面数据
-  void _onReady() async {
+  void _onReady(BuildContext context) async {
     Future.delayed(const Duration(seconds: 1)).then((value) => {
           setState(() {
             _size = 1.5;
@@ -55,11 +53,10 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
         });
 
     Future.wait([
-      _initUniLinks(),
       _onToken(),
       _initNotice(),
       _initLang(),
-      _initUserData(),
+      _initUserData(context),
     ]).catchError((onError) {}).whenComplete(() async {
       if (!await _onGuide()) return;
 
@@ -97,7 +94,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   /// [Event]
   /// 初始用户数据
-  Future _initUserData() async {
+  Future _initUserData(BuildContext context) async {
     StorageData loginData = await storage.get("login");
     dynamic user = loginData.value;
 
@@ -136,6 +133,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     AppInfoProvider app = ProviderUtil().ofApp(context);
     await app.conf.init();
     await app.connectivity.init(context);
+    await app.uniLinks.init(context);
+
     return true;
   }
 
@@ -177,59 +176,6 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     }
 
     return true;
-  }
-
-  /// [Event]
-  /// unlink
-  Future _initUniLinks() async {
-    StreamSubscription? sub;
-
-    final initialLink = await getInitialLink();
-    if (initialLink != null) {
-      _onUnlLink(_unlLinkQueryParameters(initialLink));
-    }
-
-    sub = linkStream.listen((String? link) {
-      _onUnlLink(_unlLinkQueryParameters(link));
-    }, onError: (err) {
-      EluiMessageComponent.warning(context)(
-        child: Text(err.toString()),
-      );
-    });
-
-    return sub;
-  }
-
-  /// [Event]
-  /// 处理地址
-  void _onUnlLink(Uri uri) {
-    if (!uri.isScheme("bfban") || !uri.isScheme("https")) return;
-
-    switch (uri.host) {
-      case "app":
-      case "bfban.gametools.network":
-      case "bfban-app.cabbagelol.net":
-      case "bfban.com":
-        switch (uri.queryParameters["open_app_type"]) {
-          // 打开玩家详情
-          case "player":
-            _urlUtil.opEnPage(context, "/player/personaId/${uri.queryParameters["id"]}");
-            break;
-          // 打开用户空间
-          case "account":
-            _urlUtil.opEnPage(context, '/account/${uri.queryParameters["id"]}');
-        }
-        break;
-    }
-  }
-
-  /// [Event]
-  /// 分析地址
-  Uri _unlLinkQueryParameters(String? link) {
-    final decoded = Uri.decodeFull(link!).replaceAll('#', '?');
-    final Uri uri = Uri.parse(decoded);
-
-    return uri;
   }
 
   @override

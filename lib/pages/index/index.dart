@@ -1,5 +1,6 @@
 /// 功能：首页控制器
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:bfban/pages/index/players.dart';
@@ -113,8 +114,17 @@ class _IndexPageState extends State<IndexPage> {
 
   /// [Event]
   /// 打开网络状态
-  void _opEnNetwork () {
+  void _opEnNetwork() {
     _urlUtil.opEnPage(context, "/network");
+  }
+
+  /// [Event]
+  /// 举报
+  void _opEnReport() {
+    String data = jsonEncode({
+      "originName": "",
+    });
+    _urlUtil.opEnPage(context, '/report/$data');
   }
 
   @override
@@ -236,6 +246,9 @@ class _IndexPageState extends State<IndexPage> {
                       case 3:
                         _opEnNetwork();
                         break;
+                      case 4:
+                        _opEnReport();
+                        break;
                     }
                   },
                   itemBuilder: (context) {
@@ -268,6 +281,20 @@ class _IndexPageState extends State<IndexPage> {
                           ],
                         ),
                       ),
+                      PopupMenuItem(
+                        value: 4,
+                        child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: Theme.of(context).iconTheme.color,
+                            ),
+                            const SizedBox(width: 10),
+                            Text(FlutterI18n.translate(context, "report.title")),
+                          ],
+                        ),
+                      ),
                       const PopupMenuItem(
                         height: 10,
                         child: Divider(height: 1),
@@ -296,7 +323,7 @@ class _IndexPageState extends State<IndexPage> {
             ),
             body: FlutterPluginDrawer(
               body: SizedBox(
-                height: screenHeight - (150),
+                height: screenHeight,
                 child: IndexedStack(
                   index: _currentPageIndex,
                   children: _listWidgetPage,
@@ -351,7 +378,7 @@ class _IndexPageState extends State<IndexPage> {
                     ),
                   ),
                 ),
-                defaultShowHeight: screenBarHeight + 70,
+                defaultShowHeight: screenBarHeight,
                 height: screenHeight * .5,
               ),
             ),

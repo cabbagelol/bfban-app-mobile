@@ -172,8 +172,10 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
+            flex: 1,
             child: [
               ExtendedImage.file(
                 File(widget.imageUrl!),
@@ -193,7 +195,6 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
                 onDoubleTap: onDoubleTap,
               )
             ][widget.type!.index],
-            flex: 1,
           )
         ],
       ),

@@ -245,7 +245,6 @@ class CardUtil {
     return {
       linkMatcher(): CustomRender.widget(
         widget: (RenderContext context, buildChildren) {
-          print(context);
           return HtmlLink(
             renderContext: context,
             url: context.tree.element!.attributes["href"],

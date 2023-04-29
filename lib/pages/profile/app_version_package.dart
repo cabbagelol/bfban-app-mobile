@@ -181,7 +181,8 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                                     color: EluiTagType.none,
                                     size: EluiTagSize.no2,
                                     theme: EluiTagTheme(
-                                      backgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
+                                      backgroundColor: Theme.of(context).colorScheme.primary,
+                                      borderColor: Theme.of(context).bottomAppBarTheme.color!,
                                     ),
                                     onTap: () {},
                                   )

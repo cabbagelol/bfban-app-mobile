@@ -79,8 +79,8 @@ class _HtmlCoreState extends State<HtmlCore> {
     Iterable<RegExpMatch> links = _regular.getCheckText(RegularType.Link, widget.data);
     for (var i in links) {
       // Rude check if the link is from the marker
-      if (view[i.start - 2] != "=") {
-        view = view.replaceAll(RegExp(i.group(0).toString()), "<a href=${i.group(0)}>${i.group(0)}</a>");
+      if (view.toString().substring(i.start - 2, i.start) != "=\"") {
+        view = view.replaceRange(i.start, i.end, "<a href=${i.group(0)}>${i.group(0)}</a>");
       }
     }
 

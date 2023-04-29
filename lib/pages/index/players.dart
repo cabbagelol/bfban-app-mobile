@@ -111,10 +111,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   Future getPlayerList() async {
     if (playersStatus!.load!) return;
 
-    Future.delayed(const Duration(seconds: 0), () {
-      if (playersStatus!.parame!.skip! <= 0) _refreshIndicatorKey.currentState!.show();
-    });
-
     setState(() {
       playersStatus!.load = true;
     });
@@ -178,7 +174,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   /// [Event]
   /// tab切换
-  _onSwitchTab(int index) async {
+  Future _onSwitchTab(int index) async {
     int value = cheaterStatus![index]["value"];
 
     playersStatus!.parame!.status = value;
@@ -189,6 +185,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       _scrollController.jumpTo(0);
     }
 
+    await _refreshIndicatorKey.currentState!.show();
     await getPlayerList();
   }
 
@@ -437,6 +434,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         onReset: () => onResetPlayerParame(),
         // 内容
         child: RefreshIndicator(
+          triggerMode: RefreshIndicatorTriggerMode.anywhere,
           key: _refreshIndicatorKey,
           onRefresh: _onRefresh,
           child: playersStatus!.list!.isEmpty
@@ -448,41 +446,41 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     if (index < playersStatus!.list!.length) {
                       // 分页提示
                       if (playersStatus!.list![index]["pageTip"] != null) {
-                        return SizedBox(
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).textTheme.titleSmall?.color,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
+                  return SizedBox(
+                    height: 30,
+                    child: Center(
+                      child: Text(
+                        FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.titleSmall?.color,
+                        ),
+                      ),
+                    ),
+                  );
+                }
 
-                      // 内容卡片
-                      return CheatListCard(
-                        item: playersStatus?.list![index],
-                      );
-                    }
+                // 内容卡片
+                return CheatListCard(
+                  item: playersStatus?.list![index],
+                );
+              }
 
-                    // else if (index >= playersStatus!.list!.length && playersStatus!.load!) {
-                    //   // 下拉加载
-                    //   return Center(
-                    //     child: Container(
-                    //       height: 30,
-                    //       width: 30,
-                    //       margin: const EdgeInsets.symmetric(vertical: 10),
-                    //       child: const CircularProgressIndicator(strokeWidth: 2),
-                    //     ),
-                    //   );
-                    // }
+              // else if (index >= playersStatus!.list!.length && playersStatus!.load!) {
+              //   // 下拉加载
+              //   return Center(
+              //     child: Container(
+              //       height: 30,
+              //       width: 30,
+              //       margin: const EdgeInsets.symmetric(vertical: 10),
+              //       child: const CircularProgressIndicator(strokeWidth: 2),
+              //     ),
+              //   );
+              // }
 
-                    return Container();
-                  },
-                ),
+              return Container();
+            },
+          ),
         ),
       ),
     );

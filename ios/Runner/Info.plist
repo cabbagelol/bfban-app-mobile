@@ -42,6 +42,8 @@
 	<string>The app requires your consent to access the album for uploading images</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>The App requires your consent to access matters</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>This application requires your consent to access voice recognition</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

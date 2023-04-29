@@ -1,14 +1,17 @@
 /// 全局状态管理
+import 'dart:convert';
+
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../constants/api.dart';
-import '../utils/http.dart';
 import '../utils/index.dart';
 
 class AppInfoProvider with ChangeNotifier {
   NetwrokConf conf = NetwrokConf();
   AppInfoNetwrokStatus connectivity = AppInfoNetwrokStatus();
+  AppUniLinks uniLinks = AppUniLinks();
 }
 
 class AppInfoNetwrokStatus with ChangeNotifier {
@@ -126,4 +129,59 @@ class NetworkConfData {
     this.cheaterStatus,
     this.action,
   });
+}
+
+class AppUniLinks with ChangeNotifier {
+  final UrlUtil _urlUtil = UrlUtil();
+
+  final _appLinks = AppLinks();
+
+  static late BuildContext? appLinksContext;
+
+  Future init(BuildContext context) async {
+    if (context != null) AppUniLinks.appLinksContext = context;
+
+    final uri = await _appLinks.getInitialAppLink();
+    if (uri != null) _onUnlLink(uri);
+
+    _appLinks.allUriLinkStream.listen((Uri uri) {
+      _onUnlLink(uri);
+    });
+
+    return _appLinks;
+  }
+
+  /// [Event]
+  /// 处理地址
+  void _onUnlLink(Uri uri) {
+    if (uri.isScheme("bfban") || uri.isScheme("https")) {
+      switch (uri.host) {
+        case "app":
+        case "bfban.gametools.network":
+        case "bfban-app.cabbagelol.net":
+        case "bfban.com":
+          switch (uri.path.toString()) {
+            case "/player":
+              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, "/player/personaId/${uri.queryParameters["id"]}");
+              break;
+            case "/account":
+              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, '/account/${uri.queryParameters["id"]}');
+              break;
+            case "/report":
+              String data = jsonEncode({
+                "originName": uri.queryParameters["value"] ?? "",
+              });
+              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, '/report/$data');
+              break;
+            case "/search":
+              String data = jsonEncode({
+                "id": uri.queryParameters["id"],
+              });
+              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, '/search/$data');
+              break;
+          }
+          break;
+      }
+    }
+  }
 }
