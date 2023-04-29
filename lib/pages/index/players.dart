@@ -181,9 +181,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     onResetPlayerParame(skip: true, page: true);
 
-    if (_scrollController.initialScrollOffset > 0 && _scrollController.position.pixels > 0) {
-      _scrollController.jumpTo(0);
-    }
+    _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
 
     await _refreshIndicatorKey.currentState!.show();
     await getPlayerList();
@@ -289,33 +287,34 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 clipBehavior: Clip.none,
                 children: <Widget>[
                   I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}"),
-                  Positioned(
-                    top: -10,
-                    right: -12,
-                    child: AnimatedOpacity(
-                      opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
-                      duration: const Duration(milliseconds: 300),
-                      child: Container(
-                        padding: const EdgeInsets.all(2),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.error,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 12,
-                          minHeight: 12,
-                        ),
-                        child: Text(
-                          i["num"].toString(),
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: Colors.white,
+                  if (i["num"] != null && i["num"] > 0)
+                    Positioned(
+                      top: -10,
+                      right: -12,
+                      child: AnimatedOpacity(
+                        opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
+                        duration: const Duration(milliseconds: 300),
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.error,
+                            borderRadius: BorderRadius.circular(100),
                           ),
-                          textAlign: TextAlign.center,
+                          constraints: const BoxConstraints(
+                            minWidth: 12,
+                            minHeight: 12,
+                          ),
+                          child: Text(
+                            i["num"].toString(),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             );
@@ -330,7 +329,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
           Expanded(
             flex: 1,
             child: Container(
-              height: 61,
+              height: 50,
               color: Theme.of(context).scaffoldBackgroundColor,
               child: ButtonBar(
                 alignment: MainAxisAlignment.end,
@@ -446,41 +445,29 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     if (index < playersStatus!.list!.length) {
                       // 分页提示
                       if (playersStatus!.list![index]["pageTip"] != null) {
-                  return SizedBox(
-                    height: 30,
-                    child: Center(
-                      child: Text(
-                        FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).textTheme.titleSmall?.color,
-                        ),
-                      ),
-                    ),
-                  );
-                }
+                        return SizedBox(
+                          height: 30,
+                          child: Center(
+                            child: Text(
+                              FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.titleSmall?.color,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
 
-                // 内容卡片
-                return CheatListCard(
-                  item: playersStatus?.list![index],
-                );
-              }
+                      // 内容卡片
+                      return CheatListCard(
+                        item: playersStatus?.list![index],
+                      );
+                    }
 
-              // else if (index >= playersStatus!.list!.length && playersStatus!.load!) {
-              //   // 下拉加载
-              //   return Center(
-              //     child: Container(
-              //       height: 30,
-              //       width: 30,
-              //       margin: const EdgeInsets.symmetric(vertical: 10),
-              //       child: const CircularProgressIndicator(strokeWidth: 2),
-              //     ),
-              //   );
-              // }
-
-              return Container();
-            },
-          ),
+                    return Container();
+                  },
+                ),
         ),
       ),
     );

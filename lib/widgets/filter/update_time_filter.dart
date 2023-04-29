@@ -30,23 +30,39 @@ class UpdateTimeFilterPanelState extends State<UpdateTimeFilterPanel> {
 
   void _onSelectionChanged(DateRangePickerSelectionChangedArgs date) {
     PickerDateRange dateValue = date.value;
-    widget.data!.value = "${dateValue.startDate},${dateValue.endDate}";
+    if (dateValue.startDate != null && dateValue.endDate != null) widget.data!.value = "${dateValue.startDate},${dateValue.endDate}";
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 240,
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 6),
       child: SfDateRangePicker(
         onSelectionChanged: _onSelectionChanged,
+        headerStyle: DateRangePickerHeaderStyle(
+          textStyle: Theme.of(context).textTheme.bodyMedium,
+        ),
+        yearCellStyle: DateRangePickerYearCellStyle(
+          textStyle: Theme.of(context).textTheme.bodyMedium,
+        ),
+        monthCellStyle: DateRangePickerMonthCellStyle(
+          textStyle: Theme.of(context).textTheme.bodyMedium,
+        ),
+        monthViewSettings: DateRangePickerMonthViewSettings(
+          viewHeaderHeight: 0,
+          viewHeaderStyle: DateRangePickerViewHeaderStyle(
+            textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 15,
+                ),
+          ),
+          weekNumberStyle: DateRangePickerWeekNumberStyle(textStyle: Theme.of(context).textTheme.bodyMedium!),
+        ),
         view: DateRangePickerView.month,
         selectionMode: DateRangePickerSelectionMode.range,
         maxDate: DateTime.now(),
         minDate: DateTime.fromMicrosecondsSinceEpoch(1514764800000),
         navigationDirection: DateRangePickerNavigationDirection.vertical,
-        monthViewSettings: const DateRangePickerMonthViewSettings(
-          viewHeaderHeight: 0,
-        ),
         viewSpacing: .2,
       ),
     );

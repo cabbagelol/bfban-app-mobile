@@ -53,10 +53,6 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
         return GestureDetector(
           child: Column(
             children: [
-              Container(
-                height: 1,
-                color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
-              ),
               if (widget.data != null)
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 10),
@@ -72,7 +68,12 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
                       ),
                     ),
                   ),
-                )
+                ),
+              if (widget.data != null)
+                Container(
+                  height: 1,
+                  color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
+                ),
             ],
           ),
           onTap: () => _setIndex(index),

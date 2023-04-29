@@ -58,74 +58,76 @@ class _LoginPanelState extends State<LoginPanelPage> {
             ),
           ],
         ),
-        body: Consumer<UserInfoProvider>(
-          builder: (BuildContext context, data, Widget? child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                WaveBorder(
-                  width: 80,
-                  maxWidth: 600,
-                  count: 6,
-                  borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
-                  borderWidth: 2,
-                  duration: const Duration(seconds: 5),
-                  child: CircleAvatar(
-                    radius: 39,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: Image.asset(
-                        "assets/splash/splash_center_logo.png",
-                        width: 80,
-                        height: 80,
-                        fit: BoxFit.cover,
-                        filterQuality: FilterQuality.high,
+        body: ClipPath(
+          child: Consumer<UserInfoProvider>(
+            builder: (BuildContext context, data, Widget? child) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  WaveBorder(
+                    width: 80,
+                    maxWidth: 600,
+                    count: 6,
+                    borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
+                    borderWidth: 2,
+                    duration: const Duration(seconds: 5),
+                    child: CircleAvatar(
+                      radius: 39,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100),
+                        child: Image.asset(
+                          "assets/splash/splash_center_logo.png",
+                          width: 80,
+                          height: 80,
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.high,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 20),
-                      Text(
-                        FlutterI18n.translate(context, "app.signin.panel.title"),
-                        style: const TextStyle(fontSize: 20),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        FlutterI18n.translate(context, "app.signin.panel.label"),
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 40),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 20),
+                        Text(
+                          FlutterI18n.translate(context, "app.signin.panel.title"),
+                          style: const TextStyle(fontSize: 20),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 50),
-                      MaterialButton(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        color: Theme.of(context).colorScheme.primary,
-                        elevation: 2,
-                        onPressed: () => _openSignin(),
-                        child: Text(FlutterI18n.translate(context, "app.signin.panel.BfbanAccountButton")),
-                      ),
-                      const SizedBox(height: 20),
-                      MaterialButton(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
-                        elevation: 0,
-                        onPressed: () => _pop(),
-                        child: Text(FlutterI18n.translate(context, "app.signin.panel.cancelButton")),
-                      ),
-                    ],
+                        const SizedBox(height: 5),
+                        Text(
+                          FlutterI18n.translate(context, "app.signin.panel.label"),
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyMedium!.color,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 50),
+                        MaterialButton(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          color: Theme.of(context).colorScheme.primary,
+                          elevation: 2,
+                          onPressed: () => _openSignin(),
+                          child: Text(FlutterI18n.translate(context, "app.signin.panel.BfbanAccountButton")),
+                        ),
+                        const SizedBox(height: 20),
+                        MaterialButton(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
+                          elevation: 0,
+                          onPressed: () => _pop(),
+                          child: Text(FlutterI18n.translate(context, "app.signin.panel.cancelButton")),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
         bottomSheet: Container(
           width: double.infinity,

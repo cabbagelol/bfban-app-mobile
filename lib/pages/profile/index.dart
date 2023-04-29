@@ -30,10 +30,16 @@ class UserCenterPage extends StatefulWidget {
 class _UserCenterPageState extends State<UserCenterPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  bool accountLoading = false;
+
   /// [Response]
   /// 注销用户信息
   Future<void> removeUserInfo(UserInfoProvider userProvider) async {
-    userProvider.accountQuit(context);
+    if (accountLoading) return;
+
+    setState(() => accountLoading = true);
+    await userProvider.accountQuit(context);
+    setState(() => accountLoading = false);
   }
 
   /// [Event]
@@ -266,7 +272,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
 
             Offstage(
               offstage: !data.isLogin,
-              child: Padding(
+              child: Container(
+                height: 90,
                 padding: const EdgeInsets.only(
                   top: 20,
                   left: 20,
@@ -275,25 +282,36 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 ),
                 child: ElevatedButton(
                   style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
+                        padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
                         backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.error),
                       ),
                   onPressed: () => removeUserInfo(data),
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      const Icon(Icons.output),
-                      Text(
-                        FlutterI18n.translate(context, "header.signout"),
-                        style: const TextStyle(
-                          color: Colors.white,
+                  child: accountLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Wrap(
+                          spacing: 5,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            const Icon(Icons.output),
+                            Text(
+                              FlutterI18n.translate(context, "header.signout"),
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                 ),
               ),
             ),
+
+            const SizedBox(height: 80),
           ],
         );
       },

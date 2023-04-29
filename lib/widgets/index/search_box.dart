@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:bfban/router/router.dart';
+import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 
 enum titleSearchTheme {
@@ -127,19 +128,22 @@ class TitleSearchState extends State<TitleSearchWidget> {
                     Expanded(
                       flex: 1,
                       child: widget.theme == titleSearchTheme.white
-                          ? EditableText(
+                          ? TextField(
                               controller: controller,
                               focusNode: controllerFocus,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                isCollapsed: true,
+                                contentPadding: EdgeInsets.zero,
+                              ),
                               keyboardType: TextInputType.text,
                               cursorColor: Theme.of(context).colorScheme.primary,
-                              cursorWidth: 3,
-                              cursorRadius: const Radius.circular(100),
                               maxLines: 1,
-                              style:  TextStyle(
+                              style: TextStyle(
                                 fontSize: 15,
                                 color: titleSearchColor(widget.theme).textColor,
                               ),
-                              backgroundCursorColor: Colors.white,
+                              // backgroundCursorColor: Colors.white,
                               onSubmitted: (data) => widget.onSubmitted!(data),
                               onChanged: (data) => widget.onChanged!(data),
                             )

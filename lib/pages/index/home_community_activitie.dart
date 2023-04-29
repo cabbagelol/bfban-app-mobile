@@ -247,7 +247,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                                   ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  (i["username"] ?? i["byUserName"] ?? i["toPlayerName"]).toString(),
+                                  i["toPlayerName"].toString(),
                                   style: const TextStyle(
                                     fontSize: 20,
                                   ),
@@ -320,7 +320,8 @@ class WidgetStateText extends StatelessWidget {
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text("${FlutterI18n.translate(context, "home.activity.activities.report")}\t", style: textile),
+            Text((itemData!["username"] ?? itemData!["byUserName"] ?? itemData!["toPlayerName"]).toString(), style: textile),
+            Text("\t${FlutterI18n.translate(context, "home.activity.activities.report")}\t", style: textile),
             GamesTagWidget(
               data: itemData!["game"],
             ),

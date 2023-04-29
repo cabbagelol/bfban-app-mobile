@@ -32,18 +32,19 @@ abstract class PlayerBaseData {
   });
 
   Map setData(Map i) {
-    id = i["id"];
-    originName = i["originName"];
-    originUserId = i["originUserId"];
-    originPersonaId = i["originPersonaId"];
-    games = i["games"];
-    cheatMethods = i["cheatMethods"];
-    avatarLink = i["avatarLink"];
-    viewNum = i["viewNum"];
-    commentsNum = i["commentsNum"];
-    status = i["status"];
-    createTime = i["createTime"];
-    updateTime = i["updateTime"];
+    if (i["id"] != null) id = i["id"];
+    if (i["originName"] != null) originName = i["originName"];
+    if (i["originUserId"] != null) originUserId = i["originUserId"];
+    if (i["originPersonaId"] != null) originPersonaId = i["originPersonaId"];
+    if (i["games"] != null) games = i["games"];
+    if (i["cheatMethods"] != null) cheatMethods = i["cheatMethods"];
+    if (i["avatarLink"] != null) avatarLink = i["avatarLink"];
+    if (i["viewNum"] != null) viewNum = i["viewNum"];
+    if (i["commentsNum"] != null) commentsNum = i["commentsNum"];
+    if (i["status"] != null) status = i["status"];
+    if (i["valid"] != null) valid = i["valid"];
+    if (i["createTime"] != null) createTime = i["createTime"];
+    if (i["updateTime"] != null) updateTime = i["updateTime"];
     return toMap;
   }
 
@@ -59,6 +60,7 @@ abstract class PlayerBaseData {
       "viewNum": viewNum,
       "commentsNum": commentsNum,
       "valid": valid,
+      "status": status,
       "createTime": createTime,
       "updateTime": updateTime,
     };

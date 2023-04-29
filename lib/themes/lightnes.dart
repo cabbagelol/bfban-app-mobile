@@ -138,7 +138,7 @@ class LightnesTheme {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0.2),
+          elevation: MaterialStateProperty.all(0),
           backgroundColor: MaterialStateProperty.all(const Color(0xff364e80)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,

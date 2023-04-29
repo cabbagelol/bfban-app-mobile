@@ -107,9 +107,9 @@ class CheatListCard extends StatelessWidget {
           if (isIconCommendView!)
             Container(
               margin: const EdgeInsets.symmetric(
-                horizontal: 12,
+                horizontal: 6,
               ),
-              height: 30,
+              height: 25,
               width: 1,
               color: Theme.of(context).dividerTheme.color!,
             ),
@@ -121,9 +121,9 @@ class CheatListCard extends StatelessWidget {
           if (isIconHotView!)
             Container(
               margin: const EdgeInsets.symmetric(
-                horizontal: 12,
+                horizontal: 6,
               ),
-              height: 30,
+              height: 25,
               width: 1,
               color: Theme.of(context).dividerTheme.color!,
             ),

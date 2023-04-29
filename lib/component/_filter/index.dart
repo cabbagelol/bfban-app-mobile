@@ -248,15 +248,7 @@ class FilterState extends State<Filter> {
               constraints: BoxConstraints(
                 minHeight: selectHeight,
               ),
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).dividerTheme.color!,
-                    width: 0.5,
-                  ),
-                ),
-              ),
+              color: Theme.of(context).scaffoldBackgroundColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: filterItem.asMap().keys.map<Widget>((index) {
@@ -279,7 +271,7 @@ class FilterState extends State<Filter> {
           maintainAnimation: true,
           child: AnimatedOpacity(
             opacity: _selectIndex != null ? 1.0 : 0,
-            duration: const Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 200),
             child: Container(
               margin: EdgeInsets.only(top: selectHeight),
               constraints: BoxConstraints(
@@ -310,19 +302,6 @@ class FilterState extends State<Filter> {
                   ),
                   // 按钮组
                   Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor.withOpacity(1),
-                      border: Border(
-                        top: BorderSide(
-                          color: Theme.of(context).dividerTheme.color!,
-                          width: 0.5,
-                        ),
-                        bottom: BorderSide(
-                          color: Theme.of(context).dividerTheme.color!,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
                     child: widget.actions == null
                         ? actionsFilterWidget(
                             onChange: () {
@@ -419,6 +398,14 @@ class _FilterTitleWidgetState extends State<FilterTitleWidget> {
       children: <Widget>[
         Container(
           margin: const EdgeInsets.only(right: 5),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 2,
+                color: showPanel ? Colors.white : Colors.transparent,
+              ),
+            ),
+          ),
           child: widget.title,
         ),
         widget.isIcon

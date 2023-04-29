@@ -70,10 +70,6 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
             return GestureDetector(
               child: Column(
                 children: [
-                  Container(
-                    height: 1,
-                    color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
-                  ),
                   if (widget.data != null)
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -114,6 +110,11 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
                           ],
                         ),
                       ),
+                    ),
+                  if (widget.data != null)
+                    Container(
+                      height: 1,
+                      color: Theme.of(context).dividerTheme.color!.withOpacity(.06),
                     ),
                 ],
               ),

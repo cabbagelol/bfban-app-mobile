@@ -1,11 +1,7 @@
 /// 搜索
 
-import 'dart:ui' as ui;
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:video_player/video_player.dart';
 
 import '../../data/Theme.dart';
 import 'home_community_activitie.dart';
@@ -33,9 +29,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   // 应用主体
   AppThemeItem? theme;
 
-  // 视频控制器
-  VideoPlayerController? _controller;
-
   final GlobalKey<HomeCommunityPageState> _homeCommunityPageKey = GlobalKey<HomeCommunityPageState>();
 
   final GlobalKey<HomeTracePageState> _homeTracePageKey = GlobalKey<HomeTracePageState>();
@@ -56,20 +49,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
-    /// 播放控制器
-    _controller = VideoPlayerController.asset(
-      'assets/video/bf-video-hero-medium-steam-launch.mp4',
-      videoPlayerOptions: VideoPlayerOptions(
-        mixWithOthers: true,
-      ),
-    )
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      })
-      ..setLooping(true)
-      ..play();
   }
 
   @override
@@ -101,12 +80,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     tabController = TabController(vsync: this, length: homeTabs.length, initialIndex: 0);
 
     super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller!.dispose();
   }
 
   @override
@@ -145,41 +118,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             }).toList(),
           ),
         ),
-        body: Stack(
-          fit: StackFit.loose,
-          children: <Widget>[
-            // Positioned(
-            //   top: 0,
-            //   bottom: 0,
-            //   child: _controller!.value.isInitialized
-            //       ? AspectRatio(
-            //           aspectRatio: _controller!.value.aspectRatio,
-            //           child: VideoPlayer(_controller!),
-            //         )
-            //       : Container(),
-            // ),
-            BackdropFilter(
-              filter: ui.ImageFilter.blur(
-                sigmaX: 6.0,
-                sigmaY: 6.0,
-              ),
-              child: Column(
+        body: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: TabBarView(
+                controller: tabController,
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: TabBarView(
-                      controller: tabController,
-                      children: [
-                        const HomeCommunityPage(),
-                        HomeTrendPage(key: _homeTrendPageKey),
-                        HomeTracePage(key: _homeTracePageKey),
-                        const HomeTourRecordPage(),
-                      ],
-                    ),
-                  )
+                  const HomeCommunityPage(),
+                  HomeTrendPage(key: _homeTrendPageKey),
+                  HomeTracePage(key: _homeTracePageKey),
+                  const HomeTourRecordPage(),
                 ],
               ),
-            ),
+            )
           ],
         ),
       ),
