@@ -35,7 +35,6 @@ class _HtmlImageState extends State<HtmlImage> {
     if (imageUrl.isEmpty) return;
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) {
-        logger.i(imageUrl);
         return PhotoViewSimpleScreen(
           type: PhotoViewFileType.network,
           imageUrl: imageUrl,

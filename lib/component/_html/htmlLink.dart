@@ -25,16 +25,17 @@ class HtmlLink extends StatelessWidget {
 
   /// [Event]
   Widget linkIcon() {
-    switch (Uri(path: url).scheme) {
+    String scheme = url!.split(":")[0];
+    switch (scheme) {
       case "http":
       case "https":
-        return const Icon(Icons.link, size: 15);
+        return const Icon(Icons.link_outlined, size: 15);
       case "mailto":
-        return const Icon(Icons.email, size: 15);
+        return const Icon(Icons.email_outlined, size: 15);
       case "sms":
-        return const Icon(Icons.sms, size: 15);
+        return const Icon(Icons.sms_outlined, size: 15);
       default:
-        return const Icon(Icons.link, size: 15);
+        return const Icon(Icons.link_outlined, size: 15);
     }
   }
 

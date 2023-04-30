@@ -23,6 +23,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../component/_gamesTag/index.dart';
+import '../../component/_recordLink/index.dart';
 import '../../provider/userinfo_provider.dart';
 import 'time_line.dart';
 
@@ -820,6 +821,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                         title: "-",
                                       )
                                     : _updateUserName(context, snapshot.data),
+                              ),
+
+                              RecordLinkWidget(
+                                data: snapshot.data,
                               ),
 
                               const SizedBox(height: 50),

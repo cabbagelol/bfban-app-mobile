@@ -140,7 +140,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
         if (timeLineIndex > 0 && timelineList[timeLineIndex - 1].containsKey("createTime")) {
           prevNameTimeListTime = DateTime.parse(timelineList[timeLineIndex - 1]["createTime"]).millisecondsSinceEpoch;
         }
-        nameTimeListTime = DateTime.parse(timelineList[timeLineIndex]["createTime"]).millisecondsSinceEpoch;
+        nameTimeListTime = timelineList[timeLineIndex]["createTime"] != null ? DateTime.parse(timelineList[timeLineIndex]["createTime"]).millisecondsSinceEpoch : 0;
 
         // 历史名称的记录大于1，history内表示举报提交时初始名称，不应当放进timeline中
         // 索引自身历史修改日期位置，放入timeline中

@@ -46,12 +46,13 @@ class NetwrokConf with ChangeNotifier {
 
   // 从远程服务获取配置
   NetworkConfData data = NetworkConfData(
-    confList: ["privilege", "gameName", "cheatMethodsGlossary", "cheaterStatus", "action"],
+    confList: ["privilege", "gameName", "cheatMethodsGlossary", "cheaterStatus", "action", "recordLink"],
     privilege: {},
     gameName: {},
     cheatMethodsGlossary: {},
     cheaterStatus: {},
     action: {},
+    recordLink: {},
   );
 
   /// [Event]
@@ -67,6 +68,7 @@ class NetwrokConf with ChangeNotifier {
     Config.cheatMethodsGlossary = data.cheatMethodsGlossary!;
     Config.cheaterStatus = data.cheaterStatus!;
     Config.action = data.action!;
+    Config.recordLink = data.recordLink!;
 
     notifyListeners();
     return Config;
@@ -97,6 +99,9 @@ class NetwrokConf with ChangeNotifier {
       case "privilege":
         data.privilege = result.data;
         break;
+      case "recordLink":
+        data.recordLink = result.data;
+        break;
     }
 
     return result;
@@ -121,6 +126,8 @@ class NetworkConfData {
   // 判决类型配置
   Map? action;
 
+  Map? recordLink;
+
   NetworkConfData({
     this.confList,
     this.privilege,
@@ -128,6 +135,7 @@ class NetworkConfData {
     this.cheatMethodsGlossary,
     this.cheaterStatus,
     this.action,
+    this.recordLink,
   });
 }
 

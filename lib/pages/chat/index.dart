@@ -297,7 +297,7 @@ class _MessagePageState extends State<MessagePage> {
                                     Card(
                                       margin: const EdgeInsets.only(right: 60, top: 40),
                                       child: HtmlWidget(
-                                        content: e["content"].toString(),
+                                        content: "<p>${e["content"]}</p>",
                                       ),
                                     ),
                                   ],
@@ -334,7 +334,7 @@ class _MessagePageState extends State<MessagePage> {
                                     Card(
                                       margin: const EdgeInsets.only(left: 60, top: 25),
                                       child: HtmlWidget(
-                                        content: e["content"].toString(),
+                                        content: "<p>${e["content"]}</p>",
                                       ),
                                     ),
                                   ],

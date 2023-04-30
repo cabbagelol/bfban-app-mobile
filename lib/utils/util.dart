@@ -36,4 +36,13 @@ class Util {
     }
     return key;
   }
+
+  /// [Event]
+  ///
+  onReplacementStringVariable(String text, Map params) {
+    for (var i in params.entries) {
+      text = text.replaceAll("{${i.key}}", i.value);
+    }
+    return text;
+  }
 }

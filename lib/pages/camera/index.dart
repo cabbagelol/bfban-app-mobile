@@ -102,7 +102,6 @@ class _CameraPageState extends State<CameraPage> {
               bottomActions: AwesomeBottomActions(
                 state: state,
                 onMediaTap: (mediaCapture) {
-                  logger.i(mediaCapture.filePath);
                 },
               ),
             ),

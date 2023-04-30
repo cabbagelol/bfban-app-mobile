@@ -54,7 +54,7 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
     if (tourRecordStatus.load!) return;
 
     StorageData viewedData = await storage.get("viewed");
-    Map viewed = viewedData.value;
+    Map viewed = viewedData.value ?? {};
     List<TourRecordPlayerBaseData>? viewedWidgets = [];
     tourRecordStatus.list!.clear();
 

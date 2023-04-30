@@ -55,7 +55,6 @@ class RichEditCoreState extends State<RichEditCore> {
         onChangeContent: (value) {
           if (value!.isEmpty) return;
           controllerContent = value.toString();
-          logger.i(controllerContent);
         },
       ),
     );
@@ -81,7 +80,6 @@ class RichEditCoreState extends State<RichEditCore> {
   void _openMediaPage() {
     _urlUtil.opEnPage(context, "/account/media/insert").then((value) {
       if (value.toString().isNotEmpty) {
-        logger.i(value);
         controller.insertLink(value, value, false);
       }
     });

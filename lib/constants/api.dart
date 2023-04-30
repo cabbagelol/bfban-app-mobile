@@ -40,6 +40,7 @@ class Config {
   static Map cheatMethodsGlossary = {};
   static Map cheaterStatus = {};
   static Map action = {};
+  static Map recordLink = {};
 
   /// 请求接口
   /// 参考 bfban.com项目内置的util/api.js

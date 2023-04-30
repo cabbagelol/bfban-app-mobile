@@ -247,7 +247,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                                   ),
                                 const SizedBox(width: 10),
                                 Text(
-                                  i["toPlayerName"].toString(),
+                                  (i["username"] ?? i["toPlayerName"]).toString(),
                                   style: const TextStyle(
                                     fontSize: 20,
                                   ),
