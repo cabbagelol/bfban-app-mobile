@@ -56,6 +56,7 @@ class _ReportPageState extends State<ReportPage> {
   Map videoInfo = {
     "value": "",
     "videoIndex": 0,
+    "maxStringLang": 255,
     "maxCount": 10,
     "links": [
       {
@@ -150,6 +151,31 @@ class _ReportPageState extends State<ReportPage> {
         }
       });
       EluiMessageComponent.error(context)(child: Text(result.data.toString()), duration: 20000);
+    });
+  }
+
+  /// [Event]
+  /// video剩余可输入长度
+  int _getVideoCharacterLength() {
+    return videoWidgetList.where((data) => data.toString().isNotEmpty).join(",").length ?? 0;
+  }
+
+  /// [Event]
+  /// 视频链接容量溢出添加到描述
+  void _addOverflowVideoLinkDescriptionBox() {
+    String videoHtmlList = "";
+    for (var i in videoWidgetList) {
+      videoHtmlList = "$videoHtmlList<li><a href='$i'>$i</a></li>";
+    }
+
+    String html = """
+    <p>${FlutterI18n.translate(context, "detail.info.videoLink")}</p>
+    <ul>${videoHtmlList}</ul>
+    """;
+
+    setState(() {
+      videoWidgetList = [];
+      reportStatus.param!.description = '${reportStatus.param!.description!}\t\n$html';
     });
   }
 
@@ -269,7 +295,7 @@ class _ReportPageState extends State<ReportPage> {
   /// [Event]
   /// 添加视频链接
   _addVideoLink() {
-    return videoWidgetList.length < videoInfo["maxCount"]
+    return videoWidgetList.length < videoInfo["maxCount"] && _getVideoCharacterLength() < videoInfo["maxStringLang"]
         ? () {
             setState(() {
               videoWidgetList.add("");
@@ -300,7 +326,7 @@ class _ReportPageState extends State<ReportPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
-        title: Text(FlutterI18n.translate(context, "report.title")),
+        title: Text(FlutterI18n.translate(context, "app.report.title")),
         actions: <Widget>[
           reportStatus.load!
               ? ElevatedButton(
@@ -455,56 +481,92 @@ class _ReportPageState extends State<ReportPage> {
 
           /// S 视频链接
           EluiCellComponent(
-            title: "${FlutterI18n.translate(context, "detail.info.videoLink")} (${videoWidgetList.length}/${videoInfo["maxCount"]})",
+            title: FlutterI18n.translate(context, "detail.info.videoLink"),
+            label: "${videoWidgetList.length}/${videoInfo["maxCount"]}",
             cont: videoWidgetList.length < videoInfo["maxCount"]
-                ? OutlinedButton(
-                    onPressed: _addVideoLink(),
-                    child: const Icon(Icons.add),
+                ? Wrap(
+                    children: [
+                      if (_getVideoCharacterLength() > videoInfo["maxStringLang"])
+                        const Icon(
+                          Icons.warning,
+                          color: Colors.yellow,
+                          size: 15,
+                        ),
+                      OutlinedButton(
+                        onPressed: _addVideoLink(),
+                        child: const Icon(Icons.add),
+                      )
+                    ],
                   )
                 : Container(),
           ),
-          videoWidgetList.isNotEmpty
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: videoWidgetList.asMap().keys.map((index) {
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 5, left: 15, right: 15),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(3),
-                        side: BorderSide(
-                          color: Theme.of(context).dividerTheme.color!,
-                          width: 1,
-                        ),
+
+          if (_getVideoCharacterLength() > videoInfo["maxStringLang"])
+            Column(
+              children: [
+                EluiTipComponent(
+                  type: EluiTip.warning,
+                  child: Wrap(
+                    spacing: 4,
+                    runSpacing: 5,
+                    children: [
+                      Text(FlutterI18n.translate(context, "app.report.overflowLength")),
+                      TextButton(
+                        onPressed: () => _addOverflowVideoLinkDescriptionBox(),
+                        style: ButtonStyle(padding: MaterialStateProperty.all(const EdgeInsets.all(0)), textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 12)), visualDensity: const VisualDensity(vertical: -3, horizontal: 2)),
+                        child: Text(FlutterI18n.translate(context, "app.report.overflowLengthButton")),
                       ),
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Input(
-                                textStyle: Theme.of(context).textTheme.bodyMedium,
-                                contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                                value: videoWidgetList[index],
-                                onChange: (data) {
-                                  setState(() {
-                                    videoWidgetList[index] = data["value"].toString();
-                                  });
-                                },
-                                placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => _removeVideoLink(index),
-                              child: const Icon(Icons.delete),
-                            )
-                          ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+              ],
+            ),
+
+          if (videoWidgetList.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: videoWidgetList.asMap().keys.map((index) {
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 5, left: 15, right: 15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3),
+                    side: BorderSide(
+                      color: Theme.of(context).dividerTheme.color!,
+                      width: 1,
+                    ),
+                  ),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Input(
+                            // type: TextInputType.url,
+                            textStyle: Theme.of(context).textTheme.bodyMedium,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                            value: videoWidgetList[index],
+                            onChange: (data) {
+                              setState(() {
+                                videoWidgetList[index] = data["value"].toString();
+                              });
+                            },
+                            placeholder: videoInfo["links"][videoInfo["videoIndex"]]["placeholder"],
+                          ),
                         ),
-                      ),
-                    );
-                  }).toList(),
-                )
-              : const EmptyWidget(),
+                        GestureDetector(
+                          onTap: () => _removeVideoLink(index),
+                          child: const Icon(Icons.delete),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+            )
+          else
+            const EmptyWidget(),
 
           /// E 视频链接
 

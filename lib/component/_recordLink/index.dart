@@ -90,6 +90,17 @@ class _RecordLinkWidgetState extends State<RecordLinkWidget> {
                 children: [
                   Row(
                     children: [
+                      Card(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(3),
+                          child: Image.asset(
+                            "assets/images/recordPlatforms/$platformName.png",
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
                       Expanded(
                         flex: 1,
                         child: Text(platformName),

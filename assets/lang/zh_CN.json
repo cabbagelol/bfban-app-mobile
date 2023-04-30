@@ -213,6 +213,11 @@
         "reportCount": "举报总数"
       }
     },
+    "report": {
+      "title": "举报玩家",
+      "overflowLength": "添加的链接超出最大长度，请删减链接或使用短链接，推荐点击下方按钮将所有链接放置描述中",
+      "overflowLengthButton": "好的，添加描述框中"
+    },
     "signin": {
       "title": "登录",
       "panel": {

@@ -53,7 +53,13 @@ class _HtmlCoreState extends State<HtmlCore> {
       // 可疑链接
       // 将可疑的文本链接转换为链接widget
       for (var p_child_link_item in _regular.getCheckText(RegularType.Link, i.group(0))) {
-        vDom = vDom.replaceFirst(p_child_link_item.group(0), "<a href=${p_child_link_item.group(0)}>${p_child_link_item.group(0)}</a>");
+        RegExpMatch _p_child_link_item = p_child_link_item;
+        String text = p_child_link_item.group(0);
+        String textL = vDom[_p_child_link_item.start - 4] != null ? vDom.substring(_p_child_link_item.start - 4, _p_child_link_item.start) : "";
+
+        if (textL.indexOf("img") < 0 && !textL.contains("=\"") && !textL.contains("src=") && !textL.contains("href=")) {
+          vDom = vDom.replaceFirst(text, "<a href=$text>$text</a>");
+        }
       }
 
       // p child -> hrs
