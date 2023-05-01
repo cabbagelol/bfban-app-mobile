@@ -119,7 +119,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
             if (widget.quote != null) widget.quote!,
             [
               Container(
-                margin: const EdgeInsets.all(10),
+                margin: const EdgeInsets.all(8),
                 child: SelectableHtml(
                   data: htmlEscape.convert(widget.content.toString()),
                   style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
@@ -139,7 +139,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                 children: [
                   InkWell(
                     child: Container(
-                      margin: EdgeInsets.only(left: 4),
+                      margin: const EdgeInsets.only(left: 4),
                       child: const Icon(Icons.fullscreen, size: 16),
                     ),
                     onTap: () {

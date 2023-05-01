@@ -43,7 +43,10 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
 
   @override
   void initState() {
-    _doubleClickAnimationController = AnimationController(duration: const Duration(milliseconds: 150), vsync: this);
+    _doubleClickAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 150),
+      vsync: this,
+    );
     super.initState();
   }
 

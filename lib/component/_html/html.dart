@@ -25,21 +25,14 @@ class _HtmlCoreState extends State<HtmlCore> {
   String renderView = "";
 
   @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((Duration time) {
-      packagingRender(context);
-    });
-    super.initState();
-  }
-
-  @override
   void didChangeDependencies() {
+    packagingRender();
     super.didChangeDependencies();
   }
 
   /// [Event]
   /// 包装器
-  void packagingRender(context) {
+  void packagingRender() {
     String vDom = "<div>${widget.data ?? ""}</div>";
     if (widget.data!.isEmpty) return;
 
@@ -52,15 +45,21 @@ class _HtmlCoreState extends State<HtmlCore> {
       // p child -> links
       // 可疑链接
       // 将可疑的文本链接转换为链接widget
-      for (var p_child_link_item in _regular.getCheckText(RegularType.Link, i.group(0))) {
-        RegExpMatch _p_child_link_item = p_child_link_item;
-        String text = p_child_link_item.group(0);
-        String textL = vDom[_p_child_link_item.start - 4] != null ? vDom.substring(_p_child_link_item.start - 4, _p_child_link_item.start) : "";
-
-        if (textL.indexOf("img") < 0 && !textL.contains("=\"") && !textL.contains("src=") && !textL.contains("href=")) {
-          vDom = vDom.replaceFirst(text, "<a href=$text>$text</a>");
-        }
-      }
+      // for (var p_child_link_item in _regular.getCheckText(RegularType.Link, i.group(0))) {
+      //   RegExpMatch _p_child_link_item = p_child_link_item;
+      //   String text = p_child_link_item.group(0);
+      //   String textFront;
+      //
+      //   if (_p_child_link_item.start > 4 && vDom.toString().length < _p_child_link_item.start && text[_p_child_link_item.start - 4] != null) {
+      //     textFront = vDom.substring(_p_child_link_item.start - 4, _p_child_link_item.start);
+      //   } else {
+      //     textFront = "";
+      //   }
+      //
+      //   if (textFront.indexOf("img") < 0 && !textFront.contains("=\"") && !textFront.contains("src=") && !textFront.contains("href=")) {
+      //     vDom = vDom.replaceFirst(text, "<a href=$text>$text</a>");
+      //   }
+      // }
 
       // p child -> hrs
       if (i.group(0).toString().contains("----")) {

@@ -1,3 +1,4 @@
+import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
@@ -104,7 +105,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
           }
 
           // 没有更多数据
-          if (d["result"].isEmpty) {
+          if (d["result"].isEmpty && playerTimelineStatus.list![playerTimelineStatus.list!.length - 1]["pageNotContent"] == null) {
             int first = playerTimelineStatus.list!.length;
             playerTimelineStatus.list!.insert(first, {
               "pageNotContent": true,
@@ -201,90 +202,94 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       onRefresh: _onRefreshTimeline,
       child: ListView(
         controller: scrollController,
-        children: playerTimelineStatus.list!.asMap().entries.map((data) {
-          int index = data.key;
+        children: playerTimelineStatus.list!.isNotEmpty
+            ? playerTimelineStatus.list!.asMap().entries.map((data) {
+                int index = data.key;
 
-          if (data.key < playerTimelineStatus.list!.length) {
-            var timeLineItem = data.value;
+                if (data.key < playerTimelineStatus.list!.length) {
+                  var timeLineItem = data.value;
 
-            // 分页提示
-            if (timeLineItem["pageTip"] != null) {
-              return Column(
-                children: [
-                  const Divider(height: 1),
-                  SizedBox(
-                    height: 30,
-                    child: Center(
-                      child: Text(
-                        FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${timeLineItem["pageIndex"]}"}),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                  // 分页提示
+                  if (timeLineItem["pageTip"] != null) {
+                    return Column(
+                      children: [
+                        if (index > 0 && index < playerTimelineStatus.list!.length - 1) const Divider(height: 1),
+                        SizedBox(
+                          height: 30,
+                          child: Center(
+                            child: Text(
+                              FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${timeLineItem["pageIndex"]}"}),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.bodyMedium?.color,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }
+                      ],
+                    );
+                  }
 
-            // 无更多数据
-            if (timeLineItem["pageNotContent"] != null) {
-              return Column(
-                children: [
-                  const Divider(height: 1),
-                  SizedBox(
-                    height: 30,
-                    child: Center(
-                      child: Text(
-                        FlutterI18n.translate(context, "basic.tip.notContent"),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Theme.of(context).textTheme.bodyMedium?.color,
+                  // 无更多数据
+                  if (timeLineItem["pageNotContent"] != null) {
+                    return Column(
+                      children: [
+                        if (index > 1 && index < playerTimelineStatus.list!.length - 1) const Divider(height: 1),
+                        SizedBox(
+                          height: 30,
+                          child: Center(
+                            child: Text(
+                              FlutterI18n.translate(context, "basic.tip.notContent"),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.bodyMedium?.color,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }
+                      ],
+                    );
+                  }
 
-            switch (timeLineItem["type"]) {
-              case "reply":
-                // 回复
-                return CheatUserCheatersCard(
-                  onReplySucceed: _onReplySucceed,
-                )
-                  ..data = timeLineItem
-                  ..index = index;
-              case "report":
-                // 举报卡片
-                return CheatReportsCard(
-                  onReplySucceed: _onReplySucceed,
-                )
-                  ..data = timeLineItem
-                  ..index = index;
-              case "judgement":
-              // 举报
-                return JudgementCard()
-                  ..data = timeLineItem
-                  ..index = index;
-              case "banAppeal":
-              // 申诉
-                return AppealCard(
-                  onReplySucceed: _onReplySucceed,
-                )
-                  ..data = timeLineItem
-                  ..index = index;
-              case "historyUsername":
-                return HistoryNameCard()
-                  ..data = timeLineItem
-                  ..index = index;
-            }
-          }
+                  switch (timeLineItem["type"]) {
+                    case "reply":
+                      // 回复
+                      return CheatUserCheatersCard(
+                        onReplySucceed: _onReplySucceed,
+                      )
+                        ..data = timeLineItem
+                        ..index = index + 1;
+                    case "report":
+                      // 举报卡片
+                      return CheatReportsCard(
+                        onReplySucceed: _onReplySucceed,
+                      )
+                        ..data = timeLineItem
+                        ..index = index + 1;
+                    case "judgement":
+                      // 举报
+                      return JudgementCard()
+                        ..data = timeLineItem
+                        ..index = index + 1;
+                    case "banAppeal":
+                      // 申诉
+                      return AppealCard(
+                        onReplySucceed: _onReplySucceed,
+                      )
+                        ..data = timeLineItem
+                        ..index = index + 1;
+                    case "historyUsername":
+                      return HistoryNameCard()
+                        ..data = timeLineItem
+                        ..index = index + 1;
+                  }
+                }
 
-          return Container();
-        }).toList(),
+                return Container();
+              }).toList()
+            : [
+                const EmptyWidget(),
+              ],
       ),
     );
   }

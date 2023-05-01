@@ -181,7 +181,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     onResetPlayerParame(skip: true, page: true);
 
-    _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+    if (_scrollController.hasClients && _scrollController.position.pixels > _scrollController.position.minScrollExtent) {
+      _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+    }
 
     await _refreshIndicatorKey.currentState!.show();
     await getPlayerList();
