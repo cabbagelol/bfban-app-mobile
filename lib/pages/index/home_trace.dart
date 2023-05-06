@@ -19,6 +19,8 @@ class HomeTracePage extends StatefulWidget {
 }
 
 class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveClientMixin {
+  final Storage _storage = Storage();
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   // 列表视图控制器
@@ -95,22 +97,6 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
     await getTraceList();
   }
 
-  /// [Event]
-  /// 获取追踪案件列表
-  void getPlayerDetail(String id) async {
-    dynamic query = await Storage().get("viewed");
-
-    if (query == null) {
-      await getNetworkQuery(id);
-    } else {
-      await getLoaclQuery(id);
-    }
-  }
-
-  Future getNetworkQuery(String id) async {}
-
-  Future getLoaclQuery(String id) async {}
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -118,7 +104,7 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
       builder: (context, data, child) {
         return data.userinfo.isEmpty
             ? const HomeHintLogin()
-            : RefreshIndicator(
+            : traceStatus.list!.isNotEmpty ? RefreshIndicator(
                 key: _refreshIndicatorKey,
                 onRefresh: _onRefresh,
                 child: ListView.builder(
@@ -134,7 +120,7 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
                     );
                   },
                 ),
-              );
+              ) : const EmptyWidget();
       },
     );
   }

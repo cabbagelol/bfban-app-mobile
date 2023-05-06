@@ -165,7 +165,6 @@ class AppUniLinks with ChangeNotifier {
     if (uri.isScheme("bfban") || uri.isScheme("https")) {
       switch (uri.host) {
         case "app":
-        case "bfban.gametools.network":
         case "bfban-app.cabbagelol.net":
         case "bfban.com":
           switch (uri.path.toString()) {

@@ -22,6 +22,7 @@ import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../component/_bfvHackers/index.dart';
 import '../../component/_gamesTag/index.dart';
 import '../../component/_recordLink/index.dart';
 import '../../provider/userinfo_provider.dart';
@@ -156,27 +157,24 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// [Event]
   /// 更新游览值
   Future _onViewd() async {
-    StorageData? viewed = await storage.get("viewed");
+    StorageData? viewedData = await storage.get("viewed");
+    Map viewed = viewedData.value ?? {};
     String? id = viewedStatus.parame!.id.toString();
 
     if (id.isEmpty) return;
 
-    // TODO 校验，包含ID且1天累，则不更新游览值
-    // if (viewed != null) {
-    //   return;
-    // }
+    // 校验,含id且1天内，则不更新游览值
+    if (!viewed.containsKey(id) && num.parse(viewed[id]) < num.parse(viewed[id]) + 10 * 60 * 60 * 1000) return;
 
     Response result = await Http.request(
       Config.httpHost["player_viewed"],
-      parame: viewedStatus.parame?.toMap,
+      data: viewedStatus.parame!.toMap,
       method: Http.POST,
     );
 
     if (result.data["success"] == 1) {
-      if (viewed.value[id] != null) {
-        viewed.value[id] = DateTime.now().millisecondsSinceEpoch.toString();
-        storage.set("viewed", value: viewed);
-      }
+      viewed[id] = DateTime.now().millisecondsSinceEpoch;
+      storage.set("viewed", value: viewed);
 
       setState(() {
         playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
@@ -557,10 +555,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                               clipBehavior: Clip.antiAlias,
                                               child: Stack(
                                                 children: [
-                                                  Positioned(
+                                                  const Positioned(
                                                     top: 0,
-                                                    child: Image.asset(
-                                                      "assets/images/default-player-avatar.jpg",
+                                                    child: EluiImgComponent(
+                                                      src: "assets/images/default-player-avatar.jpg",
                                                       fit: BoxFit.contain,
                                                       width: 150,
                                                       height: 150,
@@ -626,15 +624,23 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
                                                   style: const TextStyle(fontSize: 33),
                                                 ),
                                                 const SizedBox(height: 2),
-                                                Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context).cardTheme.color,
-                                                    border: Border.all(color: Theme.of(context).dividerTheme.color!),
-                                                    borderRadius: BorderRadius.circular(3),
-                                                  ),
-                                                  child: Text(FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}")),
-                                                )
+                                                Wrap(
+                                                  spacing: 5,
+                                                  children: [
+                                                    Container(
+                                                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                                                      decoration: BoxDecoration(
+                                                        color: Theme.of(context).cardTheme.color,
+                                                        border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                                                        borderRadius: BorderRadius.circular(3),
+                                                      ),
+                                                      child: Text(FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}")),
+                                                    ),
+                                                    BfvHackersWidget(
+                                                      data: snapshot.data,
+                                                    ),
+                                                  ],
+                                                ),
                                               ],
                                             ),
                                           ),

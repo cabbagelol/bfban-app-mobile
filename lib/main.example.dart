@@ -15,7 +15,7 @@ void main() async {
       // Request address
       // Use the development address in the Android emulator, which should be 10.0.2.2:3000/api
       // by https://developer.android.google.cn/studio/run/emulator-networking
-      "network_service_request": BaseUrl(host: "bfban.gametools.network", pathname: "/api"),
+      "network_service_request": BaseUrl(host: "bfban.com", pathname: "/api"),
       // In development mode it can be written like this:
       // "network_service_request": {
       //   "ios": BaseUrl(protocol: BaseUrlProtocol.HTTP, host: "127.0.0.1:3000", pathname: "/api"),

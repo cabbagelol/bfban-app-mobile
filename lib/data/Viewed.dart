@@ -15,9 +15,11 @@ class ViewedStatusParame {
     this.id,
   });
 
-  get toMap {
+  Map<String, dynamic> get toMap {
     return {
-      "id": id,
+      "data": {
+        "id": id,
+      }
     };
   }
 }

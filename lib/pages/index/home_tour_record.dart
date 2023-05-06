@@ -1,3 +1,5 @@
+/// 预览记录
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -39,7 +41,7 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
   Map selectMap = {};
 
   @override
-  bool get wantKeepAlive => false;
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -63,7 +65,7 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
     });
 
     for (var i in viewed.entries) {
-      Map playerData = await storagePlayer.query(i.key);
+      Map playerData = await storagePlayer.query(i.key) ?? {};
 
       if (playerData.isEmpty) return;
       TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
@@ -99,9 +101,9 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
     });
 
     if (isEdit) {
-      tourRecordStatus.list!.forEach((i) {
+      for (var i in tourRecordStatus.list!) {
         selectMap.addAll({i.id: status});
-      });
+      }
 
       setState(() {
         this.selectMap = selectMap;
@@ -114,7 +116,7 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
   void _selectDeleteItem() async {
     if (isEdit && selectMap.isNotEmpty) {
       StorageData viewedData = await storage.get("viewed");
-      Map viewed = viewedData.value;
+      Map viewed = viewedData.value ?? {};
 
       for (var i in selectMap.entries) {
         if (i.value) {
@@ -136,75 +138,81 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
         return RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _onRefresh,
-          child: ListView.builder(
+          child: ListView(
             controller: _scrollController,
-            itemCount: tourRecordStatus.list!.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (tourRecordStatus.list!.isEmpty) {
-                return const EmptyWidget();
-              }
-
-              if (index == 0) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  height: 35,
-                  color: Theme.of(context).primaryColorDark.withOpacity(.1),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: isEdit
-                            ? Row(
-                                children: [
-                                  Checkbox(
-                                    value: selectAll,
-                                    onChanged: (status) => _selectAllItem(status!),
-                                  ),
-                                  TextButton(
-                                    onPressed: () => _selectDeleteItem(),
-                                    child: const Icon(Icons.delete, size: 15),
-                                  ),
-                                ],
-                              )
-                            : Container(),
-                      ),
-                      OutlinedButton(
-                        onPressed: () {
-                          setState(() {
-                            isEdit = !isEdit;
-                          });
-                        },
-                        child: Text(!isEdit ? FlutterI18n.translate(context, "basic.button.submit") : FlutterI18n.translate(context, "basic.button.cancel")),
-                      )
-                    ],
-                  ),
-                );
-              }
-
-              return Row(
-                children: [
-                  if (isEdit)
-                    Container(
-                      margin: const EdgeInsets.only(left: 15),
-                      child: Checkbox(
-                        visualDensity: VisualDensity.standard,
-                        value: selectMap[tourRecordStatus.list![index].id] ?? false,
-                        onChanged: (status) {
-                          setState(() {
-                            selectMap[tourRecordStatus.list![index].id] = status;
-                          });
-                        },
-                      ),
+            children: [
+              // tabBar
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                height: 35,
+                color: Theme.of(context).primaryColorDark.withOpacity(.1),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: isEdit
+                          ? Row(
+                              children: [
+                                Checkbox(
+                                  value: selectAll,
+                                  onChanged: (status) => _selectAllItem(status!),
+                                ),
+                                TextButton(
+                                  onPressed: () => _selectDeleteItem(),
+                                  child: const Icon(Icons.delete, size: 15),
+                                ),
+                              ],
+                            )
+                          : Container(),
                     ),
-                  Expanded(
-                    flex: 1,
-                    child: CheatListCard(
-                      item: tourRecordStatus.list![index].toMap,
+                    OutlinedButton(
+                      onPressed: () => _getTourRecordList(),
+                      child: const Icon(Icons.rotate_right, size: 15),
                     ),
-                  ),
-                ],
-              );
-            },
+                    const SizedBox(width: 3),
+                    OutlinedButton(
+                      onPressed: () {
+                        setState(() {
+                          isEdit = !isEdit;
+                        });
+                      },
+                      child: !isEdit ? const Icon(Icons.edit, size: 15) : Text(FlutterI18n.translate(context, "basic.button.cancel")),
+                    )
+                  ],
+                ),
+              ),
+
+              // 列表
+              tourRecordStatus.list!.isEmpty
+                  ? const EmptyWidget()
+                  : Column(
+                      children: tourRecordStatus.list!.map((i) {
+                        return Row(
+                          children: [
+                            if (isEdit)
+                              Container(
+                                margin: const EdgeInsets.only(left: 15),
+                                child: Checkbox(
+                                  visualDensity: VisualDensity.standard,
+                                  value: selectMap[i.id] ?? false,
+                                  onChanged: (status) {
+                                    setState(() {
+                                      selectMap[i.id] = status;
+                                    });
+                                  },
+                                ),
+                              ),
+                            Expanded(
+                              flex: 1,
+                              child: CheatListCard(
+                                item: i.toMap,
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    )
+            ],
           ),
         );
       },

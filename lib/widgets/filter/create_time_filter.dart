@@ -45,9 +45,15 @@ class CreateTimeFilterPanelState extends State<CreateTimeFilterPanel> {
         ),
         yearCellStyle: DateRangePickerYearCellStyle(
           textStyle: Theme.of(context).textTheme.bodyMedium,
+          disabledDatesTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.4),
+              ),
         ),
         monthCellStyle: DateRangePickerMonthCellStyle(
           textStyle: Theme.of(context).textTheme.bodyMedium,
+          disabledDatesTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.4),
+              ),
         ),
         monthViewSettings: DateRangePickerMonthViewSettings(
           viewHeaderHeight: 0,

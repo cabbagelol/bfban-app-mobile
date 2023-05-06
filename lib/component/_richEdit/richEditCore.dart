@@ -6,9 +6,12 @@ import 'package:flutter_rte/flutter_rte.dart';
 class RichEditCore extends StatefulWidget {
   String? data;
 
+  bool? expandFullHeight;
+
   RichEditCore({
     Key? key,
     this.data = "",
+    this.expandFullHeight = true,
   }) : super(key: key);
 
   @override
@@ -19,6 +22,7 @@ class RichEditCoreState extends State<RichEditCore> {
   final UrlUtil _urlUtil = UrlUtil();
 
   late HtmlEditorController controller;
+  late FocusNode myFocusNode;
 
   String controllerContent = "";
 
@@ -28,6 +32,8 @@ class RichEditCoreState extends State<RichEditCore> {
       toolbarOptions: HtmlToolbarOptions(
         toolbarPosition: ToolbarPosition.custom,
         toolbarType: ToolbarType.nativeGrid,
+        gridViewHorizontalSpacing: 0,
+        gridViewVerticalSpacing: 3,
         defaultToolbarButtons: [
           const ListButtons(listStyles: false),
           const FontButtons(
@@ -39,12 +45,18 @@ class RichEditCoreState extends State<RichEditCore> {
             superscript: false,
             subscript: false,
           ),
-          const InsertButtons(),
+          const InsertButtons(link: true),
         ],
         // backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
       ),
       editorOptions: HtmlEditorOptions(
-        hintStyle: TextStyle(color: Theme.of(context).textTheme.displayMedium!.color!.withOpacity(.5)),
+        initialText: widget.data ?? "",
+        minHeight: 300,
+        padding: const EdgeInsets.symmetric(horizontal: 0),
+        hintStyle: TextStyle(
+          color: Theme.of(context).textTheme.displayMedium!.color!.withOpacity(.5),
+          fontWeight: FontWeight.normal,
+        ),
         hint: FlutterI18n.translate(context, "app.richedit.placeholder"),
       ),
       stylingOptions: HtmlStylingOptions(
@@ -53,14 +65,12 @@ class RichEditCoreState extends State<RichEditCore> {
       ),
       callbacks: Callbacks(
         onChangeContent: (value) {
-          if (value!.isEmpty) return;
           controllerContent = value.toString();
         },
       ),
     );
-
-    controller
-      ..toolbarOptions.customButtonGroups = [
+    controller.toolbarOptions.fixedToolbar = true;
+    controller.toolbarOptions.customButtonGroups = [
         CustomButtonGroup(
           index: 3,
           buttons: [
@@ -72,6 +82,10 @@ class RichEditCoreState extends State<RichEditCore> {
           ],
         ),
       ];
+
+    Future.delayed(const Duration(seconds: 1)).then((value) {
+      controller.setFocus();
+    });
     super.didChangeDependencies();
   }
 
@@ -86,24 +100,30 @@ class RichEditCoreState extends State<RichEditCore> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Container(
-          color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.8),
-          child: ToolbarWidget(
+        Expanded(
+          flex: 1,
+          child: HtmlEditor(
+            expandFullHeight: widget.expandFullHeight! ?? false,
             controller: controller,
           ),
         ),
-        Divider(height: 1),
-        Expanded(
-          child: HtmlEditor(
-            minHeight: 300,
-            expandFullHeight: true,
-            initialValue: widget.data,
+        const Divider(height: 1),
+        Container(
+          color: Theme.of(context).unselectedWidgetColor.withOpacity(.8),
+          child: ToolbarWidget(
             controller: controller,
           ),
-          flex: 1,
         ),
       ],
     );

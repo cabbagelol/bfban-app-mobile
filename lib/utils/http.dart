@@ -1,8 +1,8 @@
 /// http请求
 
-// ignore_for_file: constant_identifier_names, non_constant_identifier_names
-
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 
 import 'package:bfban/utils/index.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
@@ -33,6 +33,10 @@ class Http extends ScaffoldState {
   static String? TOKEN = "";
   static BuildContext? CONTENT;
 
+  static String get USERAGENT {
+    return "Bfban-Mobile-Client";
+  }
+
   static String setToken(String value) {
     return TOKEN = value;
   }
@@ -55,7 +59,10 @@ class Http extends ScaffoldState {
     headers = headers ?? {"x-access-token": ""};
     method = method ?? 'GET';
 
-    if (headers != null && TOKEN!.isNotEmpty) {
+    if (headers.isNotEmpty && Http.USERAGENT.isNotEmpty) {
+      headers.addAll({HttpHeaders.userAgentHeader: Http.USERAGENT});
+    }
+    if (headers.isNotEmpty && TOKEN!.isNotEmpty) {
       headers["x-access-token"] = TOKEN;
     }
 
@@ -89,6 +96,7 @@ class Http extends ScaffoldState {
 
       if (response.data["code"] == "user.tokenExpired") {
         UrlUtil().opEnPage(CONTENT!, "/login/panel");
+        StorageAccount().clearAll(CONTENT!);
       }
 
       result = response;
