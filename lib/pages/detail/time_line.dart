@@ -85,6 +85,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       setState(() {
         if (playerTimelineStatus.parame.skip! <= 0) {
           playerTimelineStatus.list = d["result"];
+          _onMergeHistoryName();
         } else {
           if (d["result"].isNotEmpty && playerTimelineStatus.parame.skip! <= playerTimelineStatus.parame.limit!) {
             playerTimelineStatus.list?.add({
@@ -92,6 +93,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
               "pageIndex": playerTimelineStatus.pageNumber!,
             });
             playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
+            _onMergeHistoryName();
           }
 
           // 追加数据
@@ -102,6 +104,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
               "pageIndex": playerTimelineStatus.pageNumber!,
             });
             playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
+            _onMergeHistoryName();
           }
 
           // 没有更多数据
@@ -114,8 +117,6 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
         }
         playerTimelineStatus.total = d["total"];
       });
-
-      _onMergeHistoryName();
     }
 
     setState(() {

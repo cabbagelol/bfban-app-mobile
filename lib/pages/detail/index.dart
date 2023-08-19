@@ -164,7 +164,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
     if (id.isEmpty) return;
 
     // 校验,含id且1天内，则不更新游览值
-    if (!viewed.containsKey(id) && num.parse(viewed[id]) < num.parse(viewed[id]) + 10 * 60 * 60 * 1000) return;
+    if (viewed.containsKey(id) && num.parse(viewed[id]) < num.parse(viewed[id]) + 10 * 60 * 60 * 1000) return;
 
     Response result = await Http.request(
       Config.httpHost["player_viewed"],

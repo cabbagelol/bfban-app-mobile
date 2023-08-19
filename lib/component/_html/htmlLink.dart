@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/html_parser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/index.dart';
 
 class HtmlLink extends StatelessWidget {
   final UrlUtil _urlUtil = UrlUtil();
-
-  RenderContext? renderContext;
 
   String? url;
 
@@ -17,7 +14,6 @@ class HtmlLink extends StatelessWidget {
 
   HtmlLink({
     Key? key,
-    this.renderContext,
     required this.url,
     this.text,
     this.style,
@@ -54,7 +50,7 @@ class HtmlLink extends StatelessWidget {
             TextSpan(
               text: (text ?? url).toString().trim(),
               style: (style ?? const TextStyle()).copyWith(
-                color: renderContext?.style.color ?? Colors.blue,
+                // color: renderContext?.style.color ?? Colors.blue,
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.dotted,
               ),

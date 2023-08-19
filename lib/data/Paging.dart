@@ -1,7 +1,4 @@
-import 'dart:ffi';
 import 'dart:io';
-
-import 'package:camerawesome/generated/i18n.dart';
 
 abstract class Paging {
   int? skip;

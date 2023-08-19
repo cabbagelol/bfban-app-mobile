@@ -64,51 +64,9 @@ class PackageProvider with ChangeNotifier {
   Future init() async {
     await getPackage();
     await getOnlinePackage();
-    await openUpPanel();
 
     notifyListeners();
     return true;
-  }
-
-  /// [Event]
-  /// 打开app升级面板
-  Future openUpPanel() async {
-    if (isNewVersion) {
-      await showDialog(
-        context: context!,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            elevation: 40,
-            clipBehavior: Clip.hardEdge,
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  Text("${FlutterI18n.translate(context, "app.setting.versions.currentVersion")}:${currentVersion}"),
-                  Text("${FlutterI18n.translate(context, "app.setting.versions.newVersion")}:${onlineVersion}"),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(FlutterI18n.translate(context, "basic.button.cancel")),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              TextButton(
-                child: Text(FlutterI18n.translate(context, "basic.button.submit")),
-                onPressed: () {
-                  _urlUtil.opEnPage(context, "/profile/version").then((value) {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 
   /// [Event]

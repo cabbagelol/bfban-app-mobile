@@ -18,7 +18,7 @@ class BfvHackersWidget extends StatefulWidget {
 class _BfvHackersWidgetState extends State<BfvHackersWidget> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  late Map hackersData = {
+  Map hackersData = {
     "hack_score_current": 0,
   };
 
@@ -26,6 +26,12 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
   void initState() {
     _getBfvHackers();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    hackersData = {};
+    super.dispose();
   }
 
   /// [Response]
@@ -89,19 +95,19 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                Image.network(
-                  "https://bfvhackers.com/static/media/bfv-hacker-lookup-logo.png",
-                  width: 20,
-                  height: 20,
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  padding: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                      color: _checkScoreLevels().color!.withOpacity(.15),
-                      border: Border.all(
-                        color: _checkScoreLevels().color!.withOpacity(.1),
+                      Image.asset(
+                        "assets/images/recordPlatforms/Bfv-Hackers.png",
+                        width: 20,
+                        height: 20,
                       ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        decoration: BoxDecoration(
+                            color: _checkScoreLevels().color!.withOpacity(.15),
+                            border: Border.all(
+                              color: _checkScoreLevels().color!.withOpacity(.1),
+                            ),
                       borderRadius: BorderRadius.circular(3)
                   ),
                   child: Text(

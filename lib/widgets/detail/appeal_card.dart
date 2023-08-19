@@ -67,7 +67,7 @@ class AppealCard extends StatelessWidget {
                             backgroundColor: Theme.of(context).cardColor,
                             textColor: Theme.of(context).textTheme.displayMedium!.color!,
                           ),
-                          value: data["appealStatus"],
+                          value: data["appealStatus"] ?? "NONE",
                         ),
                       ),
                       TextSpan(

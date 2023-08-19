@@ -92,44 +92,6 @@ class _HtmlImageState extends State<HtmlImage> {
                 ),
               ),
             );
-          case LoadState.failed:
-            return Card(
-              margin: EdgeInsets.zero,
-              color: widget.color!.withOpacity(.5),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-                child: Center(
-                  child: Column(
-                    children: [
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          const Icon(Icons.image, size: 50),
-                          Positioned(
-                            top: -5,
-                            right: -5,
-                            child: Icon(
-                              Icons.error,
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Opacity(
-                        opacity: .5,
-                        child: Text(
-                          "${widget.src}",
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
           case LoadState.completed:
             return Card(
               color: widget.color!.withOpacity(.5),
@@ -223,6 +185,45 @@ class _HtmlImageState extends State<HtmlImage> {
                     ),
                   ),
                 ],
+              ),
+            );
+          case LoadState.failed:
+          default:
+            return Card(
+              margin: EdgeInsets.zero,
+              color: widget.color!.withOpacity(.5),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          const Icon(Icons.image, size: 50),
+                          Positioned(
+                            top: -5,
+                            right: -5,
+                            child: Icon(
+                              Icons.error,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Opacity(
+                        opacity: .5,
+                        child: Text(
+                          "${widget.src}",
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             );
         }

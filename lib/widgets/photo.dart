@@ -1,5 +1,7 @@
 /// 图片查看
 
+import 'dart:io';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';

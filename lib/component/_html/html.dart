@@ -98,8 +98,7 @@ class _HtmlCoreState extends State<HtmlCore> {
     return Html(
       data: renderView,
       style: widget.style ?? _detailApi.styleHtml(context),
-      customRenders: _detailApi.customRenders(context),
-      tagsList: Html.tags..addAll(["app-icon", "app-player", "app-user", "app-floor", "app-hr"]),
+      extensions: _detailApi.customRenders(),
     );
   }
 }

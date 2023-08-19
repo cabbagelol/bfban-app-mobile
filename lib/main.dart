@@ -40,23 +40,18 @@ void runMain() async {
 
   runZonedGuarded(
     () async {
-      await Sentry.init(
-        (options) {
-          options.dsn = Config.apiHost["sentry"]!.url;
-        },
-      );
-
-      runApp(const BfBanApp());
+      await Sentry.init((options) {
+        options.dsn = Config.apiHost["sentry"]!.url;
+      });
 
       FlutterNativeSplash.remove();
     },
     (exception, stackTrace) async {
-      await Sentry.captureException(
-        exception,
-        stackTrace: stackTrace,
-      );
+      await Sentry.captureException(exception, stackTrace: stackTrace);
     },
   );
+
+  runApp(const BfBanApp());
 }
 
 class BfBanApp extends StatefulWidget {

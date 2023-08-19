@@ -21,13 +21,6 @@ class _CameraPageState extends State<CameraPage> {
 
   dynamic firstCamera;
 
-  /// 扫码结果
-  List _scanResult = [
-    // {"type_index": 0, "type": "web_site_link", "content": "1004766466591"},
-    // {"type_index": 1, "type": "app_palyer_link", "content": "1004766466591"},
-    // {"type_index": 2, "type": "text", "content": "1004766466591"}
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -53,6 +46,25 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
+  Future<CaptureRequest> path2(sensors, CaptureMode captureMode) async {
+    final Directory extDir = await getApplicationSupportDirectory();
+    final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
+    final String fileExtension = captureMode == CaptureMode.photo ? 'jpg' : 'mp4';
+
+    if (sensors.length == 1) {
+      final String filePath = '${fileDir.path}/${DateTime.now().millisecondsSinceEpoch}.$fileExtension';
+
+      return SingleCaptureRequest(filePath, sensors.first);
+    } else {
+      // 用于区分前后摄像头
+      return MultipleCaptureRequest(
+        {
+          for (final sensor in sensors) sensor: '${fileDir.path}/${sensor.position == SensorPosition.front ? 'front_' : "back_"}${DateTime.now().millisecondsSinceEpoch}.$fileExtension',
+        },
+      );
+    }
+  }
+
   Future<String> path(CaptureMode captureMode) async {
     final Directory extDir = await getApplicationSupportDirectory();
     final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
@@ -66,8 +78,8 @@ class _CameraPageState extends State<CameraPage> {
     return Scaffold(
       body: CameraAwesomeBuilder.custom(
         saveConfig: SaveConfig.photoAndVideo(
-          photoPathBuilder: () => path(CaptureMode.photo),
-          videoPathBuilder: () => path(CaptureMode.video),
+          photoPathBuilder: (sensors) => path2(sensors, CaptureMode.photo),
+          videoPathBuilder: (sensors) => path2(sensors, CaptureMode.video),
           initialCaptureMode: CaptureMode.photo,
         ),
         onImageForAnalysis: (AnalysisImage img) async {
@@ -101,8 +113,7 @@ class _CameraPageState extends State<CameraPage> {
               ),
               bottomActions: AwesomeBottomActions(
                 state: state,
-                onMediaTap: (mediaCapture) {
-                },
+                onMediaTap: (mediaCapture) {},
               ),
             ),
           );

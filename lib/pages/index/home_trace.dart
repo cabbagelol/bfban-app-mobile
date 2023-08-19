@@ -51,10 +51,6 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
   Future getTraceList() async {
     if (traceStatus.load == true) return;
 
-    Future.delayed(const Duration(seconds: 0), () {
-      if (traceStatus.parame.skip! <= 0) _refreshIndicatorKey.currentState!.show();
-    });
-
     setState(() {
       traceStatus.load = true;
     });
