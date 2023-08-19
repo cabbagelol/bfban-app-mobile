@@ -88,10 +88,14 @@ class _LanguagePageState extends State<LanguagePage> {
     setState(() {
       load = true;
     });
+
     await FlutterI18n.refresh(context, Locale(currentPageSelectLang));
+
     setState(() {
       langProvider!.currentLang = currentPageSelectLang;
-      Future.delayed(const Duration(milliseconds: 300), () {
+    });
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
         load = false;
       });
     });
@@ -130,6 +134,15 @@ class _LanguagePageState extends State<LanguagePage> {
               ],
             ),
         ],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return BackButton(
+              onPressed: () {
+                if (load == false) Navigator.of(context).pop();
+              },
+            );
+          },
+        ),
       ),
       body: Consumer<TranslationProvider>(
         builder: (BuildContext context, data, Widget? child) {

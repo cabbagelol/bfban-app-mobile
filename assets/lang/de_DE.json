@@ -217,7 +217,7 @@
         "cancelButton": "Stornieren",
         "signupButton": "BFBAN-Konto registrieren"
       },
-      "accountId": "Konto-ID eingeben",
+      "accountId": "Konto-ID / E-Mail",
       "password": "Passwort",
       "verificationCode": "Bestätigungs-Code"
     },

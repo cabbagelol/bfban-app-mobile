@@ -218,7 +218,7 @@
         "cancelButton": "cancel",
         "signupButton": "Register a BFBAN account"
       },
-      "accountId": "Enter Account ID",
+      "accountId": "Account ID / Email",
       "password": "Account password",
       "verificationCode": "Captcha"
     },

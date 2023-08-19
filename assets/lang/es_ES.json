@@ -217,8 +217,8 @@
         "cancelButton": "Cancelar",
         "signupButton": "Registrar cuenta BFBAN"
       },
-      "accountId": "Ingrese la identificación de la cuenta",
-      "password": "contraseña",
+      "accountId": "ID de cuenta / bandeja de entrada",
+      "password": "criptográfico",
       "verificationCode": "código de verificación"
     },
     "search": {
