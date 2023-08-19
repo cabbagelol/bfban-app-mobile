@@ -116,8 +116,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
   logger: ^1.3.0
+
   flutter_lints: ^2.0.1
+
+  widgetbook: ^1.0.3
 
   # 启动屏幕 https://pub.flutter-io.cn/packages/flutter_native_splash
   flutter_native_splash: ^2.2.10+1
