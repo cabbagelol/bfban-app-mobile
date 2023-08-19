@@ -56,7 +56,7 @@ class Http extends ScaffoldState {
   }) async {
     Response result = Response(data: {}, requestOptions: RequestOptions(path: '/'));
     data = data ?? {};
-    headers = headers ?? {"x-access-token": ""};
+    headers = headers ?? {"x-access-token": "", "user-agent": "client-phone"};
     method = method ?? 'GET';
 
     if (headers.isNotEmpty && Http.USERAGENT.isNotEmpty) {

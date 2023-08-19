@@ -15,10 +15,12 @@ class LoginStatus {
 class LoginStatusParame extends Captcha implements CaptchaCookie {
   String? username;
   String? password;
+  String? visitType;
 
   LoginStatusParame({
     this.username,
     this.password,
+    this.visitType,
     this.cookie,
   });
 
@@ -27,6 +29,7 @@ class LoginStatusParame extends Captcha implements CaptchaCookie {
       "data": {
         "username": username,
         "password": password,
+        "visitType": visitType,
       }
     };
     map.addAll(captchaToMap);

@@ -32,6 +32,7 @@ class _SigninPageState extends State<SigninPage> {
     parame: LoginStatusParame(
       username: "",
       password: "",
+      visitType: "client-phone",
       cookie: "",
     ),
   );
