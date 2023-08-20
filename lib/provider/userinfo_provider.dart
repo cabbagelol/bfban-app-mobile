@@ -1,6 +1,3 @@
-/// 用户数据状态管理
-
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';

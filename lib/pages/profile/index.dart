@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -92,105 +92,50 @@ class _UserCenterPageState extends State<UserCenterPage> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: _opEnSpace(),
-                            child: Row(
-                              children: [
-                                if (data.userinfo["userAvatar"] != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: EluiImgComponent(
-                                      width: 40,
-                                      height: 40,
-                                      src: data.userinfo["userAvatar"] ?? "",
-                                    ),
-                                  ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  flex: 1,
-                                  child: textLoad(
-                                    value: data.userinfo["username"] ?? FlutterI18n.translate(context, "signin.title"),
-                                    fontSize: 20,
-                                  ),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child: GestureDetector(
+                        onTap: _opEnSpace(),
+                        child: Row(
+                          children: [
+                            if (data.userinfo["userAvatar"] != null)
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(60),
+                                child: EluiImgComponent(
+                                  width: 60,
+                                  height: 60,
+                                  src: data.userinfo["userAvatar"] ?? "",
                                 ),
-                                Visibility(
-                                  visible: data.isLogin,
-                                  child: Text(
-                                    "id: ${data.userinfo["userId"]}",
-                                    style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.subtitle2!.color),
-                                  ),
-                                ),
-                                const Icon(Icons.chevron_right),
-                              ],
-                            ),
-                          ),
-                          if (data.isLogin) const SizedBox(height: 15),
-                          if (data.isLogin)
-                            AnimatedOpacity(
-                              opacity: data.isLogin ? 1 : .3,
-                              duration: const Duration(seconds: 1),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              flex: 1,
+                              child: Wrap(
+                                spacing: 5,
+                                runSpacing: 5,
                                 children: [
-                                  GestureDetector(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Text(
-                                          data.isLogin ? ProviderUtil().ofChat(context).total.toString() : "-",
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          FlutterI18n.translate(context, "profile.chat.title"),
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                        )
-                                      ],
+                                  Text(
+                                    data.userinfo["username"] ?? FlutterI18n.translate(context, "signin.title"),
+                                    style: TextStyle(
+                                      fontSize: FontSize.xLarge.value,
                                     ),
-                                    onTap: () => _opEnMessage(),
                                   ),
-                                  Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                                    height: 30,
-                                    width: 1,
-                                    color: Theme.of(context).dividerTheme.color,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Container(
-                                        constraints: const BoxConstraints(
-                                          maxWidth: 200,
-                                        ),
+                                  if (data.userinfo["userAvatar"] != null)
+                                    const Card(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                                         child: Wrap(
                                           spacing: 5,
-                                          children: [PrivilegesTagWidget(data: data.userinfo["privilege"])],
+                                          children: [Icon(Icons.ads_click, size: 15), Text("Mobile device client")],
                                         ),
                                       ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        FlutterI18n.translate(context, "account.role"),
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                  if (data.userinfo["userAvatar"] != null) PrivilegesTagWidget(data: data.userinfo["privilege"]),
                                 ],
                               ),
                             ),
-                        ],
+                            const Icon(Icons.chevron_right),
+                          ],
+                        ),
                       ),
                     ),
                   ],

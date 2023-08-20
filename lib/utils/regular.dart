@@ -15,7 +15,7 @@ class Regular {
 
   /// 正则验证
   check(RegularType regularType, dynamic value) {
-    if (regularType == null || regularType == RegularType.None) return;
+    if (regularType == RegularType.None) return;
     final checkResult = REGULARTYPE[regularType]!.v.hasMatch(value);
 
     if (checkResult) {

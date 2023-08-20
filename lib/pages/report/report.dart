@@ -16,7 +16,6 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/widgets/edit/game_type_radio.dart';
 
 import '../../component/_customReply/customReply.dart';
-import '../../component/_richEdit/index.dart';
 import '../../data/index.dart';
 
 class ReportPage extends StatefulWidget {
@@ -157,7 +156,7 @@ class _ReportPageState extends State<ReportPage> {
   /// [Event]
   /// video剩余可输入长度
   int _getVideoCharacterLength() {
-    return videoWidgetList.where((data) => data.toString().isNotEmpty).join(",").length ?? 0;
+    return videoWidgetList.where((data) => data.toString().isNotEmpty).join(",").length;
   }
 
   /// [Event]
@@ -170,7 +169,7 @@ class _ReportPageState extends State<ReportPage> {
 
     String html = """
     <p>${FlutterI18n.translate(context, "detail.info.videoLink")}</p>
-    <ul>${videoHtmlList}</ul>
+    <ul>$videoHtmlList</ul>
     """;
 
     setState(() {

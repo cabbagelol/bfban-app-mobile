@@ -1,4 +1,3 @@
-import 'package:bfban/utils/index.dart';
 
 /// 版本管理器
 

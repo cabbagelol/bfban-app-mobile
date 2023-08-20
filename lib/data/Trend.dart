@@ -78,14 +78,14 @@ enum TrendStatusParameTime {
 class TrendStatusParame extends Paging {
   String? time;
 
-  final List? _TrendStatusParameTimeList = ["daily", "weekly", "monthly", "yearly"];
+  final List _TrendStatusParameTimeList = ["daily", "weekly", "monthly", "yearly"];
 
   TrendStatusParame({
     this.limit = 10,
     this.skip = 0,
     TrendStatusParameTime time = TrendStatusParameTime.weekly,
   }) : super() {
-    this.time = _TrendStatusParameTimeList![time.index];
+    this.time = _TrendStatusParameTimeList[time.index];
   }
 
   Map<String, dynamic> get toMap {

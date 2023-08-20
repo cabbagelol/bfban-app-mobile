@@ -1,7 +1,6 @@
 /// 用户登录
 
 import 'dart:ui' as ui;
-import 'dart:convert';
 
 import 'package:bfban/component/_captcha/index.dart';
 import 'package:bfban/constants/api.dart';
@@ -211,13 +210,13 @@ class _SigninPageState extends State<SigninPage> {
                                     child: EluiInputComponent(
                                       theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
                                       placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
-                                      autofillHints: [AutofillHints.username],
+                                      autofillHints: const [AutofillHints.username],
                                       onChange: (data) {
                                         setState(() {
                                           loginStatus.parame!.username = data["value"];
                                         });
                                       },
-                              ),
+                                    ),
                             ),
                             const SizedBox(
                               height: 5,

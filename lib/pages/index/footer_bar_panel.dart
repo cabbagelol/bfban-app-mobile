@@ -280,7 +280,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       )
                     else
                       Text(
-                        statistics.data!.registers.toString() ?? "0",
+                        statistics.data!.registers.toString(),
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -320,7 +320,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       )
                     else
                       Text(
-                        statistics.data!.banAppeals.toString() ?? "0",
+                        statistics.data!.banAppeals.toString(),
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -360,7 +360,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                       )
                     else
                       Text(
-                        statistics.data!.players.toString() ?? "0",
+                        statistics.data!.players.toString(),
                         style: const TextStyle(
                           fontSize: 20,
                         ),

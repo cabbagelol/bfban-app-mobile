@@ -147,7 +147,7 @@ class AppUniLinks with ChangeNotifier {
   static late BuildContext? appLinksContext;
 
   Future init(BuildContext context) async {
-    if (context != null) AppUniLinks.appLinksContext = context;
+    AppUniLinks.appLinksContext = context;
 
     final uri = await _appLinks.getInitialAppLink();
     if (uri != null) _onUnlLink(uri);

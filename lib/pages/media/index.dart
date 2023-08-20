@@ -176,7 +176,7 @@ class _mediaPageState extends State<MediaPage> {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
 
-    if (image != null) await File(image!.path).copy("${fileDir.path}/${image.name}");
+    if (image != null) await File(image.path).copy("${fileDir.path}/${image.name}");
   }
 
   /// [Event]

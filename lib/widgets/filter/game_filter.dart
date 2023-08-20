@@ -27,12 +27,10 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
   void initState() {
     super.initState();
 
-    if (widget.isInit == null || widget.data == null) {
-      widget.data = FilterPanelData(
-        value: "all",
-        name: "game",
-      );
-    }
+    widget.data ??= FilterPanelData(
+      value: "all",
+      name: "game",
+    );
 
     setState(() {
       gameList.addAll(Config.game["child"]);

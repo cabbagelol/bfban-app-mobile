@@ -1,8 +1,4 @@
-/// 网络
-
-import 'package:bfban/data/Url.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -20,7 +16,6 @@ class AppNetworkPage extends StatefulWidget {
 }
 
 class _AppNetworkPageState extends State<AppNetworkPage> {
-  final UrlUtil _urlUtil = UrlUtil();
 
   AppNetworkStatus appNetworkStatus = AppNetworkStatus(
     list: [],
@@ -116,12 +111,9 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
         return StatefulBuilder(
           builder: (context, onState) {
             return AlertDialog(
-              title: Wrap(
+              title: const Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
-                children: const [
-                  Icon(Icons.info),
-                  Text("\tEdit")
-                ],
+                children: [Icon(Icons.info), Text("\tEdit")],
               ),
               content: SingleChildScrollView(
                 child: ListBody(

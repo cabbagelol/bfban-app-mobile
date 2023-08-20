@@ -10,7 +10,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/api.dart';
-import '../../provider/translation_provider.dart';
 
 class GuideAgreementPage extends StatefulWidget {
   const GuideAgreementPage({
@@ -73,7 +72,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
 
   /// [Event]
   openAgreement() {
-    UrlUtil().onPeUrl(Config.apiHost["app_web_site"]!.url + "/agreement/${language}.html");
+    UrlUtil().onPeUrl("${Config.apiHost["app_web_site"]!.url}/agreement/$language.html");
   }
 
   @override

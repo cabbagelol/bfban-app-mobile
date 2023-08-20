@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
 
@@ -56,12 +58,8 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
   }
 
   BfvHackerScoreLevelColor _checkScoreLevels() {
-    var hackScoreCurrent = hackersData["hack_score_current"];
-    var hackScoreLevels = hackersData["hack_score_levels"] ?? {
-      "hack": 10,
-      "v_sus": 20,
-      "sus": 100
-    };
+    var hackScoreCurrent = hackersData["hack_score_current"] ?? 0;
+    var hackScoreLevels = hackersData["hack_score_levels"] ?? {"hack": 10, "v_sus": 20, "sus": 100};
 
     if (hackScoreCurrent < hackScoreLevels["hack"]) {
       return BfvHackerScoreLevelColor(
@@ -95,19 +93,19 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                      Image.asset(
-                        "assets/images/recordPlatforms/Bfv-Hackers.png",
-                        width: 20,
-                        height: 20,
+                Image.asset(
+                  "assets/images/recordPlatforms/Bfv-Hackers.png",
+                  width: 20,
+                  height: 20,
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 3),
+                  decoration: BoxDecoration(
+                      color: _checkScoreLevels().color!.withOpacity(.15),
+                      border: Border.all(
+                        color: _checkScoreLevels().color!.withOpacity(.1),
                       ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
-                        padding: const EdgeInsets.symmetric(horizontal: 3),
-                        decoration: BoxDecoration(
-                            color: _checkScoreLevels().color!.withOpacity(.15),
-                            border: Border.all(
-                              color: _checkScoreLevels().color!.withOpacity(.1),
-                            ),
                       borderRadius: BorderRadius.circular(3)
                   ),
                   child: Text(

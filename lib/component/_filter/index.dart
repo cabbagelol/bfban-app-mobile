@@ -53,7 +53,7 @@ class FilterState extends State<Filter> {
   final GlobalKey _containerKey = GlobalKey();
 
   /// 筛选的下标
-  int? _selectIndex = null;
+  int? _selectIndex;
 
   /// 筛选布局的高度
   double selectHeight = 0;

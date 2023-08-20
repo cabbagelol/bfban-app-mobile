@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import '../constants/api.dart';
 import '../utils/index.dart';
@@ -46,13 +45,11 @@ class StoragePlayer extends Storage {
 
   // 强制更新
   onForcedUpdate() {
-    if (PLAYERDATA != null) {
-      PLAYERDATA.forEach((key, value) async {
-        if (PLAYERDATA[key] != null) PLAYERDATA[key] = await getCheatersInfo(key);
-      });
+    PLAYERDATA.forEach((key, value) async {
+      if (PLAYERDATA[key] != null) PLAYERDATA[key] = await getCheatersInfo(key);
+    });
 
-      updateStorage();
-    }
+    updateStorage();
   }
 
   // 获取作弊档案

@@ -145,6 +145,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
     _doubleClickAnimation!.addListener(_doubleClickAnimationListener);
 
     _doubleClickAnimationController.forward();
+    return null;
   }
 
   @override

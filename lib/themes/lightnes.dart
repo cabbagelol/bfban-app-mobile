@@ -14,7 +14,7 @@ class LightnesTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all(Color(0xff364e80)),
+          foregroundColor: MaterialStateProperty.all(const Color(0xff364e80)),
           textStyle: MaterialStateProperty.all(
             const TextStyle(color: Color(0xff364e80)),
           ),

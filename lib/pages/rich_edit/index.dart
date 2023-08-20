@@ -45,7 +45,7 @@ class _richEditPageState extends State<RichEditPage> {
 
   /// 确认
   void _onSubmit() async {
-    String html = await _richEditCoreKey.currentState!.controllerContent;
+    String html = _richEditCoreKey.currentState!.controllerContent;
     Navigator.pop(
       context,
       {

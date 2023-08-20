@@ -256,9 +256,9 @@ class _InsertSelectState extends State<InsertSelect> {
                 TextButton(
                   style: ButtonStyle(padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
                   onPressed: () => _onUploadFile(),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.upload_file_rounded,
                         size: 90,
@@ -295,9 +295,9 @@ class _InsertSelectState extends State<InsertSelect> {
                 TextButton(
                   style: ButtonStyle(padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
                   onPressed: () => _onMediaPage(),
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Icon(
                         Icons.perm_media,
                         size: 90,
@@ -388,7 +388,7 @@ class _InsertCropState extends State<InsertCrop> {
       cacheRawData: true,
     );
     Map editWidget = {
-      -1: Text("Not image"),
+      -1: const Text("Not image"),
       0: lo,
       1: network,
       2: network,

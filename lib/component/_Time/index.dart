@@ -29,7 +29,7 @@ class _TimeWidgetState extends State<TimeWidget> {
   Date date = Date();
 
   /// [Event]
-  /// 翻译中文
+  /// 时间转换可读时间刻
   String getFriendlyDescriptionTime(String date, {type = "Y_D_M"}) {
     var time = DateTime.parse(date);
     var now = DateTime.now();

@@ -23,7 +23,7 @@ class MediaManagement {
     final Directory extDir = await getApplicationSupportDirectory();
     final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
 
-    File newFile = File(fileDir.path + "/${const Uuid().v4()}.png");
+    File newFile = File("${fileDir.path}/${const Uuid().v4()}.png");
     newFile.writeAsBytes(Uint8List.fromList(response.data));
     File result = await newFile.create(recursive: true);
 

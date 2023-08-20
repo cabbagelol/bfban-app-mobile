@@ -1,11 +1,9 @@
 /// 包
 
 import 'package:flutter/material.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../utils/http.dart';
-import '../utils/url.dart';
 import '../utils/version.dart';
 
 class PackageStatus {
@@ -41,7 +39,6 @@ class PackageStatus {
 }
 
 class PackageProvider with ChangeNotifier {
-  final UrlUtil _urlUtil = UrlUtil();
 
   BuildContext? context;
 

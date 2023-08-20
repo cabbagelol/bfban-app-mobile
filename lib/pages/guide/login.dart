@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/provider.dart';
 import '../../utils/url.dart';
 import '../../widgets/wave_border.dart';
 

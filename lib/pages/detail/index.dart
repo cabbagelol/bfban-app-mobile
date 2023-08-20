@@ -45,7 +45,7 @@ class PlayerDetailPage extends StatefulWidget {
   _PlayerDetailPageState createState() => _PlayerDetailPageState();
 }
 
-class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerProviderStateMixin {
+class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderStateMixin {
   GlobalKey<TimeLineState> timeLineKey = GlobalKey<TimeLineState>();
 
   UrlUtil _urlUtil = UrlUtil();
@@ -158,13 +158,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with SingleTickerPr
   /// 更新游览值
   Future _onViewd() async {
     StorageData? viewedData = await storage.get("viewed");
-    Map viewed = viewedData.value ?? {};
+    Map<String, dynamic> viewed = viewedData.value ?? {};
     String? id = viewedStatus.parame!.id.toString();
 
     if (id.isEmpty) return;
 
     // 校验,含id且1天内，则不更新游览值
-    if (viewed.containsKey(id) && num.parse(viewed[id]) < num.parse(viewed[id]) + 10 * 60 * 60 * 1000) return;
+    if (viewed.containsKey(id) && (viewed[id]! < viewed[id]! + 10 * 60 * 60 * 1000)) return;
 
     Response result = await Http.request(
       Config.httpHost["player_viewed"],

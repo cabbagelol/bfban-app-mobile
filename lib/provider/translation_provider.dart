@@ -1,6 +1,3 @@
-/// 国际化
-
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 

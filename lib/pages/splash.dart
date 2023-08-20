@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
-import 'package:app_links/app_links.dart';
 
 import '../provider/package_provider.dart';
 
@@ -57,7 +56,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       _initNotice(),
       _initLang(),
       _initUserData(context),
-    ]).catchError((onError) {}).whenComplete(() async {
+    ]).catchError((onError) => []).whenComplete(() async {
       if (!await _onGuide()) return;
 
       onMain();
@@ -221,9 +220,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                       maxLines: 1,
                     ),
                     if (!appInfo.connectivity.isConnectivity())
-                      Wrap(
+                      const Wrap(
                         runAlignment: WrapAlignment.center,
-                        children: const [
+                        children: [
                           SizedBox(width: 10),
                           Icon(Icons.error, size: 18),
                           Icon(Icons.network_locked, size: 18),

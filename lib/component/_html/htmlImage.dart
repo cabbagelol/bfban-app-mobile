@@ -1,4 +1,3 @@
-import 'package:bfban/utils/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -116,8 +115,8 @@ class _HtmlImageState extends State<HtmlImage> {
                                 });
                               },
                               child: const SizedBox(
-                                child: Icon(Icons.turn_slight_left, size: 15),
                                 width: 25,
+                                child: Icon(Icons.turn_slight_left, size: 15),
                               ),
                             ),
                             const VerticalDivider(width: 1),
@@ -132,8 +131,8 @@ class _HtmlImageState extends State<HtmlImage> {
                                 });
                               },
                               child: const SizedBox(
-                                child: Icon(Icons.turn_slight_right, size: 15),
                                 width: 25,
+                                child: Icon(Icons.turn_slight_right, size: 15),
                               ),
                             ),
                             if (turns != 0) const VerticalDivider(width: 1),
@@ -145,8 +144,8 @@ class _HtmlImageState extends State<HtmlImage> {
                                   });
                                 },
                                 child: const SizedBox(
-                                  child: Icon(Icons.rotate_left, size: 15),
                                   width: 35,
+                                  child: Icon(Icons.rotate_left, size: 15),
                                 ),
                               ),
                           ],

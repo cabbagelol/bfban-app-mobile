@@ -17,8 +17,8 @@ import '../../constants/api.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
 import '../profile/index.dart';
-import 'footerbar_panel.dart';
-import 'home.dart';
+import 'footer_bar_panel.dart';
+import 'search.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
@@ -229,93 +229,96 @@ class _IndexPageState extends State<IndexPage> {
                 ],
               ),
               actions: <Widget>[
-                PopupMenuButton(
-                  icon: Icon(
-                    Icons.adaptive.more,
-                    color: Theme.of(context).iconTheme.color,
-                  ),
-                  offset: const Offset(0, 45),
-                  onSelected: (value) {
-                    switch (value) {
-                      case 1:
-                        _urlUtil.opEnPage(context, '/camera').then((value) {});
-                        break;
-                      case 2:
-                        _takeLook();
-                        break;
-                      case 3:
-                        _opEnNetwork();
-                        break;
-                      case 4:
-                        _opEnReport();
-                        break;
-                    }
-                  },
-                  itemBuilder: (context) {
-                    return [
-                      PopupMenuItem(
-                        value: 1,
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.camera,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(FlutterI18n.translate(context, "app.home.scancode")),
-                          ],
+                Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
+                  return PopupMenuButton(
+                    icon: Icon(
+                      Icons.adaptive.more,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    offset: const Offset(0, 45),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 1:
+                          _urlUtil.opEnPage(context, '/camera').then((value) {});
+                          break;
+                        case 2:
+                          _takeLook();
+                          break;
+                        case 3:
+                          _opEnNetwork();
+                          break;
+                        case 4:
+                          _opEnReport();
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          value: 1,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.camera,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.home.scancode")),
+                            ],
+                          ),
                         ),
-                      ),
-                      PopupMenuItem(
-                        value: 2,
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.casino_outlined,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(FlutterI18n.translate(context, "app.home.takeLook")),
-                          ],
+                        PopupMenuItem(
+                          value: 2,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.casino_outlined,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.home.takeLook")),
+                            ],
+                          ),
                         ),
-                      ),
-                      PopupMenuItem(
-                        value: 4,
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(FlutterI18n.translate(context, "report.title")),
-                          ],
+                        PopupMenuItem(
+                          value: 4,
+                          enabled: data.isLogin,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "report.title")),
+                            ],
+                          ),
                         ),
-                      ),
-                      const PopupMenuItem(
-                        height: 10,
-                        child: Divider(height: 1),
-                      ),
-                      PopupMenuItem(
-                        value: 3,
-                        child: Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.language,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            const SizedBox(width: 10),
-                            Text(FlutterI18n.translate(context, "app.networkDetection.title")),
-                          ],
+                        const PopupMenuItem(
+                          height: 10,
+                          child: Divider(height: 1),
                         ),
-                      ),
-                    ];
-                  },
-                ),
+                        PopupMenuItem(
+                          value: 3,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.language,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.networkDetection.title")),
+                            ],
+                          ),
+                        ),
+                      ];
+                    },
+                  );
+                })
               ],
               elevation: 0,
               titleSpacing: 0.0,

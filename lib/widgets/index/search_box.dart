@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:bfban/router/router.dart';
-import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 
 enum titleSearchTheme {

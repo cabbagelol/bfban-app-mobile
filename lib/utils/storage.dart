@@ -122,9 +122,12 @@ class StorageData {
 
   setData(dynamic data) {
     if (data != null) {
-      Map map = jsonDecode(data);
-      if (map["time"] != null) time = map["time"];
-      if (map["value"] != null) value = map["value"];
+      Map map = {};
+      if (data.runtimeType == String) {
+        map = jsonDecode(data);
+        if (map["time"] != null) time = map["time"];
+        if (map["value"] != null) value = map["value"];
+      }
     }
     return toMap;
   }

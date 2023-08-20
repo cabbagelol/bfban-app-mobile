@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../utils/index.dart';
-import '../_empty/index.dart';
 
 enum CustomReplyType { General, Judgement }
 
@@ -75,6 +74,9 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
             scopeUse: [CustomReplyType.Judgement],
           ),
         ]);
+        break;
+      case CustomReplyType.General:
+      default:
         break;
     }
 

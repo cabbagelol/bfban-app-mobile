@@ -38,14 +38,14 @@ class SearchInUserCard extends StatelessWidget {
           Text(
             item!["username"] ?? "",
             style: TextStyle(
-              color: Theme.of(context).primaryTextTheme.headline1!.color,
+              color: Theme.of(context).primaryTextTheme.displayLarge!.color,
               fontSize: 20,
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             decoration: BoxDecoration(
-              color: Theme.of(context).backgroundColor,
+              color: Theme.of(context).colorScheme.background,
               borderRadius: const BorderRadius.all(
                 Radius.circular(2),
               ),

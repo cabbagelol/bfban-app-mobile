@@ -1,6 +1,5 @@
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class PrivilegesTagWidget extends StatefulWidget {

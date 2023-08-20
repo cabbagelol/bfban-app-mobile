@@ -1,6 +1,3 @@
-/// 聊天窗口
-
-import 'dart:convert';
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_html/htmlWidget.dart';

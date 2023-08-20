@@ -21,7 +21,7 @@ abstract class FilterPanelWidget extends StatefulWidget {
   /// 查找对应 _FilterItem 管理
   /// 从_FilterItem取得title or panle的状态
   FilterItem _getPanel(String name) {
-    FilterItem? data = null;
+    FilterItem? data;
     filterAll?.asMap().keys.forEach((index) {
       FilterItem element = filterAll![index];
       if (element.name == name) {

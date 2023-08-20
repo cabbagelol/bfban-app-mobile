@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:bfban/utils/index.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
@@ -153,10 +152,5 @@ class Http extends ScaffoldState {
     // dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: Config.apiHost[typeUrl]!.baseHost)).interceptor);
 
     return dio;
-  }
-
-  /// 清空 dio 对象
-  static clear() {
-    dio.clear();
   }
 }

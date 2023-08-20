@@ -19,7 +19,6 @@ class HomeTracePage extends StatefulWidget {
 }
 
 class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveClientMixin {
-  final Storage _storage = Storage();
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 

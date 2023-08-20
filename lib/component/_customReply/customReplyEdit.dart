@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:bfban/component/_Time/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../utils/index.dart';
-import '../_html/htmlWidget.dart';
 import 'customReply.dart';
 
 class CustomReplyEditPage extends StatefulWidget {
@@ -172,13 +170,11 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
           /// 内容
           EluiCellComponent(
             title: FlutterI18n.translate(context, "report.labels.description"),
-            cont: true
-                ? const Icon(
-                    Icons.warning,
-                    color: Colors.yellow,
-                    size: 15,
-                  )
-                : null,
+            cont: const Icon(
+              Icons.warning,
+              color: Colors.yellow,
+              size: 15,
+            ),
           ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 15),

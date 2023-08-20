@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:widgetbook/widgetbook.dart';
 
 void main() {
-  runApp(HotReload());
+  runApp(const HotReload());
 }
 
 class HotReload extends StatelessWidget {

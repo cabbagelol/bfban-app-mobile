@@ -16,7 +16,7 @@ class QuoteCard extends StatefulWidget {
 }
 
 class _QuoteCardState extends State<QuoteCard> {
-  Map? quote = null;
+  Map? quote;
 
   @override
   void initState() {

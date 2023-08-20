@@ -23,7 +23,7 @@ class Upload extends Http {
   Future on(io.File file) async {
     if (file == null) return;
 
-    if (await file.readAsBytesSync().length <= FILESIZE) {
+    if (file.readAsBytesSync().length <= FILESIZE) {
       var res = await uploadDateSmallFile(file);
       return res;
     } else {
@@ -52,7 +52,7 @@ class Upload extends Http {
         "Content-Type": fileManagement.resolutionFileType(file.path),
         "Content-Length": length,
       },
-      data: await file.readAsBytesSync(),
+      data: file.readAsBytesSync(),
     );
 
     if (result.data["success"] == 1) {

@@ -51,16 +51,6 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
         permissions = [];
         break;
     }
-
-    _getQueryPermanentlyState();
-  }
-
-  /// 查询权限结果
-  void _getQueryPermanentlyState() {
-    for (var permission in permissions) {
-      // !.url(permission.value);
-      // TODO
-    }
   }
 
   @override
@@ -197,7 +187,6 @@ class _PermissionState extends State<PermissionWidget> {
 
   PermissionStatus _permissionStatus = PermissionStatus.denied;
 
-  @override
   bool get wantKeepAlive => true;
 
   @override
