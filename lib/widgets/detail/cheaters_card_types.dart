@@ -26,46 +26,60 @@ class TimeLineBaseCard extends StatefulWidget {
 
   List? leftIconTypes = [
     CircleAvatar(
+      radius: 18,
       backgroundColor: Colors.blue.withOpacity(.2),
       child: const Icon(
         Icons.help,
         color: Colors.red,
+        size: 14,
       ),
     ),
     CircleAvatar(
+      radius: 18,
       backgroundColor: Colors.blue.withOpacity(.2),
       child: const Icon(
         Icons.chat_bubble_outlined,
         color: Colors.blue,
+        size: 14,
       ),
     ),
     CircleAvatar(
+      radius: 18,
       backgroundColor: Colors.white.withOpacity(.2),
-      child: const Icon(Icons.front_hand),
+      child: const Icon(
+        Icons.front_hand,
+        size: 14,
+      ),
     ),
     CircleAvatar(
+      radius: 18,
       backgroundColor: const Color(0xFF3d1380).withOpacity(.8),
       child: const Icon(
         Icons.chat_rounded,
         color: Colors.white,
+        size: 14,
       ),
     ),
     CircleAvatar(
+      radius: 18,
       backgroundColor: const Color(0xFFeb2f96).withOpacity(.2),
       child: const Icon(
         Icons.bookmark,
         color: Color(0xFFeb2f96),
+        size: 14,
       ),
     ),
     CircleAvatar(
+      radius: 18,
       backgroundColor: const Color(0xFFffe58f).withOpacity(.2),
       child: const Icon(
         Icons.history,
         color: Color(0xFFffe58f),
+        size: 14,
       ),
     )
   ];
-  Widget? leftIcon;
+  CircleAvatar? leftIcon;
 
   TimeLineBaseCard({
     Key? key,

@@ -8,6 +8,8 @@ class HtmlLink extends StatelessWidget {
 
   String? url;
 
+  Color? color;
+
   String? text;
 
   TextStyle? style;
@@ -15,6 +17,7 @@ class HtmlLink extends StatelessWidget {
   HtmlLink({
     Key? key,
     required this.url,
+    this.color = Colors.blue,
     this.text,
     this.style,
   }) : super(key: key);
@@ -25,13 +28,13 @@ class HtmlLink extends StatelessWidget {
     switch (scheme) {
       case "http":
       case "https":
-        return const Icon(Icons.link_outlined, size: 15);
+        return Icon(Icons.link_outlined, size: 15, color: color);
       case "mailto":
-        return const Icon(Icons.email_outlined, size: 15);
+        return Icon(Icons.email_outlined, size: 15, color: color);
       case "sms":
-        return const Icon(Icons.sms_outlined, size: 15);
+        return Icon(Icons.sms_outlined, size: 15, color: color);
       default:
-        return const Icon(Icons.link_outlined, size: 15);
+        return Icon(Icons.link_outlined, size: 15, color: color);
     }
   }
 
@@ -40,6 +43,10 @@ class HtmlLink extends StatelessWidget {
     return GestureDetector(
       child: Text.rich(
         TextSpan(
+          style: TextStyle(
+            color: color,
+            decorationColor: color!.withOpacity(.7),
+          ),
           children: [
             WidgetSpan(
               child: Container(
@@ -50,7 +57,6 @@ class HtmlLink extends StatelessWidget {
             TextSpan(
               text: (text ?? url).toString().trim(),
               style: (style ?? const TextStyle()).copyWith(
-                // color: renderContext?.style.color ?? Colors.blue,
                 decoration: TextDecoration.underline,
                 decorationStyle: TextDecorationStyle.dotted,
               ),

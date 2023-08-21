@@ -47,7 +47,7 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
       method: Http.GET,
     );
 
-    if (this.mounted) {
+    if (mounted) {
       setState(() {
         hackerLoad = false;
         if (result.data != null) hackersData = result.data;
@@ -93,41 +93,42 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
         ? InkWell(
             child: Card(
               child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                  child: Wrap(
-                    spacing: 5,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/recordPlatforms/Bfv-Hackers.png",
-                        width: 20,
-                        height: 20,
-                      ),
-                      if (hackerLoad)
-                        SizedBox(
-                          width: 110,
-                          child: LinearProgressIndicator(
-                            minHeight: 2,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        )
-                      else
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          decoration: BoxDecoration(
-                              color: _checkScoreLevels().color!.withOpacity(.15),
-                              border: Border.all(
-                                color: _checkScoreLevels().color!.withOpacity(.1),
-                              ),
-                              borderRadius: BorderRadius.circular(3)),
-                          child: Text(
-                            "Hack Score: ${hackersData["hack_score_current"] ?? 0}",
-                            style: TextStyle(color: _checkScoreLevels().textColor),
-                          ),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                child: Wrap(
+                  spacing: 5,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/recordPlatforms/Bfv-Hackers.png",
+                      width: 20,
+                      height: 20,
+                    ),
+                    if (hackerLoad)
+                      SizedBox(
+                        width: 50,
+                        child: LinearProgressIndicator(
+                          minHeight: 2,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
-                      const Icon(Icons.open_in_new, size: 15)
-                    ],
-                  )),
+                      )
+                    else
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        decoration: BoxDecoration(
+                            color: _checkScoreLevels().color!.withOpacity(.15),
+                            border: Border.all(
+                              color: _checkScoreLevels().color!.withOpacity(.1),
+                            ),
+                            borderRadius: BorderRadius.circular(3)),
+                        child: Text(
+                          "Hack Score: ${hackersData["hack_score_current"] ?? 0}",
+                          style: TextStyle(color: _checkScoreLevels().textColor),
+                        ),
+                      ),
+                    const Icon(Icons.open_in_new, size: 15)
+                  ],
+                ),
+              ),
             ),
             onTap: () => _openExcursionistView(),
           )

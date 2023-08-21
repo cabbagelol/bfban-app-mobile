@@ -421,7 +421,16 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   /// 分享
   void _onShare(Map i) {
     _urlUtil.onPeUrl(
-      "${Config.apiHost["web_site"]!.url}/player/${i["originUserId"]}/share",
+      "${Config.apiHost["web_site"]!.url}/player/${i["originPersonaId"]}/share",
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  /// [Event]
+  /// 分享
+  void _opEnExplorePlayerDetail(Map i) {
+    _urlUtil.onPeUrl(
+      "${Config.apiHost["web_site"]!.url}/player/${i["originPersonaId"]}",
       mode: LaunchMode.externalApplication,
     );
   }
@@ -498,10 +507,53 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                 ),
                 elevation: 0,
                 actions: <Widget>[
-                  IconButton(
-                    icon: const Icon(Icons.open_in_new),
-                    onPressed: () {
-                      _onShare(snapshot.data);
+                  PopupMenuButton(
+                    icon: Icon(
+                      Icons.adaptive.more,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
+                    offset: const Offset(0, 45),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 1:
+                          _onShare(snapshot.data);
+                          break;
+                        case 2:
+                          _opEnExplorePlayerDetail(snapshot.data);
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          value: 1,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.share_outlined,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "share.title")),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 2,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.explore,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.detail.openExplorePlayerDetail")),
+                            ],
+                          ),
+                        ),
+                      ];
                     },
                   ),
                 ],
@@ -555,14 +607,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                               clipBehavior: Clip.antiAlias,
                                               child: Stack(
                                                 children: [
-                                                  const Positioned(
+                                                  Positioned(
                                                     top: 0,
-                                                    child: EluiImgComponent(
-                                                      src: "assets/images/default-player-avatar.jpg",
-                                                      fit: BoxFit.contain,
-                                                      width: 150,
-                                                      height: 150,
-                                                    ),
+                                                    child: Image.asset("assets/images/default-player-avatar.jpg"),
                                                   ),
                                                   EluiImgComponent(
                                                     src: snapshot.data!["avatarLink"],

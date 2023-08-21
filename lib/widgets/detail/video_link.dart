@@ -42,7 +42,7 @@ class VideoLink extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: HtmlLink(
-                        url: i.value,
+                        url: i.value ?? "none",
                         style: const TextStyle(
                           fontSize: 12,
                           overflow: TextOverflow.ellipsis,

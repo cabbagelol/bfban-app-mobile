@@ -1,3 +1,4 @@
+import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -56,7 +57,7 @@ class _HtmlImageState extends State<HtmlImage> {
               margin: EdgeInsets.zero,
               color: widget.color!.withOpacity(.5),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                 child: Center(
                   child: Column(
                     children: [
@@ -79,12 +80,7 @@ class _HtmlImageState extends State<HtmlImage> {
                       const SizedBox(height: 10),
                       Opacity(
                         opacity: .5,
-                        child: Text(
-                          "${widget.src}",
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: HtmlLink(url: "${widget.src}"),
                       )
                     ],
                   ),
@@ -156,7 +152,7 @@ class _HtmlImageState extends State<HtmlImage> {
                           child: Text(
                             "${widget.src}",
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontSize: 12),
+                            style: TextStyle(fontSize: 12, color: widget.color),
                             maxLines: 1,
                           ),
                         ),
@@ -192,7 +188,7 @@ class _HtmlImageState extends State<HtmlImage> {
               margin: EdgeInsets.zero,
               color: widget.color!.withOpacity(.5),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+                padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                 child: Center(
                   child: Column(
                     children: [
@@ -213,12 +209,7 @@ class _HtmlImageState extends State<HtmlImage> {
                       const SizedBox(height: 10),
                       Opacity(
                         opacity: .5,
-                        child: Text(
-                          "${widget.src}",
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        child: HtmlLink(url: "${widget.src}"),
                       )
                     ],
                   ),

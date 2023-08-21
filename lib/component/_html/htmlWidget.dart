@@ -79,6 +79,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
         ),
+        "a": Style(color: Theme.of(context).primaryColorDark)
       },
       {
         "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 10)),
@@ -93,6 +94,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
         ),
+        "a": Style(color: Theme.of(context).primaryColorDark)
       },
       {
         "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 15)),
@@ -107,6 +109,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
         ),
+        "a": Style(color: Theme.of(context).primaryColorDark)
       }
     ];
     return htmlStyle;
@@ -244,6 +247,7 @@ class CardUtil {
         tagsToExtend: {"a"},
         builder: (extensionContext) {
           return HtmlLink(
+            color: extensionContext.style!.color,
             url: extensionContext.element!.attributes["href"],
             text: extensionContext.element!.text,
           );
@@ -404,6 +408,7 @@ class CardUtil {
         fontSize: FontSize(15),
         color: Theme.of(context).textTheme.displayMedium!.color,
       ),
+      "a": Style(color: Colors.blue)
     };
   }
 
