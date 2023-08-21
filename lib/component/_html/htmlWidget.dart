@@ -74,7 +74,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         "img": Style(
           color: Theme.of(context).primaryColorDark,
           backgroundColor: Theme.of(context).primaryColorDark,
-          padding: HtmlPaddings.symmetric(vertical: 5),
+          margin: Margins.symmetric(vertical: 5),
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
@@ -88,7 +88,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         "img": Style(
           color: Theme.of(context).primaryColorDark,
           backgroundColor: Theme.of(context).primaryColorDark,
-          padding: HtmlPaddings.symmetric(vertical: 5),
+          margin: Margins.symmetric(vertical: 7),
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
@@ -102,7 +102,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         "img": Style(
           color: Theme.of(context).primaryColorDark,
           backgroundColor: Theme.of(context).primaryColorDark,
-          padding: HtmlPaddings.symmetric(vertical: 5),
+          margin: Margins.symmetric(vertical: 7),
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
@@ -253,19 +253,20 @@ class CardUtil {
       TagExtension(
         tagsToExtend: {"img"},
         builder: (extensionContext) {
-          return HtmlImage(
-            src: extensionContext.node.attributes["src"],
-            color: extensionContext.style!.color,
-            backgroundColor: extensionContext.style!.backgroundColor,
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: 2),
+            child: HtmlImage(
+              src: extensionContext.node.attributes["src"],
+              color: extensionContext.style!.color,
+              backgroundColor: extensionContext.style!.backgroundColor,
+            ),
           );
         },
       ),
       // hr
       TagExtension(
         tagsToExtend: {"app-hr", "hr"},
-        builder: (extensionContext) {
-          return const Divider(height: 1);
-        },
+        child: const Divider(height: 1),
       ),
       // app-icon
       TagExtension(

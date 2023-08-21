@@ -16,6 +16,9 @@ class JudgementCard extends StatelessWidget {
   // 单条数据
   late Map data;
 
+  // 数据数量
+  late num maxDataCount;
+
   // 位置
   late int index = 0;
 
@@ -27,8 +30,9 @@ class JudgementCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TimeLineCard(
+    return TimeLineBaseCard(
       type: TimeLineItemType.judgement,
+      isShowLine: maxDataCount > 1 && index < maxDataCount,
       header: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

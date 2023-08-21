@@ -53,7 +53,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
       agreement["load"] = true;
     });
 
-    Response result = await Http.request(
+    Response<dynamic> result = await Http.request(
       "agreement/$language.html",
       typeUrl: "app_web_site",
       method: Http.GET,

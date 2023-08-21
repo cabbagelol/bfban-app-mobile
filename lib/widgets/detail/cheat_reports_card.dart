@@ -15,9 +15,11 @@ class CheatReportsCard extends StatelessWidget {
   // 单条数据
   late dynamic data;
 
+  // 数据数量
+  late num maxDataCount;
+
   // 位置
   late int? index;
-
 
   final CardUtil _detailApi = CardUtil();
 
@@ -30,8 +32,9 @@ class CheatReportsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TimeLineCard(
+    return TimeLineBaseCard(
       type: TimeLineItemType.report,
+      isShowLine: maxDataCount > 1 && index! < maxDataCount,
       header: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,

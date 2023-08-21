@@ -84,7 +84,7 @@ class Upload extends Http {
         "mimeType": fileManagement.resolutionFileType(file.path),
         "body": await MultipartFile.fromFile(
           file.path,
-          filename: const Uuid().v4(),
+          filename: "${const Uuid().v4()}_$fileName",
         ),
       }),
     );

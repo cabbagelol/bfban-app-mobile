@@ -46,18 +46,20 @@ class Storage {
 
   /// [Event]
   /// 设置
-  Future set(String name, {String type = "string", value = "null"}) async {
+  Future set(String key, {String type = "string", value = "null"}) async {
     try {
       if (!isInit) await init();
+      String name = "$_preName$key";
       switch (type) {
         case "bool":
-          _prefs!.setBool("$_preName$name", value);
+          _prefs!.setBool(name, value);
           break;
         case "string":
+          int time = DateTime.now().millisecondsSinceEpoch;
           await _prefs!.setString(
-            "$_preName$name",
+            name,
             jsonEncode({
-              "time": DateTime.now().millisecondsSinceEpoch,
+              "time": time,
               "value": value,
             }),
           );

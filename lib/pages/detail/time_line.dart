@@ -106,14 +106,6 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
             playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
             _onMergeHistoryName();
           }
-
-          // 没有更多数据
-          if (d["result"].isEmpty && playerTimelineStatus.list![playerTimelineStatus.list!.length - 1]["pageNotContent"] == null) {
-            int first = playerTimelineStatus.list!.length;
-            playerTimelineStatus.list!.insert(first, {
-              "pageNotContent": true,
-            });
-          }
         }
         playerTimelineStatus.total = d["total"];
       });
@@ -206,6 +198,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
         children: playerTimelineStatus.list!.isNotEmpty
             ? playerTimelineStatus.list!.asMap().entries.map((data) {
                 int index = data.key;
+                num maxDataCount = playerTimelineStatus.list!.length;
 
                 if (data.key < playerTimelineStatus.list!.length) {
                   var timeLineItem = data.value;
@@ -215,39 +208,31 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
                     return Column(
                       children: [
                         if (index > 0 && index < playerTimelineStatus.list!.length - 1) const Divider(height: 1),
-                        SizedBox(
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${timeLineItem["pageIndex"]}"}),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).textTheme.bodyMedium?.color,
+                        Row(
+                          children: [
+                            if (index > 0 && index < playerTimelineStatus.list!.length - 1)
+                              Container(
+                                margin: const EdgeInsets.only(left: 29, right: 28),
+                                color: Theme.of(context).dividerTheme.color,
+                                width: 2,
+                                height: 35,
+                              ),
+                            Center(
+                              child: Wrap(
+                                children: [
+                                  const Icon(Icons.tag, size: 17),
+                                  Text(
+                                    FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${timeLineItem["pageIndex"]}"}),
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-
-                  // 无更多数据
-                  if (timeLineItem["pageNotContent"] != null) {
-                    return Column(
-                      children: [
-                        if (index > 1 && index < playerTimelineStatus.list!.length - 1) const Divider(height: 1),
-                        SizedBox(
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              FlutterI18n.translate(context, "basic.tip.notContent"),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).textTheme.bodyMedium?.color,
-                              ),
-                            ),
-                          ),
-                        ),
+                          ],
+                        )
                       ],
                     );
                   }
@@ -258,6 +243,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
                       return CheatUserCheatersCard(
                         onReplySucceed: _onReplySucceed,
                       )
+                        ..maxDataCount = maxDataCount
                         ..data = timeLineItem
                         ..index = index + 1;
                     case "report":
@@ -265,11 +251,13 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
                       return CheatReportsCard(
                         onReplySucceed: _onReplySucceed,
                       )
+                        ..maxDataCount = maxDataCount
                         ..data = timeLineItem
                         ..index = index + 1;
                     case "judgement":
                       // 举报
                       return JudgementCard()
+                        ..maxDataCount = maxDataCount
                         ..data = timeLineItem
                         ..index = index + 1;
                     case "banAppeal":
@@ -277,10 +265,12 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
                       return AppealCard(
                         onReplySucceed: _onReplySucceed,
                       )
+                        ..maxDataCount = maxDataCount
                         ..data = timeLineItem
                         ..index = index + 1;
                     case "historyUsername":
                       return HistoryNameCard()
+                        ..maxDataCount = maxDataCount
                         ..data = timeLineItem
                         ..index = index + 1;
                   }

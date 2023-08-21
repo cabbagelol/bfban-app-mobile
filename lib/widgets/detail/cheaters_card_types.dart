@@ -16,12 +16,13 @@ enum TimeLineItemType {
 
 /// 时间轴卡
 /// Core Card
-class TimeLineCard extends StatelessWidget {
+class TimeLineBaseCard extends StatefulWidget {
   List<Widget>? header;
   Widget? headerSecondary;
   Widget? content;
   TimeLineItemBottomBtn? bottom;
   Widget? button;
+  bool? isShowLine;
 
   List? leftIconTypes = [
     CircleAvatar(
@@ -66,7 +67,7 @@ class TimeLineCard extends StatelessWidget {
   ];
   Widget? leftIcon;
 
-  TimeLineCard({
+  TimeLineBaseCard({
     Key? key,
     TimeLineItemType type = TimeLineItemType.none,
     this.header,
@@ -74,67 +75,109 @@ class TimeLineCard extends StatelessWidget {
     this.content,
     this.button,
     this.bottom,
+    this.isShowLine = true,
   }) : super(key: key) {
     leftIcon = leftIconTypes![type.index];
   }
 
   @override
+  State<TimeLineBaseCard> createState() => _TimeLineBaseCardState();
+}
+
+class _TimeLineBaseCardState extends State<TimeLineBaseCard> {
+  GlobalKey contentKey = GlobalKey();
+  double contentBodyHeight = 400.0;
+
+  /// [Event]
+  /// 设置垂直线高度
+  _getWidgetHeight() {
+    setState(() {
+      contentBodyHeight = contentKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
+    });
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _getWidgetHeight();
+    });
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant TimeLineBaseCard oldWidget) {
+    _getWidgetHeight();
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      child: Column(
-        children: [
-          const Divider(height: 1),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: contentBodyHeight,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                child: leftIcon!,
+                padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
+                child: widget.leftIcon!,
               ),
-              Flexible(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // 卡片标题
-                    Container(
-                      margin: const EdgeInsets.only(right: 10, top: 20, bottom: 10),
-                      child: SelectionArea(
-                        child: Wrap(
-                          children: header!,
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: Column(
-                        children: [
-                          if (headerSecondary != null) headerSecondary!,
-
-                          // 内容
-                          content!,
-                        ],
-                      ),
-                    ),
-                  ],
+              if (widget.isShowLine!)
+                Flexible(
+                  flex: 1,
+                  child: Container(
+                    color: Theme.of(context).dividerTheme.color,
+                    width: 2,
+                  ),
                 ),
-              ),
             ],
           ),
-          if (bottom != null)
-            Container(
-              margin: const EdgeInsets.only(top: 3, left: 50, right: 10),
-              child: Column(
-                children: [
-                  bottom!,
-                ],
-              ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            key: contentKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // 卡片标题
+                Container(
+                  margin: const EdgeInsets.only(right: 10, top: 5, bottom: 10),
+                  child: SelectionArea(
+                    child: Wrap(
+                      children: widget.header!,
+                    ),
+                  ),
+                ),
+
+                Container(
+                  margin: const EdgeInsets.only(right: 10),
+                  child: Column(
+                    children: [
+                      if (widget.headerSecondary != null) widget.headerSecondary!,
+
+                      // 内容
+                      widget.content!,
+                    ],
+                  ),
+                ),
+
+                if (widget.bottom != null)
+                  Container(
+                    margin: const EdgeInsets.only(top: 3, right: 10),
+                    child: Column(
+                      children: [
+                        widget.bottom!,
+                      ],
+                    ),
+                  ),
+              ],
             ),
-        ],
-      ),
+          ),
+        ),
+      ],
     );
   }
 }

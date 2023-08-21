@@ -2,6 +2,7 @@
 
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_load/index.dart';
 
 import '../../constants/api.dart';
 
@@ -20,6 +21,8 @@ class BfvHackersWidget extends StatefulWidget {
 class _BfvHackersWidgetState extends State<BfvHackersWidget> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  bool hackerLoad = false;
+
   Map hackersData = {
     "hack_score_current": 0,
   };
@@ -30,15 +33,13 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    hackersData = {};
-    super.dispose();
-  }
-
   /// [Response]
   /// 获取bfvHackers状态
   Future _getBfvHackers() async {
+    setState(() {
+      hackerLoad = true;
+    });
+
     Response result = await Http.request(
       "is-hacker",
       typeUrl: "network_bfv_hackers_request",
@@ -46,9 +47,12 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
       method: Http.GET,
     );
 
-    setState(() {
-      hackersData = result.data;
-    });
+    if (this.mounted) {
+      setState(() {
+        hackerLoad = false;
+        if (result.data != null) hackersData = result.data;
+      });
+    }
   }
 
   /// [Event]
@@ -87,40 +91,46 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
   Widget build(BuildContext context) {
     return widget.data!["games"].contains("bfv")
         ? InkWell(
-      child: Card(
-        child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/recordPlatforms/Bfv-Hackers.png",
-                  width: 20,
-                  height: 20,
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  padding: const EdgeInsets.symmetric(horizontal: 3),
-                  decoration: BoxDecoration(
-                      color: _checkScoreLevels().color!.withOpacity(.15),
-                      border: Border.all(
-                        color: _checkScoreLevels().color!.withOpacity(.1),
+            child: Card(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                  child: Wrap(
+                    spacing: 5,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/recordPlatforms/Bfv-Hackers.png",
+                        width: 20,
+                        height: 20,
                       ),
-                      borderRadius: BorderRadius.circular(3)
-                  ),
-                  child: Text(
-                    "Hack Score: ${hackersData["hack_score_current"] ?? 0}",
-                    style: TextStyle(
-                        color: _checkScoreLevels().textColor
-                    ),
-                  ),
-                ),
-                const Icon(Icons.open_in_new, size: 15)
-              ],
-            )),
-      ),
-      onTap: () => _openExcursionistView(),
-    )
+                      if (hackerLoad)
+                        SizedBox(
+                          width: 110,
+                          child: LinearProgressIndicator(
+                            minHeight: 2,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        )
+                      else
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          decoration: BoxDecoration(
+                              color: _checkScoreLevels().color!.withOpacity(.15),
+                              border: Border.all(
+                                color: _checkScoreLevels().color!.withOpacity(.1),
+                              ),
+                              borderRadius: BorderRadius.circular(3)),
+                          child: Text(
+                            "Hack Score: ${hackersData["hack_score_current"] ?? 0}",
+                            style: TextStyle(color: _checkScoreLevels().textColor),
+                          ),
+                        ),
+                      const Icon(Icons.open_in_new, size: 15)
+                    ],
+                  )),
+            ),
+            onTap: () => _openExcursionistView(),
+          )
         : Container();
   }
 }

@@ -48,7 +48,7 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
     if (trendStatus.load == true) return;
 
     Future.delayed(const Duration(seconds: 0), () {
-      if (trendStatus.parame.skip! <= 0) _refreshIndicatorKey.currentState!.show();
+      if (trendStatus.parame.skip! <= 0 && _refreshIndicatorKey.currentState != null) _refreshIndicatorKey.currentState!.show();
     });
 
     setState(() {

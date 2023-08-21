@@ -11,3 +11,7 @@ git:
     language_mapping:
       en_US: en
       zh_CN: zh_CN
+      zh_TW: zh_TW
+      it_IT: it_IT
+      es_ES: es_ES
+      de_DE: de_DE

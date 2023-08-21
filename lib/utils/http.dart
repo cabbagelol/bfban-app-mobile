@@ -93,11 +93,6 @@ class Http extends ScaffoldState {
         ),
       );
 
-      if (response.data["code"] == "user.tokenExpired") {
-        UrlUtil().opEnPage(CONTENT!, "/login/panel");
-        StorageAccount().clearAll(CONTENT!);
-      }
-
       result = response;
     } on DioError catch (e) {
       switch (e.type) {

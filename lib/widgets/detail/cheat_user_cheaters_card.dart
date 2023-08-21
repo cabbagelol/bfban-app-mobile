@@ -12,6 +12,9 @@ class CheatUserCheatersCard extends StatelessWidget {
   // 单条数据
   late Map data;
 
+  // 数据数量
+  late num maxDataCount;
+
   // 位置
   late int index = 0;
 
@@ -26,8 +29,9 @@ class CheatUserCheatersCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TimeLineCard(
+    return TimeLineBaseCard(
       type: TimeLineItemType.reply,
+      isShowLine: maxDataCount > 1 && index < maxDataCount,
       header: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

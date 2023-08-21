@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
 
 class FileWidgetUI extends StatefulWidget {
@@ -7,7 +5,8 @@ class FileWidgetUI extends StatefulWidget {
 
   final Function onSucceed;
 
-  FileWidgetUI({Key? key,
+  const FileWidgetUI({
+    Key? key,
     this.i,
     required this.onSucceed,
   }) : super(key: key);
