@@ -18,7 +18,7 @@ dependencies:
   syncfusion_flutter_datepicker: any
 
   # 请求模块 https://pub.dev/packages/dio
-  dio: ^4.0.4
+  dio: ^5.0.0
 
   # Dio Cookie 管理器 https://pub.dev/packages/dio_cookie_manager
   dio_cookie_manager: ^2.0.0
