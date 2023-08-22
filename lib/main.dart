@@ -22,6 +22,8 @@ import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 
+const String appGroupId = 'com.cabbagelol.bfban';
+
 // 入口
 void runMain() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

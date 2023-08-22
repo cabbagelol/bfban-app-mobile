@@ -105,9 +105,11 @@ class _TimeLineBaseCardState extends State<TimeLineBaseCard> {
   /// [Event]
   /// 设置垂直线高度
   _getWidgetHeight() {
-    setState(() {
-      contentBodyHeight = contentKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
-    });
+    if (mounted) {
+      setState(() {
+        contentBodyHeight = contentKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
+      });
+    }
   }
 
   @override

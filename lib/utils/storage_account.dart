@@ -26,5 +26,7 @@ class StorageAccount extends Storage {
 
     // 清空 用户状态管理机
     ProviderUtil().ofUser(context).clear();
+    // 清空 用户消息内容
+    ProviderUtil().ofChat(context).messageStatus.total = 0;
   }
 }

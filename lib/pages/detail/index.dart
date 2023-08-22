@@ -6,6 +6,8 @@ import 'dart:ui' as ui;
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
+import 'package:bfban/router/router.dart';
+import 'package:bfban/widgets/wave_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -348,8 +350,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   /// [Event]
   /// 查看图片
   void _onEnImgInfo(context) async {
-    String imageUrl = playerStatus.data!.avatarLink!.toString();
+    String? imageUrl = playerStatus.data!.avatarLink!.toString();
+
     if (imageUrl.isEmpty) return;
+
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) {
         return PhotoViewSimpleScreen(
@@ -579,14 +583,24 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                 children: [
                                   Positioned(
                                     child: Opacity(
-                                      opacity: .2,
+                                      opacity: .1,
                                       child: SizedBox(
-                                        width: 800,
+                                        // width: 800,
                                         height: 350,
-                                        child: EluiImgComponent(
-                                          src: snapshot.data.toString(),
-                                          width: 800,
-                                          height: 350,
+                                        child: ShaderMask(
+                                          blendMode: BlendMode.dstIn,
+                                          shaderCallback: (Rect bounds) {
+                                            return const LinearGradient(
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                              colors: [Colors.black, Colors.transparent],
+                                            ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+                                          },
+                                          child: EluiImgComponent(
+                                            src: snapshot.data!["avatarLink"].toString(),
+                                            width: 800,
+                                            height: 350,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -597,50 +611,52 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                         sigmaX: 0,
                                         sigmaY: 0,
                                       ),
-                                      child: InkWell(
-                                        onTap: () => _onEnImgInfo(context),
-                                        child: Container(
-                                          margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
-                                          child: Center(
-                                            child: Card(
-                                              elevation: 0,
-                                              clipBehavior: Clip.antiAlias,
-                                              child: Stack(
-                                                children: [
-                                                  Positioned(
-                                                    top: 0,
-                                                    child: Image.asset("assets/images/default-player-avatar.jpg"),
-                                                  ),
-                                                  EluiImgComponent(
-                                                    src: snapshot.data!["avatarLink"],
-                                                    fit: BoxFit.contain,
-                                                    width: 150,
-                                                    height: 150,
-                                                  ),
-                                                  Positioned(
-                                                    right: 0,
-                                                    bottom: 0,
-                                                    child: Container(
-                                                      padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                                                      decoration: const BoxDecoration(
-                                                        gradient: LinearGradient(
-                                                          begin: Alignment.topLeft,
-                                                          end: Alignment.bottomRight,
-                                                          colors: [
-                                                            Colors.transparent,
-                                                            Colors.transparent,
-                                                            Colors.black87,
-                                                          ],
+                                      child: Center(
+                                        child: GestureDetector(
+                                          onTap: () => _onEnImgInfo(context),
+                                          child: Container(
+                                            margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
+                                            child: Center(
+                                              child: Card(
+                                                elevation: 0,
+                                                clipBehavior: Clip.antiAlias,
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned(
+                                                      top: 0,
+                                                      child: Image.asset("assets/images/default-player-avatar.jpg"),
+                                                    ),
+                                                    EluiImgComponent(
+                                                      src: snapshot.data!["avatarLink"],
+                                                      fit: BoxFit.contain,
+                                                      width: 150,
+                                                      height: 150,
+                                                    ),
+                                                    Positioned(
+                                                      right: 0,
+                                                      bottom: 0,
+                                                      child: Container(
+                                                        padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                                                        decoration: const BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            begin: Alignment.topLeft,
+                                                            end: Alignment.bottomRight,
+                                                            colors: [
+                                                              Colors.transparent,
+                                                              Colors.transparent,
+                                                              Colors.black87,
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        child: const Icon(
+                                                          Icons.search,
+                                                          color: Colors.white70,
+                                                          size: 30,
                                                         ),
                                                       ),
-                                                      child: const Icon(
-                                                        Icons.search,
-                                                        color: Colors.white70,
-                                                        size: 30,
-                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),

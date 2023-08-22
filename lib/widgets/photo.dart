@@ -20,7 +20,7 @@ class PhotoViewSimpleScreen extends StatefulWidget {
   PhotoViewSimpleScreen({
     Key? key,
     this.type = PhotoViewFileType.network,
-    this.imageUrl,
+    this.imageUrl = "",
   }) : super(key: key);
 
   @override
@@ -148,6 +148,28 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
     return null;
   }
 
+  Widget _ImageWidget(int index) {
+    return [
+      ExtendedImage.file(
+        File(widget.imageUrl!),
+        fit: BoxFit.contain,
+        mode: ExtendedImageMode.gesture,
+        initGestureConfigHandler: initGestureConfigHandler,
+        loadStateChanged: loadStateChanged,
+        onDoubleTap: onDoubleTap,
+      ),
+      ExtendedImage.network(
+        widget.imageUrl!,
+        fit: BoxFit.contain,
+        mode: ExtendedImageMode.gesture,
+        cache: true,
+        initGestureConfigHandler: initGestureConfigHandler,
+        loadStateChanged: loadStateChanged,
+        onDoubleTap: onDoubleTap,
+      )
+    ][index];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,25 +204,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
         children: [
           Expanded(
             flex: 1,
-            child: [
-              ExtendedImage.file(
-                File(widget.imageUrl!),
-                fit: BoxFit.contain,
-                mode: ExtendedImageMode.gesture,
-                initGestureConfigHandler: initGestureConfigHandler,
-                loadStateChanged: loadStateChanged,
-                onDoubleTap: onDoubleTap,
-              ),
-              ExtendedImage.network(
-                widget.imageUrl!,
-                fit: BoxFit.contain,
-                mode: ExtendedImageMode.gesture,
-                cache: true,
-                initGestureConfigHandler: initGestureConfigHandler,
-                loadStateChanged: loadStateChanged,
-                onDoubleTap: onDoubleTap,
-              )
-            ][widget.type!.index],
+            child: _ImageWidget(widget.type!.index),
           )
         ],
       ),

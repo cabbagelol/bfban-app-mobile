@@ -226,7 +226,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   /// [Event]
-  /// 清楚本地所有储存
+  /// 清除本地所有储存
   Future delectLocalMessage() async {
     await Storage().remove(packageName);
 
