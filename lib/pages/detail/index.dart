@@ -598,7 +598,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                           },
                                           child: EluiImgComponent(
                                             src: snapshot.data!["avatarLink"].toString(),
-                                            width: 800,
+                                            fit: BoxFit.fitWidth,
+                                            width: MediaQuery.of(context).size.width,
                                             height: 350,
                                           ),
                                         ),

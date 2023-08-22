@@ -46,7 +46,7 @@ class Storage {
 
   /// [Event]
   /// 设置
-  Future set(String key, {String type = "string", value = "null"}) async {
+  Future set(String key, {String type = "string", value}) async {
     try {
       if (!isInit) await init();
       String name = "$_preName$key";
@@ -56,12 +56,10 @@ class Storage {
           break;
         case "string":
           int time = DateTime.now().millisecondsSinceEpoch;
+          Map val = {"time": time, "value": value};
           await _prefs!.setString(
             name,
-            jsonEncode({
-              "time": time,
-              "value": value,
-            }),
+            jsonEncode(val),
           );
           break;
       }

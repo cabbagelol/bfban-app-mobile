@@ -66,11 +66,11 @@ class _LoginPanelState extends State<LoginPanelPage> {
                 children: [
                   WaveBorder(
                     width: 80,
-                    maxWidth: 600,
-                    count: 6,
-                    borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
-                    borderWidth: 2,
-                    duration: const Duration(seconds: 5),
+                    maxWidth: MediaQuery.of(context).size.width,
+                    count: 3,
+                    borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                    borderWidth: 5,
+                    duration: const Duration(seconds: 10),
                     child: CircleAvatar(
                       radius: 39,
                       child: ClipRRect(

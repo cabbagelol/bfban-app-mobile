@@ -80,7 +80,10 @@ class _HtmlImageState extends State<HtmlImage> {
                       const SizedBox(height: 10),
                       Opacity(
                         opacity: .5,
-                        child: HtmlLink(url: "${widget.src}"),
+                        child: HtmlLink(
+                          url: "${widget.src}",
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
+                        ),
                       )
                     ],
                   ),
@@ -209,7 +212,10 @@ class _HtmlImageState extends State<HtmlImage> {
                       const SizedBox(height: 10),
                       Opacity(
                         opacity: .5,
-                        child: HtmlLink(url: "${widget.src}"),
+                        child: HtmlLink(
+                          url: "${widget.src}",
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
+                        ),
                       )
                     ],
                   ),
