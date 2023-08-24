@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bfban/utils/index.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
+import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter/material.dart';
 
 export 'package:dio/dio.dart';
@@ -144,7 +144,6 @@ class Http extends ScaffoldState {
     Config.apiHost.forEach((key, value) {
       dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: value.baseHost)).interceptor);
     });
-    // dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: Config.apiHost[typeUrl]!.baseHost)).interceptor);
 
     return dio;
   }
