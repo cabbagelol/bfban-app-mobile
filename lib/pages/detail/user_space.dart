@@ -1,6 +1,8 @@
 /// 用户展示页
 /// 站内用户
 
+import 'dart:ui' as ui;
+
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +59,8 @@ class UserSpacePageState extends State<UserSpacePage> {
       skip: 0,
     ),
   );
+
+  GlobalKey appBarKey = GlobalKey();
 
   @override
   void initState() {
@@ -184,7 +188,10 @@ class UserSpacePageState extends State<UserSpacePage> {
             }
 
             return Scaffold(
+              extendBodyBehindAppBar: true,
               appBar: AppBar(
+                key: appBarKey,
+                backgroundColor: Colors.transparent,
                 title: snapshot.data["username"] != null
                     ? Column(
                         children: [
@@ -227,107 +234,153 @@ class UserSpacePageState extends State<UserSpacePage> {
               ),
               body: RefreshIndicator(
                 onRefresh: _onRefresh,
+                displacement: 120,
+                edgeOffset: MediaQuery.of(context).viewInsets.top,
                 child: ListView(
                   controller: _scrollController,
                   padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                      child: Card(
-                        margin: EdgeInsets.zero,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Wrap(
-                            spacing: 40,
-                            runSpacing: 25,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(50),
-                                child: CircleAvatar(
-                                  radius: 30,
-                                  child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
-                                      ? Image.network(snapshot.data["userAvatar"])
-                                      : Text(
-                                          snapshot.data["username"][0].toString().toUpperCase(),
-                                          style: const TextStyle(fontSize: 25),
-                                        ),
-                                ),
+                    Stack(
+                      alignment: AlignmentDirectional.topCenter,
+                      children: [
+                        Positioned(
+                          child: Opacity(
+                            opacity: .3,
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: ShaderMask(
+                                blendMode: BlendMode.dstIn,
+                                shaderCallback: (Rect bounds) {
+                                  return const LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [Colors.black, Colors.transparent],
+                                  ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+                                },
+                                child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
+                                    ? EluiImgComponent(
+                                        src: snapshot.data["userAvatar"].toString(),
+                                        fit: BoxFit.fitWidth,
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 350,
+                                      )
+                                    : Image.asset(
+                                        "assets/images/default-player-avatar.jpg",
+                                        fit: BoxFit.fitHeight,
+                                      ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Opacity(
-                                    opacity: .5,
-                                    child: Text(
-                                      FlutterI18n.translate(context, "account.role"),
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  PrivilegesTagWidget(data: snapshot.data["privilege"]),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Opacity(
-                                    opacity: .5,
-                                    child: Text(
-                                      FlutterI18n.translate(context, "account.joinedAt"),
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  TimeWidget(
-                                    data: snapshot.data["joinTime"],
-                                    style: const TextStyle(fontSize: 18),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Opacity(
-                                    opacity: .5,
-                                    child: Text(
-                                      FlutterI18n.translate(context, "account.lastOnlineTime"),
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  TimeWidget(
-                                    data: snapshot.data["lastOnlineTime"],
-                                    style: const TextStyle(fontSize: 18),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Opacity(
-                                    opacity: .5,
-                                    child: Text(
-                                      FlutterI18n.translate(context, "account.reportNum"),
-                                      style: const TextStyle(fontSize: 20),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    snapshot.data["reportnum"].toString(),
-                                    style: const TextStyle(fontSize: 18),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ],
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                        SafeArea(
+                          bottom: false,
+                          right: false,
+                          left: false,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.only(
+                              top: 20,
+                              left: 15,
+                              right: 15,
+                            ),
+                            child: Card(
+                              margin: EdgeInsets.zero,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Wrap(
+                                  spacing: 40,
+                                  runSpacing: 25,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: CircleAvatar(
+                                        radius: 30,
+                                        child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
+                                            ? Image.network(snapshot.data["userAvatar"])
+                                            : Text(
+                                                snapshot.data["username"][0].toString().toUpperCase(),
+                                                style: const TextStyle(fontSize: 25),
+                                              ),
+                                      ),
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "account.role"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        PrivilegesTagWidget(data: snapshot.data["privilege"]),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "account.joinedAt"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        TimeWidget(
+                                          data: snapshot.data["joinTime"],
+                                          style: const TextStyle(fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "account.lastOnlineTime"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        TimeWidget(
+                                          data: snapshot.data["lastOnlineTime"],
+                                          style: const TextStyle(fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Opacity(
+                                          opacity: .5,
+                                          child: Text(
+                                            FlutterI18n.translate(context, "account.reportNum"),
+                                            style: const TextStyle(fontSize: 20),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          snapshot.data["reportnum"].toString(),
+                                          style: const TextStyle(fontSize: 18),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
 
                     // 举报列表

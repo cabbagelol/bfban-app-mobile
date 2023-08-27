@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 
 import '../../component/_html/htmlWidget.dart';
+import '../../utils/index.dart';
 
 enum TimeLineItemType {
   none,
@@ -117,13 +118,14 @@ class _TimeLineBaseCardState extends State<TimeLineBaseCard> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _getWidgetHeight();
     });
-    super.initState();
-  }
 
-  @override
-  void didUpdateWidget(covariant TimeLineBaseCard oldWidget) {
-    _getWidgetHeight();
-    super.didUpdateWidget(oldWidget);
+    eventUtil.on("html-image-update-widget", (e) {
+      Future.delayed(const Duration(microseconds: 300), () {
+        _getWidgetHeight();
+      });
+    });
+
+    super.initState();
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 
+import '../../utils/index.dart';
 import '../../widgets/index.dart';
 
 class HtmlImage extends StatefulWidget {
@@ -50,7 +51,10 @@ class _HtmlImageState extends State<HtmlImage> {
       fit: BoxFit.fitWidth,
       mode: ExtendedImageMode.editor,
       cache: true,
+      enableLoadState: true,
       loadStateChanged: (ExtendedImageState state) {
+        eventUtil.emit("html-image-update-widget", {});
+
         switch (state.extendedImageLoadState) {
           case LoadState.loading:
             return Card(

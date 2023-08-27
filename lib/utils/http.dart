@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bfban/utils/index.dart';
+import 'package:dio/adapter.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter/material.dart';
 

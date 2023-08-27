@@ -224,7 +224,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
     }
 
     EluiMessageComponent.error(context)(
-      child: Text(result.data["message"]),
+      child: Text(result.data["message"] ?? result.data["code"]),
     );
 
     setState(() {

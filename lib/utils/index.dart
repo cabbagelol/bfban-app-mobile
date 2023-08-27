@@ -14,5 +14,6 @@ export 'provider.dart';
 export 'util.dart';
 export 'regular.dart';
 export 'logger.dart';
+export 'event.dart';
 
 export '../provider/appInfo_provider.dart';
