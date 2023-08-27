@@ -1,4 +1,4 @@
-![](https://bfban-app.cabbagelol.net/images/github.app.bigpicture.jpg)
+![](https://bfban-app.cabbagelol.net/images/github.app.bigpicture.v2.png)
 
 ## Bfban 助手
 
