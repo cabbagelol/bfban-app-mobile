@@ -1,27 +1,42 @@
-enum FileType { NONE, VIDEO, IMAGE }
+enum FileType { NONE, VIDEO, IMAGE, ZIP }
 
 class FileManagement {
   /// 支持格式
   final Map FILETYPE = {
-    FileType.VIDEO: ["mp4", "mov"],
-    FileType.IMAGE: ["png", "bmp", "jpg", "webp"],
-  };
-
-  /// 转换字典
-  final Map FILERESOLUTION = {
-    "mp4": "video/mp4",
-    "mov": "video/mov",
-    "png": "image/png",
-    "bmp": "image/bmp",
-    "jpg": "image/jpeg",
-    "webp": "image/webp",
+    FileType.VIDEO: ["webm", "ogg", "mp4", "mov"],
+    FileType.ZIP: ["zip"],
+    FileType.IMAGE: ["gif", "png", "bmp", "jpg", "webp"],
   };
 
   /// 解析类型
   /// 通过文件后缀转换media-types格式
   /// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
   resolutionFileType(String url) {
-    return FILERESOLUTION[splitFileUrl(url)["fileExtension"]] ?? "application/octet-stream";
+    switch (splitFileUrl(url)["fileExtension"]) {
+      case "gif":
+        return "image/gif";
+      case "jpg":
+        return "image/jpg";
+      case "png":
+        return "image/png";
+      case "bmp":
+        return "image/bmp";
+      case "webp":
+        return "image/webp";
+      case "webm":
+        return "video/webm";
+      case "ogg":
+        return "video/ogg";
+      case "mp4":
+        return "video/mp4";
+      case "mov":
+        return "video/mov";
+      case "zip":
+      case "x-zip-compressed":
+        return "application/zip";
+      default:
+        return "application/octet-stream";
+    }
   }
 
   /// 检查文件类型

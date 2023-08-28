@@ -42,5 +42,34 @@ class StationUserInfoParame extends Paging {
 }
 
 class StationUserInfoData extends StationUserBaseData {
-  //
+  @override
+  Map setData(Map i) {
+    id = i["id"].toString();
+    attr!.setData(i["attr"]);
+    joinTime = i["joinTime"];
+    lastOnlineTime = i["lastOnlineTime"];
+    origin = i["origin"];
+    privilege = i["privilege"];
+    reportnum = i["reportnum"];
+    subscribes = i["subscribes"];
+    userAvatar = i["userAvatar"];
+    username = i["username"];
+    return toMap;
+  }
+
+  @override
+  get toMap {
+    return {
+      "id": id,
+      "attr": attr!.toMap,
+      "joinTime": joinTime,
+      "lastOnlineTime": lastOnlineTime,
+      "origin": origin,
+      "privilege": privilege,
+      "reportnum": reportnum,
+      "subscribes": subscribes,
+      "userAvatar": userAvatar,
+      "username": username,
+    };
+  }
 }

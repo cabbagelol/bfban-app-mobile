@@ -83,7 +83,7 @@ class TranslationProvider with ChangeNotifier {
     notifyListeners();
     Response result = await Http.request(
       "config/languages.json",
-      typeUrl: "app_web_site",
+      httpDioValue: "app_web_site",
       method: Http.GET,
     );
 
@@ -100,7 +100,7 @@ class TranslationProvider with ChangeNotifier {
     notifyListeners();
     Response result = await Http.request(
       "lang/$currentLang.json",
-      typeUrl: "web_site",
+      httpDioValue: "web_site",
       method: Http.GET,
     );
 

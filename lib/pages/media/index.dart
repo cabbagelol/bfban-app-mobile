@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,6 +78,10 @@ class _mediaPageState extends State<MediaPage> {
   /// [Result]
   /// 查询媒体库状态
   Future _getNetworkMediaInfo() async {
+    setState(() {
+      cloudMediaInfoStatus.load = true;
+    });
+
     Response result = await Http.request(
       Config.httpHost["service_myStorageQuota"],
       method: Http.GET,
@@ -88,6 +93,10 @@ class _mediaPageState extends State<MediaPage> {
         cloudMediaInfoStatus.data = d["data"];
       });
     }
+
+    setState(() {
+      cloudMediaInfoStatus.load = false;
+    });
   }
 
   /// [Result]
@@ -139,6 +148,7 @@ class _mediaPageState extends State<MediaPage> {
 
     if (result.data["success"] == 1) {
       final d = result.data;
+
       setState(() {
         if (cloudMediaStatus.parame!.skip! <= 0) {
           cloudMediaStatus.setList(d["data"], MediaType.Network);
@@ -275,6 +285,56 @@ class _mediaPageState extends State<MediaPage> {
   }
 
   /// [Event]
+  /// 查看媒体库状态
+  void _opEnCloudMediaInfo() {
+    Widget widget = Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, 'profile.media.maxFileNumber'),
+            cont: Text(cloudMediaInfoStatus.data!['maxFileNumber'].toString()),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, 'profile.media.maxTrafficQuota'),
+            cont: Text(onUnitConversion(cloudMediaInfoStatus.data!['maxTrafficQuota'])),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, 'profile.media.usedStorageQuota'),
+            cont: Row(
+              children: [
+                Text(onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
+                const Text("/"),
+                Text(onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+              ],
+            ),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, 'profile.media.todayFileNumber'),
+            cont: Text(cloudMediaInfoStatus.data!['todayFileNumber'].toString()),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, 'profile.media.todayTrafficQuota'),
+            cont: Text(onUnitConversion(cloudMediaInfoStatus.data!['todayTrafficQuota'])),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, 'profile.media.prevResetTime'),
+            cont: TimeWidget(data: cloudMediaInfoStatus.data!['prevResetTime']),
+          ),
+        ],
+      ),
+    );
+
+    Navigator.of(context).push(
+      CupertinoPageRoute(
+        builder: (BuildContext context) {
+          return widget;
+        },
+      ),
+    );
+  }
+
+  /// [Event]
   /// 上传文件
   void _onUploadFile(context, i) async {
     setState(() {
@@ -318,22 +378,24 @@ class _mediaPageState extends State<MediaPage> {
 
         FileStat stat = await i.file.stat();
 
+        // ignore: use_build_context_synchronously
         showDialog(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                  content: SingleChildScrollView(
-                    child: ListBody(
-                      children: <Widget>[
-                        SelectableText(i.file.path.toString()),
-                        Text(stat.type.toString()),
-                        Text("Size ${stat.size}"),
-                        Text("Accessed ${stat.accessed}"),
-                        Text("Modified ${stat.modified}"),
-                        Text("Changed ${stat.changed}"),
-                      ],
-                    ),
-                  ),
-                ));
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  SelectableText(i.file.path.toString()),
+                  Text(stat.type.toString()),
+                  Text("Size ${onUnitConversion(stat.size)}"),
+                  Text("Accessed ${stat.accessed}"),
+                  Text("Modified ${stat.modified}"),
+                  Text("Changed ${stat.changed}"),
+                ],
+              ),
+            ),
+          ),
+        );
         break;
       case MediaType.Network:
         if (i is! MediaFileNetworkData) return;
@@ -346,6 +408,7 @@ class _mediaPageState extends State<MediaPage> {
         // 2 再次检查
         if (openFileDetail[i.filename] == null) return;
 
+        // ignore: use_build_context_synchronously
         showDialog(
           context: context,
           builder: (BuildContext context) => AlertDialog(
@@ -354,7 +417,7 @@ class _mediaPageState extends State<MediaPage> {
                 children: <Widget>[
                   SelectableText(openFileDetail[i.filename]["downloadURL"]),
                   Text("mimeType ${openFileDetail[i.filename]["mimeType"]}"),
-                  Text("Size ${openFileDetail[i.filename]["size"]}"),
+                  Text("Size ${onUnitConversion(openFileDetail[i.filename]["size"])}"),
                 ],
               ),
             ),
@@ -391,6 +454,30 @@ class _mediaPageState extends State<MediaPage> {
         await _getNetworkMediaList();
         break;
     }
+  }
+
+  /// [Event]
+  /// Storage unit conversion
+  onUnitConversion(dynamic value) {
+    String size = "";
+    double limit = double.parse(value.toString());
+    if (limit < 0.1 * 1024) {
+      size = limit.toStringAsFixed(2) + "B";
+    } else if (limit < 0.1 * 1024 * 1024) {
+      size = (limit / 1024).toStringAsFixed(2) + "KB";
+    } else if (limit < 0.1 * 1024 * 1024 * 1024) {
+      size = (limit / (1024 * 1024)).toStringAsFixed(2) + "MB";
+    } else {
+      size = (limit / (1024 * 1024 * 1024)).toStringAsFixed(2) + "GB";
+    }
+
+    String sizeStr = size.toString();
+    var index = sizeStr.indexOf(".");
+    var dou = sizeStr.substring(index, 2);
+    if (dou == "00") {
+      return sizeStr.substring(0, index) + sizeStr.substring(index + 3, 2);
+    }
+    return size;
   }
 
   @override
@@ -514,17 +601,46 @@ class _mediaPageState extends State<MediaPage> {
                           child: Row(
                             children: [
                               Expanded(
-                                flex: 1,
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.info_outline, size: 16),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      "${cloudMediaInfoStatus.data!["usedStorageQuota"] ?? "0"}",
-                                    )
-                                  ],
-                                ),
-                              ),
+                                  flex: 1,
+                                  child: GestureDetector(
+                                    onTap: () => _opEnCloudMediaInfo(),
+                                    child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
+                                        const Icon(Icons.info_outline, size: 18),
+                                        const SizedBox(width: 5),
+                                        cloudMediaInfoStatus.data!.isEmpty
+                                            ? ELuiLoadComponent(
+                                                type: "line",
+                                                lineWidth: 1,
+                                                color: Theme.of(context).textTheme.titleMedium!.color!,
+                                                size: 16,
+                                              )
+                                            : Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
+                                                      const Text("/"),
+                                                      Text(onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+                                                    ],
+                                                  ),
+                                                  Container(
+                                                    margin: const EdgeInsets.only(top: 10),
+                                                    width: 150,
+                                                    child: LinearProgressIndicator(
+                                                      value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
+                                                      minHeight: 4,
+                                                      backgroundColor: Theme.of(context).cardTheme.color,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                      ],
+                                    ),
+                                  )),
                               TextButton(
                                 onPressed: () async {
                                   _getNetworkMediaInfo();

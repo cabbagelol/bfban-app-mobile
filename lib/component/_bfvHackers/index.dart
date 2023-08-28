@@ -42,7 +42,7 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
 
     Response result = await Http.request(
       "is-hacker",
-      typeUrl: "network_bfv_hackers_request",
+      httpDioValue: "network_bfv_hackers_request",
       parame: {"name": widget.data!["originName"]},
       method: Http.GET,
     );

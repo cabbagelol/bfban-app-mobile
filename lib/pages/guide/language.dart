@@ -56,7 +56,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
 
     Response result = await Http.request(
       "config/languages.json",
-      typeUrl: "app_web_site",
+      httpDioValue: "app_web_site",
       method: Http.GET,
     );
 

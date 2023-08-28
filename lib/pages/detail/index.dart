@@ -95,6 +95,19 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
     "isThisUserSubscribes": false,
   };
 
+  Map statusColors = {
+    0: Colors.green,
+    1: Colors.red,
+    2: Colors.green,
+    3: Colors.yellow,
+    4: Colors.grey,
+    5: Colors.yellow,
+    6: Colors.deepOrangeAccent,
+    7: Colors.green,
+    8: Colors.green,
+    9: Colors.yellow,
+  };
+
   @override
   void initState() {
     super.initState();
@@ -694,11 +707,14 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                     Container(
                                                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                                       decoration: BoxDecoration(
-                                                        color: Theme.of(context).cardTheme.color,
-                                                        border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                                                        color: (statusColors[snapshot.data?["status"]] as Color).withOpacity(.3),
+                                                        border: Border.all(color: statusColors[snapshot.data?["status"]] as Color ?? Theme.of(context).dividerTheme.color!),
                                                         borderRadius: BorderRadius.circular(3),
                                                       ),
-                                                      child: Text(FlutterI18n.translate(context, "basic.status.${snapshot.data?["status"]}")),
+                                                      child: Text(
+                                                        FlutterI18n.translate(context, "basic.status.${snapshot.data["status"]}"),
+                                                        style: TextStyle(color: statusColors[snapshot.data?["status"]] as Color),
+                                                      ),
                                                     ),
                                                     BfvHackersWidget(
                                                       data: snapshot.data,

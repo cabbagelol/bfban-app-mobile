@@ -42,17 +42,19 @@ class Upload extends Http {
       };
     }
 
-    dynamic length = file.readAsBytesSync().length;
+    var length = file.lengthSync();
+    var postData = await file.readAsBytes();
 
     Response result = await Http.request(
       Config.httpHost["service_upload"],
+      httpDioType: HttpDioType.upload,
       method: Http.PUT,
       headers: {
         HttpHeaders.contentTypeHeader: "application/json",
+        Headers.contentLengthHeader: length,
         "Content-Type": fileManagement.resolutionFileType(file.path),
-        "Content-Length": length,
       },
-      data: file.readAsBytesSync(),
+      data: Stream.fromIterable(postData.map((e) => [e])), // 构建 Stream<List<int>>
     );
 
     if (result.data["success"] == 1) {
@@ -78,7 +80,11 @@ class Upload extends Http {
 
     Response result = await Http.request(
       Config.apiHost["service_upload"]!.url,
+      httpDioType: HttpDioType.upload,
       method: Http.POST,
+      headers: {
+        "Content-Type": fileManagement.resolutionFileType(file.path),
+      },
       data: FormData.fromMap({
         "size": length,
         "mimeType": fileManagement.resolutionFileType(file.path),

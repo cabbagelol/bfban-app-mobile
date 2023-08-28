@@ -91,7 +91,7 @@ class PackageProvider with ChangeNotifier {
     notifyListeners();
     Response result = await Http.request(
       "config/version.json",
-      typeUrl: "app_web_site",
+      httpDioValue: "app_web_site",
       method: Http.GET,
     );
 

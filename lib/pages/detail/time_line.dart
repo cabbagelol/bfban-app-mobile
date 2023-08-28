@@ -214,7 +214,6 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
                             if (index > 0 && index < playerTimelineStatus.list!.length - 1)
                               Container(
                                 margin: const EdgeInsets.only(left: 29, right: 28),
-                                color: Theme.of(context).dividerTheme.color,
                                 width: 2,
                                 height: 35,
                               ),

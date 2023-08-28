@@ -146,6 +146,21 @@ class _UserCenterPageState extends State<UserCenterPage> {
             Visibility(
               visible: data.isLogin,
               child: EluiCellComponent(
+                title: FlutterI18n.translate(context, "app.setting.cell.information.title"),
+                label: FlutterI18n.translate(context, "app.setting.cell.information.describe"),
+                theme: EluiCellTheme(
+                  titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                  labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                  linkColor: Theme.of(context).textTheme.titleMedium?.color,
+                  backgroundColor: Theme.of(context).cardTheme.color,
+                ),
+                islink: true,
+                onTap: () => _urlUtil.opEnPage(context, "/account/information/"),
+              ),
+            ),
+            Visibility(
+              visible: data.isLogin,
+              child: EluiCellComponent(
                 title: FlutterI18n.translate(context, "app.setting.cell.media.title"),
                 label: FlutterI18n.translate(context, "app.setting.cell.media.describe"),
                 theme: EluiCellTheme(

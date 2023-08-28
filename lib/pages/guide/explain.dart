@@ -39,7 +39,7 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
 
     Response result = await Http.request(
       "config/news.json",
-      typeUrl: "app_web_site",
+      httpDioValue: "app_web_site",
       method: Http.GET,
     );
 

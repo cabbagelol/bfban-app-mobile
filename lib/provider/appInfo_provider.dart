@@ -79,7 +79,7 @@ class NetwrokConf with ChangeNotifier {
   Future getRemoteConfiguration(String fileName) async {
     Response result = await Http.request(
       "config/$fileName.json",
-      typeUrl: "web_site",
+      httpDioValue: "web_site",
       method: Http.GET,
     );
 

@@ -60,6 +60,7 @@ class StationUserBaseDataInAttr {
   bool? allowDM;
   String? avatar;
   String? certUser;
+  String? language;
   bool? freezeOfNoBinding;
   String? introduction;
   bool? showOrigin;
@@ -69,6 +70,7 @@ class StationUserBaseDataInAttr {
     this.allowDM,
     this.avatar,
     this.certUser,
+    this.language,
     this.freezeOfNoBinding,
     this.introduction,
     this.showOrigin,
@@ -79,6 +81,7 @@ class StationUserBaseDataInAttr {
     allowDM = i["allowDM"];
     avatar = i["avatar"];
     certUser = i["certUser"];
+    language = i["language"];
     freezeOfNoBinding = i["freezeOfNoBinding"];
     introduction = i["introduction"];
     showOrigin = i["showOrigin"];
@@ -91,9 +94,11 @@ class StationUserBaseDataInAttr {
       "allowDM": allowDM,
       "avatar": avatar,
       "certUser": certUser,
+      "language": language,
       "freezeOfNoBinding": freezeOfNoBinding,
       "introduction": introduction,
       "showOrigin": showOrigin,
+      "mute": mute,
     };
   }
 }

@@ -15,6 +15,11 @@ import 'package:cookie_jar/cookie_jar.dart';
 
 import 'package:bfban/constants/api.dart';
 
+enum HttpDioType {
+  api,
+  upload,
+}
+
 class Http extends ScaffoldState {
   static Dio dio = createInstance();
 
@@ -34,7 +39,7 @@ class Http extends ScaffoldState {
   static BuildContext? CONTENT;
 
   static String get USERAGENT {
-    return "Bfban-Mobile-Client";
+    return "client-phone";
   }
 
   static String setToken(String value) {
@@ -48,7 +53,8 @@ class Http extends ScaffoldState {
   /// request method
   static Future request(
     String url, {
-    String typeUrl = "network_service_request",
+    String httpDioValue = "network_service_request",
+    HttpDioType httpDioType = HttpDioType.api,
     data,
     Map<String, dynamic>? parame,
     method,
@@ -56,7 +62,7 @@ class Http extends ScaffoldState {
   }) async {
     Response result = Response(data: {}, requestOptions: RequestOptions(path: '/'));
     data = data ?? {};
-    headers = headers ?? {"x-access-token": "", "user-agent": "client-phone"};
+    headers = headers ?? {"x-access-token": ""};
     method = method ?? 'GET';
 
     if (headers.isNotEmpty && Http.USERAGENT.isNotEmpty) {
@@ -75,7 +81,16 @@ class Http extends ScaffoldState {
       });
     }
 
-    String domain = typeUrl.isEmpty ? "" : Config.apiHost[typeUrl]!.url;
+    String domain = "";
+    switch (httpDioType) {
+      case HttpDioType.api:
+        domain = httpDioValue.isEmpty ? "" : Config.apiHost[httpDioValue]!.url;
+        break;
+      case HttpDioType.upload:
+        domain = Config.apiUpload.url;
+        break;
+    }
+
     String path = "$domain/$url";
 
     try {

@@ -3,6 +3,8 @@
 import 'package:bfban/pages/detail/user_space.dart';
 import 'package:bfban/pages/license/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
+import 'package:bfban/pages/profile/account/change_password.dart';
+import 'package:bfban/pages/profile/account/setuser_name.dart';
 import 'package:bfban/pages/profile/setting/destock.dart';
 import 'package:bfban/pages/profile/setting/language.dart';
 import 'package:bfban/pages/profile/setting/notice.dart';
@@ -33,6 +35,7 @@ import '../pages/login/signup.dart';
 import '../pages/media/Insert.dart';
 import '../pages/media/index.dart';
 import '../pages/chat/index.dart';
+import '../pages/profile/account/information.dart';
 import '../pages/profile/app_network.dart';
 import '../pages/profile/app_version_package.dart';
 import '../pages/splash.dart';
@@ -96,6 +99,24 @@ class Routes {
         "url": "/account/:id",
         "item": (context, params) {
           return UserSpacePage(id: params["id"][0]);
+        }
+      },
+      {
+        "url": "/account/information/",
+        "item": (context, params) {
+          return const InformationPage();
+        }
+      },
+      {
+        "url": "/account/information/setUserName",
+        "item": (context, params) {
+          return const setuserNamePage();
+        }
+      },
+      {
+        "url": "/account/information/changePassword",
+        "item": (context, params) {
+          return const changePasswordPage();
         }
       },
       {
