@@ -2,6 +2,7 @@ import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
+import 'package:flutter_elui_plugin/_img/index.dart';
 import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
@@ -159,6 +160,12 @@ class _InformationPageState extends State<InformationPage> {
     _urlUtil.opEnPage(context, "/account/information/changePassword");
   }
 
+  /// [Event]
+  /// 头像服务商
+  void _opEnWebUserAvatar() {
+    _urlUtil.onPeUrl("https://www.gravatar.com");
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -201,10 +208,17 @@ class _InformationPageState extends State<InformationPage> {
                             title: "Avatar",
                             label: "Avatar support is provided by third parties, click to register",
                             islink: true,
+                            onTap: () {
+                              _opEnWebUserAvatar();
+                            },
                             cont: ClipOval(
                               clipBehavior: Clip.hardEdge,
                               child: informationStatus.data!.toMap.containsKey('userAvatar')
-                                  ? Image.network(informationStatus.data!.userAvatar!, width: 40, height: 40)
+                                  ? EluiImgComponent(
+                                      src: informationStatus.data!.userAvatar!,
+                                      width: 40,
+                                      height: 40,
+                                    )
                                   : const CircleAvatar(
                                       minRadius: 4,
                                       child: Icon(
@@ -219,8 +233,17 @@ class _InformationPageState extends State<InformationPage> {
                             title: FlutterI18n.translate(context, "signup.form.username"),
                             cont: Row(
                               children: [
-                                Text(informationStatus.data!.username.toString()),
-                                const SizedBox(width: 5),
+                                SelectionArea(
+                                  child: Text(
+                                    informationStatus.data!.username.toString(),
+                                    style: const TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      decorationStyle: TextDecorationStyle.dashed,
+                                      decorationThickness: 1,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
                                 OutlinedButton(
                                   onPressed: () {
                                     _opEnSetUserName();
@@ -235,7 +258,7 @@ class _InformationPageState extends State<InformationPage> {
                             cont: Row(
                               children: [
                                 const Text("******"),
-                                const SizedBox(width: 5),
+                                const SizedBox(width: 8),
                                 OutlinedButton(
                                   onPressed: () {
                                     _opEnChangePassword();
@@ -287,11 +310,15 @@ class _InformationPageState extends State<InformationPage> {
                             ),
                           EluiCellComponent(
                             title: FlutterI18n.translate(context, "signup.form.originName"),
-                            cont: Text(informationStatus.data!.origin!['originName'].toString() ?? "-"),
+                            cont: SelectionArea(
+                              child: Text(informationStatus.data!.origin!['originName'].toString() ?? "-"),
+                            ),
                           ),
                           EluiCellComponent(
                             title: FlutterI18n.translate(context, "signup.form.originId"),
-                            cont: Text(informationStatus.data!.origin!['originUserId'].toString() ?? "-"),
+                            cont: SelectionArea(
+                              child: Text(informationStatus.data!.origin!['originUserId'].toString() ?? "-"),
+                            ),
                           ),
                           const Divider(height: 5),
                           EluiCellComponent(

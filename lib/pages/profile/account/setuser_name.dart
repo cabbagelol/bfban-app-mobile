@@ -154,7 +154,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
             },
             steps: [
               Step(
-                title: const Text("Step 1"),
+                title: Text(FlutterI18n.translate(context, "profile.account.modifyName.steps.0.title")),
                 content: Column(
                   children: [
                     EluiTipComponent(
@@ -183,7 +183,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
                 ),
               ),
               Step(
-                title: const Text("Step 2"),
+                title: Text(FlutterI18n.translate(context, "profile.account.modifyName.steps.1.title")),
                 content: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -238,9 +238,9 @@ class _setuserNamePageState extends State<setuserNamePage> {
                   ],
                 ),
               ),
-              const Step(
-                title: Text("Step 3"),
-                content: Row(
+              Step(
+                title: Text(FlutterI18n.translate(context, "profile.account.modifyName.steps.2.title")),
+                content: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
