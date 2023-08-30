@@ -21,7 +21,7 @@ class Upload extends Http {
 
   /// On
   Future on(io.File file) async {
-    if (file == null) return;
+    if (file.readAsLinesSync().isEmpty) return;
 
     if (file.readAsBytesSync().length <= FILESIZE) {
       var res = await uploadDateSmallFile(file);
@@ -35,7 +35,7 @@ class Upload extends Http {
   /// 小文件
   /// 2m以内
   Future uploadDateSmallFile(io.File file) async {
-    if (file == null) {
+    if (file.readAsLinesSync().isEmpty) {
       return {
         "code": -1,
         "message": "Missing parameter",
@@ -111,7 +111,7 @@ class Upload extends Http {
 
   /// 查询文件详情
   Future serviceFile(String filename) async {
-    if (filename == null) return;
+    if (filename.isEmpty) return;
 
     Response result = await Http.request(
       Config.httpHost["service_file"],

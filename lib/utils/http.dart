@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bfban/utils/index.dart';
-import 'package:dio/adapter.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
 import 'package:flutter/material.dart';
 
@@ -111,6 +110,7 @@ class Http extends ScaffoldState {
 
       result = response;
     } on DioError catch (e) {
+      dioErrorExpired(e, result);
       switch (e.type) {
         case DioErrorType.receiveTimeout:
           return Response(
@@ -138,7 +138,7 @@ class Http extends ScaffoldState {
             requestOptions: RequestOptions(path: url, method: method),
           );
         case DioErrorType.other:
-          // TODO: Handle this case.
+        // TODO: Handle this case.
           break;
       }
     }
@@ -162,5 +162,12 @@ class Http extends ScaffoldState {
     });
 
     return dio;
+  }
+
+  static dioErrorExpired(DioError e, Response res) {
+    const errorCode = ['user.tokenClientException', 'user.tokenExpired', 'user.invalid'];
+    if (errorCode.contains(res.data['code'])) {
+      eventUtil.emit('user-token-expired', res);
+    }
   }
 }

@@ -6,8 +6,6 @@ import 'dart:ui' as ui;
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
-import 'package:bfban/router/router.dart';
-import 'package:bfban/widgets/wave_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -304,10 +302,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       subscribes["load"] = true;
     });
 
-    Response result = await Http.request(
-      Config.httpHost["user_me"],
-      method: Http.GET,
-    );
+    Response result = await UserInfoProvider().getUserInfo();
 
     if (result.data["success"] == 1) {
       _checkSubscribesStatus(result.data["data"]["subscribes"]);
@@ -708,7 +703,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                                       decoration: BoxDecoration(
                                                         color: (statusColors[snapshot.data?["status"]] as Color).withOpacity(.3),
-                                                        border: Border.all(color: statusColors[snapshot.data?["status"]] as Color ?? Theme.of(context).dividerTheme.color!),
+                                                        border: Border.all(color: statusColors[snapshot.data?["status"]] as Color),
                                                         borderRadius: BorderRadius.circular(3),
                                                       ),
                                                       child: Text(

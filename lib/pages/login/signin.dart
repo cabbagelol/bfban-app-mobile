@@ -168,6 +168,7 @@ class _SigninPageState extends State<SigninPage> {
           builder: (BuildContext context, data, Widget? child) {
             return Stack(
               fit: StackFit.loose,
+              alignment: AlignmentDirectional.center,
               children: <Widget>[
                 // Positioned(
                 //   top: 0,
@@ -186,7 +187,7 @@ class _SigninPageState extends State<SigninPage> {
                       data.isLogin
                           ? const Center(
                         child: Icon(Icons.account_circle),
-                            )
+                      )
                           : Expanded(
                         flex: 1,
                         child: Column(
@@ -217,17 +218,17 @@ class _SigninPageState extends State<SigninPage> {
                                         });
                                       },
                                     ),
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Card(
-                              margin: const EdgeInsets.symmetric(horizontal: 20),
-                              child: EluiInputComponent(
-                                theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                placeholder: FlutterI18n.translate(context, "app.signin.password"),
-                                autofillHints: const [AutofillHints.password],
-                                type: TextInputType.visiblePassword,
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Card(
+                                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                                    child: EluiInputComponent(
+                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                      placeholder: FlutterI18n.translate(context, "app.signin.password"),
+                                      autofillHints: const [AutofillHints.password],
+                                      type: TextInputType.visiblePassword,
                                 onChange: (data) => loginStatus.parame!.password = data["value"],
                               ),
                             ),
@@ -271,20 +272,20 @@ class _SigninPageState extends State<SigninPage> {
                     child: TextButton(
                       child: loginStatus.load!
                           ? SizedBox(
-                        height: 40,
-                        child: ELuiLoadComponent(
-                          type: "line",
-                          lineWidth: 2,
-                          color: Theme.of(context).textTheme.bodyMedium!.color!,
-                          size: 25,
-                        ),
-                      )
+                              height: 40,
+                              child: ELuiLoadComponent(
+                                type: "line",
+                                lineWidth: 2,
+                                color: Theme.of(context).textTheme.bodyMedium!.color!,
+                                size: 25,
+                              ),
+                            )
                           : const SizedBox(
-                        height: 40,
-                        child: Icon(
-                          Icons.done,
-                        ),
-                      ),
+                              height: 40,
+                              child: Icon(
+                                Icons.done,
+                              ),
+                            ),
                       onPressed: () => _onLogin(),
                     ),
                   ),

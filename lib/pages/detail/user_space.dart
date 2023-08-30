@@ -1,8 +1,3 @@
-/// 用户展示页
-/// 站内用户
-
-import 'dart:ui' as ui;
-
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
@@ -241,12 +236,15 @@ class UserSpacePageState extends State<UserSpacePage> {
                   padding: EdgeInsets.zero,
                   children: <Widget>[
                     Stack(
-                      alignment: AlignmentDirectional.topCenter,
                       children: [
                         Positioned(
                           child: Opacity(
                             opacity: .3,
-                            child: SizedBox(
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                minHeight: 150,
+                                maxHeight: 300,
+                              ),
                               width: MediaQuery.of(context).size.width,
                               child: ShaderMask(
                                 blendMode: BlendMode.dstIn,
@@ -265,8 +263,8 @@ class UserSpacePageState extends State<UserSpacePage> {
                                         height: 350,
                                       )
                                     : Image.asset(
-                                        "assets/images/default-player-avatar.jpg",
-                                        fit: BoxFit.fitHeight,
+                                  "assets/images/default-player-avatar.jpg",
+                                        fit: BoxFit.fitWidth,
                                       ),
                               ),
                             ),

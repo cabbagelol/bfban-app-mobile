@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -151,17 +149,17 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
                       flex: 1,
                       child: isEdit
                           ? Row(
-                        children: [
-                          Checkbox(
-                            value: selectAll,
-                            onChanged: (status) => _selectAllItem(status!),
-                          ),
-                          TextButton(
-                            onPressed: () => _selectDeleteItem(),
-                            child: const Icon(Icons.delete, size: 15),
-                          ),
-                        ],
-                      )
+                              children: [
+                                Checkbox(
+                                  value: selectAll,
+                                  onChanged: (status) => _selectAllItem(status!),
+                                ),
+                                TextButton(
+                                  onPressed: () => _selectDeleteItem(),
+                                  child: const Icon(Icons.delete, size: 15),
+                                ),
+                              ],
+                            )
                           : Container(),
                     ),
                     OutlinedButton(
@@ -185,32 +183,32 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
               tourRecordStatus.list!.isEmpty
                   ? const EmptyWidget()
                   : Column(
-                children: tourRecordStatus.list!.map((i) {
-                  return Row(
-                    children: [
-                      if (isEdit)
-                        Container(
-                          margin: const EdgeInsets.only(left: 15),
-                          child: Checkbox(
-                            visualDensity: VisualDensity.standard,
-                            value: selectMap[i.id] ?? false,
-                            onChanged: (status) {
-                              setState(() {
-                                selectMap[i.id] = status;
-                              });
-                            },
-                          ),
-                        ),
-                      Expanded(
-                        flex: 1,
-                        child: CheatListCard(
-                          item: i.toMap,
-                        ),
-                      ),
-                    ],
-                  );
-                }).toList(),
-              )
+                      children: tourRecordStatus.list!.map((i) {
+                        return Row(
+                          children: [
+                            if (isEdit)
+                              Container(
+                                margin: const EdgeInsets.only(left: 15),
+                                child: Checkbox(
+                                  visualDensity: VisualDensity.standard,
+                                  value: selectMap[i.id] ?? false,
+                                  onChanged: (status) {
+                                    setState(() {
+                                      selectMap[i.id] = status;
+                                    });
+                                  },
+                                ),
+                              ),
+                            Expanded(
+                              flex: 1,
+                              child: CheatListCard(
+                                item: i.toMap,
+                              ),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    )
             ],
           ),
         );

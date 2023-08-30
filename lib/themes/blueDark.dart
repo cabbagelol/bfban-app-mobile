@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../data/index.dart';
 
-class LightnesTheme extends AppBaseThemeItem {
+class BlueDarkTheme extends AppBaseThemeItem {
   @override
   init() {}
 
@@ -11,8 +11,8 @@ class LightnesTheme extends AppBaseThemeItem {
   changeSystem() {
     SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.white,
-      statusBarBrightness: Brightness.dark,
+      systemNavigationBarColor: Colors.black,
+      statusBarBrightness: Brightness.light,
     );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
@@ -22,7 +22,7 @@ class LightnesTheme extends AppBaseThemeItem {
 
   @override
   static dynamic data = AppThemeItem(
-    name: "lightnes",
+    name: "blueDark",
     isDefault: true,
     themeData: ThemeData(
       sliderTheme: const SliderThemeData(
@@ -32,9 +32,9 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all(const Color(0xff364e80)),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
           textStyle: MaterialStateProperty.all(
-            const TextStyle(color: Color(0xff364e80)),
+            const TextStyle(color: Colors.white),
           ),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
@@ -48,53 +48,52 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.white,
-        modalBackgroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        modalBackgroundColor: Colors.black,
       ),
-      canvasColor: Colors.white,
-      primaryColorDark: const Color(0xff364e80),
+      canvasColor: Colors.yellow.shade50,
+      primaryColorDark: Colors.yellow,
       textTheme: const TextTheme(
-        displayLarge: TextStyle(color: Colors.black),
-        displayMedium: TextStyle(color: Colors.black),
-        displaySmall: TextStyle(color: Colors.black),
-        headlineMedium: TextStyle(color: Colors.black),
-        headlineSmall: TextStyle(color: Colors.black),
-        titleLarge: TextStyle(color: Colors.black),
-        titleMedium: TextStyle(color: Colors.black),
-        titleSmall: TextStyle(color: Colors.black45),
-        bodyLarge: TextStyle(color: Colors.black),
-        bodyMedium: TextStyle(color: Colors.black),
-        bodySmall: TextStyle(color: Colors.black),
+        displayLarge: TextStyle(color: Colors.white),
+        displayMedium: TextStyle(color: Colors.white70),
+        displaySmall: TextStyle(color: Colors.white54),
+        headlineMedium: TextStyle(color: Colors.white),
+        headlineSmall: TextStyle(color: Colors.white),
+        titleLarge: TextStyle(color: Colors.white),
+        titleMedium: TextStyle(color: Colors.white),
+        titleSmall: TextStyle(color: Colors.white54),
+        bodyLarge: TextStyle(color: Colors.white),
+        bodyMedium: TextStyle(color: Colors.white),
+        bodySmall: TextStyle(color: Colors.white),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(const Color(0xff364e80).withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(const Color(0xff364e80)),
+        trackColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.2)),
+        thumbColor: MaterialStateProperty.all(Colors.yellow),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
         textStyle: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
         inputDecorationTheme: const InputDecorationTheme(),
         menuStyle: MenuStyle(
           elevation: MaterialStateProperty.all(2),
           backgroundColor: MaterialStateProperty.all(Colors.black),
-          surfaceTintColor: MaterialStateProperty.all(Colors.black),
+          surfaceTintColor: MaterialStateProperty.all(Colors.white),
         ),
       ),
-      textSelectionTheme:  TextSelectionThemeData(
+      textSelectionTheme: TextSelectionThemeData(
         selectionColor: const Color(0x7a364e80).withOpacity(.3),
         selectionHandleColor: const Color(0xff364e80),
-        cursorColor: const Color(0x7a364e80),
+        cursorColor: const Color(0xff364e80),
       ),
-      unselectedWidgetColor: const Color(0xfff7f9fd),
-      scaffoldBackgroundColor: const Color(0xfff7f9fd),
+      unselectedWidgetColor: Colors.white,
+      scaffoldBackgroundColor: const Color(0xff111b2b),
       splashColor: Colors.transparent,
-      dialogBackgroundColor: Colors.white,
       dialogTheme: const DialogTheme(
         elevation: 2,
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xff405d98),
         titleTextStyle: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       highlightColor: Colors.transparent,
@@ -102,29 +101,27 @@ class LightnesTheme extends AppBaseThemeItem {
         color: Color(0xff111b2b),
         fillColor: Colors.black38,
         textStyle: TextStyle(
-          color: Colors.black87,
+          color: Colors.white60,
         ),
-        focusColor: Color(0xff111b2b),
-        selectedColor: Colors.black,
+        focusColor: Colors.white60,
+        selectedColor: Colors.white,
         selectedBorderColor: Colors.black38,
         splashColor: Colors.black38,
         borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.black87,
+        color: Colors.white,
       ),
       popupMenuTheme: const PopupMenuThemeData(
-        color: Colors.white,
+        color: Colors.black,
+        surfaceTintColor: Colors.white,
         textStyle: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
         elevation: 2,
       ),
-      dividerColor: Colors.black12,
       dividerTheme: const DividerThemeData(
-        color: Colors.black12,
-        space: .4,
-        indent: .5,
+        color: Colors.white12,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
@@ -156,12 +153,17 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
+          textStyle: MaterialStateProperty.all(
+            const TextStyle(
+              color: Colors.white,
+            ),
+          ),
           elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(const Color(0xff364e80)),
+          backgroundColor: MaterialStateProperty.all(const Color(0xff1a2a44)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
-          overlayColor: MaterialStateProperty.all(Colors.yellow),
+          overlayColor: MaterialStateProperty.all(const Color(0xff09121e)),
           mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
@@ -169,7 +171,7 @@ class LightnesTheme extends AppBaseThemeItem {
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
               side: const BorderSide(
-                color: Colors.black12,
+                color: Colors.white12,
                 width: 1,
               ),
             ),
@@ -178,102 +180,106 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       bannerTheme: const MaterialBannerThemeData(
-        backgroundColor: Color(0xffffffff),
+        backgroundColor: Color(0xff364e80),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Colors.white,
+        buttonColor: const Color(0xff364e80),
         disabledColor: const Color(0xff364e80).withOpacity(.2),
-      ),
-      bottomAppBarTheme: const BottomAppBarTheme(
-        color: Colors.white,
-        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3),
+          side: const BorderSide(
+            color: Colors.white12,
+            width: 1,
+          ),
+        ),
       ),
       buttonBarTheme: const ButtonBarThemeData(
         layoutBehavior: ButtonBarLayoutBehavior.constrained,
       ),
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: Colors.white,
-        labelTextStyle: MaterialStateProperty.all(
-          const TextStyle(
-            color: Colors.black45,
-          ),
-        ),
+      navigationBarTheme: const NavigationBarThemeData(
+        backgroundColor: Colors.black,
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-        selectedItemColor: Color(0xff364e80),
+        selectedItemColor: Colors.yellow,
         selectedLabelStyle: TextStyle(
-          color: Color(0xff364e80),
+          color: Colors.yellow,
           fontSize: 14,
         ),
-        elevation: 0,
-        unselectedItemColor: Colors.black54,
+        unselectedItemColor: Colors.white,
         unselectedLabelStyle: TextStyle(
-          color: Colors.black26,
+          color: Colors.white,
           fontSize: 14,
         ),
       ),
       appBarTheme: const AppBarTheme(
-        backgroundColor: Colors.white,
-        foregroundColor: Color(0xff364e80),
+        color: Color(0xff364e80),
+        foregroundColor: Colors.white,
         shadowColor: Colors.black26,
         elevation: 0,
         iconTheme: IconThemeData(
-          color: Color(0xff364e80),
+          color: Colors.white,
         ),
       ),
-      primaryColor: Colors.black,
+      primaryColor: const Color(0xff111b2b),
       tabBarTheme: const TabBarTheme(
-        unselectedLabelColor: Colors.black54,
-        labelColor: Color(0xff364e80),
+        unselectedLabelColor: Colors.white38,
+        labelColor: Colors.yellow,
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(
-            color: Color(0xff364e80),
+            color: Colors.yellow,
             width: 3,
           ),
         ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Color(0xff364e80),
-        focusColor: Colors.white,
+        backgroundColor: Colors.yellow,
+        focusColor: Color(0xff364e80),
       ),
-      iconTheme: const IconThemeData(
-        color: Color(0xff364e80),
-      ),
+      // iconTheme: const IconThemeData(
+      //   color: Colors.white,
+      // ),
       cardTheme: CardTheme(
-        color: Colors.white,
-        shadowColor: const Color(0x39131372),
+        color: const Color(0xff0d1323),
+        shadowColor: Colors.black54,
         margin: EdgeInsets.zero,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
           side: const BorderSide(
-            color: Colors.black12,
+            color: Colors.white10,
             width: 1,
           ),
         ),
       ),
-      cardColor: const Color(0xfff2f2f2),
       radioTheme: RadioThemeData(
         mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
-        overlayColor: MaterialStateProperty.all(const Color(0xff364e80).withOpacity(.7)),
-        fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
+        overlayColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.7)),
+        fillColor: MaterialStateProperty.all(Colors.yellow),
+      ),
+      primaryTextTheme: const TextTheme(
+        displayLarge: TextStyle(color: Colors.white),
+        displayMedium: TextStyle(color: Colors.white70),
+        displaySmall: TextStyle(color: Colors.white54),
+        headlineMedium: TextStyle(color: Colors.white38),
+        headlineSmall: TextStyle(color: Colors.white24),
+        titleLarge: TextStyle(color: Colors.white12),
       ),
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(Colors.white),
         fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
         side: const BorderSide(
-          color: Colors.black12,
+          color: Colors.white12,
           width: 3,
         ),
       ),
       chipTheme: const ChipThemeData(
-        backgroundColor: Colors.white10,
+        backgroundColor: Colors.black12,
         secondarySelectedColor: Colors.black,
-        checkmarkColor: Colors.white,
+        checkmarkColor: Colors.black,
         iconTheme: IconThemeData(
-          color: Colors.black,
+          color: Color(0xff364e80),
         ),
         secondaryLabelStyle: TextStyle(
           color: Colors.black,
@@ -283,19 +289,25 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
       ),
       colorScheme: const ColorScheme(
+        outline: Colors.white10,
         brightness: Brightness.dark,
         primary: Color(0xff364e80),
         onPrimary: Color(0xff364e80),
-        secondary: Color(0xff99acd2),
-        onSecondary: Color(0xff99acd2),
+        secondary: Color(0xff476ab2),
+        onSecondary: Color(0xff476ab2),
         error: Colors.red,
         onError: Colors.red,
         errorContainer: Colors.white,
-        background: Colors.white,
-        onBackground: Colors.white,
-        surface: Colors.black,
-        onSurface: Colors.black,
-      ).copyWith(background: const Color(0xffffffff)),
+        background: Color(0xff111b2b),
+        onBackground: Color(0xff111b2b),
+        surface: Color(0xff364e80),
+        onSurface: Color(0xff364e80),
+        // background: Colors.black,
+      ),
+      bottomAppBarTheme: const BottomAppBarTheme(
+        color: Colors.black,
+        elevation: 0,
+      ),
     ),
   );
 }

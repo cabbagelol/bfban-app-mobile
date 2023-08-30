@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../data/index.dart';
 
-class DarkTheme {
+class DarkTheme extends AppBaseThemeItem {
+  @override
+  init() {}
+
+  @override
+  changeSystem() {
+    SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.black,
+      statusBarBrightness: Brightness.light,
+    );
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
+
+  @override
+  get d => data;
+
+  @override
   static dynamic data = AppThemeItem(
     name: "dark",
     isDefault: true,
@@ -64,23 +82,23 @@ class DarkTheme {
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        selectionColor: const Color(0x7a364e80).withOpacity(.3),
-        selectionHandleColor: const Color(0xff364e80),
-        cursorColor: const Color(0xff364e80),
+        selectionColor: const Color(0xff171414).withOpacity(.3),
+        selectionHandleColor: const Color(0xff171414),
+        cursorColor: const Color(0xff171414),
       ),
       unselectedWidgetColor: Colors.white,
-      scaffoldBackgroundColor: const Color(0xff111b2b),
+      scaffoldBackgroundColor: const Color(0xff171414),
       splashColor: Colors.transparent,
       dialogTheme: const DialogTheme(
         elevation: 2,
-        backgroundColor: Color(0xff405d98),
+        backgroundColor: Color(0xff171414),
         titleTextStyle: TextStyle(
           color: Colors.white,
         ),
       ),
       highlightColor: Colors.transparent,
       toggleButtonsTheme: const ToggleButtonsThemeData(
-        color: Color(0xff111b2b),
+        color: Color(0xff171414),
         fillColor: Colors.black38,
         textStyle: TextStyle(
           color: Colors.white60,
@@ -108,7 +126,7 @@ class DarkTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(const Color(0xff1c3762)),
+          backgroundColor: MaterialStateProperty.all(const Color(0xff171414)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
@@ -196,7 +214,7 @@ class DarkTheme {
         ),
       ),
       appBarTheme: const AppBarTheme(
-        color: Color(0xff364e80),
+        color: Colors.black,
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
         elevation: 0,
@@ -217,13 +235,13 @@ class DarkTheme {
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.yellow,
-        focusColor: Color(0xff364e80),
+        focusColor: Color(0xff171718),
       ),
       // iconTheme: const IconThemeData(
       //   color: Colors.white,
       // ),
       cardTheme: CardTheme(
-        color: const Color(0xff0d1323),
+        color: const Color(0xff000000),
         shadowColor: Colors.black54,
         margin: EdgeInsets.zero,
         elevation: 0,
@@ -250,7 +268,7 @@ class DarkTheme {
       ),
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(Colors.white),
-        fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
+        fillColor: MaterialStateProperty.all(const Color(0xff2d2a2a)),
         side: const BorderSide(
           color: Colors.white12,
           width: 3,

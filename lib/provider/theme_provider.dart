@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -14,16 +13,20 @@ class ThemeProvider with ChangeNotifier {
 
   Storage storage = Storage();
 
+  _TimeProviderInterval timeProviderInterval = _TimeProviderInterval(value: DateTime(DateTime.now().year, 0, 0, 12));
+
   /// 主题
   ThemeProviderData theme = ThemeProviderData(
     defaultName: "dark",
     current: "",
     autoSwitchTheme: false,
+    evening: "",
+    morning: "",
     textScaleFactor: 1,
   );
 
   /// 主题表
-  Map<String, AppThemeItem>? list = ThemeList;
+  Map<String, AppBaseThemeItem>? list = ThemeList;
 
   /// [Event]
   /// 初始
@@ -37,6 +40,8 @@ class ThemeProvider with ChangeNotifier {
     theme.autoSwitchTheme = localTheme["autoTheme"];
     theme.current = localTheme["name"];
     theme.textScaleFactor = localTheme["textScaleFactor"] ?? 1;
+    theme.morning = localTheme["morning"] ?? theme.defaultName;
+    theme.evening = localTheme["evening"] ?? theme.defaultName;
 
     notifyListeners();
     return true;
@@ -51,7 +56,7 @@ class ThemeProvider with ChangeNotifier {
   List<AppThemeItem>? get getList {
     List<AppThemeItem> _l = [];
     list!.forEach((key, value) {
-      _l.add(value);
+      _l.add(value.d);
     });
     return _l;
   }
@@ -81,7 +86,10 @@ class ThemeProvider with ChangeNotifier {
 
     return {
       "name": theme.defaultName,
+      "morning": theme.morning,
+      "evening": theme.evening,
       "autoTheme": theme.autoSwitchTheme,
+      "textScaleFactor": theme.textScaleFactor,
     };
   }
 
@@ -92,6 +100,8 @@ class ThemeProvider with ChangeNotifier {
       themePackageName!,
       value: {
         "name": name ?? theme.current,
+        "morning": theme.morning,
+        "evening": theme.evening,
         "autoTheme": theme.autoSwitchTheme,
         "textScaleFactor": theme.textScaleFactor,
       },
@@ -109,6 +119,8 @@ class ThemeProvider with ChangeNotifier {
 
   /// 获取主题 ThemeData
   ThemeData get currentThemeData {
+    ThemeData name = ThemeData();
+
     // 是否开启自动主题，依照自动决定
     if (theme.autoSwitchTheme!) {
       switch (isBrightnessMode) {
@@ -120,7 +132,27 @@ class ThemeProvider with ChangeNotifier {
           break;
       }
     }
-    return list![currentThemeName]!.themeData!;
+
+    if (!theme.autoSwitchTheme!) {
+      name = list![currentThemeName]!.d.themeData!;
+    }
+
+    // 自动选择主题，按照时间
+    if (theme.autoSwitchTheme!) {
+      DateTime currentTime = DateTime.now();
+      if (currentTime.isAfter(timeInterval)) {
+        // 早上
+        name = list![theme.morning]!.d.themeData!;
+      } else {
+        // 晚上
+        name = list![theme.evening]!.d.themeData!;
+      }
+    }
+
+    // 配置主题外状态内容
+    list![currentThemeName]!.changeSystem();
+
+    return name;
   }
 
   /// 获取主题名称
@@ -133,23 +165,43 @@ class ThemeProvider with ChangeNotifier {
   set autoSwitchTheme(bool? value) {
     theme.autoSwitchTheme = value;
 
-    // 更改后更新本地
-    setLocalTheme(theme.current.toString());
+    // 自动选择主题，按照时间
+    if (theme.autoSwitchTheme!) {
+      DateTime currentTime = DateTime.now();
+      if (currentTime.isAfter(timeInterval)) {
+        theme.current = theme.morning;
+      } else {
+        theme.current = theme.evening;
+      }
+    }
 
     notifyListeners();
   }
+
+  // 上午下午中间分界线
+  DateTime get timeInterval => timeProviderInterval.value!;
 }
 
 class ThemeProviderData {
   String? current;
   String? defaultName;
   bool? autoSwitchTheme;
+  String? evening;
+  String? morning;
   double? textScaleFactor;
 
   ThemeProviderData({
     this.current,
     this.defaultName,
     this.autoSwitchTheme = false,
-    this.textScaleFactor = 1,
+    this.evening,
+    this.morning,
+    this.textScaleFactor = 1.0,
   });
+}
+
+class _TimeProviderInterval {
+  DateTime? value;
+
+  _TimeProviderInterval({this.value});
 }

@@ -3,7 +3,6 @@ import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
-import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tip/index.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../../constants/api.dart';
 import '../../../data/index.dart';
+import '../../../provider/userinfo_provider.dart';
 import '../../../utils/index.dart';
 
 class InformationPage extends StatefulWidget {
@@ -56,10 +56,7 @@ class _InformationPageState extends State<InformationPage> {
       informationStatus.load = true;
     });
 
-    Response result = await Http.request(
-      Config.httpHost["user_me"],
-      method: Http.GET,
-    );
+    Response result = await UserInfoProvider().getUserInfo();
 
     if (result.data["success"] == 1) {
       Map d = result.data["data"];
@@ -311,13 +308,13 @@ class _InformationPageState extends State<InformationPage> {
                           EluiCellComponent(
                             title: FlutterI18n.translate(context, "signup.form.originName"),
                             cont: SelectionArea(
-                              child: Text(informationStatus.data!.origin!['originName'].toString() ?? "-"),
+                              child: Text(informationStatus.data!.origin!['originName'].toString()),
                             ),
                           ),
                           EluiCellComponent(
                             title: FlutterI18n.translate(context, "signup.form.originId"),
                             cont: SelectionArea(
-                              child: Text(informationStatus.data!.origin!['originUserId'].toString() ?? "-"),
+                              child: Text(informationStatus.data!.origin!['originUserId'].toString()),
                             ),
                           ),
                           const Divider(height: 5),

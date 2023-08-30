@@ -174,8 +174,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        title: widget.imageUrl! != null ? Text(widget.imageUrl!.toString()) : Container(),
+        title: widget.imageUrl!.isNotEmpty ? Text(widget.imageUrl!.toString()) : Container(),
         centerTitle: true,
         actions: [
           if (widget.type == PhotoViewFileType.network)

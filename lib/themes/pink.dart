@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../data/index.dart';
 
-class PinkTheme {
+class PinkTheme extends AppBaseThemeItem {
+  @override
+  init() {}
+
+  @override
+  changeSystem() {
+    SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.white,
+      statusBarBrightness: Brightness.dark,
+    );
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
+
+  get d => data;
+
+  @override
   static dynamic data = AppThemeItem(
     name: "pink",
     isDefault: false,

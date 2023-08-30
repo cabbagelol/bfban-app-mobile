@@ -70,7 +70,18 @@ class UserInfoProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  /// [Event]
+  /// [Response]
+  /// 账户信息
+  Future<Response> getUserInfo() async {
+    Response result = await Http.request(
+      Config.httpHost["user_me"],
+      method: Http.GET,
+    );
+
+    return result;
+  }
+
+  /// [Response]
   /// 账户注销
   Future accountQuit(BuildContext context) async {
     Response result = await Http.request(

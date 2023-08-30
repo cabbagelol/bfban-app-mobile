@@ -42,11 +42,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
   /// [Response]
   /// 获取账户信息
   void _getUserinfo() async {
-    Response result = await Http.request(
-      Config.httpHost["user_me"],
-      method: Http.GET,
-      data: {},
-    );
+    Response result = await UserInfoProvider().getUserInfo();
 
     if (result.data["success"] == 1) {
       Map d = result.data["data"];
@@ -169,7 +165,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
                               context,
                               "profile.account.modifyName.residueDegree",
                               translationParams: {
-                                "changeNameLeft": userInfo["attr"]["changeNameLeft"].toString() ?? '0',
+                                "changeNameLeft": userInfo["attr"]["changeNameLeft"].toString(),
                               },
                             ),
                             style: const TextStyle(fontWeight: FontWeight.bold),

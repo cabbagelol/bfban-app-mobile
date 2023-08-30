@@ -33,12 +33,12 @@ void runMain() async {
   Routes.configureRoutes(FluroRouter());
 
   // 设置系统状态栏
-  SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarBrightness: Brightness.light,
-  );
+  // SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
+  //   statusBarColor: Colors.transparent,
+  //   statusBarBrightness: Brightness.light,
+  // );
+  // SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 
   runZonedGuarded(
     () async {

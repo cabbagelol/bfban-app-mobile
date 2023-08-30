@@ -54,10 +54,7 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
       traceStatus.load = true;
     });
 
-    Response result = await Http.request(
-      Config.httpHost["user_me"],
-      method: Http.GET,
-    );
+    Response result = await UserInfoProvider().getUserInfo();
 
     if (result.data["success"] == 1) {
       List subscribes = result.data["data"]["subscribes"] ?? [];
