@@ -8,6 +8,4 @@ class TimeLineStatus {
   });
 }
 
-class TimeLineItem {
-
-}
+class TimeLineItem {}

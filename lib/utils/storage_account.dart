@@ -6,16 +6,14 @@ import 'package:flutter/cupertino.dart';
 import "storage.dart";
 
 class StorageAccount extends Storage {
-  List ACCOUNTDATA = [{
-    "name": "cookie"
-  }, {
-    "name": "token"
-  }, {
-    "name": "login"
-  }];
+  List ACCOUNTDATA = [
+    {"name": "cookie"},
+    {"name": "token"},
+    {"name": "login"}
+  ];
 
   /// 擦除本地账户数据
-  Future clearAll (BuildContext context) async {
+  Future clearAll(BuildContext context) async {
     List<Future> Futures = [];
 
     for (var element in ACCOUNTDATA) {

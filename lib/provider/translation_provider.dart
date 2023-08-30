@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 
 import '../utils/index.dart';
@@ -21,7 +20,7 @@ class TranslationProvider with ChangeNotifier {
   // 获取当前语言
   String get currentLang => _currentLang;
 
-  set currentLang (String value) {
+  set currentLang(String value) {
     _currentLang = value;
     setLocalLang();
     notifyListeners();

@@ -140,7 +140,7 @@ class ThemeProvider with ChangeNotifier {
     // 自动选择主题，按照时间
     if (theme.autoSwitchTheme!) {
       DateTime currentTime = DateTime.now();
-      if (currentTime.isAfter(timeInterval)) {
+      if (currentTime.isBefore(timeInterval)) {
         // 早上
         name = list![theme.morning]!.d.themeData!;
       } else {
@@ -168,7 +168,7 @@ class ThemeProvider with ChangeNotifier {
     // 自动选择主题，按照时间
     if (theme.autoSwitchTheme!) {
       DateTime currentTime = DateTime.now();
-      if (currentTime.isAfter(timeInterval)) {
+      if (currentTime.isBefore(timeInterval)) {
         theme.current = theme.morning;
       } else {
         theme.current = theme.evening;

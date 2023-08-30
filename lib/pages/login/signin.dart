@@ -186,13 +186,13 @@ class _SigninPageState extends State<SigninPage> {
                     children: <Widget>[
                       data.isLogin
                           ? const Center(
-                        child: Icon(Icons.account_circle),
-                      )
+                              child: Icon(Icons.account_circle),
+                            )
                           : Expanded(
-                        flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                              flex: 1,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
                                   ClipOval(
                                     clipBehavior: Clip.hardEdge,
                                     child: localLoginRecord.containsKey(loginStatus.parame!.username)
@@ -229,37 +229,37 @@ class _SigninPageState extends State<SigninPage> {
                                       placeholder: FlutterI18n.translate(context, "app.signin.password"),
                                       autofillHints: const [AutofillHints.password],
                                       type: TextInputType.visiblePassword,
-                                onChange: (data) => loginStatus.parame!.password = data["value"],
+                                      onChange: (data) => loginStatus.parame!.password = data["value"],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Card(
+                                    clipBehavior: Clip.none,
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                    ),
+                                    child: EluiInputComponent(
+                                      placeholder: FlutterI18n.translate(context, "captcha.title"),
+                                      internalstyle: true,
+                                      maxLenght: 4,
+                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                      right: CaptchaWidget(
+                                        context: context,
+                                        seconds: 25,
+                                        onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                      ),
+                                      onChange: (data) {
+                                        setState(() {
+                                          loginStatus.parame!.value = data["value"];
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Card(
-                              clipBehavior: Clip.none,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              child: EluiInputComponent(
-                                placeholder: FlutterI18n.translate(context, "captcha.title"),
-                                internalstyle: true,
-                                maxLenght: 4,
-                                theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                right: CaptchaWidget(
-                                  context: context,
-                                  seconds: 25,
-                                  onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
-                                ),
-                                onChange: (data) {
-                                  setState(() {
-                                    loginStatus.parame!.value = data["value"];
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),

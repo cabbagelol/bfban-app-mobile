@@ -16,7 +16,6 @@ class AppNetworkPage extends StatefulWidget {
 }
 
 class _AppNetworkPageState extends State<AppNetworkPage> {
-
   AppNetworkStatus appNetworkStatus = AppNetworkStatus(
     list: [],
   );

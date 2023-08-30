@@ -71,17 +71,17 @@ class RichEditCoreState extends State<RichEditCore> {
     );
     controller.toolbarOptions.fixedToolbar = true;
     controller.toolbarOptions.customButtonGroups = [
-        CustomButtonGroup(
-          index: 3,
-          buttons: [
-            CustomToolbarButton(
-              icon: Icons.image,
-              action: () => _openMediaPage(),
-              isSelected: false,
-            ),
-          ],
-        ),
-      ];
+      CustomButtonGroup(
+        index: 3,
+        buttons: [
+          CustomToolbarButton(
+            icon: Icons.image,
+            action: () => _openMediaPage(),
+            isSelected: false,
+          ),
+        ],
+      ),
+    ];
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
       controller.setFocus();

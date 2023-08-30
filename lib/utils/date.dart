@@ -48,9 +48,6 @@ class Date {
       "millisecondsSinceEpoch": time.millisecondsSinceEpoch,
     };
   }
-
 }
 
-class DateData {
-
-}
+class DateData {}

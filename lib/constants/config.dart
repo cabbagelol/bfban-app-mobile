@@ -6,7 +6,8 @@ class AppConfig extends InheritedWidget {
   final String flavorName;
   final String apiBaseUrl;
 
-  const AppConfig({Key? key,
+  const AppConfig({
+    Key? key,
     this.debug = false,
     required this.appName,
     required this.flavorName,

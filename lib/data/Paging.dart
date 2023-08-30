@@ -41,7 +41,7 @@ abstract class Paging {
 
   Map<String, dynamic> get pageToMap => Map.from({
         "skip": skip,
-        "limit": isMultiplier() ? limit! * 2 : limit ,
+        "limit": isMultiplier() ? limit! * 2 : limit,
       });
 }
 

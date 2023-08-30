@@ -39,7 +39,6 @@ class PackageStatus {
 }
 
 class PackageProvider with ChangeNotifier {
-
   BuildContext? context;
 
   // 包状态

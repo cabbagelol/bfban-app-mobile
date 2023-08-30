@@ -31,7 +31,7 @@ class _SupportPageState extends State<SupportPage> {
 
   /// [Event]
   /// 打开网络状态
-  void _opEnNetwork () {
+  void _opEnNetwork() {
     _urlUtil.opEnPage(context, "/network");
   }
 
@@ -76,7 +76,6 @@ class _SupportPageState extends State<SupportPage> {
             islink: true,
             onTap: () => _urlUtil.onPeUrl("https://github.com/BFBAN/bfban-app", mode: LaunchMode.externalApplication),
           ),
-
 
           EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.support.licenseTitle"),

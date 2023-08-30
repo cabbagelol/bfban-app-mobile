@@ -6,18 +6,18 @@ class CaptchaProvider with ChangeNotifier {
 
   Map record = {};
 
-  set (String key,int value) {
+  set(String key, int value) {
     record[key] = value;
     notifyListeners();
   }
 
-  int get (String key) {
+  int get(String key) {
     int res = record[key] ?? -1;
     notifyListeners();
     return res;
   }
 
-  rem (String key) {
+  rem(String key) {
     record.remove(key);
   }
 }

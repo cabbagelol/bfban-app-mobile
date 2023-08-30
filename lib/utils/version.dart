@@ -1,4 +1,3 @@
-
 /// 版本管理器
 
 enum VersionReleaseType { None, Beta, Release }

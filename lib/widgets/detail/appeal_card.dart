@@ -86,8 +86,8 @@ class AppealCard extends StatelessWidget {
         ),
       ],
       content: HtmlWidget(
-          content: data["content"],
-          quote: QuoteCard(data: data),
+        content: data["content"],
+        quote: QuoteCard(data: data),
       ),
       bottom: TimeLineItemBottomBtn(
         data: data,

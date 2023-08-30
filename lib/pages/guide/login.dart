@@ -61,7 +61,7 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
               Card(
                 margin: const EdgeInsets.symmetric(horizontal: 30),
                 child: Padding(
-                  padding:  const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: Row(
                     children: [
                       CircleAvatar(

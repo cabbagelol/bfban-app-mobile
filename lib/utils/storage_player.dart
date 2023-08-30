@@ -1,4 +1,3 @@
-
 import '../constants/api.dart';
 import '../utils/index.dart';
 import "./storage.dart";
@@ -38,9 +37,9 @@ class StoragePlayer extends Storage {
   }
 
   // 删除
-  pop (dynamic key) {
+  pop(dynamic key) {
     if (!PLAYERDATA.containsKey(key)) return;
-      PLAYERDATA.remove(key);
+    PLAYERDATA.remove(key);
   }
 
   // 强制更新

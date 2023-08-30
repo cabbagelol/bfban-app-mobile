@@ -20,10 +20,6 @@ class FilterMaskTheme {
   });
 }
 
-class FilterTitleTheme {
+class FilterTitleTheme {}
 
-}
-
-class FilterPanelTheme {
-
-}
+class FilterPanelTheme {}

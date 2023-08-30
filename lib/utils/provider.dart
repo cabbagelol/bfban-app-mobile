@@ -11,32 +11,32 @@ import '../provider/translation_provider.dart';
 
 class ProviderUtil {
   // App 全局
-  AppInfoProvider ofApp (BuildContext context) {
+  AppInfoProvider ofApp(BuildContext context) {
     return Provider.of<AppInfoProvider>(context, listen: false);
   }
 
   // 国际化
-  TranslationProvider ofLang (BuildContext context) {
+  TranslationProvider ofLang(BuildContext context) {
     return Provider.of<TranslationProvider>(context, listen: false);
   }
 
   // 用户信息
-  UserInfoProvider ofUser (BuildContext context) {
+  UserInfoProvider ofUser(BuildContext context) {
     return Provider.of<UserInfoProvider>(context, listen: false)..context = context;
   }
 
   // 聊天
-  ChatProvider ofChat (BuildContext context) {
+  ChatProvider ofChat(BuildContext context) {
     return Provider.of<ChatProvider>(context, listen: false);
   }
 
   // 包
-  PackageProvider ofPackage (BuildContext context) {
+  PackageProvider ofPackage(BuildContext context) {
     return Provider.of<PackageProvider>(context, listen: false)..context = context;
   }
 
   // 主题
-  ThemeProvider ofTheme (BuildContext context) {
+  ThemeProvider ofTheme(BuildContext context) {
     return Provider.of<ThemeProvider>(context, listen: false)..context = context;
   }
 }

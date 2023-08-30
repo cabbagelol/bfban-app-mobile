@@ -102,7 +102,7 @@ class _chatDetailPageState extends State<ChatDetailPage> {
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            if(snapshot.data == null) {
+            if (snapshot.data == null) {
               return const NotFoundPage();
             }
 

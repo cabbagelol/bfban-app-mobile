@@ -263,7 +263,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                         height: 350,
                                       )
                                     : Image.asset(
-                                  "assets/images/default-player-avatar.jpg",
+                                        "assets/images/default-player-avatar.jpg",
                                         fit: BoxFit.fitWidth,
                                       ),
                               ),

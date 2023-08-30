@@ -81,7 +81,7 @@ class LightnesTheme extends AppBaseThemeItem {
           surfaceTintColor: MaterialStateProperty.all(Colors.black),
         ),
       ),
-      textSelectionTheme:  TextSelectionThemeData(
+      textSelectionTheme: TextSelectionThemeData(
         selectionColor: const Color(0x7a364e80).withOpacity(.3),
         selectionHandleColor: const Color(0xff364e80),
         cursorColor: const Color(0x7a364e80),

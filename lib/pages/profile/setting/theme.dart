@@ -56,7 +56,7 @@ class _ThemePageState extends State<ThemePage> {
   /// 保存主题
   _onSave(ThemeProvider data) {
     // 1
-    if (!fromData["autoSwitchTheme"]) data.setTheme(fromData["selectThemeName"]);
+    data.setTheme(fromData["selectThemeName"]);
 
     // 2
     data.setTextScaleFactor(fromData["textScaleFactor"]);

@@ -84,9 +84,7 @@ class _GamesTagWidgetState extends State<GamesTagWidget> {
                 padding: widget.currentSizeType.padding,
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardTheme.color,
-                  border: Border.all(
-                    color: Theme.of(context).dividerTheme.color!
-                  ),
+                  border: Border.all(color: Theme.of(context).dividerTheme.color!),
                   borderRadius: BorderRadius.circular(widget.currentSizeType.border),
                 ),
                 child: Image.asset(

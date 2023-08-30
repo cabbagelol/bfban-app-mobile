@@ -1,6 +1,5 @@
 import 'package:bfban/data/Paging.dart';
 
-
 class TraceStatus {
   bool? load;
   List? list;

@@ -30,7 +30,7 @@ class SearchResultData {
     required this.comment,
   });
 
-  set (String key, List list) {
+  set(String key, List list) {
     switch (key) {
       case "player":
         player = list;
@@ -44,7 +44,7 @@ class SearchResultData {
     }
   }
 
-  List data (String key) {
+  List data(String key) {
     switch (key) {
       case "player":
         return player;

@@ -18,8 +18,7 @@ class radioListFilter extends FilterPanelWidget {
     this.itemCount,
     this.onChange,
     required this.itemBuilder,
-  })
-      : assert(itemCount == null || itemCount >= 0),
+  })  : assert(itemCount == null || itemCount >= 0),
         super(key: key);
 
   @override
@@ -67,8 +66,7 @@ class _radioListFilterState extends State<radioListFilter> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: _list!
                 .map(
-                  (e) =>
-                  InkWell(
+                  (e) => InkWell(
                     onTap: onChange(e),
                     child: widget.itemBuilder!(context, e, widget.data!.value),
                   ),

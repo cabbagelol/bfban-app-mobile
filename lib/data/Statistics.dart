@@ -62,7 +62,7 @@ class StatisticsData {
     this.details,
   });
 
-  setData (Map i) {
+  setData(Map i) {
     reports = i["reports"];
     players = i["players"];
     confirmed = i["confirmed"];

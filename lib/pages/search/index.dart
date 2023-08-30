@@ -340,13 +340,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 duration: const Duration(milliseconds: 300),
                 child: searchStatus.load
                     ? ELuiLoadComponent(
-                        type: "line",
+                  type: "line",
                         color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
                         size: 20,
                         lineWidth: 2,
                       )
                     : Icon(
-                        Icons.search,
+                  Icons.search,
                         color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
                       ),
               ),
@@ -400,7 +400,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             ),
                             searchStatus.historyList!.isNotEmpty
                                 ? Wrap(
-                                    spacing: 10,
+                              spacing: 10,
                                     runSpacing: 5,
                                     children: searchStatus.historyList!.map((i) {
                                       return InputChip(

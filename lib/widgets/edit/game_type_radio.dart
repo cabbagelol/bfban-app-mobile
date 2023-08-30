@@ -6,7 +6,8 @@ class GameTypeRadioWidget extends StatelessWidget {
   final bool index;
   final GestureTapCallback? onTap;
 
-   const GameTypeRadioWidget({Key? key,
+  const GameTypeRadioWidget({
+    Key? key,
     this.child,
     this.index = false,
     this.onTap,

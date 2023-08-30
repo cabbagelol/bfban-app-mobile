@@ -57,4 +57,3 @@ abstract class FilterPanelWidget extends StatefulWidget {
   /// 展开
   var show;
 }
-

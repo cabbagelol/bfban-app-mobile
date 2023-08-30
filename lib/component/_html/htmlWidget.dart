@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bfban/component/_html/html.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:uuid/uuid.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:fluro/fluro.dart';
@@ -25,13 +26,9 @@ class HtmlWidget extends StatefulWidget {
   HtmlWidgetFontSize? size;
   List sizeConfig = [];
   Widget? quote;
+  String? id;
 
-  HtmlWidget({
-    Key? key,
-    this.content,
-    HtmlWidgetFontSize? size = HtmlWidgetFontSize.Default,
-    this.quote,
-  }) : super(key: key);
+  HtmlWidget({Key? key, this.content, HtmlWidgetFontSize? size = HtmlWidgetFontSize.Default, this.quote, this.id}) : super(key: key);
 
   @override
   State<HtmlWidget> createState() => _HtmlWidgetState();
@@ -222,6 +219,8 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                       setState(() {
                         dropdownRenderingSelectedValue = selected;
                       });
+
+                      eventUtil.emit("html-image-update-widget", {});
                     },
                   )
                 ],

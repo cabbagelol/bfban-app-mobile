@@ -55,6 +55,7 @@ class ScreenUtil {
 
   ///当前设备宽度 px
   static double get screenWidth => _screenWidth;
+
   ///当前设备高度 px
   static double get screenHeight => _screenHeight;
 
@@ -72,9 +73,11 @@ class ScreenUtil {
   ///根据设计稿的设备宽度适配
   ///高度也根据这个来做适配可以保证不变形
   setWidth(int width) => width * scaleWidth;
+
   ///根据设计稿的设备宽度适配
   ///高度也根据这个来做适配可以保证不变形
   L(double width) => width * scaleWidth;
+
   /// 根据设计稿的设备高度适配
   /// 当发现设计稿中的一屏显示的与当前样式效果不符合时,
   /// 或者形状有差异时,高度适配建议使用此方法

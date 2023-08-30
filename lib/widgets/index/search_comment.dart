@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
 
-
 class SearchCommentCard extends StatelessWidget {
   final dynamic item;
 

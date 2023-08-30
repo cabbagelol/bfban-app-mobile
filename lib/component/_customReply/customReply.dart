@@ -189,8 +189,7 @@ class CustomReplyItem {
     this.scopeUse,
   });
 
-  Map get objectAsMap =>
-      {
+  Map get objectAsMap => {
         "title": title,
         "content": content,
         "template": template,

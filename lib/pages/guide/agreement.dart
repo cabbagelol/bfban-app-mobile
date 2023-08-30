@@ -45,7 +45,6 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
     super.initState();
   }
 
-
   /// [Response]
   /// 获取协议
   getAgreement() async {

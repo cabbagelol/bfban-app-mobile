@@ -60,9 +60,7 @@ class _TimeWidgetState extends State<TimeWidget> {
     } else if (d.inDays == 2) {
       return FlutterI18n.translate(context, "app.basic.time.beforeYesterday");
     } else if (d.inDays >= 3 && d.inDays <= 7) {
-      return FlutterI18n.translate(context, "app.basic.time.dayAgo", translationParams: {
-        "s": d.inDays.toString()
-      });
+      return FlutterI18n.translate(context, "app.basic.time.dayAgo", translationParams: {"s": d.inDays.toString()});
     }
 
     widget.value = this.date.getTimestampTransferCharacter(date)[type];

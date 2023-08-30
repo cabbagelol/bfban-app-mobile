@@ -1,13 +1,9 @@
 class ObjectToMap {
-   toMap (object) {
+  toMap(object) {
     late Map<dynamic, dynamic> map = {};
 
-    object.forEach((i) => {
-      map[i] = object[i]
-    });
+    object.forEach((i) => {map[i] = object[i]});
 
     return map;
   }
-
 }
-

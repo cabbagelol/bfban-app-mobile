@@ -52,7 +52,7 @@ class DarkTheme extends AppBaseThemeItem {
         modalBackgroundColor: Colors.black,
       ),
       canvasColor: Colors.yellow.shade50,
-      primaryColorDark: Colors.yellow,
+      primaryColorDark: Color(0xff5d5d5d),
       textTheme: const TextTheme(
         displayLarge: TextStyle(color: Colors.white),
         displayMedium: TextStyle(color: Colors.white70),
@@ -87,7 +87,7 @@ class DarkTheme extends AppBaseThemeItem {
         cursorColor: const Color(0xff171414),
       ),
       unselectedWidgetColor: Colors.white,
-      scaffoldBackgroundColor: const Color(0xff171414),
+      scaffoldBackgroundColor: const Color(0xff1c1c1c),
       splashColor: Colors.transparent,
       dialogTheme: const DialogTheme(
         elevation: 2,

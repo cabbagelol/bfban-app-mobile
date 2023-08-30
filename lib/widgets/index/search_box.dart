@@ -128,7 +128,7 @@ class TitleSearchState extends State<TitleSearchWidget> {
                       flex: 1,
                       child: widget.theme == titleSearchTheme.white
                           ? TextField(
-                              controller: controller,
+                        controller: controller,
                               focusNode: controllerFocus,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,

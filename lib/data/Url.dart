@@ -20,7 +20,7 @@ class BaseUrl {
 
   String get url => "$_protocol${host ?? ""}${pathname ?? ""}";
 
-  set url (String url) {
+  set url(String url) {
     Uri uri = Uri.parse(url);
     protocol = uri.scheme;
     pathname = uri.path;

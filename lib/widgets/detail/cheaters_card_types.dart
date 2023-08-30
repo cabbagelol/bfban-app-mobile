@@ -100,8 +100,8 @@ class TimeLineBaseCard extends StatefulWidget {
 }
 
 class _TimeLineBaseCardState extends State<TimeLineBaseCard> {
-  GlobalKey contentKey = GlobalKey();
-  double contentBodyHeight = 400.0;
+  final GlobalKey contentKey = GlobalKey();
+  double contentBodyHeight = 0.0;
 
   /// [Event]
   /// 设置垂直线高度
