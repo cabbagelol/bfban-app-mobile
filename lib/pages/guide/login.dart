@@ -48,7 +48,7 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      FlutterI18n.translate(context, "app.guide.login.label"),
+                      FlutterI18n.translate(context, "app.guide.login.${data.isLogin ? 'welcomeBack' : 'label'}"),
                       style: TextStyle(
                         color: Theme.of(context).textTheme.subtitle2!.color,
                       ),
@@ -59,6 +59,7 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
               ),
               const SizedBox(height: 30),
               Card(
+                color: Theme.of(context).cardTheme.color!.withOpacity(.9),
                 margin: const EdgeInsets.symmetric(horizontal: 30),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),

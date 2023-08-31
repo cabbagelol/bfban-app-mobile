@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bfban/component/_html/html.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:uuid/uuid.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:fluro/fluro.dart';
@@ -27,8 +26,16 @@ class HtmlWidget extends StatefulWidget {
   List sizeConfig = [];
   Widget? quote;
   String? id;
+  bool? footerToolBar;
 
-  HtmlWidget({Key? key, this.content, HtmlWidgetFontSize? size = HtmlWidgetFontSize.Default, this.quote, this.id}) : super(key: key);
+  HtmlWidget({
+    Key? key,
+    this.content,
+    HtmlWidgetFontSize? size = HtmlWidgetFontSize.Default,
+    this.quote,
+    this.id,
+    this.footerToolBar = true,
+  }) : super(key: key);
 
   @override
   State<HtmlWidget> createState() => _HtmlWidgetState();
@@ -143,89 +150,90 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                 ),
               ),
             ][int.parse(dropdownRenderingSelectedValue)],
-            const Divider(height: 1),
-            SizedBox(
-              height: 20,
-              child: Row(
-                children: [
-                  InkWell(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 4),
-                      child: const Icon(Icons.fullscreen, size: 16),
+            if (widget.footerToolBar!) const Divider(height: 1),
+            if (widget.footerToolBar!)
+              SizedBox(
+                height: 20,
+                child: Row(
+                  children: [
+                    InkWell(
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 4),
+                        child: const Icon(Icons.fullscreen, size: 16),
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return Scaffold(
+                                appBar: AppBar(),
+                                body: ListView(
+                                  children: [
+                                    HtmlCore(
+                                      data: widget.content,
+                                      style: htmlStyle[2],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return Scaffold(
-                              appBar: AppBar(),
-                              body: ListView(
-                                children: [
-                                  HtmlCore(
-                                    data: widget.content,
-                                    style: htmlStyle[2],
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                  const Expanded(child: SizedBox(width: 1)),
-                  DropdownButton(
-                    underline: Container(),
-                    dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).textTheme.bodyMedium!.color,
+                    const Expanded(child: SizedBox(width: 1)),
+                    DropdownButton(
+                      underline: Container(),
+                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.bodyMedium!.color,
+                      ),
+                      items: dropdownSizeType.map<DropdownMenuItem<String>>((e) {
+                        return DropdownMenuItem(
+                          value: e["value"],
+                          child: Text(e["name"]),
+                        );
+                      }).toList(),
+                      value: dropdownSizeTypeSelectedValue,
+                      onChanged: (selected) {
+                        setState(() {
+                          dropdownSizeTypeSelectedValue = selected;
+                        });
+                      },
                     ),
-                    items: dropdownSizeType.map<DropdownMenuItem<String>>((e) {
-                      return DropdownMenuItem(
-                        value: e["value"],
-                        child: Text(e["name"]),
-                      );
-                    }).toList(),
-                    value: dropdownSizeTypeSelectedValue,
-                    onChanged: (selected) {
-                      setState(() {
-                        dropdownSizeTypeSelectedValue = selected;
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    width: 20,
-                    height: 8,
-                    child: VerticalDivider(width: 1),
-                  ),
-                  DropdownButton(
-                    elevation: 2,
-                    underline: Container(),
-                    dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Theme.of(context).textTheme.bodyMedium!.color,
+                    const SizedBox(
+                      width: 20,
+                      height: 8,
+                      child: VerticalDivider(width: 1),
                     ),
-                    items: dropdownRenderingMethods.map<DropdownMenuItem<String>>((e) {
-                      return DropdownMenuItem(
-                        value: e["value"],
-                        child: Text(e["name"]),
-                      );
-                    }).toList(),
-                    value: dropdownRenderingSelectedValue,
-                    onChanged: (selected) {
-                      setState(() {
-                        dropdownRenderingSelectedValue = selected;
-                      });
+                    DropdownButton(
+                      elevation: 2,
+                      underline: Container(),
+                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).textTheme.bodyMedium!.color,
+                      ),
+                      items: dropdownRenderingMethods.map<DropdownMenuItem<String>>((e) {
+                        return DropdownMenuItem(
+                          value: e["value"],
+                          child: Text(e["name"]),
+                        );
+                      }).toList(),
+                      value: dropdownRenderingSelectedValue,
+                      onChanged: (selected) {
+                        setState(() {
+                          dropdownRenderingSelectedValue = selected;
+                        });
 
-                      eventUtil.emit("html-image-update-widget", {});
-                    },
-                  )
-                ],
-              ),
-            )
+                        eventUtil.emit("html-image-update-widget", {});
+                      },
+                    )
+                  ],
+                ),
+              )
           ],
         ),
       ),

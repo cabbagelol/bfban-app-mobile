@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/_cell/cell.dart';
+import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -41,9 +42,9 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
       case "android":
         permissions = [
           Permission.camera,
-          Permission.audio,
           Permission.storage,
           Permission.videos,
+          Permission.photos,
           Permission.notification,
         ];
         break;
@@ -134,29 +135,40 @@ class _PermissionState extends State<PermissionWidget> {
   _PermissionState(this._permission);
 
   Map permissionName = {
+    Permission.manageExternalStorage: {
+      "name": "app.guide.permission.list.manageExternalStorage.name",
+      "describe": "app.guide.permission.list.manageExternalStorage.describe",
+      "shouldShowRequestRationale": false,
+    },
     Permission.camera: {
       "name": "app.guide.permission.list.camera.name",
       "describe": "app.guide.permission.list.camera.describe",
+      "shouldShowRequestRationale": false,
     },
     Permission.audio: {
       "name": "app.guide.permission.list.audio.name",
       "describe": "app.guide.permission.list.audio.describe",
+      "shouldShowRequestRationale": false,
     },
     Permission.photos: {
       "name": "app.guide.permission.list.photos.name",
       "describe": "app.guide.permission.list.photos.describe",
+      "shouldShowRequestRationale": false,
     },
     Permission.storage: {
       "name": "app.guide.permission.list.storage.name",
       "describe": "app.guide.permission.list.storage.describe",
+      "shouldShowRequestRationale": false,
     },
     Permission.videos: {
       "name": "app.guide.permission.list.videos.name",
       "describe": "app.guide.permission.list.videos.describe",
+      "shouldShowRequestRationale": false,
     },
     Permission.notification: {
       "name": "app.guide.permission.list.notification.name",
       "describe": "app.guide.permission.list.notification.describe",
+      "shouldShowRequestRationale": false,
     },
   };
 
@@ -193,6 +205,7 @@ class _PermissionState extends State<PermissionWidget> {
   void initState() {
     super.initState();
 
+    _shouldShowRequestRationale(widget._permission);
     _listenForPermissionStatus();
   }
 
@@ -213,6 +226,10 @@ class _PermissionState extends State<PermissionWidget> {
       default:
         return Colors.grey;
     }
+  }
+
+  void _shouldShowRequestRationale(Permission permission) async {
+    permissionName[_permission]['shouldShowRequestRationale'] = await permission.shouldShowRequestRationale;
   }
 
   @override

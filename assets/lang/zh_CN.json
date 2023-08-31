@@ -71,13 +71,18 @@
       },
       "login": {
         "title": "欢迎您到来",
-        "label": "如果你已经拥有BFBAN账户,现在就可登录."
+        "label": "如果你已经拥有BFBAN账户,现在就可登录.",
+        "welcomeBack": "欢迎回到我们的'战场'上"
       },
       "permission": {
         "title": "权限",
         "label": "依照您需求触摸下方单元,预先授权应用权限;此处并非强制要求,在需要特定功能下程序会提示您未授权的权限询问;一些功能不授权不影响整体APP使用",
         "tip": "如果存在【永久拒绝】选项,可以到设置>应用>权限随时修改",
         "list": {
+          "manageExternalStorage": {
+            "name": "外部储存",
+            "describe": "此功能用于从外部储存读取和写入媒体素材"
+          },
           "camera": {
             "name": "摄像头",
             "describe": "拍摄或录制多媒体,媒体内容多为证据"
@@ -88,11 +93,11 @@
           },
           "videos": {
             "name": "视频",
-            "describe": "读取设备外部视频"
+            "describe": "读取视频内容,用途素材导入或导出、上传"
           },
           "photos": {
             "name": "相册",
-            "describe": "读取相册内容,用途证据为主"
+            "describe": "读取相册内容,用途素材导入或导出、上传"
           },
           "storage": {
             "name": "本地储存",
@@ -136,8 +141,8 @@
           "describe": "联BAN网站"
         },
         "resources": {
-          "title": "支援",
-          "describe": "程序数据由不用服务商提供"
+          "title": "支持",
+          "describe": "引导、程序Github、许可证、应用文档"
         }
       },
       "versions": {

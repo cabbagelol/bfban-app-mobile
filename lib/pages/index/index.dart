@@ -45,18 +45,21 @@ class _IndexPageState extends State<IndexPage> {
 
   DateTime? _lastPressedAt = DateTime(0); //上次点击时间
 
-  List navs = [
+  List<dynamic> navs = [
     {
       "name": "home",
-      "icon": const Icon(Icons.home_sharp, size: 30),
+      "icon": const Icon(Icons.home_outlined, size: 30),
+      "activeIcon": const Icon(Icons.home_sharp, size: 30),
     },
     {
       "name": "player_list",
       "icon": const Icon(Icons.view_list_outlined, size: 30),
+      "activeIcon": const Icon(Icons.view_list, size: 30),
     },
     {
       "name": "profile",
-      "icon": const Icon(Icons.person_sharp, size: 30),
+      "icon": const Icon(Icons.person_outline, size: 30),
+      "activeIcon": const Icon(Icons.person_sharp, size: 30),
     },
   ];
 
@@ -245,6 +248,7 @@ class _IndexPageState extends State<IndexPage> {
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               if (constraints.maxWidth <= 1024) {
+                // move app
                 return Scaffold(
                   extendBodyBehindAppBar: true,
                   appBar: AppBar(
@@ -419,26 +423,11 @@ class _IndexPageState extends State<IndexPage> {
                     type: BottomNavigationBarType.fixed,
                     showSelectedLabels: true,
                     showUnselectedLabels: true,
-                    items: [
-                      {
-                        "name": "home",
-                        "icon": const Icon(Icons.home_sharp, size: 30),
-                      },
-                      {
-                        "name": "player_list",
-                        "icon": const Icon(Icons.view_list_outlined, size: 30),
-                      },
-                      {
-                        "name": "profile",
-                        "icon": const Icon(Icons.person_sharp, size: 30),
-                      },
-                    ].map((Map? nav) {
+                    items: navs.map((nav) {
                       return BottomNavigationBarItem(
                         icon: nav!["icon"],
-                        label: FlutterI18n.translate(
-                          context,
-                          "${nav["name"]}.title",
-                        ),
+                        activeIcon: nav["activeIcon"],
+                        label: FlutterI18n.translate(context, "${nav["name"]}.title"),
                       );
                     }).toList(),
                     currentIndex: _currentPageIndex,
@@ -446,6 +435,7 @@ class _IndexPageState extends State<IndexPage> {
                   ),
                 );
               } else {
+                // desktop
                 return Scaffold(
                   body: Row(
                     children: [
@@ -457,24 +447,10 @@ class _IndexPageState extends State<IndexPage> {
                         },
                         labelType: NavigationRailLabelType.none,
                         backgroundColor: Theme.of(context).bottomAppBarTheme.color,
-                        destinations: [
-                          {
-                            "name": "home",
-                            "icon": const Icon(Icons.home_sharp, size: 30),
-                          },
-                          {
-                            "name": "player_list",
-                            "count": (playerListPage?.currentState?.playersStatus?.list!.length ?? 0).toString(),
-                            "icon": const Icon(Icons.view_list_outlined, size: 30),
-                          },
-                          {
-                            "name": "profile",
-                            "icon": const Icon(Icons.person_sharp, size: 30),
-                          },
-                        ].map((Map? nav) {
+                        destinations: navs.map((nav) {
                           return NavigationRailDestination(
                             icon: nav!["icon"],
-                            selectedIcon: nav!["icon"],
+                            selectedIcon: nav!["activeIcon"],
                             label: Text(FlutterI18n.translate(
                               context,
                               "${nav["name"]}.title",

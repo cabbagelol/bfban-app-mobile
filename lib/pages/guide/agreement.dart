@@ -1,5 +1,7 @@
 /// 协议内容
 
+import 'package:bfban/component/_html/htmlLink.dart';
+import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:bfban/provider/translation_provider.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
 
   Map agreement = {
     "load": false,
+    "error": 0,
     "content": "Agreement Content",
   };
 
@@ -52,16 +55,21 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
       agreement["load"] = true;
     });
 
-    Response<dynamic> result = await Http.request(
+    Response result = await Http.request(
       "agreement/$language.html",
       httpDioValue: "app_web_site",
       method: Http.GET,
     );
 
-    if (result.data.toString().isNotEmpty) {
+    if (result.data is String && result.data != '' || result.data["error"] == null && agreement["content"] != null) {
       setState(() {
         agreement["content"] = result.data.toString();
       });
+    } else {
+      setState(() {
+        agreement["error"] = 1;
+      });
+      EluiMessageComponent.error(context)(child: const Text("error"));
     }
 
     setState(() {
@@ -97,6 +105,11 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                       FlutterI18n.translate(context, "app.guide.agreement.title"),
                       style: const TextStyle(fontSize: 25),
                     ),
+                    const SizedBox(width: 5),
+                    Text(
+                      "($language)",
+                      style: const TextStyle(fontSize: 25),
+                    )
                   ],
                 ),
               ),
@@ -104,56 +117,80 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Card(
-                    elevation: 0,
-                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: agreement["load"]
-                        ? SizedBox(
-                            height: 100,
-                            child: ELuiLoadComponent(
-                              type: "line",
-                              color: Theme.of(context).appBarTheme.backgroundColor!,
-                              size: 17,
-                              lineWidth: 2,
+                  if (!agreement["load"] && agreement["error"] == 1)
+                    Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+                        child: Center(
+                          child: GestureDetector(
+                            child: Column(
+                              children: [
+                                Icon(Icons.refresh, size: FontSize.xxLarge.value),
+                                const SizedBox(height: 15),
+                                HtmlLink(url: "${Config.apis["app_web_site"]!.url}/agreement"),
+                              ],
                             ),
-                          )
-                        : Container(
-                            padding: const EdgeInsets.all(5),
-                            child: GestureDetector(
-                              child: Html(data: agreement["content"], shrinkWrap: true),
-                            ),
+                            onTap: () {
+                              getAgreement();
+                            },
                           ),
-                  ),
+                        ),
+                      ),
+                    )
+                  else
+                    Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: agreement["load"]
+                          ? SizedBox(
+                              height: 100,
+                              child: ELuiLoadComponent(
+                                type: "line",
+                                color: Theme.of(context).appBarTheme.backgroundColor!,
+                                size: 17,
+                                lineWidth: 2,
+                              ),
+                            )
+                          : HtmlWidget(
+                              content: agreement["content"],
+                              footerToolBar: false,
+                            ),
+                    ),
                 ],
               ),
               InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 10,
-                    right: 10,
-                  ),
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Checkbox(
-                        materialTapTargetSize: MaterialTapTargetSize.padded,
-                        value: checked,
-                        onChanged: (bool? checkBoxChecked) {
-                          setState(() {
-                            checked = checkBoxChecked!;
-                          });
-                        },
-                      ),
-                      Text(
-                        FlutterI18n.translate(context, "app.guide.agree"),
-                      )
-                    ],
+                child: Opacity(
+                  opacity: agreement["load"] ? .2 : 1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                      right: 10,
+                    ),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Checkbox(
+                          materialTapTargetSize: MaterialTapTargetSize.padded,
+                          value: checked,
+                          onChanged: (bool? checkBoxChecked) {
+                            setState(() {
+                              checked = checkBoxChecked!;
+                            });
+                          },
+                        ),
+                        Text(
+                          FlutterI18n.translate(context, "app.guide.agree"),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 onTap: () {
+                  if (agreement["load"]) return;
                   setState(() {
                     checked = !checked;
                   });
+                  eventUtil.emit("disable-next", !checked);
                 },
               )
             ],

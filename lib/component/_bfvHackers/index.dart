@@ -17,7 +17,7 @@ class BfvHackersWidget extends StatefulWidget {
   State<BfvHackersWidget> createState() => _BfvHackersWidgetState();
 }
 
-class _BfvHackersWidgetState extends State<BfvHackersWidget> {
+class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepAliveClientMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
   bool hackerLoad = false;
@@ -25,6 +25,9 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> {
   Map hackersData = {
     "hack_score_current": 0,
   };
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {

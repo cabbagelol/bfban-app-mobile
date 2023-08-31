@@ -118,8 +118,14 @@ class Http extends ScaffoldState {
             requestOptions: RequestOptions(path: url, method: method),
           );
         case DioErrorType.response:
+          Map data = Map.from({'error': -2});
+          if (e.response!.data is Map) {
+            data.addAll(e.response!.data as Map);
+          } else if (e.response!.data is String) {
+            data.addAll({"content": e.response!.data});
+          }
           return Response(
-            data: Map.from({'error': -2})..addAll(e.response!.data as Map),
+            data: data,
             requestOptions: e.requestOptions,
           );
         case DioErrorType.cancel:

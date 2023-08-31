@@ -1,3 +1,4 @@
+import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/_load/index.dart';
@@ -45,6 +46,13 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
     if (result.data.toString().isNotEmpty) {
       setState(() {
         news = result.data["news"];
+        for (var element in news) {
+          String body = "";
+          element["content"].forEach((p) {
+            body += "<div>$p</div>";
+          });
+          element["body"] = body;
+        }
       });
     }
 
@@ -116,14 +124,10 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
                             ],
                           ),
                           const SizedBox(height: 5),
-                          Column(
-                            children: i["content"].map<Widget>((content) {
-                              return Html(
-                                data: content,
-                                style: {"*": Style(margin: Margins.zero)},
-                              );
-                            }).toList(),
-                          )
+                          HtmlWidget(
+                            content: i["body"],
+                            footerToolBar: false,
+                          ),
                         ],
                       ),
                     );

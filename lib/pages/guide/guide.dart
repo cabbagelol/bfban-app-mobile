@@ -41,11 +41,52 @@ class _GuidePageState extends State<GuidePage> {
     const GuideLoginPage(),
   ];
 
+  /// 是否允许上一步
+  bool disablePrev = false;
+
+  /// 是否允许下一步
+  bool disableNext = false;
+
   late final GlobalKey<AgreementPageState> _agreementPageKey = GlobalKey<AgreementPageState>();
 
   @override
   void initState() {
+    for (var eventName in ['disable-prev', 'disable-next']) {
+      eventUtil.on(eventName, (value) {
+        setState(() {
+          switch (eventName) {
+            case 'disable-prev':
+              disablePrev = value;
+              break;
+            case 'disable-next':
+              disableNext = value;
+              break;
+          }
+        });
+      });
+    }
+
     super.initState();
+  }
+
+  /// [Event]
+  /// 上一步
+  _onBacktrack() async {
+    if (guideListPageIndex <= 0) return;
+
+    if (guideListPageIndex == 2) {
+      setState(() {
+        disableNext = true;
+      });
+    }
+
+    setState(() {
+      if (guideListPageIndex == 1) {
+        disableNext = false;
+      }
+
+      guideListPageIndex -= 1;
+    });
   }
 
   /// [Event]
@@ -54,6 +95,12 @@ class _GuidePageState extends State<GuidePage> {
     // 勾选
     bool isAgreement = _agreementPageKey.currentState?.checked ?? false;
     if (!isAgreement && guideListPageIndex == 1) return;
+
+    if (guideListPageIndex == 0) {
+      setState(() {
+        disableNext = true;
+      });
+    }
 
     // 完成离开
     if (guideListPageIndex == guideListPage.length - 1) {
@@ -65,15 +112,6 @@ class _GuidePageState extends State<GuidePage> {
 
     setState(() {
       if (guideListPageIndex <= guideListPage.length - 1) guideListPageIndex += 1;
-    });
-  }
-
-  /// [Event]
-  /// 上一步
-  _onBacktrack() async {
-    if (guideListPageIndex <= 0) return;
-    setState(() {
-      guideListPageIndex -= 1;
     });
   }
 
@@ -126,13 +164,14 @@ class _GuidePageState extends State<GuidePage> {
                   opacity: guideListPageIndex == 0 ? 0 : 1,
                   duration: const Duration(milliseconds: 300),
                   child: TextButton(
-                    onPressed: _onBacktrack,
+                    onPressed: disablePrev ? null : _onBacktrack,
                     child: Text(FlutterI18n.translate(context, "basic.button.prev")),
                   ),
                 ),
                 Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
                 ElevatedButton(
-                  onPressed: _onNext,
+                  onPressed: disableNext ? null : _onNext,
+                  style: ElevatedButton.styleFrom(disabledForegroundColor: Theme.of(context).colorScheme.primary.withOpacity(.5), disabledBackgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.2)),
                   child: guideListPageIndex + 1 < guideListPage.length
                       ? Text(FlutterI18n.translate(context, "basic.button.next"))
                       : Text(
