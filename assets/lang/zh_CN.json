@@ -60,27 +60,27 @@
       "version": "验证版本服务",
       "theme": "初始化主题",
       "appInitial": "初始化程序应用",
-      "networkError": "应用未连接网络，程序依赖在线服务"
+      "networkError": "应用未连接网络,程序依赖在线服务"
     },
     "guide": {
       "endNext": "完成",
       "agreement": {
         "title": "协议",
         "content": "协议内容..",
-        "errorContent": "网络错误无法获取协议内容，请访问:"
+        "errorContent": "网络错误无法获取协议内容,请访问:"
       },
       "login": {
         "title": "欢迎您到来",
-        "label": "如果你已经拥有BFBAN账户，现在就可登录."
+        "label": "如果你已经拥有BFBAN账户,现在就可登录."
       },
       "permission": {
         "title": "权限",
-        "label": "依照您需求触摸下方单元，预先授权应用权限;此处并非强制要求,在需要特定功能下程序会提示您未授权的权限询问;一些功能不授权不影响整体APP使用",
-        "tip": "如果存在【永久拒绝】选项，可以到设置>应用>权限随时修改",
+        "label": "依照您需求触摸下方单元,预先授权应用权限;此处并非强制要求,在需要特定功能下程序会提示您未授权的权限询问;一些功能不授权不影响整体APP使用",
+        "tip": "如果存在【永久拒绝】选项,可以到设置>应用>权限随时修改",
         "list": {
           "camera": {
             "name": "摄像头",
-            "describe": "拍摄或录制多媒体，媒体内容多为证据"
+            "describe": "拍摄或录制多媒体,媒体内容多为证据"
           },
           "audio": {
             "name": "声音",
@@ -92,7 +92,7 @@
           },
           "photos": {
             "name": "相册",
-            "describe": "读取相册内容，用途证据为主"
+            "describe": "读取相册内容,用途证据为主"
           },
           "storage": {
             "name": "本地储存",
@@ -142,25 +142,25 @@
       },
       "versions": {
         "title": "版本",
-        "describe": "程序版本",
+        "describe": "更新,最新版本,当前版本",
         "currentVersion": "当前版本",
         "newVersion": "最新版本",
         "newVersionDescribe_new": "已经最新",
         "newVersionDescribe_old": "过时的版本",
         "type": "类型",
-        "superHairVersionTip": "未找到对应版本，您当前版本可能是超发版本"
+        "superHairVersionTip": "未找到对应版本,您当前版本可能是超发版本"
       },
       "language": {
         "title": "语言"
       },
       "theme": {
         "title": "主题",
-        "describe": "设置程序外观",
+        "describe": "颜色外观,定时主题切换,字体大小",
         "textScaleFactor": "字体大小"
       },
       "cleanManagement": {
         "title": "清理",
-        "describe": "清理程序持久保存文件，谨慎操作"
+        "describe": "删除本地数据,谨慎操作"
       },
       "appInfo": {
         "title": "应用程序",
@@ -215,8 +215,8 @@
     },
     "report": {
       "title": "举报玩家",
-      "overflowLength": "添加的链接超出最大长度，请删减链接或使用短链接，推荐点击下方按钮将所有链接放置描述中",
-      "overflowLengthButton": "好的，添加描述框中"
+      "overflowLength": "添加的链接超出最大长度,请删减链接或使用短链接,推荐点击下方按钮将所有链接放置描述中",
+      "overflowLengthButton": "好的,添加描述框中"
     },
     "detail": {
       "openExplorePlayerDetail": "游览器查看案件"

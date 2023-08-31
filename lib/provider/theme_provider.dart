@@ -13,7 +13,9 @@ class ThemeProvider with ChangeNotifier {
 
   Storage storage = Storage();
 
-  _TimeProviderInterval timeProviderInterval = _TimeProviderInterval(value: DateTime(DateTime.now().year, 0, 0, 12));
+  _TimeProviderInterval timeProviderInterval = _TimeProviderInterval(
+    value: DateTime(DateTime.now().year, 0, 0, 7),
+  );
 
   /// 主题
   ThemeProviderData theme = ThemeProviderData(
@@ -179,7 +181,7 @@ class ThemeProvider with ChangeNotifier {
   }
 
   // 上午下午中间分界线
-  DateTime get timeInterval => timeProviderInterval.value!;
+  DateTime get timeInterval => timeProviderInterval.value!.toLocal();
 }
 
 class ThemeProviderData {

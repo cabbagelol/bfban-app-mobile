@@ -133,14 +133,10 @@ class _ThemePageState extends State<ThemePage> {
                         flex: 1,
                         child: Wrap(
                           children: [
-                            Row(
+                            const Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.sunny),
-                                Text(
-                                  " 0:00 - ${data.timeInterval.toLocal().hour}:${data.timeInterval.toLocal().month}",
-                                  textAlign: TextAlign.center,
-                                )
+                                Icon(Icons.sunny),
                               ],
                             ),
                             DropdownButton<String>(
@@ -182,6 +178,10 @@ class _ThemePageState extends State<ThemePage> {
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Column(
                           children: [
+                            Text(
+                              "${data.timeInterval.hour}:${data.timeInterval.month}",
+                              textAlign: TextAlign.center,
+                            ),
                             IconButton(
                               enableFeedback: false,
                               icon: const Icon(Icons.compare_arrows_sharp),
@@ -197,14 +197,10 @@ class _ThemePageState extends State<ThemePage> {
                         flex: 1,
                         child: Wrap(
                           children: [
-                            Row(
+                            const Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                const Icon(Icons.dark_mode),
-                                Text(
-                                  " ${data.timeInterval.toLocal().hour}:${data.timeInterval.toLocal().month} - 24:00",
-                                  textAlign: TextAlign.center,
-                                )
+                                Icon(Icons.dark_mode),
                               ],
                             ),
                             DropdownButton<String>(
