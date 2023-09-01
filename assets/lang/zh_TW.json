@@ -71,13 +71,18 @@
       },
       "login": {
         "title": "歡迎您到來",
-        "label": "如果你已經擁有BFBAN賬戶，現在就可登錄."
+        "label": "如果你已經擁有BFBAN賬戶，現在就可登錄.",
+        "welcomeBack": "歡迎回到我們的'戰場'上"
       },
       "permission": {
         "title": "權限",
         "label": "依照您需求觸摸下方單元，預先授權應用權限;此處並非強制要求,在需要特定功能下程序會提示您未授權的權限詢問;一些功能不授權不影響整體APP使用",
         "tip": "如果存在【永久拒絕】選項，可以到設置>應用>權限隨時修改",
         "list": {
+          "manageExternalStorage": {
+            "name": "外部儲存",
+            "describe": "此功能用於從外部儲存讀取和寫入媒體素材"
+          },
           "camera": {
             "name": "攝像頭",
             "describe": "拍攝或錄製多媒體，媒體內容多為證據"
@@ -88,11 +93,11 @@
           },
           "videos": {
             "name": "影片",
-            "describe": "讀取設備外部影片"
+            "describe": "讀取視頻內容,用途素材導入或導出、上傳"
           },
           "photos": {
             "name": "相冊",
-            "describe": "讀取相冊內容，用途證據為主"
+            "describe": "讀取相冊內容,用途素材導入或導出、上傳"
           },
           "storage": {
             "name": "本地儲存",
@@ -119,13 +124,17 @@
     "setting": {
       "title": "設置中心",
       "cell": {
-        "account": {
+        "information": {
           "title": "賬戶",
-          "describe": "管理BFBAN的賬戶信息"
+          "describe": "修改用戶名稱,修改密碼,賬戶設置"
+        },
+        "customReply": {
+          "title": "自定義模板",
+          "describe": "回覆模板"
         },
         "media": {
           "title": "媒體庫",
-          "describe": "在BFBAN保存以及創建文件"
+          "describe": "圖片,視頻,上傳文件,管理"
         },
         "website": {
           "title": "網站地址",
@@ -133,12 +142,12 @@
         },
         "resources": {
           "title": "支援",
-          "describe": "程序數據由不用服務商提供"
+          "describe": "引導、程序Github、許可證、應用文檔"
         }
       },
       "versions": {
         "title": "版本",
-        "describe": "程序版本",
+        "describe": "更新,最新版本,當前版本",
         "currentVersion": "當前版本",
         "newVersion": "最新版本",
         "newVersionDescribe_new": "已經最新",
@@ -151,7 +160,8 @@
       },
       "theme": {
         "title": "主題",
-        "describe": "設置程序外觀"
+        "describe": "顏色外觀,定時主題切換,字體大小",
+        "textScaleFactor": "字體大小"
       },
       "cleanManagement": {
         "title": "清理",
@@ -208,6 +218,14 @@
         "reportCount": "檢舉總數"
       }
     },
+    "report": {
+      "title": "舉報玩家",
+      "overflowLength": "添加的鏈接超出最大長度,請刪減鏈接或使用短鏈接,推薦點擊下方按鈕將所有鏈接放置描述中",
+      "overflowLengthButton": "好的,添加描述框中"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "遊覽器查看案件"
+    },
     "signin": {
       "title": "登錄",
       "panel": {
@@ -217,7 +235,7 @@
         "cancelButton": "取消",
         "signupButton": "註冊BFBAN賬戶"
       },
-      "accountId": "賬戶ID/邮箱",
+      "accountId": "賬戶ID/郵箱",
       "password": "密碼",
       "verificationCode": "驗證碼"
     },

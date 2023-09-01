@@ -60,27 +60,32 @@
       "version": "Verificar servicio de versión",
       "theme": "Inicializar el tema",
       "appInitial": "aplicación de inicialización",
-      "networkError": "La aplicación no está conectada a la red y el programa depende de los servicios en línea."
+      "networkError": "La aplicación no está conectada a la red, el programa depende de los servicios en línea"
     },
     "guide": {
       "endNext": "Finalizar",
       "agreement": {
         "title": "protocolo",
         "content": "Acuerdo..",
-        "errorContent": "Error de red No se puede obtener el contenido del protocolo, visite:"
+        "errorContent": "Error de red no se puede obtener el contenido del protocolo, por favor visite:"
       },
       "login": {
         "title": "bienvenido",
-        "label": "Si ya tiene una cuenta BFBAN, puede iniciar sesión ahora."
+        "label": "Si ya tiene una cuenta BFBAN, inicie sesión ahora.",
+        "welcomeBack": "Bienvenido a nuestro 'campo de batalla'"
       },
       "permission": {
         "title": "permisos",
-        "label": "Toque la unidad a continuación para preautorizar los permisos de la aplicación de acuerdo con sus necesidades; este no es un requisito obligatorio y el programa le pedirá permisos no autorizados cuando se requieran funciones específicas; algunas funciones no autorizan y no afectan el uso general de la APLICACIÓN",
+        "label": "Preautorizar la aplicación tocando la unidad inferior según sus necesidades; Aquí no es obligatorio, en la necesidad de una función específica, el programa le pedirá permiso no autorizado para preguntar; Algunas funciones no autorizadas no afectan el uso general de la aplicación",
         "tip": "Si hay una opción 【Denegación permanente】, puede ir a Configuración > Aplicación > Permisos para modificarla en cualquier momento.",
         "list": {
+          "manageExternalStorage": {
+            "name": "Almacenamiento externo",
+            "describe": "Esta función se utiliza para leer y escribir material multimedia desde el almacenamiento externo"
+          },
           "camera": {
             "name": "Cámara",
-            "describe": "Dispara o graba multimedia, la mayoría de los cuales son evidencia"
+            "describe": "Filmación o grabación de multimedia, el contenido de los medios es principalmente evidencia"
           },
           "audio": {
             "name": "sonido",
@@ -88,11 +93,11 @@
           },
           "videos": {
             "name": "video",
-            "describe": "Leer video externo del dispositivo"
+            "describe": "Leer contenido de vídeo, uso importación o exportación de material, carga"
           },
           "photos": {
             "name": "album de fotos",
-            "describe": "Lea el contenido del álbum de fotos, principalmente use evidencia"
+            "describe": "Leer el contenido del álbum, uso importación o exportación de material, carga"
           },
           "storage": {
             "name": "almacenamiento local",
@@ -119,13 +124,17 @@
     "setting": {
       "title": "establecer el centro",
       "cell": {
-        "account": {
-          "title": "cuenta",
-          "describe": "Administrar la información de la cuenta BFBAN"
+        "information": {
+          "title": "Las cuentas",
+          "describe": "Cambiar nombre de usuario, cambiar contraseña, configuración de cuenta"
+        },
+        "customReply": {
+          "title": "Personaliza tu plantilla",
+          "describe": "Responder a plantillas"
         },
         "media": {
           "title": "Mediateca",
-          "describe": "Guardar y crear archivos en BFBAN"
+          "describe": "Imágenes, videos, subir archivos, administrar"
         },
         "website": {
           "title": "dirección web",
@@ -133,29 +142,30 @@
         },
         "resources": {
           "title": "apoyo",
-          "describe": "Los datos del programa son proporcionados por diferentes proveedores de servicios."
+          "describe": "Bootstrap, programa Github, licencias, documentación de la aplicación"
         }
       },
       "versions": {
         "title": "Versión",
-        "describe": "Versión del programa",
+        "describe": "Actualización, última versión, versión actual",
         "currentVersion": "versión actual",
         "newVersion": "La última versión",
         "newVersionDescribe_new": "Ya está actualizado",
         "newVersionDescribe_old": "versión obsoleta",
         "type": "tipo",
-        "superHairVersionTip": "No se encontró la versión correspondiente, su versión actual puede ser una versión sobreeditada"
+        "superHairVersionTip": "No se ha encontrado ninguna correspondencia. Su versión actual puede ser ultra hair"
       },
       "language": {
         "title": "idioma"
       },
       "theme": {
         "title": "tema",
-        "describe": "establecer la apariencia del programa"
+        "describe": "Apariencia de color, cambio de tema de tiempo, tamaño de fuente",
+        "textScaleFactor": "Tamaño de letra"
       },
       "cleanManagement": {
         "title": "limpiar",
-        "describe": "Cleaner guarda archivos de forma persistente, proceda con precaución"
+        "describe": "Eliminar datos locales y actuar con precaución"
       },
       "appInfo": {
         "title": "solicitud",
@@ -208,6 +218,14 @@
         "reportCount": "número total de informes"
       }
     },
+    "report": {
+      "title": "Reportar un jugador",
+      "overflowLength": "Los enlaces añadidos están fuera de la longitud máxima. Por favor, corte los enlaces o utilice enlaces cortos. Se recomienda hacer clic en el botón de abajo para colocar todos los enlaces en la descripción",
+      "overflowLengthButton": "Ok, añadir descripción en el cuadro"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "Tour ver caso"
+    },
     "signin": {
       "title": "Acceso",
       "panel": {
@@ -217,8 +235,8 @@
         "cancelButton": "Cancelar",
         "signupButton": "Registrar cuenta BFBAN"
       },
-      "accountId": "ID de cuenta / bandeja de entrada",
-      "password": "criptográfico",
+      "accountId": "ID de cuenta/correo electrónico",
+      "password": "contraseña",
       "verificationCode": "código de verificación"
     },
     "search": {
