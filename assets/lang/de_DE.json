@@ -71,13 +71,18 @@
       },
       "login": {
         "title": "Willkommen",
-        "label": "Wenn Sie bereits ein BFBAN-Konto haben, können Sie sich jetzt anmelden."
+        "label": "Wenn Sie bereits ein BFBAN-Konto haben, können Sie sich jetzt anmelden.",
+        "welcomeBack": "Willkommen zurück auf unserem krieg"
       },
       "permission": {
         "title": "Berechtigungen",
         "label": "Berühren Sie die Einheit unten, um Anwendungsberechtigungen gemäß Ihren Anforderungen vorzuautorisieren; dies ist keine zwingende Anforderung, und das Programm fordert Sie zur Eingabe nicht autorisierter Berechtigungen auf, wenn bestimmte Funktionen erforderlich sind; einige Funktionen autorisieren nicht und wirken sich nicht auf die gesamte APP-Nutzung aus",
         "tip": "Wenn es eine Option 【Permanent Deny】gibt, können Sie zu Einstellungen > Anwendung > Berechtigungen gehen, um sie jederzeit zu ändern",
         "list": {
+          "manageExternalStorage": {
+            "name": "Externe lagerung",
+            "describe": "Diese funktion dient zum lesen und schreiben Von medienmaterialien aus der externen speicherung"
+          },
           "camera": {
             "name": "Kamera",
             "describe": "Schießen oder nehmen Sie Multimedia auf, von denen die meisten Beweise sind"
@@ -88,11 +93,11 @@
           },
           "videos": {
             "name": "Video",
-            "describe": "Lesen Sie das externe Video des Geräts"
+            "describe": "Video-inhalte lesen, material importieren Oder exportieren und hochladen"
           },
           "photos": {
             "name": "Fotoalbum",
-            "describe": "Lesen Sie den Inhalt des Fotoalbums, verwenden Sie hauptsächlich Beweise"
+            "describe": "Dateien werden aufgerufen, um material zu importieren Oder zu exportieren und zu laden"
           },
           "storage": {
             "name": "lokaler Speicher",
@@ -119,13 +124,17 @@
     "setting": {
       "title": "Zentrum setzen",
       "cell": {
-        "account": {
+        "information": {
           "title": "Konto",
-          "describe": "Verwalten Sie BFBAN-Kontoinformationen"
+          "describe": "Benutzername, passwort und zugangseinstellungen ändern"
+        },
+        "customReply": {
+          "title": "Definierte vorlage",
+          "describe": "Schaltest die vorlage durch"
         },
         "media": {
           "title": "Medienbibliothek",
-          "describe": "Speichern und erstellen Sie Dateien in BFBAN"
+          "describe": "Fotos, videos, hochladen Von dateien, verwaltung"
         },
         "website": {
           "title": "Webseitenadressse",
@@ -133,12 +142,12 @@
         },
         "resources": {
           "title": "Unterstützung",
-          "describe": "Programmdaten werden von verschiedenen Dienstanbietern bereitgestellt"
+          "describe": "Programme, programme, lizenzen, dokumente - hier ist das passwort"
         }
       },
       "versions": {
         "title": "Ausführung",
-        "describe": "Programmversion",
+        "describe": "Aktualisierung, aktuelle ausgabe",
         "currentVersion": "aktuelle Version",
         "newVersion": "Die neueste version",
         "newVersionDescribe_new": "Bereits aktuell",
@@ -151,7 +160,8 @@
       },
       "theme": {
         "title": "Thema",
-        "describe": "das Erscheinungsbild des Programms festlegen"
+        "describe": "Aussehen der farben, gescheites thema, schriftgröße",
+        "textScaleFactor": "Die schriftgröße"
       },
       "cleanManagement": {
         "title": "Aufräumen",
@@ -208,6 +218,14 @@
         "reportCount": "Gesamtzahl der Berichte"
       }
     },
+    "report": {
+      "title": "Die spieler anzeigen.",
+      "overflowLength": "Die hinzugefügte verknüpfung ist eine maximale länge wert. Löschen sie den link Oder verwenden sie kurze links und empfehlen sie, nach unten zu klicken, um alle links in die beschreibung einzubauen",
+      "overflowLengthButton": "Ok, fügen sie das imaginarium hinzu"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "Der tourist schaute den fall"
+    },
     "signin": {
       "title": "Anmeldung",
       "panel": {
@@ -217,7 +235,7 @@
         "cancelButton": "Stornieren",
         "signupButton": "BFBAN-Konto registrieren"
       },
-      "accountId": "Konto-ID / E-Mail",
+      "accountId": "Include/e-mail, ein postfach",
       "password": "Passwort",
       "verificationCode": "Bestätigungs-Code"
     },
