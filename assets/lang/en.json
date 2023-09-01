@@ -48,7 +48,6 @@
         "report": "Report",
         "banAppeal": "Ban Appeal",
         "signup": "New Users",
-        "verify": "Verify",
         "judgement": "Judgement"
       },
       "paging": "{num} Page"
@@ -68,20 +67,25 @@
       "agreement": {
         "title": "Usage protocol",
         "content": "The terms of the agreement ..",
-        "errorContent": "Network Error Unable to get protocol content, please visit:"
+        "errorContent": "Unable to get protocol content due to network error, please visit:"
       },
       "login": {
         "title": "Welcome.",
-        "label": "if you already have a BFBAN account, you can log in now."
+        "label": "If you already have a BFBAN account, log in now.",
+        "welcomeBack": "Welcome back to our battlefields"
       },
       "permission": {
         "title": "Authority",
-        "label": "Please touch the cell below to grant permission to the application. Not mandatory",
-        "tip": "If there is the option of [Permanently Reject], you can modify the permission in Settings Application",
+        "label": "Touch the lower unit according to your needs to pre-authorize the application permissions; Here is not mandatory, to specific functions under the program will prompt you to unauthorized access to ask; Some functions are not authorized and will not affect the overall APP use",
+        "tip": "If the \"permanent reject\" option exists, you can go to Settings &gt; Application &gt; Permissions can be changed at any time",
         "list": {
+          "manageExternalStorage": {
+            "name": "External storage",
+            "describe": "This feature is used to read and write media assets from external storage"
+          },
           "camera": {
             "name": "Camera",
-            "describe": "It is mainly used for shooting or recording multimedia, and the media content is mainly evidence."
+            "describe": "Shooting or recording multimedia, media content for evidence"
           },
           "audio": {
             "name": "Audio",
@@ -89,11 +93,11 @@
           },
           "videos": {
             "name": "Video",
-            "describe": "Read external video from the device"
+            "describe": "Read video content, use material import or export, upload"
           },
           "photos": {
             "name": "photo album",
-            "describe": "Read the contents of the album, with the purpose evidence as the main evidence"
+            "describe": "Read the content of the album, use material import or export, upload"
           },
           "storage": {
             "name": "local storage",
@@ -106,8 +110,8 @@
         },
         "status": {
           "-1": "unknown",
-          "0": "Authorization succeeded",
-          "1": "Unauthorized",
+          "0": "To allow",
+          "1": "reject",
           "2": "Permanent Rejection",
           "3": "restricted"
         }
@@ -120,13 +124,17 @@
     "setting": {
       "title": "Application Settings",
       "cell": {
-        "account": {
-          "title": "Accounts",
-          "describe": "Manage BFBAN account information"
+        "information": {
+          "title": "Account",
+          "describe": "Change user name, change password, account Settings"
+        },
+        "customReply": {
+          "title": "Custom templates",
+          "describe": "Reply template"
         },
         "media": {
           "title": "Media",
-          "describe": "Save and create files in BFBAN"
+          "describe": "Pictures, video, upload files, and management"
         },
         "website": {
           "title": "Website address",
@@ -134,32 +142,33 @@
         },
         "resources": {
           "title": "Support",
-          "describe": "the program data is provide by a different service provider"
+          "describe": "Bootstrapping, application Github, licenses, application documentation"
         }
       },
       "versions": {
         "title": "Revision",
-        "describe": "Program Version",
+        "describe": "Update, latest version, current version",
         "currentVersion": "Current Version",
         "newVersion": "Latest version",
         "newVersionDescribe_new": "Already up-to-date",
         "newVersionDescribe_old": "obsolete version",
         "type": "Type",
-        "superHairVersionTip": "No corresponding version found. Your current version may be the over-issued version"
+        "superHairVersionTip": "Version not found, your current version may be an over-issued version"
       },
       "language": {
-        "title": "Language"
+        "title": "language"
       },
       "theme": {
         "title": "Themes",
-        "describe": "Set the appearance of the program"
+        "describe": "Color appearance, timed theme switching, font size",
+        "textScaleFactor": "The font size"
       },
       "cleanManagement": {
-        "title": "Clean up",
-        "describe": "Clean up the program to save files persistently, and operate with caution"
+        "title": "clean up",
+        "describe": "Delete local data, and proceed with caution"
       },
       "appInfo": {
-        "title": "Application program",
+        "title": "application program",
         "describe": "Open Program App Info"
       },
       "notice": {
@@ -184,10 +193,10 @@
         "githubDescription": "Access open source repository",
         "donateTitle": "donate",
         "donateDescription": "Donate to the developers of the BFBAN APP",
-        "licenseTitle": "Licenses",
-        "licenseDescription": "list program licenses",
-        "appDocumentationTitle": "Application Documentation",
-        "appDocumentationDescription": "Help file address"
+        "licenseTitle": "License",
+        "licenseDescription": "Listing program licenses",
+        "appDocumentationTitle": "Application documentation",
+        "appDocumentationDescription": "Help document address"
       }
     },
     "networkDetection": {
@@ -196,7 +205,7 @@
         "0": "Under inspection",
         "1": "Normal service",
         "2": "Service exception",
-        "3": "service not"
+        "3": "Service unknown"
       }
     },
     "userspace": {
@@ -209,6 +218,14 @@
         "reportCount": "Total number of reports"
       }
     },
+    "report": {
+      "title": "Report players",
+      "overflowLength": "The link added exceeds the maximum length, please delete the link or use the short link. It is recommended to click the button below to place all links in the description",
+      "overflowLengthButton": "Ok, add a description box"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "Viewer to view the case"
+    },
     "signin": {
       "title": "Login",
       "panel": {
@@ -218,8 +235,8 @@
         "cancelButton": "cancel",
         "signupButton": "Register a BFBAN account"
       },
-      "accountId": "Account ID / Email",
-      "password": "Account password",
+      "accountId": "Account ID or Email",
+      "password": "cipher",
       "verificationCode": "Captcha"
     },
     "search": {
