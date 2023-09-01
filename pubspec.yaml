@@ -77,7 +77,7 @@ dependencies:
   # quill_html_editor: ^2.1.8
 
   # 富文本扩展
-  flutter_rte: any
+  flutter_rte: ^1.0.0
 
   # uuid https://github.com/Daegalus/dart-uuid
   uuid: ^3.0.4

@@ -114,7 +114,6 @@ class RichEditCoreState extends State<RichEditCore> {
         Expanded(
           flex: 1,
           child: Container(
-            color: Colors.redAccent,
             child: HtmlEditor(
               expandFullHeight: widget.expandFullHeight!,
               controller: controller,
