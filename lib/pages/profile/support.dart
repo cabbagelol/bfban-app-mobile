@@ -1,5 +1,6 @@
 /// 支持
 
+import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
@@ -74,7 +75,7 @@ class _SupportPageState extends State<SupportPage> {
               backgroundColor: Theme.of(context).cardTheme.color,
             ),
             islink: true,
-            onTap: () => _urlUtil.onPeUrl("https://github.com/BFBAN/bfban-app", mode: LaunchMode.externalApplication),
+            onTap: () => _urlUtil.onPeUrl("${Config.apis["web_github"]!.url}/cabbagelol/bfban-app-mobile", mode: LaunchMode.externalApplication),
           ),
 
           EluiCellComponent(

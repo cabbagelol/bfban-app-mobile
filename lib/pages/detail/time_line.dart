@@ -117,6 +117,14 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     });
   }
 
+  @override
+  void dispose() {
+    setState(() {
+      playerTimelineStatus.load = false;
+    });
+    super.dispose();
+  }
+
   /// [Event]
   /// 合并时间轴历史名称
   void _onMergeHistoryName() {
