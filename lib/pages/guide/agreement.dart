@@ -78,8 +78,19 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
   }
 
   /// [Event]
-  openAgreement() {
+  /// 打开协议
+  _openAgreement() {
     UrlUtil().onPeUrl("${Config.apiHost["app_web_site"]!.url}/agreement/$language.html");
+  }
+
+  /// [Event]
+  /// 许可开关
+  _onPermitSwitch() {
+    if (agreement["load"]) return;
+    setState(() {
+      checked = !checked;
+    });
+    eventUtil.emit("disable-next", !checked);
   }
 
   @override
@@ -142,13 +153,10 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                     Card(
                       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: agreement["load"]
-                          ? SizedBox(
+                          ? const SizedBox(
                               height: 100,
-                              child: ELuiLoadComponent(
-                                type: "line",
-                                color: Theme.of(context).appBarTheme.backgroundColor!,
-                                size: 17,
-                                lineWidth: 2,
+                              child: Center(
+                                child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator(strokeWidth: 2)),
                               ),
                             )
                           : HtmlWidget(
@@ -172,11 +180,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                         Checkbox(
                           materialTapTargetSize: MaterialTapTargetSize.padded,
                           value: checked,
-                          onChanged: (bool? checkBoxChecked) {
-                            setState(() {
-                              checked = checkBoxChecked!;
-                            });
-                          },
+                          onChanged: (bool? checkBoxChecked) => _onPermitSwitch(),
                         ),
                         Text(
                           FlutterI18n.translate(context, "app.guide.agree"),
@@ -185,13 +189,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                     ),
                   ),
                 ),
-                onTap: () {
-                  if (agreement["load"]) return;
-                  setState(() {
-                    checked = !checked;
-                  });
-                  eventUtil.emit("disable-next", !checked);
-                },
+                onTap: () => _onPermitSwitch(),
               )
             ],
           );

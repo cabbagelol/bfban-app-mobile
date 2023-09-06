@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bfban/component/_html/html.dart';
+import 'package:bfban/component/_html/htmlTextTranslator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -150,6 +151,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                 ),
               ),
             ][int.parse(dropdownRenderingSelectedValue)],
+            HtmlTextTranslator(content: widget.content!),
             if (widget.footerToolBar!) const Divider(height: 1),
             if (widget.footerToolBar!)
               SizedBox(

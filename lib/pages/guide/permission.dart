@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui show PlaceholderAlignment;
 
 import 'package:flutter_elui_plugin/_cell/cell.dart';
-import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -88,27 +88,26 @@ class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeep
             right: 20,
             top: 20,
           ),
-          child: Text.rich(
-            TextSpan(
-              children: [
-                const WidgetSpan(
-                  child: Icon(
-                    Icons.warning,
-                    size: 16,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.warning,
+                size: 16,
+                color: Colors.yellow,
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                flex: 1,
+                child: Text(
+                  FlutterI18n.translate(context, "app.guide.permission.tip"),
+                  style: const TextStyle(
+                    fontSize: 12,
                     color: Colors.yellow,
                   ),
                 ),
-                WidgetSpan(
-                  child: Text(
-                    FlutterI18n.translate(context, "app.guide.permission.tip"),
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Colors.yellow,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ],

@@ -20,6 +20,11 @@ class ProviderUtil {
     return Provider.of<TranslationProvider>(context, listen: false);
   }
 
+  // 内容翻译
+  PublicApiTranslationProvider ofPublicApiTranslation(BuildContext context) {
+    return Provider.of<PublicApiTranslationProvider>(context, listen: false);
+  }
+
   // 用户信息
   UserInfoProvider ofUser(BuildContext context) {
     return Provider.of<UserInfoProvider>(context, listen: false)..context = context;

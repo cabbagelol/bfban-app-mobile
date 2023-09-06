@@ -103,7 +103,6 @@ class _ThemePageState extends State<ThemePage> {
           ),
           body: Column(
             children: [
-              // Text(fromData.toString()),
               // 自动
               EluiCellComponent(
                 title: FlutterI18n.translate(context, "app.basic.function.auto.title"),

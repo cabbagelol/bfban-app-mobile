@@ -21,6 +21,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   final Storage storage = Storage();
 
+  // 状态机
+  ProviderUtil providerUtil = ProviderUtil();
+
   // 载入提示
   late String? loadTip = "";
 
@@ -78,7 +81,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 国际化
   Future _initLang() async {
-    await ProviderUtil().ofLang(context).init();
+    await providerUtil.ofLang(context).init();
+    await providerUtil.ofPublicApiTranslation(context).init();
 
     return true;
   }
@@ -86,7 +90,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 通知初始
   Future _initNotice() async {
-    await ProviderUtil().ofChat(context).init();
+    await providerUtil.ofChat(context).init();
 
     return true;
   }
@@ -102,14 +106,14 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       setState(() {
         loadTip = "app.splash.account";
       });
-      ProviderUtil().ofUser(context).setData(user);
+      providerUtil.ofUser(context).setData(user);
       // sleep(Duration(seconds: 1));
 
       // 消息 更新状态机
       setState(() {
         loadTip = "app.splash.message";
       });
-      await ProviderUtil().ofChat(context).onUpDate();
+      await providerUtil.ofChat(context).onUpDate();
       // sleep(Duration(seconds: 1));
     }
 
@@ -117,19 +121,19 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     setState(() {
       loadTip = "app.splash.version";
     });
-    await ProviderUtil().ofPackage(context).init();
+    await providerUtil.ofPackage(context).init();
 
     // 主题初始
     setState(() {
       loadTip = "app.splash.theme";
     });
-    await ProviderUtil().ofTheme(context).init();
+    await providerUtil.ofTheme(context).init();
 
     // 配置初始
     setState(() {
       loadTip = "app.splash.appInitial";
     });
-    AppInfoProvider app = ProviderUtil().ofApp(context);
+    AppInfoProvider app = providerUtil.ofApp(context);
     await app.conf.init();
     await app.connectivity.init(context);
     await app.uniLinks.init(context);
@@ -145,9 +149,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     });
 
     // 初始用户数据
-    await ProviderUtil().ofUser(context).init();
+    await providerUtil.ofUser(context).init();
 
-    String token = ProviderUtil().ofUser(context).getToken;
+    String token = providerUtil.ofUser(context).getToken;
 
     Http.setToken(token);
 

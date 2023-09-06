@@ -155,7 +155,8 @@ class _GuidePageState extends State<GuidePage> {
             },
             child: guideListPage[guideListPageIndex],
           ),
-          bottomSheet: Padding(
+          bottomNavigationBar: Container(
+            color: Theme.of(context).bottomSheetTheme.backgroundColor,
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
