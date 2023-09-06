@@ -197,6 +197,12 @@
         "licenseDescription": "Listing program licenses",
         "appDocumentationTitle": "Application documentation",
         "appDocumentationDescription": "Help document address"
+      },
+      "publicTranslator": {
+        "title": "Translation module",
+        "describe": "Translation key configuration, switch",
+        "switch": "Switch",
+        "switchDescription": "Translation module start switch"
       }
     },
     "networkDetection": {
