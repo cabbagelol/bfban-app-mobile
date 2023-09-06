@@ -74,6 +74,7 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => PackageProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => TranslationProvider()),
+        ChangeNotifierProvider(create: (context) => PublicApiTranslationProvider()),
         ChangeNotifierProvider(create: (context) => CaptchaProvider()),
       ],
       child: Consumer<ThemeProvider>(

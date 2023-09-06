@@ -8,6 +8,7 @@ import 'package:bfban/pages/profile/account/setuser_name.dart';
 import 'package:bfban/pages/profile/setting/destock.dart';
 import 'package:bfban/pages/profile/setting/language.dart';
 import 'package:bfban/pages/profile/setting/notice.dart';
+import 'package:bfban/pages/profile/setting/public_translator.dart';
 import 'package:bfban/pages/profile/setting/setting.dart';
 import 'package:fluro/fluro.dart';
 
@@ -270,6 +271,12 @@ class Routes {
         "url": "/profile/notice",
         "item": (context, params) {
           return const NoticePage();
+        }
+      },
+      {
+        "url": "/profile/translator",
+        "item": (context, params) {
+          return PublicTranslatorPage();
         }
       },
       {

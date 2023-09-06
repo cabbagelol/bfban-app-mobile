@@ -31,6 +31,12 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   /// [Event]
+  /// 打开翻译器配置
+  _opEnPublicTranslator() {
+    _urlUtil.opEnPage(context, "/profile/translator");
+  }
+
+  /// [Event]
   /// 前往版本
   void _opEnVersionDowUrl() {
     _urlUtil.opEnPage(context, "/profile/version");
@@ -119,6 +125,18 @@ class _SettingPageState extends State<SettingPage> {
             ),
             islink: true,
             onTap: () => _opEnTheme(),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, "app.setting.publicTranslator.title"),
+            label: FlutterI18n.translate(context, "app.setting.publicTranslator.describe"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _opEnPublicTranslator(),
           ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.cleanManagement.title"),

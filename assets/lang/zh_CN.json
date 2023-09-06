@@ -197,6 +197,12 @@
         "licenseDescription": "列出程序许可证",
         "appDocumentationTitle": "应用文档",
         "appDocumentationDescription": "帮助文档地址"
+      },
+      "publicTranslator": {
+        "title": "翻译模块",
+        "describe": "翻译密匙配置,开关",
+        "switch": "开关",
+        "switchDescription": "翻译模块启动开关"
       }
     },
     "networkDetection": {

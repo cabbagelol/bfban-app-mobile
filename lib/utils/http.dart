@@ -15,6 +15,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 import 'package:bfban/constants/api.dart';
 
 enum HttpDioType {
+  none,
   api,
   upload,
 }
@@ -88,9 +89,13 @@ class Http extends ScaffoldState {
       case HttpDioType.upload:
         domain = Config.apiUpload.url;
         break;
+      case HttpDioType.none:
+      default:
+        domain = "";
+        break;
     }
 
-    String path = "$domain/$url";
+    String path = "${domain.isEmpty ? "" : "$domain/"}$url";
 
     try {
       Response response = await dio.request(

@@ -119,9 +119,6 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
   @override
   void dispose() {
-    setState(() {
-      playerTimelineStatus.load = false;
-    });
     super.dispose();
   }
 
