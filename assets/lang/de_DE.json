@@ -197,6 +197,12 @@
         "licenseDescription": "Programmlizenzen auflisten",
         "appDocumentationTitle": "Bewerbungsunterlagen",
         "appDocumentationDescription": "Adresse des Hilfedokuments"
+      },
+      "publicTranslator": {
+        "title": "War das in dem übersetzungsteam",
+        "describe": "Um die mix-einstellungen zu ändern, fahren wir an",
+        "switch": "Switch",
+        "switchDescription": "Ein übersetzer schaltet den schalter ein"
       }
     },
     "networkDetection": {
