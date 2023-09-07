@@ -37,9 +37,9 @@ class titleSearchColor {
 class TitleSearchWidget extends StatefulWidget {
   final titleSearchTheme theme;
 
-  final Function? onSubmitted;
+  final Function(String data)? onSubmitted;
 
-  final Function? onChanged;
+  final Function(String data)? onChanged;
 
   final Widget? child;
 
@@ -143,8 +143,14 @@ class TitleSearchState extends State<TitleSearchWidget> {
                                 color: titleSearchColor(widget.theme).textColor,
                               ),
                               // backgroundCursorColor: Colors.white,
-                              onSubmitted: (data) => widget.onSubmitted!(data),
-                              onChanged: (data) => widget.onChanged!(data),
+                              onSubmitted: (data) {
+                                if (widget.onSubmitted != null) {
+                                  widget.onSubmitted!(data);
+                                }
+                              },
+                              onChanged: (data) {
+                                if (widget.onChanged != null) widget.onChanged!(data);
+                              },
                             )
                           : I18nText(
                               "search.placeholder",

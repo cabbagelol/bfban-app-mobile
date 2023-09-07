@@ -324,7 +324,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 searchStatus.params.param = value;
               });
             },
-            onSubmitted: () => _onSearch(isButtonClick: true),
+            onSubmitted: (dynamic data) => _onSearch(isButtonClick: true),
           ),
           actions: [
             TextButton(

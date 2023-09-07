@@ -20,6 +20,10 @@ class BfvHackersWidget extends StatefulWidget {
 class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepAliveClientMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
+  Storage storage = Storage();
+
+  String NAME = "bfvHackersCache";
+
   bool hackerLoad = false;
 
   Map hackersData = {
@@ -31,13 +35,33 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
 
   @override
   void initState() {
-    _getBfvHackers();
+    ready();
     super.initState();
+  }
+
+  ready() async {
+    StorageData cacheMapItem = await storage.get(NAME);
+
+    // 没有缓冲从接口调用
+    if (cacheMapItem.code != 0 || cacheMapItem.value[widget.data!["originPersonaId"]] == null) {
+      return _getBfvHackers();
+    }
+
+    // 从缓存读取
+    setState(() {
+      hackersData = cacheMapItem.value[widget.data!["originPersonaId"]];
+    });
+
+    // 超过限制缓存时间
+    if (DateTime(cacheMapItem.value[widget.data!["originPersonaId"]]['creationCacheTime']).add(const Duration(days: 3)).millisecondsSinceEpoch >= DateTime.now().millisecondsSinceEpoch) {
+      _getBfvHackers();
+    }
   }
 
   /// [Response]
   /// 获取bfvHackers状态
   Future _getBfvHackers() async {
+    Map cacheMap = {};
     setState(() {
       hackerLoad = true;
     });
@@ -52,8 +76,16 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
     if (mounted) {
       setState(() {
         hackerLoad = false;
-        if (result.data != null) hackersData = result.data;
+        if (result.data != null) {
+          hackersData = result.data;
+        }
       });
+    }
+
+    if (widget.data!.isNotEmpty && widget.data!["originPersonaId"] != null) {
+      hackersData['creationCacheTime'] = DateTime.now().millisecondsSinceEpoch;
+      cacheMap[widget.data!["originPersonaId"]] = hackersData;
+      storage.set(NAME, value: cacheMap);
     }
   }
 

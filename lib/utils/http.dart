@@ -149,7 +149,7 @@ class Http extends ScaffoldState {
             requestOptions: RequestOptions(path: url, method: method),
           );
         case DioErrorType.other:
-        // TODO: Handle this case.
+          // TODO: Handle this case.
           break;
       }
     }

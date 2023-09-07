@@ -1,7 +1,5 @@
 /// 程序入口
 
-import 'dart:async';
-
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
@@ -40,20 +38,13 @@ void runMain() async {
   // SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  runZonedGuarded(
-    () async {
-      await Sentry.init((options) {
-        options.dsn = Config.apiHost["sentry"]!.url;
-      });
-
-      FlutterNativeSplash.remove();
-    },
-    (exception, stackTrace) async {
-      await Sentry.captureException(exception, stackTrace: stackTrace);
-    },
-  );
+  Sentry.init((options) {
+    options.dsn = Config.apiHost["sentry"]!.url;
+  });
 
   runApp(const BfBanApp());
+
+  FlutterNativeSplash.remove();
 }
 
 class BfBanApp extends StatefulWidget {
