@@ -112,9 +112,20 @@ class DarkTheme extends AppBaseThemeItem {
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.white,
       ),
+      tooltipTheme: TooltipThemeData(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: const BorderRadius.all(Radius.circular(3.0)),
+          border: Border.all(
+            width: 1,
+            color: Colors.white24,
+          ),
+        ),
+        textStyle: const TextStyle(color: Colors.white),
+      ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Colors.black,
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.black,
         textStyle: TextStyle(
           color: Colors.white,
         ),

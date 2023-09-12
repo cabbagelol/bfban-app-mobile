@@ -226,6 +226,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     );
 
     if (result.data["success"] == 1) {
+      if (!mounted) return;
       setState(() {
         searchTrends = result.data["data"];
       });

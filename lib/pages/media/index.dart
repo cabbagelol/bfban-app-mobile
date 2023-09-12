@@ -15,7 +15,7 @@ import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/index.dart';
-import '../../widgets/detail/home_hint_login.dart';
+import '../../widgets/hint_login.dart';
 import '../../widgets/photo.dart';
 
 class MediaPage extends StatefulWidget {
@@ -40,6 +40,8 @@ class _mediaPageState extends State<MediaPage> {
   final GlobalKey<RefreshIndicatorState> _refreshNetworkIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   final ScrollController _scrollNetworkController = ScrollController();
+
+  ProviderUtil providerUtil = ProviderUtil();
 
   MediaStatus mediaStatus = MediaStatus(
     load: false,
@@ -82,6 +84,8 @@ class _mediaPageState extends State<MediaPage> {
   /// [Result]
   /// 查询媒体库状态
   Future _getNetworkMediaInfo() async {
+    if (!providerUtil.ofUser(context).isLogin) return;
+
     setState(() {
       cloudMediaInfoStatus.load = true;
     });
@@ -707,7 +711,7 @@ class _mediaPageState extends State<MediaPage> {
                                 ),
                               ],
                             )
-                          : const Center(child: HomeHintLogin()),
+                          : const Center(child: HintLoginWidget()),
                     ),
                   ],
                 ),

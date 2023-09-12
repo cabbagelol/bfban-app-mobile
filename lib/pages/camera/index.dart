@@ -108,7 +108,7 @@ class _CameraPageState extends State<CameraPage> {
               middleContent: Column(
                 children: [
                   const Spacer(),
-                  AwesomeCameraModeSelector(state: state),
+                  // AwesomeCameraModeSelector(state: state),
                 ],
               ),
               bottomActions: AwesomeBottomActions(
@@ -127,7 +127,7 @@ class _CameraPageState extends State<CameraPage> {
           maxFramesPerSecond: 20,
         ),
         theme: AwesomeTheme(
-          bottomActionsBackgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.5),
+          bottomActionsBackgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.1),
           buttonTheme: AwesomeButtonTheme(
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(0.5),
             iconSize: 20,

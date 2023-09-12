@@ -6,7 +6,7 @@ import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/http.dart';
-import '../../widgets/detail/home_hint_login.dart';
+import '../../widgets/hint_login.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class HomeTrendPage extends StatefulWidget {
@@ -89,7 +89,7 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
     super.build(context);
     return Consumer<UserInfoProvider>(builder: (context, data, child) {
       return data.userinfo.isEmpty
-          ? const HomeHintLogin()
+          ? const HintLoginWidget()
           : RefreshIndicator(
               key: _refreshIndicatorKey,
               onRefresh: _onRefresh,

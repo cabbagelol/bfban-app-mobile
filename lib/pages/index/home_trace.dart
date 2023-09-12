@@ -8,7 +8,7 @@ import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/index.dart';
-import '../../widgets/detail/home_hint_login.dart';
+import '../../widgets/hint_login.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class HomeTracePage extends StatefulWidget {
@@ -95,7 +95,7 @@ class HomeTracePageState extends State<HomeTracePage> with AutomaticKeepAliveCli
     return Consumer<UserInfoProvider>(
       builder: (context, data, child) {
         return data.userinfo.isEmpty
-            ? const HomeHintLogin()
+            ? const HintLoginWidget()
             : traceStatus.list!.isNotEmpty
                 ? RefreshIndicator(
                     key: _refreshIndicatorKey,
