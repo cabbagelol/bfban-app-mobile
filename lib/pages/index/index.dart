@@ -18,7 +18,7 @@ import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
 import '../profile/index.dart';
 import 'footer_bar_panel.dart';
-import 'search.dart';
+import 'home.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
@@ -240,7 +240,7 @@ class _IndexPageState extends State<IndexPage> {
       child: Consumer<AppInfoProvider>(
         builder: (context, appInfo, child) {
           _listWidgetPage = [
-            const SearchPage(),
+            const homePage(),
             PlayerListPage(key: playerListPage),
             const UserCenterPage(),
           ];

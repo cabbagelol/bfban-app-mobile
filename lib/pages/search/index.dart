@@ -226,6 +226,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     );
 
     if (result.data["success"] == 1) {
+      if (!mounted) return;
       setState(() {
         searchTrends = result.data["data"];
       });
@@ -324,7 +325,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 searchStatus.params.param = value;
               });
             },
-            onSubmitted: () => _onSearch(isButtonClick: true),
+            onSubmitted: (dynamic data) => _onSearch(isButtonClick: true),
           ),
           actions: [
             TextButton(

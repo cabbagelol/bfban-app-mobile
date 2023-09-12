@@ -1,6 +1,7 @@
 /// 作弊者列表卡片
 
 import 'package:bfban/component/_Time/index.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -36,10 +37,12 @@ class CheatListCard extends StatelessWidget {
           Radius.circular(20),
         ),
         child: CircleAvatar(
-          child: EluiImgComponent(
+          child: ExtendedImage.network(
+            item["avatarLink"],
             width: 40,
             height: 40,
-            src: item["avatarLink"],
+            fit: BoxFit.fill,
+            cache: true,
           ),
         ),
       ),

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:bfban/component/_html/html.dart';
+import 'package:bfban/component/_html/htmlFullScreen.dart';
 import 'package:bfban/component/_html/htmlTextTranslator.dart';
+import 'package:bfban/pages/profile/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -123,6 +125,22 @@ class _HtmlWidgetState extends State<HtmlWidget> {
   dynamic dropdownSizeTypeSelectedValue = "1";
   dynamic dropdownRenderingSelectedValue = "1";
 
+  /// [Event]
+  /// 全屏预览
+  _opEnFullScreenPreview(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext _context) {
+          return HtmlFullScreen(
+            content: widget.content!,
+            style: htmlStyle[2],
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Offstage(
@@ -164,24 +182,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                         child: const Icon(Icons.fullscreen, size: 16),
                       ),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return Scaffold(
-                                appBar: AppBar(),
-                                body: ListView(
-                                  children: [
-                                    HtmlCore(
-                                      data: widget.content,
-                                      style: htmlStyle[2],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        );
+                        _opEnFullScreenPreview(context);
                       },
                     ),
                     const Expanded(child: SizedBox(width: 1)),

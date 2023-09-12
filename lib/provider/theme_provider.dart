@@ -19,7 +19,7 @@ class ThemeProvider with ChangeNotifier {
 
   /// 主题
   ThemeProviderData theme = ThemeProviderData(
-    defaultName: "dark",
+    defaultName: ThemeDefault,
     current: "",
     autoSwitchTheme: false,
     evening: "",

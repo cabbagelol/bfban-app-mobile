@@ -6,9 +6,8 @@ import 'dart:ui' as ui;
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -21,6 +20,7 @@ import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../component/_bfvHackers/index.dart';
 import '../../component/_gamesTag/index.dart';
@@ -88,6 +88,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   /// 举报记录
   Widget cheatersRecordWidgetList = Container();
 
+  /// 玩家订阅追踪
   Map subscribes = {
     "load": false,
     "isThisUserSubscribes": false,
@@ -108,16 +109,14 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
 
   @override
   void initState() {
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ready();
+    });
 
     if (widget.personaId != null) playerStatus.parame!.personaId = widget.personaId!;
     if (widget.dbId != null) playerStatus.parame!.dbId = widget.dbId!;
-  }
 
-  @override
-  void didChangeDependencies() {
-    ready();
-    super.didChangeDependencies();
+    super.initState();
   }
 
   void ready() async {
@@ -605,8 +604,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                             ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
                                           },
                                           child: EluiImgComponent(
-                                            src: snapshot.data!["avatarLink"].toString(),
-                                            fit: BoxFit.fitWidth,
+                                            src: snapshot.data!["avatarLink"],
                                             width: MediaQuery.of(context).size.width,
                                             height: 350,
                                           ),
@@ -633,13 +631,24 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                   children: [
                                                     Positioned(
                                                       top: 0,
-                                                      child: Image.asset("assets/images/default-player-avatar.jpg"),
+                                                      child: Image.asset(
+                                                        "assets/images/default-player-avatar.jpg",
+                                                        width: 150,
+                                                        height: 150,
+                                                      ),
                                                     ),
-                                                    EluiImgComponent(
-                                                      src: snapshot.data!["avatarLink"],
-                                                      fit: BoxFit.contain,
+                                                    ExtendedImage.network(
+                                                      snapshot.data!["avatarLink"],
+                                                      key: ValueKey<String>(const Uuid().v4(options: {
+                                                        'name': 'avatarLink-up',
+                                                        'url': snapshot.data!["avatarLink"],
+                                                        'time': DateTime.now().millisecondsSinceEpoch,
+                                                      })),
                                                       width: 150,
                                                       height: 150,
+                                                      fit: BoxFit.contain,
+                                                      cache: true,
+                                                      clearMemoryCacheWhenDispose: true,
                                                     ),
                                                     Positioned(
                                                       right: 0,

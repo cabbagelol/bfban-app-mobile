@@ -9,10 +9,10 @@ import 'home_tour_record.dart';
 import 'home_trace.dart';
 import 'home_trend.dart';
 
-class SearchPage extends StatefulWidget {
+class homePage extends StatefulWidget {
   final int num;
 
-  const SearchPage({
+  const homePage({
     Key? key,
     this.num = 0,
   }) : super(key: key);
@@ -22,10 +22,10 @@ class SearchPage extends StatefulWidget {
   }
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _homePageState createState() => _homePageState();
 }
 
-class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
+class _homePageState extends State<homePage> with TickerProviderStateMixin {
   // 应用主体
   AppThemeItem? theme;
 
@@ -43,8 +43,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     {"text": "activities", "icon": Icons.notifications_active_rounded},
     {"text": "trend", "icon": Icons.local_fire_department_sharp},
     {"text": "trace", "icon": Icons.star},
-    {"text": "tourRecord", "icon": Icons.receipt},
+    // {"text": "tourRecord", "icon": Icons.receipt},
   ];
+
+  List<Widget> homeTabsWidget = [];
 
   @override
   void initState() {
@@ -61,17 +63,23 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       };
       switch (i["text"]) {
         case "activities":
+          homeTabsWidget.add(const HomeCommunityPage());
           waitMap["load"] = _homeCommunityPageKey.currentState?.activityStatus.load ?? false;
           break;
         case "trend":
+          homeTabsWidget.add(HomeTrendPage(key: _homeTrendPageKey));
           waitMap["load"] = _homeTrendPageKey.currentState?.trendStatus.load ?? false;
           break;
         case "trace":
+          homeTabsWidget.add(HomeTracePage(key: _homeTracePageKey));
           waitMap["load"] = _homeTracePageKey.currentState?.traceStatus.load ?? false;
           break;
         case "tourRecord":
-        default:
+          homeTabsWidget.add(const HomeTourRecordPage());
           waitMap["load"] = false;
+          break;
+        default:
+          // Null
           break;
       }
       homeTabs.add(waitMap);
@@ -124,12 +132,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               flex: 1,
               child: TabBarView(
                 controller: tabController,
-                children: [
-                  const HomeCommunityPage(),
-                  HomeTrendPage(key: _homeTrendPageKey),
-                  HomeTracePage(key: _homeTracePageKey),
-                  const HomeTourRecordPage(),
-                ],
+                children: homeTabsWidget.toList(),
               ),
             )
           ],

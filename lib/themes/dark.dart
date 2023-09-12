@@ -51,7 +51,7 @@ class DarkTheme extends AppBaseThemeItem {
         backgroundColor: Colors.black,
         modalBackgroundColor: Colors.black,
       ),
-      canvasColor: Colors.yellow.shade50,
+      canvasColor: const Color(0xff252525),
       primaryColorDark: Colors.yellow,
       textTheme: const TextTheme(
         displayLarge: TextStyle(color: Colors.white),
@@ -82,9 +82,9 @@ class DarkTheme extends AppBaseThemeItem {
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        selectionColor: const Color(0xff171414).withOpacity(.3),
-        selectionHandleColor: const Color(0xff171414),
-        cursorColor: const Color(0xff171414),
+        selectionColor: const Color(0xff1a1a1a).withOpacity(.3),
+        selectionHandleColor: const Color(0xff1a1a1a),
+        cursorColor: const Color(0xff1a1a1a),
       ),
       unselectedWidgetColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xff111111),
@@ -112,9 +112,20 @@ class DarkTheme extends AppBaseThemeItem {
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.white,
       ),
+      tooltipTheme: TooltipThemeData(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: const BorderRadius.all(Radius.circular(3.0)),
+          border: Border.all(
+            width: 1,
+            color: Colors.white24,
+          ),
+        ),
+        textStyle: const TextStyle(color: Colors.white),
+      ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Colors.black,
-        surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.black,
         textStyle: TextStyle(
           color: Colors.white,
         ),
@@ -222,7 +233,7 @@ class DarkTheme extends AppBaseThemeItem {
           color: Colors.white,
         ),
       ),
-      primaryColor: const Color(0xff111b2b),
+      primaryColor: Colors.yellow,
       tabBarTheme: const TabBarTheme(
         unselectedLabelColor: Colors.white38,
         labelColor: Colors.yellow,
@@ -275,7 +286,7 @@ class DarkTheme extends AppBaseThemeItem {
         ),
       ),
       chipTheme: const ChipThemeData(
-        backgroundColor: Colors.black12,
+        backgroundColor: Colors.black,
         secondarySelectedColor: Colors.black,
         checkmarkColor: Colors.black,
         iconTheme: IconThemeData(
@@ -285,7 +296,7 @@ class DarkTheme extends AppBaseThemeItem {
           color: Colors.black,
         ),
         labelStyle: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
       colorScheme: const ColorScheme(
@@ -293,8 +304,8 @@ class DarkTheme extends AppBaseThemeItem {
         brightness: Brightness.dark,
         primary: Color(0xff364e80),
         onPrimary: Color(0xff364e80),
-        secondary: Color(0xff476ab2),
-        onSecondary: Color(0xff476ab2),
+        secondary: Color(0xff2e426c),
+        onSecondary: Color(0xff2e426c),
         error: Colors.red,
         onError: Colors.red,
         errorContainer: Colors.white,

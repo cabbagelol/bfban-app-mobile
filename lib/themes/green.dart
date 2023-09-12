@@ -91,6 +91,17 @@ class GreenTheme extends AppBaseThemeItem {
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.white,
       ),
+      tooltipTheme: TooltipThemeData(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(3.0)),
+          border: Border.all(
+            width: 1,
+            color: Colors.white24,
+          ),
+        ),
+        textStyle: const TextStyle(color: Colors.black),
+      ),
       popupMenuTheme: const PopupMenuThemeData(
         color: Colors.white,
         textStyle: TextStyle(
