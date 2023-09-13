@@ -15,12 +15,17 @@ class TranslationProvider with ChangeNotifier {
   // 如: { 'zh': {} }
   Map _list = {};
 
+  // 默认语言
+  String _default = "zh_CN";
+
+  String get defaultLang => _default;
+
   // 当前语言
   // 如: [zh, en, jp ...]
   String _currentLang = "";
 
   // 获取当前语言
-  String get currentLang => _currentLang;
+  String get currentLang => _currentLang.isEmpty ? _default : _currentLang;
 
   set currentLang(String value) {
     _currentLang = value;

@@ -422,7 +422,7 @@ class _IndexPageState extends State<IndexPage> {
                   bottomNavigationBar: BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
                     showSelectedLabels: true,
-                    showUnselectedLabels: true,
+                    showUnselectedLabels: false,
                     items: navs.map((nav) {
                       return BottomNavigationBarItem(
                         icon: nav!["icon"],

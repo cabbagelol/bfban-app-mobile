@@ -90,8 +90,8 @@ class _BfBanAppState extends State<BfBanApp> {
                       basePath: "assets/lang",
                       baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
                       useCountryCode: false,
-                      fallback: "zh_CN",
-                      forcedLocale: Locale(langData.currentLang.isEmpty ? "zh_CN" : langData.currentLang),
+                      fallback: langData.defaultLang,
+                      forcedLocale: Locale(langData.currentLang.isEmpty ? langData.defaultLang : langData.currentLang),
                     ),
                   )
                 ],

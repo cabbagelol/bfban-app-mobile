@@ -25,6 +25,8 @@ class GuideAgreementPage extends StatefulWidget {
 class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAliveClientMixin {
   TranslationProvider? langProvider;
 
+  ProviderUtil providerUtil = ProviderUtil();
+
   bool checked = false;
 
   Map agreement = {
@@ -40,9 +42,9 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
 
   @override
   void initState() {
-    langProvider = ProviderUtil().ofLang(context);
-
+    langProvider = providerUtil.ofLang(context);
     language = langProvider!.currentLang;
+    
     getAgreement();
 
     super.initState();

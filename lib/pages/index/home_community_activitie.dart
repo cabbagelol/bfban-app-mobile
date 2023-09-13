@@ -342,9 +342,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              const SizedBox(height: 10),
                               Row(
                                 children: [
                                   Placeholder(
@@ -365,7 +363,8 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
+                              const SizedBox(height: 5),
                             ],
                           ),
                         ),
@@ -386,7 +385,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                         ),
                       ],
                     ),
-                    const Divider(height: 1),
                   ],
                 );
               },

@@ -25,7 +25,7 @@ class CustomTranslationLoader extends FileTranslationLoader {
     required this.baseUri,
     basePath = "assets/lang",
     forcedLocale,
-    fallback = "zh_CN",
+    fallback = "",
     useCountryCode = false,
     useScriptCode = false,
     decodeStrategies,
