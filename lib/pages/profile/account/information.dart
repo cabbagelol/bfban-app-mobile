@@ -23,6 +23,8 @@ class InformationPage extends StatefulWidget {
 class _InformationPageState extends State<InformationPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  StorageAccount storageAccount = StorageAccount();
+
   StationUserInfoStatus informationStatus = StationUserInfoStatus(
     load: false,
     data: StationUserInfoData(),
@@ -31,6 +33,8 @@ class _InformationPageState extends State<InformationPage> {
   StationUserInfoData informationDiffData = StationUserInfoData();
 
   bool saveLoad = false;
+
+  bool langLocalSync = true;
 
   /// 异步
   Future? futureBuilder;
@@ -45,6 +49,10 @@ class _InformationPageState extends State<InformationPage> {
   }
 
   void ready() async {
+    bool langLocalSync = await storageAccount.getConfiguration("langLocalSync");
+    setState(() {
+      this.langLocalSync = langLocalSync;
+    });
     await getLanguageList();
     futureBuilder = _getUserInfo();
   }
@@ -107,7 +115,7 @@ class _InformationPageState extends State<InformationPage> {
   Future getLanguageList() async {
     Response result = await Http.request(
       "config/languages.json",
-      httpDioValue: "app_web_site",
+      httpDioValue: "web_site",
       method: Http.GET,
     );
 
@@ -321,22 +329,42 @@ class _InformationPageState extends State<InformationPage> {
                           EluiCellComponent(
                             title: FlutterI18n.translate(context, "profile.account.form.language"),
                             label: FlutterI18n.translate(context, "profile.account.form.languageSyncDescribe"),
-                            cont: Container(
-                              constraints: const BoxConstraints(maxWidth: 150),
-                              child: DropdownButton(
-                                isDense: false,
-                                dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                                style: Theme.of(context).dropdownMenuTheme.textStyle,
-                                onChanged: (value) {
-                                  setState(() {
-                                    informationStatus.data!.attr!.language = value.toString();
-                                  });
-                                },
-                                value: informationStatus.data!.attr!.language,
-                                items: languages.map<DropdownMenuItem<String>>((i) {
-                                  return DropdownMenuItem(value: i["name"].toString(), child: Text(i["label"].toString()));
-                                }).toList(),
-                              ),
+                            cont: Row(
+                              children: [
+                                if (langLocalSync)
+                                  Container(
+                                    constraints: const BoxConstraints(maxWidth: 150),
+                                    child: DropdownButton(
+                                      isDense: false,
+                                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                                      style: Theme.of(context).dropdownMenuTheme.textStyle,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          informationStatus.data!.attr!.language = value.toString();
+                                        });
+                                      },
+                                      value: informationStatus.data!.attr!.language,
+                                      items: languages.where((lang) {
+                                        return !(lang["ignoreSave"] == true);
+                                      }).map<DropdownMenuItem<String>>((i) {
+                                        return DropdownMenuItem(
+                                          value: i["name"].toString(),
+                                          child: Text(i["label"].toString()),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                const SizedBox(width: 5),
+                                Checkbox(
+                                  value: langLocalSync,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      langLocalSync = value!;
+                                      storageAccount.updateConfiguration('langLocalSync', langLocalSync);
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                           EluiCellComponent(

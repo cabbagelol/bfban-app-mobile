@@ -55,6 +55,8 @@ class UserSpacePageState extends State<UserSpacePage> {
     ),
   );
 
+  bool reportListNextEmpty = false;
+
   GlobalKey appBarKey = GlobalKey();
 
   @override
@@ -68,6 +70,12 @@ class UserSpacePageState extends State<UserSpacePage> {
     });
 
     ready();
+  }
+
+  @override
+  void dispose() {
+    userSpaceInfo.data = StationUserSpaceData();
+    super.dispose();
   }
 
   void ready() async {
@@ -121,15 +129,20 @@ class UserSpacePageState extends State<UserSpacePage> {
     );
 
     if (result.data["success"] == 1) {
-      final d = result.data["data"];
+      List d = result.data["data"];
 
+      if (!mounted) return;
       setState(() {
-        reportListStatus.list = d;
+        if (d.isEmpty) {
+          reportListNextEmpty = true;
+        }
+
+        if (d.isNotEmpty) reportListStatus.list = d;
       });
     }
 
     setState(() {
-      userSpaceInfo.load = false;
+      reportListStatus.load = false;
     });
   }
 
@@ -147,8 +160,10 @@ class UserSpacePageState extends State<UserSpacePage> {
   /// [Event]
   /// 下拉 追加数据
   Future _getMore() async {
-    await _getSiteUserReports();
+    if (reportListStatus.load! && reportListNextEmpty) return;
+
     reportListStatus.parame.nextPage();
+    await _getSiteUserReports();
   }
 
   /// [Event]
@@ -392,6 +407,13 @@ class UserSpacePageState extends State<UserSpacePage> {
                             isIconView: false,
                           );
                         }).toList(),
+                      )
+                    else if (reportListStatus.list.isEmpty && reportListStatus.load!)
+                      Container(
+                        margin: const EdgeInsets.only(top: 20),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
                       )
                     else
                       const EmptyWidget()

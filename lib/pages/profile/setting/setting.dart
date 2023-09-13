@@ -5,7 +5,10 @@ import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
+import '../../../provider/translation_provider.dart';
+import '../../../provider/userinfo_provider.dart';
 import '../../../utils/index.dart';
 
 class SettingPage extends StatefulWidget {
@@ -97,6 +100,14 @@ class _SettingPageState extends State<SettingPage> {
               labelColor: Theme.of(context).textTheme.displayMedium?.color,
               linkColor: Theme.of(context).textTheme.titleMedium?.color,
               backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            cont: Consumer<TranslationProvider>(
+              builder: (context, data, child) {
+                return Opacity(
+                  opacity: .6,
+                  child: Text(data.currentLang),
+                );
+              },
             ),
             islink: true,
             onTap: () => _opEnLanguage(),

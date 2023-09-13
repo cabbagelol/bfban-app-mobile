@@ -26,9 +26,9 @@ class UserInfoProvider with ChangeNotifier {
     return userinfo.isNotEmpty && getToken.isNotEmpty;
   }
 
-  // 是否管理员
+  // 是否管理员一类
   bool get isAdmin {
-    return isLogin && userinfo["privilege"].any((i) => ["admin", "super"].contains(i));
+    return isLogin && userinfo["privilege"].any((i) => ["admin", "super", "root"].contains(i));
   }
 
   // 获取用户信息

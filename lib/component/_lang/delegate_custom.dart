@@ -20,7 +20,22 @@ class CustomTranslationLoader extends FileTranslationLoader {
 
   Map<dynamic, dynamic> _decodedMap = {};
 
-  CustomTranslationLoader({required this.namespaces, required this.baseUri, basePath = "assets/lang", forcedLocale, fallback = "zh_CN", useCountryCode = false, useScriptCode = false, decodeStrategies}) : super(fallbackFile: fallback, useCountryCode: useCountryCode, basePath: basePath, forcedLocale: forcedLocale, decodeStrategies: decodeStrategies) {
+  CustomTranslationLoader({
+    required this.namespaces,
+    required this.baseUri,
+    basePath = "assets/lang",
+    forcedLocale,
+    fallback = "zh_CN",
+    useCountryCode = false,
+    useScriptCode = false,
+    decodeStrategies,
+  }) : super(
+          fallbackFile: fallback,
+          useCountryCode: useCountryCode,
+          basePath: basePath,
+          forcedLocale: forcedLocale,
+          decodeStrategies: decodeStrategies,
+        ) {
     assert(namespaces != null);
     assert(namespaces!.isNotEmpty);
   }
@@ -30,18 +45,29 @@ class CustomTranslationLoader extends FileTranslationLoader {
     Uri resolvedUri = baseUri.replace(path: '${baseUri.path}/$fileName.$extension');
     StorageData languageData = await storage.get(packageName);
     dynamic local = languageData.value;
-    dynamic result;
+    dynamic networkResult;
+    dynamic localResult;
 
     // 从远程服务器取得LANG配置单，如果缓存则使用本地
     if (local == null || local.toString().isEmpty) {
       dynamic networkLang = await http.get(resolvedUri);
-      result = jsonDecode(utf8.decode(networkLang.bodyBytes));
+      networkResult = jsonDecode(utf8.decode(networkLang.bodyBytes));
     } else {
-      result = local["listConf"];
+      networkResult = local["listConf"];
     }
 
-    _decodedMap.addAll(jsonDecode(await assetBundle.loadString('$basePath/${composeFileName()}.json', cache: false)));
-    _decodedMap.addAll(result);
+    // 本地载入
+    String localPath = "$basePath/${composeFileName()}.json";
+    String loadString = await assetBundle.loadString(localPath, cache: false);
+    if (loadString.isEmpty) {
+      String localFallbackFilePath = "$basePath/$fallbackFile.json";
+      localResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: false));
+    } else {
+      localResult = jsonDecode(loadString);
+    }
+
+    _decodedMap.addAll(localResult);
+    _decodedMap.addAll(networkResult);
 
     return jsonEncode(_decodedMap);
   }
