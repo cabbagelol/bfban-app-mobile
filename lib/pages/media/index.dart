@@ -41,6 +41,8 @@ class _mediaPageState extends State<MediaPage> {
 
   final ScrollController _scrollNetworkController = ScrollController();
 
+  FileManagement fileManagement = FileManagement();
+
   ProviderUtil providerUtil = ProviderUtil();
 
   MediaStatus mediaStatus = MediaStatus(
@@ -195,13 +197,17 @@ class _mediaPageState extends State<MediaPage> {
   /// [Event]
   /// 从公共相册导入APP文件
   importingFiles() async {
-    final Directory extDir = await getApplicationSupportDirectory();
-    final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
-    final fileName = const Uuid().v4(options: {'name': image?.name});
+    try {
+      final Directory extDir = await getApplicationSupportDirectory();
+      final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100, requestFullMetadata: true);
+      final String fileName = "${const Uuid().v4(options: {'name': image?.name})}.${fileManagement.splitFileUrl(image!.name)["fileExtension"]}";
 
-    if (image != null) await File(image.path).copy("${fileDir.path}/$fileName");
+      await File(image.path).copy("${fileDir.path}/$fileName");
+    } catch (err) {
+      rethrow;
+    }
   }
 
   /// [Event]
@@ -360,7 +366,7 @@ class _mediaPageState extends State<MediaPage> {
 
     if (result["code"] == 1) {
       // 标记
-      Map splitFileUrl = FileManagement().splitFileUrl(i.file.path);
+      Map splitFileUrl = fileManagement.splitFileUrl(i.file.path);
       String newPath = "${i.file.parent.path}/${splitFileUrl["fileName"]}_[Uploaded].${splitFileUrl["fileExtension"]}";
       i.file.renameSync(newPath);
 
@@ -477,13 +483,13 @@ class _mediaPageState extends State<MediaPage> {
     String size = "";
     double limit = double.parse(value.toString());
     if (limit < 0.1 * 1024) {
-      size = limit.toStringAsFixed(2) + "B";
+      size = "${limit.toStringAsFixed(2)}B";
     } else if (limit < 0.1 * 1024 * 1024) {
-      size = (limit / 1024).toStringAsFixed(2) + "KB";
+      size = "${(limit / 1024).toStringAsFixed(2)}KB";
     } else if (limit < 0.1 * 1024 * 1024 * 1024) {
-      size = (limit / (1024 * 1024)).toStringAsFixed(2) + "MB";
+      size = "${(limit / (1024 * 1024)).toStringAsFixed(2)}MB";
     } else {
-      size = (limit / (1024 * 1024 * 1024)).toStringAsFixed(2) + "GB";
+      size = "${(limit / (1024 * 1024 * 1024)).toStringAsFixed(2)}GB";
     }
 
     String sizeStr = size.toString();
@@ -985,13 +991,18 @@ class MediaIconCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (filetype == FileType.IMAGE)
-          Image.file(
-            i.file,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.low,
+          Expanded(
+            flex: 1,
+            child: Image.file(
+              i.file,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.low,
+            ),
           )
         else if (filetype == FileType.VIDEO)
           const Icon(
