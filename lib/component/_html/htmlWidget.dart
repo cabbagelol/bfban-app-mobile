@@ -33,7 +33,7 @@ class HtmlWidget extends StatefulWidget {
 
   HtmlWidget({
     Key? key,
-    this.content,
+    this.content = "",
     HtmlWidgetFontSize? size = HtmlWidgetFontSize.Default,
     this.quote,
     this.id,
@@ -133,7 +133,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
       MaterialPageRoute(
         builder: (BuildContext _context) {
           return HtmlFullScreen(
-            content: widget.content!,
+            content: widget.content! ?? "",
             style: htmlStyle[2],
           );
         },
@@ -154,87 +154,94 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            /// html widget content
             if (widget.quote != null) widget.quote!,
             [
               SelectionArea(
                 child: Html(
-                  data: htmlEscape.convert(widget.content.toString()),
+                  data: htmlEscape.convert(widget.content ?? ""),
                   style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
                 ),
               ),
               SelectionArea(
                 child: HtmlCore(
-                  data: widget.content,
+                  data: widget.content ?? "",
                   style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
                 ),
               ),
             ][int.parse(dropdownRenderingSelectedValue)],
-            HtmlTextTranslator(content: widget.content!),
+            HtmlTextTranslator(content: widget.content ?? ""),
+
+            /// html widget footer bar
             if (widget.footerToolBar!) const Divider(height: 1),
             if (widget.footerToolBar!)
-              SizedBox(
-                height: 20,
-                child: Row(
-                  children: [
-                    InkWell(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 4),
-                        child: const Icon(Icons.fullscreen, size: 16),
+              ClipPath(
+                clipBehavior: Clip.hardEdge,
+                child: SizedBox(
+                  height: 20,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 4),
+                          child: const Icon(Icons.fullscreen, size: 16),
+                        ),
+                        onTap: () {
+                          _opEnFullScreenPreview(context);
+                        },
                       ),
-                      onTap: () {
-                        _opEnFullScreenPreview(context);
-                      },
-                    ),
-                    const Expanded(child: SizedBox(width: 1)),
-                    DropdownButton(
-                      underline: Container(),
-                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
+                      const Expanded(flex: 2, child: SizedBox(width: 5)),
+                      DropdownButton(
+                        underline: Container(),
+                        dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                        items: dropdownSizeType.map<DropdownMenuItem<String>>((e) {
+                          return DropdownMenuItem(
+                            value: e["value"],
+                            child: Text(e["name"]),
+                          );
+                        }).toList(),
+                        value: dropdownSizeTypeSelectedValue,
+                        onChanged: (selected) {
+                          setState(() {
+                            dropdownSizeTypeSelectedValue = selected;
+                          });
+                        },
                       ),
-                      items: dropdownSizeType.map<DropdownMenuItem<String>>((e) {
-                        return DropdownMenuItem(
-                          value: e["value"],
-                          child: Text(e["name"]),
-                        );
-                      }).toList(),
-                      value: dropdownSizeTypeSelectedValue,
-                      onChanged: (selected) {
-                        setState(() {
-                          dropdownSizeTypeSelectedValue = selected;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                      height: 8,
-                      child: VerticalDivider(width: 1),
-                    ),
-                    DropdownButton(
-                      elevation: 2,
-                      underline: Container(),
-                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
+                      const SizedBox(
+                        width: 20,
+                        height: 8,
+                        child: VerticalDivider(width: 1),
                       ),
-                      items: dropdownRenderingMethods.map<DropdownMenuItem<String>>((e) {
-                        return DropdownMenuItem(
-                          value: e["value"],
-                          child: Text(e["name"]),
-                        );
-                      }).toList(),
-                      value: dropdownRenderingSelectedValue,
-                      onChanged: (selected) {
-                        setState(() {
-                          dropdownRenderingSelectedValue = selected;
-                        });
+                      DropdownButton(
+                        elevation: 2,
+                        underline: Container(),
+                        dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                        items: dropdownRenderingMethods.map<DropdownMenuItem<String>>((e) {
+                          return DropdownMenuItem(
+                            value: e["value"],
+                            child: Text(e["name"]),
+                          );
+                        }).toList(),
+                        value: dropdownRenderingSelectedValue,
+                        onChanged: (selected) {
+                          setState(() {
+                            dropdownRenderingSelectedValue = selected;
+                          });
 
-                        eventUtil.emit("html-image-update-widget", {});
-                      },
-                    )
-                  ],
+                          eventUtil.emit("html-image-update-widget", {});
+                        },
+                      )
+                    ],
+                  ),
                 ),
               )
           ],
@@ -441,7 +448,7 @@ class CardUtil {
     });
 
     _urlUtil.opEnPage(context, "/reply/$content").then((value) {
-      if (callback) callback(value);
+      if (callback != null) callback();
     });
   }
 }

@@ -707,6 +707,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                 const SizedBox(height: 2),
                                                 Wrap(
                                                   spacing: 5,
+                                                  runSpacing: 5,
                                                   children: [
                                                     Container(
                                                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),

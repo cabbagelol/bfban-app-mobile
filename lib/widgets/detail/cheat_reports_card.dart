@@ -111,7 +111,7 @@ class CheatReportsCard extends StatelessWidget {
       ],
       headerSecondary: VideoLink(data: data),
       content: HtmlWidget(
-        content: data["content"],
+        content: data["content"] is Map ? data["content"]["text"] : data["content"],
         quote: QuoteCard(data: data),
       ),
       bottom: TimeLineItemBottomBtn(

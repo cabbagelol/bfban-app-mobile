@@ -235,12 +235,10 @@ class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
                 IconButton(
                   onPressed: () {
                     cardUtil.setReply(
-                      context,
-                      type: 1,
-                      floor: widget.floor,
-                      toPlayerId: widget.data!["toPlayerId"],
-                      toCommentId: widget.data!["id"],
-                    );
+                      context, type: 1, floor: widget.floor, toPlayerId: widget.data!["toPlayerId"], toCommentId: widget.data!["id"], callback: () {
+                      // 更新时间轴
+                      eventUtil.emit("updateTimeline-event", null);
+                    });
                   },
                   icon: const Icon(
                     Icons.quickreply_outlined,

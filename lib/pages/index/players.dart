@@ -37,6 +37,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   // 列表视图控制器
   final ScrollController _scrollController = ScrollController();
 
+  final StorageAccount _storageAccount = StorageAccount();
+
   // 玩家数据
   final PlayersStatus? playersStatus = PlayersStatus(
     load: false,
@@ -65,6 +67,11 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   void initState() {
     ready();
 
+    cheaterStatus!.insert(0, {
+      "value": -1,
+      "values": [-1],
+    });
+
     // 标签初始
     _tabController = TabController(
       vsync: this,
@@ -85,11 +92,10 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   /// [Event]
   /// 初始
-  ready() {
-    cheaterStatus!.insert(0, {
-      "value": -1,
-      "values": [-1],
-    });
+  ready() async {
+    dynamic playersTabInitialIndex = await _storageAccount.getConfiguration("playersTabInitialIndex");
+
+    if (playersTabInitialIndex != null && playersTabInitialIndex != 0) _tabController?.index = playersTabInitialIndex is bool ? 0 : playersTabInitialIndex;
 
     getPlayerList();
     getPlayerStatistics();
@@ -184,6 +190,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     if (_scrollController.hasClients && _scrollController.position.pixels > _scrollController.position.minScrollExtent) {
       _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
     }
+
+    _storageAccount.updateConfiguration("playersTabInitialIndex", index);
 
     await _refreshIndicatorKey.currentState!.show();
     await getPlayerList();

@@ -10,7 +10,6 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../component/_captcha/index.dart';
 import '../../component/_customReply/customReply.dart';
 import '../../widgets/edit/game_type_radio.dart';
 
@@ -83,13 +82,6 @@ class _JudgementPageState extends State<JudgementPage> {
       return {
         "code": -1,
         "msg": "detail.messages.pleaseExplain",
-      };
-    }
-
-    if (manageStatus.parame!.value.isEmpty) {
-      return {
-        "code": -1,
-        "msg": "signin.fillEverything",
       };
     }
 
@@ -387,27 +379,6 @@ class _JudgementPageState extends State<JudgementPage> {
               ),
 
               /// E 理由
-              const SizedBox(
-                height: 20,
-              ),
-
-              /// S 验证码
-              EluiInputComponent(
-                internalstyle: true,
-                theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                onChange: (data) {
-                  setState(() {
-                    manageStatus.parame!.value = data["value"];
-                  });
-                },
-                right: CaptchaWidget(
-                  onChange: (Captcha captcha) => manageStatus.parame!.setCaptcha(captcha),
-                ),
-                maxLenght: 4,
-                placeholder: FlutterI18n.translate(context, "captcha.title"),
-              ),
-
-              /// E 验证码
             ],
           );
         },
