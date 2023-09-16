@@ -1,5 +1,6 @@
 /// 状态管理 工具包
 
+import 'package:bfban/provider/dir_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,5 +44,10 @@ class ProviderUtil {
   // 主题
   ThemeProvider ofTheme(BuildContext context) {
     return Provider.of<ThemeProvider>(context, listen: false)..context = context;
+  }
+
+  // 文件
+  DirProvider ofDir(BuildContext context) {
+    return Provider.of<DirProvider>(context, listen: false);
   }
 }

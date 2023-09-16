@@ -10,6 +10,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/utils/index.dart';
 
+import '../provider/dir_provider.dart';
+
 enum PhotoViewFileType { file, network }
 
 class PhotoViewSimpleScreen extends StatefulWidget {
@@ -63,7 +65,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
       imageSaveStatus = true;
     });
 
-    dynamic result = await mediaManagement.saveLocalImages(src);
+    dynamic result = await mediaManagement.saveLocalImages(context, src);
 
     result["code"] == 0
         ? EluiMessageComponent.success(context)(
@@ -179,10 +181,11 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
         actions: [
           if (widget.type == PhotoViewFileType.network)
             imageSaveStatus
-                ? ElevatedButton(
+                ? IconButton(
                     onPressed: () {},
-                    child: const ELuiLoadComponent(
+                    icon: ELuiLoadComponent(
                       type: "line",
+                      color: Theme.of(context).iconTheme.color!,
                       lineWidth: 2,
                       size: 25,
                     ),
@@ -198,14 +201,17 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
                   ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            flex: 1,
-            child: _ImageWidget(widget.type!.index),
-          )
-        ],
+      body: ClipRect(
+        clipBehavior: Clip.hardEdge,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              flex: 1,
+              child: _ImageWidget(widget.type!.index),
+            )
+          ],
+        ),
       ),
     );
   }

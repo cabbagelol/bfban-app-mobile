@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +33,8 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
       if (value.url.isNotEmpty && key != "none") {
         AppNetworkItem appNetworkItem = AppNetworkItem(
           load: false,
+          statusCode: 0,
+          statusLogs: [],
           status: 0,
           ms: 0,
           name: key,
@@ -60,14 +61,13 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
     });
 
     Future headFuture = Http.dio.head(url);
-    headFuture.ignore();
     headFuture.catchError((err) {
-      EluiMessageComponent.warning(context)(
-        child: Text("$url:${err.error}"),
-        duration: 3000,
-      );
       setState(() {
         item.statusCode = err.response.statusCode;
+        item.statusLogs.add({
+          "message": "${err.error}",
+          "time": DateTime.now().millisecondsSinceEpoch,
+        });
         item.status = 2;
         item.load = false;
       });
@@ -256,13 +256,43 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                             ),
                           ],
                         ),
-                        subtitle: SelectionArea(
-                          child: Text(
-                            i.url.toString(),
-                            style: TextStyle(
-                              color: Theme.of(context).textTheme.displayMedium!.color,
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SelectionArea(
+                              child: Text(
+                                i.baseHost.toString(),
+                                style: TextStyle(
+                                  color: Theme.of(context).textTheme.displayMedium!.color,
+                                ),
+                              ),
                             ),
-                          ),
+                            if (i.statusLogs.isNotEmpty)
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: Column(
+                                  children: i.statusLogs.indexed.map((log) {
+                                    return Wrap(
+                                      spacing: 5,
+                                      crossAxisAlignment: WrapCrossAlignment.center,
+                                      children: [
+                                        Text("${log.$1}"),
+                                        const SizedBox(
+                                          width: 4,
+                                          child: Divider(height: 1, thickness: 1),
+                                        ),
+                                        Text(log.$2["message"].toString()),
+                                        const SizedBox(
+                                          width: 15,
+                                          child: Divider(height: 1, thickness: 1),
+                                        ),
+                                        Text(log.$2["time"].toString()),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                          ],
                         ),
                         trailing: i.load
                             ? const SizedBox(

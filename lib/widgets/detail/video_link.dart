@@ -39,14 +39,28 @@ class VideoLink extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 5),
-                    Expanded(
-                      flex: 1,
-                      child: HtmlLink(
-                        url: i.value,
-                        style: const TextStyle(
-                          fontSize: 12,
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        constraints: BoxConstraints(
+                          maxWidth: (MediaQuery.of(context).size.width),
+                        ),
+                        child: HtmlLink(
+                          url: i.value,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          softWrap: false,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        constraints: const BoxConstraints(minWidth: 10),
+                        child: const Divider(thickness: 2, endIndent: 4),
                       ),
                     ),
                     Text("${i.key + 1}"),

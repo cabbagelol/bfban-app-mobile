@@ -2,6 +2,7 @@
 /// 存放日历卡片的模板
 
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_button/index.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
@@ -99,16 +100,18 @@ class TimeLineBaseCard extends StatefulWidget {
   State<TimeLineBaseCard> createState() => _TimeLineBaseCardState();
 }
 
-class _TimeLineBaseCardState extends State<TimeLineBaseCard> {
-  final GlobalKey contentKey = GlobalKey();
-  double contentBodyHeight = 0.0;
+class _TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerProviderStateMixin {
+  final GlobalKey contentHtmlBaseKey = GlobalKey();
+
+  // 当前内容高度
+  double currentBodyHeight = 0;
 
   /// [Event]
   /// 设置垂直线高度
   _getWidgetHeight() {
     if (mounted) {
       setState(() {
-        contentBodyHeight = contentKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
+        currentBodyHeight = contentHtmlBaseKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
       });
     }
   }
@@ -134,7 +137,7 @@ class _TimeLineBaseCardState extends State<TimeLineBaseCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: contentBodyHeight,
+          height: currentBodyHeight,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -156,7 +159,7 @@ class _TimeLineBaseCardState extends State<TimeLineBaseCard> {
         Expanded(
           flex: 1,
           child: Container(
-            key: contentKey,
+            key: contentHtmlBaseKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -234,8 +237,7 @@ class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
               if (widget.isShowReply)
                 IconButton(
                   onPressed: () {
-                    cardUtil.setReply(
-                      context, type: 1, floor: widget.floor, toPlayerId: widget.data!["toPlayerId"], toCommentId: widget.data!["id"], callback: () {
+                    cardUtil.setReply(context, type: 1, floor: widget.floor, toPlayerId: widget.data!["toPlayerId"], toCommentId: widget.data!["id"], callback: () {
                       // 更新时间轴
                       eventUtil.emit("updateTimeline-event", null);
                     });

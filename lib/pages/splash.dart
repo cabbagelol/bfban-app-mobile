@@ -49,9 +49,10 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// 初始页面数据
   void _onReady(BuildContext context) async {
     Future.delayed(const Duration(seconds: 1)).then((value) => {
-          setState(() {
-            _size = 1.5;
-          })
+          if (mounted)
+            setState(() {
+              _size = 1.5;
+            })
         });
 
     Future.wait([
@@ -128,6 +129,12 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       loadTip = "app.splash.theme";
     });
     await providerUtil.ofTheme(context).init();
+
+    // 文件
+    setState(() {
+      loadTip = "app.splash.dir";
+    });
+    await providerUtil.ofDir(context).init();
 
     // 配置初始
     setState(() {

@@ -77,19 +77,6 @@ class _SupportPageState extends State<SupportPage> {
             islink: true,
             onTap: () => _urlUtil.onPeUrl("${Config.apis["web_github"]!.url}/cabbagelol/bfban-app-mobile", mode: LaunchMode.externalApplication),
           ),
-
-          EluiCellComponent(
-            title: FlutterI18n.translate(context, "app.setting.support.licenseTitle"),
-            label: FlutterI18n.translate(context, "app.setting.support.licenseDescription"),
-            theme: EluiCellTheme(
-              titleColor: Theme.of(context).textTheme.titleMedium?.color,
-              labelColor: Theme.of(context).textTheme.displayMedium?.color,
-              linkColor: Theme.of(context).textTheme.titleMedium?.color,
-              backgroundColor: Theme.of(context).cardTheme.color,
-            ),
-            islink: true,
-            onTap: () => UrlUtil().opEnPage(context, "/license"),
-          ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.cell.website.title"),
             label: "${FlutterI18n.translate(context, "app.setting.cell.website.describe")}: ${Config.apiHost["web_site"]!.url}",
@@ -105,18 +92,18 @@ class _SupportPageState extends State<SupportPage> {
               mode: LaunchMode.externalApplication,
             ),
           ),
-          // EluiCellComponent(
-          //   title: FlutterI18n.translate(context, "app.setting.support.feedbackTitle"),
-          //   label: FlutterI18n.translate(context, "app.setting.support.feedbackDescription"),
-          //   theme: EluiCellTheme(
-          //     titleColor: Theme.of(context).textTheme.subtitle1?.color,
-          //     labelColor: Theme.of(context).textTheme.subtitle2?.color,
-          //     linkColor: Theme.of(context).textTheme.subtitle1?.color,
-          //     backgroundColor: Theme.of(context).cardTheme.color,
-          //   ),
-          //   islink: true,
-          //   onTap: () => UrlUtil().onPeUrl("https://jq.qq.com/?_wv=1027&k=kXr9z9FE"),
-          // ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, "app.setting.support.licenseTitle"),
+            label: FlutterI18n.translate(context, "app.setting.support.licenseDescription"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => UrlUtil().opEnPage(context, "/license"),
+          ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.support.appDocumentationTitle"),
             label: FlutterI18n.translate(context, "app.setting.support.appDocumentationDescription"),

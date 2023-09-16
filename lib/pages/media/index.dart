@@ -13,6 +13,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../constants/api.dart';
 import '../../data/index.dart';
+import '../../provider/dir_provider.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/index.dart';
 import '../../widgets/hint_login.dart';
@@ -40,6 +41,8 @@ class _mediaPageState extends State<MediaPage> {
   final GlobalKey<RefreshIndicatorState> _refreshNetworkIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   final ScrollController _scrollNetworkController = ScrollController();
+
+  DirProvider? dirProvider;
 
   FileManagement fileManagement = FileManagement();
 
@@ -70,9 +73,11 @@ class _mediaPageState extends State<MediaPage> {
 
   @override
   void initState() {
-    _getNetworkMediaInfo();
+    dirProvider = Provider.of<DirProvider>(context, listen: false);
+
     _getLocalMediaFiles();
     _getNetworkMediaList();
+    _getNetworkMediaInfo();
 
     _scrollNetworkController.addListener(() {
       if (_scrollNetworkController.position.pixels == _scrollNetworkController.position.maxScrollExtent) {
@@ -180,15 +185,7 @@ class _mediaPageState extends State<MediaPage> {
   /// [Event]
   /// 获取本地媒体列表
   Future _getLocalMediaFiles() async {
-    Directory extDir = await getApplicationSupportDirectory();
-    Directory path = Directory('${extDir.path}/media');
-
-    if (!path.existsSync()) {
-      path.createSync(recursive: true);
-    }
-
-    List pathFiles = path.listSync(recursive: true);
-
+    List pathFiles = await dirProvider!.getAllFile(laterPath: '/media');
     setState(() {
       mediaStatus.setList(pathFiles, MediaType.Local);
     });
@@ -198,13 +195,11 @@ class _mediaPageState extends State<MediaPage> {
   /// 从公共相册导入APP文件
   importingFiles() async {
     try {
-      final Directory extDir = await getApplicationSupportDirectory();
-      final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
       final ImagePicker picker = ImagePicker();
       final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100, requestFullMetadata: true);
       final String fileName = "${const Uuid().v4(options: {'name': image?.name})}.${fileManagement.splitFileUrl(image!.name)["fileExtension"]}";
 
-      await File(image.path).copy("${fileDir.path}/$fileName");
+      await File(image.path).copy("${dirProvider!.currentDefaultSavePath}/media/$fileName");
     } catch (err) {
       rethrow;
     }
@@ -506,6 +501,14 @@ class _mediaPageState extends State<MediaPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(FlutterI18n.translate(context, "app.setting.cell.media.title")),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _urlUtil.opEnPage(context, "/profile/dir/configuration");
+            },
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
       body: DefaultTabController(
         length: 2,
@@ -559,7 +562,22 @@ class _mediaPageState extends State<MediaPage> {
                             margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                             child: Row(
                               children: [
-                                Expanded(flex: 1, child: Container()),
+                                Expanded(
+                                  flex: 1,
+                                  child: Wrap(
+                                    spacing: 7,
+                                    children: [
+                                      Wrap(
+                                        spacing: 2,
+                                        crossAxisAlignment: WrapCrossAlignment.center,
+                                        children: [
+                                          const Icon(Icons.file_present_sharp),
+                                          Text("${mediaStatus.list.length} file"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 TextButton(
                                   onPressed: () async {
                                     _openCamera();

@@ -53,9 +53,9 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
     });
 
     // 超过限制缓存时间
-    if (DateTime(cacheMapItem.value[widget.data!["originPersonaId"]]['creationCacheTime']).add(const Duration(days: 3)).millisecondsSinceEpoch >= DateTime.now().millisecondsSinceEpoch) {
-      _getBfvHackers();
-    }
+    int now = DateTime.now().millisecondsSinceEpoch;
+    int expirationTime = DateTime(cacheMapItem.value[widget.data!["originPersonaId"]]['creationCacheTime']).add(const Duration(days: 3)).millisecondsSinceEpoch;
+    if (expirationTime >= now) _getBfvHackers();
   }
 
   /// [Response]
