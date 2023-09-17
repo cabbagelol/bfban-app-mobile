@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "automatisch",
@@ -29,6 +29,7 @@
       "delete": "löschen",
       "fileInfo": "Einzelheiten",
       "uploadFile": "Daten hochladen",
+      "export": "Export",
       "tab": {
         "local": "lokal",
         "cloud": "Wolkenfotogalerie"
@@ -40,27 +41,28 @@
       "needAccount": "Diese Funktion erfordert ein Konto, bitte melden Sie sich zuerst an",
       "tabs": {
         "activities": "dynamisch",
-        "trend": "Heiße Fälle",
+        "tourRecord": "Browser-Verlauf",
         "trace": "Schiene",
-        "tourRecord": "Browser-Verlauf"
+        "trend": "Heiße Fälle"
       },
       "screen": {
-        "report": "Bericht",
         "banAppeal": "appellieren",
-        "signup": "neuer Benutzer",
-        "judgement": "Beurteilung"
+        "judgement": "Beurteilung",
+        "report": "Bericht",
+        "signup": "neuer Benutzer"
       },
       "paging": "Seite {num}"
     },
     "splash": {
-      "guide": "Erststart",
       "account": "Kontoinformationen laden",
-      "token": "Konfiguration der Benutzeridentität",
-      "message": "Nachricht aktualisieren",
-      "version": "Überprüfen Sie den Versionsdienst",
-      "theme": "Initialisieren Sie das Design",
       "appInitial": "Initialisierungsanwendung",
-      "networkError": "Die Anwendung ist nicht mit dem Netzwerk verbunden und das Programm ist auf Onlinedienste angewiesen"
+      "dir": "Primäre speicherkonfiguration",
+      "guide": "Erststart",
+      "message": "Nachricht aktualisieren",
+      "networkError": "Die Anwendung ist nicht mit dem Netzwerk verbunden und das Programm ist auf Onlinedienste angewiesen",
+      "theme": "Initialisieren Sie das Design",
+      "token": "Konfiguration der Benutzeridentität",
+      "version": "Überprüfen Sie den Versionsdienst"
     },
     "guide": {
       "endNext": "Beenden",
@@ -135,6 +137,14 @@
         "media": {
           "title": "Medienbibliothek",
           "describe": "Fotos, videos, hochladen Von dateien, verwaltung"
+        },
+        "dirConfiguration": {
+          "title": "Speichereinrichtung",
+          "scanDirectoryTitle": "Liste einscannen",
+          "scanDirectoryDescription": "Wählen sie ordner einscannen (auswahl)",
+          "defaultSavePathTitle": "Standard download position erkannt",
+          "defaultSavePathDirectory": "Download der bevorzugte speicherort im programm",
+          "leastOneHint": "Nimm wenigstens eine!"
         },
         "website": {
           "title": "Webseitenadressse",
