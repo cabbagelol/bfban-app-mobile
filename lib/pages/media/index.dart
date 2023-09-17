@@ -13,6 +13,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../constants/api.dart';
 import '../../data/index.dart';
+import '../../provider/dir_provider.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/index.dart';
 import '../../widgets/hint_login.dart';
@@ -41,6 +42,10 @@ class _mediaPageState extends State<MediaPage> {
 
   final ScrollController _scrollNetworkController = ScrollController();
 
+  DirProvider? dirProvider;
+
+  FileManagement fileManagement = FileManagement();
+
   ProviderUtil providerUtil = ProviderUtil();
 
   MediaStatus mediaStatus = MediaStatus(
@@ -68,9 +73,11 @@ class _mediaPageState extends State<MediaPage> {
 
   @override
   void initState() {
-    _getNetworkMediaInfo();
+    dirProvider = Provider.of<DirProvider>(context, listen: false);
+
     _getLocalMediaFiles();
     _getNetworkMediaList();
+    _getNetworkMediaInfo();
 
     _scrollNetworkController.addListener(() {
       if (_scrollNetworkController.position.pixels == _scrollNetworkController.position.maxScrollExtent) {
@@ -178,30 +185,25 @@ class _mediaPageState extends State<MediaPage> {
   /// [Event]
   /// 获取本地媒体列表
   Future _getLocalMediaFiles() async {
-    Directory extDir = await getApplicationSupportDirectory();
-    Directory path = Directory('${extDir.path}/media');
-
-    if (!path.existsSync()) {
-      path.createSync(recursive: true);
-    }
-
-    List pathFiles = path.listSync(recursive: true);
-
+    List pathFiles = await dirProvider!.getAllFile(laterPath: '/media');
     setState(() {
       mediaStatus.setList(pathFiles, MediaType.Local);
     });
+    return true;
   }
 
   /// [Event]
   /// 从公共相册导入APP文件
   importingFiles() async {
-    final Directory extDir = await getApplicationSupportDirectory();
-    final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
-    final fileName = const Uuid().v4(options: {'name': image?.name});
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 100, requestFullMetadata: true);
+      final String fileName = "${const Uuid().v4(options: {'name': image?.name})}.${fileManagement.splitFileUrl(image!.name)["fileExtension"]}";
 
-    if (image != null) await File(image.path).copy("${fileDir.path}/$fileName");
+      await File(image.path).copy("${dirProvider!.currentDefaultSavePath}/media/$fileName");
+    } catch (err) {
+      rethrow;
+    }
   }
 
   /// [Event]
@@ -360,7 +362,7 @@ class _mediaPageState extends State<MediaPage> {
 
     if (result["code"] == 1) {
       // 标记
-      Map splitFileUrl = FileManagement().splitFileUrl(i.file.path);
+      Map splitFileUrl = fileManagement.splitFileUrl(i.file.path);
       String newPath = "${i.file.parent.path}/${splitFileUrl["fileName"]}_[Uploaded].${splitFileUrl["fileExtension"]}";
       i.file.renameSync(newPath);
 
@@ -447,11 +449,11 @@ class _mediaPageState extends State<MediaPage> {
   Future<void> _onRefresh(MediaType type) async {
     switch (type) {
       case MediaType.Local:
-        _getLocalMediaFiles();
+        await _getLocalMediaFiles();
         break;
       case MediaType.Network:
         cloudMediaStatus.parame!.resetPage();
-        _getNetworkMediaList();
+        await _getNetworkMediaList();
         break;
     }
     return;
@@ -462,7 +464,7 @@ class _mediaPageState extends State<MediaPage> {
   Future _getMore(MediaType type) async {
     switch (type) {
       case MediaType.Local:
-        _getLocalMediaFiles();
+        await _getLocalMediaFiles();
         break;
       case MediaType.Network:
         cloudMediaStatus.parame!.nextPage(count: cloudMediaStatus.parame!.limit!);
@@ -477,13 +479,13 @@ class _mediaPageState extends State<MediaPage> {
     String size = "";
     double limit = double.parse(value.toString());
     if (limit < 0.1 * 1024) {
-      size = limit.toStringAsFixed(2) + "B";
+      size = "${limit.toStringAsFixed(2)}B";
     } else if (limit < 0.1 * 1024 * 1024) {
-      size = (limit / 1024).toStringAsFixed(2) + "KB";
+      size = "${(limit / 1024).toStringAsFixed(2)}KB";
     } else if (limit < 0.1 * 1024 * 1024 * 1024) {
-      size = (limit / (1024 * 1024)).toStringAsFixed(2) + "MB";
+      size = "${(limit / (1024 * 1024)).toStringAsFixed(2)}MB";
     } else {
-      size = (limit / (1024 * 1024 * 1024)).toStringAsFixed(2) + "GB";
+      size = "${(limit / (1024 * 1024 * 1024)).toStringAsFixed(2)}GB";
     }
 
     String sizeStr = size.toString();
@@ -500,6 +502,14 @@ class _mediaPageState extends State<MediaPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(FlutterI18n.translate(context, "app.setting.cell.media.title")),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _urlUtil.opEnPage(context, "/profile/dir/configuration");
+            },
+            icon: const Icon(Icons.settings),
+          ),
+        ],
       ),
       body: DefaultTabController(
         length: 2,
@@ -553,7 +563,22 @@ class _mediaPageState extends State<MediaPage> {
                             margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                             child: Row(
                               children: [
-                                Expanded(flex: 1, child: Container()),
+                                Expanded(
+                                  flex: 1,
+                                  child: Wrap(
+                                    spacing: 7,
+                                    children: [
+                                      Wrap(
+                                        spacing: 2,
+                                        crossAxisAlignment: WrapCrossAlignment.center,
+                                        children: [
+                                          const Icon(Icons.file_present_sharp),
+                                          Text("${mediaStatus.list.length} file"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 TextButton(
                                   onPressed: () async {
                                     _openCamera();
@@ -653,17 +678,18 @@ class _mediaPageState extends State<MediaPage> {
                                                           Container(
                                                             margin: const EdgeInsets.only(top: 10),
                                                             width: 150,
-                                                            child: LinearProgressIndicator(
-                                                              value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
-                                                              minHeight: 4,
-                                                              backgroundColor: Theme.of(context).cardTheme.color,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                              ],
-                                            ),
-                                          )),
+                                                          child: LinearProgressIndicator(
+                                                            value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
+                                                            minHeight: 4,
+                                                            backgroundColor: Theme.of(context).cardTheme.color,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                       TextButton(
                                         onPressed: () async {
                                           _getNetworkMediaInfo();
@@ -784,9 +810,16 @@ class _MediaCardState extends State<MediaCard> {
               children: [
                 if (widget.i.type == MediaType.Local)
                   ClipPath(
-                    child: MediaIconCard(
-                      i: widget.i,
-                      filetype: _filetype,
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        if (widget.i.type == MediaType.Local && widget.onTapOpenFile != null) {
+                          widget.onTapOpenFile!();
+                        }
+                      },
+                      child: MediaIconCard(
+                        i: widget.i,
+                        filetype: _filetype,
+                      ),
                     ),
                   )
                 else
@@ -985,13 +1018,19 @@ class MediaIconCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (filetype == FileType.IMAGE)
-          Image.file(
-            i.file,
-            fit: BoxFit.cover,
-            filterQuality: FilterQuality.low,
+          Expanded(
+            flex: 1,
+            child: Image.file(
+              i.file,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.low,
+              repeat: ImageRepeat.noRepeat,
+            ),
           )
         else if (filetype == FileType.VIDEO)
           const Icon(

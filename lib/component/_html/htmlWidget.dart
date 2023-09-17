@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bfban/component/_html/html.dart';
 import 'package:bfban/component/_html/htmlFullScreen.dart';
 import 'package:bfban/component/_html/htmlTextTranslator.dart';
-import 'package:bfban/pages/profile/setting/setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -31,13 +30,17 @@ class HtmlWidget extends StatefulWidget {
   String? id;
   bool? footerToolBar;
 
+  // 选项变动
+  Function? onChangeOption;
+
   HtmlWidget({
     Key? key,
-    this.content,
+    this.content = "",
     HtmlWidgetFontSize? size = HtmlWidgetFontSize.Default,
     this.quote,
     this.id,
     this.footerToolBar = true,
+    this.onChangeOption,
   }) : super(key: key);
 
   @override
@@ -74,17 +77,18 @@ class _HtmlWidgetState extends State<HtmlWidget> {
   Future onReady() async {
     htmlStyle = [
       {
-        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 5)),
+        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 15)),
         "body": Style(
-          fontSize: FontSize(12),
+          fontSize: FontSize(20),
         ),
         "img": Style(
           color: Theme.of(context).primaryColorDark,
           backgroundColor: Theme.of(context).primaryColorDark,
-          margin: Margins.symmetric(vertical: 5),
+          margin: Margins.symmetric(vertical: 10),
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
+          margin: Margins.symmetric(vertical: 3),
         ),
         "a": Style(color: Theme.of(context).primaryColorDark)
       },
@@ -100,24 +104,26 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
+          margin: Margins.symmetric(vertical: 3),
         ),
-        "a": Style(color: Theme.of(context).primaryColorDark)
+        "a": Style(color: Theme.of(context).primaryColorDark),
       },
       {
-        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 15)),
+        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 5)),
         "body": Style(
-          fontSize: FontSize(20),
+          fontSize: FontSize(12),
         ),
         "img": Style(
           color: Theme.of(context).primaryColorDark,
           backgroundColor: Theme.of(context).primaryColorDark,
-          margin: Margins.symmetric(vertical: 7),
+          margin: Margins.symmetric(vertical: 3),
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
+          margin: Margins.zero,
         ),
         "a": Style(color: Theme.of(context).primaryColorDark)
-      }
+      },
     ];
     return htmlStyle;
   }
@@ -131,9 +137,9 @@ class _HtmlWidgetState extends State<HtmlWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext _context) {
+        builder: (BuildContext context) {
           return HtmlFullScreen(
-            content: widget.content!,
+            content: widget.content! ?? "",
             style: htmlStyle[2],
           );
         },
@@ -154,87 +160,99 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            /// html widget content
             if (widget.quote != null) widget.quote!,
-            [
-              SelectionArea(
-                child: Html(
-                  data: htmlEscape.convert(widget.content.toString()),
-                  style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
-                ),
-              ),
-              SelectionArea(
-                child: HtmlCore(
-                  data: widget.content,
-                  style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
-                ),
-              ),
-            ][int.parse(dropdownRenderingSelectedValue)],
-            HtmlTextTranslator(content: widget.content!),
-            if (widget.footerToolBar!) const Divider(height: 1),
-            if (widget.footerToolBar!)
-              SizedBox(
-                height: 20,
-                child: Row(
-                  children: [
-                    InkWell(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 4),
-                        child: const Icon(Icons.fullscreen, size: 16),
-                      ),
-                      onTap: () {
-                        _opEnFullScreenPreview(context);
-                      },
-                    ),
-                    const Expanded(child: SizedBox(width: 1)),
-                    DropdownButton(
-                      underline: Container(),
-                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
-                      ),
-                      items: dropdownSizeType.map<DropdownMenuItem<String>>((e) {
-                        return DropdownMenuItem(
-                          value: e["value"],
-                          child: Text(e["name"]),
-                        );
-                      }).toList(),
-                      value: dropdownSizeTypeSelectedValue,
-                      onChanged: (selected) {
-                        setState(() {
-                          dropdownSizeTypeSelectedValue = selected;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      width: 20,
-                      height: 8,
-                      child: VerticalDivider(width: 1),
-                    ),
-                    DropdownButton(
-                      elevation: 2,
-                      underline: Container(),
-                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
-                      ),
-                      items: dropdownRenderingMethods.map<DropdownMenuItem<String>>((e) {
-                        return DropdownMenuItem(
-                          value: e["value"],
-                          child: Text(e["name"]),
-                        );
-                      }).toList(),
-                      value: dropdownRenderingSelectedValue,
-                      onChanged: (selected) {
-                        setState(() {
-                          dropdownRenderingSelectedValue = selected;
-                        });
 
-                        eventUtil.emit("html-image-update-widget", {});
-                      },
-                    )
-                  ],
+            SelectionArea(
+              child: [
+                Html(
+                  data: htmlEscape.convert(widget.content ?? ""),
+                  style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
+                ),
+                HtmlCore(
+                  data: widget.content ?? "",
+                  style: htmlStyle[int.parse(dropdownSizeTypeSelectedValue)],
+                ),
+              ][int.parse(dropdownRenderingSelectedValue)],
+            ),
+            HtmlTextTranslator(content: widget.content ?? ""),
+
+            /// html widget footer bar
+            if (widget.footerToolBar!)
+              Divider(
+                thickness: 1,
+                height: 1,
+                color: Theme.of(context).dividerColor.withOpacity(.08),
+              ),
+            if (widget.footerToolBar!)
+              ClipPath(
+                clipBehavior: Clip.hardEdge,
+                child: SizedBox(
+                  height: 20,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 4),
+                          child: const Icon(Icons.fullscreen, size: 16),
+                        ),
+                        onTap: () {
+                          _opEnFullScreenPreview(context);
+                        },
+                      ),
+                      const Expanded(flex: 2, child: SizedBox(width: 5)),
+                      DropdownButton(
+                        underline: Container(),
+                        dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                        items: dropdownSizeType.map<DropdownMenuItem<String>>((e) {
+                          return DropdownMenuItem(
+                            value: e["value"],
+                            child: Text(e["name"]),
+                          );
+                        }).toList(),
+                        value: dropdownSizeTypeSelectedValue,
+                        onChanged: (selected) {
+                          setState(() {
+                            dropdownSizeTypeSelectedValue = selected;
+                          });
+
+                          if (widget.onChangeOption != null) widget.onChangeOption!();
+                        },
+                      ),
+                      const SizedBox(
+                        width: 20,
+                        height: 8,
+                        child: VerticalDivider(width: 1),
+                      ),
+                      DropdownButton(
+                        elevation: 2,
+                        underline: Container(),
+                        dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                        items: dropdownRenderingMethods.map<DropdownMenuItem<String>>((e) {
+                          return DropdownMenuItem(
+                            value: e["value"],
+                            child: Text(e["name"]),
+                          );
+                        }).toList(),
+                        value: dropdownRenderingSelectedValue,
+                        onChanged: (selected) {
+                          setState(() {
+                            dropdownRenderingSelectedValue = selected;
+                          });
+
+                          if (widget.onChangeOption != null) widget.onChangeOption!();
+                        },
+                      )
+                    ],
+                  ),
                 ),
               )
           ],
@@ -252,6 +270,28 @@ class CardUtil {
   /// 自定义控件
   List<HtmlExtension> customRenders() {
     return [
+      // 换行
+      // TagExtension(
+      //   tagsToExtend: {"br"},
+      //   builder: (extensionContext) {
+      //     return Wrap(
+      //       children: [
+      //         Opacity(
+      //           opacity: .5,
+      //           child: SvgPicture.asset(
+      //             "assets/images/wrap-icon.svg",
+      //             allowDrawingOutsideViewBox: true,
+      //             excludeFromSemantics: true,
+      //             matchTextDirection: true,
+      //             width: 10,
+      //             height: 10,
+      //             color: extensionContext.style!.color!,
+      //           ),
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // ),
       // 链接
       TagExtension(
         tagsToExtend: {"a"},
@@ -268,7 +308,12 @@ class CardUtil {
         tagsToExtend: {"img"},
         builder: (extensionContext) {
           return Container(
-            margin: const EdgeInsets.symmetric(vertical: 2),
+            margin: EdgeInsets.only(
+              top: extensionContext.style!.margin!.top!.value,
+              left: extensionContext.style!.margin!.left!.value,
+              right: extensionContext.style!.margin!.right!.value,
+              bottom: extensionContext.style!.margin!.bottom!.value,
+            ),
             child: HtmlImage(
               src: extensionContext.node.attributes["src"],
               color: extensionContext.style!.color,
@@ -405,20 +450,20 @@ class CardUtil {
   /// 默认样式表
   Map<String, Style> styleHtml(BuildContext context) {
     return {
+      "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 10)),
       "body": Style(
-        padding: HtmlPaddings.zero,
-        margin: Margins.zero,
+        fontSize: FontSize(15),
       ),
       "img": Style(
         color: Theme.of(context).primaryColorDark,
         backgroundColor: Theme.of(context).primaryColorDark,
-        padding: HtmlPaddings.symmetric(vertical: 5),
+        margin: Margins.symmetric(vertical: 7),
       ),
       "p": Style(
-        fontSize: FontSize(15),
         color: Theme.of(context).textTheme.displayMedium!.color,
+        margin: Margins.symmetric(vertical: 3),
       ),
-      "a": Style(color: Colors.blue)
+      "a": Style(color: Theme.of(context).primaryColorDark),
     };
   }
 
@@ -441,7 +486,7 @@ class CardUtil {
     });
 
     _urlUtil.opEnPage(context, "/reply/$content").then((value) {
-      if (callback) callback(value);
+      if (callback != null) callback();
     });
   }
 }

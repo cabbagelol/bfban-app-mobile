@@ -13,6 +13,7 @@ class AppNetworkItem extends BaseUrl {
   bool load;
   int status;
   int statusCode;
+  List statusLogs;
   num ms;
   String name;
 
@@ -20,6 +21,7 @@ class AppNetworkItem extends BaseUrl {
     this.load = false,
     this.status = 0,
     this.statusCode = 0, // Success should be >= 200 < 300
+    this.statusLogs = const [],
     this.ms = 0,
     this.name = "",
   });

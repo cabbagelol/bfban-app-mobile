@@ -1,5 +1,7 @@
 /// 应用路由
 
+import 'dart:io';
+
 import 'package:bfban/pages/detail/user_space.dart';
 import 'package:bfban/pages/license/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
@@ -34,6 +36,7 @@ import '../pages/camera/index.dart';
 import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
 import '../pages/media/Insert.dart';
+import '../pages/media/dir_configuration.dart';
 import '../pages/media/index.dart';
 import '../pages/chat/index.dart';
 import '../pages/profile/account/information.dart';
@@ -137,6 +140,12 @@ class Routes {
         "item": (context, params) {
           return const InsertMediaPage();
         }
+      },
+      {
+        "url": "/profile/dir/configuration",
+        "item": (context, params) {
+          return const directoryConfigurationPage();
+        },
       },
       {
         "url": "/player/dbId/:dbId",

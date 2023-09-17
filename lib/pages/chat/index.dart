@@ -389,11 +389,7 @@ class _MessagePageState extends State<MessagePage> {
             );
           default:
             return Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                centerTitle: true,
-              ),
+              appBar: AppBar(),
               body: const Center(
                 child: CircularProgressIndicator(),
               ),

@@ -30,6 +30,12 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
   List<CustomReplyItem> useTemplates = [];
 
   @override
+  void initState() {
+    _upTemplateData();
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     _upTemplateData();
     super.didChangeDependencies();
@@ -86,8 +92,10 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
         item.mapAsObject = i;
         list.add(item);
       }
-      setState(() {});
     }
+
+    // update view
+    setState(() {});
   }
 
   /// [Event]
@@ -114,6 +122,8 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const SizedBox(height: 2),
+
+        /// customContent
         if (list.isNotEmpty)
           Container(
             margin: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
@@ -124,7 +134,7 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
                 return InkWell(
                   child: Container(
                     constraints: const BoxConstraints(
-                      maxWidth: 165,
+                      maxWidth: 185,
                       minWidth: 80,
                     ),
                     child: Column(
@@ -147,6 +157,8 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
             ),
           ),
         if (list.isNotEmpty) const Divider(height: 1),
+
+        /// footer toolbar
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(

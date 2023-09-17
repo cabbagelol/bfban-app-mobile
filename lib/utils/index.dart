@@ -9,7 +9,6 @@ export 'media_management.dart';
 export 'file.dart';
 export 'version.dart';
 export 'upload.dart';
-export 'camera.dart';
 export 'provider.dart';
 export 'util.dart';
 export 'regular.dart';

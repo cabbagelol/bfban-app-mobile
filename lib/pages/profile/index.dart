@@ -185,21 +185,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
                 ),
               ),
               EluiCellComponent(
-                title: FlutterI18n.translate(context, "app.setting.cell.website.title"),
-                label: FlutterI18n.translate(context, "app.setting.cell.website.describe"),
-                theme: EluiCellTheme(
-                  titleColor: Theme.of(context).textTheme.titleMedium?.color,
-                  labelColor: Theme.of(context).textTheme.displayMedium?.color,
-                  linkColor: Theme.of(context).textTheme.titleMedium?.color,
-                  backgroundColor: Theme.of(context).cardTheme.color,
-                ),
-                islink: true,
-                onTap: () => _urlUtil.onPeUrl(
-                  Config.apiHost["web_site"]!.url,
-                  mode: LaunchMode.externalApplication,
-                ),
-              ),
-              EluiCellComponent(
                 title: FlutterI18n.translate(context, "app.setting.cell.resources.title"),
                 label: FlutterI18n.translate(context, "app.setting.cell.resources.describe"),
                 theme: EluiCellTheme(

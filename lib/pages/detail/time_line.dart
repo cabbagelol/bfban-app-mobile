@@ -56,6 +56,11 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       }
     });
 
+    // 订阅通知时间轴列表更新
+    eventUtil.on("updateTimeline-event", (arg) {
+      getTimeline();
+    });
+
     getTimeline();
 
     super.initState();

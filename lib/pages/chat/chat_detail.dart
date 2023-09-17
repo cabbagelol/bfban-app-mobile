@@ -137,9 +137,8 @@ class _chatDetailPageState extends State<ChatDetailPage> {
           default:
             return Scaffold(
               appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
                 centerTitle: true,
+                title: Text(userinfo.data!.username.toString()),
               ),
               body: const Center(
                 child: CircularProgressIndicator(),

@@ -33,8 +33,9 @@ class _HtmlCoreState extends State<HtmlCore> {
   /// [Event]
   /// 包装器
   void packagingRender() {
-    String vDom = "<div>${widget.data ?? ""}</div>";
     if (widget.data!.isEmpty) return;
+
+    String vDom = "<div class='root'>${widget.data ?? ""}</div>";
 
     // p
     Iterable<RegExpMatch> p = _regular.getCheckText(RegularType.P, widget.data);
@@ -99,6 +100,7 @@ class _HtmlCoreState extends State<HtmlCore> {
       data: renderView,
       style: widget.style ?? _detailApi.styleHtml(context),
       extensions: _detailApi.customRenders(),
+      shrinkWrap: true,
     );
   }
 }

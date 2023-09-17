@@ -71,6 +71,12 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   void initState() {
+    _listWidgetPage = [
+      const homePage(),
+      PlayerListPage(key: playerListPage),
+      const UserCenterPage(),
+    ];
+
     _onUserTokenExpired();
     super.initState();
   }
@@ -239,12 +245,6 @@ class _IndexPageState extends State<IndexPage> {
       },
       child: Consumer<AppInfoProvider>(
         builder: (context, appInfo, child) {
-          _listWidgetPage = [
-            const homePage(),
-            PlayerListPage(key: playerListPage),
-            const UserCenterPage(),
-          ];
-
           return LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               if (constraints.maxWidth < 1024) {
@@ -422,7 +422,7 @@ class _IndexPageState extends State<IndexPage> {
                   bottomNavigationBar: BottomNavigationBar(
                     type: BottomNavigationBarType.fixed,
                     showSelectedLabels: true,
-                    showUnselectedLabels: true,
+                    showUnselectedLabels: false,
                     items: navs.map((nav) {
                       return BottomNavigationBarItem(
                         icon: nav!["icon"],

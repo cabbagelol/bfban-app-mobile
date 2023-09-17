@@ -14,12 +14,21 @@ class HtmlLink extends StatelessWidget {
 
   TextStyle? style;
 
+  bool softWrap;
+
+  int? maxLines;
+
+  TextOverflow? overflow;
+
   HtmlLink({
     Key? key,
     required this.url,
     this.color = Colors.blue,
     this.text,
     this.style,
+    this.softWrap = true,
+    this.maxLines,
+    this.overflow,
   }) : super(key: key);
 
   /// [Event]
@@ -41,27 +50,34 @@ class HtmlLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Text.rich(
-        TextSpan(
-          style: TextStyle(
-            color: color,
-            decorationColor: color!.withOpacity(.7),
+      child: Tooltip(
+        message: url,
+        child: Text.rich(
+          TextSpan(
+            style: TextStyle(
+              color: color,
+              decorationColor: color!.withOpacity(.7),
+            ),
+            children: [
+              WidgetSpan(
+                child: Container(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: linkIcon(),
+                ),
+              ),
+              TextSpan(
+                text: (text ?? url).toString().trim(),
+                style: (style ?? const TextStyle()).copyWith(
+                  decoration: TextDecoration.underline,
+                  decorationStyle: TextDecorationStyle.dotted,
+                ),
+              ),
+            ],
           ),
-          children: [
-            WidgetSpan(
-              child: Container(
-                padding: const EdgeInsets.only(right: 5),
-                child: linkIcon(),
-              ),
-            ),
-            TextSpan(
-              text: (text ?? url).toString().trim(),
-              style: (style ?? const TextStyle()).copyWith(
-                decoration: TextDecoration.underline,
-                decorationStyle: TextDecorationStyle.dotted,
-              ),
-            ),
-          ],
+          softWrap: softWrap,
+          maxLines: maxLines,
+          overflow: overflow,
+          textWidthBasis: (!softWrap) ? TextWidthBasis.longestLine : TextWidthBasis.parent,
         ),
       ),
       onTap: () {

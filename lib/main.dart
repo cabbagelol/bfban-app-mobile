@@ -2,6 +2,7 @@
 
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/provider/chat_provider.dart';
+import 'package:bfban/provider/dir_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
 import 'package:bfban/provider/translation_provider.dart';
@@ -31,16 +32,14 @@ void runMain() async {
   Routes.configureRoutes(FluroRouter());
 
   // 设置系统状态栏
-  // SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
-  //   statusBarColor: Colors.transparent,
-  //   statusBarBrightness: Brightness.light,
-  // );
-  // SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  Sentry.init((options) {
-    options.dsn = Config.apiHost["sentry"]!.url;
-  });
+  // Sentry
+  if (Config.env == Env.PROD) {
+    Sentry.init((options) {
+      options.dsn = Config.apiHost["sentry"]!.url;
+    });
+  }
 
   runApp(const BfBanApp());
 
@@ -67,13 +66,14 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => TranslationProvider()),
         ChangeNotifierProvider(create: (context) => PublicApiTranslationProvider()),
         ChangeNotifierProvider(create: (context) => CaptchaProvider()),
+        ChangeNotifierProvider(create: (context) => DirProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (BuildContext? themeContext, themeData, Widget? child) {
           return Consumer<TranslationProvider>(
             builder: (BuildContext? context, langData, Widget? child) {
               return MaterialApp(
-                debugShowCheckedModeBanner: false,
+                debugShowCheckedModeBanner: Config.env == Env.DEV,
                 theme: themeData.currentThemeData,
                 initialRoute: '/splash',
                 supportedLocales: const [
@@ -90,8 +90,8 @@ class _BfBanAppState extends State<BfBanApp> {
                       basePath: "assets/lang",
                       baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
                       useCountryCode: false,
-                      fallback: "zh_CN",
-                      forcedLocale: Locale(langData.currentLang.isEmpty ? "zh_CN" : langData.currentLang),
+                      fallback: langData.defaultLang,
+                      forcedLocale: Locale(langData.currentLang.isEmpty ? langData.defaultLang : langData.currentLang),
                     ),
                   )
                 ],

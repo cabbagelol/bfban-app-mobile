@@ -55,7 +55,7 @@ dependencies:
   url_launcher: ^6.1.10
 
   # (图像or文件)选择器 https://pub.flutter-io.cn/packages/image_picker
-  image_picker: ^0.8.1
+  image_picker: ^1.0.0
   image: any
 
   # 图片扩展(裁剪) https://pub.flutter-io.cn/packages/extended_image
