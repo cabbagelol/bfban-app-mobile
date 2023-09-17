@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_button/index.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
@@ -97,38 +98,40 @@ class TimeLineBaseCard extends StatefulWidget {
   }
 
   @override
-  State<TimeLineBaseCard> createState() => _TimeLineBaseCardState();
+  State<TimeLineBaseCard> createState() => TimeLineBaseCardState();
 }
 
-class _TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerProviderStateMixin {
+class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerProviderStateMixin {
   final GlobalKey contentHtmlBaseKey = GlobalKey();
 
   // 当前内容高度
   double currentBodyHeight = 0;
 
-  /// [Event]
-  /// 设置垂直线高度
-  _getWidgetHeight() {
-    if (mounted) {
-      setState(() {
-        currentBodyHeight = contentHtmlBaseKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
-      });
-    }
-  }
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _getWidgetHeight();
-    });
-
-    eventUtil.on("html-image-update-widget", (e) {
-      Future.delayed(const Duration(microseconds: 300), () {
-        _getWidgetHeight();
-      });
+      updateWidgetHeight();
     });
 
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  /// [Event]
+  /// 设置垂直线高度
+  updateWidgetHeight() {
+    Future.delayed(const Duration(milliseconds: 25), () {
+      if (mounted) {
+        double semanticBounds = contentHtmlBaseKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
+        setState(() {
+          if (semanticBounds != currentBodyHeight) currentBodyHeight = semanticBounds;
+        });
+      }
+    });
   }
 
   @override
@@ -136,8 +139,11 @@ class _TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPr
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
+        Container(
           height: currentBodyHeight,
+          constraints: BoxConstraints(
+            minHeight: 50,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -147,7 +153,7 @@ class _TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPr
               ),
               if (widget.isShowLine!)
                 Flexible(
-                  flex: 1,
+                  flex: 2,
                   child: Container(
                     color: Theme.of(context).dividerTheme.color,
                     width: 2,
@@ -234,6 +240,14 @@ class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
           flex: 1,
           child: Wrap(
             children: [
+              // if (widget.isShowShare)
+              //   IconButton(
+              //     onPressed: () {},
+              //     icon: const Icon(
+              //       Icons.share_outlined,
+              //       size: 17,
+              //     ),
+              //   ),
               if (widget.isShowReply)
                 IconButton(
                   onPressed: () {
@@ -247,13 +261,6 @@ class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
                     size: 17,
                   ),
                 ),
-              // if (widget.isShowShare)
-              //   IconButton(
-              //     onPressed: () {},
-              //     icon: const Icon(
-              //       Icons.share_outlined,
-              //     ),
-              //   ),
             ],
           ),
         ),

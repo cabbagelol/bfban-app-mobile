@@ -189,6 +189,7 @@ class _mediaPageState extends State<MediaPage> {
     setState(() {
       mediaStatus.setList(pathFiles, MediaType.Local);
     });
+    return true;
   }
 
   /// [Event]
@@ -448,11 +449,11 @@ class _mediaPageState extends State<MediaPage> {
   Future<void> _onRefresh(MediaType type) async {
     switch (type) {
       case MediaType.Local:
-        _getLocalMediaFiles();
+        await _getLocalMediaFiles();
         break;
       case MediaType.Network:
         cloudMediaStatus.parame!.resetPage();
-        _getNetworkMediaList();
+        await _getNetworkMediaList();
         break;
     }
     return;
@@ -463,7 +464,7 @@ class _mediaPageState extends State<MediaPage> {
   Future _getMore(MediaType type) async {
     switch (type) {
       case MediaType.Local:
-        _getLocalMediaFiles();
+        await _getLocalMediaFiles();
         break;
       case MediaType.Network:
         cloudMediaStatus.parame!.nextPage(count: cloudMediaStatus.parame!.limit!);
@@ -677,17 +678,18 @@ class _mediaPageState extends State<MediaPage> {
                                                           Container(
                                                             margin: const EdgeInsets.only(top: 10),
                                                             width: 150,
-                                                            child: LinearProgressIndicator(
-                                                              value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
-                                                              minHeight: 4,
-                                                              backgroundColor: Theme.of(context).cardTheme.color,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                              ],
-                                            ),
-                                          )),
+                                                          child: LinearProgressIndicator(
+                                                            value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
+                                                            minHeight: 4,
+                                                            backgroundColor: Theme.of(context).cardTheme.color,
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
                                       TextButton(
                                         onPressed: () async {
                                           _getNetworkMediaInfo();
@@ -808,9 +810,16 @@ class _MediaCardState extends State<MediaCard> {
               children: [
                 if (widget.i.type == MediaType.Local)
                   ClipPath(
-                    child: MediaIconCard(
-                      i: widget.i,
-                      filetype: _filetype,
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        if (widget.i.type == MediaType.Local && widget.onTapOpenFile != null) {
+                          widget.onTapOpenFile!();
+                        }
+                      },
+                      child: MediaIconCard(
+                        i: widget.i,
+                        filetype: _filetype,
+                      ),
                     ),
                   )
                 else
@@ -1020,6 +1029,7 @@ class MediaIconCard extends StatelessWidget {
               i.file,
               fit: BoxFit.cover,
               filterQuality: FilterQuality.low,
+              repeat: ImageRepeat.noRepeat,
             ),
           )
         else if (filetype == FileType.VIDEO)

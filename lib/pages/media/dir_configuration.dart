@@ -2,6 +2,7 @@ import 'package:bfban/provider/dir_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,12 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
 
   ready() async {
     dirProvider = Provider.of<DirProvider>(context, listen: false);
+
+    // 当可选的存储位置丢失（SD拔出），将代替原来
+    if (paths.isNotEmpty && paths.where((element) => element.dirName == dirProvider!.defaultSavePathValue).isEmpty) {
+      dirProvider!.defaultSavePathValue = paths.first.dirName;
+      dirProvider!.notifyListeners();
+    }
 
     setState(() {
       paths = dirProvider!.paths;
@@ -88,6 +95,20 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
               const SizedBox(height: 5),
               EluiCellComponent(
                 title: FlutterI18n.translate(context, "扫描位置"),
+                cont: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: paths.where((element) => element.check!).indexed.map((e) {
+                      return Opacity(
+                        opacity: .6,
+                        child: Text(
+                          "${e.$2.toMap["dirName"].toString().toUpperCase()} ${e.$1 + 1}",
+                          style: TextStyle(fontSize: FontSize.xxSmall.value),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
                 label: "选择扫描文件目录(多选)",
               ),
               Column(
@@ -105,7 +126,12 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
                     title: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(e.dirName),
+                        Text(
+                          e.dirName.toUpperCase(),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                     subtitle: Text(e.basicPath),

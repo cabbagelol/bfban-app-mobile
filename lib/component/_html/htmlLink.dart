@@ -77,7 +77,7 @@ class HtmlLink extends StatelessWidget {
           softWrap: softWrap,
           maxLines: maxLines,
           overflow: overflow,
-          textWidthBasis: TextWidthBasis.longestLine,
+          textWidthBasis: (!softWrap) ? TextWidthBasis.longestLine : TextWidthBasis.parent,
         ),
       ),
       onTap: () {

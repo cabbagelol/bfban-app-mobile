@@ -24,35 +24,22 @@ class HistoryNameCard extends StatelessWidget {
       type: TimeLineItemType.historyName,
       isShowLine: maxDataCount > 1 && index < maxDataCount,
       header: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // 标题
-                  Text.rich(
-                    TextSpan(
-                      style: const TextStyle(fontSize: 16, height: 1.5),
-                      children: [
-                        TextSpan(
-                          text: "\t${FlutterI18n.translate(context, "detail.appeal.info.changeName")}\t",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        TextSpan(
-                          text: "\t·\t${Date().getTimestampTransferCharacter(data["fromTime"])["Y_D_M"]}",
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+        // 标题
+        Text.rich(
+          TextSpan(
+            style: const TextStyle(fontSize: 16, height: 1.5),
+            children: [
+              TextSpan(
+                text: "\t${FlutterI18n.translate(context, "detail.appeal.info.changeName")}\t",
+                style: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                ),
               ),
-            ),
-          ],
+              TextSpan(
+                text: "\t·\t${Date().getTimestampTransferCharacter(data["fromTime"])["Y_D_M"]}",
+              )
+            ],
+          ),
         ),
       ],
       content: Container(

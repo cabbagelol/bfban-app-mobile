@@ -30,6 +30,9 @@ class HtmlWidget extends StatefulWidget {
   String? id;
   bool? footerToolBar;
 
+  // 选项变动
+  Function? onChangeOption;
+
   HtmlWidget({
     Key? key,
     this.content = "",
@@ -37,6 +40,7 @@ class HtmlWidget extends StatefulWidget {
     this.quote,
     this.id,
     this.footerToolBar = true,
+    this.onChangeOption,
   }) : super(key: key);
 
   @override
@@ -73,9 +77,9 @@ class _HtmlWidgetState extends State<HtmlWidget> {
   Future onReady() async {
     htmlStyle = [
       {
-        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 5)),
+        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 15)),
         "body": Style(
-          fontSize: FontSize(12),
+          fontSize: FontSize(20),
         ),
         "img": Style(
           color: Theme.of(context).primaryColorDark,
@@ -84,7 +88,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
-          margin: Margins.zero,
+          margin: Margins.symmetric(vertical: 3),
         ),
         "a": Style(color: Theme.of(context).primaryColorDark)
       },
@@ -105,9 +109,9 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         "a": Style(color: Theme.of(context).primaryColorDark),
       },
       {
-        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 15)),
+        "app-hr,hr": Style(margin: Margins.symmetric(horizontal: -10, vertical: 5)),
         "body": Style(
-          fontSize: FontSize(20),
+          fontSize: FontSize(12),
         ),
         "img": Style(
           color: Theme.of(context).primaryColorDark,
@@ -116,10 +120,10 @@ class _HtmlWidgetState extends State<HtmlWidget> {
         ),
         "p": Style(
           color: Theme.of(context).textTheme.displayMedium!.color,
-          margin: Margins.symmetric(vertical: 3),
+          margin: Margins.zero,
         ),
         "a": Style(color: Theme.of(context).primaryColorDark)
-      }
+      },
     ];
     return htmlStyle;
   }
@@ -133,7 +137,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (BuildContext _context) {
+        builder: (BuildContext context) {
           return HtmlFullScreen(
             content: widget.content! ?? "",
             style: htmlStyle[2],
@@ -215,6 +219,8 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                           setState(() {
                             dropdownSizeTypeSelectedValue = selected;
                           });
+
+                          if (widget.onChangeOption != null) widget.onChangeOption!();
                         },
                       ),
                       const SizedBox(
@@ -242,7 +248,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
                             dropdownRenderingSelectedValue = selected;
                           });
 
-                          eventUtil.emit("html-image-update-widget", {});
+                          if (widget.onChangeOption != null) widget.onChangeOption!();
                         },
                       )
                     ],
