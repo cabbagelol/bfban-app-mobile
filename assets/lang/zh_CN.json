@@ -29,6 +29,7 @@
       "delete": "删除",
       "fileInfo": "详细信息",
       "uploadFile": "上传文件",
+      "export": "导出",
       "tab": {
         "local": "本地",
         "cloud": "云图库"
@@ -135,6 +136,14 @@
         "media": {
           "title": "媒体库",
           "describe": "图片,视频,上传文件,管理"
+        },
+        "dirConfiguration": {
+          "title": "配置",
+          "scanDirectoryTitle": "扫描目录",
+          "scanDirectoryDescription": "选择扫描文件目录(多选)",
+          "defaultSavePathTitle": "默认下载位置",
+          "defaultSavePathDirectory": "程序内下载首选储存位置",
+          "leastOneHint": "至少选择一个"
         },
         "website": {
           "title": "网站地址",

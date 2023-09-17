@@ -892,13 +892,25 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                             fontSize: FontSize.xLarge.value,
                                           ),
                                         ),
-                                        IconButton(
-                                          icon: const Icon(
-                                            Icons.refresh,
-                                            size: 25,
-                                          ),
-                                          onPressed: () => _seUpdateUserNameList(),
-                                        )
+                                        if (userNameList["buttonLoad"])
+                                          IconButton(
+                                            icon: const SizedBox(
+                                              width: 16,
+                                              height: 16,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                            onPressed: () {},
+                                          )
+                                        else
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.refresh,
+                                              size: 25,
+                                            ),
+                                            onPressed: () => _seUpdateUserNameList(),
+                                          )
                                       ],
                                     ),
                                   );
