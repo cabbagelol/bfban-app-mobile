@@ -563,7 +563,7 @@ class _mediaPageState extends State<MediaPage> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 2,
-                            color: Theme.of(context).textTheme.displayMedium!.color!,
+                            color: Theme.of(context).progressIndicatorTheme.color!,
                             size: 13,
                           ),
                       ],
@@ -689,9 +689,9 @@ class _mediaPageState extends State<MediaPage> {
                                               const SizedBox(width: 5),
                                               cloudMediaInfoStatus.data!.isEmpty
                                                   ? ELuiLoadComponent(
-                                                      type: "line",
+                                                type: "line",
                                                       lineWidth: 1,
-                                                      color: Theme.of(context).textTheme.titleMedium!.color!,
+                                                      color: Theme.of(context).progressIndicatorTheme.color!,
                                                       size: 16,
                                                     )
                                                   : Column(
@@ -976,7 +976,7 @@ class _MediaCardState extends State<MediaCard> {
                       child: ELuiLoadComponent(
                         type: "line",
                         lineWidth: 2,
-                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                        color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 30,
                       ),
                     ),
@@ -994,7 +994,7 @@ class _MediaCardState extends State<MediaCard> {
                       child: ELuiLoadComponent(
                         type: "line",
                         lineWidth: 2,
-                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                        color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 30,
                       ),
                     ),

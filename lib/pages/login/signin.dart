@@ -276,7 +276,7 @@ class _SigninPageState extends State<SigninPage> {
                               child: ELuiLoadComponent(
                                 type: "line",
                                 lineWidth: 2,
-                                color: Theme.of(context).textTheme.bodyMedium!.color!,
+                                color: Theme.of(context).progressIndicatorTheme.color!,
                                 size: 25,
                               ),
                             )

@@ -181,7 +181,7 @@ class _IndexPageState extends State<IndexPage> {
                         child: IconButton(
                           icon: Icon(
                             Icons.chat,
-                            color: Theme.of(context).iconTheme.color,
+                            color: Theme.of(context).appBarTheme.iconTheme!.color,
                           ),
                           onPressed: _openMessage(),
                         ),
@@ -253,21 +253,13 @@ class _IndexPageState extends State<IndexPage> {
                   extendBodyBehindAppBar: true,
                   appBar: AppBar(
                     backgroundColor: Colors.transparent,
-                    flexibleSpace: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomRight,
-                          colors: ProviderUtil().ofTheme(context).currentThemeName == "default" ? [Colors.transparent, Colors.black54] : [Colors.transparent, Colors.black12],
-                        ),
-                      ),
-                    ),
                     title: titleWidget,
                     actions: <Widget>[
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(
                           icon: Icon(
                             Icons.adaptive.more,
-                            color: Theme.of(context).iconTheme.color,
+                            color: Theme.of(context).appBarTheme.iconTheme!.color,
                           ),
                           offset: const Offset(0, 45),
                           onSelected: (value) {
@@ -396,9 +388,9 @@ class _IndexPageState extends State<IndexPage> {
                                 height: 6.0,
                                 width: 45.0,
                                 margin: const EdgeInsets.only(top: 10.0, bottom: 10),
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 214, 215, 218),
-                                  borderRadius: BorderRadius.all(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).dividerTheme.color,
+                                  borderRadius: const BorderRadius.all(
                                     Radius.circular(5.0),
                                   ),
                                 ),
@@ -500,7 +492,7 @@ class _IndexPageState extends State<IndexPage> {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.add,
+                                      Icons.front_hand,
                                       color: Theme.of(context).iconTheme.color,
                                     ),
                                     const SizedBox(width: 10),

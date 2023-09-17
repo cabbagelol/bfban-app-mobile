@@ -6,7 +6,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
-import 'cheaters_card_types.dart';
+import 'basic_card_types.dart';
 
 /// 申诉
 class AppealCard extends StatelessWidget {

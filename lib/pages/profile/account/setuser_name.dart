@@ -125,7 +125,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
                                   ELuiLoadComponent(
                                     type: "line",
                                     lineWidth: 2,
-                                    color: Theme.of(context).textTheme.bodyMedium!.color!,
+                                    color: Theme.of(context).progressIndicatorTheme.color!,
                                     size: 20,
                                   ),
                                 Text(FlutterI18n.translate(context, "basic.button.next")),

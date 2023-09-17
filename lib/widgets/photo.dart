@@ -185,7 +185,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
                     onPressed: () {},
                     icon: ELuiLoadComponent(
                       type: "line",
-                      color: Theme.of(context).iconTheme.color!,
+                      color: Theme.of(context).progressIndicatorTheme.color!,
                       lineWidth: 2,
                       size: 25,
                     ),

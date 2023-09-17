@@ -94,7 +94,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
     list.add(data.objectAsMap);
     storage.set("customReply", value: list);
 
-    EluiMessageComponent.success(context)(child: const Text("Success"));
+    EluiMessageComponent.success(context)(child: const Icon(Icons.done));
     Navigator.pop(context);
   }
 
@@ -113,7 +113,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
 
     storage.set("customReply", value: customReplyList);
 
-    EluiMessageComponent.success(context)(child: const Text("Success"));
+    EluiMessageComponent.success(context)(child: const Icon(Icons.done));
     Navigator.pop(context);
   }
 

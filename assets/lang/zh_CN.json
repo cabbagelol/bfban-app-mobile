@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "自动",
@@ -41,27 +41,28 @@
       "needAccount": "此功能需要账户, 请先登录",
       "tabs": {
         "activities": "动态",
-        "trend": "热门案件",
+        "tourRecord": "游览记录",
         "trace": "追踪",
-        "tourRecord": "游览记录"
+        "trend": "热门案件"
       },
       "screen": {
-        "report": "举报",
         "banAppeal": "申诉",
-        "signup": "新用户",
-        "judgement": "判决"
+        "judgement": "判决",
+        "report": "举报",
+        "signup": "新用户"
       },
       "paging": "第{num}页"
     },
     "splash": {
-      "guide": "初始引导",
       "account": "加载账户信息",
-      "token": "用户身份配置",
-      "message": "更新消息",
-      "version": "验证版本服务",
-      "theme": "初始化主题",
       "appInitial": "初始化程序应用",
-      "networkError": "应用未连接网络,程序依赖在线服务"
+      "dir": "初始储存配置",
+      "guide": "初始引导",
+      "message": "更新消息",
+      "networkError": "应用未连接网络,程序依赖在线服务",
+      "theme": "初始化主题",
+      "token": "用户身份配置",
+      "version": "验证版本服务"
     },
     "guide": {
       "endNext": "完成",

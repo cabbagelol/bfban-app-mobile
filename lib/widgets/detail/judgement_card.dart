@@ -7,7 +7,7 @@ import '../../component/_html/htmlWidget.dart';
 import '../../utils/date.dart';
 import '../../utils/index.dart';
 import 'basic_quote_card.dart';
-import 'cheaters_card_types.dart';
+import 'basic_card_types.dart';
 
 /// 裁判
 class JudgementCard extends StatelessWidget {

@@ -69,7 +69,7 @@ class _ThemePageState extends State<ThemePage> {
       themeDiffFromData = Map.from(fromData);
     });
 
-    EluiMessageComponent.success(context)(child: const Text("Success"));
+    EluiMessageComponent.success(context)(child: const Icon(Icons.done));
   }
 
   /// [Event]

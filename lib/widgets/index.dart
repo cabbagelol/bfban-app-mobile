@@ -4,7 +4,7 @@ export 'bottom_bar.dart';
 export 'photo.dart';
 
 // S detail
-export 'detail/cheaters_card_types.dart';
+export 'detail/basic_card_types.dart';
 // E detail
 
 // S index

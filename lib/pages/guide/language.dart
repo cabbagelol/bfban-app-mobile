@@ -114,7 +114,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
                       ELuiLoadComponent(
                         type: "line",
                         lineWidth: 1,
-                        color: Theme.of(context).textTheme.titleMedium!.color!,
+                        color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 16,
                       ),
                   ],

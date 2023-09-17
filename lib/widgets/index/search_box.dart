@@ -111,7 +111,7 @@ class TitleSearchState extends State<TitleSearchWidget> {
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 decoration: BoxDecoration(
                   color: titleSearchColor(widget.theme).color,
-                  border: Border.all(color: Theme.of(context).dividerTheme.color!, width: 1),
+                  border: Border.all(color: Theme.of(context).dividerTheme.color!.withOpacity(.3), width: 1),
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: Row(

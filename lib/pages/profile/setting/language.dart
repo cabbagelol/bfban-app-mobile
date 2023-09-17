@@ -113,7 +113,7 @@ class _LanguagePageState extends State<LanguagePage> {
               icon: ELuiLoadComponent(
                 type: "line",
                 lineWidth: 2,
-                color: Theme.of(context).textTheme.displayMedium!.color!,
+                color: Theme.of(context).progressIndicatorTheme.color!,
                 size: 20,
               ),
             )

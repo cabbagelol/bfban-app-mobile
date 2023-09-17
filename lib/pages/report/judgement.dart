@@ -193,7 +193,7 @@ class _JudgementPageState extends State<JudgementPage> {
                     type: "line",
                     lineWidth: 2,
                     size: 20,
-                    color: Theme.of(context).appBarTheme.iconTheme!.color!,
+                    color: Theme.of(context).progressIndicatorTheme.color!,
                   ),
                 )
               : IconButton(
