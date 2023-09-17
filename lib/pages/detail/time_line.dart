@@ -51,7 +51,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
     // 滚动视图初始
     scrollController.addListener(() {
-      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
+      if (!playerTimelineStatus.load! && scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         _getMore();
       }
     });
@@ -295,7 +295,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
                         child: ELuiLoadComponent(
                           type: "line",
                           lineWidth: 3,
-                          color: Theme.of(context).textTheme.displayMedium!.color!,
+                          color: Theme.of(context).progressIndicatorTheme.color!,
                           size: 28,
                         ),
                       )

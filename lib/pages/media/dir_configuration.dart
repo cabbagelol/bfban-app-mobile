@@ -46,7 +46,7 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
     dirData.setSaveDirPath(paths);
 
     EluiMessageComponent.success(context)(
-      child: const Text("ok"),
+      child: const Icon(Icons.done),
     );
   }
 
@@ -56,6 +56,7 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
       builder: (BuildContext? dirContext, dirData, Widget? child) {
         return Scaffold(
           appBar: AppBar(
+            title: Text(FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.title")),
             actions: [
               IconButton(
                 onPressed: () => onSave(dirData),
@@ -66,8 +67,8 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
           body: ListView(
             children: [
               EluiCellComponent(
-                title: "默认下载位置",
-                label: "程序内下载首选储存位置",
+                title: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.defaultSavePathTitle"),
+                label: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.defaultSavePathDirectory"),
                 theme: EluiCellTheme(
                   titleColor: Theme.of(context).textTheme.titleMedium?.color,
                   labelColor: Theme.of(context).textTheme.displayMedium?.color,
@@ -94,22 +95,20 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
               ),
               const SizedBox(height: 5),
               EluiCellComponent(
-                title: FlutterI18n.translate(context, "扫描位置"),
-                cont: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: paths.where((element) => element.check!).indexed.map((e) {
-                      return Opacity(
-                        opacity: .6,
-                        child: Text(
-                          "${e.$2.toMap["dirName"].toString().toUpperCase()} ${e.$1 + 1}",
-                          style: TextStyle(fontSize: FontSize.xxSmall.value),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                title: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.scanDirectoryTitle"),
+                cont: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: paths.where((element) => element.check!).indexed.map((e) {
+                    return Opacity(
+                      opacity: .6,
+                      child: Text(
+                        "${e.$2.toMap["dirName"].toString().toUpperCase()} ${e.$1 + 1}",
+                        style: TextStyle(fontSize: FontSize.xxSmall.value),
+                      ),
+                    );
+                  }).toList(),
                 ),
-                label: "选择扫描文件目录(多选)",
+                label: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.scanDirectoryDescription"),
               ),
               Column(
                 children: paths.map((e) {
@@ -126,20 +125,22 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
                     title: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          e.dirName.toUpperCase(),
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        Text(e.dirName.toUpperCase()),
                       ],
                     ),
-                    subtitle: Text(e.basicPath),
+                    subtitle: Text(
+                      e.basicPath,
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.displayMedium?.color,
+                      ),
+                    ),
                     trailing: Checkbox(
                       value: e.check,
                       onChanged: (value) {
                         if (!value! && paths.where((o) => o.check!).length == 1) {
-                          EluiMessageComponent.warning(context)(child: const Text("至少选择一个"));
+                          EluiMessageComponent.warning(context)(
+                            child: Text(FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.leastOneHint")),
+                          );
                           return;
                         }
 

@@ -1,11 +1,11 @@
-enum FileType { NONE, VIDEO, IMAGE, ZIP }
+enum FileManagementType { NONE, VIDEO, IMAGE, ZIP }
 
 class FileManagement {
   /// 支持格式
   final Map FILETYPE = {
-    FileType.VIDEO: ["webm", "ogg", "mp4", "mov"],
-    FileType.ZIP: ["zip"],
-    FileType.IMAGE: ["gif", "png", "bmp", "jpg", "webp"],
+    FileManagementType.VIDEO: ["webm", "ogg", "mp4", "mov"],
+    FileManagementType.ZIP: ["zip"],
+    FileManagementType.IMAGE: ["gif", "png", "bmp", "jpg", "webp"],
   };
 
   /// 解析类型
@@ -41,7 +41,7 @@ class FileManagement {
 
   /// 检查文件类型
   checkFileExtension(String url) {
-    FileType type = FileType.NONE;
+    FileManagementType type = FileManagementType.NONE;
     String fileExtension = splitFileUrl(url)["fileExtension"];
 
     for (MapEntry i in FILETYPE.entries) {

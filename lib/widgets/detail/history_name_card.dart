@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../utils/index.dart';
-import 'cheaters_card_types.dart';
+import 'basic_card_types.dart';
 
 class HistoryNameCard extends StatelessWidget {
   // 单条数据

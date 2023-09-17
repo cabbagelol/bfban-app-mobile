@@ -79,7 +79,7 @@ class BaseMediaFileData {
   File get file => _file!;
 
   get extension {
-    if (_file == null) return FileType.NONE;
+    if (_file == null) return FileManagementType.NONE;
     return FileManagement().checkFileExtension(_file!.path);
   }
 

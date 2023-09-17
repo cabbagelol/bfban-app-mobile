@@ -41,7 +41,7 @@ class GreenTheme extends AppBaseThemeItem {
         modalBackgroundColor: Colors.green.withOpacity(.1),
       ),
       canvasColor: const Color(0xFF4CAF50),
-      primaryColorDark: Colors.green.shade300,
+      primaryColorDark: const Color(0xFF4CAF50),
       textTheme: const TextTheme(
         displayLarge: TextStyle(color: Color(0xFF5DB761)),
         displayMedium: TextStyle(color: Color(0xFF5DB761)),
@@ -89,7 +89,7 @@ class GreenTheme extends AppBaseThemeItem {
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.white,
+        color: Colors.green,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
@@ -173,12 +173,12 @@ class GreenTheme extends AppBaseThemeItem {
         ),
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.green.shade300,
+        color: Colors.green,
         foregroundColor: Colors.white,
         shadowColor: Colors.green.shade50,
         elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.green.shade900,
         ),
       ),
       primaryColor: Colors.green,

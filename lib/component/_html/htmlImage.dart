@@ -74,7 +74,7 @@ class _HtmlImageState extends State<HtmlImage> {
                             right: -2,
                             child: ELuiLoadComponent(
                               type: "line",
-                              color: Theme.of(context).iconTheme.color!,
+                              color: Theme.of(context).progressIndicatorTheme.color!,
                               size: 17,
                               lineWidth: 2,
                             ),

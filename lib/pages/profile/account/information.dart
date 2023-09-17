@@ -192,7 +192,7 @@ class _InformationPageState extends State<InformationPage> {
                           ? ELuiLoadComponent(
                               type: "line",
                               lineWidth: 2,
-                              color: Theme.of(context).textTheme.displayMedium!.color!,
+                              color: Theme.of(context).progressIndicatorTheme.color!,
                               size: 20,
                             )
                           : const Icon(Icons.done),

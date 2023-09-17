@@ -712,8 +712,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                     Container(
                                                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                                       decoration: BoxDecoration(
-                                                        color: (statusColors[snapshot.data?["status"]] as Color).withOpacity(.3),
-                                                        border: Border.all(color: statusColors[snapshot.data?["status"]] as Color),
+                                                        color: (statusColors[snapshot.data?["status"]] as Color).withOpacity(.2),
+                                                        border: Border.all(color: statusColors[snapshot.data?["status"]].withOpacity(.3) as Color),
                                                         borderRadius: BorderRadius.circular(3),
                                                       ),
                                                       child: Text(
@@ -733,9 +733,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                             onPressed: () => _onSubscribes(data.isLogin),
                                             child: subscribes["load"]
                                                 ? ELuiLoadComponent(
-                                                    type: "line",
+                                              type: "line",
                                                     lineWidth: 1,
-                                                    color: Theme.of(context).textTheme.displayMedium!.color!,
+                                                    color: Theme.of(context).progressIndicatorTheme.color!,
                                                     size: 16,
                                                   )
                                                 : subscribes["isThisUserSubscribes"]
@@ -892,13 +892,25 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                             fontSize: FontSize.xLarge.value,
                                           ),
                                         ),
-                                        IconButton(
-                                          icon: const Icon(
-                                            Icons.refresh,
-                                            size: 25,
-                                          ),
-                                          onPressed: () => _seUpdateUserNameList(),
-                                        )
+                                        if (userNameList["buttonLoad"])
+                                          IconButton(
+                                            icon: const SizedBox(
+                                              width: 16,
+                                              height: 16,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            ),
+                                            onPressed: () {},
+                                          )
+                                        else
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.refresh,
+                                              size: 25,
+                                            ),
+                                            onPressed: () => _seUpdateUserNameList(),
+                                          )
                                       ],
                                     ),
                                   );

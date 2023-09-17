@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "自动",
@@ -29,6 +29,7 @@
       "delete": "删除",
       "fileInfo": "详细信息",
       "uploadFile": "上传文件",
+      "export": "导出",
       "tab": {
         "local": "本地",
         "cloud": "云图库"
@@ -40,27 +41,28 @@
       "needAccount": "此功能需要账户, 请先登录",
       "tabs": {
         "activities": "动态",
-        "trend": "热门案件",
+        "tourRecord": "游览记录",
         "trace": "追踪",
-        "tourRecord": "游览记录"
+        "trend": "热门案件"
       },
       "screen": {
-        "report": "举报",
         "banAppeal": "申诉",
-        "signup": "新用户",
-        "judgement": "判决"
+        "judgement": "判决",
+        "report": "举报",
+        "signup": "新用户"
       },
       "paging": "第{num}页"
     },
     "splash": {
-      "guide": "初始引导",
       "account": "加载账户信息",
-      "token": "用户身份配置",
-      "message": "更新消息",
-      "version": "验证版本服务",
-      "theme": "初始化主题",
       "appInitial": "初始化程序应用",
-      "networkError": "应用未连接网络,程序依赖在线服务"
+      "dir": "初始储存配置",
+      "guide": "初始引导",
+      "message": "更新消息",
+      "networkError": "应用未连接网络,程序依赖在线服务",
+      "theme": "初始化主题",
+      "token": "用户身份配置",
+      "version": "验证版本服务"
     },
     "guide": {
       "endNext": "完成",
@@ -135,6 +137,14 @@
         "media": {
           "title": "媒体库",
           "describe": "图片,视频,上传文件,管理"
+        },
+        "dirConfiguration": {
+          "title": "配置",
+          "scanDirectoryTitle": "扫描目录",
+          "scanDirectoryDescription": "选择扫描文件目录(多选)",
+          "defaultSavePathTitle": "默认下载位置",
+          "defaultSavePathDirectory": "程序内下载首选储存位置",
+          "leastOneHint": "至少选择一个"
         },
         "website": {
           "title": "网站地址",

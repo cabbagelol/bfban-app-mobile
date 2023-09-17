@@ -134,7 +134,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                       ELuiLoadComponent(
                                         type: "line",
                                         lineWidth: 1,
-                                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                                        color: Theme.of(context).progressIndicatorTheme.color!,
                                         size: 18,
                                       ),
                                       const SizedBox(height: 5),
@@ -189,7 +189,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                                       ELuiLoadComponent(
                                         type: "line",
                                         lineWidth: 1,
-                                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                                        color: Theme.of(context).progressIndicatorTheme.color!,
                                         size: 18,
                                       ),
                                       const SizedBox(height: 5),
@@ -273,7 +273,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 1,
-                            color: Theme.of(context).textTheme.displayMedium!.color!,
+                            color: Theme.of(context).progressIndicatorTheme.color!,
                             size: 18,
                           ),
                         ],
@@ -313,7 +313,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 1,
-                            color: Theme.of(context).textTheme.titleMedium!.color!,
+                            color: Theme.of(context).progressIndicatorTheme.color!,
                             size: 18,
                           ),
                         ],
@@ -353,7 +353,7 @@ class _HomeButtomPanelState extends State<HomeButtomPanel> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 1,
-                            color: Theme.of(context).textTheme.titleMedium!.color!,
+                            color: Theme.of(context).progressIndicatorTheme.color!,
                             size: 18,
                           ),
                         ],

@@ -55,7 +55,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
   void _onSave() {
     publicApiTranslationProvider!.onSave();
 
-    EluiMessageComponent.success(context)(child: const Text("ok"));
+    EluiMessageComponent.success(context)(child: const Icon(Icons.done));
   }
 
   /// [Event]

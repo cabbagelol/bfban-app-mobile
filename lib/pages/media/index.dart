@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -187,7 +187,7 @@ class _mediaPageState extends State<MediaPage> {
   Future _getLocalMediaFiles() async {
     List pathFiles = await dirProvider!.getAllFile(laterPath: '/media');
     setState(() {
-      mediaStatus.setList(pathFiles, MediaType.Local);
+      if (pathFiles.isNotEmpty) mediaStatus.setList(pathFiles, MediaType.Local);
     });
     return true;
   }
@@ -247,14 +247,14 @@ class _mediaPageState extends State<MediaPage> {
         Widget widget = Container();
         if (!await i.file.exists() && i.extension == null) return;
 
-        if (i.extension == FileType.IMAGE) {
+        if (i.extension == FileManagementType.IMAGE) {
           widget = PhotoViewSimpleScreen(
             type: PhotoViewFileType.file,
             imageUrl: i.file.path,
           );
         }
 
-        if (i.extension == FileType.VIDEO || i.extension == FileType.NONE) {
+        if (i.extension == FileManagementType.VIDEO || i.extension == FileManagementType.NONE) {
           widget = Scaffold(
             appBar: AppBar(
               title: Text(i.file.path),
@@ -387,6 +387,30 @@ class _mediaPageState extends State<MediaPage> {
   }
 
   /// [Event]
+  /// 导出
+  void _onExportFile(context, i) async {
+    try {
+      String fileName = fileManagement.splitFileUrl(i.file.path)["fileName"];
+      String newPath = "${dirProvider!.fileAllPath.downloadsDirectory!.path}/$fileName";
+
+      await File(i.file.path).copy(newPath);
+
+      EluiMessageComponent.success(context)(
+        child: Column(
+          children: [
+            const Icon(Icons.done),
+            Text(newPath),
+          ],
+        ),
+      );
+    } catch (err) {
+      EluiMessageComponent.error(context)(
+        child: Text(err.toString()),
+      );
+    }
+  }
+
+  /// [Event]
   /// 文件详情
   void _onEnFileInfo(BuildContext context, dynamic i) async {
     switch (i.type) {
@@ -505,7 +529,9 @@ class _mediaPageState extends State<MediaPage> {
         actions: [
           IconButton(
             onPressed: () {
-              _urlUtil.opEnPage(context, "/profile/dir/configuration");
+              _urlUtil.opEnPage(context, "/profile/dir/configuration").then((value) {
+                _onRefresh(MediaType.Local);
+              });
             },
             icon: const Icon(Icons.settings),
           ),
@@ -537,7 +563,7 @@ class _mediaPageState extends State<MediaPage> {
                           ELuiLoadComponent(
                             type: "line",
                             lineWidth: 2,
-                            color: Theme.of(context).textTheme.displayMedium!.color!,
+                            color: Theme.of(context).progressIndicatorTheme.color!,
                             size: 13,
                           ),
                       ],
@@ -627,6 +653,9 @@ class _mediaPageState extends State<MediaPage> {
                                         onTapUploadFile: () {
                                           _onUploadFile(context, i);
                                         },
+                                        onTagExportFile: () {
+                                          _onExportFile(context, i);
+                                        },
                                       );
                                     },
                                   )
@@ -649,35 +678,35 @@ class _mediaPageState extends State<MediaPage> {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                          flex: 1,
-                                          child: GestureDetector(
-                                            onTap: () => _opEnCloudMediaInfo(),
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.start,
-                                              children: [
-                                                const Icon(Icons.info_outline, size: 18),
-                                                const SizedBox(width: 5),
-                                                cloudMediaInfoStatus.data!.isEmpty
-                                                    ? ELuiLoadComponent(
-                                                        type: "line",
-                                                        lineWidth: 1,
-                                                        color: Theme.of(context).textTheme.titleMedium!.color!,
-                                                        size: 16,
-                                                      )
-                                                    : Column(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Row(
-                                                            children: [
-                                                              Text(onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
-                                                              const Text("/"),
-                                                              Text(onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
-                                                            ],
-                                                          ),
-                                                          Container(
-                                                            margin: const EdgeInsets.only(top: 10),
-                                                            width: 150,
+                                        flex: 1,
+                                        child: GestureDetector(
+                                          onTap: () => _opEnCloudMediaInfo(),
+                                          child: Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(Icons.info_outline, size: 18),
+                                              const SizedBox(width: 5),
+                                              cloudMediaInfoStatus.data!.isEmpty
+                                                  ? ELuiLoadComponent(
+                                                type: "line",
+                                                      lineWidth: 1,
+                                                      color: Theme.of(context).progressIndicatorTheme.color!,
+                                                      size: 16,
+                                                    )
+                                                  : Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            Text(onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
+                                                            const Text("/"),
+                                                            Text(onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+                                                          ],
+                                                        ),
+                                                        Container(
+                                                          margin: const EdgeInsets.only(top: 10),
+                                                          width: 150,
                                                           child: LinearProgressIndicator(
                                                             value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
                                                             minHeight: 4,
@@ -758,6 +787,7 @@ class MediaCard extends StatefulWidget {
   Function? onTapFileInfo;
   Function? onTapUploadFile;
   Function? onTagSelectFile;
+  Function? onTagExportFile;
 
   MediaCard({
     Key? key,
@@ -768,6 +798,7 @@ class MediaCard extends StatefulWidget {
     this.onTapFileInfo,
     this.onTapUploadFile,
     this.onTagSelectFile,
+    this.onTagExportFile,
   }) : super(key: key);
 
   @override
@@ -863,6 +894,9 @@ class _MediaCardState extends State<MediaCard> {
                         case "upload_file":
                           if (widget.onTapUploadFile != null) widget.onTapUploadFile!();
                           break;
+                        case "export_file":
+                          if (widget.onTagExportFile != null) widget.onTagExportFile!();
+                          break;
                       }
                     },
                     itemBuilder: (content) => <PopupMenuEntry>[
@@ -886,6 +920,18 @@ class _MediaCardState extends State<MediaCard> {
                               const Icon(Icons.delete),
                               const SizedBox(width: 10),
                               Text(FlutterI18n.translate(context, "app.media.delete")),
+                            ],
+                          ),
+                        ),
+                      if (widget.i.type == MediaType.Local)
+                        PopupMenuItem(
+                          value: "export_file",
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Icon(Icons.file_copy_rounded),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.media.export")),
                             ],
                           ),
                         ),
@@ -930,7 +976,7 @@ class _MediaCardState extends State<MediaCard> {
                       child: ELuiLoadComponent(
                         type: "line",
                         lineWidth: 2,
-                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                        color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 30,
                       ),
                     ),
@@ -948,7 +994,7 @@ class _MediaCardState extends State<MediaCard> {
                       child: ELuiLoadComponent(
                         type: "line",
                         lineWidth: 2,
-                        color: Theme.of(context).textTheme.displayMedium!.color!,
+                        color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 30,
                       ),
                     ),
@@ -1022,7 +1068,7 @@ class MediaIconCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (filetype == FileType.IMAGE)
+        if (filetype == FileManagementType.IMAGE)
           Expanded(
             flex: 1,
             child: Image.file(
@@ -1032,7 +1078,7 @@ class MediaIconCard extends StatelessWidget {
               repeat: ImageRepeat.noRepeat,
             ),
           )
-        else if (filetype == FileType.VIDEO)
+        else if (filetype == FileManagementType.VIDEO)
           const Icon(
             Icons.video_camera_back_outlined,
             size: 40,

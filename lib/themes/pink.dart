@@ -88,7 +88,7 @@ class PinkTheme extends AppBaseThemeItem {
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.white,
+        color: Colors.pink,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
@@ -177,7 +177,7 @@ class PinkTheme extends AppBaseThemeItem {
         shadowColor: Colors.pink.shade50,
         elevation: 0,
         iconTheme: const IconThemeData(
-          color: Colors.white,
+          color: Color(0xFFB22554),
         ),
       ),
       primaryColor: Colors.pink,

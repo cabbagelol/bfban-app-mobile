@@ -168,7 +168,7 @@ class _captchaWidgetState extends State<CaptchaWidget> {
                     ELuiLoadComponent(
                       type: "line",
                       lineWidth: 1,
-                      color: Theme.of(context).textTheme.displayMedium!.color!,
+                      color: Theme.of(context).progressIndicatorTheme.color!,
                       size: 16,
                     )
                   else
