@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "automatic",
@@ -29,38 +29,40 @@
       "delete": "Delete",
       "fileInfo": "Detailed information",
       "uploadFile": "Upload files",
+      "export": "Export file",
       "tab": {
         "local": "Local",
         "cloud": "Cloud Gallery"
       }
     },
     "home": {
-      "scancode": "Shoot",
+      "scancode": "Scan Code",
       "takeLook": "Take a look",
       "needAccount": "This function requires an account, please log in first",
       "tabs": {
         "activities": "Website dynamics",
-        "trend": "Hot case",
+        "tourRecord": "tour Record",
         "trace": "Trace",
-        "tourRecord": "tour Record"
+        "trend": "Hot case"
       },
       "screen": {
-        "report": "Report",
         "banAppeal": "Ban Appeal",
-        "signup": "New Users",
-        "judgement": "Judgement"
+        "judgement": "Judgement",
+        "report": "Report",
+        "signup": "New Users"
       },
       "paging": "{num} Page"
     },
     "splash": {
-      "guide": "Initial boot",
       "account": "Load account information",
-      "token": "User identity configuration",
-      "message": "Update message",
-      "version": "Versioning service",
-      "theme": "Initialize topic",
       "appInitial": "Initializes the program application",
-      "networkError": "The application is not connected to the network, and the program relies on online services"
+      "dir": "Initial storage configuration",
+      "guide": "Initial boot",
+      "message": "Update message",
+      "networkError": "The application is not connected to the network, and the program relies on online services",
+      "theme": "Initialize topic",
+      "token": "User identity configuration",
+      "version": "Versioning service"
     },
     "guide": {
       "endNext": "Complete",
@@ -135,6 +137,14 @@
         "media": {
           "title": "Media",
           "describe": "Pictures, video, upload files, and management"
+        },
+        "dirConfiguration": {
+          "title": "storage configuration",
+          "scanDirectoryTitle": "Scan directory",
+          "scanDirectoryDescription": "Select the file directory to scan (multiple options)",
+          "defaultSavePathTitle": "Default download location",
+          "defaultSavePathDirectory": "Preferred storage location for in-app downloads",
+          "leastOneHint": "Choose at least one"
         },
         "website": {
           "title": "Website address",
