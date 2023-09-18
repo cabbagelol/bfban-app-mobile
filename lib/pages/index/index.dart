@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:bfban/utils/index.dart';
 
 import '../../constants/api.dart';
+import '../../provider/appBuildContent.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
 import '../profile/index.dart';
@@ -31,6 +32,8 @@ class IndexPage extends StatefulWidget {
 
 class _IndexPageState extends State<IndexPage> {
   final UrlUtil _urlUtil = UrlUtil();
+
+  late BuildContext? _context;
 
   // 玩家列表
   GlobalKey<PlayerListPageState>? playerListPage = GlobalKey<PlayerListPageState>();
@@ -63,7 +66,7 @@ class _IndexPageState extends State<IndexPage> {
     },
   ];
 
-  num reportsCount = 0;
+  num reportsCount = 1;
 
   double screenHeight = 0;
 
@@ -77,8 +80,18 @@ class _IndexPageState extends State<IndexPage> {
       const UserCenterPage(),
     ];
 
-    _onUserTokenExpired();
+    // Future.delayed(Duration(seconds: 1), () {
+    //   _urlUtil.opEnPage(_context!, "/notnetwork");
+    // });
+
     super.initState();
+  }
+
+  @override
+  void deactivate() {
+    _onUserTokenExpired();
+    _onNotNetwork();
+    super.deactivate();
   }
 
   @override
@@ -116,6 +129,17 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   /// [Event]
+  /// 网络失效触发器
+  void _onNotNetwork() {
+    eventUtil.on("not-network", (arg) {
+      if (!mounted) return;
+      Future.delayed(const Duration(seconds: 1), () {
+        _urlUtil.opEnPage2("/notnetwork");
+      });
+    });
+  }
+
+  /// [Event]
   /// 首页控制器序列
   void onTap(int index) {
     setState(() {
@@ -137,7 +161,7 @@ class _IndexPageState extends State<IndexPage> {
   /// [Event]
   /// 随便看看
   void _takeLook() async {
-    if (reportsCount == 0) {
+    if (reportsCount == 1) {
       await _getReportsCount();
     }
 
@@ -163,6 +187,7 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     Widget titleWidget = Row(
       children: [
         // 消息

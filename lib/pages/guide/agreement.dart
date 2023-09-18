@@ -80,12 +80,6 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
   }
 
   /// [Event]
-  /// 打开协议
-  _openAgreement() {
-    UrlUtil().onPeUrl("${Config.apiHost["app_web_site"]!.url}/agreement/$language.html");
-  }
-
-  /// [Event]
   /// 许可开关
   _onPermitSwitch() {
     if (agreement["load"]) return;
@@ -110,9 +104,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                   right: 20,
                   bottom: 20,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Wrap(
                   children: <Widget>[
                     Text(
                       FlutterI18n.translate(context, "app.guide.agreement.title"),

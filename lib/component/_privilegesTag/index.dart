@@ -15,14 +15,18 @@ class PrivilegesTagWidget extends StatefulWidget {
 }
 
 class _PrivilegesTagWidgetState extends State<PrivilegesTagWidget> {
-  List? privileges = [];
+  final ProviderUtil _providerUtil = ProviderUtil();
+
+  List? privileges = [
+    {"value": "normal"}
+  ];
 
   @override
   void initState() {
     super.initState();
-    dynamic originalPrivilege = ProviderUtil().ofApp(context).conf.data.privilege!;
+    dynamic originalPrivilege = _providerUtil.ofApp(context).conf.data.privilege!;
 
-    if (originalPrivilege["child"] != null) {
+    if (originalPrivilege["child"] != null && widget.data!.isNotEmpty) {
       List privilegeArray = List.from(originalPrivilege!["child"]).where((i) {
         return widget.data!.isEmpty ? originalPrivilege.contains(i["value"]) : widget.data!.contains(i["value"]);
       }).toList();

@@ -1,3 +1,4 @@
+import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,8 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
 
     if (result.data.toString().isNotEmpty) {
       setState(() {
-        news = result.data["news"];
+        news = result.data["news"] ??= [];
+
         for (var element in news) {
           String body = "";
           element["content"].forEach((p) {
@@ -95,45 +97,48 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: news.map((i) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 35),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Text(
-                                  i["username"],
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+              if (news.isNotEmpty)
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: news.map((i) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 35),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    i["username"],
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Opacity(
-                                opacity: .8,
-                                child: Text(i["time"]),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          HtmlWidget(
-                            content: i["body"],
-                            footerToolBar: false,
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ),
+                                Opacity(
+                                  opacity: .8,
+                                  child: Text(i["time"]),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            HtmlWidget(
+                              content: i["body"],
+                              footerToolBar: false,
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                )
+              else
+                const EmptyWidget()
             ],
           );
         },

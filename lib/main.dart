@@ -1,5 +1,3 @@
-/// 程序入口
-
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/dir_provider.dart';
@@ -70,44 +68,43 @@ class _BfBanAppState extends State<BfBanApp> {
       ],
       child: Consumer<ThemeProvider>(
         builder: (BuildContext? themeContext, themeData, Widget? child) {
-          return Consumer<TranslationProvider>(
-            builder: (BuildContext? context, langData, Widget? child) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: Config.env == Env.DEV,
-                theme: themeData.currentThemeData,
-                initialRoute: '/splash',
-                supportedLocales: const [
-                  Locale('zh', 'CH'),
-                  Locale('en', 'US'),
-                ],
-                localizationsDelegates: [
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  FlutterI18nDelegate(
-                    translationLoader: CustomTranslationLoader(
-                      namespaces: ["app"],
-                      basePath: "assets/lang",
-                      baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
-                      useCountryCode: false,
-                      fallback: langData.defaultLang,
-                      forcedLocale: Locale(langData.currentLang.isEmpty ? langData.defaultLang : langData.currentLang),
-                    ),
-                  )
-                ],
-                builder: (BuildContext context, Widget? widget) {
-                  ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-                    return CustomError(errorDetails: errorDetails);
-                  };
-                  return MediaQuery(
-                    data: MediaQuery.of(context).copyWith(textScaleFactor: themeData.theme.textScaleFactor),
-                    child: widget!,
-                  );
-                },
-                onGenerateRoute: Routes.router!.generator,
-              );
-            },
-          );
+          return Consumer3<ThemeProvider, TranslationProvider, AppInfoProvider>(builder: (BuildContext context, ThemeProvider themeData, TranslationProvider langData, AppInfoProvider appData, Widget? child) {
+            return MaterialApp(
+              debugShowCheckedModeBanner: Config.env == Env.DEV,
+              theme: themeData.currentThemeData,
+              initialRoute: '/splash',
+              supportedLocales: const [
+                Locale('zh', 'CH'),
+                Locale('en', 'US'),
+              ],
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                FlutterI18nDelegate(
+                  translationLoader: CustomTranslationLoader(
+                    namespaces: ["app"],
+                    basePath: "assets/lang",
+                    baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
+                    useCountryCode: false,
+                    fallback: langData.defaultLang,
+                    forcedLocale: Locale(langData.currentLang.isEmpty ? langData.defaultLang : langData.currentLang),
+                  ),
+                )
+              ],
+              builder: (BuildContext context, Widget? widget) {
+                ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                  return CustomError(errorDetails: errorDetails);
+                };
+
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: themeData.theme.textScaleFactor),
+                  child: widget!,
+                );
+              },
+              onGenerateRoute: Routes.router!.generator,
+            );
+          });
         },
       ),
     );

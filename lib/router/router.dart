@@ -39,6 +39,7 @@ import '../pages/media/Insert.dart';
 import '../pages/media/dir_configuration.dart';
 import '../pages/media/index.dart';
 import '../pages/chat/index.dart';
+import '../pages/not_found/network.dart';
 import '../pages/profile/account/information.dart';
 import '../pages/profile/app_network.dart';
 import '../pages/profile/app_version_package.dart';
@@ -61,6 +62,12 @@ class Routes {
         "url": '/notfound',
         "item": (context, params) {
           return const NotFoundPage();
+        }
+      },
+      {
+        "url": '/notnetwork',
+        "item": (context, params) {
+          return const notNetworkPage();
         }
       },
       {

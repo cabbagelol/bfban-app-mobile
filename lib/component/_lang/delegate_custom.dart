@@ -3,9 +3,8 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bfban/utils/storage.dart';
 import 'package:flutter_i18n/loaders/file_translation_loader.dart';
-import 'package:http/http.dart' as http;
+import 'package:bfban/utils/index.dart';
 
 class CustomTranslationLoader extends FileTranslationLoader {
   // 包名
@@ -42,32 +41,34 @@ class CustomTranslationLoader extends FileTranslationLoader {
 
   @override
   Future<String> loadString(final String fileName, final String extension) async {
-    Uri resolvedUri = baseUri.replace(path: '${baseUri.path}/$fileName.$extension');
+    Uri resolvedUri = baseUri.replace(path: '${baseUri.path}/$fileName.json');
     StorageData languageData = await storage.get(packageName);
     dynamic local = languageData.value;
-    dynamic networkResult;
-    dynamic localResult;
+    dynamic networkLanguageResult = {};
+    dynamic localLanguageResult = {};
 
     // 从远程服务器取得LANG配置单，如果缓存则使用本地
     if (local == null || local.toString().isEmpty) {
-      dynamic networkLang = await http.get(resolvedUri);
-      networkResult = jsonDecode(utf8.decode(networkLang.bodyBytes));
+      Response networkLang = await Http.request(resolvedUri.path);
+      if (networkLang.statusCode != null) {
+        networkLanguageResult = jsonDecode(networkLang.data);
+      }
     } else {
-      networkResult = local["listConf"];
+      networkLanguageResult = local["listConf"];
     }
 
     // 本地载入
-    String localPath = "$basePath/${composeFileName()}.json";
-    String loadString = await assetBundle.loadString(localPath, cache: false);
+    String localLanguagePath = "$basePath/${composeFileName()}.json";
+    String loadString = await assetBundle.loadString(localLanguagePath, cache: false);
     if (loadString.isEmpty) {
       String localFallbackFilePath = "$basePath/$fallbackFile.json";
-      localResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: false));
+      localLanguageResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: false));
     } else {
-      localResult = jsonDecode(loadString);
+      localLanguageResult = jsonDecode(loadString);
     }
 
-    _decodedMap.addAll(localResult);
-    _decodedMap.addAll(networkResult);
+    _decodedMap.addAll(localLanguageResult);
+    _decodedMap.addAll(networkLanguageResult);
 
     return jsonEncode(_decodedMap);
   }

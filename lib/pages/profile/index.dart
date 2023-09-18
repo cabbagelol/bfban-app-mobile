@@ -77,101 +77,89 @@ class _UserCenterPageState extends State<UserCenterPage> {
             children: [
               ClipPath(
                 clipBehavior: Clip.hardEdge,
-                child: Stack(
-                  children: [
-                    if (data.userinfo["userAvatar"] != null)
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Opacity(
-                          opacity: .3,
-                          child: EluiImgComponent(
-                            src: data.userinfo["userAvatar"],
-                            fit: BoxFit.fitWidth,
+                child: InkWell(
+                  onTap: _opEnSpace(),
+                  child: Container(
+                    color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
+                    child: Stack(
+                      children: [
+                        /// 用户信息板块
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: MediaQuery.of(context).viewInsets.top + 110,
+                            left: 15,
+                            right: 15,
                           ),
-                        ),
-                      ),
-
-                    /// 用户信息板块
-                    Container(
-                      margin: EdgeInsets.only(
-                        top: MediaQuery.of(context).viewInsets.top + 110,
-                        left: 15,
-                        right: 15,
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardTheme.color,
-                          boxShadow: [
-                            BoxShadow(
-                              blurStyle: BlurStyle.solid,
-                              spreadRadius: 0,
-                              blurRadius: 20,
-                              color: Theme.of(context).shadowColor.withOpacity(.1),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardTheme.color,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurStyle: BlurStyle.solid,
+                                  spreadRadius: 0,
+                                  blurRadius: 20,
+                                  color: Theme.of(context).shadowColor.withOpacity(.1),
+                                ),
+                              ],
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(9),
+                                topRight: Radius.circular(9),
+                              ),
                             ),
-                          ],
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(9),
-                            topRight: Radius.circular(9),
-                          ),
-                        ),
-                        child: GestureDetector(
-                          onTap: _opEnSpace(),
-                          child: Row(
-                            children: [
-                              if (data.userinfo["userAvatar"] != null)
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(60),
-                                  child: EluiImgComponent(
-                                    width: 60,
-                                    height: 60,
-                                    src: data.userinfo["userAvatar"] ?? "",
+                            child: Row(
+                              children: [
+                                if (data.userinfo["userAvatar"] != null)
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(60),
+                                    child: EluiImgComponent(
+                                      width: 60,
+                                      height: 60,
+                                      src: data.userinfo["userAvatar"] ?? "",
+                                    ),
+                                  ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  flex: 1,
+                                  child: Wrap(
+                                    spacing: 5,
+                                    runSpacing: 5,
+                                    children: [
+                                      if (data.userinfo["username"] != null)
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              data.userinfo["username"],
+                                              style: TextStyle(
+                                                fontSize: FontSize.xLarge.value,
+                                              ),
+                                            ),
+                                            Text(
+                                              FlutterI18n.translate(context, "profile.meet", translationParams: {"name": data.userinfo["username"]}),
+                                              style: TextStyle(fontSize: FontSize.small.value, color: Theme.of(context).textTheme.displayMedium?.color),
+                                            )
+                                          ],
+                                        )
+                                      else
+                                        Text(
+                                          FlutterI18n.translate(context, "signin.title"),
+                                          style: TextStyle(
+                                            fontSize: FontSize.xLarge.value,
+                                          ),
+                                        ),
+                                      if (data.userinfo["userAvatar"] != null) PrivilegesTagWidget(data: data.userinfo["privilege"]),
+                                    ],
                                   ),
                                 ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                flex: 1,
-                                child: Wrap(
-                                  spacing: 5,
-                                  runSpacing: 5,
-                                  children: [
-                                    if (data.userinfo["username"] != null)
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            data.userinfo["username"],
-                                            style: TextStyle(
-                                              fontSize: FontSize.xLarge.value,
-                                            ),
-                                          ),
-                                          Text(
-                                            FlutterI18n.translate(context, "profile.meet", translationParams: {"name": data.userinfo["username"]}),
-                                            style: TextStyle(fontSize: FontSize.small.value, color: Theme.of(context).textTheme.displayMedium?.color),
-                                          )
-                                        ],
-                                      )
-                                    else
-                                      Text(
-                                        FlutterI18n.translate(context, "signin.title"),
-                                        style: TextStyle(
-                                          fontSize: FontSize.xLarge.value,
-                                        ),
-                                      ),
-                                    if (data.userinfo["userAvatar"] != null) PrivilegesTagWidget(data: data.userinfo["privilege"]),
-                                  ],
-                                ),
-                              ),
-                              const Icon(Icons.chevron_right),
-                            ],
+                                const Icon(Icons.chevron_right),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
               Divider(

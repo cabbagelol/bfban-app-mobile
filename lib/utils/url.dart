@@ -7,6 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:bfban/router/router.dart';
 
+import '../provider/appBuildContent.dart';
+
 class UrlUtil {
   /// default mode
   LaunchMode get defaultMode {
@@ -79,7 +81,7 @@ class UrlUtil {
     clearStack = false,
     rootNavigator = false,
   }) async {
-    if (url.isEmpty) return;
+    if (url.isEmpty && url == "/" && context == null) return;
 
     return await Routes.router!.navigateTo(
       context,
@@ -88,6 +90,25 @@ class UrlUtil {
       rootNavigator: rootNavigator,
       clearStack: clearStack,
     );
+  }
+
+  Future opEnPage2(
+    String url, {
+    TransitionType transition = TransitionType.cupertino,
+    clearStack = false,
+    rootNavigator = false,
+  }) async {
+    try {
+      if (url.isEmpty) return;
+
+      return await Routes.router!.navigateTo(
+        AppStatus.context!,
+        url,
+        transition: transition,
+        rootNavigator: rootNavigator,
+        clearStack: clearStack,
+      );
+    } finally {}
   }
 
   /// 返回页面

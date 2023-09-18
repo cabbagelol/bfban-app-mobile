@@ -14,30 +14,59 @@ class AppInfoProvider with ChangeNotifier {
   AppUniLinks uniLinks = AppUniLinks();
 }
 
+// 应用网络状态
 class AppInfoNetwrokStatus with ChangeNotifier {
-  var _connectivity;
+  final Connectivity _connectivity = Connectivity();
+
+  ConnectivityResult? _connectivityResult;
+
+  bool isInit = false;
+
+  final List _network = [
+    ConnectivityResult.wifi,
+    ConnectivityResult.ethernet,
+    ConnectivityResult.mobile,
+    ConnectivityResult.vpn,
+    ConnectivityResult.other,
+  ];
+
+  final List _bluetooth = [
+    ConnectivityResult.bluetooth,
+  ];
 
   Future init(context) async {
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      _connectivity = result;
+    await getConnectivityResult();
+    _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
+      _connectivityResult = result;
+      if (!isNetwork) eventUtil.emit("not-network");
       notifyListeners();
     });
+    isInit = true;
+    notifyListeners();
+    return true;
   }
 
-  get CurrentAppNetwrok => _connectivity;
+  ConnectivityResult? get currentAppNetwork => _connectivityResult;
+
+  // 是否有网络
+  bool get isNetwork {
+    if (_connectivityResult == null) return false;
+    return _network.contains(_connectivityResult);
+  }
+
+  // 蓝牙
+  bool get isBluetooth {
+    return _bluetooth.contains(_connectivityResult);
+  }
 
   /// ConnectivityResult.none
   /// 获取连接的网络类型
-  Future<ConnectivityResult> getConnectivity() async {
+  Future<ConnectivityResult> getConnectivityResult() async {
+    ConnectivityResult connectivityResult = await (_connectivity.checkConnectivity());
+    _connectivityResult = connectivityResult;
+    if (!isNetwork) eventUtil.emit("not-network");
     notifyListeners();
-    return _connectivity;
-  }
-
-  /// 是否已连接有效网络
-  bool isConnectivity() {
-    if (_connectivity == null) return true;
-    notifyListeners();
-    return !(_connectivity == ConnectivityResult.none);
+    return connectivityResult;
   }
 }
 
@@ -139,6 +168,7 @@ class NetworkConfData {
   });
 }
 
+// 应用链接
 class AppUniLinks with ChangeNotifier {
   final UrlUtil _urlUtil = UrlUtil();
 

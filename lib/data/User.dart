@@ -12,16 +12,16 @@ abstract class StationUserBaseData {
   String? username;
 
   StationUserBaseData({
-    this.id,
+    this.id = "0",
     this.attr,
-    this.joinTime,
-    this.lastOnlineTime,
-    this.origin,
-    this.privilege,
-    this.reportnum,
-    this.subscribes,
-    this.userAvatar,
-    this.username,
+    this.joinTime = "2018-01-01",
+    this.lastOnlineTime = "2018-01-01",
+    this.origin = const {},
+    this.privilege = const [],
+    this.reportnum = 0,
+    this.subscribes = const [],
+    this.userAvatar = "",
+    this.username = "username",
   }) : super() {
     attr ??= StationUserBaseDataInAttr();
   }

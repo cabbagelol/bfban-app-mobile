@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui show PlaceholderAlignment;
 
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';

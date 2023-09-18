@@ -39,11 +39,11 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
           ms: 0,
           name: key,
         );
-        appNetworkItem.url = value.url;
 
+        appNetworkItem.url = value.url;
         appNetworkStatus.list!.add(appNetworkItem);
 
-        _onNetWork(value.url);
+        _onNetWork(appNetworkItem.url);
       }
     });
   }
@@ -63,7 +63,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
     Future headFuture = Http.dio.head(url);
     headFuture.catchError((err) {
       setState(() {
-        item.statusCode = err.response.statusCode;
+        item.statusCode = err.response.statusCode ??= 100;
         item.statusLogs.add({
           "message": "${err.error}",
           "time": DateTime.now().millisecondsSinceEpoch,

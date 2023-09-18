@@ -50,6 +50,7 @@ class _HtmlImageState extends State<HtmlImage> {
       widget.src!,
       fit: BoxFit.fitWidth,
       mode: ExtendedImageMode.editor,
+      filterQuality: FilterQuality.low,
       cache: true,
       enableLoadState: true,
       loadStateChanged: (ExtendedImageState state) {

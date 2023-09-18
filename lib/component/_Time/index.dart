@@ -4,7 +4,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '../../utils/index.dart';
 
 class TimeWidget extends StatefulWidget {
-  String? data;
+  String data;
   String? value;
 
   var style;
@@ -14,7 +14,7 @@ class TimeWidget extends StatefulWidget {
 
   TimeWidget({
     Key? key,
-    this.data,
+    required this.data,
     this.style,
     this.overflow,
     this.maxLines,
@@ -31,6 +31,8 @@ class _TimeWidgetState extends State<TimeWidget> {
   /// [Event]
   /// 时间转换可读时间刻
   String getFriendlyDescriptionTime(String date, {type = "Y_D_M"}) {
+    if (date.isEmpty) return "N/A";
+
     var time = DateTime.parse(date);
     var now = DateTime.now();
     var d = now.difference(time);
@@ -70,7 +72,7 @@ class _TimeWidgetState extends State<TimeWidget> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      getFriendlyDescriptionTime(widget.data!),
+      getFriendlyDescriptionTime(widget.data),
       style: widget.style ??= null,
       overflow: widget.overflow ??= null,
       maxLines: widget.maxLines ??= null,

@@ -298,94 +298,93 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
             )
           : ListView.builder(
               controller: _scrollController,
-              itemCount: 10,
+              itemCount: 8,
               itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Placeholder(
-                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                      strokeWidth: 20,
-                                      child: const SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Placeholder(
+                return Opacity(
+                  opacity: 1 - (.1 * index),
+                  child: Stack(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Placeholder(
                                     color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
+                                    strokeWidth: 20,
                                     child: const SizedBox(
                                       width: 30,
-                                      height: 8,
+                                      height: 30,
                                     ),
                                   ),
-                                  const Expanded(flex: 1, child: SizedBox()),
-                                  Placeholder(
-                                    color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
-                                    child: const SizedBox(
-                                      width: 50,
-                                      height: 6,
-                                    ),
+                                ),
+                                const SizedBox(width: 10),
+                                Placeholder(
+                                  color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                  strokeWidth: 10,
+                                  child: const SizedBox(
+                                    width: 30,
+                                    height: 8,
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Placeholder(
-                                    color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
-                                    child: const SizedBox(
-                                      width: 120,
-                                      height: 5,
-                                    ),
+                                ),
+                                const Expanded(flex: 1, child: SizedBox()),
+                                Placeholder(
+                                  color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                  strokeWidth: 10,
+                                  child: const SizedBox(
+                                    width: 50,
+                                    height: 6,
                                   ),
-                                  const SizedBox(width: 20),
-                                  Placeholder(
-                                    color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
-                                    child: const SizedBox(
-                                      width: 120,
-                                      height: 5,
-                                    ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Placeholder(
+                                  color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                  strokeWidth: 10,
+                                  child: const SizedBox(
+                                    width: 120,
+                                    height: 5,
                                   ),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                            ],
-                          ),
+                                ),
+                                const SizedBox(width: 20),
+                                Placeholder(
+                                  color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                  strokeWidth: 10,
+                                  child: const SizedBox(
+                                    width: 120,
+                                    height: 5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                          ],
                         ),
-                        Positioned(
-                          top: 35,
-                          right: 0,
-                          child: Opacity(
-                            opacity: .5,
-                            child: Placeholder(
-                              color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                              strokeWidth: 50,
-                              child: const SizedBox(
-                                width: 70,
-                                height: 70,
-                              ),
+                      ),
+                      Positioned(
+                        top: 35,
+                        right: 0,
+                        child: Opacity(
+                          opacity: .5,
+                          child: Placeholder(
+                            color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                            strokeWidth: 50,
+                            child: const SizedBox(
+                              width: 70,
+                              height: 70,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

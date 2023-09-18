@@ -7,6 +7,7 @@ import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/appBuildContent.dart';
 import '../provider/package_provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -48,6 +49,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
   /// [Event]
   /// 初始页面数据
   void _onReady(BuildContext context) async {
+    AppStatus.context = context;
+
     Future.delayed(const Duration(seconds: 1)).then((value) => {
           if (mounted)
             setState(() {
@@ -230,7 +233,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
-                    if (!appInfo.connectivity.isConnectivity())
+                    if (!appInfo.connectivity.isNetwork && appInfo.connectivity.isInit)
                       const Wrap(
                         runAlignment: WrapAlignment.center,
                         children: [

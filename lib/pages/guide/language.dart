@@ -1,3 +1,4 @@
+import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -62,7 +63,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
 
     if (result.data.toString().isNotEmpty) {
       setState(() {
-        languages = result.data["child"];
+        languages = result.data["child"] ??= [];
       });
     }
 
@@ -128,30 +129,33 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
                 ),
 
               // 语言列表
-              Column(
-                children: languages.map((lang) {
-                  return RadioListTile<String>(
-                    value: lang["fileName"].toString(),
-                    onChanged: (value) {
-                      setLanguage(context, value!);
-                    },
-                    groupValue: langProvider!.currentLang,
-                    title: Text(
-                      lang["label"].toString(),
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyMedium!.color,
+              if (languages.isNotEmpty)
+                Column(
+                  children: languages.map((lang) {
+                    return RadioListTile<String>(
+                      value: lang["fileName"].toString(),
+                      onChanged: (value) {
+                        setLanguage(context, value!);
+                      },
+                      groupValue: langProvider!.currentLang,
+                      title: Text(
+                        lang["label"].toString(),
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
                       ),
-                    ),
-                    secondary: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                        child: Text(lang["name"]),
+                      secondary: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                          child: Text(lang["name"]),
+                        ),
                       ),
-                    ),
-                    selected: true,
-                  );
-                }).toList(),
-              ),
+                      selected: true,
+                    );
+                  }).toList(),
+                )
+              else
+                const EmptyWidget()
             ],
           );
         },
