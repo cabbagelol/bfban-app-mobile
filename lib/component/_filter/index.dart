@@ -105,6 +105,7 @@ class FilterState extends State<Filter> {
             title: i.title,
             key: titleKey,
             index: _index++,
+            tabCount: filterItem.length,
           )
             ..icon = i.icon!
             ..isIcon = i.isIcon!,
@@ -244,22 +245,23 @@ class FilterState extends State<Filter> {
           child: Builder(
             builder: (context) => Container(
               key: _containerKey,
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               constraints: BoxConstraints(
                 minHeight: selectHeight,
               ),
               color: Theme.of(context).scaffoldBackgroundColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: filterItem.asMap().keys.map<Widget>((index) {
-                  FilterItem item = filterItem[index];
-                  return GestureDetector(
-                    child: item.title!,
-                    onTap: () {
-                      _onSelectChange(index);
-                    },
-                  );
-                }).toList(),
+              child: ClipRect(
+                clipBehavior: Clip.hardEdge,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: filterItem.asMap().keys.map<Widget>((index) {
+                    FilterItem item = filterItem[index];
+                    return GestureDetector(
+                      child: item.title!,
+                      onTap: () => _onSelectChange(index),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ),
@@ -371,6 +373,8 @@ class FilterTitleWidget extends StatefulWidget {
   // 展存index
   final int? index;
 
+  final int? tabCount;
+
   // 内部StateSetter
   StateSetter? stateSetter_;
 
@@ -381,6 +385,7 @@ class FilterTitleWidget extends StatefulWidget {
     Key? key,
     this.title,
     this.index,
+    this.tabCount,
   }) : super(key: key);
 
   @override
@@ -398,6 +403,7 @@ class _FilterTitleWidgetState extends State<FilterTitleWidget> {
       children: <Widget>[
         Container(
           margin: const EdgeInsets.only(right: 5),
+          constraints: BoxConstraints(maxWidth: (MediaQuery.of(context).size.width / widget.tabCount!) - 30),
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(

@@ -340,7 +340,7 @@ class _IndexPageState extends State<IndexPage> {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.add,
+                                      Icons.front_hand,
                                       color: Theme.of(context).iconTheme.color,
                                     ),
                                     const SizedBox(width: 10),

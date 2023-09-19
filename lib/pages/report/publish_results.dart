@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+
+import '../../router/router.dart';
 
 enum PublishResultsType { error, success }
 
@@ -10,7 +14,7 @@ class PublishResultsPage extends StatefulWidget {
 
   PublishResultsPage({
     Key? key,
-    this.type,
+    this.type = "success",
   }) : super(key: key);
 
   @override
@@ -25,11 +29,6 @@ class _PublishResultsPageState extends State<PublishResultsPage> {
         elevation: 0,
         centerTitle: true,
         title: Text(FlutterI18n.translate(context, "report.info.reportHacker")),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return Container();
-          },
-        ),
       ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 40),
@@ -103,6 +102,8 @@ class _PublishResultsPageState extends State<PublishResultsPage> {
                   elevation: 0,
                   onPressed: () {
                     Navigator.of(context).pop();
+                    String data = jsonEncode({"originName": ""});
+                    Navigator.of(context).popAndPushNamed('/report/$data');
                   },
                   child: Text(FlutterI18n.translate(context, "report.button.continue")),
                 ),

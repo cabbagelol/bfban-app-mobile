@@ -70,7 +70,9 @@ class CheatUserCheatersCard extends StatelessWidget {
         content: data["content"] is Map ? data["content"]["text"] : data["content"],
         quote: QuoteCard(data: data),
         onChangeOption: () {
-          _timeLineBaseCardKey.currentState!.updateWidgetHeight();
+          Future.delayed(const Duration(milliseconds: 25), () {
+            _timeLineBaseCardKey.currentState!.updateWidgetHeight();
+          });
         },
       ),
       bottom: TimeLineItemBottomBtn(

@@ -99,7 +99,7 @@ class _ReportPageState extends State<ReportPage> {
 
   /// [Response]
   /// 提交举报
-  _onSubmit() async {
+  _onSubmit(BuildContext context) async {
     if (!_onVerification()) return;
 
     if (reportStatus.param!.value.isEmpty) {
@@ -233,6 +233,7 @@ class _ReportPageState extends State<ReportPage> {
       videoInfo = {
         "value": "",
         "videoIndex": 0,
+        "maxStringLang": 255,
         "maxCount": 10,
         "links": [
           {
@@ -338,9 +339,9 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 )
               : IconButton(
-                  onPressed: () => _onSubmit(),
+                  onPressed: () => _onSubmit(context),
                   icon: const Icon(Icons.done),
-                )
+                ),
         ],
       ),
       body: ListView(

@@ -191,7 +191,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     return RefreshIndicator(
       key: _refreshIndicatorKey,
       onRefresh: _onRefresh,
-      child: activityStatus.list!.isNotEmpty
+      child: activityStatus.list!.isNotEmpty && !activityStatus.load
           ? ListView.builder(
               controller: _scrollController,
               itemCount: activityStatus.list!.length + 1,

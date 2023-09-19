@@ -107,31 +107,33 @@ class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPro
   // 当前内容高度
   double currentBodyHeight = 0;
 
+  bool inInit = false;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       updateWidgetHeight();
     });
 
-    super.initState();
-  }
+    eventUtil.on("html-image-update-widget", (e) {
+      Future.delayed(const Duration(microseconds: 300), () {
+        updateWidgetHeight();
+      });
+    });
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+    inInit = true;
+    super.initState();
   }
 
   /// [Event]
   /// 设置垂直线高度
   updateWidgetHeight() {
-    Future.delayed(const Duration(milliseconds: 25), () {
-      if (mounted) {
-        double semanticBounds = contentHtmlBaseKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
-        setState(() {
-          if (semanticBounds != currentBodyHeight) currentBodyHeight = semanticBounds;
-        });
-      }
-    });
+    if (mounted && inInit) {
+      double semanticBounds = contentHtmlBaseKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
+      setState(() {
+        if (semanticBounds != currentBodyHeight) currentBodyHeight = semanticBounds;
+      });
+    }
   }
 
   @override
@@ -139,10 +141,11 @@ class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPro
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 0),
           height: currentBodyHeight,
-          constraints: BoxConstraints(
-            minHeight: 50,
+          constraints: const BoxConstraints(
+            minHeight: 36,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,7 +159,7 @@ class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPro
                   flex: 2,
                   child: Container(
                     color: Theme.of(context).dividerTheme.color,
-                    width: 2,
+                    width: 4,
                   ),
                 ),
             ],

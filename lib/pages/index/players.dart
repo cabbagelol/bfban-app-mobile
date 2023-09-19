@@ -368,50 +368,45 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         ],
         slot: <FilterItemWidget>[
           FilterItemWidget(
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                FlutterI18n.translate(context, "list.filters.sortByTitle"),
-                style: const TextStyle(fontSize: 12),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+            title: Text(
+              FlutterI18n.translate(context, "list.filters.sortByTitle"),
+              style: const TextStyle(fontSize: 12),
+              softWrap: true,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             panel: SoltFilterPanel(),
           ),
           FilterItemWidget(
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                FlutterI18n.translate(context, "list.colums.updateTime"),
-                style: const TextStyle(fontSize: 12),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+            title: Text(
+              FlutterI18n.translate(context, "list.colums.updateTime"),
+              style: const TextStyle(fontSize: 12),
+              softWrap: true,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textWidthBasis: TextWidthBasis.longestLine,
             ),
             panel: CreateTimeFilterPanel(),
           ),
           FilterItemWidget(
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                FlutterI18n.translate(context, "list.colums.reportTime"),
-                style: const TextStyle(fontSize: 12),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+            title: Text(
+              FlutterI18n.translate(context, "list.colums.reportTime"),
+              style: const TextStyle(fontSize: 12),
+              softWrap: true,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textWidthBasis: TextWidthBasis.longestLine,
             ),
             panel: UpdateTimeFilterPanel(),
           ),
           FilterItemWidget(
-            title: Container(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Text(
-                FlutterI18n.translate(context, "report.labels.game"),
-                style: const TextStyle(fontSize: 12),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
+            title: Text(
+              FlutterI18n.translate(context, "report.labels.game"),
+              style: const TextStyle(fontSize: 12),
+              softWrap: true,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textWidthBasis: TextWidthBasis.longestLine,
             ),
             panel: GameNameFilterPanel(
               key: _gameNameFilterKey,
