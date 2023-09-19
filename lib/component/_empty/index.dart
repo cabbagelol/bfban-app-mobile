@@ -6,12 +6,17 @@ import 'package:provider/provider.dart';
 import '../_notNetwork/index.dart';
 
 class EmptyWidget extends StatelessWidget {
-  const EmptyWidget({Key? key}) : super(key: key);
+  final bool isChenkNetork;
+
+  const EmptyWidget({
+    Key? key,
+    this.isChenkNetork = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
-      if (!appInfo.connectivity.isNetwork) {
+      if (isChenkNetork && !appInfo.connectivity.isNetwork) {
         return Container(
           alignment: Alignment.center,
           margin: const EdgeInsets.symmetric(vertical: 20),

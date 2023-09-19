@@ -25,17 +25,19 @@ class DirProvider with ChangeNotifier {
   get currentDefaultSavePath => getPaths().where((element) => element.dirName == defaultSavePathValue).first.basicPath;
 
   init() async {
-    List futurePath = await Future.wait([
-      getApplicationSupportDirectory(),
-      getExternalStorageDirectories(),
-      getDownloadsDirectory(),
-    ]);
+    List<Future> waitMode = [getApplicationSupportDirectory()];
+    if (Platform.isAndroid) waitMode.insert(1, getExternalStorageDirectories());
+    if (Platform.isAndroid) waitMode.insert(2, getDownloadsDirectory());
+    List futurePath = await Future.wait(waitMode);
 
     fileAllPath = FileAllPath(
       applicationSupportDirectory: futurePath[0],
-      externalCacheDirectories: futurePath[1],
-      downloadsDirectory: futurePath[2],
+      externalCacheDirectories: [],
+      downloadsDirectory: Directory(""),
     );
+
+    if (Platform.isAndroid) fileAllPath.externalCacheDirectories = futurePath[1];
+    if (Platform.isAndroid) fileAllPath.downloadsDirectory = futurePath[2];
 
     _initDirectory();
 
