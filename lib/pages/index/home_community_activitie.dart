@@ -430,22 +430,27 @@ class WidgetStateText extends StatelessWidget {
         return Text("${FlutterI18n.translate(context, "home.activity.activities.join")}\t", style: textile);
       case "verify":
       case "judgement":
-        // 处理
-        // 回复
+        // 处理或回复, 判决
         return Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,
           children: <Widget>[
-            Text("${FlutterI18n.translate(context, "detail.info.judge")}\t", style: textile),
+            Text((itemData!["username"] ?? itemData!["byUserName"] ?? itemData!["toPlayerName"]).toString(), style: textile),
+            Text("\t${FlutterI18n.translate(context, "detail.info.judge")}\t", style: textile),
             Text("${itemData!["toPlayerName"]}", style: textile),
             Text(FlutterI18n.translate(context, "basic.action.${_util.queryAction(itemData!["action"])}.text"), style: textile),
           ],
         );
       case "banAppeal":
         return Wrap(
-          children: [Text(FlutterI18n.translate(context, "detail.appeal.info.content"), style: textile)],
+          children: [
+            Text("${FlutterI18n.translate(context, "detail.appeal.info.content")}\t", style: textile),
+            GamesTagWidget(
+              data: itemData!["playerGames"],
+            ),
+          ],
         );
+      default:
+        return Text(itemData!["type"]);
     }
-
-    return Container();
   }
 }

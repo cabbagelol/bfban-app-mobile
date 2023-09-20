@@ -21,51 +21,59 @@ class DirProvider with ChangeNotifier {
   // 默认选择保存位置
   String defaultSavePathValue = "";
 
+  // 是否支持dir，不提供则关闭保存一类功能
+  bool isSupportDirectory() => paths.isNotEmpty;
+
   // 获取默认选择保存的完整地址
   get currentDefaultSavePath => getPaths().where((element) => element.dirName == defaultSavePathValue).first.basicPath;
 
   init() async {
-    List<Future> waitMode = [getApplicationSupportDirectory()];
-    if (Platform.isAndroid) waitMode.insert(1, getExternalStorageDirectories());
-    if (Platform.isAndroid) waitMode.insert(2, getDownloadsDirectory());
-    List futurePath = await Future.wait(waitMode);
+    try {
+      List<Future> waitMode = [];
+      if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) waitMode.insert(0, getApplicationSupportDirectory());
+      if (Platform.isAndroid) waitMode.insert(1, getExternalStorageDirectories());
+      if (Platform.isAndroid) waitMode.insert(2, getDownloadsDirectory());
 
-    fileAllPath = FileAllPath(
-      applicationSupportDirectory: futurePath[0],
-      externalCacheDirectories: [],
-      downloadsDirectory: Directory(""),
-    );
+      List futurePath = await Future.wait(waitMode);
 
-    if (Platform.isAndroid) fileAllPath.externalCacheDirectories = futurePath[1];
-    if (Platform.isAndroid) fileAllPath.downloadsDirectory = futurePath[2];
+      fileAllPath = FileAllPath(
+        applicationSupportDirectory: futurePath[0],
+        externalCacheDirectories: [],
+        downloadsDirectory: Directory(""),
+        applicationDocumentsDirectory: Directory(""),
+      );
 
-    _initDirectory();
+      if (Platform.isAndroid) fileAllPath.externalCacheDirectories = futurePath[1];
+      if (Platform.isAndroid) fileAllPath.downloadsDirectory = futurePath[2];
 
-    if (defaultSavePathValue.isEmpty) defaultSavePathValue = "appInteriorDir";
+      _initDirectory();
 
-    Map configuration = await getSaveDirPath();
-    paths = getPaths();
-    if (configuration["configuration"].length > 0) {
-      for (DirItemStorePath i in saveDirPathToMapAsDirItemStorePath(configuration["configuration"])) {
-        paths[paths.indexWhere((element) => element.dirName == i.dirName)] = i;
+      if (defaultSavePathValue.isEmpty) defaultSavePathValue = "appInteriorDir";
+
+      Map configuration = await getSaveDirPath();
+      paths = getPaths();
+      if (configuration["configuration"].length > 0) {
+        for (DirItemStorePath i in saveDirPathToMapAsDirItemStorePath(configuration["configuration"])) {
+          paths[paths.indexWhere((element) => element.dirName == i.dirName)] = i;
+        }
       }
-    }
 
-    notifyListeners();
+      notifyListeners();
+    } finally {}
     return true;
   }
 
   // 列出可使用存储位置
   List<DirItemStorePath> getPaths() {
     List<DirItemStorePath> list = [];
-    if (fileAllPath.applicationSupportDirectory!.isAbsolute) {
+    if (fileAllPath.applicationSupportDirectory!.existsSync()) {
       list.add(DirItemStorePath(
         dirName: "appInteriorDir",
         check: true,
         basicPath: fileAllPath.applicationSupportDirectory!.path,
       ));
     }
-    if (fileAllPath.downloadsDirectory!.isAbsolute) {
+    if (fileAllPath.downloadsDirectory!.existsSync()) {
       list.add(DirItemStorePath(
         dirName: "downloadsDirectory",
         basicPath: fileAllPath.downloadsDirectory!.path,
@@ -73,10 +81,12 @@ class DirProvider with ChangeNotifier {
     }
     if (fileAllPath.externalCacheDirectories!.isNotEmpty) {
       for (var externalDir in fileAllPath.externalCacheDirectories!.indexed) {
-        list.add(DirItemStorePath(
-          dirName: "external${externalDir.$1}",
-          basicPath: externalDir.$2.path,
-        ));
+        if (!externalDir.$2.existsSync())
+          // ignore: curly_braces_in_flow_control_structures
+          list.add(DirItemStorePath(
+            dirName: "external${externalDir.$1}",
+            basicPath: externalDir.$2.path,
+          ));
       }
     }
     paths = list;
@@ -88,6 +98,8 @@ class DirProvider with ChangeNotifier {
     dynamic localData = await getSaveDirPath();
     List readLocalPath = saveDirPathToMapAsDirItemStorePath(List.from(localData["configuration"]).where((element) => element["check"]).toList());
     List fileList = [];
+
+    if (!isSupportDirectory()) return [];
 
     for (DirItemStorePath i in (readLocalPath.isEmpty ? paths : readLocalPath)) {
       if (i.check! == false) continue;
@@ -132,12 +144,15 @@ class DirProvider with ChangeNotifier {
   // 初始目录
   _initDirectory() async {
     const allAppDir = ['/media', '/logs'];
-    for (var path in allAppDir) {
-      String fullPath = '${fileAllPath.applicationSupportDirectory!.path}$path';
-      if (!Directory(fullPath).existsSync()) {
-        Directory(fullPath).createSync(recursive: true);
+
+    if (fileAllPath.applicationSupportDirectory!.existsSync())
+      // ignore: curly_braces_in_flow_control_structures
+      for (var path in allAppDir) {
+        String fullPath = '${fileAllPath.applicationSupportDirectory!.path}$path';
+        if (!Directory(fullPath).existsSync()) {
+          Directory(fullPath).createSync(recursive: true);
+        }
       }
-    }
 
     return true;
   }
@@ -183,10 +198,13 @@ class FileAllPath {
   // 下载目录
   Directory? downloadsDirectory;
 
+  Directory? applicationDocumentsDirectory;
+
   FileAllPath({
     this.applicationSupportDirectory,
     this.externalCacheDirectories,
     this.downloadsDirectory,
+    this.applicationDocumentsDirectory,
   });
 }
 

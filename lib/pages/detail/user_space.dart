@@ -380,13 +380,37 @@ class UserSpacePageState extends State<UserSpacePage> {
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          snapshot.data["reportnum"].toString(),
+                                          (snapshot.data["reportnum"] ?? snapshot.data["reportNum"]).toString(),
                                           style: const TextStyle(fontSize: 18),
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                         ),
                                       ],
                                     ),
+                                    if (snapshot.data["statusNum"] != null)
+                                      Wrap(
+                                        children: snapshot.data["statusNum"].map((statusNumItem) {
+                                          return Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Opacity(
+                                                opacity: .5,
+                                                child: Text(
+                                                  FlutterI18n.translate(context, "basic.status.$statusNumItem"),
+                                                  style: const TextStyle(fontSize: 20),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(
+                                                snapshot.data["statusNum"][statusNumItem].toString(),
+                                                style: const TextStyle(fontSize: 18),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      )
                                   ],
                                 ),
                               ),

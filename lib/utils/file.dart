@@ -64,4 +64,28 @@ class FileManagement {
       "fileExtension": f[1] ?? "err",
     };
   }
+
+  /// [Event]
+  /// Storage unit conversion
+  onUnitConversion(dynamic value) {
+    String size = "";
+    double limit = double.parse(value.toString());
+    if (limit < 0.1 * 1024) {
+      size = "${limit.toStringAsFixed(2)}B";
+    } else if (limit < 0.1 * 1024 * 1024) {
+      size = "${(limit / 1024).toStringAsFixed(2)}KB";
+    } else if (limit < 0.1 * 1024 * 1024 * 1024) {
+      size = "${(limit / (1024 * 1024)).toStringAsFixed(2)}MB";
+    } else {
+      size = "${(limit / (1024 * 1024 * 1024)).toStringAsFixed(2)}GB";
+    }
+
+    String sizeStr = size.toString();
+    var index = sizeStr.indexOf(".");
+    var dou = sizeStr.substring(index, 2);
+    if (dou == "00") {
+      return sizeStr.substring(0, index) + sizeStr.substring(index + 3, 2);
+    }
+    return size;
+  }
 }

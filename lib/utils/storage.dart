@@ -5,6 +5,8 @@ import 'package:bfban/constants/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+enum StorageType { none, string, int, double, bool }
+
 class Storage {
   PackageInfo? _packageInfo;
 
@@ -27,17 +29,27 @@ class Storage {
 
   /// [Event]
   /// 获取
-  Future<StorageData> get(String name, {type = "string", backNullValue = "none"}) async {
+  Future<StorageData> get(String name, {StorageType type = StorageType.string, backNullValue = "none"}) async {
     if (!isInit) await init();
 
     StorageData result = StorageData();
 
     switch (type) {
-      case "none":
-        result.setData(_prefs!.get("$_preName$name"));
+      case StorageType.int:
+        result.setData(_prefs!.getInt("$_preName$name"));
         break;
-      case "string":
+      case StorageType.double:
+        result.setData(_prefs!.getDouble("$_preName$name"));
+        break;
+      case StorageType.bool:
+        result.setData(_prefs!.getBool("$_preName$name"));
+        break;
+      case StorageType.string:
         result.setData(_prefs!.getString("$_preName$name"));
+        break;
+      case StorageType.none:
+      default:
+        result.setData(_prefs!.get("$_preName$name"));
         break;
     }
 
@@ -46,24 +58,29 @@ class Storage {
 
   /// [Event]
   /// 设置
-  Future set(String key, {String type = "string", value}) async {
+  Future set(String key, {StorageType type = StorageType.string, value}) async {
     try {
       if (!isInit) await init();
       String name = "$_preName$key";
       switch (type) {
-        case "bool":
+        case StorageType.int:
+          _prefs!.setInt(name, value);
+          break;
+        case StorageType.double:
+          _prefs!.setDouble(name, value);
+          break;
+        case StorageType.bool:
           _prefs!.setBool(name, value);
           break;
-        case "string":
+        case StorageType.string:
           int time = DateTime.now().millisecondsSinceEpoch;
-          Map val = {"time": time, "value": value};
+          Map<dynamic, dynamic> val = {"time": time, "value": value};
           await _prefs!.setString(
             name,
             jsonEncode(val),
           );
           break;
       }
-
       return _prefs;
     } catch (E) {
       rethrow;

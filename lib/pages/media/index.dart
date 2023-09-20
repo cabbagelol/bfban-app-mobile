@@ -34,6 +34,8 @@ class MediaPage extends StatefulWidget {
 class _mediaPageState extends State<MediaPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final FileManagement _fileManagement = FileManagement();
+
   TabController? _tabController;
 
   final GlobalKey<RefreshIndicatorState> _refreshLocalIndicatorKey = GlobalKey<RefreshIndicatorState>();
@@ -314,15 +316,15 @@ class _mediaPageState extends State<MediaPage> {
           ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, 'profile.media.maxTrafficQuota'),
-            cont: Text(onUnitConversion(cloudMediaInfoStatus.data!['maxTrafficQuota'])),
+            cont: Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['maxTrafficQuota'])),
           ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, 'profile.media.usedStorageQuota'),
             cont: Row(
               children: [
-                Text(onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
+                Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
                 const Text("/"),
-                Text(onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+                Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
               ],
             ),
           ),
@@ -332,7 +334,7 @@ class _mediaPageState extends State<MediaPage> {
           ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, 'profile.media.todayTrafficQuota'),
-            cont: Text(onUnitConversion(cloudMediaInfoStatus.data!['todayTrafficQuota'])),
+            cont: Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['todayTrafficQuota'])),
           ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, 'profile.media.prevResetTime'),
@@ -428,7 +430,7 @@ class _mediaPageState extends State<MediaPage> {
                 children: <Widget>[
                   SelectableText(i.file.path.toString()),
                   Text(stat.type.toString()),
-                  Text("Size ${onUnitConversion(stat.size)}"),
+                  Text("Size ${_fileManagement.onUnitConversion(stat.size)}"),
                   Text("Accessed ${stat.accessed}"),
                   Text("Modified ${stat.modified}"),
                   Text("Changed ${stat.changed}"),
@@ -458,7 +460,7 @@ class _mediaPageState extends State<MediaPage> {
                 children: <Widget>[
                   SelectableText(openFileDetail[i.filename]["downloadURL"]),
                   Text("mimeType ${openFileDetail[i.filename]["mimeType"]}"),
-                  Text("Size ${onUnitConversion(openFileDetail[i.filename]["size"])}"),
+                  Text("Size ${_fileManagement.onUnitConversion(openFileDetail[i.filename]["size"])}"),
                 ],
               ),
             ),
@@ -495,30 +497,6 @@ class _mediaPageState extends State<MediaPage> {
         await _getNetworkMediaList();
         break;
     }
-  }
-
-  /// [Event]
-  /// Storage unit conversion
-  onUnitConversion(dynamic value) {
-    String size = "";
-    double limit = double.parse(value.toString());
-    if (limit < 0.1 * 1024) {
-      size = "${limit.toStringAsFixed(2)}B";
-    } else if (limit < 0.1 * 1024 * 1024) {
-      size = "${(limit / 1024).toStringAsFixed(2)}KB";
-    } else if (limit < 0.1 * 1024 * 1024 * 1024) {
-      size = "${(limit / (1024 * 1024)).toStringAsFixed(2)}MB";
-    } else {
-      size = "${(limit / (1024 * 1024 * 1024)).toStringAsFixed(2)}GB";
-    }
-
-    String sizeStr = size.toString();
-    var index = sizeStr.indexOf(".");
-    var dou = sizeStr.substring(index, 2);
-    if (dou == "00") {
-      return sizeStr.substring(0, index) + sizeStr.substring(index + 3, 2);
-    }
-    return size;
   }
 
   @override
@@ -699,9 +677,9 @@ class _mediaPageState extends State<MediaPage> {
                                                       children: [
                                                         Row(
                                                           children: [
-                                                            Text(onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
+                                                            Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
                                                             const Text("/"),
-                                                            Text(onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+                                                            Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
                                                           ],
                                                         ),
                                                         Container(
