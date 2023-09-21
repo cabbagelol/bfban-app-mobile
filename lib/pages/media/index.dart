@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -166,15 +167,17 @@ class _mediaPageState extends State<MediaPage> {
     if (result.data["success"] == 1) {
       final d = result.data;
 
-      setState(() {
-        if (cloudMediaStatus.parame!.skip! <= 0) {
-          cloudMediaStatus.setList(d["data"], MediaType.Network);
-        } else {
-          if (d["data"].length <= 0) return;
+      if (mounted) {
+        setState(() {
+          if (cloudMediaStatus.parame!.skip! <= 0) {
+            cloudMediaStatus.setList(d["data"], MediaType.Network);
+          } else {
+            if (d["data"].length <= 0) return;
 
-          cloudMediaStatus.addList(d["data"], MediaType.Network);
-        }
-      });
+            cloudMediaStatus.addList(d["data"], MediaType.Network);
+          }
+        });
+      }
     }
 
     setState(() {
@@ -413,7 +416,7 @@ class _mediaPageState extends State<MediaPage> {
   }
 
   /// [Event]
-  /// 文件详情
+  /// 打开文件详情
   void _onEnFileInfo(BuildContext context, dynamic i) async {
     switch (i.type) {
       case MediaType.Local:
@@ -451,6 +454,8 @@ class _mediaPageState extends State<MediaPage> {
         // 2 再次检查
         if (openFileDetail[i.filename] == null) return;
 
+        print(openFileDetail[i.filename]['filename']);
+
         // ignore: use_build_context_synchronously
         showDialog(
           context: context,
@@ -458,7 +463,7 @@ class _mediaPageState extends State<MediaPage> {
             content: SingleChildScrollView(
               child: ListBody(
                 children: <Widget>[
-                  SelectableText(openFileDetail[i.filename]["downloadURL"]),
+                  SelectableText("${Config.apis["network_service_request"]!.url}/service/file?filename=${openFileDetail[i.filename]["filename"]}"),
                   Text("mimeType ${openFileDetail[i.filename]["mimeType"]}"),
                   Text("Size ${_fileManagement.onUnitConversion(openFileDetail[i.filename]["size"])}"),
                 ],
@@ -479,6 +484,7 @@ class _mediaPageState extends State<MediaPage> {
         break;
       case MediaType.Network:
         cloudMediaStatus.parame!.resetPage();
+        await _getNetworkMediaInfo();
         await _getNetworkMediaList();
         break;
     }
@@ -663,33 +669,38 @@ class _mediaPageState extends State<MediaPage> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             children: [
-                                              const Icon(Icons.info_outline, size: 18),
-                                              const SizedBox(width: 5),
                                               cloudMediaInfoStatus.data!.isEmpty
                                                   ? ELuiLoadComponent(
-                                                type: "line",
+                                                      type: "line",
                                                       lineWidth: 1,
                                                       color: Theme.of(context).progressIndicatorTheme.color!,
                                                       size: 16,
                                                     )
-                                                  : Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                  : Row(
                                                       children: [
-                                                        Row(
+                                                        const Icon(Icons.info_outline, size: 18),
+                                                        const SizedBox(width: 10),
+                                                        Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
                                                           children: [
-                                                            Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
-                                                            const Text("/"),
-                                                            Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+                                                            Row(
+                                                              children: [
+                                                                Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
+                                                                const Text("/"),
+                                                                Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+                                                              ],
+                                                            ),
+                                                            if (cloudMediaInfoStatus.data!["usedStorageQuota"] != null && cloudMediaInfoStatus.data!["totalStorageQuota"] != null)
+                                                              Container(
+                                                                margin: const EdgeInsets.only(top: 10),
+                                                                width: 150,
+                                                                child: LinearProgressIndicator(
+                                                                  value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
+                                                                  minHeight: 4,
+                                                                  backgroundColor: Theme.of(context).cardTheme.color,
+                                                                ),
+                                                              )
                                                           ],
-                                                        ),
-                                                        Container(
-                                                          margin: const EdgeInsets.only(top: 10),
-                                                          width: 150,
-                                                          child: LinearProgressIndicator(
-                                                            value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
-                                                            minHeight: 4,
-                                                            backgroundColor: Theme.of(context).cardTheme.color,
-                                                          ),
                                                         )
                                                       ],
                                                     ),
@@ -698,10 +709,7 @@ class _mediaPageState extends State<MediaPage> {
                                         ),
                                       ),
                                       TextButton(
-                                        onPressed: () async {
-                                          _getNetworkMediaInfo();
-                                          _getNetworkMediaList();
-                                        },
+                                        onPressed: () => _onRefresh(MediaType.Network),
                                         child: const Icon(Icons.restart_alt_rounded),
                                       ),
                                     ],
@@ -825,17 +833,23 @@ class _MediaCardState extends State<MediaCard> {
                           widget.onTapOpenFile!();
                         }
                       },
-                      child: MediaIconCard(
+                      child: MediaLocalIconCard(
                         i: widget.i,
                         filetype: _filetype,
                       ),
                     ),
-                  )
-                else
-                  const Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Center(
-                      child: Icon(Icons.file_present, size: 40),
+                  ),
+                if (widget.i.type == MediaType.Network)
+                  ClipPath(
+                    child: GestureDetector(
+                      onDoubleTap: () {
+                        if (widget.i.type == MediaType.Local && widget.onTapOpenFile != null) {
+                          widget.onTapOpenFile!();
+                        }
+                      },
+                      child: MediaNetworkIconCard(
+                        i: widget.i,
+                      ),
                     ),
                   ),
 
@@ -1029,12 +1043,12 @@ class _MediaCardState extends State<MediaCard> {
   }
 }
 
-class MediaIconCard extends StatelessWidget {
+class MediaLocalIconCard extends StatelessWidget {
   var filetype;
 
   var i;
 
-  MediaIconCard({
+  MediaLocalIconCard({
     Key? key,
     this.filetype,
     this.i,
@@ -1049,9 +1063,9 @@ class MediaIconCard extends StatelessWidget {
         if (filetype == FileManagementType.IMAGE)
           Expanded(
             flex: 1,
-            child: Image.file(
+            child: ExtendedImage.file(
               i.file,
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
               filterQuality: FilterQuality.low,
               repeat: ImageRepeat.noRepeat,
             ),
@@ -1066,6 +1080,34 @@ class MediaIconCard extends StatelessWidget {
             Icons.file_present,
             size: 40,
           ),
+      ],
+    );
+  }
+}
+
+class MediaNetworkIconCard extends StatelessWidget {
+  var i;
+
+  MediaNetworkIconCard({
+    Key? key,
+    this.i,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 1,
+          child: ExtendedImage.network(
+            "${Config.apis["network_service_request"]!.url}/service/file?filename=${i.filename}",
+            fit: BoxFit.contain,
+            filterQuality: FilterQuality.low,
+            repeat: ImageRepeat.noRepeat,
+          ),
+        )
       ],
     );
   }

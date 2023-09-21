@@ -3,16 +3,29 @@ import 'package:flutter/services.dart';
 
 import '../data/index.dart';
 
-class PinkTheme extends AppBaseThemeItem {
+class MikuGreenTheme extends AppBaseThemeItem {
   @override
   init() {}
+
+  static Color color = const Color(0xff39c5bb);
+  static Color color0 = const Color(0xffe6fffc);
+  static Color color50 = const Color(0xffd0fffa);
+  static Color color100 = const Color(0xffa5fff7);
+  static Color color200 = const Color(0xff82fff5);
+  static Color color300 = const Color(0xff40d7cc);
+  static Color color400 = const Color(0xff3cccc2);
+  static Color color500 = const Color(0xff33ada4);
+  static Color color600 = const Color(0xff2d9b94);
+  static Color color700 = const Color(0xff2a8f88);
+  static Color color800 = const Color(0xff237c76);
+  static Color color900 = const Color(0xff1c625d);
 
   @override
   changeSystem() {
     SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       systemNavigationBarColor: Colors.white,
-      statusBarBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
     );
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
@@ -21,82 +34,82 @@ class PinkTheme extends AppBaseThemeItem {
 
   @override
   static dynamic data = AppThemeItem(
-    name: "pink",
+    name: "mikuGreen",
     isDefault: false,
     themeData: ThemeData(
       sliderTheme: SliderThemeData(
-        valueIndicatorColor: Colors.pink.shade50,
+        valueIndicatorColor: color,
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           elevation: MaterialStateProperty.all(0),
-          foregroundColor: MaterialStateProperty.all(Colors.pink.shade300),
+          foregroundColor: MaterialStateProperty.all(color),
           textStyle: MaterialStateProperty.all(
-            TextStyle(color: Colors.pink.shade300),
+            TextStyle(color: color),
           ),
         ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: Colors.pink.withOpacity(.1),
-        modalBackgroundColor: Colors.pink.withOpacity(.1),
+        backgroundColor: color.withOpacity(.1),
+        modalBackgroundColor: color.withOpacity(.1),
       ),
-      canvasColor: const Color(0xFFFFFCFC),
-      primaryColorLight: Colors.pink.shade300,
-      primaryColorDark: Colors.pink.shade300,
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(color: Color(0xFF503050)),
-        displayMedium: TextStyle(color: Color(0xFF503050)),
-        displaySmall: TextStyle(color: Color(0xFF503050)),
-        headlineMedium: TextStyle(color: Colors.black),
-        headlineSmall: TextStyle(color: Colors.black),
-        titleLarge: TextStyle(color: Color(0xFF2C1A2C)),
-        titleMedium: TextStyle(color: Color(0xFF2C1A2C)),
-        titleSmall: TextStyle(color: Color(0xFF2C1A2C)),
-        bodyLarge: TextStyle(color: Color(0xFF2C1A2C)),
-        bodyMedium: TextStyle(color: Color(0xFF2C1A2C)),
-        bodySmall: TextStyle(color: Color(0xFF2C1A2C)),
+      canvasColor: const Color(0xffdefff9),
+      primaryColorLight: Colors.white,
+      primaryColorDark: color,
+      textTheme: TextTheme(
+        displayLarge: TextStyle(color: color800.withOpacity(.8)),
+        displayMedium: TextStyle(color: color800.withOpacity(.8)),
+        displaySmall: TextStyle(color: color800.withOpacity(.8)),
+        headlineMedium: const TextStyle(color: Colors.black),
+        headlineSmall: const TextStyle(color: Colors.black),
+        titleLarge: TextStyle(color: color900),
+        titleMedium: TextStyle(color: color900),
+        titleSmall: TextStyle(color: color900),
+        bodyLarge: TextStyle(color: color800),
+        bodyMedium: TextStyle(color: color800),
+        bodySmall: TextStyle(color: color800),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(Colors.pink.shade300.withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(Colors.pink.shade300),
+        trackColor: MaterialStateProperty.all(color.withOpacity(.2)),
+        thumbColor: MaterialStateProperty.all(color),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        selectionColor: Colors.pink.shade300.withOpacity(.1),
-        selectionHandleColor: Colors.pink.shade300.withOpacity(.1),
-        cursorColor: Colors.pink.shade300,
+        selectionColor: color300.withOpacity(.5),
+        selectionHandleColor: color300,
+        cursorColor: color,
       ),
       unselectedWidgetColor: Colors.white,
-      scaffoldBackgroundColor: const Color(0xFFFFFAFB),
+      scaffoldBackgroundColor: const Color(0xfff6fffd),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
       dialogTheme: DialogTheme(
         elevation: 10,
-        backgroundColor: Colors.pink.shade300,
+        backgroundColor: color300,
         titleTextStyle: const TextStyle(
           color: Colors.white,
         ),
       ),
       highlightColor: Colors.transparent,
       toggleButtonsTheme: ToggleButtonsThemeData(
-        color: Colors.pink.shade50,
-        fillColor: Colors.pink.shade50,
+        color: color,
+        fillColor: color,
         textStyle: TextStyle(
-          color: Colors.pink.shade300,
+          color: color,
         ),
         focusColor: Colors.white60,
         selectedColor: Colors.white,
-        selectedBorderColor: Colors.pink.shade800,
+        selectedBorderColor: color800,
         splashColor: Colors.black38,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.pink,
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: color,
         linearTrackColor: Colors.black12,
         refreshBackgroundColor: Colors.white,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
-          color: Colors.pink.shade50,
+          color: color,
           borderRadius: const BorderRadius.all(Radius.circular(3.0)),
           border: Border.all(
             width: 1,
@@ -112,22 +125,29 @@ class PinkTheme extends AppBaseThemeItem {
         ),
         elevation: 2,
       ),
-      dividerColor: Colors.pink.shade50,
-      dividerTheme: DividerThemeData(
-        color: Colors.pink.shade50,
+      dividerColor: Colors.black12,
+      dividerTheme: const DividerThemeData(
+        color: Colors.black12,
+        space: 1,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: color.withOpacity(.3),
+          disabledForegroundColor: color.withOpacity(.3),
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
           textStyle: MaterialStateProperty.all(
             TextStyle(
-              color: Colors.pink.shade300,
+              color: color,
             ),
           ),
           elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(Colors.pink.shade300),
+          backgroundColor: MaterialStateProperty.all(color),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.transparent),
@@ -148,59 +168,59 @@ class PinkTheme extends AppBaseThemeItem {
       ),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       bannerTheme: MaterialBannerThemeData(
-        backgroundColor: Colors.pink.shade300,
+        backgroundColor: color,
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: Colors.pink.shade300,
-        disabledColor: Colors.pink.shade300.withOpacity(.2),
+        buttonColor: color,
+        disabledColor: color300.withOpacity(.2),
       ),
       buttonBarTheme: const ButtonBarThemeData(
         layoutBehavior: ButtonBarLayoutBehavior.constrained,
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: Colors.pink.shade50,
+        backgroundColor: color.withOpacity(.4),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        backgroundColor: const Color(0xFFFFFDFD),
+        backgroundColor: Colors.white,
         landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-        selectedItemColor: Colors.pink.shade300,
+        selectedItemColor: color,
         selectedLabelStyle: TextStyle(
-          color: Colors.pink.shade300,
+          color: color,
           fontSize: 14,
         ),
         elevation: 0,
-        unselectedItemColor: Colors.pink.shade100,
+        unselectedItemColor: color,
         unselectedLabelStyle: TextStyle(
-          color: Colors.pink.shade100,
+          color: color,
           fontSize: 14,
         ),
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.pink.shade300,
-        foregroundColor: Colors.white,
-        shadowColor: Colors.pink.shade50,
+        color: color900,
+        foregroundColor: color500,
+        shadowColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(
-          color: Color(0xFFB22554),
+        iconTheme: IconThemeData(
+          color: color.withOpacity(1),
         ),
       ),
-      primaryColor: Colors.pink,
+      primaryColor: color,
       tabBarTheme: TabBarTheme(
-        unselectedLabelColor: Colors.pink.shade100,
-        labelColor: Colors.pink,
-        indicator: const UnderlineTabIndicator(
+        unselectedLabelColor: color300,
+        labelColor: color900,
+        indicator: UnderlineTabIndicator(
           borderSide: BorderSide(
-            color: Colors.pink,
+            color: color,
             width: 3,
           ),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Colors.pink.shade300,
+        backgroundColor: color300,
         focusColor: Colors.white,
       ),
       iconTheme: IconThemeData(
-        color: Colors.pink.shade300,
+        color: color300,
       ),
       cardTheme: CardTheme(
         color: Colors.white,
@@ -210,19 +230,19 @@ class PinkTheme extends AppBaseThemeItem {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
           side: BorderSide(
-            color: Colors.pink.shade50,
+            color: color100,
             width: 1,
           ),
         ),
       ),
       radioTheme: RadioThemeData(
         mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
-        overlayColor: MaterialStateProperty.all(Colors.pink.withOpacity(.7)),
-        fillColor: MaterialStateProperty.all(Colors.pink),
+        overlayColor: MaterialStateProperty.all(color.withOpacity(.7)),
+        fillColor: MaterialStateProperty.all(color),
       ),
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(Colors.white),
-        fillColor: MaterialStateProperty.all(Colors.pink.shade300),
+        fillColor: MaterialStateProperty.all(color),
         side: const BorderSide(
           color: Colors.black12,
           width: 3,
@@ -233,24 +253,26 @@ class PinkTheme extends AppBaseThemeItem {
         secondarySelectedColor: Colors.white,
         checkmarkColor: Colors.white,
         iconTheme: IconThemeData(
-          color: Colors.pink.shade300,
+          color: color300,
         ),
         secondaryLabelStyle: TextStyle(
-          color: Colors.pink.shade300,
+          color: color300,
         ),
         labelStyle: TextStyle(
-          color: Colors.pink.shade300,
+          color: color300,
         ),
       ),
       colorScheme: ColorScheme(
-        outline: Colors.white10,
+        outline: color100,
         brightness: Brightness.light,
-        primary: Colors.pink.shade300,
-        onPrimary: Colors.pink.shade300,
-        secondary: Colors.pink,
-        onSecondary: Colors.pink,
-        error: Colors.redAccent,
-        onError: Colors.redAccent,
+        primary: color,
+        onPrimary: Colors.white,
+        primaryContainer: color300,
+        onPrimaryContainer: color,
+        secondary: color,
+        onSecondary: color,
+        error: const Color(0xffFC4952),
+        onError: const Color(0xffA4181F),
         errorContainer: Colors.white,
         background: const Color(0xff111b2b),
         onBackground: const Color(0xff111b2b),

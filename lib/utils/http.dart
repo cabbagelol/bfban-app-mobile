@@ -55,15 +55,13 @@ class Http extends ScaffoldState {
     String url, {
     String httpDioValue = "network_service_request",
     HttpDioType httpDioType = HttpDioType.api,
-    data,
+    Object? data = const {},
     Map<String, dynamic>? parame,
-    method,
+    method = GET,
     headers,
   }) async {
     Response result = Response(data: {}, requestOptions: RequestOptions(path: '/'));
-    data = data ?? {};
     headers = headers ?? {"x-access-token": ""};
-    method = method ?? 'GET';
 
     if (headers.isNotEmpty && Http.USERAGENT.isNotEmpty) {
       headers.addAll({HttpHeaders.userAgentHeader: Http.USERAGENT});

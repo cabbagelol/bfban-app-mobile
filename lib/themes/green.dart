@@ -30,6 +30,7 @@ class GreenTheme extends AppBaseThemeItem {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
           foregroundColor: MaterialStateProperty.all(Colors.green.shade300),
           textStyle: MaterialStateProperty.all(
             TextStyle(color: Colors.green.shade300),
@@ -41,6 +42,7 @@ class GreenTheme extends AppBaseThemeItem {
         modalBackgroundColor: Colors.green.withOpacity(.1),
       ),
       canvasColor: const Color(0xFF4CAF50),
+      primaryColorLight: const Color(0xFF4CAF50),
       primaryColorDark: const Color(0xFF4CAF50),
       textTheme: const TextTheme(
         displayLarge: TextStyle(color: Color(0xFF5DB761)),
@@ -65,7 +67,7 @@ class GreenTheme extends AppBaseThemeItem {
         cursorColor: Colors.green.shade300,
       ),
       unselectedWidgetColor: Colors.white,
-      scaffoldBackgroundColor: const Color(0xFFFCFFFC),
+      scaffoldBackgroundColor: const Color(0xFFF4FFF4),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
       dialogTheme: DialogTheme(
@@ -90,6 +92,8 @@ class GreenTheme extends AppBaseThemeItem {
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.green,
+        linearTrackColor: Colors.black12,
+        refreshBackgroundColor: Colors.white,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
@@ -114,7 +118,13 @@ class GreenTheme extends AppBaseThemeItem {
         color: Colors.green.shade50,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          disabledBackgroundColor: Colors.green.shade300,
+          disabledForegroundColor: Colors.green.shade300,
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -241,11 +251,11 @@ class GreenTheme extends AppBaseThemeItem {
       ),
       colorScheme: ColorScheme(
         outline: Colors.white10,
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         primary: Colors.green.shade300,
         onPrimary: Colors.green.shade300,
-        secondary: const Color(0xff0a111c),
-        onSecondary: const Color(0xff0a111c),
+        secondary: Colors.green,
+        onSecondary: Colors.green,
         error: Colors.redAccent,
         onError: Colors.redAccent,
         errorContainer: Colors.white,

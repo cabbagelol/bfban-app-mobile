@@ -366,11 +366,14 @@ class _ThemePageState extends State<ThemePage> {
                               Visibility(
                                 visible: _i.name == (fromData["autoSwitchTheme"]! ? fromData["autoSwitchTheme.morning"] : fromData["selectThemeName"]),
                                 child: const Positioned(
-                                  top: 5,
-                                  right: 5,
-                                  child: CircleAvatar(
-                                    radius: 15,
-                                    child: Icon(Icons.done),
+                                  top: 0,
+                                  right: 0,
+                                  child: Checkbox(
+                                    value: true,
+                                    onChanged: null,
+                                    tristate: true,
+                                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                    shape: CircleBorder(),
                                   ),
                                 ),
                               ),

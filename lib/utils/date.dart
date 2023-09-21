@@ -12,7 +12,7 @@ class Date {
     String date, {
     num = 0,
   }) {
-    var time_ = DateTime.parse(date);
+    DateTime time_ = DateTime.parse(date).toLocal();
 
     var year = time_.year;
     var month = zeroPadding(time_.month);
@@ -29,7 +29,6 @@ class Date {
       "minute": minute,
       "microsecond": "$microsecond",
       "millisecond": "$microsecond",
-      "(zh)D_M": "$month月$day日",
       "Y_D": "$year-$month-$day",
       "Y_D_M": "$year-$month-$day $hour:$minute",
       "Y_D_M_M": "$year-$month-$day $hour:$minute:$microsecond",

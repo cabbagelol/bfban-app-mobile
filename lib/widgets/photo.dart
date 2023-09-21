@@ -155,6 +155,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
       ExtendedImage.file(
         File(widget.imageUrl!),
         fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
         mode: ExtendedImageMode.gesture,
         initGestureConfigHandler: initGestureConfigHandler,
         loadStateChanged: loadStateChanged,
@@ -163,6 +164,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
       ExtendedImage.network(
         widget.imageUrl!,
         fit: BoxFit.contain,
+        filterQuality: FilterQuality.high,
         mode: ExtendedImageMode.gesture,
         cache: true,
         initGestureConfigHandler: initGestureConfigHandler,

@@ -32,6 +32,7 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
+          elevation: MaterialStateProperty.all(0),
           foregroundColor: MaterialStateProperty.all(const Color(0xff364e80)),
           textStyle: MaterialStateProperty.all(
             const TextStyle(color: Color(0xff364e80)),
@@ -52,6 +53,7 @@ class LightnesTheme extends AppBaseThemeItem {
         modalBackgroundColor: Colors.white,
       ),
       canvasColor: Colors.white,
+      primaryColorLight: const Color(0xff364e80),
       primaryColorDark: const Color(0xff364e80),
       textTheme: const TextTheme(
         displayLarge: TextStyle(color: Colors.black),
@@ -112,6 +114,8 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.black87,
+        linearTrackColor: Colors.black12,
+        refreshBackgroundColor: Colors.white,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
@@ -294,7 +298,7 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
       ),
       colorScheme: const ColorScheme(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
         primary: Color(0xff364e80),
         onPrimary: Color(0xff364e80),
         secondary: Color(0xff99acd2),

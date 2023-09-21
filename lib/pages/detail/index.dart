@@ -140,7 +140,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
 
     Response result = await Http.request(
       Config.httpHost["cheaters"],
-      parame: playerStatus.parame?.toMap,
+      parame: playerStatus.parame!.toMap,
       method: Http.GET,
     );
 
@@ -188,9 +188,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       viewed[id] = DateTime.now().millisecondsSinceEpoch;
       storage.set("viewed", value: viewed);
 
-      setState(() {
-        playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
-      });
+      if (mounted) {
+        setState(() {
+          playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
+        });
+      }
     }
   }
 

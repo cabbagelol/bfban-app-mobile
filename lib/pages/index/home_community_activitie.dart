@@ -247,7 +247,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                                       else
                                         CircleAvatar(
                                           radius: 15,
-                                          child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString()),
+                                          child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString().toUpperCase()),
                                         ),
                                       const SizedBox(width: 10),
                                       Text(

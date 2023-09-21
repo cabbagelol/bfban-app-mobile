@@ -75,22 +75,31 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
                   linkColor: Theme.of(context).textTheme.titleMedium?.color,
                   backgroundColor: Theme.of(context).cardTheme.color,
                 ),
-                cont: DropdownButton(
-                  isDense: false,
-                  dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                  style: Theme.of(context).dropdownMenuTheme.textStyle,
-                  onChanged: (value) {
-                    setState(() {
-                      dirData.defaultSavePathValue = value.toString();
-                    });
-                  },
-                  value: dirData.defaultSavePathValue,
-                  items: paths.map((i) {
-                    return DropdownMenuItem(
-                      value: i.dirName,
-                      child: Text(i.dirName.toUpperCase()),
-                    );
-                  }).toList(),
+                cont: Column(
+                  children: [
+                    if (!dirData.isSupportDirectory())
+                      const Center(
+                        child: Icon(Icons.error),
+                      )
+                    else
+                      DropdownButton(
+                        isDense: false,
+                        dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                        style: Theme.of(context).dropdownMenuTheme.textStyle,
+                        onChanged: (value) {
+                          setState(() {
+                            dirData.defaultSavePathValue = value.toString();
+                          });
+                        },
+                        value: dirData.defaultSavePathValue,
+                        items: paths.map((i) {
+                          return DropdownMenuItem(
+                            value: i.dirName,
+                            child: Text(i.dirName.toUpperCase()),
+                          );
+                        }).toList(),
+                      ),
+                  ],
                 ),
               ),
               const SizedBox(height: 5),

@@ -178,6 +178,7 @@ class _DestockPageState extends State<DestockPage> {
                     value: "",
                     internalstyle: true,
                     placeholder: "input key",
+                    theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
                     onChange: (data) {
                       setState(() {
                         destockKeyValue = data["value"].toString();
@@ -236,8 +237,8 @@ class _DestockPageState extends State<DestockPage> {
                                           EluiTagComponent(
                                             size: EluiTagSize.no2,
                                             color: EluiTagType.primary,
-                                            value: "${_fileManagement.onUnitConversion(e.value.length)}",
-                                            onTap: () {},
+                                            value: "${e.byes}",
+                                            onTap: null,
                                           ),
                                           EluiTagComponent(
                                             size: EluiTagSize.no2,
@@ -286,11 +287,14 @@ class DestockStatus {
 }
 
 class DestockItemData {
+  FileManagement _fileManagement = FileManagement();
+
   bool check;
   String? env;
   String? appName;
   String? key;
   dynamic value;
+  String byes;
   String fullName = "";
 
   DestockItemData({
@@ -299,6 +303,7 @@ class DestockItemData {
     this.appName,
     this.key,
     this.value,
+    this.byes = "-",
   });
 
   setName(String value) {
@@ -314,5 +319,6 @@ class DestockItemData {
 
   setValue(dynamic value) {
     this.value = value;
+    this.byes = _fileManagement.onUnitConversion(this.value.toString().length);
   }
 }

@@ -172,7 +172,11 @@ class _GuidePageState extends State<GuidePage> {
                 Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
                 ElevatedButton(
                   onPressed: disableNext ? null : _onNext,
-                  style: ElevatedButton.styleFrom(disabledForegroundColor: Theme.of(context).colorScheme.primary.withOpacity(.5), disabledBackgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.2)),
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    disabledForegroundColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
+                    disabledBackgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.2),
+                  ),
                   child: guideListPageIndex + 1 < guideListPage.length
                       ? Text(FlutterI18n.translate(context, "basic.button.next"))
                       : Text(
