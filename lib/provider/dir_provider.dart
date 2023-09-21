@@ -54,7 +54,8 @@ class DirProvider with ChangeNotifier {
       paths = getPaths();
       if (configuration["configuration"].length > 0) {
         for (DirItemStorePath i in saveDirPathToMapAsDirItemStorePath(configuration["configuration"])) {
-          paths[paths.indexWhere((element) => element.dirName == i.dirName)] = i;
+          int index = paths.indexWhere((element) => element.dirName == i.dirName);
+          if (index >= 0) paths[index] = i;
         }
       }
 
