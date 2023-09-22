@@ -173,7 +173,7 @@ class PublicApiTranslationProvider with ChangeNotifier {
   // 当前激活翻译模块实例
   PublicTranslatorItem get currentPublicTranslatorItem {
     PublicTranslatorItem currentPublicTranslatorItem = PublicTranslatorItem();
-    currentPublicTranslatorItem = allTranslator.where((PublicTranslatorItem i) => i.type.name == selectActivate).first;
+    if (userTrList.isNotEmpty && selectActivate.isNotEmpty) currentPublicTranslatorItem = allTranslator.where((PublicTranslatorItem i) => i.type.name == selectActivate).first;
     return currentPublicTranslatorItem;
   }
 

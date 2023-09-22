@@ -1,5 +1,6 @@
 /// 主题管理
 
+import 'package:bfban/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
@@ -18,8 +19,18 @@ class ThemePage extends StatefulWidget {
 }
 
 class _ThemePageState extends State<ThemePage> {
-  Map fromData = {"textScaleFactor": 1.0, "selectThemeName": "dark"};
-  Map themeDiffFromData = {"textScaleFactor": 1.0, "selectThemeName": "dark"};
+  Map fromData = {
+    "textScaleFactor": 1.0,
+    "selectThemeName": ThemeDefault,
+    "autoSwitchTheme.morning": ThemeDefault,
+    "autoSwitchTheme.evening": ThemeDefault,
+  };
+  Map themeDiffFromData = {
+    "textScaleFactor": 1.0,
+    "selectThemeName": ThemeDefault,
+    "autoSwitchTheme.morning": ThemeDefault,
+    "autoSwitchTheme.evening": ThemeDefault,
+  };
 
   ThemeProvider? themeProvider;
 
@@ -32,8 +43,8 @@ class _ThemePageState extends State<ThemePage> {
         "selectThemeName": themeProvider!.theme.current,
         "autoSwitchTheme": themeProvider!.theme.autoSwitchTheme,
         "textScaleFactor": themeProvider!.theme.textScaleFactor,
-        "autoSwitchTheme.morning": themeProvider!.theme.morning,
-        "autoSwitchTheme.evening": themeProvider!.theme.evening,
+        "autoSwitchTheme.morning": themeProvider!.theme.morning!.isEmpty ? ThemeDefault : themeProvider!.theme.morning,
+        "autoSwitchTheme.evening": themeProvider!.theme.evening!.isEmpty ? ThemeDefault : themeProvider!.theme.evening,
       };
       themeDiffFromData = Map.from(d);
       fromData = d;
@@ -54,17 +65,17 @@ class _ThemePageState extends State<ThemePage> {
 
   /// [Event]
   /// 保存主题
-  _onSave(ThemeProvider data) {
+  _onSave(ThemeProvider data, BuildContext context) {
     // 1
-    data.setTheme(fromData["selectThemeName"]);
-
-    // 2
-    data.setTextScaleFactor(fromData["textScaleFactor"]);
-    data.autoSwitchTheme = fromData["autoSwitchTheme"];
+    if (fromData["autoSwitchTheme"] != null) data.autoSwitchTheme = fromData["autoSwitchTheme"];
+    if (fromData["textScaleFactor"] != null) data.theme.textScaleFactor = fromData["textScaleFactor"];
     if (fromData["autoSwitchTheme.morning"] != null) data.theme.morning = fromData["autoSwitchTheme.morning"];
     if (fromData["autoSwitchTheme.evening"] != null) data.theme.evening = fromData["autoSwitchTheme.evening"];
 
-    // 3
+    // 2
+    data.setTheme(fromData["selectThemeName"]);
+    data.setLocalTheme();
+
     setState(() {
       themeDiffFromData = Map.from(fromData);
     });
@@ -87,7 +98,7 @@ class _ThemePageState extends State<ThemePage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
-      builder: (BuildContext context, data, Widget? child) {
+      builder: (BuildContext context, themeData, Widget? child) {
         return Scaffold(
           appBar: AppBar(
             title: Text(FlutterI18n.translate(context, "app.setting.theme.title")),
@@ -95,7 +106,7 @@ class _ThemePageState extends State<ThemePage> {
               if (!_contrastModification(themeDiffFromData, fromData))
                 IconButton(
                   onPressed: () {
-                    _onSave(data);
+                    _onSave(themeData, context);
                   },
                   icon: const Icon(Icons.done),
                 )
@@ -147,9 +158,10 @@ class _ThemePageState extends State<ThemePage> {
                                   fromData["autoSwitchTheme.morning"] = value;
                                 });
                               },
-                              value: fromData["autoSwitchTheme.morning"] ?? data.theme.defaultName,
-                              items: data.getList!
-                                  .map((i) => DropdownMenuItem(
+                              value: fromData["autoSwitchTheme.morning"],
+                              items: themeData.getList!
+                                  .map(
+                                    (i) => DropdownMenuItem(
                                       value: i.name,
                                       child: Wrap(
                                         spacing: 5,
@@ -163,7 +175,9 @@ class _ThemePageState extends State<ThemePage> {
                                           ),
                                           Text(i.name),
                                         ],
-                                      )))
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                             ),
                           ],
@@ -178,7 +192,7 @@ class _ThemePageState extends State<ThemePage> {
                         child: Column(
                           children: [
                             Text(
-                              "${data.timeInterval.hour}:${data.timeInterval.month}",
+                              "${themeData.timeInterval.hour}:${themeData.timeInterval.month}",
                               textAlign: TextAlign.center,
                             ),
                             IconButton(
@@ -211,9 +225,10 @@ class _ThemePageState extends State<ThemePage> {
                                   fromData["autoSwitchTheme.evening"] = value;
                                 });
                               },
-                              value: fromData["autoSwitchTheme.evening"] ?? data.theme.defaultName,
-                              items: data.getList!
-                                  .map((i) => DropdownMenuItem(
+                              value: fromData["autoSwitchTheme.evening"],
+                              items: themeData.getList!
+                                  .map(
+                                    (i) => DropdownMenuItem(
                                       value: i.name,
                                       child: Wrap(
                                         spacing: 5,
@@ -227,7 +242,9 @@ class _ThemePageState extends State<ThemePage> {
                                           ),
                                           Text(i.name),
                                         ],
-                                      )))
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                             ),
                           ],
@@ -252,7 +269,7 @@ class _ThemePageState extends State<ThemePage> {
                         min: 0.8,
                         max: 1.2,
                         divisions: 2,
-                        label: data.theme.textScaleFactor!.toStringAsFixed(1),
+                        label: themeData.theme.textScaleFactor!.toStringAsFixed(1),
                         onChanged: (value) {
                           setState(() {
                             fromData["textScaleFactor"] = value;
@@ -277,9 +294,9 @@ class _ThemePageState extends State<ThemePage> {
                       childAspectRatio: 1.0,
                     ),
                     padding: const EdgeInsets.all(10),
-                    itemCount: data.getList!.length,
+                    itemCount: themeData.getList!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      AppThemeItem _i = data.getList![index];
+                      AppThemeItem _i = themeData.getList![index];
                       ThemeData _themedata = _i.themeData!;
 
                       return GestureDetector(
@@ -364,7 +381,7 @@ class _ThemePageState extends State<ThemePage> {
                                 ),
                               ),
                               Visibility(
-                                visible: _i.name == (fromData["autoSwitchTheme"]! ? fromData["autoSwitchTheme.morning"] : fromData["selectThemeName"]),
+                                visible: fromData["autoSwitchTheme"]! ? false : _i.name == (fromData["selectThemeName"] ?? ThemeDefault),
                                 child: const Positioned(
                                   top: 0,
                                   right: 0,

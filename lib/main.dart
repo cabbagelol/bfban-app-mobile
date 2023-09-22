@@ -66,55 +66,52 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => CaptchaProvider()),
         ChangeNotifierProvider(create: (context) => DirProvider()),
       ],
-      child: Consumer<ThemeProvider>(
-        builder: (BuildContext? themeContext, themeData, Widget? child) {
-          return Consumer3<ThemeProvider, TranslationProvider, AppInfoProvider>(builder: (BuildContext context, ThemeProvider themeData, TranslationProvider langData, AppInfoProvider appData, Widget? child) {
-            return MaterialApp(
-              debugShowCheckedModeBanner: Config.env == Env.DEV,
-              theme: themeData.currentThemeData,
-              initialRoute: '/splash',
-              supportedLocales: const [
-                Locale('zh', 'CH'),
-                Locale('en', 'US'),
-              ],
-              localizationsDelegates: [
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-                FlutterI18nDelegate(
-                  translationLoader: CustomTranslationLoader(
-                    namespaces: ["app"],
-                    basePath: "assets/lang",
-                    baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
-                    useCountryCode: false,
-                    fallback: langData.defaultLang,
-                    forcedLocale: Locale(langData.currentLang.isEmpty ? langData.defaultLang : langData.currentLang),
-                  ),
-                )
-              ],
-              builder: (BuildContext context, Widget? widget) {
-                ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-                  return CustomError(errorDetails: errorDetails);
-                };
+      child: Consumer3<ThemeProvider, TranslationProvider, AppInfoProvider>(builder: (BuildContext context, ThemeProvider themeData, TranslationProvider langData, AppInfoProvider appData, Widget? child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: Config.env == Env.DEV,
+          theme: themeData.currentThemeData,
+          themeAnimationDuration: Duration.zero,
+          initialRoute: '/splash',
+          supportedLocales: const [
+            Locale('zh', 'CH'),
+            Locale('en', 'US'),
+          ],
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            FlutterI18nDelegate(
+              translationLoader: CustomTranslationLoader(
+                namespaces: ["app"],
+                basePath: "assets/lang",
+                baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
+                useCountryCode: false,
+                fallback: langData.defaultLang,
+                forcedLocale: Locale(langData.currentLang.isEmpty ? langData.defaultLang : langData.currentLang),
+              ),
+            )
+          ],
+          builder: (BuildContext context, Widget? widget) {
+            ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+              return WidgetError(errorDetails: errorDetails);
+            };
 
-                return MediaQuery(
-                  data: MediaQuery.of(context).copyWith(textScaleFactor: themeData.theme.textScaleFactor),
-                  child: widget!,
-                );
-              },
-              onGenerateRoute: Routes.router!.generator,
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: themeData.theme.textScaleFactor),
+              child: widget!,
             );
-          });
-        },
-      ),
+          },
+          onGenerateRoute: Routes.router!.generator,
+        );
+      }),
     );
   }
 }
 
-class CustomError extends StatelessWidget {
+class WidgetError extends StatelessWidget {
   final FlutterErrorDetails? errorDetails;
 
-  const CustomError({
+  const WidgetError({
     Key? key,
     required this.errorDetails,
   })  : assert(errorDetails != null),
@@ -129,8 +126,8 @@ class CustomError extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Text(
           errorDetails!.library.toString(),
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.errorContainer,
             fontWeight: FontWeight.bold,
           ),
         ),

@@ -17,9 +17,10 @@ class ThemeProvider with ChangeNotifier {
     value: DateTime(DateTime.now().year, 0, 0, 7),
   );
 
+  String? get defaultName => theme.defaultName ?? ThemeDefault;
+
   /// 主题
   ThemeProviderData theme = ThemeProviderData(
-    defaultName: ThemeDefault,
     current: "",
     autoSwitchTheme: false,
     evening: "",
@@ -39,6 +40,7 @@ class ThemeProvider with ChangeNotifier {
     if (localTheme.isEmpty) return false;
 
     // 读取本地 更新自动主题状态
+    theme.defaultName = ThemeDefault;
     theme.autoSwitchTheme = localTheme["autoTheme"];
     theme.current = localTheme["name"];
     theme.textScaleFactor = localTheme["textScaleFactor"] ?? 1;
@@ -70,9 +72,8 @@ class ThemeProvider with ChangeNotifier {
 
     // 设置主题
     theme.current = name;
+    list![name]!.changeSystem();
 
-    // 持久储存
-    setLocalTheme(name);
     notifyListeners();
   }
 
@@ -123,22 +124,6 @@ class ThemeProvider with ChangeNotifier {
   ThemeData get currentThemeData {
     ThemeData name = ThemeData();
 
-    // 是否开启自动主题，依照自动决定
-    if (theme.autoSwitchTheme!) {
-      switch (isBrightnessMode) {
-        case Brightness.dark:
-          theme.current = theme.defaultName;
-          break;
-        case Brightness.light:
-          theme.current = "lightnes";
-          break;
-      }
-    }
-
-    if (!theme.autoSwitchTheme!) {
-      name = list![currentThemeName]!.d.themeData!;
-    }
-
     // 自动选择主题，按照时间
     if (theme.autoSwitchTheme!) {
       DateTime currentTime = DateTime.now();
@@ -149,6 +134,8 @@ class ThemeProvider with ChangeNotifier {
         // 晚上
         name = list![theme.evening]!.d.themeData!;
       }
+    } else if (!theme.autoSwitchTheme!) {
+      name = list![currentThemeName]!.d.themeData!;
     }
 
     // 配置主题外状态内容
@@ -185,16 +172,27 @@ class ThemeProvider with ChangeNotifier {
 }
 
 class ThemeProviderData {
+  // 当前主题名称
   String? current;
+
+  // 默认主题名称
   String? defaultName;
+
+  // 自动切换开关
   bool? autoSwitchTheme;
+
+  // 早上主题名称
   String? evening;
+
+  // 晚上主题名称
   String? morning;
+
+  // 字体缩放比例
   double? textScaleFactor;
 
   ThemeProviderData({
     this.current,
-    this.defaultName,
+    this.defaultName = ThemeDefault,
     this.autoSwitchTheme = false,
     this.evening,
     this.morning,
