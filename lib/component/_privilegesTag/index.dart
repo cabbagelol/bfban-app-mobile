@@ -57,7 +57,7 @@ class _PrivilegesTagWidgetState extends State<PrivilegesTagWidget> {
                   FlutterI18n.translate(context, "basic.privilege.${i["value"]}"),
                   style: TextStyle(
                     fontSize: 13,
-                    color: Theme.of(context).hintColor,
+                    color: Theme.of(context).colorScheme.primaryContainer,
                   ),
                 ),
               );

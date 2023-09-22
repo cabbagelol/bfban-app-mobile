@@ -253,6 +253,7 @@ class GreenTheme extends AppBaseThemeItem {
         outline: Colors.white10,
         brightness: Brightness.light,
         primary: Colors.green.shade300,
+        primaryContainer: Colors.white,
         onPrimary: Colors.green.shade300,
         secondary: Colors.green,
         onSecondary: Colors.green,

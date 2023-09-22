@@ -303,6 +303,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         outline: Colors.white10,
         brightness: Brightness.dark,
         primary: Color(0xff364e80),
+        primaryContainer: Colors.white,
         onPrimary: Color(0xff364e80),
         secondary: Color(0xff476ab2),
         onSecondary: Color(0xff476ab2),

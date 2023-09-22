@@ -27,6 +27,13 @@ class TranslationProvider with ChangeNotifier {
   // 获取当前语言
   String get currentLang => _currentLang.isEmpty ? _default : _currentLang;
 
+  // 转换当前语言对应的本地文本
+  // 如: zh_CN 中文简体、en_US engshis
+  String get currentToLocalLangName {
+    if (_listDictionaryFrom.isEmpty) return _currentLang;
+    return _listDictionaryFrom.where((element) => element["fileName"] == _currentLang).first["label"] ?? _currentLang ?? _default;
+  }
+
   set currentLang(String value) {
     _currentLang = value;
     setLocalLang();
@@ -55,6 +62,7 @@ class TranslationProvider with ChangeNotifier {
     dynamic local = languageData.value;
 
     if (local != null) {
+      _listDictionaryFrom = local["listDictionaryFrom"];
       return local;
     }
 

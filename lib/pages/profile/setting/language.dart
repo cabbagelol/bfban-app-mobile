@@ -158,6 +158,18 @@ class _LanguagePageState extends State<LanguagePage> {
                     color: Theme.of(context).textTheme.bodyMedium!.color,
                   ),
                 ),
+                subtitle: Wrap(
+                  children: [
+                    if (lang["members"] != null && lang["members"].isNotEmpty)
+                      Wrap(
+                        children: lang["members"].map<Widget>((i) {
+                          return Text(i["name"].toString());
+                        }).toList(),
+                      )
+                    else
+                      const Text("N/A")
+                  ],
+                ),
                 secondary: Card(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),

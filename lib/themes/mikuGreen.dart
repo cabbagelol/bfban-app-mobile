@@ -107,6 +107,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         linearTrackColor: Colors.black12,
         refreshBackgroundColor: Colors.white,
       ),
+      shadowColor: color,
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
           color: color,
@@ -266,8 +267,8 @@ class MikuGreenTheme extends AppBaseThemeItem {
         outline: color100,
         brightness: Brightness.light,
         primary: color,
+        primaryContainer: Colors.white,
         onPrimary: Colors.white,
-        primaryContainer: color300,
         onPrimaryContainer: color,
         secondary: color,
         onSecondary: color,

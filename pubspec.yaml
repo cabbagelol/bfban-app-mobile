@@ -128,7 +128,8 @@ dev_dependencies:
   build_runner: ^2.4.6
 
 flutter_native_splash:
-  color: "#2E4E81"
+  color: "#f2f2f2"
+  color_dark: "#2E4E81"
   branding: assets/splash/ic_launcher.png
   image: assets/splash/splash_center_logo.png
   branding_mode: center

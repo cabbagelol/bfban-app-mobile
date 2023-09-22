@@ -139,7 +139,8 @@
           "describe": "图片,视频,上传文件,管理"
         },
         "dirConfiguration": {
-          "title": "配置",
+          "title": "文件夹配置",
+          "describe": "默认文件夹，文件扫描",
           "scanDirectoryTitle": "扫描目录",
           "scanDirectoryDescription": "选择扫描文件目录(多选)",
           "defaultSavePathTitle": "默认下载位置",

@@ -300,6 +300,7 @@ class LightnesTheme extends AppBaseThemeItem {
       colorScheme: const ColorScheme(
         brightness: Brightness.light,
         primary: Color(0xff364e80),
+        primaryContainer: Colors.white,
         onPrimary: Color(0xff364e80),
         secondary: Color(0xff99acd2),
         onSecondary: Color(0xff99acd2),

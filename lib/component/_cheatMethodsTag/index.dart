@@ -61,7 +61,7 @@ class _CheatMethodsTagWidgetState extends State<CheatMethodsTagWidget> {
                     FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(i)}.title"),
                     style: TextStyle(
                       fontSize: 13,
-                      color: Theme.of(context).hintColor,
+                      color: Theme.of(context).colorScheme.primaryContainer,
                     ),
                   ),
                 ),

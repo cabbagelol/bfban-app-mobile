@@ -70,6 +70,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
     return Consumer<UserInfoProvider>(
       builder: (context, UserInfoProvider data, child) {
         return RefreshIndicator(
+          displacement: 120,
+          edgeOffset: MediaQuery.of(context).viewInsets.top,
           onRefresh: () => _onRefresh(data),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -83,6 +85,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                     color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
                     child: Stack(
                       children: [
+
                         /// 用户信息板块
                         Container(
                           margin: EdgeInsets.only(
@@ -109,16 +112,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
                             ),
                             child: Row(
                               children: [
-                                if (data.userinfo["userAvatar"] != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: EluiImgComponent(
-                                      width: 60,
-                                      height: 60,
-                                      src: data.userinfo["userAvatar"] ?? "",
-                                    ),
-                                  ),
-                                const SizedBox(width: 10),
                                 Expanded(
                                   flex: 1,
                                   child: Wrap(
@@ -152,6 +145,16 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                     ],
                                   ),
                                 ),
+                                if (data.userinfo["userAvatar"] != null)
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(60),
+                                    child: EluiImgComponent(
+                                      width: 60,
+                                      height: 60,
+                                      src: data.userinfo["userAvatar"] ?? "",
+                                    ),
+                                  ),
+                                const SizedBox(width: 10),
                                 const Icon(Icons.chevron_right),
                               ],
                             ),
@@ -254,32 +257,32 @@ class _UserCenterPageState extends State<UserCenterPage> {
                           ),
                           child: ElevatedButton(
                             style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                                  elevation: MaterialStateProperty.all(0),
-                                  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 20)),
-                                  backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.error),
-                                ),
+                              elevation: MaterialStateProperty.all(0),
+                              padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 20)),
+                              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.error),
+                            ),
                             onPressed: () => removeUserInfo(data),
                             child: accountLoading
                                 ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                  )
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            )
                                 : Wrap(
-                                    spacing: 5,
-                                    crossAxisAlignment: WrapCrossAlignment.center,
-                                    children: [
-                                      const Icon(Icons.output),
-                                      Text(
-                                        FlutterI18n.translate(context, "header.signout"),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
+                              spacing: 5,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                const Icon(Icons.output),
+                                Text(
+                                  FlutterI18n.translate(context, "header.signout"),
+                                  style: const TextStyle(
+                                    color: Colors.white,
                                   ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

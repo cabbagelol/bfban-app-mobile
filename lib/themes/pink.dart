@@ -94,6 +94,7 @@ class PinkTheme extends AppBaseThemeItem {
         linearTrackColor: Colors.black12,
         refreshBackgroundColor: Colors.white,
       ),
+      shadowColor: Colors.red,
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
           color: Colors.pink.shade50,
@@ -112,9 +113,9 @@ class PinkTheme extends AppBaseThemeItem {
         ),
         elevation: 2,
       ),
-      dividerColor: Colors.pink.shade50,
+      dividerColor: Colors.pink.shade400.withOpacity(.2),
       dividerTheme: DividerThemeData(
-        color: Colors.pink.shade50,
+        color: Colors.pink.shade400.withOpacity(.2),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
@@ -246,11 +247,12 @@ class PinkTheme extends AppBaseThemeItem {
         outline: Colors.white10,
         brightness: Brightness.light,
         primary: Colors.pink.shade300,
+        primaryContainer: Colors.white,
         onPrimary: Colors.pink.shade300,
         secondary: Colors.pink,
         onSecondary: Colors.pink,
-        error: Colors.redAccent,
-        onError: Colors.redAccent,
+        error: const Color(0xffd00649),
+        onError: const Color(0xffd00649),
         errorContainer: Colors.white,
         background: const Color(0xff111b2b),
         onBackground: const Color(0xff111b2b),

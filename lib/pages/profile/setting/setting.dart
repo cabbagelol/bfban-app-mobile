@@ -1,5 +1,6 @@
 /// 设置中心
 
+import 'package:bfban/provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
@@ -49,6 +50,12 @@ class _SettingPageState extends State<SettingPage> {
   /// 打开主题
   void _opEnTheme() {
     _urlUtil.opEnPage(context, '/profile/theme');
+  }
+
+  /// [Event]
+  /// div
+  void _opEnDir() {
+    _urlUtil.opEnPage(context, '/profile/dir/configuration');
   }
 
   /// [Event]
@@ -103,14 +110,37 @@ class _SettingPageState extends State<SettingPage> {
             ),
             cont: Consumer<TranslationProvider>(
               builder: (context, data, child) {
-                return Opacity(
-                  opacity: .6,
-                  child: Text(data.currentLang),
-                );
+                return Text(data.currentToLocalLangName);
               },
             ),
             islink: true,
             onTap: () => _opEnLanguage(),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, "app.setting.theme.title"),
+            label: FlutterI18n.translate(context, "app.setting.theme.describe"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            cont: Consumer<ThemeProvider>(
+              builder: (context, data, child) {
+                return Row(
+                  children: [
+                    Card(
+                      color: data.currentThemeData.scaffoldBackgroundColor,
+                      child: const SizedBox(width: 20, height: 20),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(data.currentThemeName),
+                  ],
+                );
+              },
+            ),
+            islink: true,
+            onTap: () => _opEnTheme(),
           ),
           const SizedBox(height: 10),
           EluiCellComponent(
@@ -126,18 +156,6 @@ class _SettingPageState extends State<SettingPage> {
             onTap: () => _opEnNotice(),
           ),
           EluiCellComponent(
-            title: FlutterI18n.translate(context, "app.setting.theme.title"),
-            label: FlutterI18n.translate(context, "app.setting.theme.describe"),
-            theme: EluiCellTheme(
-              titleColor: Theme.of(context).textTheme.titleMedium?.color,
-              labelColor: Theme.of(context).textTheme.displayMedium?.color,
-              linkColor: Theme.of(context).textTheme.titleMedium?.color,
-              backgroundColor: Theme.of(context).cardTheme.color,
-            ),
-            islink: true,
-            onTap: () => _opEnTheme(),
-          ),
-          EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.publicTranslator.title"),
             label: FlutterI18n.translate(context, "app.setting.publicTranslator.describe"),
             theme: EluiCellTheme(
@@ -148,6 +166,18 @@ class _SettingPageState extends State<SettingPage> {
             ),
             islink: true,
             onTap: () => _opEnPublicTranslator(),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.title"),
+            label: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.describe"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _opEnDir(),
           ),
           EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.cleanManagement.title"),
