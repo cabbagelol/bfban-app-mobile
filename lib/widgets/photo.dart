@@ -57,9 +57,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
   /// [Event]
   /// 储存图片
   void onSave(BuildContext context, String? src) async {
-    if (imageSaveStatus) {
-      return;
-    }
+    if (imageSaveStatus) return;
 
     setState(() {
       imageSaveStatus = true;

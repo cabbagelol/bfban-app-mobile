@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:app_links/app_links.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +24,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   final Storage storage = Storage();
 
+  final _appLinks = AppLinks();
+
   // 状态机
   ProviderUtil providerUtil = ProviderUtil();
 
@@ -37,18 +41,15 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _onReady();
+    });
     super.initState();
-  }
-
-  @override
-  void didChangeDependencies() {
-    _onReady(context);
-    super.didChangeDependencies();
   }
 
   /// [Event]
   /// 初始页面数据
-  void _onReady(BuildContext context) async {
+  void _onReady() async {
     AppStatus.context = context;
 
     Future.delayed(const Duration(seconds: 1)).then((value) => {
@@ -62,7 +63,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
       _onToken(),
       _initNotice(),
       _initLang(),
-      _initUserData(context),
+      _initUserData(),
     ]).catchError((onError) => []).whenComplete(() async {
       if (!await _onGuide()) return;
 
@@ -70,15 +71,27 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     });
   }
 
+  /// [Event]
+  /// 进入主程序
   void onMain() {
     Future.delayed(const Duration(seconds: 0)).then((value) {
       _urlUtil.opEnPage(
         context,
         "/",
         transition: TransitionType.none,
+        replace: true,
         clearStack: true,
         rootNavigator: true,
       );
+    }).then((value) async {
+      AppStatus.context = context;
+
+      final uri = await _appLinks.getInitialAppLink();
+      if (uri != null) _onUnlLink(uri);
+
+      _appLinks.allUriLinkStream.listen((Uri uri) {
+        _onUnlLink(uri);
+      });
     });
   }
 
@@ -101,7 +114,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   /// [Event]
   /// 初始用户数据
-  Future _initUserData(BuildContext context) async {
+  Future _initUserData() async {
     StorageData loginData = await storage.get("login");
     dynamic user = loginData.value;
 
@@ -146,7 +159,6 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     AppInfoProvider app = providerUtil.ofApp(context);
     await app.conf.init();
     await app.connectivity.init(context);
-    await app.uniLinks.init(context);
 
     return true;
   }
@@ -180,8 +192,8 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     StorageData guideData = await storage.get(guideName);
     dynamic guide = guideData.value;
 
-    if (guide == null) {
-      _urlUtil.opEnPage(context, "/guide", transition: TransitionType.fadeIn).then((value) async {
+    if (guideData.code != 0 && guide == null) {
+      await _urlUtil.opEnPage(context, "/guide", transition: TransitionType.fadeIn).then((value) async {
         onMain();
         await storage.set(guideName, value: 1);
       });
@@ -189,6 +201,45 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     }
 
     return true;
+  }
+
+  /// [Event]
+  /// 处理地址
+  void _onUnlLink(Uri uri) {
+    if (!mounted) return;
+    if (uri.isScheme("bfban") || uri.isScheme("https")) {
+      switch (uri.host) {
+        case "app":
+        case "bfban-app.cabbagelol.net":
+        case "bfban.com":
+          switch (uri.path.toString()) {
+            case "/player":
+              if (uri.queryParameters["id"] == null) return;
+              _urlUtil.opEnPage(context, "/player/personaId/${uri.queryParameters["id"]}");
+              break;
+            case "/account":
+              if (uri.queryParameters["id"] == null) return;
+              _urlUtil.opEnPage(context, '/account/${uri.queryParameters["id"]}');
+              break;
+            case "/report":
+              if (uri.queryParameters["value"] == null) return;
+              String data = jsonEncode({
+                "originName": uri.queryParameters["value"] ?? "",
+              });
+              _urlUtil.opEnPage(context, '/report/$data');
+              break;
+            case "/search":
+              if (uri.queryParameters["text"] == null) return;
+              String data = jsonEncode({
+                "text": uri.queryParameters["text"],
+                "type": uri.queryParameters["type"] ?? "user",
+              });
+              _urlUtil.opEnPage(context, '/search/$data');
+              break;
+          }
+          break;
+      }
+    }
   }
 
   @override

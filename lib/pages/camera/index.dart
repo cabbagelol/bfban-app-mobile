@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:bfban/constants/api.dart';
+import 'package:provider/provider.dart';
 
+import '../../provider/dir_provider.dart';
 import '../../utils/url.dart';
 
 class CameraPage extends StatefulWidget {
@@ -21,14 +23,12 @@ class _CameraPageState extends State<CameraPage> {
 
   dynamic firstCamera;
 
+  DirProvider? dirProvider;
+
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    dirProvider = Provider.of<DirProvider>(context, listen: false);
   }
 
   /// [Event]
@@ -46,9 +46,14 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-  Future<CaptureRequest> path2(sensors, CaptureMode captureMode) async {
-    final Directory extDir = await getApplicationSupportDirectory();
-    final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
+  /// [Event]
+  /// 打开媒体
+  void openMedia() {
+    _urlUtil.opEnPage(context, "/account/media/");
+  }
+
+  Future<CaptureRequest> path(List<Sensor> sensors, CaptureMode captureMode) async {
+    final fileDir = await Directory('${dirProvider!.currentDefaultSavePath}/media').create(recursive: true);
     final String fileExtension = captureMode == CaptureMode.photo ? 'jpg' : 'mp4';
 
     if (sensors.length == 1) {
@@ -58,98 +63,160 @@ class _CameraPageState extends State<CameraPage> {
     } else {
       // 用于区分前后摄像头
       return MultipleCaptureRequest(
-        {
-          for (final sensor in sensors) sensor: '${fileDir.path}/${sensor.position == SensorPosition.front ? 'front_' : "back_"}${DateTime.now().millisecondsSinceEpoch}.$fileExtension',
-        },
+        {for (final sensor in sensors) sensor: '${fileDir.path}/${sensor.position == SensorPosition.front ? 'front_' : "back_"}${DateTime.now().millisecondsSinceEpoch}.$fileExtension'},
       );
     }
   }
 
-  Future<String> path(CaptureMode captureMode) async {
-    final Directory extDir = await getApplicationSupportDirectory();
-    final fileDir = await Directory('${extDir.path}/media').create(recursive: true);
-    final String fileExtension = captureMode == CaptureMode.photo ? 'jpg' : 'mp4';
-    final String filePath = '${fileDir.path}/${DateTime.now().millisecondsSinceEpoch}.$fileExtension';
-    return filePath;
+  @override
+  Widget build(BuildContext context) {
+    return CameraAwesomeBuilder.custom(
+      saveConfig: SaveConfig.photoAndVideo(
+        photoPathBuilder: (List<Sensor> sensors) => path(sensors, CaptureMode.photo),
+        videoPathBuilder: (List<Sensor> sensors) => path(sensors, CaptureMode.video),
+        initialCaptureMode: CaptureMode.photo,
+      ),
+      progressIndicator: Scaffold(
+        appBar: AppBar(),
+        body: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+      builder: (CameraState state, size, rect) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            title: AwesomeTopActions(
+              state: state,
+              padding: EdgeInsets.zero,
+              children: [
+                const Spacer(),
+                AwesomeFlashButton(state: state),
+                const SizedBox(width: 5),
+                if (state is PhotoCameraState) AwesomeAspectRatioButton(state: state),
+              ],
+            ),
+          ),
+          body: AwesomeCameraLayout(
+            state: state,
+            topActions: Container(),
+            middleContent: const Column(
+              children: [
+                Spacer(),
+                // AwesomeCameraModeSelector(state: state),
+              ],
+            ),
+            bottomActions: AwesomeBottomActions(
+              state: state,
+              right: Column(
+                children: [
+                  // 相机已准备好拍照 或 相机已准备好拍摄视频
+                  if (state is PhotoCameraState || state is VideoCameraState)
+                    StreamBuilder<MediaCapture?>(
+                      stream: state.captureState$,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return SizedBox(
+                            width: 55,
+                            height: 55,
+                            child: OpenMediaButton(
+                              state: state,
+                              onTap: (state) {
+                                openMedia();
+                              },
+                            ),
+                          );
+                        }
+                        return SizedBox(
+                          width: 55,
+                          child: AwesomeMediaPreview(
+                            mediaCapture: snapshot.requireData,
+                            onMediaTap: (mediaCapture) {
+                              openMedia();
+                            },
+                          ),
+                        );
+                      },
+                    )
+                  else
+                    OpenMediaButton(
+                      state: state,
+                      onTap: (statu) {
+                        openMedia();
+                      },
+                    )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      imageAnalysisConfig: AnalysisConfig(
+        androidOptions: const AndroidAnalysisOptions.nv21(width: 250),
+        autoStart: false,
+        cupertinoOptions: const CupertinoAnalysisOptions.bgra8888(),
+        maxFramesPerSecond: 20,
+      ),
+      theme: AwesomeTheme(
+        bottomActionsBackgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.1),
+        buttonTheme: AwesomeButtonTheme(
+          foregroundColor: Theme.of(context).appBarTheme.iconTheme!.color!,
+          backgroundColor: Theme.of(context).appBarTheme.backgroundColor!,
+          iconSize: 20,
+          rotateWithCamera: false,
+          padding: const EdgeInsets.all(10),
+          buttonBuilder: (child, onTap) {
+            return ClipOval(
+              child: Material(
+                color: Colors.transparent,
+                shape: const CircleBorder(),
+                child: InkWell(
+                  splashColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.5),
+                  highlightColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.5),
+                  onTap: onTap,
+                  child: child,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
+}
+
+class OpenMediaButton extends StatelessWidget {
+  final CameraState state;
+  final AwesomeTheme? theme;
+  final Widget Function() iconBuilder;
+  final void Function(CameraState) onTap;
+
+  OpenMediaButton({
+    required this.state,
+    this.theme,
+    Widget Function()? iconBuilder,
+    void Function(CameraState)? onTap,
+    double scale = 1.3,
+  })  : iconBuilder = iconBuilder ??
+            (() {
+              return AwesomeCircleWidget.icon(
+                theme: theme,
+                icon: Icons.perm_media_outlined,
+                scale: scale,
+              );
+            }),
+        onTap = onTap ?? ((state) => {});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CameraAwesomeBuilder.custom(
-        saveConfig: SaveConfig.photoAndVideo(
-          photoPathBuilder: (sensors) => path2(sensors, CaptureMode.photo),
-          videoPathBuilder: (sensors) => path2(sensors, CaptureMode.video),
-          initialCaptureMode: CaptureMode.photo,
-        ),
-        onImageForAnalysis: (AnalysisImage img) async {
-          // Handle image analysis
-          print(img);
-        },
-        builder: (state, size, rect) {
-          return Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              title: AwesomeTopActions(
-                state: state,
-                padding: EdgeInsets.zero,
-                children: [
-                  const Spacer(),
-                  AwesomeFlashButton(state: state),
-                  const SizedBox(width: 5),
-                  if (state is PhotoCameraState) AwesomeAspectRatioButton(state: state),
-                ],
-              ),
-            ),
-            body: AwesomeCameraLayout(
-              state: state,
-              topActions: Container(),
-              middleContent: Column(
-                children: [
-                  const Spacer(),
-                  // AwesomeCameraModeSelector(state: state),
-                ],
-              ),
-              bottomActions: AwesomeBottomActions(
-                state: state,
-                onMediaTap: (mediaCapture) {},
-              ),
-            ),
-          );
-        },
-        imageAnalysisConfig: AnalysisConfig(
-          androidOptions: const AndroidAnalysisOptions.nv21(
-            width: 250,
-          ),
-          autoStart: true,
-          cupertinoOptions: const CupertinoAnalysisOptions.bgra8888(),
-          maxFramesPerSecond: 20,
-        ),
-        theme: AwesomeTheme(
-          bottomActionsBackgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.1),
-          buttonTheme: AwesomeButtonTheme(
-            backgroundColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(0.5),
-            iconSize: 20,
-            rotateWithCamera: false,
-            padding: const EdgeInsets.all(10),
-            foregroundColor: Theme.of(context).appBarTheme.iconTheme!.color!,
-            buttonBuilder: (child, onTap) {
-              return ClipOval(
-                child: Material(
-                  color: Colors.transparent,
-                  shape: const CircleBorder(),
-                  child: InkWell(
-                    splashColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.5),
-                    highlightColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(0.5),
-                    onTap: onTap,
-                    child: child,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
+    final theme = this.theme ?? AwesomeThemeProvider.of(context).theme;
+
+    return AwesomeOrientedWidget(
+      rotateWithDevice: theme.buttonTheme.rotateWithCamera,
+      child: theme.buttonTheme.buttonBuilder(
+        iconBuilder(),
+        () => onTap(state),
       ),
     );
   }

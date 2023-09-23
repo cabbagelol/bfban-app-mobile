@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:bfban/utils/index.dart';
 import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/material.dart';
 
 export 'package:dio/dio.dart';
@@ -169,6 +170,18 @@ class Http extends ScaffoldState {
     Config.apiHost.forEach((key, value) {
       dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: value.baseHost)).interceptor);
     });
+
+    // Add the interceptor
+    dio.interceptors.add(RetryInterceptor(
+      dio: dio,
+      logPrint: print,
+      retries: 3,
+      retryDelays: const [
+        Duration(seconds: 3),
+        Duration(seconds: 10),
+        Duration(seconds: 20),
+      ],
+    ));
 
     return dio;
   }

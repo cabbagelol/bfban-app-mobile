@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:bfban/data/Sort.dart';
+
 import '../utils/index.dart';
 
 enum MediaType { Local, Network }
@@ -17,6 +19,8 @@ class MediaList {
 class MediaWrite {
   List list = [];
 
+  BaseSort sort = BaseSort();
+
   /// 赋值
   void setList(List fileList, MediaType type) {
     switch (type) {
@@ -30,10 +34,31 @@ class MediaWrite {
     _add(fileList, type);
   }
 
+  void setListSort() {
+    _sort();
+  }
+
   /// 追加
   /// 适用下拉加载
   void addList(List fileList, MediaType type) {
     _add(fileList, type);
+    _sort();
+  }
+
+  /// 排序
+  _sort() {
+    list.sort((a, b) {
+      int aTime = DateTime.parse(a.createTime.toString()).millisecondsSinceEpoch;
+      int bTime = DateTime.parse(b.createTime.toString()).millisecondsSinceEpoch;
+
+      switch (sort.order) {
+        case OrderType.asc:
+          return aTime < bTime ? 1 : -1;
+        case OrderType.desc:
+        default:
+          return aTime > bTime ? 1 : -1;
+      }
+    });
   }
 
   _add(List fileList, MediaType type) {
@@ -93,16 +118,25 @@ class MediaFileLocalData extends BaseMediaFileData {
   final MediaType type = MediaType.Local;
 
   // 本地上传状态
-  bool updataLoad = false;
+  bool upload = false;
+
+  // 已上传标记
+  String upLoadedName = "[Uploaded]";
 
   FileManagement fileManagement = FileManagement();
 
+  // 仅本地
+  // 是否已上传过
+  bool get isUploaded {
+    return _file!.path.contains(upLoadedName);
+  }
+
   get createTime {
-    return _file.runtimeType;
+    return _file!.statSync().changed;
   }
 
   String get filename {
-    return fileManagement.splitFileUrl(_file!.path)["fileName"] as String;
+    return (fileManagement.splitFileUrl(_file!.path)["fileName"] as String).replaceAll(upLoadedName, "");
   }
 
   String get fileExtension {

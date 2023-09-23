@@ -108,13 +108,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   void _onReady() async {
     StorageData searchHistoryData = await _storage.get("search.history");
     List history = searchHistoryData.value ?? [];
+    Map param = jsonDecode(widget.data);
 
     _getTrend();
 
     setState(() {
       /// 序列化
-      searchStatus.params.param = jsonDecode(widget.data)["id"];
+      searchStatus.params.param = param["text"];
       searchStatus.historyList = history;
+
+      /// 如果初始页面包含内容则直接搜索
+      if (searchStatus.params.param != null) {
+        _onPenByType({"type": param["type"], "keyword": param["text"] ?? "player"});
+      }
     });
   }
 

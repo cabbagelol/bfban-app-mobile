@@ -81,9 +81,7 @@ class TitleSearchState extends State<TitleSearchWidget> {
       case titleSearchTheme.black:
         Routes.router!.navigateTo(
           context,
-          '/search/${jsonEncode({
-                "id": value,
-              })}',
+          '/search/${jsonEncode({"text": value})}',
           transition: TransitionType.cupertino,
         );
         return true;

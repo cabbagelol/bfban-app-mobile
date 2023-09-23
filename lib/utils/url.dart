@@ -77,18 +77,22 @@ class UrlUtil {
   Future opEnPage(
     BuildContext context,
     String url, {
+    replace = false,
     TransitionType transition = TransitionType.cupertino,
     clearStack = false,
     rootNavigator = false,
+    opaque = false,
   }) async {
     if (url.isEmpty && url == "/" && context == null) return;
 
-    return await Routes.router!.navigateTo(
+    return await Routes.router.navigateTo(
       context,
       url,
+      replace: replace,
       transition: transition,
       rootNavigator: rootNavigator,
       clearStack: clearStack,
+      opaque: opaque,
     );
   }
 
@@ -101,7 +105,7 @@ class UrlUtil {
     try {
       if (url.isEmpty) return;
 
-      return await Routes.router!.navigateTo(
+      return await Routes.router.navigateTo(
         AppStatus.context!,
         url,
         transition: transition,

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -59,11 +60,15 @@ class LightnesTheme extends AppBaseThemeItem {
         displayLarge: TextStyle(color: Colors.black),
         displayMedium: TextStyle(color: Colors.black),
         displaySmall: TextStyle(color: Colors.black),
-        headlineMedium: TextStyle(color: Colors.black),
-        headlineSmall: TextStyle(color: Colors.black),
+        labelLarge: TextStyle(color: Colors.black26),
+        labelMedium: TextStyle(color: Colors.black26),
+        labelSmall: TextStyle(color: Colors.black26),
+        headlineLarge: TextStyle(color: Colors.black26),
+        headlineMedium: TextStyle(color: Colors.black26),
+        headlineSmall: TextStyle(color: Colors.black26),
         titleLarge: TextStyle(color: Colors.black),
         titleMedium: TextStyle(color: Colors.black),
-        titleSmall: TextStyle(color: Colors.black45),
+        titleSmall: TextStyle(color: Colors.black),
         bodyLarge: TextStyle(color: Colors.black),
         bodyMedium: TextStyle(color: Colors.black),
         bodySmall: TextStyle(color: Colors.black),
@@ -85,7 +90,7 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       textSelectionTheme: TextSelectionThemeData(
         selectionColor: const Color(0x7a364e80).withOpacity(.3),
-        selectionHandleColor: const Color(0xff364e80),
+        selectionHandleColor: const Color(0x7a364e80),
         cursorColor: const Color(0x7a364e80),
       ),
       unselectedWidgetColor: const Color(0xfff7f9fd),
@@ -176,7 +181,7 @@ class LightnesTheme extends AppBaseThemeItem {
           foregroundColor: MaterialStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
           shadowColor: MaterialStateProperty.all(Colors.black),
-          overlayColor: MaterialStateProperty.all(Colors.yellow),
+          overlayColor: MaterialStateProperty.all(const Color(0xff2c416e).withOpacity(.5)),
           mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
@@ -311,7 +316,9 @@ class LightnesTheme extends AppBaseThemeItem {
         onBackground: Colors.white,
         surface: Colors.black,
         onSurface: Colors.black,
-      ).copyWith(background: const Color(0xffffffff)),
+      ).copyWith(
+        background: const Color(0xffffffff),
+      ),
     ),
   );
 }

@@ -6,7 +6,8 @@ abstract class StationUserBaseData {
   String? lastOnlineTime;
   Map? origin;
   List? privilege;
-  int? reportnum;
+  int? reportNum;
+  Map? statusNum;
   List? subscribes;
   String? userAvatar;
   String? username;
@@ -18,7 +19,8 @@ abstract class StationUserBaseData {
     this.lastOnlineTime = "2018-01-01",
     this.origin = const {},
     this.privilege = const [],
-    this.reportnum = 0,
+    this.reportNum = 0,
+    this.statusNum = const {},
     this.subscribes = const [],
     this.userAvatar = "",
     this.username = "username",
@@ -33,7 +35,8 @@ abstract class StationUserBaseData {
     lastOnlineTime = i["lastOnlineTime"];
     origin = i["origin"];
     privilege = i["privilege"];
-    reportnum = i["reportnum"];
+    reportNum = i["reportnum"] ?? i["reportNum"];
+    statusNum = i["statusNum"];
     subscribes = i["subscribes"];
     userAvatar = i["userAvatar"];
     username = i["username"];
@@ -48,7 +51,8 @@ abstract class StationUserBaseData {
       "lastOnlineTime": lastOnlineTime,
       "origin": origin,
       "privilege": privilege,
-      "reportnum": reportnum,
+      "reportnum": reportNum,
+      "statusNum": statusNum,
       "subscribes": subscribes,
       "userAvatar": userAvatar,
       "username": username,

@@ -7,6 +7,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../constants/api.dart';
 import '../utils/index.dart';
+import 'appBuildContent.dart';
 
 class AppInfoProvider with ChangeNotifier {
   NetwrokConf conf = NetwrokConf();
@@ -174,16 +175,18 @@ class AppUniLinks with ChangeNotifier {
 
   final _appLinks = AppLinks();
 
-  static late BuildContext? appLinksContext;
+  BuildContext? appLinksContext;
 
   Future init(BuildContext context) async {
-    AppUniLinks.appLinksContext = context;
+    appLinksContext = context;
 
     final uri = await _appLinks.getInitialAppLink();
-    if (uri != null) _onUnlLink(uri);
+    if (uri != null) _onUnlLink(uri, appLinksContext!);
 
     _appLinks.allUriLinkStream.listen((Uri uri) {
-      _onUnlLink(uri);
+      Future.delayed(const Duration(seconds: 1), () {
+        _onUnlLink(uri, appLinksContext!);
+      });
     });
 
     return _appLinks;
@@ -191,7 +194,7 @@ class AppUniLinks with ChangeNotifier {
 
   /// [Event]
   /// 处理地址
-  void _onUnlLink(Uri uri) {
+  void _onUnlLink(Uri uri, BuildContext context) {
     if (uri.isScheme("bfban") || uri.isScheme("https")) {
       switch (uri.host) {
         case "app":
@@ -199,22 +202,22 @@ class AppUniLinks with ChangeNotifier {
         case "bfban.com":
           switch (uri.path.toString()) {
             case "/player":
-              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, "/player/personaId/${uri.queryParameters["id"]}");
+              _urlUtil.opEnPage2("/player/personaId/${uri.queryParameters["id"]}");
               break;
             case "/account":
-              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, '/account/${uri.queryParameters["id"]}');
+              _urlUtil.opEnPage2('/account/${uri.queryParameters["id"]}');
               break;
             case "/report":
               String data = jsonEncode({
                 "originName": uri.queryParameters["value"] ?? "",
               });
-              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, '/report/$data');
+              _urlUtil.opEnPage2('/report/$data');
               break;
             case "/search":
               String data = jsonEncode({
                 "id": uri.queryParameters["id"],
               });
-              _urlUtil.opEnPage(AppUniLinks.appLinksContext!, '/search/$data');
+              _urlUtil.opEnPage(context, '/search/$data');
               break;
           }
           break;

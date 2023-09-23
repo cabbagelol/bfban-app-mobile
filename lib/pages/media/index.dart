@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:extended_image/extended_image.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -192,7 +191,10 @@ class _mediaPageState extends State<MediaPage> {
   Future _getLocalMediaFiles() async {
     List pathFiles = await dirProvider!.getAllFile(laterPath: '/media');
     setState(() {
-      if (pathFiles.isNotEmpty) mediaStatus.setList(pathFiles, MediaType.Local);
+      if (pathFiles.isNotEmpty) {
+        mediaStatus.setList(pathFiles, MediaType.Local);
+        mediaStatus.setListSort();
+      }
     });
     return true;
   }
@@ -360,7 +362,7 @@ class _mediaPageState extends State<MediaPage> {
   /// 上传文件
   void _onUploadFile(context, i) async {
     setState(() {
-      i.updataLoad = true;
+      i.upload = true;
     });
 
     Map result = await Upload().on(i.file);
@@ -377,13 +379,13 @@ class _mediaPageState extends State<MediaPage> {
 
       _getLocalMediaFiles();
       setState(() {
-        i.updataLoad = false;
+        i.upload = false;
       });
       return;
     }
 
     setState(() {
-      i.updataLoad = false;
+      i.upload = false;
     });
 
     EluiMessageComponent.error(context)(
@@ -802,12 +804,6 @@ class _MediaCardState extends State<MediaCard> {
     super.initState();
   }
 
-  /// [Event]
-  /// 是否已上传
-  bool _isUploaded(File file) {
-    return file.path.contains("[Uploaded]");
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -927,8 +923,8 @@ class _MediaCardState extends State<MediaCard> {
                             ],
                           ),
                         ),
-                      if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file)) const PopupMenuDivider(),
-                      if (widget.i.type == MediaType.Local && !_isUploaded(widget.i.file))
+                      if (widget.i.type == MediaType.Local && !widget.i.isUploaded) const PopupMenuDivider(),
+                      if (widget.i.type == MediaType.Local && !widget.i.isUploaded)
                         PopupMenuItem(
                           value: "upload_file",
                           child: Wrap(
@@ -975,7 +971,7 @@ class _MediaCardState extends State<MediaCard> {
                   ),
 
                 /// 上传遮盖
-                if (widget.i.type == MediaType.Local && widget.i.updataLoad)
+                if (widget.i.type == MediaType.Local && widget.i.upload)
                   Positioned(
                     top: 0,
                     left: 0,
@@ -1012,7 +1008,7 @@ class _MediaCardState extends State<MediaCard> {
                   runSpacing: 2,
                   spacing: 2,
                   children: [
-                    if (widget.i.type == MediaType.Local && _isUploaded(widget.i.file))
+                    if (widget.i.type == MediaType.Local && widget.i.isUploaded)
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 7,
