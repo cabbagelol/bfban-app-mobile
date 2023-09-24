@@ -181,12 +181,10 @@ class AppUniLinks with ChangeNotifier {
     appLinksContext = context;
 
     final uri = await _appLinks.getInitialAppLink();
-    if (uri != null) _onUnlLink(uri, appLinksContext!);
+    if (uri != null) _onUnlLink(uri);
 
     _appLinks.allUriLinkStream.listen((Uri uri) {
-      Future.delayed(const Duration(seconds: 1), () {
-        _onUnlLink(uri, appLinksContext!);
-      });
+      _onUnlLink(uri);
     });
 
     return _appLinks;
@@ -194,7 +192,7 @@ class AppUniLinks with ChangeNotifier {
 
   /// [Event]
   /// 处理地址
-  void _onUnlLink(Uri uri, BuildContext context) {
+  void _onUnlLink(Uri uri) {
     if (uri.isScheme("bfban") || uri.isScheme("https")) {
       switch (uri.host) {
         case "app":
@@ -202,22 +200,26 @@ class AppUniLinks with ChangeNotifier {
         case "bfban.com":
           switch (uri.path.toString()) {
             case "/player":
-              _urlUtil.opEnPage2("/player/personaId/${uri.queryParameters["id"]}");
+              if (uri.queryParameters["id"] == null) return;
+              _urlUtil.opEnPage(appLinksContext!, "/player/personaId/${uri.queryParameters["id"]}");
               break;
             case "/account":
-              _urlUtil.opEnPage2('/account/${uri.queryParameters["id"]}');
+              if (uri.queryParameters["id"] == null) return;
+              _urlUtil.opEnPage(appLinksContext!, '/account/${uri.queryParameters["id"]}');
               break;
             case "/report":
               String data = jsonEncode({
                 "originName": uri.queryParameters["value"] ?? "",
               });
-              _urlUtil.opEnPage2('/report/$data');
+              _urlUtil.opEnPage(appLinksContext!, '/report/$data');
               break;
             case "/search":
+              if (uri.queryParameters["text"] == null) return;
               String data = jsonEncode({
-                "id": uri.queryParameters["id"],
+                "text": uri.queryParameters["text"],
+                "type": uri.queryParameters["type"],
               });
-              _urlUtil.opEnPage(context, '/search/$data');
+              _urlUtil.opEnPage(appLinksContext!, '/search/$data');
               break;
           }
           break;

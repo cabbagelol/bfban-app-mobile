@@ -1,6 +1,7 @@
 /// http请求
 
 import 'dart:async';
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:bfban/utils/index.dart';
@@ -114,7 +115,6 @@ class Http extends ScaffoldState {
 
       result = response;
     } on DioError catch (e) {
-      dioErrorExpired(e, result);
       switch (e.type) {
         case DioErrorType.receiveTimeout:
           return Response(
@@ -183,13 +183,34 @@ class Http extends ScaffoldState {
       ],
     ));
 
+    // Token有效
+    dio.interceptors.add(TokenInterceptor());
+
     return dio;
   }
+}
 
-  static dioErrorExpired(DioError e, Response res) {
+class TokenInterceptor extends Interceptor {
+  bool isReLogin = false;
+  Queue queue = Queue();
+
+  TokenInterceptor();
+
+  @override
+  Future onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) async {
+    if (response.requestOptions.path.contains(Config.apiHost["network_service_request"]!.url)) _checkToken(response);
+    return super.onResponse(response, handler);
+  }
+
+  /// [Event]
+  /// 检查token
+  static _checkToken(Response<dynamic> response) {
     const errorCode = ['user.tokenClientException', 'user.tokenExpired', 'user.invalid'];
-    if (errorCode.contains(res.data['code'])) {
-      eventUtil.emit('user-token-expired', res);
+    if (errorCode.contains(response.data['code'])) {
+      eventUtil.emit('user-token-expired', response);
     }
   }
 }

@@ -283,6 +283,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       appBar: AppBar(
         titleSpacing: 0,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(.1),
         title: TabBar(
           controller: _tabController,

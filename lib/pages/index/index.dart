@@ -7,6 +7,7 @@ import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,6 @@ import 'package:provider/provider.dart';
 import 'package:bfban/utils/index.dart';
 
 import '../../constants/api.dart';
-import '../../provider/appBuildContent.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
 import '../profile/index.dart';
@@ -266,7 +266,9 @@ class _IndexPageState extends State<IndexPage> {
           );
           return false;
         }
-        return true;
+
+        await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+        return false;
       },
       child: Consumer<AppInfoProvider>(
         builder: (context, appInfo, child) {
@@ -279,6 +281,7 @@ class _IndexPageState extends State<IndexPage> {
                   appBar: AppBar(
                     backgroundColor: Colors.transparent,
                     title: titleWidget,
+                    automaticallyImplyLeading: false,
                     actions: <Widget>[
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(

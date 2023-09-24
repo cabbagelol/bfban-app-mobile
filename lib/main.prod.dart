@@ -11,7 +11,7 @@ void main() async {
       "web_github": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "github.com"),
       "app_web_site": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban-app.cabbagelol.net"),
       "web_site": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.com"),
-      "network_bfv_hackers_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfvhackers.com", pathname: "/api/v1/"),
+      "network_bfv_hackers_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfvhackers.com", pathname: "/api/v1"),
       "network_service_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.gametools.network", pathname: "/api"),
     },
     jiguan: {

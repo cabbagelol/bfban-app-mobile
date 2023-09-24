@@ -134,6 +134,7 @@ class TitleSearchState extends State<TitleSearchWidget> {
                                 contentPadding: EdgeInsets.zero,
                               ),
                               keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.search,
                               cursorColor: Theme.of(context).colorScheme.primary,
                               maxLines: 1,
                               style: TextStyle(

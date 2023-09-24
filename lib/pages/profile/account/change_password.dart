@@ -81,51 +81,62 @@ class _changePasswordPageState extends State<changePasswordPage> {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         children: [
-          Card(
-            child: EluiInputComponent(
-              title: FlutterI18n.translate(context, "reset.form.oldPassword"),
-              value: "",
-              placeholder: FlutterI18n.translate(context, "reset.form.oldPassword"),
-              onChange: (String value) {
-                setState(() {
-                  if (value.isEmpty) return;
-                  oldpassword = value;
-                });
-              },
-            ),
-          ),
-          const SizedBox(height: 5),
-          Card(
-            child: EluiInputComponent(
-              title: FlutterI18n.translate(context, "reset.form.newPassword"),
-              value: "",
-              placeholder: FlutterI18n.translate(context, "reset.form.newPassword"),
-              onChange: (String value) {
-                setState(() {
-                  if (value.isEmpty) return;
-                  newpassword = value;
-                });
-              },
-            ),
-          ),
-          const SizedBox(height: 10),
-          Card(
-            child: EluiInputComponent(
-              title: FlutterI18n.translate(context, "captcha.title"),
-              value: "",
-              placeholder: FlutterI18n.translate(context, "captcha.title"),
-              onChange: (value) {
-                setState(() {
-                  captcha.value = value;
-                });
-              },
-              right: CaptchaWidget(
-                context: context,
-                seconds: 25,
-                onChange: (Captcha captcha) => captcha.setCaptcha(captcha),
-              ),
+          AutofillGroup(
+            child: Column(
+              children: [
+                Card(
+                  child: EluiInputComponent(
+                    title: FlutterI18n.translate(context, "reset.form.oldPassword"),
+                    placeholder: FlutterI18n.translate(context, "reset.form.oldPassword"),
+                    value: "",
+                    textInputAction: TextInputAction.next,
+                    autofillHints: const [AutofillHints.password],
+                    onChange: (String value) {
+                      setState(() {
+                        if (value.isEmpty) return;
+                        oldpassword = value;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Card(
+                  child: EluiInputComponent(
+                    title: FlutterI18n.translate(context, "reset.form.newPassword"),
+                    placeholder: FlutterI18n.translate(context, "reset.form.newPassword"),
+                    value: "",
+                    textInputAction: TextInputAction.next,
+                    autofillHints: const [AutofillHints.newPassword],
+                    onChange: (String value) {
+                      setState(() {
+                        if (value.isEmpty) return;
+                        newpassword = value;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Card(
+                  child: EluiInputComponent(
+                    title: FlutterI18n.translate(context, "captcha.title"),
+                    placeholder: FlutterI18n.translate(context, "captcha.title"),
+                    value: "",
+                    textInputAction: TextInputAction.done,
+                    onChange: (value) {
+                      setState(() {
+                        captcha.value = value;
+                      });
+                    },
+                    right: CaptchaWidget(
+                      context: context,
+                      seconds: 25,
+                      onChange: (Captcha captcha) => captcha.setCaptcha(captcha),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

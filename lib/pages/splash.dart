@@ -73,26 +73,20 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   /// [Event]
   /// 进入主程序
-  void onMain() {
-    Future.delayed(const Duration(seconds: 0)).then((value) {
-      _urlUtil.opEnPage(
-        context,
-        "/",
-        transition: TransitionType.none,
-        replace: true,
-        clearStack: true,
-        rootNavigator: true,
-      );
-    }).then((value) async {
-      AppStatus.context = context;
+  void onMain() async {
+    AppStatus.context = context;
 
-      final uri = await _appLinks.getInitialAppLink();
-      if (uri != null) _onUnlLink(uri);
+    AppInfoProvider app = providerUtil.ofApp(context);
+    await app.uniLinks.init(context);
 
-      _appLinks.allUriLinkStream.listen((Uri uri) {
-        _onUnlLink(uri);
-      });
-    });
+    // ignore: use_build_context_synchronously
+    _urlUtil.opEnPage(
+      context,
+      "/",
+      transition: TransitionType.none,
+      clearStack: false,
+      rootNavigator: true,
+    );
   }
 
   /// [Event]
@@ -201,45 +195,6 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
     }
 
     return true;
-  }
-
-  /// [Event]
-  /// 处理地址
-  void _onUnlLink(Uri uri) {
-    if (!mounted) return;
-    if (uri.isScheme("bfban") || uri.isScheme("https")) {
-      switch (uri.host) {
-        case "app":
-        case "bfban-app.cabbagelol.net":
-        case "bfban.com":
-          switch (uri.path.toString()) {
-            case "/player":
-              if (uri.queryParameters["id"] == null) return;
-              _urlUtil.opEnPage(context, "/player/personaId/${uri.queryParameters["id"]}");
-              break;
-            case "/account":
-              if (uri.queryParameters["id"] == null) return;
-              _urlUtil.opEnPage(context, '/account/${uri.queryParameters["id"]}');
-              break;
-            case "/report":
-              if (uri.queryParameters["value"] == null) return;
-              String data = jsonEncode({
-                "originName": uri.queryParameters["value"] ?? "",
-              });
-              _urlUtil.opEnPage(context, '/report/$data');
-              break;
-            case "/search":
-              if (uri.queryParameters["text"] == null) return;
-              String data = jsonEncode({
-                "text": uri.queryParameters["text"],
-                "type": uri.queryParameters["type"] ?? "user",
-              });
-              _urlUtil.opEnPage(context, '/search/$data');
-              break;
-          }
-          break;
-      }
-    }
   }
 
   @override

@@ -190,74 +190,81 @@ class _SigninPageState extends State<SigninPage> {
                             )
                           : Expanded(
                               flex: 1,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ClipOval(
-                                    clipBehavior: Clip.hardEdge,
-                                    child: localLoginRecord.containsKey(loginStatus.parame!.username)
-                                        ? Image.network(localLoginRecord[loginStatus.parame!.username]!)
-                                        : CircleAvatar(
-                                            minRadius: avater,
-                                            child: Icon(
-                                              Icons.account_circle,
-                                              size: avater + 10.0,
+                              child: AutofillGroup(
+                                onDisposeAction: AutofillContextAction.commit,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClipOval(
+                                      clipBehavior: Clip.hardEdge,
+                                      child: localLoginRecord.containsKey(loginStatus.parame!.username)
+                                          ? Image.network(localLoginRecord[loginStatus.parame!.username]!)
+                                          : CircleAvatar(
+                                              minRadius: avater,
+                                              child: Icon(
+                                                Icons.account_circle,
+                                                size: avater + 10.0,
+                                              ),
                                             ),
-                                          ),
-                                  ),
-                                  const SizedBox(height: 50),
-                                  Card(
-                                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: EluiInputComponent(
-                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                      placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
-                                      autofillHints: const [AutofillHints.username],
-                                      onChange: (data) {
-                                        setState(() {
-                                          loginStatus.parame!.username = data["value"];
-                                        });
-                                      },
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Card(
-                                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                                    child: EluiInputComponent(
-                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                      placeholder: FlutterI18n.translate(context, "app.signin.password"),
-                                      autofillHints: const [AutofillHints.password],
-                                      type: TextInputType.visiblePassword,
-                                      onChange: (data) => loginStatus.parame!.password = data["value"],
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Card(
-                                    clipBehavior: Clip.none,
-                                    margin: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                    ),
-                                    child: EluiInputComponent(
-                                      placeholder: FlutterI18n.translate(context, "captcha.title"),
-                                      internalstyle: true,
-                                      maxLenght: 4,
-                                      theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                      right: CaptchaWidget(
-                                        context: context,
-                                        seconds: 25,
-                                        onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                    const SizedBox(height: 50),
+                                    Card(
+                                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: EluiInputComponent(
+                                        theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                        placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
+                                        type: TextInputType.text,
+                                        textInputAction: TextInputAction.next,
+                                        autofillHints: const [AutofillHints.username, AutofillHints.email],
+                                        onChange: (data) {
+                                          setState(() {
+                                            loginStatus.parame!.username = data["value"];
+                                          });
+                                        },
                                       ),
-                                      onChange: (data) {
-                                        setState(() {
-                                          loginStatus.parame!.value = data["value"];
-                                        });
-                                      },
                                     ),
-                                  ),
-                                ],
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Card(
+                                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: EluiInputComponent(
+                                        theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                        placeholder: FlutterI18n.translate(context, "app.signin.password"),
+                                        textInputAction: TextInputAction.next,
+                                        autofillHints: const [AutofillHints.password],
+                                        type: TextInputType.visiblePassword,
+                                        onChange: (data) => loginStatus.parame!.password = data["value"],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Card(
+                                      clipBehavior: Clip.none,
+                                      margin: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                      ),
+                                      child: EluiInputComponent(
+                                        placeholder: FlutterI18n.translate(context, "captcha.title"),
+                                        internalstyle: true,
+                                        maxLenght: 4,
+                                        textInputAction: TextInputAction.done,
+                                        theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                                        right: CaptchaWidget(
+                                          context: context,
+                                          seconds: 25,
+                                          onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                        ),
+                                        onChange: (data) {
+                                          setState(() {
+                                            loginStatus.parame!.value = data["value"];
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                     ],

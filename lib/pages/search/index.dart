@@ -198,6 +198,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     Response result = await request;
 
     if (result.data["success"] == 1) {
+      if (!mounted) return;
       setState(() {
         searchStatus.list.set(searchTabsType[searchTabsIndex]["text"], result.data["data"]);
         searchStatus.load = false;

@@ -101,7 +101,7 @@ class _BfBanAppState extends State<BfBanApp> {
               child: widget!,
             );
           },
-          onGenerateRoute: Routes.router!.generator,
+          onGenerateRoute: Routes.router.generator,
         );
       }),
     );
@@ -122,15 +122,9 @@ class WidgetError extends StatelessWidget {
     return Card(
       color: Theme.of(context).colorScheme.error,
       margin: EdgeInsets.zero,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          errorDetails!.library.toString(),
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.errorContainer,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+      child: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Icon(Icons.error),
       ),
     );
   }

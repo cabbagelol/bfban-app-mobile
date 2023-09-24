@@ -129,6 +129,7 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
                 appBar: AppBar(
                   titleSpacing: 0,
                   centerTitle: true,
+                  automaticallyImplyLeading: false,
                   backgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(.1),
                   title: TabBar(
                     controller: tabController,
