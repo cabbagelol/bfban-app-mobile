@@ -32,6 +32,20 @@ class UserInfoProvider with ChangeNotifier {
     return isLogin && userinfo["privilege"].any((i) => ["admin", "super", "root"].contains(i));
   }
 
+  bool get isAdminL1 => isAdmin;
+
+  bool get isAdminL2 {
+    return isLogin && userinfo["privilege"].any((i) => ["admin", "super", "root"].contains(i));
+  }
+
+  bool get isAdminL3 {
+    return isLogin && userinfo["privilege"].any((i) => ["super", "root"].contains(i));
+  }
+
+  bool get isAdminL4 {
+    return isLogin && userinfo["privilege"].any((i) => ["root"].contains(i));
+  }
+
   // 获取用户信息
   Map get userinfo {
     return _userdata["userinfo"] ?? {};

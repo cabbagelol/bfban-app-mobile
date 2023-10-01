@@ -5,7 +5,7 @@ import '../../data/Theme.dart';
 import '../not_found/index.dart';
 import 'home_community_activitie.dart';
 import 'home_tour_record.dart';
-import 'home_trace.dart';
+import 'home_subscribes.dart';
 import 'home_trend.dart';
 
 class homePage extends StatefulWidget {
@@ -30,7 +30,7 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
 
   final GlobalKey<HomeCommunityPageState> _homeCommunityPageKey = GlobalKey<HomeCommunityPageState>();
 
-  final GlobalKey<HomeTracePageState> _homeTracePageKey = GlobalKey<HomeTracePageState>();
+  final GlobalKey<HomeSubscribesPageState> _homeTracePageKey = GlobalKey<HomeSubscribesPageState>();
 
   final GlobalKey<HomeTrendPageState> _homeTrendPageKey = GlobalKey<HomeTrendPageState>();
 
@@ -44,8 +44,8 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
   List homeTabsType = [
     {"text": "activities", "icon": Icons.notifications_active_rounded},
     {"text": "trend", "icon": Icons.local_fire_department_sharp},
-    {"text": "trace", "icon": Icons.star},
-    // {"text": "tourRecord", "icon": Icons.receipt},
+    {"text": "subscribes", "icon": Icons.star},
+    {"text": "tourRecord", "icon": Icons.receipt},
   ];
 
   List<Widget> homeTabsWidget = [];
@@ -86,8 +86,8 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
           _homeTabsWidget.add(HomeTrendPage(key: _homeTrendPageKey));
           waitMap["load"] = _homeTrendPageKey.currentState?.trendStatus.load ?? false;
           break;
-        case "trace":
-          _homeTabsWidget.add(HomeTracePage(key: _homeTracePageKey));
+        case "subscribes":
+          _homeTabsWidget.add(HomeSubscribesPage(key: _homeTracePageKey));
           waitMap["load"] = _homeTracePageKey.currentState?.traceStatus.load ?? false;
           break;
         case "tourRecord":

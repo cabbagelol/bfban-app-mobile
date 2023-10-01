@@ -73,13 +73,13 @@ class Http extends ScaffoldState {
     }
 
     /// restful 请求处理
-    if (data is Map && data.isNotEmpty) {
-      data.forEach((key, value) {
-        if (url.contains(key)) {
-          url = url.replaceAll(':$key', value.toString());
-        }
-      });
-    }
+    // if (data is Map && data.isNotEmpty) {
+    //   data.forEach((key, value) {
+    //     if (url.contains(key)) {
+    //       url = url.replaceAll(':$key', value.toString());
+    //     }
+    //   });
+    // }
 
     String domain = "";
     switch (httpDioType) {

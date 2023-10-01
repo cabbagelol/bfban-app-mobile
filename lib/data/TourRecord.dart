@@ -1,6 +1,8 @@
 import 'package:bfban/data/index.dart';
 
-class TourRecordStatus {
+import 'Paging.dart';
+
+class TourRecordStatus extends Paging {
   bool? load;
   List<TourRecordPlayerBaseData>? list;
 

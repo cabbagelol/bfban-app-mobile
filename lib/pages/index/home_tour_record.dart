@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/index.dart';
@@ -43,52 +44,88 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
   void initState() {
     _getTourRecordList();
 
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _getMore();
+      }
+    });
+
     super.initState();
   }
 
   /// [Result]
   /// 获取游览历史
   Future _getTourRecordList() async {
-    if (tourRecordStatus.load!) return;
+    try {
+      if (tourRecordStatus.load!) return;
 
-    StorageData viewedData = await storage.get("viewed");
+      Future.delayed(const Duration(seconds: 0), () {
+        if (tourRecordStatus.skip! <= 0 && _refreshIndicatorKey.currentState != null) _refreshIndicatorKey.currentState!.show();
+      });
 
-    Map viewed = viewedData.value ?? {};
-    List<TourRecordPlayerBaseData>? viewedWidgets = [];
-    tourRecordStatus.list!.clear();
+      StorageData viewedData = await storage.get("viewed");
+      int skip = tourRecordStatus.skip ?? 0;
+      int limit = tourRecordStatus.limit ?? 40;
 
-    setState(() {
-      tourRecordStatus.load = true;
-    });
+      Map viewed = viewedData.value ?? {};
+      List<TourRecordPlayerBaseData>? viewedWidgets = [];
 
-    for (var i in viewed.entries) {
-      Map playerData = await storagePlayer.query(i.key) ?? {};
+      setState(() {
+        tourRecordStatus.list!.clear();
+        tourRecordStatus.load = true;
+      });
 
-      if (playerData.isEmpty) continue;
-      TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
-      tourRecordPlayerBaseData.setData(playerData);
-      viewedWidgets.add(tourRecordPlayerBaseData);
+      List dbIds = [];
+      int start = (skip - 1) * limit;
+      int end = (skip * limit) <= viewed.length ? skip * limit : viewed.length;
+      viewed.entries.toList().sort((a, b) => a.value > b.value ? 1 : -1);
+      dbIds = viewed.entries.toList().sublist(start, end).map((e) => e.key).toList();
+
+      Response result = await Http.request(
+        Config.httpHost["player_batch"],
+        parame: {"dbIds": dbIds},
+        method: Http.GET,
+      );
+
+      dynamic d = result.data;
+
+      if (result.data["success"] == 1) {
+        for (var playerItem in d["data"] as List) {
+          TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
+          tourRecordPlayerBaseData.setData(playerItem);
+          viewedWidgets.add(tourRecordPlayerBaseData);
+        }
+      }
+
+      setState(() {
+        tourRecordStatus.list = viewedWidgets;
+        tourRecordStatus.load = false;
+      });
+    } catch (err) {
+      setState(() {
+        tourRecordStatus.load = false;
+      });
     }
-
-    setState(() {
-      tourRecordStatus.list = viewedWidgets;
-      tourRecordStatus.load = false;
-    });
   }
 
   /// [Event]
   /// 下拉刷新方法,为list重新赋值
   Future _onRefresh() async {
+    tourRecordStatus.resetPage();
+
     await _getTourRecordList();
   }
 
   /// [Event]
   /// 下拉 追加数据
   Future _getMore() async {
+    if (tourRecordStatus.load!) return;
+
+    tourRecordStatus.nextPage();
     await _getTourRecordList();
   }
 
-  /// [Evnet]
+  /// [Event]
   /// 全选
   void _selectAllItem(bool status) async {
     Map selectMap = {};
@@ -163,7 +200,9 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
                           : Container(),
                     ),
                     OutlinedButton(
-                      onPressed: () => _getTourRecordList(),
+                      onPressed: () {
+                        _getTourRecordList();
+                      },
                       child: const Icon(Icons.rotate_right, size: 15),
                     ),
                     const SizedBox(width: 3),
@@ -180,35 +219,42 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
               ),
 
               // 列表
-              tourRecordStatus.list!.isEmpty
-                  ? const EmptyWidget()
-                  : Column(
-                      children: tourRecordStatus.list!.map((i) {
-                        return Row(
-                          children: [
-                            if (isEdit)
-                              Container(
-                                margin: const EdgeInsets.only(left: 15),
-                                child: Checkbox(
-                                  visualDensity: VisualDensity.standard,
-                                  value: selectMap[i.id] ?? false,
-                                  onChanged: (status) {
-                                    setState(() {
-                                      selectMap[i.id] = status;
-                                    });
-                                  },
-                                ),
-                              ),
-                            Expanded(
-                              flex: 1,
-                              child: CheatListCard(
-                                item: i.toMap,
-                              ),
+              if (tourRecordStatus.list!.isNotEmpty)
+                Column(
+                  children: tourRecordStatus.list!.map((i) {
+                    return Row(
+                      children: [
+                        if (isEdit)
+                          Container(
+                            margin: const EdgeInsets.only(left: 15),
+                            child: Checkbox(
+                              visualDensity: VisualDensity.standard,
+                              value: selectMap[i.id] ?? false,
+                              onChanged: (status) {
+                                setState(() {
+                                  selectMap[i.id] = status;
+                                });
+                              },
                             ),
-                          ],
-                        );
-                      }).toList(),
-                    )
+                          ),
+                        Expanded(
+                          flex: 1,
+                          child: CheatListCard(
+                            item: i.toMap,
+                          ),
+                        ),
+                      ],
+                    );
+                  }).toList(),
+                )
+              else if (tourRecordStatus.list!.isEmpty && !tourRecordStatus.load!)
+                const EmptyWidget(),
+
+              if (tourRecordStatus.load!)
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
             ],
           ),
         );

@@ -37,11 +37,17 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
   void initState() {
     getTrendList();
 
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+        _getMore();
+      }
+    });
+
     super.initState();
   }
 
   /// [Response]
-  /// 获取追踪
+  /// 获取趋势列表
   Future getTrendList() async {
     if (trendStatus.load == true) return;
 
@@ -75,39 +81,46 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
   /// [Event]
   /// 下拉刷新方法,为list重新赋值
   Future _onRefresh() async {
+    trendStatus.parame.resetPage();
+
     await getTrendList();
   }
 
   /// [Event]
   /// 下拉 追加数据
   Future _getMore() async {
+    if (trendStatus.load!) return;
+
+    trendStatus.parame.nextPage();
     await getTrendList();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Consumer<UserInfoProvider>(builder: (context, data, child) {
-      return data.userinfo.isEmpty
-          ? const HintLoginWidget()
-          : RefreshIndicator(
-              key: _refreshIndicatorKey,
-              onRefresh: _onRefresh,
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: trendStatus.list.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (trendStatus.list.isEmpty) {
-                    return const EmptyWidget();
-                  }
+    return Consumer<UserInfoProvider>(
+      builder: (context, data, child) {
+        return data.userinfo.isEmpty
+            ? const HintLoginWidget()
+            : RefreshIndicator(
+                key: _refreshIndicatorKey,
+                onRefresh: _onRefresh,
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: trendStatus.list.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (trendStatus.list.isEmpty) {
+                      return const EmptyWidget();
+                    }
 
-                  return CheatListCard(
-                    item: trendStatus.list[index].toMap,
-                    isIconHotView: true,
-                  );
-                },
-              ),
-            );
-    });
+                    return CheatListCard(
+                      item: trendStatus.list[index].toMap,
+                      isIconHotView: true,
+                    );
+                  },
+                ),
+              );
+      },
+    );
   }
 }
