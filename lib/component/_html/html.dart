@@ -30,6 +30,12 @@ class _HtmlCoreState extends State<HtmlCore> {
     super.didChangeDependencies();
   }
 
+  @override
+  void didUpdateWidget(covariant HtmlCore oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    packagingRender();
+  }
+
   /// [Event]
   /// 包装器
   void packagingRender() {

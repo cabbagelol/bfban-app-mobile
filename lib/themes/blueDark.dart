@@ -32,10 +32,15 @@ class BlueDarkTheme extends AppBaseThemeItem {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(const Color(0x7a364e80)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
           textStyle: MaterialStateProperty.all(
             const TextStyle(color: Colors.white),
           ),
+          side: MaterialStateProperty.all(const BorderSide(
+            color: Colors.white12,
+            width: 1,
+          )),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
@@ -97,6 +102,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       highlightColor: Colors.transparent,
+      iconButtonTheme: IconButtonThemeData(style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent))),
       toggleButtonsTheme: const ToggleButtonsThemeData(
         color: Color(0xff111b2b),
         fillColor: Colors.black38,

@@ -422,15 +422,6 @@ class UserSpacePageState extends State<UserSpacePage> {
                             ),
                           ],
                         )
-                      else if (reportListStatus.list.isEmpty && reportListStatus.load!)
-                        SliverList.list(children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 20),
-                            child: const Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          )
-                        ])
                       else
                         SliverList.list(children: const [
                           EmptyWidget(),

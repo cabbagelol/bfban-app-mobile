@@ -24,6 +24,16 @@ class _PrivilegesTagWidgetState extends State<PrivilegesTagWidget> {
   @override
   void initState() {
     super.initState();
+    _updateView();
+  }
+
+  @override
+  void didUpdateWidget(covariant PrivilegesTagWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _updateView();
+  }
+
+  void _updateView() {
     dynamic originalPrivilege = _providerUtil.ofApp(context).conf.data.privilege!;
 
     if (originalPrivilege["child"] != null && widget.data!.isNotEmpty) {

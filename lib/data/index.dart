@@ -20,3 +20,4 @@ export './Viewed.dart';
 export './Media.dart';
 export './CloudMedia.dart';
 export './PublicTranslator.dart';
+export './Appeal.dart';

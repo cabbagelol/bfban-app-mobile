@@ -89,69 +89,87 @@ class _SigninPageState extends State<SigninPage> {
   /// [Response]
   /// 登陆
   void _onLogin() async {
-    if (loginStatus.parame!.value.isEmpty) {
-      EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.accountId")));
-      return;
-    } else if (loginStatus.parame!.password!.isEmpty) {
-      EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyPassword")));
-      return;
-    } else if (loginStatus.parame!.username!.isEmpty) {
-      EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyAccount")));
-      return;
-    }
-
-    setState(() {
-      loginStatus.load = true;
-    });
-
-    Response result = await Http.request(
-      Config.httpHost["account_signin"],
-      method: Http.POST,
-      headers: {'Cookie': loginStatus.parame!.cookie},
-      data: loginStatus.parame!.toMap,
-    );
-
-    if (result.data["success"] == 1) {
-      late Map d = result.data["data"];
-
-      d["time"] = DateTime.now().millisecondsSinceEpoch;
-      if (d["userinfo"]["userAvatar"].toString().isNotEmpty) {
-        localLoginRecord.addAll({
-          d["userinfo"]["username"].toString(): d["userinfo"]["userAvatar"],
-        });
+    try {
+      if (loginStatus.parame!.value.isEmpty) {
+        EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.accountId")));
+        return;
+      } else if (loginStatus.parame!.password!.isEmpty) {
+        EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyPassword")));
+        return;
+      } else if (loginStatus.parame!.username!.isEmpty) {
+        EluiMessageComponent.error(context)(child: Text(FlutterI18n.translate(context, "app.signin.emptyAccount")));
+        return;
       }
 
-      TextInput.finishAutofillContext();
+      setState(() {
+        loginStatus.load = true;
+      });
 
-      Future.wait([
-        _storage.set("login.localLoginRecord", value: localLoginRecord),
-        // 持久存用户信息
-        _storage.set("login", value: d),
-      ]).then((value) {
-        // 持久储存 -> 状态机 -> HTTP -> Widget
+      Response result = await Http.request(
+        Config.httpHost["account_signin"],
+        method: Http.POST,
+        headers: {'Cookie': loginStatus.parame!.cookie},
+        data: loginStatus.parame!.toMap,
+      );
 
-        // 用户数据状态管理 存用户账户
-        ProviderUtil().ofUser(context).setData(result.data["data"]);
+      dynamic d = result.data;
 
-        // 设置http模块 token
-        Http.setToken(result.data["data"]["token"]);
+      if (result.data["success"] == 1) {
+        late Map dList = d["data"];
 
-        // 更新消息
-        ProviderUtil().ofChat(context).onUpDate();
-      }).catchError((E) {
-        EluiMessageComponent.error(context)(
-          child: Text("$E"),
+        EluiMessageComponent.success(context)(
+          child: Text(FlutterI18n.translate(
+            context,
+            "appStatusCode.${d["code"].replaceAll(".", "_")}",
+            translationParams: {"message": d["message"] ?? ""},
+          )),
         );
-      }).whenComplete(() => Navigator.pop(context, 'loginBack'));
-    } else {
+
+        dList["time"] = DateTime.now().millisecondsSinceEpoch;
+        if (dList["userinfo"]["userAvatar"].toString().isNotEmpty) {
+          localLoginRecord.addAll({
+            dList["userinfo"]["username"].toString(): dList["userinfo"]["userAvatar"],
+          });
+        }
+
+        TextInput.finishAutofillContext();
+
+        Future.wait([
+          _storage.set("login.localLoginRecord", value: localLoginRecord),
+          // 持久存用户信息
+          _storage.set("login", value: dList),
+        ]).then((value) {
+          // 持久储存 -> 状态机 -> HTTP -> Widget
+
+          // 用户数据状态管理 存用户账户
+          ProviderUtil().ofUser(context).setData(result.data["data"]);
+
+          // 设置http模块 token
+          Http.setToken(result.data["data"]["token"]);
+
+          // 更新消息
+          ProviderUtil().ofChat(context).onUpDate();
+        }).catchError((err) {
+          throw err;
+        }).whenComplete(() => Navigator.pop(context, 'loginBack'));
+      } else {
+        EluiMessageComponent.error(context)(
+            child: Text(FlutterI18n.translate(
+              context,
+              "appStatusCode.${d["code"].replaceAll(".", "_")}",
+              translationParams: {"message": d["message"] ?? ""},
+            )),
+            duration: 10000);
+      }
+
+      setState(() {
+        loginStatus.load = false;
+      });
+    } catch (err) {
       EluiMessageComponent.error(context)(
-        child: Text(result.data["code"]),
+        child: Text(err.toString()),
       );
     }
-
-    setState(() {
-      loginStatus.load = false;
-    });
   }
 
   @override

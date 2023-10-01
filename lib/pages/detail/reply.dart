@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -15,6 +14,7 @@ import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:bfban/component/_captcha/index.dart';
 
 import '../../component/_customReply/customReply.dart';
+import '../../component/_html/html.dart';
 
 class ReplyPage extends StatefulWidget {
   dynamic data;
@@ -33,7 +33,7 @@ class _ReplyPageState extends State<ReplyPage> {
 
   final Storage _storage = Storage();
 
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _replyFormKey = GlobalKey<FormState>();
 
   // 回复
   ReplyStatus replyStatus = ReplyStatus(
@@ -58,67 +58,85 @@ class _ReplyPageState extends State<ReplyPage> {
   /// [Response]
   /// 回复
   void _onReply() async {
-    ReplyStatusParame parame = replyStatus.parame!;
-    bool isLogin = ProviderUtil().ofUser(context).isLogin;
+    try {
+      FormState? reportFormKey = _replyFormKey.currentState;
+      bool validate = reportFormKey!.validate();
+      bool isLogin = ProviderUtil().ofUser(context).isLogin;
 
-    if (!isLogin) {
-      EluiMessageComponent.warning(context)(
-        child: Text(FlutterI18n.translate(context, "detail.info.replyManual4")),
+      if (!validate) return;
+      reportFormKey.save();
+
+      if (!isLogin) {
+        EluiMessageComponent.warning(context)(
+          child: Text(FlutterI18n.translate(context, "detail.info.replyManual4")),
+        );
+        return;
+      }
+
+      setState(() {
+        replyStatus.load = true;
+      });
+
+      // 过滤空数据
+      dynamic data = replyStatus.parame!.toMap;
+      data["data"].removeWhere((key, value) => value.toString().isEmpty);
+
+      Response result = await Http.request(
+        Config.httpHost["player_reply"],
+        data: replyStatus.parame!.toMap,
+        method: Http.POST,
       );
-      return;
-    }
 
-    if (parame.content!.isEmpty && parame.value.isEmpty) {
-      EluiMessageComponent.warning(context)(
-        child: Text(FlutterI18n.translate(context, "signup.fillIn")),
-      );
-      return;
-    }
+      dynamic d = result.data;
 
-    setState(() {
-      replyStatus.load = true;
-    });
+      if (result.data["success"] == 1) {
+        EluiMessageComponent.success(context)(
+          child: Text(FlutterI18n.translate(
+            context,
+            "appStatusCode.${d["code"].replaceAll(".", "_")}",
+            translationParams: {"message": d["message"] ?? ""},
+          )),
+        );
 
-    // 过滤空数据
-    dynamic data = replyStatus.parame!.toMap;
-    data["data"].removeWhere((key, value) => value.toString().isEmpty);
+        setState(() {
+          replyStatus.load = false;
+          Navigator.pop(context, "cheatersCardTypes");
+        });
+        return;
+      }
 
-    Response result = await Http.request(
-      Config.httpHost["player_reply"],
-      data: replyStatus.parame!.toMap,
-      method: Http.POST,
-    );
-
-    if (result.data["success"] == 1) {
       setState(() {
         replyStatus.load = false;
-        Navigator.pop(context, "cheatersCardTypes");
       });
-      return;
+
+      EluiMessageComponent.error(context)(
+        child: Text(FlutterI18n.translate(
+          context,
+          "appStatusCode.${d["code"].replaceAll(".", "_")}",
+          translationParams: {"message": d["message"] ?? ""},
+        )),
+        duration: 20000,
+      );
+    } catch (err) {
+      EluiMessageComponent.error(context)(
+        child: Text(err.toString()),
+      );
     }
-
-    setState(() {
-      replyStatus.load = false;
-    });
-
-    EluiMessageComponent.error(context)(
-      child: Text("${result.data["code"]}:${result.data["message"]}"),
-    );
   }
 
   /// [Event]
   /// 打开编辑页面
-  _opEnRichEdit() async {
-    await _storage.set("richedit", value: replyStatus.parame!.content.toString());
+  _opEnRichEdit({updateValue}) async {
+    await _storage.set("richedit", value: updateValue ?? replyStatus.parame!.content.toString());
 
-    _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino).then((data) {
-      /// 按下确认储存富文本编写的内容
-      if (data["code"] == 1) {
-        setState(() {
-          replyStatus.parame!.content = data["html"];
-        });
-      }
-    });
+    Map data = await _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino);
+
+    /// 按下确认储存富文本编写的内容
+    if (data["code"] == 1) {
+      return data["html"];
+    }
+
+    return "";
   }
 
   @override
@@ -147,7 +165,7 @@ class _ReplyPageState extends State<ReplyPage> {
             ],
           ),
           body: Form(
-            key: _formKey,
+            key: _replyFormKey,
             child: ListView(
               children: [
                 EluiTipComponent(
@@ -156,92 +174,128 @@ class _ReplyPageState extends State<ReplyPage> {
                 ),
 
                 /// S 理由
-                EluiCellComponent(
-                  title: "",
-                  cont: replyStatus.parame!.content!.isEmpty
-                      ? const Icon(
-                          Icons.warning,
-                          color: Colors.yellow,
-                          size: 15,
-                        )
-                      : Container(),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Card(
-                    clipBehavior: Clip.hardEdge,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3),
-                      side: BorderSide(
-                        color: Theme.of(context).dividerTheme.color!,
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.white38,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(
-                            minHeight: 100,
-                            maxHeight: 180,
-                          ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: <Widget>[
-                              Html(data: replyStatus.parame!.content),
-                              Positioned(
-                                top: 0,
-                                left: 0,
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  color: const Color.fromRGBO(0, 0, 0, 0.2),
-                                  child: Center(
-                                    child: TextButton.icon(
-                                      icon: const Icon(Icons.edit),
-                                      label: const Text(
-                                        "Edit",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      onPressed: () {
-                                        _opEnRichEdit();
-                                      },
-                                    ),
+                FormField(
+                  builder: (FormFieldState field) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      color: field.isValid ? Colors.transparent : Theme.of(context).colorScheme.error.withOpacity(.2),
+                      child: Column(
+                        children: [
+                          EluiCellComponent(
+                            title: FlutterI18n.translate(context, "report.labels.description"),
+                            cont: field.isValid
+                                ? null
+                                : Icon(
+                                    Icons.help,
+                                    color: Theme.of(context).colorScheme.error,
+                                    size: 15,
                                   ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 15),
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: Card(
+                              clipBehavior: Clip.hardEdge,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(3),
+                                side: BorderSide(
+                                  color: field.isValid ? Theme.of(context).dividerColor : Theme.of(context).colorScheme.error,
+                                  width: 1,
                                 ),
                               ),
-                            ],
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  InkWell(
+                                    child: Container(
+                                      constraints: const BoxConstraints(minHeight: 100),
+                                      child: Opacity(
+                                        opacity: field.value.isNotEmpty ? 1 : .5,
+                                        child: HtmlCore(data: field.value.isNotEmpty ? field.value : FlutterI18n.translate(context, "app.richedit.placeholder")),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      String html = await _opEnRichEdit(updateValue: field.value);
+                                      field.setState(() {
+                                        field.setValue(html);
+                                      });
+                                    },
+                                  ),
+                                  const Divider(height: 1),
+                                  CustomReplyWidget(
+                                    type: CustomReplyType.General,
+                                    onChange: (String selectTemp) {
+                                      setState(() {
+                                        replyStatus.parame!.content = selectTemp;
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
-                        const Divider(height: 1),
-                        CustomReplyWidget(
-                          type: CustomReplyType.General,
-                          onChange: (String selectTemp) {
-                            setState(() {
-                              replyStatus.parame!.content = selectTemp;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                        ],
+                      ),
+                    );
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  initialValue: replyStatus.parame!.content,
+                  onSaved: (value) {
+                    setState(() {
+                      replyStatus.parame!.content = value as String?;
+                    });
+                  },
+                  validator: (value) {
+                    if (value.toString().length < 0 && value.toString().length > 5000) return "";
+                    if (value.toString().isEmpty) return "";
+                    return null;
+                  },
                 ),
 
                 /// E 理由
-                const SizedBox(
-                  height: 20,
-                ),
 
-                EluiInputComponent(
-                  internalstyle: true,
-                  placeholder: FlutterI18n.translate(context, "captcha.title"),
-                  maxLenght: 4,
-                  theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                  right: CaptchaWidget(
-                    onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),
-                  ),
-                  onChange: (data) => replyStatus.parame!.value = data["value"],
+                FormField(
+                  builder: (FormFieldState field) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 250),
+                      color: field.isValid ? Colors.transparent : Theme.of(context).colorScheme.error.withOpacity(.2),
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(3),
+                          side: BorderSide(
+                            color: field.isValid ? Theme.of(context).dividerColor : Theme.of(context).colorScheme.error,
+                            width: 1,
+                          ),
+                        ),
+                        child: EluiInputComponent(
+                          theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
+                          textInputAction: TextInputAction.done,
+                          onChange: (data) {
+                            field.setState(() {
+                              field.setValue(data["value"]);
+                            });
+                          },
+                          right: CaptchaWidget(
+                            onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),
+                          ),
+                          maxLenght: 4,
+                          placeholder: FlutterI18n.translate(context, "captcha.title"),
+                        ),
+                      ),
+                    );
+                  },
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  initialValue: replyStatus.parame!.value,
+                  onSaved: (value) {
+                    setState(() {
+                      replyStatus.parame!.value = value as String;
+                    });
+                  },
+                  validator: (value) {
+                    if (value.toString().isEmpty) return "";
+                    return null;
+                  },
                 ),
               ],
             ),

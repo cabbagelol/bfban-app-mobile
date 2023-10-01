@@ -136,6 +136,7 @@ class _captchaWidgetState extends State<CaptchaWidget> {
         return;
       }
 
+      if (!mounted) return;
       setState(() {
         captchaTime.count -= 1;
         _upLocalCaptchaValue(captchaTime.count);

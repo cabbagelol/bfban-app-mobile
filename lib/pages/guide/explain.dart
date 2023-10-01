@@ -45,6 +45,7 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
     );
 
     if (result.data.toString().isNotEmpty) {
+      if (!mounted) return;
       setState(() {
         news = result.data["news"] ??= [];
 

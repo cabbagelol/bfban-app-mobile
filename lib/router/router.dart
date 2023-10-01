@@ -1,3 +1,4 @@
+import 'package:bfban/pages/detail/appeal.dart';
 import 'package:bfban/pages/detail/user_space.dart';
 import 'package:bfban/pages/license/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
@@ -157,6 +158,12 @@ class Routes {
       "url": "/player/personaId/:personaId",
       "item": (context, params) {
         return PlayerDetailPage(personaId: params["personaId"][0]);
+      }
+    },
+    {
+      "url": "/player/appeal/:personaId",
+      "item": (context, params) {
+        return AppealPage(personaId: params["personaId"][0]);
       }
     },
     {

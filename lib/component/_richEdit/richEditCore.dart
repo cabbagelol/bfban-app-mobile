@@ -113,11 +113,9 @@ class RichEditCoreState extends State<RichEditCore> {
       children: [
         Expanded(
           flex: 1,
-          child: Container(
-            child: HtmlEditor(
-              expandFullHeight: widget.expandFullHeight!,
-              controller: controller,
-            ),
+          child: HtmlEditor(
+            expandFullHeight: widget.expandFullHeight!,
+            controller: controller,
           ),
         ),
         const Divider(height: 1),

@@ -43,9 +43,11 @@ class CustomTranslationLoader extends FileTranslationLoader {
   Future<String> loadString(final String fileName, final String extension) async {
     Uri resolvedUri = baseUri.replace(path: '${baseUri.path}/$fileName.json');
     StorageData languageData = await storage.get(packageName);
+
     dynamic local = languageData.value;
     dynamic networkLanguageResult = {};
     dynamic localLanguageResult = {};
+    dynamic localStatusCodeResult = {};
 
     // 从远程服务器取得LANG配置单，如果缓存则使用本地
     if (local == null || local.toString().isEmpty) {
@@ -67,7 +69,17 @@ class CustomTranslationLoader extends FileTranslationLoader {
       localLanguageResult = jsonDecode(loadString);
     }
 
+    String localStatusCodePath = "$basePath/${composeFileName()}_status_code.json";
+    String loadStatusCodeString = await assetBundle.loadString(localStatusCodePath, cache: false);
+    if (loadStatusCodeString.isEmpty) {
+      String localFallbackFilePath = "$basePath/${fallbackFile}_status_code.json";
+      localStatusCodeResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: false));
+    } else {
+      localStatusCodeResult = jsonDecode(loadStatusCodeString);
+    }
+
     _decodedMap.addAll(localLanguageResult);
+    _decodedMap.addAll(localStatusCodeResult);
     _decodedMap.addAll(networkLanguageResult);
 
     return jsonEncode(_decodedMap);

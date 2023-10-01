@@ -342,18 +342,29 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   }
 
   /// [Event]
+  /// 申诉
+  dynamic onAppeal() {
+    // 检查登录状态
+    if (!ProviderUtil().ofUser(context).checkLogin()) return;
+
+    _urlUtil.opEnPage(context, "/player/appeal/${playerStatus.data!.id}").then((value) {
+      _getCheatersInfo();
+      timeLineKey.currentState?.getTimeline();
+      timeLineKey.currentState?.scrollController.jumpTo(timeLineKey.currentState?.scrollController.position.maxScrollExtent as double);
+    });
+  }
+
+  /// [Event]
   /// 审核人员判决
   dynamic onJudgement() {
-    return () {
-      // 检查登录状态
-      if (!ProviderUtil().ofUser(context).checkLogin()) return;
+    // 检查登录状态
+    if (!ProviderUtil().ofUser(context).checkLogin()) return;
 
-      _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data!.id}", transition: TransitionType.cupertinoFullScreenDialog).then((value) {
-        _getCheatersInfo();
-        timeLineKey.currentState?.getTimeline();
-        timeLineKey.currentState?.scrollController.jumpTo(timeLineKey.currentState?.scrollController.position.maxScrollExtent as double);
-      });
-    };
+    _urlUtil.opEnPage(context, "/report/manage/${playerStatus.data!.id}", transition: TransitionType.cupertinoFullScreenDialog).then((value) {
+      _getCheatersInfo();
+      timeLineKey.currentState?.getTimeline();
+      timeLineKey.currentState?.scrollController.jumpTo(timeLineKey.currentState?.scrollController.position.maxScrollExtent as double);
+    });
   }
 
   /// [Event]
@@ -731,19 +742,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                               ],
                                             ),
                                           ),
-                                          OutlinedButton(
-                                            onPressed: () => _onSubscribes(data.isLogin),
-                                            child: subscribes["load"]
-                                                ? ELuiLoadComponent(
-                                              type: "line",
-                                                    lineWidth: 1,
-                                                    color: Theme.of(context).progressIndicatorTheme.color!,
-                                                    size: 16,
-                                                  )
-                                                : subscribes["isThisUserSubscribes"]
-                                                    ? const Icon(Icons.notifications_off)
-                                                    : const Icon(Icons.notifications),
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -973,14 +971,38 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                 flex: 1,
                                 child: TextButton(
                                   onPressed: _onReport(),
-                                  child: Text(
-                                    FlutterI18n.translate(context, "report.title"),
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                  child: Wrap(
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    spacing: 10,
+                                    children: [
+                                      const Icon(
+                                        Icons.front_hand,
+                                        color: Colors.orangeAccent,
+                                      ),
+                                      Text(
+                                        FlutterI18n.translate(context, "report.title"),
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
                                   ),
                                 ),
+                              ),
+                              const SizedBox(width: 5),
+                              OutlinedButton(
+                                onPressed: () => _onSubscribes(data.isLogin),
+                                child: subscribes["load"]
+                                    ? ELuiLoadComponent(
+                                        type: "line",
+                                        lineWidth: 1,
+                                        color: Theme.of(context).progressIndicatorTheme.color!,
+                                        size: 16,
+                                      )
+                                    : subscribes["isThisUserSubscribes"]
+                                        ? const Icon(Icons.notifications_off)
+                                        : const Icon(Icons.notifications),
                               ),
                             ],
                           ),
@@ -1011,27 +1033,36 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                   ),
                                 ),
                               ),
-
-                              // 管理员 判决
-                              data.isAdmin
-                                  ? const SizedBox(
-                                      width: 10,
-                                    )
-                                  : const SizedBox(),
-                              data.isAdmin
-                                  ? Expanded(
-                                      flex: 1,
-                                      child: TextButton(
-                                        onPressed: onJudgement(),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Text(FlutterI18n.translate(context, "detail.info.judgement")),
-                                          ],
-                                        ),
+                              PopupMenuButton(
+                                icon: Icon(Icons.adaptive.more),
+                                offset: const Offset(0, -100),
+                                onSelected: (value) {
+                                  switch (value) {
+                                    case 1:
+                                      onAppeal();
+                                      break;
+                                    case 2:
+                                      onJudgement();
+                                      break;
+                                  }
+                                },
+                                itemBuilder: (context) {
+                                  return [
+                                    PopupMenuItem(
+                                      value: 1,
+                                      enabled: data.isLogin && playerStatus.data!.status == 1,
+                                      child: Text(FlutterI18n.translate(context, "detail.appeal.dealAppeal")),
+                                    ),
+                                    // 管理员 判决
+                                    if (data.isAdmin)
+                                      PopupMenuItem(
+                                        value: 2,
+                                        enabled: data.isAdmin,
+                                        child: Text(FlutterI18n.translate(context, "detail.info.judgement")),
                                       ),
-                                    )
-                                  : const SizedBox(),
+                                  ];
+                                },
+                              ),
                             ],
                           ),
                         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../constants/api.dart';
 import '../utils/index.dart';
@@ -83,31 +84,48 @@ class UserInfoProvider with ChangeNotifier {
   /// [Response]
   /// 账户注销
   Future accountQuit(BuildContext context) async {
-    Response result = await Http.request(
-      Config.httpHost["account_signout"],
-      headers: {
-        "x-access-token": Http.TOKEN,
-      },
-      method: Http.POST,
-    );
-
-    _storageAccount.clearAll(context); // 擦除持久数据账户相关key
-    clear(); // 擦除状态机的账户信息
-
-    notifyListeners();
-
-    if (result.data["success"] == 1) {
-      EluiMessageComponent.success(context)(
-        child: Text(result.data!["message"]),
+    try {
+      Response result = await Http.request(
+        Config.httpHost["account_signout"],
+        headers: {
+          "x-access-token": Http.TOKEN,
+        },
+        method: Http.POST,
       );
+
+      _storageAccount.clearAll(context); // 擦除持久数据账户相关key
+      clear(); // 擦除状态机的账户信息
+
+      notifyListeners();
+
+      dynamic d = result.data;
+
+      if (result.data["success"] == 1) {
+        EluiMessageComponent.success(context)(
+          child: Text(FlutterI18n.translate(
+            context,
+            "appStatusCode.${d["code"].replaceAll(".", "_")}",
+            translationParams: {"message": d["message"] ?? ""},
+          )),
+        );
+        return result;
+      }
+
+      EluiMessageComponent.error(context)(
+        child: Text(FlutterI18n.translate(
+          context,
+          "appStatusCode.${d["code"].replaceAll(".", "_")}",
+          translationParams: {"message": d["message"] ?? ""},
+        )),
+        duration: 3000,
+      );
+
       return result;
+    } catch (err) {
+      EluiMessageComponent.error(context)(
+        child: Text(err.toString()),
+      );
     }
-
-    EluiMessageComponent.error(context)(
-      child: Text(result.data!["code"]),
-    );
-
-    return result;
   }
 
   /// [Event]

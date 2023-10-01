@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class GameTypeRadioWidget extends StatelessWidget {
   final Widget? child;
   final bool index;
+  final bool errorHint;
   final GestureTapCallback? onTap;
 
   const GameTypeRadioWidget({
     Key? key,
     this.child,
     this.index = false,
+    this.errorHint = false,
     this.onTap,
   }) : super(key: key);
 
@@ -21,7 +23,7 @@ class GameTypeRadioWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
           side: BorderSide(
-            color: Theme.of(context).dividerTheme.color!,
+            color: !errorHint ? Theme.of(context).colorScheme.error : Theme.of(context).dividerTheme.color!,
             width: 1,
           ),
         ),
