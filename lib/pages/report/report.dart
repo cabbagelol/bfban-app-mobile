@@ -113,7 +113,7 @@ class _ReportPageState extends State<ReportPage> {
       // 处理视频格式
       reportStatus.param!.videoLink = videoWidgetList.where((data) => data.toString().isNotEmpty).join(",");
 
-      Response<dynamic> result = await Http.request(
+      Response<dynamic> result = await HttpToken.request(
         Config.httpHost["player_report"],
         data: reportStatus.param!.toMap,
         method: Http.POST,
@@ -329,6 +329,7 @@ class _ReportPageState extends State<ReportPage> {
                           theme: EluiInputTheme(
                             textStyle: TextStyle(
                               fontSize: 25,
+                              fontFamily: "UbuntuMono",
                               color: Theme.of(context).textTheme.bodyMedium!.color,
                             ),
                           ),

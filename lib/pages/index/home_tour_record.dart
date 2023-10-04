@@ -172,14 +172,12 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
         return RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _onRefresh,
-          child: ListView(
-            controller: _scrollController,
+          child: Column(
             children: [
               // tabBar
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                padding: const EdgeInsets.only(top: 5, bottom: 5, right: 15),
                 height: 35,
-                color: Theme.of(context).primaryColorDark.withOpacity(.1),
                 child: Row(
                   children: [
                     Expanded(
@@ -217,44 +215,50 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
                   ],
                 ),
               ),
+              const Divider(height: 1),
+              Expanded(
+                flex: 1,
+                child: ListView(
+                  controller: _scrollController,
+                  children: [
+                    // 列表
+                    if (tourRecordStatus.list!.isNotEmpty)
+                      Column(
+                        children: tourRecordStatus.list!.map((i) {
+                          return Row(
+                            children: [
+                              if (isEdit)
+                                Container(
+                                  margin: const EdgeInsets.only(left: 0),
+                                  child: Checkbox(
+                                    visualDensity: VisualDensity.standard,
+                                    value: selectMap[i.id] ?? false,
+                                    onChanged: (status) {
+                                      setState(() {
+                                        selectMap[i.id] = status;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              Expanded(
+                                flex: 1,
+                                child: CheatListCard(item: i.toMap),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      )
+                    else if (tourRecordStatus.list!.isEmpty && !tourRecordStatus.load!)
+                      const EmptyWidget(),
 
-              // 列表
-              if (tourRecordStatus.list!.isNotEmpty)
-                Column(
-                  children: tourRecordStatus.list!.map((i) {
-                    return Row(
-                      children: [
-                        if (isEdit)
-                          Container(
-                            margin: const EdgeInsets.only(left: 15),
-                            child: Checkbox(
-                              visualDensity: VisualDensity.standard,
-                              value: selectMap[i.id] ?? false,
-                              onChanged: (status) {
-                                setState(() {
-                                  selectMap[i.id] = status;
-                                });
-                              },
-                            ),
-                          ),
-                        Expanded(
-                          flex: 1,
-                          child: CheatListCard(
-                            item: i.toMap,
-                          ),
-                        ),
-                      ],
-                    );
-                  }).toList(),
-                )
-              else if (tourRecordStatus.list!.isEmpty && !tourRecordStatus.load!)
-                const EmptyWidget(),
-
-              if (tourRecordStatus.load!)
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: const Center(child: CircularProgressIndicator()),
+                    if (tourRecordStatus.load!)
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                  ],
                 ),
+              ),
             ],
           ),
         );

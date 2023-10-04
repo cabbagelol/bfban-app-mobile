@@ -81,7 +81,7 @@ class _ReplyPageState extends State<ReplyPage> {
       dynamic data = replyStatus.parame!.toMap;
       data["data"].removeWhere((key, value) => value.toString().isEmpty);
 
-      Response result = await Http.request(
+      Response result = await HttpToken.request(
         Config.httpHost["player_reply"],
         data: replyStatus.parame!.toMap,
         method: Http.POST,

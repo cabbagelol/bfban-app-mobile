@@ -136,6 +136,12 @@ flutter_native_splash:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: UbuntuMono
+      fonts:
+        - asset: fonts/Ubuntu_Mono/UbuntuMono-Italic.ttf
+        - asset: fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf
+          style: italic
   assets:
     - assets/
     - assets/lang/
@@ -146,3 +152,5 @@ flutter:
     - assets/images/games/bf6/
     - assets/images/games/bfv/
     - assets/splash/
+    - fonts/
+    - fonts/Ubuntu_Mono/

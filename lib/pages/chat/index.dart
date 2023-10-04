@@ -126,7 +126,7 @@ class _MessagePageState extends State<MessagePage> {
     messageSendStatus!["data"]["content"] = textFieldcontroller!.text;
     messageSendStatus!["data"]["toUserId"] = widget.id;
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["user_message"],
       data: {
         "data": messageSendStatus!["data"],

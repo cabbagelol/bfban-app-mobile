@@ -119,7 +119,7 @@ class ChatProvider with ChangeNotifier {
     messageStatus.load = true;
     _list = [];
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["user_message"],
       method: Http.GET,
     );
@@ -158,7 +158,7 @@ class ChatProvider with ChangeNotifier {
     messageStatus.load = true;
     notifyListeners();
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["user_message_mark"],
       parame: messageStatus.params!.toMap,
       method: Http.POST,

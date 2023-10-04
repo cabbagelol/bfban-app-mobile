@@ -87,7 +87,7 @@ class UserInfoProvider with ChangeNotifier {
   /// [Response]
   /// 账户信息
   Future<Response> getUserInfo() async {
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["user_me"],
       method: Http.GET,
     );
@@ -99,10 +99,10 @@ class UserInfoProvider with ChangeNotifier {
   /// 账户注销
   Future accountQuit(BuildContext context) async {
     try {
-      Response result = await Http.request(
+      Response result = await HttpToken.request(
         Config.httpHost["account_signout"],
         headers: {
-          "x-access-token": Http.TOKEN,
+          "x-access-token": HttpToken.TOKEN,
         },
         method: Http.POST,
       );

@@ -41,7 +41,7 @@ class _changePasswordPageState extends State<changePasswordPage> {
       load = true;
     });
 
-    Response result = await Http.request(Config.httpHost["user_changePassword"], method: Http.POST, data: {
+    Response result = await HttpToken.request(Config.httpHost["user_changePassword"], method: Http.POST, data: {
       "data": {
         "newpassword": newpassword,
         "oldpassword": oldpassword,

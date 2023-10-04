@@ -66,7 +66,7 @@ class CheatReportsCard extends StatelessWidget {
                 text: data["toOriginName"] + "\t",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                ),
+                  fontFamily: "UbuntuMono"),
               ),
               TextSpan(
                 text: "${FlutterI18n.translate(context, "detail.info.inGame")}\t",

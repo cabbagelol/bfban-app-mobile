@@ -254,7 +254,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                                         (i["username"] ?? i["toPlayerName"]).toString(),
                                         style: const TextStyle(
                                           fontSize: 20,
-                                        ),
+                                          fontFamily: "UbuntuMono"),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                       ),

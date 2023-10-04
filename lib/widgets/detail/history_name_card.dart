@@ -52,12 +52,20 @@ class HistoryNameCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(data["beforeUsername"].toString(), textAlign: TextAlign.center),
+              Text(
+                data["beforeUsername"].toString(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontFamily: "UbuntuMono"),
+              ),
               const SizedBox(
                 height: 30,
                 child: Icon(Icons.arrow_downward_outlined, size: 16),
               ),
-              Text(data["nextUsername"].toString(), textAlign: TextAlign.center),
+              Text(
+                data["nextUsername"].toString(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: "UbuntuMono"),
+              ),
             ],
           ),
         ),

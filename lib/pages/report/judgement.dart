@@ -85,7 +85,7 @@ class _JudgementPageState extends State<JudgementPage> {
         manageStatus.load = true;
       });
 
-      Response result = await Http.request(
+      Response result = await HttpToken.request(
         Config.httpHost["player_judgement"],
         method: Http.POST,
         data: manageStatus.parame!.toMap,

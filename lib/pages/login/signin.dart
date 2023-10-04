@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:bfban/component/_captcha/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/data/index.dart';
+import 'package:bfban/utils/http_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -145,7 +146,7 @@ class _SigninPageState extends State<SigninPage> {
           ProviderUtil().ofUser(context).setData(result.data["data"]);
 
           // 设置http模块 token
-          Http.setToken(result.data["data"]["token"]);
+          HttpToken.setToken(result.data["data"]["token"]);
 
           // 更新消息
           ProviderUtil().ofChat(context).onUpDate();

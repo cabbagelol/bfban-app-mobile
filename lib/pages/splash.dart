@@ -169,7 +169,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
     String token = providerUtil.ofUser(context).getToken;
 
-    Http.setToken(token);
+    HttpToken.setToken(token);
 
     return true;
   }

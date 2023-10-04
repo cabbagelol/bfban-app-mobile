@@ -88,7 +88,7 @@ class _InformationPageState extends State<InformationPage> {
       saveLoad = true;
     });
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["user_me"],
       method: Http.POST,
       data: {

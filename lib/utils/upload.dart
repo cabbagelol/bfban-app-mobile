@@ -2,11 +2,10 @@
 import 'dart:io' as io;
 import 'dart:io';
 
-import 'package:bfban/utils/file.dart';
+import 'package:bfban/utils/index.dart';
 import 'package:uuid/uuid.dart';
 
 import '../constants/api.dart';
-import 'http.dart';
 
 class Upload extends Http {
   int FILESIZE = 2 * 1024 * 1024;
@@ -45,7 +44,7 @@ class Upload extends Http {
     var length = file.lengthSync();
     var postData = await file.readAsBytes();
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["service_upload"],
       httpDioType: HttpDioType.upload,
       method: Http.PUT,
@@ -78,7 +77,7 @@ class Upload extends Http {
     String fileName = fileManagement.splitFileUrl(file.path)["fileName"];
     dynamic length = file.readAsBytesSync().length;
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.apiHost["service_upload"]!.url,
       httpDioType: HttpDioType.upload,
       method: Http.POST,
@@ -113,7 +112,7 @@ class Upload extends Http {
   Future serviceFile(String filename) async {
     if (filename.isEmpty) return;
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["service_file"],
       parame: {"filename": filename, "explain": true},
       method: Http.GET,

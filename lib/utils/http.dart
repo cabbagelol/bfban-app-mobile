@@ -1,7 +1,6 @@
 /// http请求
 
 import 'dart:async';
-import 'dart:collection';
 import 'dart:io';
 
 import 'package:bfban/utils/index.dart';
@@ -36,16 +35,10 @@ class Http extends ScaffoldState {
   static const String PATCH = 'patch';
   static const String DELETE = 'delete';
 
-  /// token
-  static String? TOKEN = "";
   static BuildContext? CONTENT;
 
   static String get USERAGENT {
     return "client-phone";
-  }
-
-  static String setToken(String value) {
-    return TOKEN = value;
   }
 
   static of(BuildContext content) {
@@ -60,16 +53,13 @@ class Http extends ScaffoldState {
     Object? data = const {},
     Map<String, dynamic>? parame,
     method = GET,
-    headers,
+    Map<String, dynamic>? headers,
   }) async {
     Response result = Response(data: {}, requestOptions: RequestOptions(path: '/'));
-    headers = headers ?? {"x-access-token": ""};
+    headers = headers ?? {};
 
     if (headers.isNotEmpty && Http.USERAGENT.isNotEmpty) {
       headers.addAll({HttpHeaders.userAgentHeader: Http.USERAGENT});
-    }
-    if (headers.isNotEmpty && TOKEN!.isNotEmpty) {
-      headers["x-access-token"] = TOKEN;
     }
 
     /// restful 请求处理
@@ -183,34 +173,6 @@ class Http extends ScaffoldState {
       ],
     ));
 
-    // Token有效
-    dio.interceptors.add(TokenInterceptor());
-
     return dio;
-  }
-}
-
-class TokenInterceptor extends Interceptor {
-  bool isReLogin = false;
-  Queue queue = Queue();
-
-  TokenInterceptor();
-
-  @override
-  Future onResponse(
-    Response response,
-    ResponseInterceptorHandler handler,
-  ) async {
-    if (response.requestOptions.path.contains(Config.apiHost["network_service_request"]!.url)) _checkToken(response);
-    return super.onResponse(response, handler);
-  }
-
-  /// [Event]
-  /// 检查token
-  static _checkToken(Response<dynamic> response) {
-    const errorCode = ['user.tokenClientException', 'user.tokenExpired', 'user.invalid'];
-    if (errorCode.contains(response.data['code'])) {
-      eventUtil.emit('user-token-expired', response);
-    }
   }
 }

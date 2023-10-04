@@ -24,6 +24,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../component/_bfvHackers/index.dart';
 import '../../component/_gamesTag/index.dart';
+import '../../component/_playerStatusTag/index.dart';
 import '../../component/_recordLink/index.dart';
 import '../../provider/userinfo_provider.dart';
 import 'time_line.dart';
@@ -92,19 +93,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   Map subscribes = {
     "load": false,
     "isThisUserSubscribes": false,
-  };
-
-  Map statusColors = {
-    0: Colors.green,
-    1: Colors.red,
-    2: Colors.green,
-    3: Colors.yellow,
-    4: Colors.grey,
-    5: Colors.yellow,
-    6: Colors.deepOrangeAccent,
-    7: Colors.green,
-    8: Colors.green,
-    9: Colors.yellow,
   };
 
   @override
@@ -218,7 +206,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       userNameList["buttonLoad"] = true;
     });
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["player_update"],
       data: {
         "personaId": playerStatus.data!.originPersonaId,
@@ -278,7 +266,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
     }
 
     // 提交
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["user_me"],
       data: {
         "data": {"subscribes": subscribesArray},
@@ -396,7 +384,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
         DataRow(
           cells: [
             DataCell(
-              SelectableText(i["originName"]),
+              SelectableText(
+                i["originName"],
+                style: const TextStyle(fontFamily: "UbuntuMono"),
+              ),
             ),
             DataCell(
               TimeWidget(data: i["fromTime"]),
@@ -422,9 +413,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
           DataColumn(
             label: Text(
               FlutterI18n.translate(context, "list.colums.playerId"),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           DataColumn(
@@ -715,24 +704,19 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                               children: [
                                                 SelectableText(
                                                   snapshot.data["originName"] ?? "User Name",
-                                                  style: const TextStyle(fontSize: 33),
+                                                  style: TextStyle(
+                                                    fontSize: FontSize.xxLarge.value,
+                                                    fontFamily: "UbuntuMono",
+                                                  ),
                                                 ),
                                                 const SizedBox(height: 2),
                                                 Wrap(
                                                   spacing: 5,
                                                   runSpacing: 5,
                                                   children: [
-                                                    Container(
-                                                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                                                      decoration: BoxDecoration(
-                                                        color: (statusColors[snapshot.data?["status"]] as Color).withOpacity(.2),
-                                                        border: Border.all(color: statusColors[snapshot.data?["status"]].withOpacity(.3) as Color),
-                                                        borderRadius: BorderRadius.circular(3),
-                                                      ),
-                                                      child: Text(
-                                                        FlutterI18n.translate(context, "basic.status.${snapshot.data["status"]}"),
-                                                        style: TextStyle(color: statusColors[snapshot.data?["status"]] as Color),
-                                                      ),
+                                                    PlayerStatusTagWidget(
+                                                      size: PlayerStatusTagSize.medium,
+                                                      status: snapshot.data?["status"],
                                                     ),
                                                     BfvHackersWidget(
                                                       data: snapshot.data,
@@ -1033,8 +1017,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                   ),
                                 ),
                               ),
+                              const SizedBox(width: 5),
                               PopupMenuButton(
                                 icon: Icon(Icons.adaptive.more),
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
                                 offset: const Offset(0, -100),
                                 onSelected: (value) {
                                   switch (value) {
@@ -1051,7 +1037,14 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                     PopupMenuItem(
                                       value: 1,
                                       enabled: data.isLogin && playerStatus.data!.status == 1,
-                                      child: Text(FlutterI18n.translate(context, "detail.appeal.dealAppeal")),
+                                      child: Wrap(
+                                        spacing: 15,
+                                        runAlignment: WrapAlignment.center,
+                                        children: [
+                                          Text(FlutterI18n.translate(context, "detail.appeal.dealAppeal")),
+                                          PlayerStatusTagWidget(status: 1, size: PlayerStatusTagSize.small),
+                                        ],
+                                      ),
                                     ),
                                     // 管理员 判决
                                     if (data.isAdmin)

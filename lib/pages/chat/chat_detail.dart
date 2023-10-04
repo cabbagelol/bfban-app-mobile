@@ -66,7 +66,7 @@ class _chatDetailPageState extends State<ChatDetailPage> {
       userinfo.load = true;
     });
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["user_info"],
       parame: userinfo.parame!.toMap,
       method: Http.GET,

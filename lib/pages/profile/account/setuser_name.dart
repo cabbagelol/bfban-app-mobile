@@ -61,7 +61,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
       load = true;
     });
 
-    Response result = await Http.request(Config.httpHost["user_changeName"], method: Http.POST, data: {
+    Response result = await HttpToken.request(Config.httpHost["user_changeName"], method: Http.POST, data: {
       "data": {
         "newname": newname,
       },

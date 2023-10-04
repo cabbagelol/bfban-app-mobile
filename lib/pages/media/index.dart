@@ -99,7 +99,7 @@ class _mediaPageState extends State<MediaPage> {
       cloudMediaInfoStatus.load = true;
     });
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["service_myStorageQuota"],
       method: Http.GET,
     );
@@ -157,7 +157,7 @@ class _mediaPageState extends State<MediaPage> {
       cloudMediaStatus.load = true;
     });
 
-    Response result = await Http.request(
+    Response result = await HttpToken.request(
       Config.httpHost["service_myFiles"],
       parame: cloudMediaStatus.parame!.toMap,
       method: Http.GET,
