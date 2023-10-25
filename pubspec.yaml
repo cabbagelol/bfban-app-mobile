@@ -125,7 +125,7 @@ dev_dependencies:
 
 flutter_native_splash:
   color: "#f2f2f2"
-  color_dark: "#2E4E81"
+  color_dark: "#000"
   branding: assets/splash/ic_launcher.png
   image: assets/splash/splash_center_logo.png
   branding_mode: center

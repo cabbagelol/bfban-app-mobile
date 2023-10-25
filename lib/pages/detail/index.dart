@@ -695,13 +695,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                       flex: 1,
                                       child: Row(
                                         children: <Widget>[
-                                          /// 用户名称
                                           Expanded(
                                             flex: 1,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
+                                                /// 用户名称
                                                 SelectableText(
                                                   snapshot.data["originName"] ?? "User Name",
                                                   style: TextStyle(
@@ -709,7 +709,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                     fontFamily: "UbuntuMono",
                                                   ),
                                                 ),
-                                                const SizedBox(height: 2),
+                                                const SizedBox(height: 5),
                                                 Wrap(
                                                   spacing: 5,
                                                   runSpacing: 5,
@@ -833,15 +833,29 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                       Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Opacity(
+                                          const Opacity(
                                             opacity: .5,
                                             child: Text(
-                                              FlutterI18n.translate(context, "signup.form.originId"),
-                                              style: const TextStyle(fontSize: 20),
+                                              "Persona Id",
+                                              style: TextStyle(fontSize: 20),
                                             ),
                                           ),
                                           const SizedBox(height: 5),
                                           Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          const Opacity(
+                                            opacity: .5,
+                                            child: Text(
+                                              "User Id",
+                                              style: TextStyle(fontSize: 20),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          Text("${snapshot.data?["originUserId"]}", style: const TextStyle(fontSize: 18))
                                         ],
                                       ),
                                       Column(
@@ -1020,8 +1034,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                               const SizedBox(width: 5),
                               PopupMenuButton(
                                 icon: Icon(Icons.adaptive.more),
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                offset: const Offset(0, -100),
+                                enabled: data.isLogin,
                                 onSelected: (value) {
                                   switch (value) {
                                     case 1:
@@ -1034,18 +1047,20 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                 },
                                 itemBuilder: (context) {
                                   return [
-                                    PopupMenuItem(
-                                      value: 1,
-                                      enabled: data.isLogin && playerStatus.data!.status == 1,
-                                      child: Wrap(
-                                        spacing: 15,
-                                        runAlignment: WrapAlignment.center,
-                                        children: [
-                                          Text(FlutterI18n.translate(context, "detail.appeal.dealAppeal")),
-                                          PlayerStatusTagWidget(status: 1, size: PlayerStatusTagSize.small),
-                                        ],
+                                    // 申诉处理
+                                    if (data.isLogin && false)
+                                      PopupMenuItem(
+                                        value: 1,
+                                        enabled: data.isLogin && playerStatus.data!.status == 1,
+                                        child: Wrap(
+                                          spacing: 15,
+                                          runAlignment: WrapAlignment.center,
+                                          children: [
+                                            Text(FlutterI18n.translate(context, "detail.appeal.dealAppeal")),
+                                            PlayerStatusTagWidget(status: 1, size: PlayerStatusTagSize.small),
+                                          ],
+                                        ),
                                       ),
-                                    ),
                                     // 管理员 判决
                                     if (data.isAdmin)
                                       PopupMenuItem(
