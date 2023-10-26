@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../../component/_refresh/index.dart';
 import '../../utils/index.dart';
 import '../not_found/index.dart';
 
@@ -18,6 +19,9 @@ class ChatListPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatListPage> {
   final UrlUtil _urlUtil = UrlUtil();
+
+  /// 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   /// 消息转让
   ChatProvider? providerUtil;
@@ -42,12 +46,15 @@ class _ChatPageState extends State<ChatListPage> {
 
   /// [Event]
   /// 刷新
-  Future<void> _onRefresh() async {
+  Future _onRefresh() async {
     setState(() {
       chatRequestLoad = true;
     });
 
     futureBuilder = providerUtil!.onUpDate();
+
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
 
     setState(() {
       chatRequestLoad = false;
@@ -95,9 +102,9 @@ class _ChatPageState extends State<ChatListPage> {
                   ),
                 ],
               ),
-              body: RefreshIndicator(
-                displacement: 120,
-                edgeOffset: MediaQuery.of(context).viewInsets.top,
+              body: Refresh(
+                key: _refreshKey,
+                edgeOffset: 100 + MediaQuery.of(context).padding.top,
                 onRefresh: _onRefresh,
                 child: Consumer<ChatProvider>(
                   builder: (BuildContext context, data, Widget? child) {

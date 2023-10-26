@@ -78,6 +78,8 @@ dependencies:
   # https://pub.flutter-io.cn/packages/quill_html_editor
   # quill_html_editor: ^2.1.8
 
+  easy_refresh: ^3.3.2+2
+
   # 富文本扩展
   flutter_rte: ^1.0.0
 

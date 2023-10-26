@@ -140,6 +140,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
         viewedStatus.parame!.id = d["id"];
       });
 
+      _getIsSubscribes();
       _onViewd();
     } else {
       EluiMessageComponent.error(context)(
@@ -233,6 +234,32 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   }
 
   /// [Response]
+  /// 获取追踪状态
+  void _getIsSubscribes() async {
+    setState(() {
+      subscribes["load"] = true;
+    });
+
+    Response result = await HttpToken.request(
+      Config.httpHost["user_isSubscribes"],
+      data: {"id": playerStatus.data!.id},
+      method: Http.POST,
+    );
+
+    dynamic d = result.data;
+
+    if (result.data["success"] == 1) {
+      setState(() {
+        subscribes["isThisUserSubscribes"] = d.data ?? false;
+      });
+    }
+
+    setState(() {
+      subscribes["load"] = false;
+    });
+  }
+
+  /// [Response]
   /// 追踪此玩家
   void _onSubscribes(isLogin) async {
     if (subscribes["load"]) return;
@@ -241,42 +268,37 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       return;
     }
 
-    StorageData subscribeData = await storage.get("subscribes");
-    List? subscribesLocal = subscribeData.value;
-    List? subscribesArray = [];
-    subscribesLocal ??= [];
-
     setState(() {
       subscribes["load"] = true;
     });
 
-    // 取得用户已追踪列表
-    if (ProviderUtil().ofUser(context).isLogin) {
-      Response userInfoResult = await _getUserInfo();
-      if (userInfoResult.data["success"] == 1) subscribesArray.addAll(userInfoResult.data["data"]["subscribes"]);
-    }
-
-    // 添加或移除订阅
-    if (!subscribesArray.contains(playerStatus.data!.id)) {
-      subscribes["isThisUserSubscribes"] = false;
-      subscribesArray.add(playerStatus.data!.id);
-    } else {
-      subscribes["isThisUserSubscribes"] = true;
-      subscribesArray.remove(playerStatus.data!.id);
-    }
-
-    // 提交
-    Response result = await HttpToken.request(
-      Config.httpHost["user_me"],
-      data: {
-        "data": {"subscribes": subscribesArray},
-      },
-      method: Http.POST,
-    );
-
-    if (result.data["success"] == 1) {
-      _checkSubscribesStatus(subscribesArray);
-      storage.set("subscribes", value: subscribesArray);
+    switch (subscribes["isThisUserSubscribes"]) {
+      case false:
+        await HttpToken.request(
+          Config.httpHost["user_subscribes_add"],
+          data: {
+            "playerIds": [playerStatus.data!.id]
+          },
+          method: Http.POST,
+        ).then((value) {
+          setState(() {
+            subscribes["isThisUserSubscribes"] = true;
+          });
+        });
+        break;
+      case true:
+        await HttpToken.request(
+          Config.httpHost["user_subscribes_delete"],
+          data: {
+            "playerIds": [playerStatus.data!.id]
+          },
+          method: Http.POST,
+        ).then((value) {
+          setState(() {
+            subscribes["isThisUserSubscribes"] = false;
+          });
+        });
+        break;
     }
 
     setState(() {
@@ -864,7 +886,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                           const Opacity(
                                             opacity: .5,
                                             child: Text(
-                                              "ID",
+                                              "Id",
                                               style: TextStyle(fontSize: 20),
                                             ),
                                           ),

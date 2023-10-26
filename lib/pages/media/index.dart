@@ -722,7 +722,7 @@ class _mediaPageState extends State<MediaPage> {
                                   flex: 1,
                                   child: cloudMediaStatus.list.isNotEmpty
                                       ? GridView.builder(
-                                    controller: _scrollNetworkController,
+                                          controller: _scrollNetworkController,
                                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
                                             mainAxisSpacing: 20.0,
@@ -999,9 +999,9 @@ class _MediaCardState extends State<MediaCard> {
                 Expanded(
                   flex: 1,
                   child: Text(
-                    widget.i.filename.toString(),
+                    widget.i.filename,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
+                    maxLines: 2,
                   ),
                 ),
                 Wrap(

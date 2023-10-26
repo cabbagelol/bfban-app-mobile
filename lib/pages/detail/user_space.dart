@@ -1,6 +1,7 @@
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -9,6 +10,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
 import '../../component/_privilegesTag/index.dart';
+import '../../component/_refresh/index.dart';
+import '../../component/_userAvatar/index.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
 import '../../widgets/index.dart';
@@ -30,10 +33,11 @@ class UserSpacePage extends StatefulWidget {
 class UserSpacePageState extends State<UserSpacePage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  /// 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
+
   /// 异步
   Future? futureBuilder;
-
-  final ScrollController _scrollController = ScrollController();
 
   /// 用户信息
   StationUserSpaceStatus userSpaceInfo = StationUserSpaceStatus(
@@ -57,20 +61,11 @@ class UserSpacePageState extends State<UserSpacePage> {
     ),
   );
 
-  bool reportListNextEmpty = false;
-
   GlobalKey appBarKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        _getMore();
-      }
-    });
-
     ready();
   }
 
@@ -136,15 +131,27 @@ class UserSpacePageState extends State<UserSpacePage> {
     );
 
     if (result.data["success"] == 1) {
-      List d = result.data["data"];
+      dynamic d = result.data;
 
       if (!mounted) return;
       setState(() {
-        if (d.isEmpty) {
-          reportListNextEmpty = true;
+        // 追加数据预期状态
+        if (d["data"].isEmpty || d["data"].length < reportListStatus.parame.limit) {
+          _refreshKey.currentState!.controller.finishLoad(IndicatorResult.noMore);
         }
 
-        if (d.isNotEmpty) reportListStatus.list = d;
+        // 首页数据
+        if (reportListStatus.parame.skip! <= 0) {
+          reportListStatus.list.clear();
+          reportListStatus.list = d["data"];
+          return;
+        }
+
+        // 追加数据
+        if (d["data"].isNotEmpty) {
+          reportListStatus.list = d["data"];
+          _refreshKey.currentState!.controller.finishLoad(IndicatorResult.success);
+        }
       });
     }
 
@@ -162,14 +169,16 @@ class UserSpacePageState extends State<UserSpacePage> {
     });
 
     await _getSiteUserReports();
+
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
   }
 
   /// [Event]
   /// 下拉 追加数据
   Future _getMore() async {
-    if (reportListStatus.load! && reportListNextEmpty) return;
-
     reportListStatus.parame.nextPage();
+
     await _getSiteUserReports();
   }
 
@@ -237,10 +246,11 @@ class UserSpacePageState extends State<UserSpacePage> {
                     ),
                   ],
                 ),
-                body: RefreshIndicator(
+                body: Refresh(
+                  key: _refreshKey,
                   onRefresh: _onRefresh,
-                  displacement: 120,
-                  edgeOffset: MediaQuery.of(context).viewInsets.top,
+                  onLoad: _getMore,
+                  edgeOffset: 100 + MediaQuery.of(context).viewInsets.top,
                   child: CustomScrollView(
                     slivers: [
                       SliverAppBar(
@@ -267,9 +277,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                   child: CircleAvatar(
                                     radius: 40,
                                     child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
-                                        ? EluiImgComponent(
-                                            src: snapshot.data["userAvatar"],
-                                          )
+                                        ? UserAvatar(src: snapshot.data["userAvatar"])
                                         : Text(
                                             snapshot.data["username"][0].toString().toUpperCase(),
                                             style: const TextStyle(fontSize: 25),

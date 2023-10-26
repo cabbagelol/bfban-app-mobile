@@ -1,7 +1,9 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../../component/_refresh/index.dart';
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
@@ -17,7 +19,8 @@ class HomeTourRecordPage extends StatefulWidget {
 }
 
 class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticKeepAliveClientMixin {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  // 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   // 列表视图控制器
   final ScrollController _scrollController = ScrollController();
@@ -59,10 +62,6 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
     try {
       if (tourRecordStatus.load!) return;
 
-      Future.delayed(const Duration(seconds: 0), () {
-        if (tourRecordStatus.skip! <= 0 && _refreshIndicatorKey.currentState != null) _refreshIndicatorKey.currentState!.show();
-      });
-
       StorageData viewedData = await storage.get("viewed");
       int skip = tourRecordStatus.skip ?? 0;
       int limit = tourRecordStatus.limit ?? 40;
@@ -101,6 +100,8 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
         tourRecordStatus.list = viewedWidgets;
         tourRecordStatus.load = false;
       });
+
+      _refreshKey.currentState!.controller.finishLoad(IndicatorResult.success);
     } catch (err) {
       setState(() {
         tourRecordStatus.load = false;
@@ -114,6 +115,9 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
     tourRecordStatus.resetPage();
 
     await _getTourRecordList();
+
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
   }
 
   /// [Event]
@@ -169,8 +173,8 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
     super.build(context);
     return Consumer<UserInfoProvider>(
       builder: (context, data, child) {
-        return RefreshIndicator(
-          key: _refreshIndicatorKey,
+        return Refresh(
+          key: _refreshKey,
           onRefresh: _onRefresh,
           child: Column(
             children: [
@@ -184,17 +188,17 @@ class _HomeTourRecordPageState extends State<HomeTourRecordPage> with AutomaticK
                       flex: 1,
                       child: isEdit
                           ? Row(
-                              children: [
-                                Checkbox(
-                                  value: selectAll,
-                                  onChanged: (status) => _selectAllItem(status!),
-                                ),
-                                TextButton(
-                                  onPressed: () => _selectDeleteItem(),
-                                  child: const Icon(Icons.delete, size: 15),
-                                ),
-                              ],
-                            )
+                        children: [
+                          Checkbox(
+                            value: selectAll,
+                            onChanged: (status) => _selectAllItem(status!),
+                          ),
+                          TextButton(
+                            onPressed: () => _selectDeleteItem(),
+                            child: const Icon(Icons.delete, size: 15),
+                          ),
+                        ],
+                      )
                           : Container(),
                     ),
                     OutlinedButton(

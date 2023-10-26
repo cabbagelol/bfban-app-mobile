@@ -1,3 +1,4 @@
+import 'package:bfban/component/_userAvatar/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
@@ -23,12 +24,9 @@ class SearchInUserCard extends StatelessWidget {
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
         ),
-        child: CircleAvatar(
-          child: EluiImgComponent(
-            width: 40,
-            height: 40,
-            src: item!["userAvatar"] ?? "",
-          ),
+        child: UserAvatar(
+          src: item!["userAvatar"] ?? "",
+          size: 40,
         ),
       ),
       title: Wrap(
@@ -59,7 +57,7 @@ class SearchInUserCard extends StatelessWidget {
             Text(
               Date().getTimestampTransferCharacter(item!["joinTime"])["Y_D_M"],
               style: TextStyle(
-                color: Theme.of(context).textTheme.subtitle2!.color,
+                color: Theme.of(context).textTheme.titleSmall!.color,
                 fontSize: 9,
               ),
               overflow: TextOverflow.ellipsis,
@@ -70,7 +68,7 @@ class SearchInUserCard extends StatelessWidget {
             Text(
               Date().getTimestampTransferCharacter(item!["updateTime"])["Y_D_M"],
               style: TextStyle(
-                color: Theme.of(context).textTheme.subtitle2!.color,
+                color: Theme.of(context).textTheme.titleSmall!.color,
                 fontSize: 9,
               ),
               overflow: TextOverflow.ellipsis,

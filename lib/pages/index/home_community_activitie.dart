@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:bfban/data/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:flutter_elui_plugin/_img/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+
+import '../../component/_refresh/index.dart';
 
 class HomeCommunityPage extends StatefulWidget {
   const HomeCommunityPage({Key? key}) : super(key: key);
@@ -23,7 +24,8 @@ class HomeCommunityPage extends StatefulWidget {
 class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMixin, AutomaticKeepAliveClientMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  // 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   // 列表视图控制器
   final ScrollController _scrollController = ScrollController();
@@ -143,8 +145,11 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
   /// [Event]
   /// 下拉刷新方法,为list重新赋值
-  Future<void> _onRefresh() async {
+  Future _onRefresh() async {
     await _getActivity();
+
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
   }
 
   @override
@@ -188,8 +193,8 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
       return is_;
     }
 
-    return RefreshIndicator(
-      key: _refreshIndicatorKey,
+    return Refresh(
+      key: _refreshKey,
       onRefresh: _onRefresh,
       child: activityStatus.list!.isNotEmpty && !activityStatus.load
           ? ListView.builder(
