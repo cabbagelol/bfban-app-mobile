@@ -129,12 +129,11 @@ flutter_native_splash:
   color: "#f2f2f2"
   color_dark: "#000"
   branding: assets/splash/ic_launcher.png
-  image: assets/splash/splash_center_logo.png
   branding_mode: center
   android_gravity: center
   fullscreen: true
   android: true
-  ios: true
+  ios: false
 
 flutter:
   uses-material-design: true

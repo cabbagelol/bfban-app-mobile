@@ -250,7 +250,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
 
     if (result.data["success"] == 1) {
       setState(() {
-        subscribes["isThisUserSubscribes"] = d.data ?? false;
+        subscribes["isThisUserSubscribes"] = d["data"] ?? false;
       });
     }
 

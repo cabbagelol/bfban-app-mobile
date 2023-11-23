@@ -373,6 +373,9 @@ class _JudgementPageState extends State<JudgementPage> {
                                   CustomReplyWidget(
                                     type: CustomReplyType.Judgement,
                                     onChange: (String selectTemp) {
+                                      field.setState(() {
+                                        field.setValue(selectTemp);
+                                      });
                                       setState(() {
                                         manageStatus.parame!.content = selectTemp;
                                       });

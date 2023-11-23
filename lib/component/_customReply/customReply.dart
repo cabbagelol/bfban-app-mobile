@@ -4,7 +4,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../utils/index.dart';
 
-enum CustomReplyType { General, Judgement }
+enum CustomReplyType { General, Report, Judgement }
 
 class CustomReplyWidget extends StatefulWidget {
   Function? onChange;
@@ -81,6 +81,7 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
           ),
         ]);
         break;
+      case CustomReplyType.Report:
       case CustomReplyType.General:
       default:
         break;
