@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "自動",
@@ -29,6 +29,7 @@
       "delete": "刪除",
       "fileInfo": "詳細信息",
       "uploadFile": "上傳文件",
+      "export": "導出",
       "tab": {
         "local": "本地",
         "cloud": "雲圖庫"
@@ -40,27 +41,28 @@
       "needAccount": "此功能需要賬戶, 請先登錄",
       "tabs": {
         "activities": "動態",
-        "trend": "熱門案件",
-        "subscribes": "追踪",
-        "tourRecord": "遊覽記錄"
+        "tourRecord": "遊覽記錄",
+        "subscribes": "追蹤",
+        "trend": "熱門案件"
       },
       "screen": {
-        "report": "檢舉",
         "banAppeal": "申訴",
-        "signup": "新用戶",
-        "judgement": "判決"
+        "judgement": "判決",
+        "report": "檢舉",
+        "signup": "新用戶"
       },
       "paging": "第{num}頁"
     },
     "splash": {
-      "guide": "初始引導",
       "account": "加載賬戶信息",
-      "token": "用戶身份配置",
-      "message": "更新消息",
-      "version": "驗證版本服務",
-      "theme": "初始化主題",
       "appInitial": "初始化程序應用",
-      "networkError": "應用未連接網絡，程序依賴在線服務"
+      "dir": "初始儲存配置",
+      "guide": "初始引導",
+      "message": "更新消息",
+      "networkError": "應用未連接網絡，程序依賴在線服務",
+      "theme": "初始化主題",
+      "token": "用戶身份配置",
+      "version": "驗證版本服務"
     },
     "guide": {
       "endNext": "完成",
@@ -135,6 +137,15 @@
         "media": {
           "title": "媒體庫",
           "describe": "圖片,視頻,上傳文件,管理"
+        },
+        "dirConfiguration": {
+          "title": "檔案夾配置",
+          "describe": "默認檔案夾，檔案掃描",
+          "scanDirectoryTitle": "掃描目錄",
+          "scanDirectoryDescription": "選擇掃描文件目錄(多選)",
+          "defaultSavePathTitle": "默認下載位置",
+          "defaultSavePathDirectory": "程式內下載首選儲存位置",
+          "leastOneHint": "至少選擇一個"
         },
         "website": {
           "title": "網站地址",
