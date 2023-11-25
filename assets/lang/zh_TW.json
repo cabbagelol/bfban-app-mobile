@@ -217,7 +217,7 @@
       }
     },
     "networkDetection": {
-      "title": "網絡監測",
+      "title": "網路監測",
       "status": {
         "0": "檢查中",
         "1": "服務正常",
