@@ -188,7 +188,7 @@
         "tagstitle": "身份標籤",
         "switch": {
           "title": "程式推送",
-          "describe": "是否接收來自應用推送信息"
+          "describe": "是否接收來自程式推送信息"
         },
         "site": {
           "title": "站內推送",
