@@ -187,7 +187,7 @@
         "describe": "程式通知管理",
         "tagstitle": "身份標籤",
         "switch": {
-          "title": "應用推送",
+          "title": "程式推送",
           "describe": "是否接收來自應用推送信息"
         },
         "site": {
