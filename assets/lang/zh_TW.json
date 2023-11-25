@@ -54,7 +54,7 @@
       "paging": "第{num}頁"
     },
     "splash": {
-      "account": "加載賬戶信息",
+      "account": "加載帳戶信息",
       "appInitial": "初始化程序應用",
       "dir": "初始儲存配置",
       "guide": "初始引導",
