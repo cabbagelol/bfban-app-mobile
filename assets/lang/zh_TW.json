@@ -210,7 +210,7 @@
         "appDocumentationDescription": "幫助檔案地址"
       },
       "publicTranslator": {
-        "title": "翻译模块",
+        "title": "翻譯模塊",
         "describe": "翻译密匙配置,开关",
         "switch": "開關",
         "switchDescription": "翻譯模塊啓動開關"
