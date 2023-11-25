@@ -128,7 +128,7 @@
       "cell": {
         "information": {
           "title": "帳戶",
-          "describe": "修改用戶名稱,修改密碼,賬戶設置"
+          "describe": "修改用戶名稱,修改密碼,帳戶設定"
         },
         "customReply": {
           "title": "自定義模板",
