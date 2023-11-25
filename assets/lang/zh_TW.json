@@ -211,7 +211,7 @@
       },
       "publicTranslator": {
         "title": "翻譯模塊",
-        "describe": "翻译密匙配置,开关",
+        "describe": "翻譯密鑰配置,開關",
         "switch": "開關",
         "switchDescription": "翻譯模塊啓動開關"
       }
