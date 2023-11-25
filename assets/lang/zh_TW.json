@@ -59,7 +59,7 @@
       "dir": "初始儲存配置",
       "guide": "初始引導",
       "message": "更新消息",
-      "networkError": "應用未連接網絡，程序依賴在線服務",
+      "networkError": "未連接網路，程式依賴在線服務",
       "theme": "初始化主題",
       "token": "用戶身份配置",
       "version": "驗證版本服務"
