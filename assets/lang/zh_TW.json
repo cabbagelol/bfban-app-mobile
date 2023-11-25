@@ -55,7 +55,7 @@
     },
     "splash": {
       "account": "加載帳戶信息",
-      "appInitial": "初始化程序應用",
+      "appInitial": "初始化程式應用",
       "dir": "初始儲存配置",
       "guide": "初始引導",
       "message": "更新消息",
