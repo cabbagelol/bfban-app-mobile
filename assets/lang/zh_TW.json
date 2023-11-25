@@ -73,7 +73,7 @@
       },
       "login": {
         "title": "歡迎您到來",
-        "label": "如果你已經擁有BFBAN賬戶，現在就可登錄.",
+        "label": "如果你已經擁有BFBAN帳戶，現在就可登入.",
         "welcomeBack": "歡迎回到我們的'戰場'上"
       },
       "permission": {
