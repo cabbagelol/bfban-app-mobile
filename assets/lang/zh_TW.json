@@ -119,7 +119,7 @@
         }
       },
       "language": {
-        "waitDownloadHint": "請等待從遠程服務下載翻譯文件"
+        "waitDownloadHint": "請等待從遠端服務下載翻譯文件"
       },
       "agree": "我同意以上內容"
     },
