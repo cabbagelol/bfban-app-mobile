@@ -250,7 +250,7 @@
         "label": "歡迎使用BFBAN APP",
         "BfbanAccountButton": "BFBAN 帳戶登入",
         "cancelButton": "取消",
-        "signupButton": "註冊BFBAN賬戶"
+        "signupButton": "註冊BFBAN帳戶"
       },
       "accountId": "賬戶ID/郵箱",
       "password": "密碼",
