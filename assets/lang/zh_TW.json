@@ -127,7 +127,7 @@
       "title": "設定中心",
       "cell": {
         "information": {
-          "title": "賬戶",
+          "title": "帳戶",
           "describe": "修改用戶名稱,修改密碼,賬戶設置"
         },
         "customReply": {
