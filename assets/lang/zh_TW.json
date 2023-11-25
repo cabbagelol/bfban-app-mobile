@@ -184,7 +184,7 @@
       },
       "notice": {
         "title": "通知設定",
-        "describe": "應用相應通知管理",
+        "describe": "程式相應通知管理",
         "tagstitle": "身份標籤",
         "switch": {
           "title": "應用推送",
