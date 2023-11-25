@@ -164,7 +164,7 @@
         "newVersionDescribe_new": "已經最新",
         "newVersionDescribe_old": "過時的版本",
         "type": "類型",
-        "superHairVersionTip": "未找到對應版本，您當前版本可能是超發版本"
+        "superHairVersionTip": "未找到對應版本，您當前版本可能是預先版本"
       },
       "language": {
         "title": "語言"
