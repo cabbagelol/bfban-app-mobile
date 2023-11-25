@@ -176,7 +176,7 @@
       },
       "cleanManagement": {
         "title": "清理",
-        "describe": "清理程序持久保存文件，謹慎操作"
+        "describe": "清理程式永久保存文件，謹慎操作"
       },
       "appInfo": {
         "title": "應用程序",
