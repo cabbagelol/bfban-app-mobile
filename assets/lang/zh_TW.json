@@ -107,7 +107,7 @@
           },
           "notification": {
             "name": "通知",
-            "describe": "程序提供外部通知"
+            "describe": "程式提供外部通知"
           }
         },
         "status": {
