@@ -248,7 +248,7 @@
       "panel": {
         "title": "BFBAN",
         "label": "歡迎使用BFBAN APP",
-        "BfbanAccountButton": "BFBAN 賬戶登錄",
+        "BfbanAccountButton": "BFBAN 帳戶登入",
         "cancelButton": "取消",
         "signupButton": "註冊BFBAN賬戶"
       },
