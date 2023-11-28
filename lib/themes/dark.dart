@@ -27,6 +27,10 @@ class DarkTheme extends AppBaseThemeItem {
     name: "dark",
     isDefault: true,
     themeData: ThemeData(
+      // GENERAL CONFIGURATION
+      applyElevationOverlayColor: true,
+      useMaterial3: true,
+      // COLOR
       sliderTheme: const SliderThemeData(
         valueIndicatorTextStyle: TextStyle(
           color: Colors.white,

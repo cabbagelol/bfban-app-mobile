@@ -37,6 +37,10 @@ class MikuGreenTheme extends AppBaseThemeItem {
     name: "mikuGreen",
     isDefault: false,
     themeData: ThemeData(
+      // GENERAL CONFIGURATION
+      applyElevationOverlayColor: true,
+      useMaterial3: true,
+      // COLOR
       sliderTheme: SliderThemeData(
         valueIndicatorColor: color,
       ),

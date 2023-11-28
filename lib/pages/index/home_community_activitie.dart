@@ -157,7 +157,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     super.build(context);
     // 消息筛选
     List<Widget> chipWidgets() {
-      // 筛选标签
+      // 动态筛选标签
       List chips = [];
 
       chipCont["list"].asMap().keys.forEach((index) {
@@ -205,7 +205,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                 if (index == 0) {
                   return Container(
                     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    height: 35,
+                    height: 40,
                     color: Theme.of(context).primaryColorDark.withOpacity(.1),
                     child: ListView(
                       scrollDirection: Axis.horizontal,

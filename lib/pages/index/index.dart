@@ -80,10 +80,6 @@ class _IndexPageState extends State<IndexPage> {
       const UserCenterPage(),
     ];
 
-    // Future.delayed(Duration(seconds: 1), () {
-    //   _urlUtil.opEnPage(_context!, "/notnetwork");
-    // });
-
     super.initState();
   }
 

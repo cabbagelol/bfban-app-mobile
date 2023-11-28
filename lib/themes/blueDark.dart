@@ -25,12 +25,15 @@ class BlueDarkTheme extends AppBaseThemeItem {
     name: "blueDark",
     isDefault: true,
     themeData: ThemeData(
+      // GENERAL CONFIGURATION
+      applyElevationOverlayColor: true,
+      useMaterial3: true,
+      // COLOR
       sliderTheme: const SliderThemeData(
         valueIndicatorTextStyle: TextStyle(
           color: Colors.white,
         ),
       ),
-      useMaterial3: true,
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(const Color(0x7a364e80)),
@@ -93,7 +96,6 @@ class BlueDarkTheme extends AppBaseThemeItem {
         cursorColor: const Color(0xff364e80),
       ),
       unselectedWidgetColor: Colors.white,
-      scaffoldBackgroundColor: const Color(0xff111b2b),
       splashColor: Colors.transparent,
       dialogTheme: const DialogTheme(
         elevation: 2,

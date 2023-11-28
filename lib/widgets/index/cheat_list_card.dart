@@ -50,7 +50,11 @@ class CheatListCard extends StatelessWidget {
         message: item["originName"],
         child: Text(
           item["originName"] ?? "",
-          style: const TextStyle(fontSize: 20, fontFamily: "UbuntuMono"),
+          style: TextStyle(
+            fontSize: 20,
+            fontFamily: "UbuntuMono",
+            color: Theme.of(context).textTheme.titleLarge!.color,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
