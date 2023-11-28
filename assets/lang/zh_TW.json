@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "自動",
@@ -21,14 +21,15 @@
         "dayAgo": "{s}天前"
       },
       "web_site": "網站地址",
-      "setting": "設置",
-      "app_exit": "再次點擊,退出程序"
+      "setting": "設定",
+      "app_exit": "再次點擊,退出程式"
     },
     "media": {
       "open": "查看",
       "delete": "刪除",
       "fileInfo": "詳細信息",
       "uploadFile": "上傳文件",
+      "export": "導出",
       "tab": {
         "local": "本地",
         "cloud": "雲圖庫"
@@ -40,27 +41,28 @@
       "needAccount": "此功能需要賬戶, 請先登錄",
       "tabs": {
         "activities": "動態",
-        "trend": "熱門案件",
-        "subscribes": "追踪",
-        "tourRecord": "遊覽記錄"
+        "tourRecord": "瀏覽記錄",
+        "subscribes": "追蹤",
+        "trend": "熱門案件"
       },
       "screen": {
-        "report": "檢舉",
         "banAppeal": "申訴",
-        "signup": "新用戶",
-        "judgement": "判決"
+        "judgement": "判決",
+        "report": "檢舉",
+        "signup": "新用戶"
       },
       "paging": "第{num}頁"
     },
     "splash": {
+      "account": "加載帳戶信息",
+      "appInitial": "初始化程式應用",
+      "dir": "初始儲存配置",
       "guide": "初始引導",
-      "account": "加載賬戶信息",
-      "token": "用戶身份配置",
       "message": "更新消息",
-      "version": "驗證版本服務",
+      "networkError": "未連接網路，程式需要網路在線服務",
       "theme": "初始化主題",
-      "appInitial": "初始化程序應用",
-      "networkError": "應用未連接網絡，程序依賴在線服務"
+      "token": "用戶身份配置",
+      "version": "驗證版本服務"
     },
     "guide": {
       "endNext": "完成",
@@ -71,12 +73,12 @@
       },
       "login": {
         "title": "歡迎您到來",
-        "label": "如果你已經擁有BFBAN賬戶，現在就可登錄.",
+        "label": "如果你已經擁有BFBAN帳戶，現在就可登入.",
         "welcomeBack": "歡迎回到我們的'戰場'上"
       },
       "permission": {
         "title": "權限",
-        "label": "依照您需求觸摸下方單元，預先授權應用權限;此處並非強制要求,在需要特定功能下程序會提示您未授權的權限詢問;一些功能不授權不影響整體APP使用",
+        "label": "依照您需求觸摸下方單元，預先授權程式權限;此處並非強制要求,在需要特定功能下程式會提示您未授權的權限詢問;一些功能不授權不影響整體APP使用",
         "tip": "如果存在【永久拒絕】選項，可以到設置>應用>權限隨時修改",
         "list": {
           "manageExternalStorage": {
@@ -84,7 +86,7 @@
             "describe": "此功能用於從外部儲存讀取和寫入媒體素材"
           },
           "camera": {
-            "name": "攝像頭",
+            "name": "攝影鏡頭",
             "describe": "拍攝或錄製多媒體，媒體內容多為證據"
           },
           "audio": {
@@ -93,11 +95,11 @@
           },
           "videos": {
             "name": "影片",
-            "describe": "讀取視頻內容,用途素材導入或導出、上傳"
+            "describe": "讀取影片內容,用途素材導入或導出、上傳"
           },
           "photos": {
             "name": "相冊",
-            "describe": "讀取相冊內容,用途素材導入或導出、上傳"
+            "describe": "讀取相簿內容,用途素材導入或導出、上傳"
           },
           "storage": {
             "name": "本地儲存",
@@ -105,28 +107,28 @@
           },
           "notification": {
             "name": "通知",
-            "describe": "程序提供外部通知"
+            "describe": "程式提供外部通知"
           }
         },
         "status": {
           "-1": "未知",
-          "0": "准許",
+          "0": "允許",
           "1": "被拒絕",
           "2": "永久拒絕",
           "3": "受限制"
         }
       },
       "language": {
-        "waitDownloadHint": "請等待從遠程服務下載翻譯文件"
+        "waitDownloadHint": "請等待從遠端服務下載翻譯文件"
       },
       "agree": "我同意以上內容"
     },
     "setting": {
-      "title": "設置中心",
+      "title": "設定中心",
       "cell": {
         "information": {
-          "title": "賬戶",
-          "describe": "修改用戶名稱,修改密碼,賬戶設置"
+          "title": "帳戶",
+          "describe": "修改用戶名稱,修改密碼,帳戶設定"
         },
         "customReply": {
           "title": "自定義模板",
@@ -134,7 +136,16 @@
         },
         "media": {
           "title": "媒體庫",
-          "describe": "圖片,視頻,上傳文件,管理"
+          "describe": "圖片,影片,上傳文件,管理"
+        },
+        "dirConfiguration": {
+          "title": "檔案夾配置",
+          "describe": "默認檔案夾，檔案掃描",
+          "scanDirectoryTitle": "掃描目錄",
+          "scanDirectoryDescription": "選擇掃描文件目錄(多選)",
+          "defaultSavePathTitle": "默認下載位置",
+          "defaultSavePathDirectory": "程式內下載首選儲存位置",
+          "leastOneHint": "至少選擇一個"
         },
         "website": {
           "title": "網站地址",
@@ -142,7 +153,7 @@
         },
         "resources": {
           "title": "支援",
-          "describe": "引導、程序Github、許可證、應用文檔"
+          "describe": "引導、程序Github、許可證、程式文檔"
         }
       },
       "versions": {
@@ -153,7 +164,7 @@
         "newVersionDescribe_new": "已經最新",
         "newVersionDescribe_old": "過時的版本",
         "type": "類型",
-        "superHairVersionTip": "未找到對應版本，您當前版本可能是超發版本"
+        "superHairVersionTip": "未找到對應版本，您當前版本可能是預先版本"
       },
       "language": {
         "title": "語言"
@@ -165,19 +176,19 @@
       },
       "cleanManagement": {
         "title": "清理",
-        "describe": "清理程序持久保存文件，謹慎操作"
+        "describe": "清理程式永久保存文件，謹慎操作"
       },
       "appInfo": {
-        "title": "應用程序",
-        "describe": "打開程序應用信息"
+        "title": "應用程式",
+        "describe": "打開程式應用信息"
       },
       "notice": {
-        "title": "通知設置",
-        "describe": "應用相應通知管理",
+        "title": "通知設定",
+        "describe": "程式通知管理",
         "tagstitle": "身份標籤",
         "switch": {
-          "title": "應用推送",
-          "describe": "是否接收來自應用推送信息"
+          "title": "程式推送",
+          "describe": "是否接收來自程式推送信息"
         },
         "site": {
           "title": "站內推送",
@@ -186,7 +197,7 @@
       },
       "support": {
         "title": "支持",
-        "guide": "應用初始引導",
+        "guide": "程式初始引導",
         "feedbackTitle": "反饋群(612949946)",
         "feedbackDescription": "和作者更加接近呢",
         "githubTitle": "Github",
@@ -194,19 +205,19 @@
         "donateTitle": "捐贈",
         "donateDescription": "向BFBAN APP的開發者捐贈",
         "licenseTitle": "許可證",
-        "licenseDescription": "列出程序許可證",
-        "appDocumentationTitle": "應用文檔",
-        "appDocumentationDescription": "幫助文檔地址"
+        "licenseDescription": "列出程式許可證",
+        "appDocumentationTitle": "應用檔案",
+        "appDocumentationDescription": "幫助檔案地址"
       },
       "publicTranslator": {
-        "title": "翻译模块",
-        "describe": "翻译密匙配置,开关",
+        "title": "翻譯模塊",
+        "describe": "翻譯密鑰配置,開關",
         "switch": "開關",
         "switchDescription": "翻譯模塊啓動開關"
       }
     },
     "networkDetection": {
-      "title": "網絡監測",
+      "title": "網路監測",
       "status": {
         "0": "檢查中",
         "1": "服務正常",
@@ -225,28 +236,28 @@
       }
     },
     "report": {
-      "title": "舉報玩家",
-      "overflowLength": "添加的鏈接超出最大長度,請刪減鏈接或使用短鏈接,推薦點擊下方按鈕將所有鏈接放置描述中",
+      "title": "檢舉玩家",
+      "overflowLength": "添加的鏈結˙超出最大長度,請刪減鏈接或使用短鏈結,推薦點擊下方按鈕將所有鏈結放置描述中",
       "overflowLengthButton": "好的,添加描述框中"
     },
     "detail": {
-      "openExplorePlayerDetail": "遊覽器查看案件"
+      "openExplorePlayerDetail": "瀏覽器查看案件"
     },
     "signin": {
-      "title": "登錄",
+      "title": "登入",
       "panel": {
         "title": "BFBAN",
         "label": "歡迎使用BFBAN APP",
-        "BfbanAccountButton": "BFBAN 賬戶登錄",
+        "BfbanAccountButton": "BFBAN 帳戶登入",
         "cancelButton": "取消",
-        "signupButton": "註冊BFBAN賬戶"
+        "signupButton": "註冊BFBAN帳戶"
       },
-      "accountId": "賬戶ID/郵箱",
+      "accountId": "帳戶ID/信箱",
       "password": "密碼",
       "verificationCode": "驗證碼"
     },
     "search": {
-      "historySearch": "歷史搜索",
+      "historySearch": "歷史搜尋",
       "hotRecommendation": "熱門推薦"
     },
     "richedit": {
