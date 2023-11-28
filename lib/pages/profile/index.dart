@@ -1,3 +1,4 @@
+import 'package:bfban/component/_userAvatar/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -146,13 +147,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                   ),
                                 ),
                                 if (data.userinfo["userAvatar"] != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: EluiImgComponent(
-                                      width: 60,
-                                      height: 60,
-                                      src: data.userinfo["userAvatar"] ?? "",
-                                    ),
+                                  UserAvatar(
+                                    src: data.userinfo["userAvatar"],
+                                    size: 60,
                                   ),
                                 const SizedBox(width: 10),
                                 const Icon(Icons.chevron_right),

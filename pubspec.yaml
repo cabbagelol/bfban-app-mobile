@@ -78,6 +78,8 @@ dependencies:
   # https://pub.flutter-io.cn/packages/quill_html_editor
   # quill_html_editor: ^2.1.8
 
+  easy_refresh: ^3.3.2+2
+
   # 富文本扩展
   flutter_rte: ^1.0.0
 
@@ -127,12 +129,11 @@ flutter_native_splash:
   color: "#f2f2f2"
   color_dark: "#000"
   branding: assets/splash/ic_launcher.png
-  image: assets/splash/splash_center_logo.png
   branding_mode: center
   android_gravity: center
   fullscreen: true
   android: true
-  ios: true
+  ios: false
 
 flutter:
   uses-material-design: true

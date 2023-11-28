@@ -1,8 +1,10 @@
 import 'package:bfban/component/_empty/index.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../component/_refresh/index.dart';
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
@@ -25,7 +27,8 @@ class TimeLine extends StatefulWidget {
 }
 
 class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  // 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   ScrollController scrollController = ScrollController();
 
@@ -49,13 +52,6 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   void initState() {
     playerTimelineStatus.parame.personaId = widget.playerStatus.data!.toMap["originPersonaId"];
 
-    // 滚动视图初始
-    scrollController.addListener(() {
-      if (!playerTimelineStatus.load! && scrollController.position.pixels == scrollController.position.maxScrollExtent) {
-        _getMore();
-      }
-    });
-
     // 订阅通知时间轴列表更新
     eventUtil.on("updateTimeline-event", (arg) {
       getTimeline();
@@ -71,10 +67,6 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   Future getTimeline() async {
     if (playerTimelineStatus.load!) return;
 
-    // Future.delayed(const Duration(seconds: 0), () {
-    //   _refreshIndicatorKey.currentState!.show();
-    // });
-
     setState(() {
       playerTimelineStatus.load = true;
     });
@@ -89,30 +81,31 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       Map d = result.data["data"];
 
       setState(() {
+        // 追加数据预期状态
+        if (d["result"].isEmpty || d["result"].length <= playerTimelineStatus.parame.limit) {
+          _refreshKey.currentState!.controller.finishLoad(IndicatorResult.noMore);
+        }
+
+        // 首页数据
         if (playerTimelineStatus.parame.skip! <= 0) {
           playerTimelineStatus.list = d["result"];
           _onMergeHistoryName();
-        } else {
-          if (d["result"].isNotEmpty && playerTimelineStatus.parame.skip! <= playerTimelineStatus.parame.limit!) {
-            playerTimelineStatus.list?.add({
-              "pageTip": true,
-              "pageIndex": playerTimelineStatus.pageNumber!,
-            });
-            playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
-            _onMergeHistoryName();
-          }
-
-          // 追加数据
-          if (d["result"].isNotEmpty) {
-            playerTimelineStatus.list!.addAll(d["result"]);
-            playerTimelineStatus.list!.add({
-              "pageTip": true,
-              "pageIndex": playerTimelineStatus.pageNumber!,
-            });
-            playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
-            _onMergeHistoryName();
-          }
+          return;
         }
+
+        // 追加数据
+        if (d["result"].isNotEmpty) {
+          playerTimelineStatus.list!
+            ..add({
+              "pageTip": true,
+              "pageIndex": playerTimelineStatus.pageNumber!,
+            })
+            ..addAll(d["result"]);
+          playerTimelineStatus.pageNumber = playerTimelineStatus.pageNumber! + 1;
+          _onMergeHistoryName();
+          _refreshKey.currentState!.controller.finishLoad(IndicatorResult.success);
+        }
+
         playerTimelineStatus.total = d["total"];
       });
     }
@@ -187,7 +180,11 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   /// 作弊玩家时间轴 刷新
   Future<void> _onRefreshTimeline() async {
     playerTimelineStatus.parame.resetPage();
+
     await getTimeline();
+
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
   }
 
   /// [Event]
@@ -200,10 +197,11 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return RefreshIndicator(
-      key: _refreshIndicatorKey,
-      edgeOffset: MediaQuery.of(context).padding.top,
+    return Refresh(
+      key: _refreshKey,
+      edgeOffset: 100 + MediaQuery.of(context).padding.top,
       onRefresh: _onRefreshTimeline,
+      onLoad: _getMore,
       child: ListView(
         controller: scrollController,
         children: playerTimelineStatus.list!.isNotEmpty

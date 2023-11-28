@@ -159,7 +159,7 @@ class _MessagePageState extends State<MessagePage> {
         "content": textFieldcontroller!.text.toString(),
         "byUserId": selfInfo!["userId"],
         "toUserId": widget.id,
-        "onLoacl": true,
+        "onLocal": true,
       };
 
       // 完成后发送
@@ -172,7 +172,7 @@ class _MessagePageState extends State<MessagePage> {
         // 插入本地消息
         providerMessage!.addData(messageContent);
         // 同时储存本地
-        _setLoacl(messageContent);
+        _setLocal(messageContent);
 
         listViewController!.jumpTo(listViewController!.position.maxScrollExtent);
         textFieldcontroller!.text = "";
@@ -182,13 +182,13 @@ class _MessagePageState extends State<MessagePage> {
 
   /// [Event]
   /// 储存消息
-  _setLoacl(Map data) async {
-    Map loaclList = await providerMessage!.getLocalMessage();
-    if (loaclList["child"] == null) {
-      loaclList["child"] = [];
+  _setLocal(Map data) async {
+    Map localList = await providerMessage!.getLocalMessage();
+    if (localList["child"] == null) {
+      localList["child"] = [];
     }
-    loaclList["child"].add(data);
-    await Storage().set(providerMessage!.packageName, value: loaclList);
+    localList["child"].add(data);
+    await Storage().set(providerMessage!.packageName, value: localList);
   }
 
   /// [Event]
@@ -200,11 +200,11 @@ class _MessagePageState extends State<MessagePage> {
 
     // 筛选
     list = list.where((item) {
-      var _is = false;
+      bool idValid = false;
       if (item["byUserId"].toString() == selfInfo!["userId"].toString() && widget.id.toString() == item["toUserId"].toString() || item["byUserId"].toString() == widget.id.toString()) {
-        _is = true;
+        idValid = true;
       }
-      return _is;
+      return idValid;
     }).toList();
 
     // 排序
@@ -249,7 +249,7 @@ class _MessagePageState extends State<MessagePage> {
                         child: ListView(
                           controller: listViewController,
                           children: _getData(data).toList().map<Widget>((e) {
-                            if (e["onLoacl"] != null && e["onLoacl"] == true) {
+                            if (e["onLocal"] != null && e["onLocal"] == true) {
                               // 我
                               return Container(
                                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -317,7 +317,7 @@ class _MessagePageState extends State<MessagePage> {
                                             child: Text(
                                               userinfo.data!.username.toString(),
                                               style: TextStyle(
-                                                color: Theme.of(context).textTheme.subtitle2!.color,
+                                                color: Theme.of(context).textTheme.titleSmall!.color,
                                               ),
                                             ),
                                           ),

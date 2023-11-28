@@ -1,6 +1,7 @@
 /// 玩家列表
 
 import 'package:bfban/component/_empty/index.dart';
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
@@ -8,6 +9,7 @@ import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_filter/index.dart';
+import '../../component/_refresh/index.dart';
 import '../../data/index.dart';
 import '../../widgets/filter/create_time_filter.dart';
 import '../../widgets/filter/game_filter.dart';
@@ -27,6 +29,9 @@ class PlayerListPage extends StatefulWidget {
 class PlayerListPageState extends State<PlayerListPage> with SingleTickerProviderStateMixin {
   // 抽屉
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  // 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   // 筛选
   final GlobalKey<GameNameFilterPanelState> _gameNameFilterKey = GlobalKey();
@@ -59,8 +64,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   // 玩家状态
   List? cheaterStatus = Config.cheaterStatus["child"] ?? [];
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-
   final GlobalKey<FilterState> _filterKey = GlobalKey();
 
   @override
@@ -78,14 +81,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       initialIndex: 0,
       length: cheaterStatus?.length ?? 0,
     );
-
-    _scrollController.addListener(() async {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        if (!playersStatus!.load!) {
-          await _getMore();
-        }
-      }
-    });
 
     super.initState();
   }
@@ -130,27 +125,28 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     if (result.data["success"] == 1) {
       Map d = result.data["data"];
       setState(() {
+        // 追加数据预期状态
+        if (d["result"].isEmpty || d["result"].length <= playersStatus?.parame!.limit) {
+          _refreshKey.currentState!.controller.finishLoad(IndicatorResult.noMore);
+        }
+
+        // 首页数据
         if (playersStatus!.parame!.skip! <= 0) {
           playersStatus?.list = d["result"];
-        } else {
-          if (playersStatus!.parame!.skip! <= playersStatus!.parame!.limit!) {
-            playersStatus!.list!.add({
+          return;
+        }
+
+        // 追加数据
+        if (d["result"].isNotEmpty) {
+          playersStatus?.list
+            ?..add({
               "pageTip": true,
               "pageIndex": playersStatus!.pageNumber!,
-            });
-            playersStatus!.pageNumber = playersStatus!.pageNumber! + 1;
-          }
+            })
+            ..addAll(d["result"]);
 
-          // 追加数据
-          if (d.isNotEmpty) {
-            playersStatus?.list
-              ?..addAll(d["result"])
-              ..add({
-                "pageTip": true,
-                "pageIndex": playersStatus!.pageNumber!,
-              });
-            playersStatus!.pageNumber = playersStatus!.pageNumber! + 1;
-          }
+          playersStatus!.pageNumber = playersStatus!.pageNumber! + 1;
+          _refreshKey.currentState!.controller.finishLoad(IndicatorResult.success);
         }
       });
     }
@@ -168,6 +164,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     playersStatus!.parame!.resetPage();
 
     await getPlayerList();
+
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
   }
 
   /// [Event]
@@ -185,15 +184,21 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     playersStatus!.parame!.status = value;
 
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
+
     onResetPlayerParame(skip: true, page: true);
 
     if (_scrollController.hasClients && _scrollController.position.pixels > _scrollController.position.minScrollExtent) {
-      _scrollController.animateTo(0, duration: const Duration(seconds: 1), curve: Curves.fastLinearToSlowEaseIn);
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastLinearToSlowEaseIn,
+      );
     }
 
     _storageAccount.updateConfiguration("playersTabInitialIndex", index);
 
-    await _refreshIndicatorKey.currentState!.show();
     await getPlayerList();
   }
 
@@ -438,10 +443,10 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         },
         onReset: () => onResetPlayerParame(),
         // 内容
-        child: RefreshIndicator(
-          triggerMode: RefreshIndicatorTriggerMode.anywhere,
-          key: _refreshIndicatorKey,
+        child: Refresh(
+          key: _refreshKey,
           onRefresh: _onRefresh,
+          onLoad: _getMore,
           child: playersStatus!.list!.isEmpty
               ? const EmptyWidget()
               : ListView.builder(

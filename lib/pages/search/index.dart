@@ -354,7 +354,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         lineWidth: 2,
                       )
                     : Icon(
-                  Icons.search,
+                        Icons.search,
                         color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
                       ),
               ),
@@ -445,7 +445,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                             if (isHotRecommendationLoad)
                               ELuiLoadComponent(
                                 type: "line",
-                                color: Theme.of(context).progressIndicatorTheme.color! as Color,
+                                color: Theme.of(context).progressIndicatorTheme.color!,
                                 size: 20,
                                 lineWidth: 2,
                               )

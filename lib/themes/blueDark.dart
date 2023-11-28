@@ -30,6 +30,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
           color: Colors.white,
         ),
       ),
+      useMaterial3: true,
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(const Color(0x7a364e80)),
@@ -137,8 +138,9 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
         elevation: 2,
       ),
+      dividerColor: Colors.white10,
       dividerTheme: const DividerThemeData(
-        color: Colors.white12,
+        color: Colors.white10,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
@@ -242,6 +244,9 @@ class BlueDarkTheme extends AppBaseThemeItem {
       primaryColor: const Color(0xff111b2b),
       tabBarTheme: const TabBarTheme(
         unselectedLabelColor: Colors.white38,
+        dividerColor: Colors.transparent,
+        indicatorColor: Colors.transparent,
+        indicatorSize: TabBarIndicatorSize.tab,
         labelColor: Colors.yellow,
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(

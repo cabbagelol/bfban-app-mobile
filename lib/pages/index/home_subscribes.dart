@@ -1,9 +1,11 @@
 /// 追踪
 
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../component/_empty/index.dart';
+import '../../component/_refresh/index.dart';
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
@@ -19,7 +21,8 @@ class HomeSubscribesPage extends StatefulWidget {
 }
 
 class HomeSubscribesPageState extends State<HomeSubscribesPage> with AutomaticKeepAliveClientMixin {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  // 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   // 列表视图控制器
   final ScrollController _scrollController = ScrollController();
@@ -60,10 +63,6 @@ class HomeSubscribesPageState extends State<HomeSubscribesPage> with AutomaticKe
       traceStatus.load = true;
     });
 
-    Future.delayed(const Duration(seconds: 0), () {
-      if (traceStatus.parame.skip! <= 0 && _refreshIndicatorKey.currentState != null) _refreshIndicatorKey.currentState!.show();
-    });
-
     Response result = await HttpToken.request(
       Config.httpHost["user_subscribes"],
       data: traceStatus.parame.toMap,
@@ -77,6 +76,8 @@ class HomeSubscribesPageState extends State<HomeSubscribesPage> with AutomaticKe
         traceStatus.list = d["data"] ?? [];
         traceStatus.load = false;
       });
+
+      _refreshKey.currentState!.controller.finishLoad(IndicatorResult.success);
       return;
     }
 
@@ -91,6 +92,9 @@ class HomeSubscribesPageState extends State<HomeSubscribesPage> with AutomaticKe
     traceStatus.parame.resetPage();
 
     await getSubscribesList();
+
+    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetFooter();
   }
 
   /// [Event]
@@ -111,8 +115,8 @@ class HomeSubscribesPageState extends State<HomeSubscribesPage> with AutomaticKe
 
         if (traceStatus.list!.isEmpty) return const EmptyWidget();
 
-        return RefreshIndicator(
-          key: _refreshIndicatorKey,
+        return Refresh(
+          key: _refreshKey,
           onRefresh: _onRefresh,
           child: ListView.builder(
             controller: _scrollController,
