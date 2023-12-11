@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:bfban/utils/index.dart';
-import 'package:dio_http_cache_lts/dio_http_cache_lts.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/material.dart';
 
@@ -25,8 +25,8 @@ class Http extends ScaffoldState {
   static Dio dio = createInstance();
 
   /// default options
-  static const int CONNECT_TIMEOUT = 10000;
-  static const int RECEIVE_TIMEOUT = 10000;
+  static const Duration CONNECT_TIEMOUT = Duration(seconds: 10);
+  static const Duration RECEIVE_TIMEOUT = Duration(seconds: 10);
 
   /// http request methods
   static const String GET = 'get';
@@ -55,7 +55,12 @@ class Http extends ScaffoldState {
     method = GET,
     Map<String, dynamic>? headers,
   }) async {
-    Response result = Response(data: {}, requestOptions: RequestOptions(path: '/'));
+    Response result = Response(
+        data: {},
+        requestOptions: RequestOptions(
+          path: '/',
+          validateStatus: (_) => true,
+        ));
     headers = headers ?? {};
 
     if (headers.isNotEmpty && Http.USERAGENT.isNotEmpty) {
@@ -92,54 +97,57 @@ class Http extends ScaffoldState {
         path,
         data: data,
         queryParameters: parame,
-        options: buildCacheOptions(
-          const Duration(days: 1),
-          maxStale: const Duration(days: 7),
-          options: Options(
-            method: method,
-            headers: headers,
-          ),
-          forceRefresh: true,
+        options: Options(
+          method: method,
+          headers: headers,
+          validateStatus: (_) => true,
         ),
       );
 
       result = response;
-    } on DioError catch (e) {
-      switch (e.type) {
-        case DioErrorType.receiveTimeout:
+    } on DioExceptionType catch (e) {
+      switch (e) {
+        case DioExceptionType.receiveTimeout:
           return Response(
             data: {'error': -1},
             requestOptions: RequestOptions(path: url, method: method),
           );
-        case DioErrorType.response:
-          Map data = Map.from({'error': -2});
-          if (e.response!.data is Map) {
-            data.addAll(e.response!.data as Map);
-          } else if (e.response!.data is String) {
-            data.addAll({"content": e.response!.data});
-          }
-          return Response(
-            data: data,
-            requestOptions: e.requestOptions,
-          );
-        case DioErrorType.cancel:
-          return Response(
-            data: {'error': -3},
-            requestOptions: RequestOptions(path: url, method: method),
-          );
-        case DioErrorType.connectTimeout:
+        case DioExceptionType.connectionTimeout:
           return Response(
             data: {'error': -4},
             requestOptions: RequestOptions(path: url, method: method),
           );
-        case DioErrorType.sendTimeout:
+        case DioExceptionType.sendTimeout:
           return Response(
             data: {'error': -6},
             requestOptions: RequestOptions(path: url, method: method),
           );
-        case DioErrorType.other:
-          // TODO: Handle this case.
+        case DioExceptionType.badCertificate:
+          return Response(
+            data: {'error': -2, 'message': 'bad certificate'},
+            requestOptions: RequestOptions(path: url, method: method),
+          );
           break;
+        case DioExceptionType.badResponse:
+          return Response(
+            data: {'error': -2, 'message': 'bad response'},
+            requestOptions: RequestOptions(path: url, method: method),
+          );
+        case DioExceptionType.cancel:
+          return Response(
+            data: {'error': -3},
+            requestOptions: RequestOptions(path: url, method: method),
+          );
+        case DioExceptionType.connectionError:
+          return Response(
+            data: {'error': -2, 'message': 'connection error'},
+            requestOptions: RequestOptions(path: url, method: method),
+          );
+        case DioExceptionType.unknown:
+          return Response(
+            data: {'error': -2, 'message': 'unknown'},
+            requestOptions: RequestOptions(path: url, method: method),
+          );
       }
     }
     return result;
@@ -148,7 +156,7 @@ class Http extends ScaffoldState {
   static Dio createInstance() {
     /// 全局属性：请求前缀、连接超时时间、响应超时时间
     BaseOptions options = BaseOptions(
-      connectTimeout: CONNECT_TIMEOUT,
+      connectTimeout: CONNECT_TIEMOUT,
       receiveTimeout: RECEIVE_TIMEOUT,
     );
     dio = Dio(options);
@@ -157,9 +165,19 @@ class Http extends ScaffoldState {
     dio.interceptors.add(CookieManager(CookieJar()));
 
     // 缓存实例
-    Config.apiHost.forEach((key, value) {
-      dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: value.baseHost)).interceptor);
-    });
+    // by https://pub.dev/packages/dio_cache_interceptor
+    dio.interceptors.add(DioCacheInterceptor(
+      options: CacheOptions(
+        store: MemCacheStore(),
+        policy: CachePolicy.request,
+        hitCacheOnErrorExcept: [],
+        maxStale: const Duration(days: 7),
+        priority: CachePriority.normal,
+        cipher: null,
+        keyBuilder: CacheOptions.defaultCacheKeyBuilder,
+        allowPostMethod: false,
+      ),
+    ));
 
     // Add the interceptor
     dio.interceptors.add(RetryInterceptor(

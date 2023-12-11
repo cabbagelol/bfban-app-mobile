@@ -6,12 +6,14 @@ class CaptchaProvider with ChangeNotifier {
 
   Map record = {};
 
-  set(String key, int value) {
+  void set(String key, int value) {
+    if (key.isEmpty || value.isNaN) return;
     record[key] = value;
     notifyListeners();
   }
 
   int get(String key) {
+    if (key.isEmpty) return -1;
     int res = record[key] ?? -1;
     notifyListeners();
     return res;

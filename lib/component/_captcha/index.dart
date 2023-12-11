@@ -36,10 +36,10 @@ class CaptchaWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<CaptchaWidget> createState() => _captchaWidgetState();
+  State<CaptchaWidget> createState() => _CaptchaWidgetState();
 }
 
-class _captchaWidgetState extends State<CaptchaWidget> {
+class _CaptchaWidgetState extends State<CaptchaWidget> {
   CaptchaStatus captchaStatus = CaptchaStatus(
     load: false,
   );
@@ -50,7 +50,7 @@ class _captchaWidgetState extends State<CaptchaWidget> {
 
   CaptchaProvider captchaProvider = CaptchaProvider();
 
-  String cp_key = "";
+  String captchaKey = "";
 
   get value => captchaStatus.value;
 
@@ -61,7 +61,7 @@ class _captchaWidgetState extends State<CaptchaWidget> {
     String path = "";
     if (widget.context != null) {
       path = ModalRoute.of(widget.context!)!.settings.name.toString();
-      cp_key = "${widget.id}_$path";
+      captchaKey = "${widget.id}_$path";
     }
     super.initState();
   }
@@ -71,9 +71,11 @@ class _captchaWidgetState extends State<CaptchaWidget> {
     super.dispose();
   }
 
-  void _upLocalCaptchaValue(count) {
+  /// [Event]
+  /// 更新本地验证码缓存值
+  void _upLocalCaptchaValue(int count) {
     if (widget.context != null) {
-      context.read<CaptchaProvider>().set(cp_key, count);
+      context.read<CaptchaProvider>().set(captchaKey, count);
     }
   }
 
@@ -95,10 +97,11 @@ class _captchaWidgetState extends State<CaptchaWidget> {
 
     if (result.data["success"] == 1) {
       final d = result.data["data"];
+      final captchaProviderRead = context.read<CaptchaProvider>();
       int seconds = widget.seconds!;
 
-      if (context.read<CaptchaProvider>().get(cp_key) >= 0) {
-        seconds = context.read<CaptchaProvider>().get(cp_key);
+      if (captchaProviderRead.get(captchaKey) >= 0) {
+        seconds = captchaProviderRead.get(captchaKey);
       }
 
       _capthcaTimeout(seconds);
@@ -132,7 +135,7 @@ class _captchaWidgetState extends State<CaptchaWidget> {
       if (captchaTime.count <= 0) {
         timer.cancel();
         captchaTime.lock = false;
-        context.read<CaptchaProvider>().rem(cp_key);
+        context.read<CaptchaProvider>().rem(captchaKey);
         return;
       }
 
@@ -199,7 +202,7 @@ class _captchaWidgetState extends State<CaptchaWidget> {
               ),
               Consumer<CaptchaProvider>(
                 builder: (BuildContext buildContext, CaptchaProvider data, Widget? chlid) {
-                  if (data.record[cp_key] != null && data.record[cp_key] <= 0) {
+                  if (data.record[captchaKey] != null && data.record[captchaKey] <= 0) {
                     return Positioned(
                       top: 1,
                       left: -2,

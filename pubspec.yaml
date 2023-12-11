@@ -14,20 +14,22 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # 时间选择器 https://pub.dev/packages/syncfusion_flutter_datepicker
-  syncfusion_flutter_datepicker: any
+  # 临时保留23.2.4版本，后版存在问题
+  # https://github.com/syncfusion/flutter-widgets/issues/1547
+  syncfusion_flutter_datepicker: 23.2.4
 
   # 请求模块 https://pub.dev/packages/dio
-  dio: ^4.0.6
+  dio: ^5.0.0
 
   # Dio Cookie 管理器 https://pub.dev/packages/dio_cookie_manager
   dio_cookie_manager: ^2.0.0
 
   # Dio 灵活重试 https://pub.dev/packages/dio_smart_retry
-  dio_smart_retry: ^1.4.0
+  dio_smart_retry: ^6.0.0
 
-  # 旧项目 https://pub.dev/packages/dio_http_cache
-  # Dio 请求缓存 https://pub.dev/packages/dio_http_cache_lts
-  dio_http_cache_lts: ^0.4.1
+  # 旧项目 https://pub.dev/packages/dio_cache_interceptor
+  #  dio_http_cache_lts: ^0.4.1
+  dio_cache_interceptor: ^3.5.0
 
   # 状态管理 https://pub.dev/packages/provider
   provider: ^6.0.2
@@ -73,14 +75,12 @@ dependencies:
   flutter_local_notifications: ^11.0.1
 
   # 相机(扫码 and 拍摄) https://pub.flutter-io.cn/packages/camerawesome
-  camerawesome: ^2.0.0-dev.1
+  camerawesome: 2.0.0-dev.1
 
-  # https://pub.flutter-io.cn/packages/quill_html_editor
-  # quill_html_editor: ^2.1.8
-
+  # 下拉刷新与加载 https://pub.flutter-io.cn/packages/easy_refresh
   easy_refresh: ^3.3.2+2
 
-  # 富文本扩展
+  # 富文本扩展 https://pub.flutter-io.cn/packages/flutter_rte
   flutter_rte: ^1.0.0
 
   # uuid https://github.com/Daegalus/dart-uuid

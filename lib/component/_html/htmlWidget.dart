@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bfban/component/_html/html.dart';
+import 'package:bfban/component/_html/htmlEmoji.dart';
 import 'package:bfban/component/_html/htmlFullScreen.dart';
 import 'package:bfban/component/_html/htmlTextTranslator.dart';
 import 'package:flutter/material.dart';
@@ -307,19 +308,32 @@ class CardUtil {
       TagExtension(
         tagsToExtend: {"img"},
         builder: (extensionContext) {
-          return Container(
-            margin: EdgeInsets.only(
-              top: extensionContext.style!.margin!.top!.value,
-              left: extensionContext.style!.margin!.left!.value,
-              right: extensionContext.style!.margin!.right!.value,
-              bottom: extensionContext.style!.margin!.bottom!.value,
+          Map<String, Widget> imgTypes = {
+            'img': Container(
+              margin: EdgeInsets.only(
+                top: extensionContext.style!.margin!.top!.value,
+                left: extensionContext.style!.margin!.left!.value,
+                right: extensionContext.style!.margin!.right!.value,
+                bottom: extensionContext.style!.margin!.bottom!.value,
+              ),
+              child: HtmlImage(
+                src: extensionContext.node.attributes["src"],
+                color: extensionContext.style!.color,
+                backgroundColor: extensionContext.style!.backgroundColor,
+              ),
             ),
-            child: HtmlImage(
-              src: extensionContext.node.attributes["src"],
+            'emoji': HtmlEmoji(
+              attributes: extensionContext.node.attributes,
               color: extensionContext.style!.color,
               backgroundColor: extensionContext.style!.backgroundColor,
-            ),
-          );
+            )
+          };
+          String imgTypeName = 'img';
+
+          // 地址包含base64，假定是表情
+          if (extensionContext.node.attributes["src"]!.indexOf(';base64,') >= 0) imgTypeName = 'emoji';
+
+          return imgTypes[imgTypeName]!;
         },
       ),
       // hr
