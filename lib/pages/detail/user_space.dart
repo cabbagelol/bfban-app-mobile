@@ -1,11 +1,15 @@
 import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/component/_achievement/index.dart';
 import 'package:bfban/component/_empty/index.dart';
+import 'package:bfban/component/_html/html.dart';
+import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:flutter_elui_plugin/elui.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -305,6 +309,13 @@ class UserSpacePageState extends State<UserSpacePage> {
                       if (reportListStatus.list.isNotEmpty)
                         SliverList.list(
                           children: [
+                            if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
+                              SelectionArea(
+                                child: HtmlCore(
+                                  data: snapshot.data["attr"]["introduction"],
+                                ),
+                              ),
+                            Container(height: 10),
                             Container(
                               width: MediaQuery.of(context).size.width,
                               margin: const EdgeInsets.symmetric(horizontal: 5),
@@ -380,11 +391,11 @@ class UserSpacePageState extends State<UserSpacePage> {
                                           ),
                                           const SizedBox(height: 5),
                                           Text(
-                                            (snapshot.data["reportnum"] ?? snapshot.data["reportNum"]).toString(),
+                                            snapshot.data["reportNum"].toString(),
                                             style: const TextStyle(fontSize: 18),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
-                                          ),
+                                          )
                                         ],
                                       ),
                                       if (snapshot.data["statusNum"] != null)
@@ -398,7 +409,7 @@ class UserSpacePageState extends State<UserSpacePage> {
                                                 Opacity(
                                                   opacity: .5,
                                                   child: Text(
-                                                    FlutterI18n.translate(context, "basic.status.${statusNumItem.key}"),
+                                                    FlutterI18n.translate(context, "basic.status.${statusNumItem.key}.text"),
                                                     style: const TextStyle(fontSize: 20),
                                                   ),
                                                 ),
@@ -412,7 +423,23 @@ class UserSpacePageState extends State<UserSpacePage> {
                                               ],
                                             );
                                           }).toList(),
-                                        )
+                                        ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Opacity(
+                                            opacity: .5,
+                                            child: Text(
+                                              FlutterI18n.translate(context, "profile.achievement.title"),
+                                              style: const TextStyle(fontSize: 20),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          achievementWidget(
+                                            data: snapshot.data["attr"]["achievements"],
+                                          )
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -35,7 +35,7 @@ abstract class StationUserBaseData {
     lastOnlineTime = i["lastOnlineTime"];
     origin = i["origin"];
     privilege = i["privilege"];
-    reportNum = i["reportnum"] ?? i["reportNum"];
+    reportNum = i["reportNum"];
     statusNum = i["statusNum"];
     subscribes = i["subscribes"];
     userAvatar = i["userAvatar"];
@@ -51,7 +51,7 @@ abstract class StationUserBaseData {
       "lastOnlineTime": lastOnlineTime,
       "origin": origin,
       "privilege": privilege,
-      "reportnum": reportNum,
+      "reportNum": reportNum,
       "statusNum": statusNum,
       "subscribes": subscribes,
       "userAvatar": userAvatar,
@@ -69,6 +69,8 @@ class StationUserBaseDataInAttr {
   String? introduction;
   bool? showOrigin;
   String? mute;
+  bool? showAchievement;
+  List? achievements;
 
   StationUserBaseDataInAttr({
     this.allowDM,
@@ -79,6 +81,8 @@ class StationUserBaseDataInAttr {
     this.introduction,
     this.showOrigin,
     this.mute,
+    this.showAchievement,
+    this.achievements,
   });
 
   Map setData(Map i) {
@@ -90,6 +94,8 @@ class StationUserBaseDataInAttr {
     introduction = i["introduction"];
     showOrigin = i["showOrigin"];
     mute = i["mute"];
+    showAchievement = i["showAchievement"];
+    achievements = i["achievements"];
     return toMap;
   }
 
@@ -103,6 +109,8 @@ class StationUserBaseDataInAttr {
       "introduction": introduction,
       "showOrigin": showOrigin,
       "mute": mute,
+      "showAchievement": showAchievement,
+      "achievements": achievements,
     };
   }
 }

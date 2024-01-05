@@ -50,7 +50,7 @@ class StationUserInfoData extends StationUserBaseData {
     lastOnlineTime = i["lastOnlineTime"];
     origin = i["origin"];
     privilege = i["privilege"];
-    reportNum = i["reportnum"] ?? i["reportNum"];
+    reportNum = i["reportNum"];
     statusNum = i["statusNum"];
     subscribes = i["subscribes"];
     userAvatar = i["userAvatar"];
@@ -67,7 +67,7 @@ class StationUserInfoData extends StationUserBaseData {
       "lastOnlineTime": lastOnlineTime,
       "origin": origin,
       "privilege": privilege,
-      "reportnum": reportNum,
+      "reportNum": reportNum,
       "statusNum": statusNum,
       "subscribes": subscribes,
       "userAvatar": userAvatar,

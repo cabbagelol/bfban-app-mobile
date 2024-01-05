@@ -16,5 +16,6 @@ export 'regular.dart';
 export 'logger.dart';
 export 'event.dart';
 export 'public_translator.dart';
+export 'achievement.dart';
 
 export '../provider/appInfo_provider.dart';

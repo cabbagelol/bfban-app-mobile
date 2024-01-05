@@ -66,7 +66,6 @@ class Upload extends Http {
 
     return {
       "code": -1,
-      // "message": "error"
       "message": result.data["code"],
     };
   }

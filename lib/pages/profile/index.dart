@@ -90,7 +90,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                         /// 用户信息板块
                         Container(
                           margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).viewInsets.top + 110,
+                            top: MediaQuery.of(context).viewInsets.top + 120,
                             left: 15,
                             right: 15,
                           ),

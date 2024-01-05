@@ -50,7 +50,7 @@ class _PlayerStatusTagWidgetState extends State<PlayerStatusTagWidget> {
         borderRadius: BorderRadius.circular(3),
       ),
       child: Text(
-        FlutterI18n.translate(context, "basic.status.${widget.status}"),
+        FlutterI18n.translate(context, "basic.status.${widget.status}.text"),
         style: TextStyle(color: statusColors[widget.status] as Color),
       ),
     );

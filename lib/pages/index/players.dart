@@ -302,7 +302,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               child: Stack(
                 clipBehavior: Clip.none,
                 children: <Widget>[
-                  I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}"),
+                  I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
                   if (i["num"] != null && i["num"] > 0)
                     Positioned(
                       top: -10,

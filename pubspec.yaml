@@ -148,6 +148,7 @@ flutter:
     - assets/lang/
     - assets/video/
     - assets/images/
+    - assets/images/achievement/
     - assets/images/recordPlatforms/
     - assets/images/games/bf1/
     - assets/images/games/bf6/

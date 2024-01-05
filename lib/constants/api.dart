@@ -36,6 +36,7 @@ class Config {
   /// 游戏类型
   /// base 配置, 会被远程覆盖
   static Map game = {"child": []};
+  static Map achievements = {};
   static Map privilege = {};
   static Map cheatMethodsGlossary = {};
   static Map cheaterStatus = {};

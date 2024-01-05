@@ -76,8 +76,9 @@ class NetwrokConf with ChangeNotifier {
 
   // 从远程服务获取配置
   NetworkConfData data = NetworkConfData(
-    confList: ["privilege", "gameName", "cheatMethodsGlossary", "cheaterStatus", "action", "recordLink"],
+    confList: ["privilege", "achievements", "gameName", "cheatMethodsGlossary", "cheaterStatus", "action", "recordLink"],
     privilege: {},
+    achievements: {},
     gameName: {},
     cheatMethodsGlossary: {},
     cheaterStatus: {},
@@ -94,6 +95,7 @@ class NetwrokConf with ChangeNotifier {
 
     // 更新类
     Config.game = data.gameName!;
+    Config.achievements = data.achievements!;
     Config.privilege = data.privilege!;
     Config.cheatMethodsGlossary = data.cheatMethodsGlossary!;
     Config.cheaterStatus = data.cheaterStatus!;
@@ -116,6 +118,9 @@ class NetwrokConf with ChangeNotifier {
     switch (fileName) {
       case "gameName":
         data.gameName = result.data;
+        break;
+      case "achievements":
+        data.achievements = result.data;
         break;
       case "action":
         data.action = result.data;
@@ -148,6 +153,9 @@ class NetworkConfData {
   // 游戏类型配置
   Map? gameName;
 
+  // 成就配置
+  Map? achievements;
+
   // 作弊行为配置
   Map? cheatMethodsGlossary;
 
@@ -161,6 +169,7 @@ class NetworkConfData {
   NetworkConfData({
     this.confList,
     this.privilege,
+    this.achievements,
     this.gameName,
     this.cheatMethodsGlossary,
     this.cheaterStatus,
