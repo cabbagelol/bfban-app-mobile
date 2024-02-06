@@ -137,7 +137,7 @@ class _IndexPageState extends State<IndexPage> {
 
   /// [Event]
   /// 首页控制器序列
-  void onTap(int index) {
+  void onHomePageIndexTap(int index) {
     setState(() {
       _currentPageIndex = index;
     });
@@ -443,11 +443,12 @@ class _IndexPageState extends State<IndexPage> {
                       return BottomNavigationBarItem(
                         icon: nav!["icon"],
                         activeIcon: nav["activeIcon"],
-                        label: FlutterI18n.translate(context, "${nav["name"]}.title"),
+                        label: FlutterI18n.translate(
+                            context, "${nav["name"]}.title"),
                       );
                     }).toList(),
                     currentIndex: _currentPageIndex,
-                    onTap: (int index) => onTap(index),
+                    onTap: (int index) => onHomePageIndexTap(index),
                   ),
                 );
               } else {

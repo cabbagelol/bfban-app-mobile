@@ -95,7 +95,7 @@ dependencies:
   image_gallery_saver: ^2.0.0
 
   # 哨兵 https://pub.dev/packages/sentry
-  sentry: ^7.9.0
+  sentry: ^7.16.0
 
   # UI库
   flutter_elui_plugin:

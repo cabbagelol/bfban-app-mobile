@@ -54,8 +54,6 @@ class _AppealPageState extends State<AppealPage> {
 
   @override
   void initState() {
-    print(widget.personaId);
-
     if (widget.personaId! == null) Navigator.pop(context);
 
     playerStatus.parame!.dbId = widget.personaId!;

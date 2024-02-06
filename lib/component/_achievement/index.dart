@@ -19,17 +19,20 @@ class _achievementWidgetState extends State<achievementWidget> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      children: widget.data!.map<Widget>((i) {
-        return Column(
-          children: [
-            SizedBox(
-              width: 25,
-              height: 25,
-              child: Image.asset(achievementUtil.getIcon(achievementUtil.getItem(i["name"])["iconPath"])),
-            )
-          ],
-        );
-      }).toList(),
+      children: widget.data == null
+          ? [const Text("N/A")]
+          : widget.data!.map<Widget>((i) {
+              return Column(
+                children: [
+                  SizedBox(
+                    width: 25,
+                    height: 25,
+                    child: Image.asset(achievementUtil.getIcon(
+                        achievementUtil.getItem(i["name"])["iconPath"])),
+                  )
+                ],
+              );
+            }).toList(),
     );
   }
 }

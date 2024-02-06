@@ -29,17 +29,22 @@ class UserInfoProvider with ChangeNotifier {
 
   // 是否管理员一类
   bool get isAdmin {
-    return isLogin && userinfo["privilege"].any((i) => ["admin", "super", "root"].contains(i));
+    return isLogin &&
+        userinfo["privilege"]
+            .any((i) => ["admin", "super", "root"].contains(i));
   }
 
   bool get isAdminL1 => isAdmin;
 
   bool get isAdminL2 {
-    return isLogin && userinfo["privilege"].any((i) => ["admin", "super", "root"].contains(i));
+    return isLogin &&
+        userinfo["privilege"]
+            .any((i) => ["admin", "super", "root"].contains(i));
   }
 
   bool get isAdminL3 {
-    return isLogin && userinfo["privilege"].any((i) => ["super", "root"].contains(i));
+    return isLogin &&
+        userinfo["privilege"].any((i) => ["super", "root"].contains(i));
   }
 
   bool get isAdminL4 {
