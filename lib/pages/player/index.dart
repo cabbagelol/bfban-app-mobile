@@ -141,7 +141,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       });
 
       _getIsSubscribes();
-      _onViewd();
+      _onUpdateViewed();
     } else {
       EluiMessageComponent.error(context)(
         child: Text(result.data.code),
@@ -157,7 +157,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
 
   /// [Event]
   /// 更新游览值
-  Future _onViewd() async {
+  Future _onUpdateViewed() async {
     StorageData? viewedData = await storage.get("viewed");
     Map<String, dynamic> viewed = viewedData.value ?? {};
     String? id = viewedStatus.parame!.id.toString();
@@ -570,7 +570,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                 color: Theme.of(context).iconTheme.color,
                               ),
                               const SizedBox(width: 10),
-                              Text(FlutterI18n.translate(context, "share.title")),
+                              Text(
+                                FlutterI18n.translate(context, "share.title"),
+                                // style: TextStyle(color: Theme.of(context).popupMenuTheme.textStyle!.color),
+                              ),
                             ],
                           ),
                         ),
@@ -584,7 +587,10 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                 color: Theme.of(context).iconTheme.color,
                               ),
                               const SizedBox(width: 10),
-                              Text(FlutterI18n.translate(context, "app.detail.openExplorePlayerDetail")),
+                              Text(
+                                FlutterI18n.translate(context, "app.detail.openExplorePlayerDetail"),
+                                // style: TextStyle(color: Theme.of(context).popupMenuTheme.textStyle!.color),
+                              ),
                             ],
                           ),
                         ),

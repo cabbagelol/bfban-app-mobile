@@ -294,7 +294,7 @@ class _InformationPageState extends State<InformationPage> {
                             ),
                           ),
                           EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.account.form.privileges"),
+                            title: FlutterI18n.translate(context, "profile.space.form.privileges"),
                             cont: Container(
                               constraints: const BoxConstraints(maxWidth: 150),
                               child: PrivilegesTagWidget(
@@ -327,8 +327,8 @@ class _InformationPageState extends State<InformationPage> {
                           ),
                           const Divider(height: 5),
                           EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.account.form.language"),
-                            label: FlutterI18n.translate(context, "profile.account.form.languageSyncDescribe"),
+                            title: FlutterI18n.translate(context, "profile.space.form.language"),
+                            label: FlutterI18n.translate(context, "profile.space.form.languageSyncDescribe"),
                             cont: Row(
                               children: [
                                 if (langLocalSync)
@@ -368,10 +368,10 @@ class _InformationPageState extends State<InformationPage> {
                             ),
                           ),
                           EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.account.form.showOrigin"),
-                            label: FlutterI18n.translate(context, "profile.account.form.showOriginDescribe"),
+                            title: FlutterI18n.translate(context, "profile.space.form.showOrigin"),
+                            label: FlutterI18n.translate(context, "profile.space.form.showOriginDescribe"),
                             cont: Checkbox(
-                              value: informationStatus.data!.attr!.showOrigin,
+                              value: informationStatus.data!.attr!.showOrigin ?? false,
                               onChanged: (bool? value) {
                                 setState(() {
                                   informationStatus.data!.attr!.showOrigin = !informationStatus.data!.attr!.showOrigin!;
@@ -380,10 +380,10 @@ class _InformationPageState extends State<InformationPage> {
                             ),
                           ),
                           EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.account.form.allowDM"),
-                            label: FlutterI18n.translate(context, "profile.account.form.allowDMdescribe"),
+                            title: FlutterI18n.translate(context, "profile.space.form.allowDM"),
+                            label: FlutterI18n.translate(context, "profile.space.form.allowDMdescribe"),
                             cont: Checkbox(
-                              value: informationStatus.data!.attr!.allowDM,
+                              value: informationStatus.data!.attr!.allowDM ?? false,
                               onChanged: (bool? value) {
                                 setState(() {
                                   informationStatus.data!.attr!.allowDM = !informationStatus.data!.attr!.allowDM!;

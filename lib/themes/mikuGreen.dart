@@ -123,11 +123,12 @@ class MikuGreenTheme extends AppBaseThemeItem {
         ),
         textStyle: const TextStyle(color: Colors.black),
       ),
-      popupMenuTheme: const PopupMenuThemeData(
+      popupMenuTheme: PopupMenuThemeData(
         color: Colors.white,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
+        labelTextStyle: MaterialStateProperty.all(const TextStyle(color: Colors.black54)),
         elevation: 2,
       ),
       dividerColor: Colors.black12,

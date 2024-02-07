@@ -189,6 +189,19 @@ class _UserCenterPageState extends State<UserCenterPage> {
                           onTap: () => _urlUtil.opEnPage(context, "/account/information/"),
                         ),
                       ),
+                      if (data.isLogin)
+                        EluiCellComponent(
+                          title: FlutterI18n.translate(context, "app.setting.cell.achievement.title"),
+                          label: FlutterI18n.translate(context, "app.setting.cell.achievement.describe"),
+                          theme: EluiCellTheme(
+                            titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                            labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                            linkColor: Theme.of(context).textTheme.titleMedium?.color,
+                            backgroundColor: Theme.of(context).cardTheme.color,
+                          ),
+                          islink: true,
+                          onTap: () => _urlUtil.opEnPage(context, "/account/achievements/"),
+                        ),
                       EluiCellComponent(
                         title: FlutterI18n.translate(context, "app.setting.cell.media.title"),
                         label: FlutterI18n.translate(context, "app.setting.cell.media.describe"),

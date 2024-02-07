@@ -11,14 +11,14 @@ import '../../../data/index.dart';
 import '../../../provider/userinfo_provider.dart';
 import '../../../utils/index.dart';
 
-class setuserNamePage extends StatefulWidget {
-  const setuserNamePage({key});
+class UserSetuserNamePage extends StatefulWidget {
+  const UserSetuserNamePage({key});
 
   @override
-  State<setuserNamePage> createState() => _setuserNamePageState();
+  State<UserSetuserNamePage> createState() => _setuserNamePageState();
 }
 
-class _setuserNamePageState extends State<setuserNamePage> {
+class _setuserNamePageState extends State<UserSetuserNamePage> {
   int stepIndex = 0;
 
   int maxStep = 2;
@@ -87,7 +87,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
       builder: (BuildContext buildContext, UserInfoProvider userInfoData, Widget? widget) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(FlutterI18n.translate(context, "profile.account.modifyName.title")),
+            title: Text(FlutterI18n.translate(context, "profile.space.modifyName.title")),
           ),
           body: Stepper(
             currentStep: stepIndex,
@@ -150,7 +150,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
             },
             steps: [
               Step(
-                title: Text(FlutterI18n.translate(context, "profile.account.modifyName.steps.0.title")),
+                title: Text(FlutterI18n.translate(context, "profile.space.modifyName.steps.0.title")),
                 content: Column(
                   children: [
                     EluiTipComponent(
@@ -158,12 +158,12 @@ class _setuserNamePageState extends State<setuserNamePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(FlutterI18n.translate(context, "profile.account.modifyName.specification1")),
+                          Text(FlutterI18n.translate(context, "profile.space.modifyName.specification1")),
                           const SizedBox(height: 10),
                           Text(
                             FlutterI18n.translate(
                               context,
-                              "profile.account.modifyName.residueDegree",
+                              "profile.space.modifyName.residueDegree",
                               translationParams: {
                                 "changeNameLeft": userInfo["attr"]["changeNameLeft"].toString(),
                               },
@@ -171,7 +171,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 5),
-                          Text(FlutterI18n.translate(context, "profile.account.modifyName.specification2")),
+                          Text(FlutterI18n.translate(context, "profile.space.modifyName.specification2")),
                         ],
                       ),
                     ),
@@ -179,7 +179,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
                 ),
               ),
               Step(
-                title: Text(FlutterI18n.translate(context, "profile.account.modifyName.steps.1.title")),
+                title: Text(FlutterI18n.translate(context, "profile.space.modifyName.steps.1.title")),
                 content: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -235,7 +235,7 @@ class _setuserNamePageState extends State<setuserNamePage> {
                 ),
               ),
               Step(
-                title: Text(FlutterI18n.translate(context, "profile.account.modifyName.steps.2.title")),
+                title: Text(FlutterI18n.translate(context, "profile.space.modifyName.steps.2.title")),
                 content: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

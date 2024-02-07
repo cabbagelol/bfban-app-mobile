@@ -110,11 +110,12 @@ class PinkTheme extends AppBaseThemeItem {
         ),
         textStyle: const TextStyle(color: Colors.black),
       ),
-      popupMenuTheme: const PopupMenuThemeData(
+      popupMenuTheme: PopupMenuThemeData(
         color: Colors.white,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
+        labelTextStyle: MaterialStateProperty.all(TextStyle(color: Colors.pinkAccent.shade100)),
         elevation: 2,
       ),
       dividerColor: Colors.pink.shade400.withOpacity(.2),

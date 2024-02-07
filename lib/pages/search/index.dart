@@ -63,12 +63,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     ),
   );
 
-  List<dynamic> searchTabsType = [
-    {"text": "player", "icon": Icons.people},
-    {"text": "user", "icon": Icons.person},
+  List<Map> searchTabsType = [
+    {"value": "player", "icon": Icons.people},
+    {"value": "user", "icon": Icons.person},
   ];
-
-  // {"text": "comment", "icon": Icons.comment},
 
   List searchTabs = [];
 
@@ -90,7 +88,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     searchTabs = [];
     for (var i in searchTabsType) {
       searchTabs.add({
-        "text": FlutterI18n.translate(context, "search.tabs.${i["text"]}"),
+        "text": FlutterI18n.translate(context, "search.tabs.${i["value"]}"),
         "icon": Icon(i["icon"]),
       });
     }
@@ -200,7 +198,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (result.data["success"] == 1) {
       if (!mounted) return;
       setState(() {
-        searchStatus.list.set(searchTabsType[searchTabsIndex]["text"], result.data["data"]);
+        searchStatus.list.set(searchTabsType[searchTabsIndex]["value"], result.data["data"]);
         searchStatus.load = false;
         isFirstScreen = false;
 
@@ -261,14 +259,12 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   void _onPenByType(Map item) {
     setState(() {
       switch (item["type"]) {
-        case "player":
-          searchTabsIndex = 0;
-          break;
         case "user":
           searchTabsIndex = 1;
           break;
-        case "comment":
-          searchTabsIndex = 2;
+        case "player":
+        default:
+          searchTabsIndex = 0;
           break;
       }
       searchStatus.params.param = item["keyword"];
@@ -286,7 +282,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     bool isIncluded = false;
 
     for (var value in list!) {
-      if (value["keyword"] == searchStatus.params.param && value["type"] == searchTabsType[searchTabsIndex]["text"]) {
+      if (value["keyword"] == searchStatus.params.param && value["type"] == searchTabsType[searchTabsIndex]["value"]) {
         isIncluded = true;
         continue;
       }
@@ -296,8 +292,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     if (list.length >= 20) list.removeAt(0);
     list.add({
       "keyword": searchStatus.params.param,
-      "type": searchTabsType[searchTabsIndex]["text"],
-      "count": searchStatus.list.data(searchTabsType[searchTabsIndex]["text"]).length,
+      "type": searchTabsType[searchTabsIndex]["value"],
+      "count": searchStatus.list.data(searchTabsType[searchTabsIndex]["value"]).length,
     });
     _storage.set("search.history", value: list);
   }
@@ -354,7 +350,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         lineWidth: 2,
                       )
                     : Icon(
-                        Icons.search,
+                  Icons.search,
                         color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
                       ),
               ),

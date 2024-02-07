@@ -8,11 +8,11 @@ import '../../component/_refresh/index.dart';
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
-import '../../widgets/detail/appeal_card.dart';
-import '../../widgets/detail/cheat_reports_card.dart';
-import '../../widgets/detail/cheat_user_cheaters_card.dart';
-import '../../widgets/detail/history_name_card.dart';
-import '../../widgets/detail/judgement_card.dart';
+import '../../widgets/player/appeal_card.dart';
+import '../../widgets/player/cheat_reports_card.dart';
+import '../../widgets/player/cheat_user_cheaters_card.dart';
+import '../../widgets/player/history_name_card.dart';
+import '../../widgets/player/judgement_card.dart';
 
 class TimeLine extends StatefulWidget {
   final PlayerStatus playerStatus;

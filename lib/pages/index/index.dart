@@ -17,7 +17,7 @@ import 'package:bfban/utils/index.dart';
 import '../../constants/api.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
-import '../profile/index.dart';
+import 'user_center.dart';
 import 'footer_bar_panel.dart';
 import 'home.dart';
 

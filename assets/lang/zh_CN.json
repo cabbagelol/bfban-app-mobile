@@ -126,6 +126,10 @@
     "setting": {
       "title": "设置中心",
       "cell": {
+        "achievement": {
+          "title": "成就",
+          "describe": "用户成就"
+        },
         "information": {
           "title": "账户",
           "describe": "修改用户名称,修改密码,账户设置"

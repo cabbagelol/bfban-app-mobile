@@ -132,14 +132,22 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
         textStyle: const TextStyle(color: Colors.white),
       ),
-      popupMenuTheme: const PopupMenuThemeData(
+      popupMenuTheme: PopupMenuThemeData(
         color: Colors.black,
         surfaceTintColor: Colors.black,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.white,
         ),
+        labelTextStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white70)),
         elevation: 2,
       ),
+      listTileTheme: const ListTileThemeData(
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+          ),
+          subtitleTextStyle: TextStyle(
+            color: Colors.white54,
+          )),
       dividerColor: Colors.white10,
       dividerTheme: const DividerThemeData(
         color: Colors.white10,

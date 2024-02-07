@@ -518,9 +518,9 @@ class Back extends StatelessWidget {
                     colors: [Colors.black, Colors.transparent],
                   ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
                 },
-                child: (src != null && src.isNotEmpty)
+                child: (src.isNotEmpty)
                     ? EluiImgComponent(
-                  src: src.toString(),
+                        src: src.toString(),
                         fit: BoxFit.fitWidth,
                         width: MediaQuery.of(context).size.width,
                         height: 250,

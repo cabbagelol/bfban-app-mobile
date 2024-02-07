@@ -3,9 +3,9 @@ import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/api.dart';
-import '../../data/index.dart';
-import '../../utils/index.dart';
+import '../../../constants/api.dart';
+import '../../../data/index.dart';
+import '../../../utils/index.dart';
 
 class AppNetworkPage extends StatefulWidget {
   const AppNetworkPage({Key? key}) : super(key: key);

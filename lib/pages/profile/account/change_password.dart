@@ -8,14 +8,14 @@ import '../../../constants/api.dart';
 import '../../../provider/userinfo_provider.dart';
 import '../../../utils/index.dart';
 
-class changePasswordPage extends StatefulWidget {
-  const changePasswordPage({key});
+class UserChangePasswordPage extends StatefulWidget {
+  const UserChangePasswordPage({key});
 
   @override
-  State<changePasswordPage> createState() => _changePasswordPageState();
+  State<UserChangePasswordPage> createState() => _changePasswordPageState();
 }
 
-class _changePasswordPageState extends State<changePasswordPage> {
+class _changePasswordPageState extends State<UserChangePasswordPage> {
   Captcha captcha = Captcha();
 
   bool load = false;

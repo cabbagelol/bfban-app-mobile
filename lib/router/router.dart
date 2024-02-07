@@ -1,28 +1,28 @@
-import 'package:bfban/pages/detail/appeal.dart';
-import 'package:bfban/pages/detail/user_space.dart';
+import 'package:bfban/pages/player/appeal.dart';
+import 'package:bfban/pages/player/index.dart';
 import 'package:bfban/pages/license/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
+import 'package:bfban/pages/profile/account/achievement.dart';
 import 'package:bfban/pages/profile/account/change_password.dart';
 import 'package:bfban/pages/profile/account/setuser_name.dart';
-import 'package:bfban/pages/profile/setting/destock.dart';
-import 'package:bfban/pages/profile/setting/language.dart';
-import 'package:bfban/pages/profile/setting/notice.dart';
-import 'package:bfban/pages/profile/setting/public_translator.dart';
-import 'package:bfban/pages/profile/setting/setting.dart';
+import 'package:bfban/pages/index/setting/destock.dart';
+import 'package:bfban/pages/index/setting/language.dart';
+import 'package:bfban/pages/index/setting/notice.dart';
+import 'package:bfban/pages/index/setting/public_translator.dart';
+import 'package:bfban/pages/index/setting/setting.dart';
 import 'package:fluro/fluro.dart';
 
 // S Pages
 import 'package:bfban/pages/guide/guide.dart';
-import 'package:bfban/pages/detail/index.dart';
 import 'package:bfban/pages/report/report.dart';
 import 'package:bfban/pages/report/publish_results.dart';
-import 'package:bfban/pages/detail/reply.dart';
+import 'package:bfban/pages/player/reply.dart';
 import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/pages/report/judgement.dart';
 import 'package:bfban/pages/login/signin.dart';
 import 'package:bfban/pages/search/index.dart';
-import 'package:bfban/pages/profile/support.dart';
-import 'package:bfban/pages/profile/setting/theme.dart';
+import 'package:bfban/pages/index/setting/support.dart';
+import 'package:bfban/pages/index/setting/theme.dart';
 import 'package:bfban/pages/rich_edit/index.dart';
 import 'package:bfban/pages/chat/chat_list.dart';
 import 'package:bfban/pages/chat/chat_detail.dart';
@@ -37,9 +37,11 @@ import '../pages/media/dir_configuration.dart';
 import '../pages/media/index.dart';
 import '../pages/chat/index.dart';
 import '../pages/not_found/network.dart';
+import '../pages/profile/account/achievement_detail.dart';
 import '../pages/profile/account/information.dart';
-import '../pages/profile/app_network.dart';
-import '../pages/profile/app_version_package.dart';
+import '../pages/index/setting/app_network.dart';
+import '../pages/index/setting/app_version_package.dart';
+import '../pages/space/index.dart';
 import '../pages/splash.dart';
 // E Pages
 
@@ -61,7 +63,7 @@ class Routes {
     {
       "url": '/notnetwork',
       "item": (context, params) {
-        return const notNetworkPage();
+        return const NotNetworkPage();
       }
     },
     {
@@ -113,15 +115,27 @@ class Routes {
       }
     },
     {
+      "url": "/account/achievements/",
+      "item": (context, params) {
+        return const UserAchievementPage();
+      }
+    },
+    {
+      "url": "/account/achievement/:id",
+      "item": (context, params) {
+        return UserAchievementDetailPage(id: params["id"][0]);
+      }
+    },
+    {
       "url": "/account/information/setUserName",
       "item": (context, params) {
-        return const setuserNamePage();
+        return const UserSetuserNamePage();
       }
     },
     {
       "url": "/account/information/changePassword",
       "item": (context, params) {
-        return const changePasswordPage();
+        return const UserChangePasswordPage();
       }
     },
     {

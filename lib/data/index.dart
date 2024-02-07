@@ -1,3 +1,4 @@
+export './Achievement.dart';
 export './Statistics.dart';
 export './Activity.dart';
 export './Player.dart';

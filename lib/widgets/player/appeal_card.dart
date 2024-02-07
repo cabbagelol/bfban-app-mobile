@@ -1,4 +1,3 @@
-import 'package:bfban/widgets/detail/basic_quote_card.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
 import 'basic_card_types.dart';
+import 'basic_quote_card.dart';
 
 /// 申诉
 class AppealCard extends StatelessWidget {
