@@ -8,6 +8,8 @@ import '../utils/index.dart';
 class UserInfoProvider with ChangeNotifier {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final ProviderUtil _providerUtil = ProviderUtil();
+
   final StorageAccount _storageAccount = StorageAccount();
 
   final Storage _storage = Storage();
@@ -112,6 +114,7 @@ class UserInfoProvider with ChangeNotifier {
         method: Http.POST,
       );
 
+      _providerUtil.ofChat(context).clearNetworkLocalMessage(); // 消息计数
       _storageAccount.clearAll(context); // 擦除持久数据账户相关key
       clear(); // 擦除状态机的账户信息
 

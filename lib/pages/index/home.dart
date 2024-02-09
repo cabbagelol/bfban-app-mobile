@@ -1,11 +1,10 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../data/Theme.dart';
-import '../not_found/index.dart';
 import 'home_community_activitie.dart';
-import 'home_tour_record.dart';
-import 'home_subscribes.dart';
 import 'home_trend.dart';
 
 class homePage extends StatefulWidget {
@@ -30,8 +29,6 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
 
   final GlobalKey<HomeCommunityPageState> _homeCommunityPageKey = GlobalKey<HomeCommunityPageState>();
 
-  final GlobalKey<HomeSubscribesPageState> _homeTracePageKey = GlobalKey<HomeSubscribesPageState>();
-
   final GlobalKey<HomeTrendPageState> _homeTrendPageKey = GlobalKey<HomeTrendPageState>();
 
   late TabController tabController;
@@ -44,8 +41,8 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
   List homeTabsType = [
     {"text": "activities", "icon": Icons.notifications_active_rounded},
     {"text": "trend", "icon": Icons.local_fire_department_sharp},
-    {"text": "subscribes", "icon": Icons.star},
-    {"text": "tourRecord", "icon": Icons.receipt},
+    // {"text": "subscribes", "icon": Icons.star},
+    // {"text": "tourRecord", "icon": Icons.receipt},
   ];
 
   List<Widget> homeTabsWidget = [];
@@ -86,16 +83,8 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
           _homeTabsWidget.add(HomeTrendPage(key: _homeTrendPageKey));
           waitMap["load"] = _homeTrendPageKey.currentState?.trendStatus.load ?? false;
           break;
-        case "subscribes":
-          _homeTabsWidget.add(HomeSubscribesPage(key: _homeTracePageKey));
-          waitMap["load"] = _homeTracePageKey.currentState?.traceStatus.load ?? false;
-          break;
-        case "tourRecord":
-          _homeTabsWidget.add(const HomeTourRecordPage());
-          waitMap["load"] = false;
-          break;
         default:
-          // Null
+        // Null
           break;
       }
       _homeTabs.add(waitMap);
@@ -122,6 +111,64 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
         /// 数据未加载完成时
         switch (snapshot.connectionState) {
           case ConnectionState.done:
+            return Scaffold(
+              extendBodyBehindAppBar: false,
+              body: CustomScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                slivers: [
+                  SliverAppBar(
+                    stretch: true,
+                    pinned: true,
+                    primary: true,
+                    automaticallyImplyLeading: false,
+                    expandedHeight: 0,
+                    toolbarHeight: 38,
+                    backgroundColor: Theme.of(context).primaryColor.withOpacity(.9),
+                    flexibleSpace: FlexibleSpaceBar(
+                      expandedTitleScale: 1,
+                      titlePadding: EdgeInsets.zero,
+                      title: TabBar(
+                        controller: tabController,
+                        isScrollable: false,
+                        tabs: homeTabs.map((e) {
+                          return Tab(
+                            iconMargin: EdgeInsets.zero,
+                            child: e["load"] ?? false
+                                ? const Text("-")
+                                : Container(
+                                    padding: EdgeInsets.zero,
+                                    constraints: BoxConstraints(
+                                      maxWidth: MediaQuery.of(context).size.width / 4,
+                                    ),
+                                    child: Wrap(
+                                      crossAxisAlignment: WrapCrossAlignment.center,
+                                      children: [
+                                        // e["icon"],
+                                        // const SizedBox(width: 5),
+                                        Text(
+                                          "${e["text"]}",
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ),
+                  SliverFillRemaining(
+                    child: TabBarView(
+                      controller: tabController,
+                      children: homeTabsWidget.toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
+
             return DefaultTabController(
               length: homeTabs.length,
               child: Scaffold(
@@ -142,17 +189,17 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
                         child: e["load"] ?? false
                             ? const Text("-")
                             : Wrap(
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  e["icon"],
-                                  Text(
-                                    "${e["text"]}",
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  )
-                                ],
-                              ),
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          children: [
+                            e["icon"],
+                            Text(
+                              "${e["text"]}",
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            )
+                          ],
+                        ),
                       );
                     }).toList(),
                   ),

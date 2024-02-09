@@ -1,7 +1,5 @@
 import 'package:bfban/component/_userAvatar/index.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_img/index.dart';
 
 import '../../component/_privilegesTag/index.dart';
 import '../../utils/date.dart';

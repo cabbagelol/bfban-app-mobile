@@ -4,12 +4,14 @@ import 'package:bfban/pages/license/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
 import 'package:bfban/pages/profile/account/achievement.dart';
 import 'package:bfban/pages/profile/account/change_password.dart';
+import 'package:bfban/pages/profile/account/history.dart';
 import 'package:bfban/pages/profile/account/setuser_name.dart';
 import 'package:bfban/pages/index/setting/destock.dart';
 import 'package:bfban/pages/index/setting/language.dart';
 import 'package:bfban/pages/index/setting/notice.dart';
 import 'package:bfban/pages/index/setting/public_translator.dart';
 import 'package:bfban/pages/index/setting/setting.dart';
+import 'package:bfban/pages/profile/account/subscribes.dart';
 import 'package:fluro/fluro.dart';
 
 // S Pages
@@ -124,6 +126,18 @@ class Routes {
       "url": "/account/achievement/:id",
       "item": (context, params) {
         return UserAchievementDetailPage(id: params["id"][0]);
+      }
+    },
+    {
+      "url": "/account/history/",
+      "item": (context, params) {
+        return const UserHistoryPage();
+      }
+    },
+    {
+      "url": "/account/subscribes/",
+      "item": (context, params) {
+        return const UserSubscribesPage();
       }
     },
     {

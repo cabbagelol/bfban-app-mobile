@@ -359,16 +359,19 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         ),
         body: Column(
           children: [
-            TabBar(
-              automaticIndicatorColorAdjustment: true,
-              controller: tabController,
-              tabs: searchTabs.map((e) {
-                return Tab(
-                  icon: e["icon"],
-                  text: e["text"],
-                  iconMargin: EdgeInsets.zero,
-                );
-              }).toList(),
+            Container(
+              color: Theme.of(context).appBarTheme.backgroundColor,
+              child: TabBar(
+                automaticIndicatorColorAdjustment: true,
+                controller: tabController,
+                tabs: searchTabs.map((e) {
+                  return Tab(
+                    icon: e["icon"],
+                    text: e["text"],
+                    iconMargin: EdgeInsets.zero,
+                  );
+                }).toList(),
+              ),
             ),
             const Divider(height: 1),
             Expanded(

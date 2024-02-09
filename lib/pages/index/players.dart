@@ -1,21 +1,19 @@
 /// 玩家列表
 
-import 'package:bfban/component/_empty/index.dart';
+import 'dart:ui';
+
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../component/_filter/index.dart';
 import '../../component/_refresh/index.dart';
 import '../../data/index.dart';
-import '../../widgets/filter/create_time_filter.dart';
-import '../../widgets/filter/game_filter.dart';
-import '../../widgets/filter/solt_filter.dart';
-import '../../widgets/filter/update_time_filter.dart';
 import '../../widgets/index/cheat_list_card.dart';
+import '../../widgets/player/filter/index.dart';
 
 class PlayerListPage extends StatefulWidget {
   const PlayerListPage({
@@ -34,7 +32,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   // 筛选
-  final GlobalKey<GameNameFilterPanelState> _gameNameFilterKey = GlobalKey();
+  GlobalKey<PlayerFilterPanelState> _playerFilterPanelKey = GlobalKey<PlayerFilterPanelState>();
 
   // TAB
   late TabController? _tabController;
@@ -63,8 +61,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   // 玩家状态
   List? cheaterStatus = Config.cheaterStatus["child"] ?? [];
-
-  final GlobalKey<FilterState> _filterKey = GlobalKey();
 
   @override
   void initState() {
@@ -270,7 +266,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       });
 
       // 渲染[筛选]控件内部数据
-      _gameNameFilterKey.currentState!.upData();
+      // _gameNameFilterKey.currentState!.upData();
     }
 
     setState(() {
@@ -285,200 +281,124 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     return Scaffold(
       key: _scaffoldKey,
       extendBodyBehindAppBar: false,
-      appBar: AppBar(
-        titleSpacing: 0,
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(.1),
-        title: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          indicatorWeight: .1,
-          labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          onTap: (index) => _onSwitchTab(index),
-          tabs: cheaterStatus!.map((i) {
-            return Tab(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: <Widget>[
-                  I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
-                  if (i["num"] != null && i["num"] > 0)
-                    Positioned(
-                      top: -10,
-                      right: -12,
-                      child: AnimatedOpacity(
-                        opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
-                        duration: const Duration(milliseconds: 300),
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.error,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 12,
-                            minHeight: 12,
-                          ),
-                          child: Text(
-                            i["num"].toString(),
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.white,
+      body: Refresh(
+        key: _refreshKey,
+        edgeOffset: 100 + MediaQuery.of(context).padding.top,
+        onRefresh: _onRefresh,
+        onLoad: _getMore,
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              stretch: true,
+              pinned: true,
+              primary: true,
+              automaticallyImplyLeading: false,
+              expandedHeight: 0,
+              toolbarHeight: 38,
+              backgroundColor: Theme.of(context).primaryColor.withOpacity(.9),
+              flexibleSpace: FlexibleSpaceBar(
+                expandedTitleScale: 1,
+                titlePadding: EdgeInsets.zero,
+                background: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 10,
+                    sigmaY: 10,
+                  ),
+                  child: const SizedBox(),
+                ),
+                title: Row(
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: TabBar(
+                        controller: _tabController,
+                        isScrollable: true,
+                        automaticIndicatorColorAdjustment: false,
+                        onTap: (index) => _onSwitchTab(index),
+                        tabs: cheaterStatus!.map((i) {
+                          return Tab(
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: <Widget>[
+                                I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
+                                if (i["num"] != null && i["num"] > 0)
+                                  Positioned(
+                                    top: -10,
+                                    right: -12,
+                                    child: AnimatedOpacity(
+                                      opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
+                                      duration: const Duration(milliseconds: 300),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).colorScheme.error,
+                                          borderRadius: BorderRadius.circular(5),
+                                          border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
+                                        ),
+                                        constraints: const BoxConstraints(
+                                          minWidth: 12,
+                                          minHeight: 12,
+                                        ),
+                                        child: Text(
+                                          i["num"] > 9999 ? "9999+" : i["num"].toString(),
+                                          style: TextStyle(
+                                            fontSize: FontSize.xSmall.value,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
-                            textAlign: TextAlign.center,
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    PlayerFilterPanel(
+                      key: _playerFilterPanelKey,
+                      onChange: (Map value) {
+                        print("onChange:");
+                        print(value);
+                        playersStatus!.parame!.setData(value);
+                        _onRefresh();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverList.builder(
+              itemCount: playersStatus!.list!.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index < playersStatus!.list!.length) {
+                  // 分页提示
+                  if (playersStatus!.list![index]["pageTip"] != null) {
+                    return SizedBox(
+                      height: 30,
+                      child: Center(
+                        child: Text(
+                          FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Theme.of(context).textTheme.titleSmall?.color,
                           ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-            );
-          }).toList(),
-        ),
-      ),
-      body: Filter(
-        key: _filterKey,
-        maxHeight: 300,
-        suckTop: false,
-        actions: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: 50,
-              color: Theme.of(context).scaffoldBackgroundColor,
-              child: ButtonBar(
-                alignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  OutlinedButton(
-                    child: Text(
-                      FlutterI18n.translate(context, "basic.button.cancel"),
-                    ),
-                    onPressed: () {
-                      _filterKey.currentState!.hidden();
-                    },
-                  ),
-                  OutlinedButton(
-                    child: Text(
-                      FlutterI18n.translate(context, "basic.button.submit"),
-                    ),
-                    onPressed: () {
-                      _filterKey.currentState!.hidden();
-                      _filterKey.currentState!.updataFrom();
-                    },
-                  ),
-                ],
-              ),
+                    );
+                  }
+
+                  // 内容卡片
+                  return CheatListCard(
+                    item: playersStatus?.list![index],
+                  );
+                }
+
+                return Container();
+              },
             ),
-          ),
-        ],
-        slot: <FilterItemWidget>[
-          FilterItemWidget(
-            title: Text(
-              FlutterI18n.translate(context, "list.filters.sortByTitle"),
-              style: const TextStyle(fontSize: 12),
-              softWrap: true,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            panel: SoltFilterPanel(),
-          ),
-          FilterItemWidget(
-            title: Text(
-              FlutterI18n.translate(context, "list.colums.updateTime"),
-              style: const TextStyle(fontSize: 12),
-              softWrap: true,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textWidthBasis: TextWidthBasis.longestLine,
-            ),
-            panel: CreateTimeFilterPanel(),
-          ),
-          FilterItemWidget(
-            title: Text(
-              FlutterI18n.translate(context, "list.colums.reportTime"),
-              style: const TextStyle(fontSize: 12),
-              softWrap: true,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textWidthBasis: TextWidthBasis.longestLine,
-            ),
-            panel: UpdateTimeFilterPanel(),
-          ),
-          FilterItemWidget(
-            title: Text(
-              FlutterI18n.translate(context, "report.labels.game"),
-              style: const TextStyle(fontSize: 12),
-              softWrap: true,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textWidthBasis: TextWidthBasis.longestLine,
-            ),
-            panel: GameNameFilterPanel(
-              key: _gameNameFilterKey,
-            ),
-          ),
-        ],
-        onChange: (data) async {
-          Map filterData = data;
-          onResetPlayerParame(game: true, sort: true, data: true);
-
-          if (data["createTime"] != null) {
-            List createTime = data["createTime"].split(",");
-
-            filterData["createTimeTo"] = DateTime.parse(createTime[0]).millisecondsSinceEpoch;
-            filterData["createTimeFrom"] = DateTime.parse(createTime[1]).millisecondsSinceEpoch;
-          }
-          if (data["updateTime"] != null) {
-            List updateTime = data["updateTime"].split(",");
-
-            filterData["updateTimeTo"] = DateTime.parse(updateTime[0]).millisecondsSinceEpoch;
-            filterData["updateTimeFrom"] = DateTime.parse(updateTime[0]).millisecondsSinceEpoch;
-          }
-
-          playersStatus!.parame!.setData(filterData);
-
-          _onRefresh();
-          getPlayerStatistics();
-        },
-        onReset: () => onResetPlayerParame(),
-        // 内容
-        child: Refresh(
-          key: _refreshKey,
-          onRefresh: _onRefresh,
-          onLoad: _getMore,
-          child: playersStatus!.list!.isEmpty
-              ? const EmptyWidget()
-              : ListView.builder(
-                  controller: _scrollController,
-                  itemCount: playersStatus!.list!.length + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index < playersStatus!.list!.length) {
-                      // 分页提示
-                      if (playersStatus!.list![index]["pageTip"] != null) {
-                        return SizedBox(
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).textTheme.titleSmall?.color,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-
-                      // 内容卡片
-                      return CheatListCard(
-                        item: playersStatus?.list![index],
-                      );
-                    }
-
-                    return Container();
-                  },
-                ),
+          ],
         ),
       ),
     );

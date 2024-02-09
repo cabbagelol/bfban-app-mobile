@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:bfban/component/_html/html.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
@@ -21,19 +22,61 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
 
   Map achievementDetailInfo = {};
 
+  bool activeButton = true;
+
+  bool activeButtonload = false;
+
   @override
   void initState() {
     achievementDetailInfo = achievementUtil.getItem(widget.id!);
     super.initState();
   }
 
+  /// [Future]
+  /// 主动获取成就
+  void onActiveAchievement() async {
+    if (achievementDetailInfo["value"] == null) return;
+    setState(() {
+      activeButtonload = true;
+    });
+
+    Response result = await achievementUtil.onActiveAchievement(achievementDetailInfo["value"]);
+
+    Map d = result.data;
+
+    if (d["success"] == 1) {
+      setState(() {
+        activeButton = false;
+        activeButtonload = false;
+      });
+
+      EluiMessageComponent.success(context)(
+        child: Text(FlutterI18n.translate(
+          context,
+          "appStatusCode.${d["code"].replaceAll(".", "_")}",
+          translationParams: {"message": d["message"] ?? ""},
+        )),
+      );
+      return;
+    }
+
+    EluiMessageComponent.error(context)(
+      child: Text(FlutterI18n.translate(
+        context,
+        "appStatusCode.${d["code"].replaceAll(".", "_")}",
+        translationParams: {"message": d["message"] ?? ""},
+      )),
+    );
+
+    setState(() {
+      activeButtonload = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      appBar: AppBar(),
       body: ListView(
         children: [
           ClipPath(
@@ -88,6 +131,23 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
           )
         ],
       ),
+      bottomNavigationBar: (achievementDetailInfo.containsKey("acquisition") && achievementDetailInfo["acquisition"].indexOf("active") >= 0)
+          ? Container(
+              padding: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                onPressed: () {
+                  onActiveAchievement();
+                },
+                child: activeButtonload
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(FlutterI18n.translate(context, "profile.achievement.getButton")),
+              ),
+            )
+          : null,
     );
   }
 }

@@ -3,7 +3,6 @@ import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/_load/index.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -108,6 +107,7 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 35),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Row(
                               children: [

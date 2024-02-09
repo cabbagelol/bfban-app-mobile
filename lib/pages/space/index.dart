@@ -260,8 +260,8 @@ class UserSpacePageState extends State<UserSpacePage> {
                       SliverAppBar(
                         stretch: true,
                         pinned: false,
+                        automaticallyImplyLeading: false,
                         backgroundColor: Colors.transparent,
-                        leading: Container(),
                         toolbarHeight: 0,
                         expandedHeight: 200,
                         flexibleSpace: FlexibleSpaceBar(

@@ -34,6 +34,11 @@ class BlueDarkTheme extends AppBaseThemeItem {
           color: Colors.white,
         ),
       ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          textStyle: MaterialStateProperty.all(TextStyle(color: Colors.white)),
+        ),
+      ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(const Color(0x7a364e80)),
@@ -247,6 +252,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),

@@ -31,23 +31,23 @@ abstract class FilterPanelWidget extends StatefulWidget {
     return data!;
   }
 
-  /// [Event]
-  /// 获取 其他面板数据
-  FilterPanelData getPanelData(String name) {
-    return _getPanel(name).panel!.data!;
-  }
-
-  /// [Event]
-  /// 获取 其他面板的title状态
-  FilterTitleWidget? getTitleData(String name) {
-    return _getPanel(name).title;
-  }
-
-  /// [Event]
-  /// 改变 其他面板数据
-  void setPanelData(String name, FilterPanelData data) {
-    _getPanel(name).panel!.data = data;
-  }
+  // /// [Event]
+  // /// 获取 其他面板数据
+  // FilterPanelData getPanelData(String name) {
+  //   return _getPanel(name).panel!.data!;
+  // }
+  //
+  // /// [Event]
+  // /// 获取 其他面板的title状态
+  // FilterTitleWidget? getTitleData(String name) {
+  //   return _getPanel(name).title;
+  // }
+  //
+  // /// [Event]
+  // /// 改变 其他面板数据
+  // void setPanelData(String name, FilterPanelData data) {
+  //   _getPanel(name).panel!.data = data;
+  // }
 
   /// [Event]
   /// 收起面板

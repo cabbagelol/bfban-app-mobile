@@ -65,7 +65,6 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         title: Text(
           FlutterI18n.translate(context, "profile.achievement.title"),
         ),
@@ -78,16 +77,17 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
             Container(
               color: Theme.of(context).cardTheme.color,
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
+              margin: const EdgeInsets.only(bottom: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     children: [
                       Text(FlutterI18n.translate(context, "profile.achievement.exp")),
-                      Container(height: 5),
+                      const SizedBox(height: 5),
                       Opacity(
                         opacity: .9,
-                        child: Text(_userAchievementStatus.data!.userAchievementExp.toString()),
+                        child: Text("${_userAchievementStatus.data!.userAchievementExp ?? "N/A"}"),
                       ),
                     ],
                   ),
@@ -95,36 +95,40 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
                   Column(
                     children: [
                       Text(FlutterI18n.translate(context, "profile.achievement.owned")),
-                      Container(height: 5),
-                      achievementWidget(
-                        data: _userAchievementStatus.data!.o_achievements,
-                        size: 20,
-                      ),
+                      const SizedBox(height: 5),
+                      if (_userAchievementStatus.data!.o_achievements!.isNotEmpty)
+                        achievementWidget(
+                          data: _userAchievementStatus.data!.o_achievements,
+                          size: 20,
+                        )
+                      else
+                        const Text("N/A"),
                     ],
                   )
                 ],
               ),
             ),
-            const Divider(thickness: 1, height: 1),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: (Config.achievements["child"] as List).where((o) => !o.containsKey("isHidden")).map<Widget>((e) {
                 if (e["child"] != null) {
                   return ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.name"),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: FontSize.large.value,
+                    title: SelectionArea(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.name"),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: FontSize.large.value,
+                            ),
                           ),
-                        ),
-                        HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.description"), style: style),
-                      ],
+                          HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.description"), style: style),
+                        ],
+                      ),
                     ),
                     subtitle: Card(
                       margin: const EdgeInsets.only(top: 5),
@@ -147,16 +151,18 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
                 }
 
                 return ListTile(
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.name"),
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSize.large.value),
-                      ),
-                      HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.conditions"), style: style),
-                    ],
+                  title: SelectionArea(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.name"),
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSize.large.value),
+                        ),
+                        HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.conditions"), style: style),
+                      ],
+                    ),
                   ),
                   subtitle: Card(
                     margin: const EdgeInsets.only(top: 5),
@@ -210,28 +216,30 @@ class AchievementCard extends StatelessWidget {
           width: 30,
           height: 30,
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {
-                if (onTap != null) onTap!();
-              },
-              child: Text(
-                FlutterI18n.translate(context, "profile.achievement.list.$value.name"),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                  decorationThickness: 4,
-                  decorationStyle: TextDecorationStyle.dashed,
+        SelectionArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  if (onTap != null) onTap!();
+                },
+                child: Text(
+                  FlutterI18n.translate(context, "profile.achievement.list.$value.name"),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    decorationThickness: 4,
+                    decorationStyle: TextDecorationStyle.dashed,
+                  ),
                 ),
               ),
-            ),
-            Text(
-              FlutterI18n.translate(context, "profile.achievement.list.$value.description"),
-              style: TextStyle(fontSize: FontSize.small.value),
-            ),
-          ],
+              Text(
+                FlutterI18n.translate(context, "profile.achievement.list.$value.description"),
+                style: TextStyle(fontSize: FontSize.small.value),
+              ),
+            ],
+          ),
         ),
       ],
     );

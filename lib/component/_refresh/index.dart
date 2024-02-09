@@ -10,12 +10,14 @@ class Refresh extends StatefulWidget {
   final FutureOr Function()? onLoad;
   final double edgeOffset;
   final Widget child;
+  final Axis triggerAxis;
 
   const Refresh({
     Key? key,
     this.onRefresh,
     this.onLoad,
     this.edgeOffset = 100,
+    this.triggerAxis = Axis.vertical,
     required this.child,
   }) : super(key: key);
 
@@ -42,7 +44,7 @@ class RefreshState extends State<Refresh> {
   }
 
   Header? onHeader() {
-    Header ch = CupertinoHeader();
+    Header ch = const CupertinoHeader();
     Header mh = MaterialHeader(
       triggerOffset: widget.edgeOffset,
       backgroundColor: Theme.of(context).canvasColor,
@@ -55,6 +57,7 @@ class RefreshState extends State<Refresh> {
   Widget build(BuildContext context) {
     return EasyRefresh(
       controller: controller,
+      triggerAxis: widget.triggerAxis,
       header: onHeader(),
       footer: ClassicFooter(
         showText: false,

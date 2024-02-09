@@ -8,6 +8,7 @@ import 'package:bfban/utils/index.dart';
 import 'package:provider/provider.dart';
 
 import '../../component/_privilegesTag/index.dart';
+import '../../component/_refresh/index.dart';
 import '../../provider/userinfo_provider.dart';
 
 class UserCenterPage extends StatefulWidget {
@@ -70,29 +71,32 @@ class _UserCenterPageState extends State<UserCenterPage> {
   Widget build(BuildContext context) {
     return Consumer<UserInfoProvider>(
       builder: (context, UserInfoProvider data, child) {
-        return RefreshIndicator(
-          displacement: 120,
-          edgeOffset: MediaQuery.of(context).viewInsets.top,
+        return Refresh(
+          edgeOffset: MediaQuery.of(context).systemGestureInsets.top + kBottomNavigationBarHeight,
           onRefresh: () => _onRefresh(data),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipPath(
-                clipBehavior: Clip.hardEdge,
-                child: InkWell(
-                  onTap: _opEnSpace(),
-                  child: Container(
-                    color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
-                    child: Stack(
-                      children: [
+          child: CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                stretch: true,
+                pinned: true,
+                primary: true,
+                automaticallyImplyLeading: false,
+                toolbarHeight: 0,
+                expandedHeight: MediaQuery.of(context).systemGestureInsets.top + kBottomNavigationBarHeight + 50,
+                flexibleSpace: FlexibleSpaceBar(
+                  expandedTitleScale: 1,
+                  titlePadding: EdgeInsets.zero,
+                  title: ClipPath(
+                    clipBehavior: Clip.hardEdge,
+                    child: InkWell(
+                      onTap: _opEnSpace(),
+                      child: Container(
+                        color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.4),
 
                         /// 用户信息板块
-                        Container(
+                        child: Container(
                           margin: EdgeInsets.only(
-                            top: MediaQuery.of(context).viewInsets.top + 120,
-                            left: 15,
-                            right: 15,
+                            top: MediaQuery.of(context).systemGestureInsets.top + kBottomNavigationBarHeight,
                           ),
                           child: Container(
                             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
@@ -107,8 +111,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 ),
                               ],
                               borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(9),
-                                topRight: Radius.circular(9),
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15),
                               ),
                             ),
                             child: Row(
@@ -116,7 +120,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                 Expanded(
                                   flex: 1,
                                   child: Wrap(
-                                    spacing: 5,
+                                    spacing: 35,
                                     runSpacing: 5,
                                     children: [
                                       if (data.userinfo["username"] != null)
@@ -146,37 +150,26 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                     ],
                                   ),
                                 ),
-                                if (data.userinfo["userAvatar"] != null)
-                                  UserAvatar(
-                                    src: data.userinfo["userAvatar"],
-                                    size: 60,
-                                  ),
-                                const SizedBox(width: 10),
                                 const Icon(Icons.chevron_right),
                               ],
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
-              Divider(
-                height: .2,
-                thickness: .2,
-                color: Theme.of(context).dividerColor.withOpacity(.1),
-              ),
-              Expanded(
-                flex: 1,
+              SliverFillRemaining(
+                fillOverscroll: false,
+                hasScrollBody: false,
                 child: MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
-                  child: ListView(
+                  child: Column(
                     children: [
-                      Visibility(
-                        visible: data.isLogin,
-                        child: EluiCellComponent(
+                      if (data.isLogin)
+                        EluiCellComponent(
                           title: FlutterI18n.translate(context, "app.setting.cell.information.title"),
                           label: FlutterI18n.translate(context, "app.setting.cell.information.describe"),
                           theme: EluiCellTheme(
@@ -188,7 +181,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
                           islink: true,
                           onTap: () => _urlUtil.opEnPage(context, "/account/information/"),
                         ),
-                      ),
                       if (data.isLogin)
                         EluiCellComponent(
                           title: FlutterI18n.translate(context, "app.setting.cell.achievement.title"),
@@ -202,6 +194,32 @@ class _UserCenterPageState extends State<UserCenterPage> {
                           islink: true,
                           onTap: () => _urlUtil.opEnPage(context, "/account/achievements/"),
                         ),
+                      if (data.isLogin)
+                        EluiCellComponent(
+                          title: FlutterI18n.translate(context, "app.setting.cell.history.title"),
+                          label: FlutterI18n.translate(context, "app.setting.cell.history.describe"),
+                          theme: EluiCellTheme(
+                            titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                            labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                            linkColor: Theme.of(context).textTheme.titleMedium?.color,
+                            backgroundColor: Theme.of(context).cardTheme.color,
+                          ),
+                          islink: true,
+                          onTap: () => _urlUtil.opEnPage(context, "/account/history/"),
+                        ),
+                      if (data.isLogin)
+                        EluiCellComponent(
+                          title: FlutterI18n.translate(context, "app.setting.cell.subscribes.title"),
+                          label: FlutterI18n.translate(context, "app.setting.cell.subscribes.describe"),
+                          theme: EluiCellTheme(
+                            titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                            labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                            linkColor: Theme.of(context).textTheme.titleMedium?.color,
+                            backgroundColor: Theme.of(context).cardTheme.color,
+                          ),
+                          islink: true,
+                          onTap: () => _urlUtil.opEnPage(context, "/account/subscribes/"),
+                        ),
                       EluiCellComponent(
                         title: FlutterI18n.translate(context, "app.setting.cell.media.title"),
                         label: FlutterI18n.translate(context, "app.setting.cell.media.describe"),
@@ -214,9 +232,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
                         islink: true,
                         onTap: () => _urlUtil.opEnPage(context, "/account/media/"),
                       ),
-                      Visibility(
-                        visible: data.isLogin,
-                        child: EluiCellComponent(
+                      if (data.isLogin)
+                        EluiCellComponent(
                           title: FlutterI18n.translate(context, "app.setting.cell.customReply.title"),
                           label: FlutterI18n.translate(context, "app.setting.cell.customReply.describe"),
                           theme: EluiCellTheme(
@@ -228,6 +245,8 @@ class _UserCenterPageState extends State<UserCenterPage> {
                           islink: true,
                           onTap: () => _urlUtil.opEnPage(context, "/report/customReply/page"),
                         ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       EluiCellComponent(
                         title: FlutterI18n.translate(context, "app.setting.cell.resources.title"),
@@ -241,9 +260,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
                         islink: true,
                         onTap: () => _urlUtil.opEnPage(context, '/profile/support'),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
                       EluiCellComponent(
                         title: FlutterI18n.translate(context, "app.setting.title"),
                         theme: EluiCellTheme(
@@ -255,52 +271,23 @@ class _UserCenterPageState extends State<UserCenterPage> {
                         islink: true,
                         onTap: () => _opEnSetting(),
                       ),
-                      Offstage(
-                        offstage: !data.isLogin,
-                        child: Container(
-                          height: 90,
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                            left: 20,
-                            right: 20,
-                            bottom: 30,
+                      const SizedBox(height: 20),
+                      if (data.isLogin)
+                        EluiCellComponent(
+                          title: FlutterI18n.translate(context, "header.signout"),
+                          theme: EluiCellTheme(
+                            titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                            labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                            linkColor: Theme.of(context).textTheme.titleMedium?.color,
+                            backgroundColor: Theme.of(context).cardTheme.color,
                           ),
-                          child: ElevatedButton(
-                            style: Theme.of(context).elevatedButtonTheme.style!.copyWith(
-                              elevation: MaterialStateProperty.all(0),
-                              padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 20)),
-                              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.error),
-                            ),
-                            onPressed: () => removeUserInfo(data),
-                            child: accountLoading
-                                ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                              ),
-                            )
-                                : Wrap(
-                              spacing: 5,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                const Icon(Icons.output),
-                                Text(
-                                  FlutterI18n.translate(context, "header.signout"),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          onTap: () => _opEnSetting(),
                         ),
-                      ),
-                      const SizedBox(height: 80),
+                      const SizedBox(height: 30),
                     ],
                   ),
                 ),
-              )
+              ),
             ],
           ),
         );

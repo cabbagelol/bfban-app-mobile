@@ -27,7 +27,7 @@ class _achievementWidgetState extends State<achievementWidget> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 5,
+      spacing: 3,
       children: widget.data == null
           ? [const Text("N/A")]
           : widget.data!.map<Widget>((i) {

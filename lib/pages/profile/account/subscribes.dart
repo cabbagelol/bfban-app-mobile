@@ -1,26 +1,25 @@
-/// 追踪
-
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../component/_empty/index.dart';
-import '../../component/_refresh/index.dart';
-import '../../constants/api.dart';
-import '../../data/index.dart';
-import '../../provider/userinfo_provider.dart';
-import '../../utils/index.dart';
-import '../../widgets/hint_login.dart';
-import '../../widgets/index/cheat_list_card.dart';
+import '../../../component/_empty/index.dart';
+import '../../../component/_refresh/index.dart';
+import '../../../constants/api.dart';
+import '../../../data/index.dart';
+import '../../../provider/userinfo_provider.dart';
+import '../../../utils/index.dart';
+import '../../../widgets/hint_login.dart';
+import '../../../widgets/index.dart';
 
-class HomeSubscribesPage extends StatefulWidget {
-  const HomeSubscribesPage({Key? key}) : super(key: key);
+class UserSubscribesPage extends StatefulWidget {
+  const UserSubscribesPage();
 
   @override
-  State<HomeSubscribesPage> createState() => HomeSubscribesPageState();
+  State<UserSubscribesPage> createState() => _UserSubscribesPageState();
 }
 
-class HomeSubscribesPageState extends State<HomeSubscribesPage> with AutomaticKeepAliveClientMixin {
+class _UserSubscribesPageState extends State<UserSubscribesPage> {
   // 列表
   final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
@@ -108,31 +107,35 @@ class HomeSubscribesPageState extends State<HomeSubscribesPage> with AutomaticKe
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return Consumer<UserInfoProvider>(
-      builder: (context, data, child) {
-        if (data.userinfo.isEmpty) return const HintLoginWidget();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(FlutterI18n.translate(context, "app.setting.cell.subscribes.title")),
+      ),
+      body: Consumer<UserInfoProvider>(
+        builder: (context, data, child) {
+          if (data.userinfo.isEmpty) return const HintLoginWidget();
 
-        if (traceStatus.list!.isEmpty) return const EmptyWidget();
+          if (traceStatus.list!.isEmpty) return const EmptyWidget();
 
-        return Refresh(
-          key: _refreshKey,
-          onRefresh: _onRefresh,
-          child: ListView.builder(
-            controller: _scrollController,
-            itemCount: traceStatus.list!.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (traceStatus.list!.isEmpty) {
-                return const EmptyWidget();
-              }
+          return Refresh(
+            key: _refreshKey,
+            onRefresh: _onRefresh,
+            child: ListView.builder(
+              controller: _scrollController,
+              itemCount: traceStatus.list!.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (traceStatus.list!.isEmpty) {
+                  return const EmptyWidget();
+                }
 
-              return CheatListCard(
-                item: traceStatus.list![index],
-              );
-            },
-          ),
-        );
-      },
+                return CheatListCard(
+                  item: traceStatus.list![index],
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

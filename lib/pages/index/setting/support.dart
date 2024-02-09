@@ -41,8 +41,6 @@ class _SupportPageState extends State<SupportPage> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
         title: Text(FlutterI18n.translate(context, "app.setting.support.title")),
         actions: [
           IconButton(

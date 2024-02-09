@@ -130,6 +130,14 @@
           "title": "成就",
           "describe": "用户成就"
         },
+        "history": {
+          "title": "游览",
+          "describe": "游览过往内容"
+        },
+        "subscribes": {
+          "title": "案件关注",
+          "describe": "订阅案件"
+        },
         "information": {
           "title": "账户",
           "describe": "修改用户名称,修改密码,账户设置"

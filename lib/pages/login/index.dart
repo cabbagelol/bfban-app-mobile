@@ -129,7 +129,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
             },
           ),
         ),
-        bottomSheet: Container(
+        bottomNavigationBar: Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: GestureDetector(

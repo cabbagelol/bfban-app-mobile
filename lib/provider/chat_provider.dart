@@ -52,16 +52,16 @@ class ChatProvider with ChangeNotifier {
 
   /// 极光初始
   initJIGUANG() async {
-    Map loaclMessage = await getLocalMessage();
+    Map localMessage = await getLocalMessage();
 
-    if (loaclMessage["onSwitchSiteMessage"] != null) messageJiguanStatus.onSwitchSiteMessage = loaclMessage["onSwitchSiteMessage"];
-    if (loaclMessage["autoSwitchAppessage"] != null) messageJiguanStatus.autoSwitchAppMessage = loaclMessage["autoSwitchAppessage"];
-    if (loaclMessage["tags"] != null) messageJiguanStatus.AppMessageTags = loaclMessage["tags"];
+    if (localMessage["onSwitchSiteMessage"] != null) messageJiguanStatus.onSwitchSiteMessage = localMessage["onSwitchSiteMessage"];
+    if (localMessage["autoSwitchAppessage"] != null) messageJiguanStatus.autoSwitchAppMessage = localMessage["autoSwitchAppessage"];
+    if (localMessage["tags"] != null) messageJiguanStatus.AppMessageTags = localMessage["tags"];
 
     // jpush.setAlias("bfban.app");
 
     // 设置身份标签
-    if (loaclMessage["tags"] != null) {
+    if (localMessage["tags"] != null) {
       List<String> tags = [];
       for (var i in messageJiguanStatus.AppMessageTags!) {
         tags.add(i["value"]);
@@ -81,7 +81,7 @@ class ChatProvider with ChangeNotifier {
     // 极光配置
     // jpush.addTags([name]);
 
-    await setLoaclMessage();
+    await setLocalMessage();
 
     notifyListeners();
   }
@@ -90,7 +90,7 @@ class ChatProvider with ChangeNotifier {
   /// 极光推送开关
   void onJiguanPush() async {
     messageJiguanStatus.autoSwitchAppMessage ? resumePush() : stopPush();
-    await setLoaclMessage();
+    await setLocalMessage();
     notifyListeners();
   }
 
@@ -217,7 +217,10 @@ class ChatProvider with ChangeNotifier {
     StorageData userChatData = await _storage.get(packageName);
     dynamic localChat = userChatData.value;
 
-    if (userChatData.code == 0) {
+    StorageData userLoginData = await _storage.get("login");
+    dynamic localUserLogin = userLoginData.value ??= null;
+
+    if (userChatData.code == 0 && localUserLogin != null) {
       return localChat;
     }
 
@@ -226,13 +229,24 @@ class ChatProvider with ChangeNotifier {
 
   /// [Event]
   /// 清除本地所有储存
-  Future delectLocalMessage() async {
-    await Storage().remove(packageName);
+  Future deleteLocalMessage() async {
+    await _storage.remove(packageName);
 
     return true;
   }
 
-  Future setLoaclMessage() async {
+  /// [Event]
+  /// 清除网络保存在状态机中数据
+  /// 如登出时触发,但不调用[deleteLocalMessage]删除记录本地储存的消息
+  Future clearNetworkLocalMessage() async {
+    messageStatus.load = false;
+    messageStatus.total = 0;
+    messageStatus.data = null;
+  }
+
+  /// [Event]
+  /// 设置本地消息
+  Future setLocalMessage() async {
     Map data = await getLocalMessage();
 
     data["child"] = data["child"] ?? [];

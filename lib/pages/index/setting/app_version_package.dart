@@ -138,12 +138,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                   height: 20,
                   child: Divider(height: 1),
                 ),
-                data.list
-                        .where((i) {
-                          return i["version"] == data.currentVersion;
-                        })
-                        .toList()
-                        .isEmpty
+                data.list.where((i) => i["version"] == data.currentVersion).toList().isEmpty
                     ? SizedBox(
                         height: 50,
                         child: EluiTipComponent(

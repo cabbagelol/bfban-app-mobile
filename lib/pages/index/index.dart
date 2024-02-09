@@ -9,6 +9,7 @@ import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -184,73 +185,6 @@ class _IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     _context = context;
-    Widget titleWidget = Row(
-      children: [
-        // 消息
-        Consumer<ChatProvider>(
-          builder: (BuildContext context, data, Widget? child) {
-            return SizedBox(
-              width: 50,
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: <Widget>[
-                  Consumer<UserInfoProvider>(
-                    builder: (BuildContext context, userdata, Widget? child) {
-                      return AnimatedOpacity(
-                        opacity: userdata.isLogin ? 1 : .3,
-                        duration: const Duration(seconds: 1),
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.chat,
-                            color: Theme.of(context).appBarTheme.iconTheme!.color,
-                          ),
-                          onPressed: _openMessage(),
-                        ),
-                      );
-                    },
-                  ),
-                  Visibility(
-                    visible: data.total != 0,
-                    child: Positioned(
-                      top: 2,
-                      right: 10,
-                      child: Container(
-                        padding: const EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.error,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        constraints: const BoxConstraints(
-                          minWidth: 15,
-                          minHeight: 15,
-                        ),
-                        child: Text(
-                          data.total.toString(), //通知数量
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-
-        // 搜索框
-        Expanded(
-          flex: 1,
-          child: TitleSearchWidget(
-            controller: TextEditingController(),
-            theme: titleSearchTheme.black,
-          ),
-        ),
-      ],
-    );
 
     return WillPopScope(
       onWillPop: () async {
@@ -276,9 +210,60 @@ class _IndexPageState extends State<IndexPage> {
                   extendBodyBehindAppBar: true,
                   appBar: AppBar(
                     backgroundColor: Colors.transparent,
-                    title: titleWidget,
                     automaticallyImplyLeading: false,
+                    centerTitle: true,
+                    leading: Consumer2<ChatProvider, UserInfoProvider>(
+                      builder: (BuildContext context, chatData, userData, Widget? child) {
+                        return Stack(
+                          fit: StackFit.expand,
+                          clipBehavior: Clip.none,
+                          children: <Widget>[
+                            AnimatedOpacity(
+                              opacity: userData.isLogin ? 1 : .3,
+                              duration: const Duration(seconds: 1),
+                              child: IconButton(
+                                icon: const Icon(Icons.chat_bubble),
+                                onPressed: _openMessage(),
+                              ),
+                            ),
+                            Visibility(
+                              visible: chatData.total != 0,
+                              child: Positioned(
+                                top: 10,
+                                right: 10,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.error,
+                                    borderRadius: BorderRadius.circular(5),
+                                    border: Border.all(color: Theme.of(context).appBarTheme.iconTheme!.color!, width: 1.4),
+                                  ),
+                                  constraints: const BoxConstraints(
+                                    minWidth: 15,
+                                    minHeight: 15,
+                                  ),
+                                  child: Text(
+                                    chatData.total.toString(), //通知数量
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: FontSize.small.value,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                     actions: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          UrlUtil().opEnPage(context, '/search/${jsonEncode({"text": ''})}');
+                        },
+                        icon: const Icon(Icons.search),
+                      ),
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(
                           icon: Icon(
@@ -370,9 +355,6 @@ class _IndexPageState extends State<IndexPage> {
                         );
                       })
                     ],
-                    elevation: 0,
-                    titleSpacing: 0.0,
-                    centerTitle: false,
                   ),
                   body: FlutterPluginDrawer(
                     body: SizedBox(
@@ -443,8 +425,7 @@ class _IndexPageState extends State<IndexPage> {
                       return BottomNavigationBarItem(
                         icon: nav!["icon"],
                         activeIcon: nav["activeIcon"],
-                        label: FlutterI18n.translate(
-                            context, "${nav["name"]}.title"),
+                        label: FlutterI18n.translate(context, "${nav["name"]}.title"),
                       );
                     }).toList(),
                     currentIndex: _currentPageIndex,
@@ -455,7 +436,6 @@ class _IndexPageState extends State<IndexPage> {
                 // desktop
                 return Scaffold(
                   appBar: AppBar(
-                    title: titleWidget,
                     actions: <Widget>[
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(
