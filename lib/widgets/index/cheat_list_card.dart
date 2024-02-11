@@ -4,6 +4,7 @@ import 'package:bfban/component/_Time/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
+import 'package:flutter_elui_plugin/_tip/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../router/router.dart';
@@ -31,7 +32,6 @@ class CheatListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      minVerticalPadding: 10,
       leading: ClipRRect(
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
@@ -63,40 +63,14 @@ class CheatListCard extends StatelessWidget {
         runAlignment: WrapAlignment.center,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
-          Text(
-            "${FlutterI18n.translate(context, "list.reportTime")}:\t",
-            style: TextStyle(
-              color: Theme.of(context).textTheme.displayMedium!.color,
-              fontSize: 9,
-            ),
-          ),
           if (item["createTime"] != null)
-            TimeWidget(
-              data: item["createTime"],
-              style: TextStyle(
-                color: Theme.of(context).textTheme.displayMedium!.color,
-                fontSize: 9,
+            Tooltip(
+              message: FlutterI18n.translate(context, "list.reportTime"),
+              child: TimeWidget(
+                data: item["createTime"],
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
-          const SizedBox(width: 8),
-          Text(
-            "${FlutterI18n.translate(context, "list.updateTime")}:\t",
-            style: TextStyle(
-              color: Theme.of(context).textTheme.displayMedium!.color,
-              fontSize: 9,
-            ),
-          ),
-          if (item["updateTime"] != null)
-            TimeWidget(
-              data: item["updateTime"],
-              style: TextStyle(
-                color: Theme.of(context).textTheme.displayMedium!.color,
-                fontSize: 9,
-              ),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
             ),
         ],
       ),
@@ -110,10 +84,8 @@ class CheatListCard extends StatelessWidget {
             ),
           if (isIconCommendView!)
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 6,
-              ),
-              height: 25,
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 6),
+              height: 20,
               width: 1,
               color: Theme.of(context).dividerTheme.color!,
             ),
@@ -124,10 +96,8 @@ class CheatListCard extends StatelessWidget {
             ),
           if (isIconHotView!)
             Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 6,
-              ),
-              height: 25,
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 6),
+              height: 20,
               width: 1,
               color: Theme.of(context).dividerTheme.color!,
             ),

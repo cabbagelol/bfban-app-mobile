@@ -36,7 +36,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(TextStyle(color: Colors.white)),
+          textStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -110,7 +110,6 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       highlightColor: Colors.transparent,
-      iconButtonTheme: IconButtonThemeData(style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent))),
       toggleButtonsTheme: const ToggleButtonsThemeData(
         color: Color(0xff111b2b),
         fillColor: Colors.black38,
@@ -147,12 +146,13 @@ class BlueDarkTheme extends AppBaseThemeItem {
         elevation: 2,
       ),
       listTileTheme: const ListTileThemeData(
-          titleTextStyle: TextStyle(
-            color: Colors.white,
-          ),
-          subtitleTextStyle: TextStyle(
-            color: Colors.white54,
-          )),
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+        ),
+        subtitleTextStyle: TextStyle(
+          color: Colors.white54,
+        ),
+      ),
       dividerColor: Colors.white10,
       dividerTheme: const DividerThemeData(
         color: Colors.white10,
@@ -248,7 +248,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       appBarTheme: const AppBarTheme(
-        color: Color(0xff364e80),
+        backgroundColor: Color(0xff364e80),
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
         elevation: 0,
@@ -258,13 +258,15 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       primaryColor: const Color(0xff111b2b),
-      tabBarTheme: const TabBarTheme(
+      tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.white38,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
         indicatorSize: TabBarIndicatorSize.tab,
         labelColor: Colors.yellow,
-        indicator: UnderlineTabIndicator(
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        indicator: const UnderlineTabIndicator(
           borderSide: BorderSide(
             color: Colors.yellow,
             width: 3,
@@ -274,6 +276,9 @@ class BlueDarkTheme extends AppBaseThemeItem {
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.yellow,
         focusColor: Color(0xff364e80),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
       ),
       // iconTheme: const IconThemeData(
       //   color: Colors.white,
@@ -316,11 +321,12 @@ class BlueDarkTheme extends AppBaseThemeItem {
         backgroundColor: Colors.black12,
         secondarySelectedColor: Colors.black,
         checkmarkColor: Colors.black,
+        selectedColor: Colors.yellow,
         iconTheme: IconThemeData(
-          color: Color(0xff364e80),
+          color: Colors.white,
         ),
         secondaryLabelStyle: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
         labelStyle: TextStyle(
           color: Colors.black,

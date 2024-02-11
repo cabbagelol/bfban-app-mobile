@@ -183,12 +183,6 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
             },
             icon: !isEdit ? const Icon(Icons.edit) : Text(FlutterI18n.translate(context, "basic.button.cancel")),
           ),
-          IconButton(
-            onPressed: () {
-              _getTourRecordList();
-            },
-            icon: const Icon(Icons.rotate_right),
-          ),
         ],
       ),
       body: Consumer<UserInfoProvider>(
@@ -219,49 +213,51 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
                   ),
 
                 /// Content List
-                Expanded(
-                  flex: 1,
-                  child: ListView(
-                    controller: _scrollController,
-                    children: [
-                      // 列表
-                      if (tourRecordStatus.list!.isNotEmpty)
-                        Column(
-                          children: tourRecordStatus.list!.map((i) {
-                            return Row(
-                              children: [
-                                if (isEdit)
-                                  Container(
-                                    margin: const EdgeInsets.only(left: 0),
-                                    child: Checkbox(
-                                      visualDensity: VisualDensity.standard,
-                                      value: selectMap[i.id] ?? false,
-                                      onChanged: (status) {
-                                        setState(() {
-                                          selectMap[i.id] = status;
-                                        });
-                                      },
+                if (!tourRecordStatus.load!)
+                  Expanded(
+                    flex: 1,
+                    child: ListView(
+                      controller: _scrollController,
+                      children: [
+                        // 列表
+                        if (tourRecordStatus.list!.isNotEmpty)
+                          Column(
+                            children: tourRecordStatus.list!.map((i) {
+                              return Row(
+                                children: [
+                                  if (isEdit)
+                                    Container(
+                                      margin: const EdgeInsets.only(left: 0),
+                                      child: Checkbox(
+                                        visualDensity: VisualDensity.standard,
+                                        value: selectMap[i.id] ?? false,
+                                        onChanged: (status) {
+                                          setState(() {
+                                            selectMap[i.id] = status;
+                                          });
+                                        },
+                                      ),
                                     ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: CheatListCard(item: i.toMap),
                                   ),
-                                Expanded(
-                                  flex: 1,
-                                  child: CheatListCard(item: i.toMap),
-                                ),
-                              ],
-                            );
-                          }).toList(),
-                        )
-                      else if (tourRecordStatus.list!.isEmpty && !tourRecordStatus.load!)
-                        const EmptyWidget(),
-
-                      if (tourRecordStatus.load!)
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 10),
-                          child: const Center(child: CircularProgressIndicator()),
-                        ),
-                    ],
+                                ],
+                              );
+                            }).toList(),
+                          )
+                        else if (tourRecordStatus.list!.isEmpty && !tourRecordStatus.load!)
+                          const EmptyWidget(),
+                      ],
+                    ),
+                  )
+                else
+                  const Expanded(
+                    flex: 1,
+                    child: Center(
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
                   ),
-                ),
               ],
             ),
           );

@@ -535,6 +535,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                     ),
                   ),
                 ),
+                centerTitle: true,
                 title: TabBar(
                   labelStyle: const TextStyle(fontSize: 16),
                   controller: _tabController,
@@ -598,7 +599,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                     },
                   ),
                 ],
-                centerTitle: true,
               ),
 
               /// 内容

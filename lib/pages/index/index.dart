@@ -554,10 +554,6 @@ class _IndexPageState extends State<IndexPage> {
                         }).toList(),
                         selectedIndex: _currentPageIndex,
                       ),
-                      // VerticalDivider(
-                      //   width: 1,
-                      //   color: Theme.of(context).dividerTheme.color!.withOpacity(.05),
-                      // ),
                       Expanded(
                         flex: 1,
                         child: IndexedStack(

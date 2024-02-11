@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 
+import 'package:bfban/component/_empty/index.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 
@@ -283,7 +284,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       extendBodyBehindAppBar: false,
       body: Refresh(
         key: _refreshKey,
-        edgeOffset: 100 + MediaQuery.of(context).padding.top,
+        edgeOffset: MediaQuery.of(context).padding.top + kTextTabBarHeight,
+        triggerOffset: MediaQuery.of(context).viewPadding.bottom + kBottomNavigationBarHeight + 50,
         onRefresh: _onRefresh,
         onLoad: _getMore,
         child: CustomScrollView(
@@ -295,16 +297,13 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
               automaticallyImplyLeading: false,
               expandedHeight: 0,
               toolbarHeight: 38,
-              backgroundColor: Theme.of(context).primaryColor.withOpacity(.9),
+              backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
               flexibleSpace: FlexibleSpaceBar(
                 expandedTitleScale: 1,
                 titlePadding: EdgeInsets.zero,
                 background: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 10,
-                    sigmaY: 10,
-                  ),
-                  child: const SizedBox(),
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10, tileMode: TileMode.decal),
+                  child: SizedBox(),
                 ),
                 title: Row(
                   children: [
@@ -361,7 +360,13 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                       onChange: (Map value) {
                         print("onChange:");
                         print(value);
-                        playersStatus!.parame!.setData(value);
+                        playersStatus!.parame!.game = value["game"];
+                        playersStatus!.parame!.sortBy = value["sortBy"];
+                        playersStatus!.parame!.createTimeFrom = value["createTimeFrom"] ??= null;
+                        playersStatus!.parame!.createTimeTo = value["createTimeTo"] ??= null;
+                        playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"] ??= null;
+                        playersStatus!.parame!.updateTimeTo = value["updateTimeTo"] ??= null;
+
                         _onRefresh();
                       },
                     ),
@@ -369,35 +374,40 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 ),
               ),
             ),
-            SliverList.builder(
-              itemCount: playersStatus!.list!.length + 1,
-              itemBuilder: (BuildContext context, int index) {
-                if (index < playersStatus!.list!.length) {
-                  // 分页提示
-                  if (playersStatus!.list![index]["pageTip"] != null) {
-                    return SizedBox(
-                      height: 30,
-                      child: Center(
-                        child: Text(
-                          FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Theme.of(context).textTheme.titleSmall?.color,
+            if (playersStatus!.list!.isNotEmpty)
+              SliverList.builder(
+                itemCount: playersStatus!.list!.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index < playersStatus!.list!.length) {
+                    // 分页提示
+                    if (playersStatus!.list![index]["pageTip"] != null) {
+                      return SizedBox(
+                        height: 30,
+                        child: Center(
+                          child: Text(
+                            FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).textTheme.titleSmall?.color,
+                            ),
                           ),
                         ),
-                      ),
+                      );
+                    }
+
+                    // 内容卡片
+                    return CheatListCard(
+                      item: playersStatus?.list![index],
                     );
                   }
 
-                  // 内容卡片
-                  return CheatListCard(
-                    item: playersStatus?.list![index],
-                  );
-                }
-
-                return Container();
-              },
-            ),
+                  return Container();
+                },
+              )
+            else
+              const SliverFillRemaining(
+                child: EmptyWidget(),
+              )
           ],
         ),
       ),

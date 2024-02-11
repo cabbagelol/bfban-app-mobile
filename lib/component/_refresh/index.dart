@@ -9,6 +9,7 @@ class Refresh extends StatefulWidget {
   final FutureOr Function()? onRefresh;
   final FutureOr Function()? onLoad;
   final double edgeOffset;
+  final double triggerOffset;
   final Widget child;
   final Axis triggerAxis;
 
@@ -17,6 +18,7 @@ class Refresh extends StatefulWidget {
     this.onRefresh,
     this.onLoad,
     this.edgeOffset = 100,
+    this.triggerOffset = 70,
     this.triggerAxis = Axis.vertical,
     required this.child,
   }) : super(key: key);
@@ -60,6 +62,7 @@ class RefreshState extends State<Refresh> {
       triggerAxis: widget.triggerAxis,
       header: onHeader(),
       footer: ClassicFooter(
+        triggerOffset: widget.triggerOffset,
         showText: false,
         textStyle: TextStyle(fontSize: FontSize.large.value),
         iconTheme: Theme.of(context).iconTheme.copyWith(size: FontSize.xLarge.value),

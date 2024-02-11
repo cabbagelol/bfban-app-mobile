@@ -142,6 +142,14 @@ class DarkTheme extends AppBaseThemeItem {
         labelTextStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white70)),
         elevation: 2,
       ),
+      listTileTheme: const ListTileThemeData(
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+        ),
+        subtitleTextStyle: TextStyle(
+          color: Colors.white54,
+        ),
+      ),
       dividerTheme: const DividerThemeData(
         color: Colors.white12,
       ),
@@ -205,7 +213,7 @@ class DarkTheme extends AppBaseThemeItem {
         backgroundColor: Color(0xff364e80),
       ),
       buttonTheme: ButtonThemeData(
-        buttonColor: const Color(0xff364e80),
+        buttonColor: Colors.white,
         disabledColor: const Color(0xff364e80).withOpacity(.2),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
@@ -236,21 +244,26 @@ class DarkTheme extends AppBaseThemeItem {
         ),
       ),
       appBarTheme: const AppBarTheme(
-        color: Colors.black,
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.black54,
         shadowColor: Colors.black26,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
       ),
-      primaryColor: Colors.yellow,
-      tabBarTheme: const TabBarTheme(
+      primaryColor: Colors.black,
+      tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.white38,
-        labelColor: Colors.yellow,
-        indicator: UnderlineTabIndicator(
+        dividerColor: Colors.transparent,
+        indicatorColor: Colors.transparent,
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        labelColor: Colors.white,
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        indicator: const UnderlineTabIndicator(
           borderSide: BorderSide(
-            color: Colors.yellow,
+            color: Colors.white,
             width: 3,
           ),
         ),
@@ -258,6 +271,9 @@ class DarkTheme extends AppBaseThemeItem {
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.yellow,
         focusColor: Color(0xff171718),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
       ),
       // iconTheme: const IconThemeData(
       //   color: Colors.white,

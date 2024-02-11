@@ -78,7 +78,7 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
       setState(() {
         hackerLoad = false;
         if (result.data != null) {
-          hackersData = result.data;
+          hackersData = result.data as Map;
         }
       });
     }

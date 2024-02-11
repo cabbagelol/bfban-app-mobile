@@ -44,7 +44,7 @@ class PinkTheme extends AppBaseThemeItem {
         backgroundColor: Colors.pink.withOpacity(.1),
         modalBackgroundColor: Colors.pink.withOpacity(.1),
       ),
-      canvasColor: const Color(0xFFFFFCFC),
+      canvasColor: Colors.pinkAccent,
       primaryColorLight: Colors.pink.shade300,
       primaryColorDark: Colors.pink.shade300,
       textTheme: const TextTheme(
@@ -69,7 +69,7 @@ class PinkTheme extends AppBaseThemeItem {
         selectionHandleColor: Colors.pink.shade300.withOpacity(.1),
         cursorColor: Colors.pink.shade300,
       ),
-      unselectedWidgetColor: Colors.white,
+      unselectedWidgetColor: Colors.pink.shade100,
       scaffoldBackgroundColor: const Color(0xFFFFFAFB),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
@@ -118,9 +118,17 @@ class PinkTheme extends AppBaseThemeItem {
         labelTextStyle: MaterialStateProperty.all(TextStyle(color: Colors.pinkAccent.shade100)),
         elevation: 2,
       ),
-      dividerColor: Colors.pink.shade400.withOpacity(.2),
+      listTileTheme: const ListTileThemeData(
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+        ),
+        subtitleTextStyle: TextStyle(
+          color: Colors.black54,
+        ),
+      ),
+      dividerColor: Colors.pink.withOpacity(.2),
       dividerTheme: DividerThemeData(
-        color: Colors.pink.shade400.withOpacity(.2),
+        color: Colors.pink.withOpacity(.2),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
@@ -182,21 +190,25 @@ class PinkTheme extends AppBaseThemeItem {
         ),
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.pink.shade300,
+        backgroundColor: Colors.pink.shade300,
         foregroundColor: Colors.white,
         shadowColor: Colors.pink.shade50,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: const IconThemeData(
-          color: Color(0xFFB22554),
+          color: Colors.white,
         ),
       ),
-      primaryColor: Colors.pink,
+      primaryColor: Colors.pink.shade300,
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.pink.shade100,
-        labelColor: Colors.pink,
+        dividerColor: Colors.transparent,
+        indicatorColor: Colors.transparent,
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        labelColor: Colors.white,
         indicator: const UnderlineTabIndicator(
           borderSide: BorderSide(
-            color: Colors.pink,
+            color: Colors.white,
             width: 3,
           ),
         ),
@@ -205,8 +217,8 @@ class PinkTheme extends AppBaseThemeItem {
         backgroundColor: Colors.pink.shade300,
         focusColor: Colors.white,
       ),
-      iconTheme: IconThemeData(
-        color: Colors.pink.shade300,
+      iconTheme: const IconThemeData(
+        color: Color(0xFFB22554),
       ),
       cardTheme: CardTheme(
         color: Colors.white,
@@ -235,17 +247,18 @@ class PinkTheme extends AppBaseThemeItem {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: Colors.black12,
+        color: MaterialStateProperty.all(Colors.black12),
+        selectedColor: Colors.yellow,
         secondarySelectedColor: Colors.white,
-        checkmarkColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.pink.shade300,
-        ),
         secondaryLabelStyle: TextStyle(
           color: Colors.pink.shade300,
         ),
+        checkmarkColor: Colors.white,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         labelStyle: TextStyle(
-          color: Colors.pink.shade300,
+          color: Colors.white,
         ),
       ),
       colorScheme: ColorScheme(

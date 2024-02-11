@@ -117,6 +117,14 @@ class GreenTheme extends AppBaseThemeItem {
         ),
         elevation: 2,
       ),
+      listTileTheme: const ListTileThemeData(
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+        ),
+        subtitleTextStyle: TextStyle(
+          color: Colors.black54,
+        ),
+      ),
       dividerColor: Colors.green.shade50,
       dividerTheme: DividerThemeData(
         color: Colors.green.shade50,
@@ -187,10 +195,11 @@ class GreenTheme extends AppBaseThemeItem {
         ),
       ),
       appBarTheme: AppBarTheme(
-        color: Colors.green,
+        backgroundColor: Colors.green.shade800,
         foregroundColor: Colors.white,
         shadowColor: Colors.green.shade50,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: IconThemeData(
           color: Colors.green.shade900,
         ),
@@ -198,7 +207,11 @@ class GreenTheme extends AppBaseThemeItem {
       primaryColor: Colors.green,
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.green.shade100,
-        labelColor: Colors.green,
+        dividerColor: Colors.transparent,
+        indicatorColor: Colors.transparent,
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        labelColor: Colors.white,
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         indicator: const UnderlineTabIndicator(
           borderSide: BorderSide(
             color: Colors.green,
@@ -211,7 +224,7 @@ class GreenTheme extends AppBaseThemeItem {
         focusColor: Colors.white,
       ),
       iconTheme: IconThemeData(
-        color: Colors.green.shade300,
+        color: Colors.green.shade900,
       ),
       cardTheme: CardTheme(
         color: Colors.white,

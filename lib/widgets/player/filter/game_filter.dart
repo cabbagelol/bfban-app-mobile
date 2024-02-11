@@ -5,8 +5,8 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/constants/api.dart';
 
-import '../../../component/_filter/class.dart';
-import '../../../component/_filter/framework.dart';
+import 'class.dart';
+import 'framework.dart';
 
 class GameNameFilterPanel extends FilterPanelWidget {
   GameNameFilterPanel({
@@ -25,27 +25,16 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
 
   @override
   void initState() {
-    widget.data = FilterPanelData(
-      value: "all",
-      name: "game",
+    widget.data ??= FilterPanelData(
+      values: ["all"],
+      names: ["game"],
     );
 
     setState(() {
       gameList.addAll(Config.game["child"]);
-      widget.isInit = true;
     });
 
     super.initState();
-  }
-
-  @override
-  void didUpdateWidget(covariant GameNameFilterPanel oldWidget) {
-    widget.data ??= FilterPanelData(
-      value: "all",
-      name: "game",
-    );
-
-    super.didUpdateWidget(oldWidget);
   }
 
   /// [Event]
@@ -63,55 +52,52 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
   Widget build(BuildContext context) {
     return FormField(
       builder: (FormFieldState field) {
-        return Column(
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(3),
-                side: BorderSide(
-                  color: Theme.of(context).dividerTheme.color!,
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DropdownButton(
-                    isExpanded: true,
-                    underline: const SizedBox(),
-                    dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    style: Theme.of(context).dropdownMenuTheme.textStyle,
-                    onChanged: (value) {
-                      field.setState(() {
-                        field.setValue(value.toString());
-                      });
-
-                      setState(() {
-                        widget.data!.value = field.value;
-                      });
-                    },
-                    value: field.value,
-                    items: gameList.asMap().keys.map<DropdownMenuItem<String>>((index) {
-                      Map i = gameList[index];
-
-                      return DropdownMenuItem(
-                        value: i["value"].toString(),
-                        child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(3),
+            side: BorderSide(
+              color: Theme.of(context).dividerTheme.color!,
+              width: 1,
             ),
-          ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              DropdownButton(
+                isDense: false,
+                isExpanded: true,
+                underline: const SizedBox(),
+                dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                style: Theme.of(context).dropdownMenuTheme.textStyle,
+                onChanged: (value) {
+                  field.setState(() {
+                    field.setValue(value.toString());
+                  });
+
+                  setState(() {
+                    widget.data!.values[0] = field.value;
+                  });
+                },
+                value: field.value,
+                items: gameList.asMap().keys.map<DropdownMenuItem<String>>((index) {
+                  Map i = gameList[index];
+
+                  return DropdownMenuItem(
+                    value: i["value"].toString(),
+                    child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
         );
       },
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      initialValue: widget.data!.value,
+      initialValue: widget.data!.values[0],
       onSaved: (value) {
         setState(() {
-          widget.data!.value = value as String;
+          widget.data!.values[0] = value as String;
         });
       },
       validator: (value) {

@@ -114,7 +114,7 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
             return Scaffold(
               extendBodyBehindAppBar: false,
               body: CustomScrollView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 slivers: [
                   SliverAppBar(
                     stretch: true,
@@ -123,10 +123,14 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
                     automaticallyImplyLeading: false,
                     expandedHeight: 0,
                     toolbarHeight: 38,
-                    backgroundColor: Theme.of(context).primaryColor.withOpacity(.9),
+                    backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
                     flexibleSpace: FlexibleSpaceBar(
                       expandedTitleScale: 1,
                       titlePadding: EdgeInsets.zero,
+                      background: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10, tileMode: TileMode.decal),
+                        child: const SizedBox(),
+                      ),
                       title: TabBar(
                         controller: tabController,
                         isScrollable: false,
@@ -160,54 +164,14 @@ class _homePageState extends State<homePage> with TickerProviderStateMixin {
                     ),
                   ),
                   SliverFillRemaining(
+                    hasScrollBody: true,
+                    fillOverscroll: true,
                     child: TabBarView(
                       controller: tabController,
                       children: homeTabsWidget.toList(),
                     ),
                   ),
                 ],
-              ),
-            );
-
-            return DefaultTabController(
-              length: homeTabs.length,
-              child: Scaffold(
-                extendBodyBehindAppBar: false,
-                appBar: AppBar(
-                  titleSpacing: 0,
-                  centerTitle: true,
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Theme.of(context).bottomAppBarTheme.color!.withOpacity(.1),
-                  title: TabBar(
-                    controller: tabController,
-                    isScrollable: true,
-                    labelPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    tabs: homeTabs.map((e) {
-                      return Tab(
-                        iconMargin: EdgeInsets.zero,
-                        child: e["load"] ?? false
-                            ? const Text("-")
-                            : Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            e["icon"],
-                            Text(
-                              "${e["text"]}",
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            )
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                body: TabBarView(
-                  controller: tabController,
-                  children: homeTabsWidget.toList(),
-                ),
               ),
             );
           default:

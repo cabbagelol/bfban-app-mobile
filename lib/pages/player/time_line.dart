@@ -199,7 +199,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     super.build(context);
     return Refresh(
       key: _refreshKey,
-      edgeOffset: 100 + MediaQuery.of(context).padding.top,
+      edgeOffset: MediaQuery.of(context).padding.top + kTextTabBarHeight,
       onRefresh: _onRefreshTimeline,
       onLoad: _getMore,
       child: ListView(

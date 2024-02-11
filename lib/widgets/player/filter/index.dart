@@ -1,8 +1,10 @@
+import 'package:bfban/widgets/player/filter/update_time_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../../component/_filter/framework.dart';
+import 'create_time_filter.dart';
+import 'framework.dart';
 import 'game_filter.dart';
 import 'solt_filter.dart';
 
@@ -33,9 +35,13 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
   Map get value => _from;
 
   List<Widget> slots = [
+    GameNameFilterPanel(),
+    const SizedBox(height: 10),
     SoltFilterPanel(),
     const SizedBox(height: 10),
-    GameNameFilterPanel(),
+    CreateTimeFilterPanel(),
+    const SizedBox(height: 10),
+    UpdateTimeFilterPanel(),
   ];
 
   @override
@@ -66,8 +72,10 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
   }
 
   void _donePlayerFilter() {
+    _from.clear();
+
     for (var element in slots) {
-      if (element is FilterPanelWidget) _from[element.data!.name] = element.data!.value!;
+      if (element is FilterPanelWidget) _from.addAll(element.data!.toMap());
     }
 
     setState(() {
@@ -89,7 +97,7 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
     Future<void> filterModal = showModalBottomSheet<void>(
       context: context,
       clipBehavior: Clip.hardEdge,
-      useSafeArea: false,
+      useRootNavigator: true,
       builder: (BuildContext context) {
         return SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -107,9 +115,16 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
                     ),
                     Flexible(
                       flex: 1,
-                      child: Text(
-                        FlutterI18n.translate(context, "list.colums.screenTitle"),
-                        style: TextStyle(fontSize: FontSize.large.value),
+                      child: Wrap(
+                        spacing: 5,
+                        runAlignment: WrapAlignment.center,
+                        children: [
+                          const Icon(Icons.filter_list),
+                          Text(
+                            FlutterI18n.translate(context, "list.colums.screenTitle"),
+                            style: TextStyle(fontSize: FontSize.large.value),
+                          ),
+                        ],
                       ),
                     ),
                     IconButton(
@@ -122,7 +137,7 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
               Flexible(
                 flex: 1,
                 child: ListView(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   children: slots,
                 ),
               )
@@ -133,24 +148,28 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
     );
 
     filterModal.then((void value) {
-      if (_playerFilter["status"] != 2)
+      if (_playerFilter["status"] != 2) {
         setState(() {
           _playerFilter["status"] = 0;
         });
+      }
       return value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // 储存初始表单值，后期对比是否变动
-      for (var element in slots) {
-        if (element is FilterPanelWidget && element.data != null) {
-          _primitive_from[element.data!.name] = element.data!.value!;
+    if (_primitive_from.keys.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // 储存初始表单值，后期对比是否变动
+        _primitive_from.clear();
+        for (var element in slots) {
+          if (element is FilterPanelWidget && element.data != null) {
+            _primitive_from.addAll(element.data!.toMap(force: true));
+          }
         }
-      }
-    });
+      });
+    }
 
     return IconButton(
       onPressed: () => _openPlayerFilter(1),

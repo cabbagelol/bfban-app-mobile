@@ -144,9 +144,17 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
         elevation: 2,
       ),
-      dividerColor: Colors.black12,
+      listTileTheme: const ListTileThemeData(
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+        ),
+        subtitleTextStyle: TextStyle(
+          color: Colors.black54,
+        ),
+      ),
+      dividerColor: const Color(0xffe7e7e7),
       dividerTheme: const DividerThemeData(
-        color: Colors.black12,
+        color: Color(0xffe7e7e7),
         space: .4,
         indent: .5,
       ),
@@ -243,15 +251,20 @@ class LightnesTheme extends AppBaseThemeItem {
         foregroundColor: Color(0xff364e80),
         shadowColor: Colors.black26,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: IconThemeData(
           color: Color(0xff364e80),
         ),
       ),
-      primaryColor: Colors.black,
-      tabBarTheme: const TabBarTheme(
+      primaryColor: Colors.white,
+      tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.black54,
-        labelColor: Color(0xff364e80),
-        indicator: UnderlineTabIndicator(
+        dividerColor: Colors.transparent,
+        indicatorColor: Colors.transparent,
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        labelColor: const Color(0xff364e80),
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+        indicator: const UnderlineTabIndicator(
           borderSide: BorderSide(
             color: Color(0xff364e80),
             width: 3,
@@ -306,16 +319,16 @@ class LightnesTheme extends AppBaseThemeItem {
           color: Colors.black,
         ),
       ),
-      colorScheme: const ColorScheme(
+      colorScheme: ColorScheme(
         brightness: Brightness.light,
-        primary: Color(0xff364e80),
+        primary: const Color(0xff364e80),
         primaryContainer: Colors.white,
-        onPrimary: Color(0xff364e80),
-        secondary: Color(0xff99acd2),
-        onSecondary: Color(0xff99acd2),
+        onPrimary: const Color(0xff364e80),
+        secondary: const Color(0xff99acd2),
+        onSecondary: const Color(0xff99acd2),
         error: Colors.red,
         onError: Colors.red,
-        errorContainer: Colors.white,
+        errorContainer: Colors.red.shade800,
         background: Colors.white,
         onBackground: Colors.white,
         surface: Colors.black,

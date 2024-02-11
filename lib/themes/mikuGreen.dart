@@ -131,9 +131,17 @@ class MikuGreenTheme extends AppBaseThemeItem {
         labelTextStyle: MaterialStateProperty.all(const TextStyle(color: Colors.black54)),
         elevation: 2,
       ),
-      dividerColor: Colors.black12,
-      dividerTheme: const DividerThemeData(
-        color: Colors.black12,
+      listTileTheme: const ListTileThemeData(
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+        ),
+        subtitleTextStyle: TextStyle(
+          color: Colors.black54,
+        ),
+      ),
+      dividerColor: color0,
+      dividerTheme: DividerThemeData(
+        color: color0,
         space: 1,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -189,9 +197,9 @@ class MikuGreenTheme extends AppBaseThemeItem {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.white,
         landscapeLayout: BottomNavigationBarLandscapeLayout.centered,
-        selectedItemColor: color,
+        selectedItemColor: color800,
         selectedLabelStyle: TextStyle(
-          color: color,
+          color: color800,
           fontSize: 14,
         ),
         elevation: 0,
@@ -202,18 +210,22 @@ class MikuGreenTheme extends AppBaseThemeItem {
         ),
       ),
       appBarTheme: AppBarTheme(
-        color: color900,
+        backgroundColor: color800,
         foregroundColor: color500,
         shadowColor: Colors.transparent,
         elevation: 0,
+        scrolledUnderElevation: 0,
         iconTheme: IconThemeData(
-          color: color.withOpacity(1),
+          color: color,
         ),
       ),
-      primaryColor: color,
+      primaryColor: color0,
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: color300,
+        dividerColor: Colors.transparent,
+        indicatorColor: Colors.transparent,
         labelColor: color900,
+        labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(
             color: color,
@@ -226,7 +238,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         focusColor: Colors.white,
       ),
       iconTheme: IconThemeData(
-        color: color300,
+        color: color800,
       ),
       cardTheme: CardTheme(
         color: Colors.white,
@@ -255,8 +267,9 @@ class MikuGreenTheme extends AppBaseThemeItem {
         ),
       ),
       chipTheme: ChipThemeData(
-        backgroundColor: Colors.black12,
+        backgroundColor: color,
         secondarySelectedColor: Colors.white,
+        surfaceTintColor: Colors.red,
         checkmarkColor: Colors.white,
         iconTheme: IconThemeData(
           color: color300,
@@ -265,7 +278,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
           color: color300,
         ),
         labelStyle: TextStyle(
-          color: color300,
+          color: Colors.white,
         ),
       ),
       colorScheme: ColorScheme(

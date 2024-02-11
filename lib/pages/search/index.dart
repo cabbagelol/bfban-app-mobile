@@ -319,7 +319,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
         appBar: AppBar(
           elevation: 0,
           titleSpacing: 0,
-          title: TitleSearchWidget(
+          title: SearchAppBarWidget(
             key: _titleSearchWidgetKey,
             controller: _searchController,
             theme: titleSearchTheme.white,

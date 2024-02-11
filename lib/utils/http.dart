@@ -3,7 +3,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:bfban/utils/index.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,8 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 
-import 'package:bfban/constants/api.dart';
+import '../constants/api.dart';
+import '../utils/index.dart';
 
 enum HttpDioType {
   none,
@@ -183,11 +183,10 @@ class Http extends ScaffoldState {
     dio.interceptors.add(RetryInterceptor(
       dio: dio,
       logPrint: print,
-      retries: 3,
+      retries: 2,
       retryDelays: const [
         Duration(seconds: 3),
         Duration(seconds: 10),
-        Duration(seconds: 20),
       ],
     ));
 

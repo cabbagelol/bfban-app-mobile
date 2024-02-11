@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:bfban/router/router.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 
 enum titleSearchTheme {
@@ -34,7 +35,7 @@ class titleSearchColor {
   }
 }
 
-class TitleSearchWidget extends StatefulWidget {
+class SearchAppBarWidget extends StatefulWidget {
   final titleSearchTheme theme;
 
   final Function(String data)? onSubmitted;
@@ -45,7 +46,7 @@ class TitleSearchWidget extends StatefulWidget {
 
   final TextEditingController controller;
 
-  const TitleSearchWidget({
+  const SearchAppBarWidget({
     Key? key,
     this.theme = titleSearchTheme.black,
     this.child,
@@ -58,7 +59,7 @@ class TitleSearchWidget extends StatefulWidget {
   TitleSearchState createState() => TitleSearchState();
 }
 
-class TitleSearchState extends State<TitleSearchWidget> {
+class TitleSearchState extends State<SearchAppBarWidget> {
   TextEditingController controller = TextEditingController(text: "");
 
   FocusNode controllerFocus = FocusNode();
@@ -79,7 +80,7 @@ class TitleSearchState extends State<TitleSearchWidget> {
         FocusScope.of(context).requestFocus(controllerFocus);
         break;
       case titleSearchTheme.black:
-        Routes.router!.navigateTo(
+        Routes.router.navigateTo(
           context,
           '/search/${jsonEncode({"text": value})}',
           transition: TransitionType.cupertino,
@@ -106,7 +107,7 @@ class TitleSearchState extends State<TitleSearchWidget> {
             Expanded(
               flex: 1,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
                   color: titleSearchColor(widget.theme).color,
                   border: Border.all(color: Theme.of(context).dividerTheme.color!.withOpacity(.3), width: 1),
@@ -120,7 +121,7 @@ class TitleSearchState extends State<TitleSearchWidget> {
                       size: 20,
                     ),
                     const SizedBox(
-                      width: 10,
+                      width: 5,
                     ),
                     Expanded(
                       flex: 1,
@@ -128,10 +129,14 @@ class TitleSearchState extends State<TitleSearchWidget> {
                           ? TextField(
                               controller: controller,
                               focusNode: controllerFocus,
-                              decoration: const InputDecoration(
+                        decoration: InputDecoration(
                                 border: InputBorder.none,
                                 isCollapsed: true,
                                 contentPadding: EdgeInsets.zero,
+                                hintText: FlutterI18n.translate(context, "search.placeholder"),
+                                hintStyle: TextStyle(
+                                  color: titleSearchColor(widget.theme).textColor!.withOpacity(.4),
+                                ),
                               ),
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.search,

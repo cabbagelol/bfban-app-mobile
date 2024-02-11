@@ -7,17 +7,17 @@ enum TimeWidgetType { convert, full }
 
 class TimeWidget extends StatefulWidget {
   String data;
-  String? value;
   TimeWidgetType type;
-
-  var style;
-  var overflow;
-  var maxLines;
-  var textAlign;
+  String? timeType;
+  TextStyle? style;
+  TextOverflow? overflow;
+  int? maxLines;
+  TextAlign? textAlign;
 
   TimeWidget({
     Key? key,
     required this.data,
+    this.timeType = "Y_D_M",
     this.type = TimeWidgetType.convert,
     this.style,
     this.overflow,
@@ -30,6 +30,8 @@ class TimeWidget extends StatefulWidget {
 }
 
 class _TimeWidgetState extends State<TimeWidget> {
+  String? value;
+
   Date date = Date();
 
   /// [Event]
@@ -73,7 +75,7 @@ class _TimeWidgetState extends State<TimeWidget> {
         break;
       case TimeWidgetType.full:
       default:
-        widget.value = this.date.getTimestampTransferCharacter(date)[type];
+        return this.date.getTimestampTransferCharacter(date)[type];
     }
     return this.date.getTimestampTransferCharacter(date)[type];
   }
@@ -81,7 +83,7 @@ class _TimeWidgetState extends State<TimeWidget> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      getFriendlyDescriptionTime(widget.data),
+      getFriendlyDescriptionTime(widget.data, type: widget.timeType),
       style: widget.style ??= null,
       overflow: widget.overflow ??= null,
       maxLines: widget.maxLines ??= null,

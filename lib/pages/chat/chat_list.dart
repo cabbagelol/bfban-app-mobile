@@ -53,8 +53,8 @@ class _ChatPageState extends State<ChatListPage> {
 
     futureBuilder = providerUtil!.onUpDate();
 
-    _refreshKey.currentState!.controller.finishRefresh();
-    _refreshKey.currentState!.controller.resetFooter();
+    _refreshKey.currentState?.controller.finishRefresh();
+    _refreshKey.currentState?.controller.resetFooter();
 
     setState(() {
       chatRequestLoad = false;
@@ -104,7 +104,7 @@ class _ChatPageState extends State<ChatListPage> {
               ),
               body: Refresh(
                 key: _refreshKey,
-                edgeOffset: 100 + MediaQuery.of(context).padding.top,
+                edgeOffset: MediaQuery.of(context).padding.top + kTextTabBarHeight,
                 onRefresh: _onRefresh,
                 child: Consumer<ChatProvider>(
                   builder: (BuildContext context, data, Widget? child) {
