@@ -645,8 +645,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                   Positioned.fill(
                                     child: BackdropFilter(
                                       filter: ui.ImageFilter.blur(
-                                        sigmaX: 0,
-                                        sigmaY: 0,
+                                        sigmaX: 1,
+                                        sigmaY: 1,
                                       ),
                                       child: Center(
                                         child: GestureDetector(
@@ -679,6 +679,16 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                       fit: BoxFit.contain,
                                                       cache: true,
                                                       clearMemoryCacheWhenDispose: true,
+                                                      printError: false,
+                                                      loadStateChanged: (ExtendedImageState state) {
+                                                        switch (state.extendedImageLoadState) {
+                                                          case LoadState.completed:
+                                                            return state.completedWidget;
+                                                          case LoadState.failed:
+                                                          default:
+                                                            return Image.asset("assets/images/default-player-avatar.jpg");
+                                                        }
+                                                      },
                                                     ),
                                                     Positioned(
                                                       right: 0,

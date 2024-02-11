@@ -43,6 +43,16 @@ class CheatListCard extends StatelessWidget {
             height: 40,
             fit: BoxFit.fill,
             cache: true,
+            printError: false,
+            loadStateChanged: (ExtendedImageState state) {
+              switch (state.extendedImageLoadState) {
+                case LoadState.completed:
+                  return state.completedWidget;
+                case LoadState.failed:
+                default:
+                  return Image.asset("assets/images/default-player-avatar.jpg");
+              }
+            },
           ),
         ),
       ),

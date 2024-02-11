@@ -96,7 +96,10 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// [Event]
   /// 重置参数
   bool onResetPlayerParame({skip = false, sort = false, game = false, page = false, data = false}) {
-    if (skip) playersStatus!.parame!.resetPage();
+    if (skip) {
+      playersStatus!.parame!.resetPage();
+      playersStatus!.pageNumber = 1;
+    }
     if (sort) playersStatus!.parame!.sortBy = "updateTime";
     if (game) playersStatus!.parame!.game = "all";
     if (data) playersStatus!.list!.clear();
@@ -134,7 +137,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         }
 
         // 追加数据
-        if (d["result"].isNotEmpty) {
+        if (d["result"].isNotEmpty && playersStatus!.list!.isNotEmpty) {
           playersStatus?.list
             ?..add({
               "pageTip": true,
@@ -159,10 +162,11 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// 下拉刷新方法,为list重新赋值
   Future _onRefresh() async {
     playersStatus!.parame!.resetPage();
+    _refreshKey.currentState!.controller.finishRefresh();
 
     await getPlayerList();
 
-    _refreshKey.currentState!.controller.finishRefresh();
+    _refreshKey.currentState!.controller.resetHeader();
     _refreshKey.currentState!.controller.resetFooter();
   }
 
@@ -181,22 +185,22 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     playersStatus!.parame!.status = value;
 
-    _refreshKey.currentState!.controller.finishRefresh();
-    _refreshKey.currentState!.controller.resetFooter();
+    onResetPlayerParame(skip: true, page: true, data: true);
 
-    onResetPlayerParame(skip: true, page: true);
-
-    if (_scrollController.hasClients && _scrollController.position.pixels > _scrollController.position.minScrollExtent) {
+    if (_scrollController.hasClients) {
       _scrollController.animateTo(
         0,
-        duration: const Duration(seconds: 1),
-        curve: Curves.fastLinearToSlowEaseIn,
+        curve: Curves.fastEaseInToSlowEaseOut,
+        duration: const Duration(milliseconds: 300),
       );
     }
 
     _storageAccount.updateConfiguration("playersTabInitialIndex", index);
 
     await getPlayerList();
+
+    _refreshKey.currentState!.controller.resetHeader();
+    _refreshKey.currentState!.controller.resetFooter();
   }
 
   /// [Response]
@@ -289,6 +293,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         onRefresh: _onRefresh,
         onLoad: _getMore,
         child: CustomScrollView(
+          controller: _scrollController,
           slivers: [
             SliverAppBar(
               stretch: true,
@@ -376,7 +381,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             ),
             if (playersStatus!.list!.isNotEmpty)
               SliverList.builder(
-                itemCount: playersStatus!.list!.length + 1,
+                itemCount: playersStatus!.list!.length,
                 itemBuilder: (BuildContext context, int index) {
                   if (index < playersStatus!.list!.length) {
                     // 分页提示
