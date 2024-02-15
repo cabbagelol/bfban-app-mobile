@@ -5,8 +5,8 @@ import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/translation_provider.dart';
-import '../../../utils/index.dart';
+import '/provider/translation_provider.dart';
+import '/utils/index.dart';
 
 class LanguagePage extends StatefulWidget {
   const LanguagePage({Key? key}) : super(key: key);

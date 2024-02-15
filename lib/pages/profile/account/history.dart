@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../../component/_empty/index.dart';
-import '../../../component/_refresh/index.dart';
-import '../../../constants/api.dart';
-import '../../../data/index.dart';
-import '../../../provider/userinfo_provider.dart';
-import '../../../utils/index.dart';
-import '../../../widgets/hint_login.dart';
-import '../../../widgets/index.dart';
+import '/component/_empty/index.dart';
+import '/component/_refresh/index.dart';
+import '/constants/api.dart';
+import '/data/index.dart';
+import '/provider/userinfo_provider.dart';
+import '/utils/index.dart';
+import '/widgets/index.dart';
 
 class UserHistoryPage extends StatefulWidget {
   const UserHistoryPage();

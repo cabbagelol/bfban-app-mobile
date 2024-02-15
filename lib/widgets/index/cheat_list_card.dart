@@ -20,9 +20,12 @@ class CheatListCard extends StatelessWidget {
 
   final bool? isIconHotView;
 
+  final double? size;
+
   const CheatListCard({
     Key? key,
     required this.item,
+    this.size = 40,
     this.isIconView = true,
     this.isIconCommendView = true,
     this.isIconHotView = false,
@@ -32,6 +35,7 @@ class CheatListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      dense: true,
       leading: ClipRRect(
         borderRadius: const BorderRadius.all(
           Radius.circular(20),
@@ -39,8 +43,8 @@ class CheatListCard extends StatelessWidget {
         child: CircleAvatar(
           child: ExtendedImage.network(
             item["avatarLink"],
-            width: 40,
-            height: 40,
+            width: size,
+            height: size,
             fit: BoxFit.fill,
             cache: true,
             printError: false,
@@ -50,7 +54,11 @@ class CheatListCard extends StatelessWidget {
                   return state.completedWidget;
                 case LoadState.failed:
                 default:
-                  return Image.asset("assets/images/default-player-avatar.jpg");
+                  return Image.asset(
+                    "assets/images/default-player-avatar.jpg",
+                    cacheWidth: size!.toInt(),
+                    cacheHeight: size!.toInt(),
+                  );
               }
             },
           ),

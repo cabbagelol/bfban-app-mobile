@@ -2,19 +2,19 @@
 
 import 'dart:ui';
 
-import 'package:bfban/component/_empty/index.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bfban/constants/api.dart';
-import 'package:bfban/utils/index.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../component/_refresh/index.dart';
-import '../../data/index.dart';
-import '../../widgets/index/cheat_list_card.dart';
-import '../../widgets/player/filter/index.dart';
+import '/component/_refresh/index.dart';
+import '/component/_empty/index.dart';
+import '/data/index.dart';
+import '/widgets/index/cheat_list_card.dart';
+import '/widgets/player/filter/index.dart';
+import '/constants/api.dart';
+import '/utils/index.dart';
 
 class PlayerListPage extends StatefulWidget {
   const PlayerListPage({
@@ -33,7 +33,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   // 筛选
-  GlobalKey<PlayerFilterPanelState> _playerFilterPanelKey = GlobalKey<PlayerFilterPanelState>();
+  final GlobalKey<PlayerFilterPanelState> _playerFilterPanelKey = GlobalKey<PlayerFilterPanelState>();
 
   // TAB
   late TabController? _tabController;
@@ -96,13 +96,15 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   /// [Event]
   /// 重置参数
   bool onResetPlayerParame({skip = false, sort = false, game = false, page = false, data = false}) {
-    if (skip) {
-      playersStatus!.parame!.resetPage();
-      playersStatus!.pageNumber = 1;
-    }
-    if (sort) playersStatus!.parame!.sortBy = "updateTime";
-    if (game) playersStatus!.parame!.game = "all";
-    if (data) playersStatus!.list!.clear();
+    setState(() {
+      if (skip) {
+        playersStatus!.parame!.resetPage();
+        playersStatus!.pageNumber = 1;
+      }
+      if (sort) playersStatus!.parame!.sortBy = "updateTime";
+      if (game) playersStatus!.parame!.game = "all";
+      if (data) playersStatus!.list!.clear();
+    });
 
     return true;
   }
@@ -124,6 +126,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     if (result.data["success"] == 1) {
       Map d = result.data["data"];
+
       setState(() {
         // 追加数据预期状态
         if (d["result"].isEmpty || d["result"].length <= playersStatus?.parame!.limit) {
@@ -185,7 +188,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     playersStatus!.parame!.status = value;
 
-    onResetPlayerParame(skip: true, page: true, data: true);
+    onResetPlayerParame(skip: true, page: true);
 
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
@@ -269,9 +272,6 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       setState(() {
         cheaterStatus = tabStatusData;
       });
-
-      // 渲染[筛选]控件内部数据
-      // _gameNameFilterKey.currentState!.upData();
     }
 
     setState(() {
@@ -288,7 +288,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       extendBodyBehindAppBar: false,
       body: Refresh(
         key: _refreshKey,
-        edgeOffset: MediaQuery.of(context).padding.top + kTextTabBarHeight,
+        edgeOffset: MediaQuery.of(context).padding.top,
         triggerOffset: MediaQuery.of(context).viewPadding.bottom + kBottomNavigationBarHeight + 50,
         onRefresh: _onRefresh,
         onLoad: _getMore,
@@ -308,7 +308,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 titlePadding: EdgeInsets.zero,
                 background: BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10, tileMode: TileMode.decal),
-                  child: SizedBox(),
+                  child: const SizedBox(),
                 ),
                 title: Row(
                   children: [
@@ -363,14 +363,12 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     PlayerFilterPanel(
                       key: _playerFilterPanelKey,
                       onChange: (Map value) {
-                        print("onChange:");
-                        print(value);
                         playersStatus!.parame!.game = value["game"];
                         playersStatus!.parame!.sortBy = value["sortBy"];
-                        playersStatus!.parame!.createTimeFrom = value["createTimeFrom"] ??= null;
-                        playersStatus!.parame!.createTimeTo = value["createTimeTo"] ??= null;
-                        playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"] ??= null;
-                        playersStatus!.parame!.updateTimeTo = value["updateTimeTo"] ??= null;
+                        playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
+                        playersStatus!.parame!.createTimeTo = value["createTimeTo"];
+                        playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
+                        playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
 
                         _onRefresh();
                       },

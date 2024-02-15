@@ -3,9 +3,11 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:animations/animations.dart';
 import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
@@ -19,7 +21,7 @@ import '../../constants/api.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/index/search_box.dart';
 import 'user_center.dart';
-import 'footer_bar_panel.dart';
+import 'home_footer_bar_panel.dart';
 import 'home.dart';
 
 class IndexPage extends StatefulWidget {
@@ -158,12 +160,52 @@ class _IndexPageState extends State<IndexPage> {
   /// [Event]
   /// 随便看看
   void _takeLook() async {
+    showCupertinoModalPopup<void>(
+      context: context,
+      barrierDismissible: false,
+      useRootNavigator: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Card(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 160),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                child: Wrap(
+                  spacing: 10,
+                  children: [
+                    const SizedBox(
+                      height: 25,
+                      child: Center(
+                        child: Icon(Icons.casino_outlined, size: 25),
+                      ),
+                    ),
+                    const SizedBox(height: 20, width: 160),
+                    SizedBox(
+                      width: 150,
+                      child: LinearProgressIndicator(
+                        minHeight: 1,
+                        color: Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
     if (reportsCount == 1) {
-      await _getReportsCount();
+      await _getReportsCount().onError((e, s) => Navigator.pop(context));
     }
 
     int random = Random().nextInt(reportsCount as int);
 
+    Navigator.pop(context);
     _urlUtil.opEnPage(context, "/player/dbId/$random");
   }
 
@@ -368,53 +410,49 @@ class _IndexPageState extends State<IndexPage> {
                       key: _drawerWidget,
                       drawer: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).bottomAppBarTheme.color,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context).dividerTheme.color!,
-                              spreadRadius: 1,
-                              blurRadius: 0,
-                            ),
-                            BoxShadow(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              spreadRadius: .2,
-                              blurRadius: 2,
-                            ),
-                          ],
+                          color: Theme.of(context).bottomSheetTheme.backgroundColor,
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Theme.of(context).dividerTheme.color!,
+                          //     spreadRadius: 1,
+                          //     blurRadius: 0,
+                          //   ),
+                          //   BoxShadow(
+                          //     color: Theme.of(context).scaffoldBackgroundColor,
+                          //     spreadRadius: .2,
+                          //     blurRadius: 2,
+                          //   ),
+                          // ],
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
                           ),
                         ),
                         height: screenBarHeight,
-                        child: OverscrollNotificationWidget(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                height: 6.0,
-                                width: 45.0,
-                                margin: const EdgeInsets.only(top: 10.0, bottom: 10),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).dividerTheme.color,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(5.0),
-                                  ),
+                        child: Column(
+                          children: <Widget>[
+                            Container(
+                              height: 6.0,
+                              width: 45.0,
+                              margin: const EdgeInsets.only(top: 10.0, bottom: 10),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).dividerTheme.color,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(5.0),
                                 ),
                               ),
-                              SizedBox(
-                                height: screenHeight * 0.5 - screenBarHeight,
-                                child: MediaQuery.removePadding(
-                                  context: context,
-                                  removeTop: true,
-                                  child: const HomeButtomPanel(),
-                                ),
+                            ),
+                            SizedBox(
+                              height: screenHeight * 0.65 - screenBarHeight,
+                              child: HomeFooterBarPanel(
+                                dragContainerKey: _drawerWidget,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                       defaultShowHeight: screenBarHeight,
-                      height: screenHeight * .5,
+                      height: screenHeight * .65,
                     ),
                   ),
                   bottomNavigationBar: BottomNavigationBar(

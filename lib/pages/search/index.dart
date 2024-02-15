@@ -172,16 +172,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Response]
   /// 账户搜索
   void _onSearch({isButtonClick = true}) async {
-    if (searchStatus.load) return;
-    if (!isButtonClick && searchStatus.params.param == "") return;
-    if (isButtonClick && searchStatus.params.param == "") {
-      EluiMessageComponent.error(context)(
-        child: Text(FlutterI18n.translate(context, "signin.fillEverything")),
-      );
-      return;
-    }
-
-    if (request != null) request!.ignore();
+    if (searchStatus.load && !isButtonClick && searchStatus.params.param == "" && searchStatus.params.param!.length < 3) return;
 
     setState(() {
       searchStatus.load = true;
@@ -317,8 +308,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       length: searchTabs.length,
       child: Scaffold(
         appBar: AppBar(
-          elevation: 0,
-          titleSpacing: 0,
+          titleSpacing: 3,
           title: SearchAppBarWidget(
             key: _titleSearchWidgetKey,
             controller: _searchController,
@@ -331,13 +321,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             onSubmitted: (dynamic data) => _onSearch(isButtonClick: true),
           ),
           actions: [
-            TextButton(
+            IconButton(
               style: ButtonStyle(
                 shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
                 backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
               ),
-              onPressed: () => _onSearch(),
-              child: AnimatedSwitcher(
+              onPressed: () => searchStatus.params.param!.isNotEmpty ? _onSearch() : null,
+              icon: AnimatedSwitcher(
                 transitionBuilder: (child, anim) {
                   return ScaleTransition(scale: anim, child: child);
                 },

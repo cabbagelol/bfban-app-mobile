@@ -9,9 +9,9 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../constants/api.dart';
-import '../../../provider/package_provider.dart';
-import '../../../utils/index.dart';
+import '/constants/api.dart';
+import '/provider/package_provider.dart';
+import '/utils/index.dart';
 
 class AppVersionPackagePage extends StatefulWidget {
   const AppVersionPackagePage({Key? key}) : super(key: key);

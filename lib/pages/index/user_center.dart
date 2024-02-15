@@ -275,6 +275,12 @@ class _UserCenterPageState extends State<UserCenterPage> {
                       onTap: () => _opEnSetting(),
                     ),
                     const SizedBox(height: 20),
+                    if (data.isLogin && accountLoading)
+                      LinearProgressIndicator(
+                        minHeight: 1,
+                        color: Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+                      ),
                     if (data.isLogin)
                       EluiCellComponent(
                         title: FlutterI18n.translate(context, "header.signout"),

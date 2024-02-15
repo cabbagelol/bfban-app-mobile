@@ -8,9 +8,9 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/translation_provider.dart';
-import '../../../provider/userinfo_provider.dart';
-import '../../../utils/index.dart';
+import '/provider/translation_provider.dart';
+import '/provider/userinfo_provider.dart';
+import '/utils/index.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);

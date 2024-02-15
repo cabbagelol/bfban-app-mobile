@@ -8,10 +8,10 @@ import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tip/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../../constants/api.dart';
-import '../../../data/index.dart';
-import '../../../provider/userinfo_provider.dart';
-import '../../../utils/index.dart';
+import '/constants/api.dart';
+import '/data/index.dart';
+import '/provider/userinfo_provider.dart';
+import '/utils/index.dart';
 
 class InformationPage extends StatefulWidget {
   const InformationPage({key});

@@ -3,7 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import '../../../component/_time/index.dart';
+import '/component/_time/index.dart';
 import 'class.dart';
 import 'framework.dart';
 

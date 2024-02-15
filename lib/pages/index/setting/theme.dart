@@ -9,7 +9,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/provider/theme_provider.dart';
 
-import '../../../data/index.dart';
+import '/data/index.dart';
 
 class ThemePage extends StatefulWidget {
   const ThemePage({Key? key}) : super(key: key);

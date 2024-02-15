@@ -6,8 +6,8 @@ import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../../data/index.dart';
-import '../../../provider/translation_provider.dart';
+import '/data/index.dart';
+import '/provider/translation_provider.dart';
 
 class PublicTranslatorPage extends StatefulWidget {
   PublicTranslatorPage({Key? key});

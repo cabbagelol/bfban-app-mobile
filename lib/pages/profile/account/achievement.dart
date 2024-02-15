@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../../component/_achievement/index.dart';
-import '../../../constants/api.dart';
-import '../../../data/index.dart';
-import '../../../utils/index.dart';
+import '/component/_achievement/index.dart';
+import '/constants/api.dart';
+import '/data/index.dart';
+import '/utils/index.dart';
 
 class UserAchievementPage extends StatefulWidget {
   const UserAchievementPage();

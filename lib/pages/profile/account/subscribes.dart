@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../../component/_empty/index.dart';
-import '../../../component/_refresh/index.dart';
-import '../../../constants/api.dart';
-import '../../../data/index.dart';
-import '../../../provider/userinfo_provider.dart';
-import '../../../utils/index.dart';
-import '../../../widgets/hint_login.dart';
-import '../../../widgets/index.dart';
+import '/component/_empty/index.dart';
+import '/component/_refresh/index.dart';
+import '/constants/api.dart';
+import '/data/index.dart';
+import '/provider/userinfo_provider.dart';
+import '/utils/index.dart';
+import '/widgets/hint_login.dart';
+import '/widgets/index.dart';
 
 class UserSubscribesPage extends StatefulWidget {
   const UserSubscribesPage();
@@ -42,7 +42,7 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
 
   @override
   void initState() {
-    getSubscribesList();
+    _getSubscribesList();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -55,7 +55,7 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
 
   /// [Response]
   /// 获取订阅列表
-  Future getSubscribesList() async {
+  Future _getSubscribesList() async {
     if (traceStatus.load == true) return;
 
     setState(() {
@@ -90,7 +90,7 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
   Future _onRefresh() async {
     traceStatus.parame.resetPage();
 
-    await getSubscribesList();
+    await _getSubscribesList();
 
     _refreshKey.currentState!.controller.finishRefresh();
     _refreshKey.currentState!.controller.resetFooter();
@@ -102,7 +102,7 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
     if (traceStatus.load!) return;
 
     traceStatus.parame.nextPage();
-    await getSubscribesList();
+    await _getSubscribesList();
   }
 
   @override
@@ -113,7 +113,7 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
       ),
       body: Consumer<UserInfoProvider>(
         builder: (context, data, child) {
-          if (data.userinfo.isEmpty) return const HintLoginWidget();
+          if (data.userinfo.isEmpty) return const Center(child: HintLoginWidget());
 
           if (traceStatus.list!.isEmpty) return const EmptyWidget();
 

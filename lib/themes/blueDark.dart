@@ -253,6 +253,9 @@ class BlueDarkTheme extends AppBaseThemeItem {
         shadowColor: Colors.black26,
         elevation: 0,
         scrolledUnderElevation: 0,
+        actionsIconTheme: IconThemeData(
+          color: Colors.white,
+        ),
         iconTheme: IconThemeData(
           color: Colors.white,
         ),

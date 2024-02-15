@@ -65,7 +65,7 @@ class DragContainerState extends State<DragContainer> with TickerProviderStateMi
   bool onResetControllerValue = true;
   double offsetDistance = 0.1;
   late Animation<double> animation;
-  bool offstage = true;
+  ValueNotifier<bool> offstage = ValueNotifier<bool>(false);
   bool _isFling = true;
 
   double get defaultOffsetDistance => widget.height - widget.defaultShowHeight;
@@ -119,7 +119,7 @@ class DragContainerState extends State<DragContainer> with TickerProviderStateMi
 
     ///偏移值在这个范围内
     offsetDistance = offsetDistance.clamp(0.0, defaultOffsetDistance);
-    offstage = offsetDistance < maxOffsetDistance;
+    offstage.value = offsetDistance < maxOffsetDistance;
     return Transform.translate(
       offset: Offset(0.0, offsetDistance),
       child: RawGestureDetector(
@@ -130,14 +130,14 @@ class DragContainerState extends State<DragContainer> with TickerProviderStateMi
               height: widget.height,
               child: widget.drawer,
             ),
-            // Offstage(
-            //   offstage: offstage,
-            //   child: Container(
-            //     /// 使用图层来解决当抽屉露出头时，上拉抽屉上移。解决的方案最佳
-            //     color: Colors.transparent,
-            //     height: widget.height,
-            //   ),
-            // )
+            Offstage(
+              offstage: offstage.value,
+              child: Container(
+                /// 使用图层来解决当抽屉露出头时，上拉抽屉上移。解决的方案最佳
+                color: Colors.transparent,
+                height: widget.height,
+              ),
+            )
           ],
         ),
       ),
@@ -377,7 +377,7 @@ enum ScrollNotificationListener {
 //class _DemoState extends State<Demo> {
 //  @override
 //  Widget build(BuildContext context) {
-//    return BottomDragWidget(
+//    return FlutterPluginDrawer(
 //        body: Container(
 //          color: Colors.brown,
 //          child: ListView.builder(itemBuilder: (BuildContext context, int index){

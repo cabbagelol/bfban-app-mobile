@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../../component/_captcha/index.dart';
-import '../../../constants/api.dart';
-import '../../../provider/userinfo_provider.dart';
-import '../../../utils/index.dart';
+import '/component/_captcha/index.dart';
+import '/constants/api.dart';
+import '/provider/userinfo_provider.dart';
+import '/utils/index.dart';
 
 class UserChangePasswordPage extends StatefulWidget {
   const UserChangePasswordPage({key});

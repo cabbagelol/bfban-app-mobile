@@ -22,13 +22,13 @@ class PlayerFilterPanel extends FilterPanelWidget {
 
 class PlayerFilterPanelState extends State<PlayerFilterPanel> {
   // 筛选
-  Map _playerFilter = {"status": 0};
+  final Map _playerFilter = {"status": 0};
 
   // 原始筛选表单
-  Map _primitive_from = {};
+  final Map _primitive_from = {};
 
   // 确定筛选表单
-  Map _from = {};
+  final Map _from = {};
 
   int get status => _playerFilter["status"] ??= false;
 
@@ -43,11 +43,6 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
     const SizedBox(height: 10),
     UpdateTimeFilterPanel(),
   ];
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   /// [Event]
   /// 对比表单变化
