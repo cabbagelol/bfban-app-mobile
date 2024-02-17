@@ -1,24 +1,29 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class FlutterPluginDrawer extends StatelessWidget {
+class FlutterPluginDrawer extends StatefulWidget {
   final Widget body;
   final DragContainer dragContainer;
 
-  const FlutterPluginDrawer({
+  FlutterPluginDrawer({
     Key? key,
     required this.body,
     required this.dragContainer,
   }) : super(key: key);
 
   @override
+  State<FlutterPluginDrawer> createState() => _FlutterPluginDrawerState();
+}
+
+class _FlutterPluginDrawerState extends State<FlutterPluginDrawer> {
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        body,
+        widget.body,
         Align(
           alignment: Alignment.bottomCenter,
-          child: dragContainer,
+          child: widget.dragContainer,
         )
       ],
     );
@@ -137,7 +142,7 @@ class DragContainerState extends State<DragContainer> with TickerProviderStateMi
                 color: Colors.transparent,
                 height: widget.height,
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -17,6 +17,8 @@ class GameTypeRadioWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ChipTheme.of(context).color;
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -28,7 +30,7 @@ class GameTypeRadioWidget extends StatelessWidget {
           ),
         ),
         elevation: 0,
-        color: index ? const Color(0xff364e80) : Theme.of(context).sliderTheme.disabledActiveTickMarkColor,
+        color: index ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.background,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           child: child!,

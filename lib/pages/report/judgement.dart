@@ -282,7 +282,10 @@ class _JudgementPageState extends State<JudgementPage> {
                                     index: method["select"],
                                     child: Tooltip(
                                       message: FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.describe"),
-                                      child: Text(FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.title")),
+                                      child: Text(
+                                        FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.title"),
+                                        style: Theme.of(context).chipTheme.labelStyle,
+                                      ),
                                     ),
                                     onTap: () {
                                       field.setState(() {

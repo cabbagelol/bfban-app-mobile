@@ -107,7 +107,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
             Expanded(
               flex: 1,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 1),
                 decoration: BoxDecoration(
                   color: titleSearchColor(widget.theme).color,
                   border: Border.all(color: Theme.of(context).dividerTheme.color!.withOpacity(.3), width: 1),
@@ -115,10 +115,12 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                 ),
                 child: Row(
                   children: <Widget>[
-                    Icon(
-                      Icons.search,
+                    IconButton(
+                      icon: Icon(Icons.arrow_back),
                       color: titleSearchColor(widget.theme).textColor,
-                      size: 20,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
                     const SizedBox(
                       width: 5,

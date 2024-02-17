@@ -48,6 +48,8 @@ class CheatListCard extends StatelessWidget {
             fit: BoxFit.fill,
             cache: true,
             printError: false,
+            cacheWidth: size?.toInt(),
+            cacheHeight: size?.toInt(),
             loadStateChanged: (ExtendedImageState state) {
               switch (state.extendedImageLoadState) {
                 case LoadState.completed:
@@ -127,7 +129,7 @@ class CheatListCard extends StatelessWidget {
           const SizedBox(width: 15),
           Container(
             width: 5,
-            height: 35,
+            height: 36,
             decoration: BoxDecoration(
               color: item["status"] == 1 ? Theme.of(context).colorScheme.error : Colors.green,
               borderRadius: BorderRadius.circular(3),

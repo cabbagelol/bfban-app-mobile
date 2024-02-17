@@ -87,7 +87,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   ready() async {
     dynamic playersTabInitialIndex = await _storageAccount.getConfiguration("playersTabInitialIndex");
 
-    if (playersTabInitialIndex != null && playersTabInitialIndex != 0) _tabController?.index = playersTabInitialIndex is bool ? 0 : playersTabInitialIndex;
+    if (playersTabInitialIndex != null && playersTabInitialIndex != 0 && cheaterStatus!.length > 1) _tabController?.index = playersTabInitialIndex is bool ? 0 : playersTabInitialIndex;
 
     getPlayerList();
     getPlayerStatistics();
@@ -292,126 +292,131 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
         triggerOffset: MediaQuery.of(context).viewPadding.bottom + kBottomNavigationBarHeight + 50,
         onRefresh: _onRefresh,
         onLoad: _getMore,
-        child: CustomScrollView(
+        child: Scrollbar(
           controller: _scrollController,
-          slivers: [
-            SliverAppBar(
-              stretch: true,
-              pinned: true,
-              primary: true,
-              automaticallyImplyLeading: false,
-              expandedHeight: 0,
-              toolbarHeight: 38,
-              backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
-              flexibleSpace: FlexibleSpaceBar(
-                expandedTitleScale: 1,
-                titlePadding: EdgeInsets.zero,
-                background: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10, tileMode: TileMode.decal),
-                  child: const SizedBox(),
-                ),
-                title: Row(
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child: TabBar(
-                        controller: _tabController,
-                        isScrollable: true,
-                        automaticIndicatorColorAdjustment: false,
-                        onTap: (index) => _onSwitchTab(index),
-                        tabs: cheaterStatus!.map((i) {
-                          return Tab(
-                            child: Stack(
-                              clipBehavior: Clip.none,
-                              children: <Widget>[
-                                I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
-                                if (i["num"] != null && i["num"] > 0)
-                                  Positioned(
-                                    top: -10,
-                                    right: -12,
-                                    child: AnimatedOpacity(
-                                      opacity: i["num"] != null || i["num"] == 0 ? 1 : 0,
-                                      duration: const Duration(milliseconds: 300),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).colorScheme.error,
-                                          borderRadius: BorderRadius.circular(5),
-                                          border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
-                                        ),
-                                        constraints: const BoxConstraints(
-                                          minWidth: 12,
-                                          minHeight: 12,
-                                        ),
-                                        child: Text(
-                                          i["num"] > 9999 ? "9999+" : i["num"].toString(),
-                                          style: TextStyle(
-                                            fontSize: FontSize.xSmall.value,
-                                            color: Colors.white,
+          child: CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              SliverAppBar(
+                stretch: true,
+                pinned: true,
+                primary: true,
+                automaticallyImplyLeading: false,
+                expandedHeight: 0,
+                toolbarHeight: 38,
+                backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
+                flexibleSpace: FlexibleSpaceBar(
+                  expandedTitleScale: 1,
+                  titlePadding: EdgeInsets.zero,
+                  background: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    blendMode: BlendMode.srcIn,
+                    child: const SizedBox(),
+                  ),
+                  title: Row(
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        child: TabBar(
+                          controller: _tabController,
+                          isScrollable: true,
+                          automaticIndicatorColorAdjustment: false,
+                          onTap: (index) => _onSwitchTab(index),
+                          tabs: cheaterStatus!.map((i) {
+                            return Tab(
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                children: <Widget>[
+                                  I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
+                                  if (i["num"] != null && i["num"] > 0)
+                                    Positioned(
+                                      top: -10,
+                                      right: -12,
+                                      child: AnimatedScale(
+                                        curve: Curves.easeInOutBack,
+                                        scale: i["num"] != null || i["num"] == 0 ? 1 : .8,
+                                        duration: const Duration(milliseconds: 800),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).colorScheme.error,
+                                            borderRadius: BorderRadius.circular(5),
+                                            border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
                                           ),
-                                          textAlign: TextAlign.center,
+                                          constraints: const BoxConstraints(
+                                            minWidth: 12,
+                                            minHeight: 12,
+                                          ),
+                                          child: Text(
+                                            i["num"] > 9999 ? "9999+" : i["num"].toString(),
+                                            style: TextStyle(
+                                              fontSize: FontSize.xSmall.value,
+                                              color: Theme.of(context).colorScheme.errorContainer,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ),
                       ),
-                    ),
-                    PlayerFilterPanel(
-                      key: _playerFilterPanelKey,
-                      onChange: (Map value) {
-                        playersStatus!.parame!.game = value["game"];
-                        playersStatus!.parame!.sortBy = value["sortBy"];
-                        playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
-                        playersStatus!.parame!.createTimeTo = value["createTimeTo"];
-                        playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
-                        playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
+                      PlayerFilterPanel(
+                        key: _playerFilterPanelKey,
+                        onChange: (Map value) {
+                          playersStatus!.parame!.game = value["game"];
+                          playersStatus!.parame!.sortBy = value["sortBy"];
+                          playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
+                          playersStatus!.parame!.createTimeTo = value["createTimeTo"];
+                          playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
+                          playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
 
-                        _onRefresh();
-                      },
-                    ),
-                  ],
+                          _onRefresh();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            if (playersStatus!.list!.isNotEmpty)
-              SliverList.builder(
-                itemCount: playersStatus!.list!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  if (index < playersStatus!.list!.length) {
-                    // 分页提示
-                    if (playersStatus!.list![index]["pageTip"] != null) {
-                      return SizedBox(
-                        height: 30,
-                        child: Center(
-                          child: Text(
-                            FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Theme.of(context).textTheme.titleSmall?.color,
+              if (playersStatus!.list!.isNotEmpty)
+                SliverList.builder(
+                  itemCount: playersStatus!.list!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (index < playersStatus!.list!.length) {
+                      // 分页提示
+                      if (playersStatus!.list![index]["pageTip"] != null) {
+                        return SizedBox(
+                          height: 30,
+                          child: Center(
+                            child: Text(
+                              FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${playersStatus!.list![index]["pageIndex"]}"}),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).textTheme.titleSmall?.color,
+                              ),
                             ),
                           ),
-                        ),
+                        );
+                      }
+
+                      // 内容卡片
+                      return CheatListCard(
+                        item: playersStatus?.list![index],
                       );
                     }
 
-                    // 内容卡片
-                    return CheatListCard(
-                      item: playersStatus?.list![index],
-                    );
-                  }
-
-                  return Container();
-                },
-              )
-            else
-              const SliverFillRemaining(
-                child: EmptyWidget(),
-              )
-          ],
+                    return Container();
+                  },
+                )
+              else
+                const SliverFillRemaining(
+                  child: EmptyWidget(),
+                )
+            ],
+          ),
         ),
       ),
     );

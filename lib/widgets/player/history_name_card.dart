@@ -32,7 +32,7 @@ class HistoryNameCard extends StatelessWidget {
               TextSpan(
                 text: "\t${FlutterI18n.translate(context, "detail.appeal.info.changeName")}\t",
                 style: const TextStyle(
-                  fontWeight: FontWeight.normal,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
               TextSpan(

@@ -38,7 +38,16 @@ class _achievementWidgetState extends State<achievementWidget> {
                 child: SizedBox(
                   width: widget.size as double,
                   height: widget.size as double,
-                  child: Image.asset(achievementUtil.getIcon(achievementUtil.getItem(i["name"])["iconPath"])),
+                  child: Image.network(
+                    achievementUtil.getIcon(achievementUtil.getItem(i["name"])["iconPath"]),
+                    errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                      return Container(
+                        color: Theme.of(context).dividerTheme.color,
+                        width: widget.size as double,
+                        height: widget.size as double,
+                      );
+                    },
+                  ),
                 ),
               );
             }).toList(),

@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
@@ -172,8 +173,9 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       data: viewedStatus.parame!.toMap,
       method: Http.POST,
     );
+    Map d = result.data;
 
-    if (result.data["success"] == 1) {
+    if (d["success"] == 1) {
       viewed[id] = DateTime.now().millisecondsSinceEpoch;
       storage.set("viewed", value: viewed);
 
@@ -526,20 +528,21 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
             return Scaffold(
               extendBodyBehindAppBar: true,
               appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                flexibleSpace: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.bottomRight,
-                      colors: ProviderUtil().ofTheme(context).currentThemeName == "default" ? [Colors.transparent, Colors.black54] : [Colors.transparent, Colors.black12],
-                    ),
+                backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
+                flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  titlePadding: EdgeInsets.zero,
+                  background: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                    blendMode: BlendMode.srcIn,
+                    child: const SizedBox(),
                   ),
-                ),
-                centerTitle: true,
-                title: TabBar(
-                  labelStyle: const TextStyle(fontSize: 16),
-                  controller: _tabController,
-                  tabs: cheatersTabs,
+                  title: TabBar(
+                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                    labelStyle: Theme.of(context).textTheme.titleMedium,
+                    controller: _tabController,
+                    tabs: cheatersTabs,
+                  ),
                 ),
                 elevation: 0,
                 actions: <Widget>[
@@ -612,362 +615,367 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                         RefreshIndicator(
                           edgeOffset: MediaQuery.of(context).padding.top,
                           onRefresh: _onRefreshCheatersInfo,
-                          child: ListView(
-                            padding: EdgeInsets.zero,
-                            children: <Widget>[
-                              Stack(
-                                alignment: AlignmentDirectional.topCenter,
-                                children: [
-                                  Positioned(
-                                    child: Opacity(
-                                      opacity: .1,
-                                      child: SizedBox(
-                                        // width: 800,
-                                        height: 350,
-                                        child: ShaderMask(
-                                          blendMode: BlendMode.dstIn,
-                                          shaderCallback: (Rect bounds) {
-                                            return const LinearGradient(
-                                              begin: Alignment.topCenter,
-                                              end: Alignment.bottomCenter,
-                                              colors: [Colors.black, Colors.transparent],
-                                            ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
-                                          },
-                                          child: EluiImgComponent(
-                                            src: snapshot.data!["avatarLink"],
-                                            width: MediaQuery.of(context).size.width,
-                                            height: 350,
+                          child: Scrollbar(
+                            child: ListView(
+                              padding: EdgeInsets.zero,
+                              children: <Widget>[
+                                Stack(
+                                  alignment: AlignmentDirectional.topCenter,
+                                  children: [
+                                    Positioned(
+                                      child: Opacity(
+                                        opacity: .1,
+                                        child: SizedBox(
+                                          height: 350,
+                                          child: ShaderMask(
+                                            blendMode: BlendMode.dstIn,
+                                            shaderCallback: (Rect bounds) {
+                                              return const LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [Colors.black, Colors.transparent],
+                                              ).createShader(Rect.fromLTRB(0, 0, bounds.width, bounds.height));
+                                            },
+                                            child: EluiImgComponent(
+                                              src: snapshot.data!["avatarLink"],
+                                              width: MediaQuery.of(context).size.width,
+                                              height: 350,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Positioned.fill(
-                                    child: BackdropFilter(
-                                      filter: ui.ImageFilter.blur(
-                                        sigmaX: 1,
-                                        sigmaY: 1,
-                                      ),
-                                      child: Center(
-                                        child: GestureDetector(
-                                          onTap: () => _onEnImgInfo(context),
-                                          child: Container(
-                                            margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
-                                            child: Center(
-                                              child: Card(
-                                                elevation: 0,
-                                                clipBehavior: Clip.antiAlias,
-                                                child: Stack(
-                                                  children: [
-                                                    Positioned(
-                                                      top: 0,
-                                                      child: Image.asset(
-                                                        "assets/images/default-player-avatar.jpg",
+                                    Positioned.fill(
+                                      child: BackdropFilter(
+                                        filter: ui.ImageFilter.blur(
+                                          sigmaX: 1,
+                                          sigmaY: 1,
+                                        ),
+                                        child: Center(
+                                          child: GestureDetector(
+                                            onTap: () => _onEnImgInfo(context),
+                                            child: Container(
+                                              margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
+                                              child: Center(
+                                                child: Card(
+                                                  elevation: 0,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  child: Stack(
+                                                    children: [
+                                                      Positioned(
+                                                        top: 0,
+                                                        child: Image.asset(
+                                                          "assets/images/default-player-avatar.jpg",
+                                                          width: 150,
+                                                          height: 150,
+                                                          cacheHeight: 150,
+                                                          cacheWidth: 150,
+                                                        ),
+                                                      ),
+                                                      ExtendedImage.network(
+                                                        snapshot.data!["avatarLink"],
+                                                        key: ValueKey<String>(const Uuid().v4(options: {
+                                                          'name': 'avatarLink-up',
+                                                          'url': snapshot.data!["avatarLink"],
+                                                          'time': DateTime.now().millisecondsSinceEpoch,
+                                                        })),
                                                         width: 150,
                                                         height: 150,
+                                                        fit: BoxFit.contain,
+                                                        cache: true,
+                                                        cacheWidth: 150,
+                                                        cacheHeight: 150,
+                                                        clearMemoryCacheWhenDispose: true,
+                                                        printError: false,
+                                                        loadStateChanged: (ExtendedImageState state) {
+                                                          switch (state.extendedImageLoadState) {
+                                                            case LoadState.completed:
+                                                              return state.completedWidget;
+                                                            case LoadState.failed:
+                                                            default:
+                                                              return Image.asset("assets/images/default-player-avatar.jpg");
+                                                          }
+                                                        },
                                                       ),
-                                                    ),
-                                                    ExtendedImage.network(
-                                                      snapshot.data!["avatarLink"],
-                                                      key: ValueKey<String>(const Uuid().v4(options: {
-                                                        'name': 'avatarLink-up',
-                                                        'url': snapshot.data!["avatarLink"],
-                                                        'time': DateTime.now().millisecondsSinceEpoch,
-                                                      })),
-                                                      width: 150,
-                                                      height: 150,
-                                                      fit: BoxFit.contain,
-                                                      cache: true,
-                                                      clearMemoryCacheWhenDispose: true,
-                                                      printError: false,
-                                                      loadStateChanged: (ExtendedImageState state) {
-                                                        switch (state.extendedImageLoadState) {
-                                                          case LoadState.completed:
-                                                            return state.completedWidget;
-                                                          case LoadState.failed:
-                                                          default:
-                                                            return Image.asset("assets/images/default-player-avatar.jpg");
-                                                        }
-                                                      },
-                                                    ),
-                                                    Positioned(
-                                                      right: 0,
-                                                      bottom: 0,
-                                                      child: Container(
-                                                        padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                                                        decoration: const BoxDecoration(
-                                                          gradient: LinearGradient(
-                                                            begin: Alignment.topLeft,
-                                                            end: Alignment.bottomRight,
-                                                            colors: [
-                                                              Colors.transparent,
-                                                              Colors.transparent,
-                                                              Colors.black87,
-                                                            ],
+                                                      Positioned(
+                                                        right: 0,
+                                                        bottom: 0,
+                                                        child: Container(
+                                                          padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                                                          decoration: const BoxDecoration(
+                                                            gradient: LinearGradient(
+                                                              begin: Alignment.topLeft,
+                                                              end: Alignment.bottomRight,
+                                                              colors: [
+                                                                Colors.transparent,
+                                                                Colors.transparent,
+                                                                Colors.black87,
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          child: const Icon(
+                                                            Icons.search,
+                                                            color: Colors.white70,
+                                                            size: 30,
                                                           ),
                                                         ),
-                                                        child: const Icon(
-                                                          Icons.search,
-                                                          color: Colors.white70,
-                                                          size: 30,
-                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                padding: const EdgeInsets.all(10),
-                                child: Row(
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 1,
-                                      child: Row(
-                                        children: <Widget>[
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                /// 用户名称
-                                                SelectableText(
-                                                  snapshot.data["originName"] ?? "User Name",
-                                                  style: TextStyle(
-                                                    fontSize: FontSize.xxLarge.value,
-                                                    fontFamily: "UbuntuMono",
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Wrap(
-                                                  spacing: 5,
-                                                  runSpacing: 5,
-                                                  children: [
-                                                    PlayerStatusTagWidget(
-                                                      size: PlayerStatusTagSize.medium,
-                                                      status: snapshot.data?["status"],
-                                                    ),
-                                                    BfvHackersWidget(
-                                                      data: snapshot.data,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-
-                              // Player Attr
-                              SelectionArea(
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                  child: Wrap(
-                                    spacing: 40,
-                                    runSpacing: 25,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.firstReportTime"),
-                                              style: const TextStyle(fontSize: 20),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                  padding: const EdgeInsets.all(10),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 1,
+                                        child: Row(
+                                          children: <Widget>[
+                                            Expanded(
+                                              flex: 1,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  /// 用户名称
+                                                  SelectableText(
+                                                    snapshot.data["originName"] ?? "User Name",
+                                                    style: TextStyle(
+                                                      fontSize: FontSize.xxLarge.value,
+                                                      fontFamily: "UbuntuMono",
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 5),
+                                                  Wrap(
+                                                    spacing: 5,
+                                                    runSpacing: 5,
+                                                    children: [
+                                                      PlayerStatusTagWidget(
+                                                        size: PlayerStatusTagSize.medium,
+                                                        status: snapshot.data?["status"],
+                                                      ),
+                                                      BfvHackersWidget(
+                                                        data: snapshot.data,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          TimeWidget(
-                                            data: snapshot.data!["createTime"],
-                                            style: const TextStyle(fontSize: 18),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.recentUpdateTime"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          TimeWidget(
-                                            data: snapshot.data!["updateTime"],
-                                            style: const TextStyle(fontSize: 18),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "detail.info.viewTimes"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "${snapshot.data!["viewNum"]}",
-                                            style: const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "basic.button.reply"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            "${snapshot.data["commentsNum"]}",
-                                            style: const TextStyle(fontSize: 18),
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              FlutterI18n.translate(context, "report.labels.game"),
-                                              style: const TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          GamesTagWidget(
-                                            data: snapshot.data["games"],
-                                            size: GamesTagSize.no3,
-                                          ),
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          const Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              "Persona Id",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          const Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              "User Id",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text("${snapshot.data?["originUserId"]}", style: const TextStyle(fontSize: 18))
-                                        ],
-                                      ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          const Opacity(
-                                            opacity: .5,
-                                            child: Text(
-                                              "Id",
-                                              style: TextStyle(fontSize: 20),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text("${snapshot.data?["id"]}", style: const TextStyle(fontSize: 18))
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
 
-                              Consumer<UserInfoProvider>(
-                                builder: (context, data, child) {
-                                  return Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                // Player Attr
+                                SelectionArea(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                    child: Wrap(
+                                      spacing: 40,
+                                      runSpacing: 25,
                                       children: [
-                                        Text(
-                                          FlutterI18n.translate(context, "detail.info.historyID"),
-                                          style: TextStyle(
-                                            fontSize: FontSize.xLarge.value,
-                                          ),
-                                        ),
-                                        if (userNameList["buttonLoad"])
-                                          IconButton(
-                                            icon: const SizedBox(
-                                              width: 16,
-                                              height: 16,
-                                              child: CircularProgressIndicator(
-                                                strokeWidth: 2,
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "detail.info.firstReportTime"),
+                                                style: const TextStyle(fontSize: 20),
                                               ),
                                             ),
-                                            onPressed: () {},
-                                          )
-                                        else
-                                          IconButton(
-                                            icon: const Icon(
-                                              Icons.refresh,
-                                              size: 25,
+                                            const SizedBox(height: 5),
+                                            TimeWidget(
+                                              data: snapshot.data!["createTime"],
+                                              style: const TextStyle(fontSize: 18),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
                                             ),
-                                            onPressed: () => _seUpdateUserNameList(),
-                                          )
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "detail.info.recentUpdateTime"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            TimeWidget(
+                                              data: snapshot.data!["updateTime"],
+                                              style: const TextStyle(fontSize: 18),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "detail.info.viewTimes"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "${snapshot.data!["viewNum"]}",
+                                              style: const TextStyle(fontSize: 18),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "basic.button.reply"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text(
+                                              "${snapshot.data["commentsNum"]}",
+                                              style: const TextStyle(fontSize: 18),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                FlutterI18n.translate(context, "report.labels.game"),
+                                                style: const TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            GamesTagWidget(
+                                              data: snapshot.data["games"],
+                                              size: GamesTagSize.no3,
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            const Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                "Persona Id",
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text("${snapshot.data?["originPersonaId"]}", style: const TextStyle(fontSize: 18))
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            const Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                "User Id",
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text("${snapshot.data?["originUserId"]}", style: const TextStyle(fontSize: 18))
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            const Opacity(
+                                              opacity: .5,
+                                              child: Text(
+                                                "Id",
+                                                style: TextStyle(fontSize: 20),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 5),
+                                            Text("${snapshot.data?["id"]}", style: const TextStyle(fontSize: 18))
+                                          ],
+                                        ),
                                       ],
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                ),
 
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 20),
-                                child: userNameList['listLoad']
-                                    ? EluiVacancyComponent(
-                                        title: "-",
-                                      )
-                                    : _updateUserName(context, snapshot.data),
-                              ),
+                                Consumer<UserInfoProvider>(
+                                  builder: (context, data, child) {
+                                    return Container(
+                                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            FlutterI18n.translate(context, "detail.info.historyID"),
+                                            style: TextStyle(
+                                              fontSize: FontSize.xLarge.value,
+                                            ),
+                                          ),
+                                          if (userNameList["buttonLoad"])
+                                            IconButton(
+                                              icon: const SizedBox(
+                                                width: 16,
+                                                height: 16,
+                                                child: CircularProgressIndicator(
+                                                  strokeWidth: 2,
+                                                ),
+                                              ),
+                                              onPressed: () {},
+                                            )
+                                          else
+                                            IconButton(
+                                              icon: const Icon(
+                                                Icons.refresh,
+                                                size: 25,
+                                              ),
+                                              onPressed: () => _seUpdateUserNameList(),
+                                            )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
 
-                              RecordLinkWidget(
-                                data: snapshot.data,
-                              ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: userNameList['listLoad']
+                                      ? EluiVacancyComponent(
+                                          title: "-",
+                                        )
+                                      : _updateUserName(context, snapshot.data),
+                                ),
 
-                              const SizedBox(height: 50),
-                            ],
+                                RecordLinkWidget(
+                                  data: snapshot.data,
+                                ),
+
+                                const SizedBox(height: 50),
+                              ],
+                            ),
                           ),
                         ),
                         TimeLine(
@@ -1027,7 +1035,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                 ),
                               ),
                               const SizedBox(width: 5),
-                              OutlinedButton(
+                              TextButton(
                                 onPressed: () => _onSubscribes(data.isLogin),
                                 child: subscribes["load"]
                                     ? ELuiLoadComponent(

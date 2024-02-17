@@ -95,7 +95,7 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
                         items: paths.map((i) {
                           return DropdownMenuItem(
                             value: i.dirName,
-                            child: Text(i.dirName.toUpperCase()),
+                            child: Text(FlutterI18n.translate(context, "app.media.directory.${i.translate!.key!}", translationParams: i.translate!.param)),
                           );
                         }).toList(),
                       ),
@@ -105,45 +105,12 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
               const SizedBox(height: 5),
               EluiCellComponent(
                 title: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.scanDirectoryTitle"),
-                cont: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: paths.where((element) => element.check!).indexed.map((e) {
-                    return Opacity(
-                      opacity: .6,
-                      child: Text(
-                        "${e.$2.toMap["dirName"].toString().toUpperCase()} ${e.$1 + 1}",
-                        style: TextStyle(fontSize: FontSize.xxSmall.value),
-                      ),
-                    );
-                  }).toList(),
-                ),
                 label: FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.scanDirectoryDescription"),
               ),
               Column(
                 children: paths.map((e) {
                   return ListTile(
-                    leading: Radio(
-                      value: e.dirName,
-                      groupValue: dirData.defaultSavePathValue,
-                      onChanged: (value) {
-                        setState(() {
-                          dirData.defaultSavePathValue = value.toString();
-                        });
-                      },
-                    ),
-                    title: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(e.dirName.toUpperCase()),
-                      ],
-                    ),
-                    subtitle: Text(
-                      e.basicPath,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.displayMedium?.color,
-                      ),
-                    ),
-                    trailing: Checkbox(
+                    leading: Checkbox(
                       value: e.check,
                       onChanged: (value) {
                         if (!value! && paths.where((o) => o.check!).length == 1) {
@@ -162,6 +129,8 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
                         }
                       },
                     ),
+                    title: Text(FlutterI18n.translate(context, "app.media.directory.${e.translate!.key!}", translationParams: e.translate!.param)),
+                    subtitle: Text(e.basicPath),
                   );
                 }).toList(),
               )

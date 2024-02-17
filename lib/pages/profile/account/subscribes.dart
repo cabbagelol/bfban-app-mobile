@@ -13,7 +13,7 @@ import '/widgets/hint_login.dart';
 import '/widgets/index.dart';
 
 class UserSubscribesPage extends StatefulWidget {
-  const UserSubscribesPage();
+  const UserSubscribesPage({Key? key}) : super(key: key);
 
   @override
   State<UserSubscribesPage> createState() => _UserSubscribesPageState();
@@ -76,7 +76,7 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
         traceStatus.load = false;
       });
 
-      _refreshKey.currentState!.controller.finishLoad(IndicatorResult.success);
+      _refreshKey.currentState?.controller.finishLoad(IndicatorResult.success);
       return;
     }
 
@@ -120,18 +120,20 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
           return Refresh(
             key: _refreshKey,
             onRefresh: _onRefresh,
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: traceStatus.list!.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (traceStatus.list!.isEmpty) {
-                  return const EmptyWidget();
-                }
+            child: Scrollbar(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: traceStatus.list!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (traceStatus.list!.isEmpty) {
+                    return const EmptyWidget();
+                  }
 
-                return CheatListCard(
-                  item: traceStatus.list![index],
-                );
-              },
+                  return CheatListCard(
+                    item: traceStatus.list![index],
+                  );
+                },
+              ),
             ),
           );
         },

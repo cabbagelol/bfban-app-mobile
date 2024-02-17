@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../data/index.dart';
 
@@ -53,9 +54,9 @@ class MikuGreenTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: color.withOpacity(.1),
-        modalBackgroundColor: color.withOpacity(.1),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.white,
+        modalBackgroundColor: Colors.white,
       ),
       canvasColor: const Color(0xffdefff9),
       primaryColorLight: Colors.white,
@@ -106,6 +107,9 @@ class MikuGreenTheme extends AppBaseThemeItem {
         splashColor: Colors.black38,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
+      scrollbarTheme: ScrollbarThemeData(
+        thumbColor: MaterialStatePropertyAll(color),
+      ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: color,
         linearTrackColor: Colors.black12,
@@ -139,9 +143,9 @@ class MikuGreenTheme extends AppBaseThemeItem {
           color: Colors.black54,
         ),
       ),
-      dividerColor: color0,
+      dividerColor: color.withOpacity(.1),
       dividerTheme: DividerThemeData(
-        color: color0,
+        color: color.withOpacity(.1),
         space: 1,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -218,11 +222,16 @@ class MikuGreenTheme extends AppBaseThemeItem {
         iconTheme: IconThemeData(
           color: color,
         ),
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: FontSize.xLarge.value,
+        ),
       ),
       primaryColor: color0,
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: color300,
         dividerColor: Colors.transparent,
+        overlayColor: MaterialStateProperty.all(Colors.transparent),
         indicatorColor: Colors.transparent,
         labelColor: color900,
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -241,7 +250,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         color: color800,
       ),
       cardTheme: CardTheme(
-        color: Colors.white,
+        color: color0,
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
         elevation: 0,
@@ -277,7 +286,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         secondaryLabelStyle: TextStyle(
           color: color300,
         ),
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Colors.white,
         ),
       ),
@@ -293,8 +302,8 @@ class MikuGreenTheme extends AppBaseThemeItem {
         error: const Color(0xffFC4952),
         onError: const Color(0xffA4181F),
         errorContainer: Colors.white,
-        background: const Color(0xff111b2b),
-        onBackground: const Color(0xff111b2b),
+        background: Colors.white,
+        onBackground: Colors.white,
         surface: Colors.white,
         onSurface: Colors.white,
         // background: Colors.black,

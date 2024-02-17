@@ -202,103 +202,107 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       edgeOffset: MediaQuery.of(context).padding.top + kTextTabBarHeight,
       onRefresh: _onRefreshTimeline,
       onLoad: _getMore,
-      child: ListView(
-        controller: scrollController,
-        children: playerTimelineStatus.list!.isNotEmpty
-            ? playerTimelineStatus.list!.asMap().entries.map((data) {
-                int index = data.key;
-                num maxDataCount = playerTimelineStatus.list!.length;
+      child: Scrollbar(
+        child: ListView(
+          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 10),
+          controller: scrollController,
+          children: playerTimelineStatus.list!.isNotEmpty
+              ? playerTimelineStatus.list!.asMap().entries.map((data) {
+                  int index = data.key;
+                  num maxDataCount = playerTimelineStatus.list!.length;
 
-                if (data.key < playerTimelineStatus.list!.length) {
-                  var timeLineItem = data.value;
+                  if (data.key < playerTimelineStatus.list!.length) {
+                    var timeLineItem = data.value;
 
-                  // 分页提示
-                  if (timeLineItem["pageTip"] != null) {
-                    return Column(
-                      children: [
-                        if (index > 0 && index < playerTimelineStatus.list!.length - 1) const Divider(height: 1),
-                        Row(
-                          children: [
-                            if (index > 0 && index < playerTimelineStatus.list!.length - 1)
-                              Container(
-                                margin: const EdgeInsets.only(left: 29, right: 28),
-                                width: 2,
-                                height: 35,
-                              ),
-                            Center(
-                              child: Wrap(
-                                children: [
-                                  const Icon(Icons.tag, size: 17),
-                                  Text(
-                                    FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${timeLineItem["pageIndex"]}"}),
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                    // 分页提示
+                    if (timeLineItem["pageTip"] != null) {
+                      return Column(
+                        children: [
+                          if (index > 0 && index < playerTimelineStatus.list!.length - 1) const Divider(height: 1),
+                          Row(
+                            children: [
+                              if (index > 0 && index < playerTimelineStatus.list!.length - 1)
+                                Container(
+                                  margin: const EdgeInsets.only(left: 29, right: 28),
+                                  width: 2,
+                                  height: 35,
+                                ),
+                              Center(
+                                child: Wrap(
+                                  runAlignment: WrapAlignment.center,
+                                  children: [
+                                    const Icon(Icons.tag, size: 17),
+                                    Text(
+                                      FlutterI18n.translate(context, "app.home.paging", translationParams: {"num": "${timeLineItem["pageIndex"]}"}),
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          )
+                        ],
+                      );
+                    }
+
+                    switch (timeLineItem["type"]) {
+                      case "reply":
+                        // 回复
+                        return CheatUserCheatersCard(
+                          onReplySucceed: _onReplySucceed,
                         )
-                      ],
-                    );
+                          ..maxDataCount = maxDataCount
+                          ..data = timeLineItem
+                          ..index = index + 1;
+                      case "report":
+                        // 举报卡片
+                        return CheatReportsCard(
+                          onReplySucceed: _onReplySucceed,
+                        )
+                          ..maxDataCount = maxDataCount
+                          ..data = timeLineItem
+                          ..index = index + 1;
+                      case "judgement":
+                        // 举报
+                        return JudgementCard()
+                          ..maxDataCount = maxDataCount
+                          ..data = timeLineItem
+                          ..index = index + 1;
+                      case "banAppeal":
+                        // 申诉
+                        return AppealCard(
+                          onReplySucceed: _onReplySucceed,
+                        )
+                          ..maxDataCount = maxDataCount
+                          ..data = timeLineItem
+                          ..index = index + 1;
+                      case "historyUsername":
+                        return HistoryNameCard()
+                          ..maxDataCount = maxDataCount
+                          ..data = timeLineItem
+                          ..index = index + 1;
+                    }
                   }
 
-                  switch (timeLineItem["type"]) {
-                    case "reply":
-                      // 回复
-                      return CheatUserCheatersCard(
-                        onReplySucceed: _onReplySucceed,
-                      )
-                        ..maxDataCount = maxDataCount
-                        ..data = timeLineItem
-                        ..index = index + 1;
-                    case "report":
-                      // 举报卡片
-                      return CheatReportsCard(
-                        onReplySucceed: _onReplySucceed,
-                      )
-                        ..maxDataCount = maxDataCount
-                        ..data = timeLineItem
-                        ..index = index + 1;
-                    case "judgement":
-                      // 举报
-                      return JudgementCard()
-                        ..maxDataCount = maxDataCount
-                        ..data = timeLineItem
-                        ..index = index + 1;
-                    case "banAppeal":
-                      // 申诉
-                      return AppealCard(
-                        onReplySucceed: _onReplySucceed,
-                      )
-                        ..maxDataCount = maxDataCount
-                        ..data = timeLineItem
-                        ..index = index + 1;
-                    case "historyUsername":
-                      return HistoryNameCard()
-                        ..maxDataCount = maxDataCount
-                        ..data = timeLineItem
-                        ..index = index + 1;
-                  }
-                }
-
-                return Container();
-              }).toList()
-            : [
-                playerTimelineStatus.load!
-                    ? Container(
-                        margin: const EdgeInsets.only(top: 30),
-                        child: ELuiLoadComponent(
-                          type: "line",
-                          lineWidth: 3,
-                          color: Theme.of(context).progressIndicatorTheme.color!,
-                          size: 28,
-                        ),
-                      )
-                    : const EmptyWidget(),
-              ],
+                  return Container();
+                }).toList()
+              : [
+                  playerTimelineStatus.load!
+                      ? Container(
+                          margin: const EdgeInsets.only(top: 30),
+                          child: ELuiLoadComponent(
+                            type: "line",
+                            lineWidth: 3,
+                            color: Theme.of(context).progressIndicatorTheme.color!,
+                            size: 28,
+                          ),
+                        )
+                      : const EmptyWidget(),
+                ],
+        ),
       ),
     );
   }

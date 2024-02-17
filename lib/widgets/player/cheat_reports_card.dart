@@ -49,6 +49,7 @@ class CheatReportsCard extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
+                  decorationThickness: 4,
                   decorationStyle: TextDecorationStyle.dotted,
                 ),
                 recognizer: TapGestureRecognizer()
@@ -64,9 +65,7 @@ class CheatReportsCard extends StatelessWidget {
               ),
               TextSpan(
                 text: data["toOriginName"] + "\t",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontFamily: "UbuntuMono"),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontFamily: "UbuntuMono"),
               ),
               TextSpan(
                 text: "${FlutterI18n.translate(context, "detail.info.inGame")}\t",

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../data/index.dart';
 
@@ -40,11 +41,11 @@ class PinkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: Colors.pink.withOpacity(.1),
-        modalBackgroundColor: Colors.pink.withOpacity(.1),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.white,
+        modalBackgroundColor: Colors.white,
       ),
-      canvasColor: Colors.pinkAccent,
+      canvasColor: Colors.pink.shade50,
       primaryColorLight: Colors.pink.shade300,
       primaryColorDark: Colors.pink.shade300,
       textTheme: const TextTheme(
@@ -92,6 +93,9 @@ class PinkTheme extends AppBaseThemeItem {
         selectedBorderColor: Colors.pink.shade800,
         splashColor: Colors.black38,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
+      scrollbarTheme: const ScrollbarThemeData(
+        thumbColor: MaterialStatePropertyAll(Colors.pink),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.pink,
@@ -198,6 +202,10 @@ class PinkTheme extends AppBaseThemeItem {
         iconTheme: const IconThemeData(
           color: Colors.white,
         ),
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: FontSize.xLarge.value,
+        ),
       ),
       primaryColor: Colors.pink.shade300,
       tabBarTheme: TabBarTheme(
@@ -254,10 +262,10 @@ class PinkTheme extends AppBaseThemeItem {
           color: Colors.pink.shade300,
         ),
         checkmarkColor: Colors.white,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        labelStyle: TextStyle(
+        labelStyle: const TextStyle(
           color: Colors.white,
         ),
       ),
@@ -272,8 +280,8 @@ class PinkTheme extends AppBaseThemeItem {
         error: const Color(0xffd00649),
         onError: const Color(0xffd00649),
         errorContainer: Colors.white,
-        background: const Color(0xff111b2b),
-        onBackground: const Color(0xff111b2b),
+        background: Colors.white70,
+        onBackground: Colors.white70,
         surface: Colors.white,
         onSurface: Colors.white,
         // background: Colors.black,

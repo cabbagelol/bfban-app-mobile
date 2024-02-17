@@ -50,6 +50,7 @@ class AppealCard extends StatelessWidget {
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,
+                          decorationThickness: 4,
                           decorationStyle: TextDecorationStyle.dotted,
                         ),
                         recognizer: TapGestureRecognizer()

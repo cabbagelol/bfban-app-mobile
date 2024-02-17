@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../component/_empty/index.dart';
+import '../../component/_refresh/index.dart';
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
@@ -25,7 +26,7 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
   TrendStatus trendStatus = TrendStatus(
     load: false,
     parame: TrendStatusParame(
-      limit: 10,
+      limit: 20,
       time: TrendStatusParameTime.yearly,
     ),
   );
@@ -102,26 +103,28 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
       builder: (context, data, child) {
         return data.userinfo.isEmpty
             ? const HintLoginWidget()
-            : RefreshIndicator(
+            : Refresh(
                 key: _refreshIndicatorKey,
                 onRefresh: _onRefresh,
                 child: MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
                   removeBottom: true,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: trendStatus.list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (trendStatus.list.isEmpty) {
-                        return const EmptyWidget();
-                      }
+                  child: Scrollbar(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      itemCount: trendStatus.list.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (trendStatus.list.isEmpty) {
+                          return const EmptyWidget();
+                        }
 
-                      return CheatListCard(
-                        item: trendStatus.list[index].toMap,
-                        isIconHotView: true,
-                      );
-                    },
+                        return CheatListCard(
+                          item: trendStatus.list[index].toMap,
+                          isIconHotView: true,
+                        );
+                      },
+                    ),
                   ),
                 ),
               );

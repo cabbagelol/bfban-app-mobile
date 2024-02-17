@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../data/index.dart';
 
@@ -122,8 +123,11 @@ class BlueDarkTheme extends AppBaseThemeItem {
         splashColor: Colors.black38,
         borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
+      scrollbarTheme: const ScrollbarThemeData(thumbColor: MaterialStatePropertyAll(Color(0xff2e426b)), radius: Radius.circular(3)),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.white,
+        circularTrackColor: Colors.transparent,
+        linearTrackColor: Colors.transparent,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
@@ -247,17 +251,21 @@ class BlueDarkTheme extends AppBaseThemeItem {
           fontSize: 14,
         ),
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: Color(0xff364e80),
+      appBarTheme: AppBarTheme(
+        backgroundColor: const Color(0xff364e80),
         foregroundColor: Colors.white,
         shadowColor: Colors.black26,
         elevation: 0,
         scrolledUnderElevation: 0,
-        actionsIconTheme: IconThemeData(
+        actionsIconTheme: const IconThemeData(
           color: Colors.white,
         ),
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
+        ),
+        titleTextStyle: TextStyle(
+          color: Colors.white,
+          fontSize: FontSize.xLarge.value,
         ),
       ),
       primaryColor: const Color(0xff111b2b),
@@ -283,9 +291,9 @@ class BlueDarkTheme extends AppBaseThemeItem {
       iconButtonTheme: IconButtonThemeData(
         style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
       ),
-      // iconTheme: const IconThemeData(
-      //   color: Colors.white,
-      // ),
+      iconTheme: const IconThemeData(
+        color: Colors.white,
+      ),
       cardTheme: CardTheme(
         color: const Color(0xff0d1323),
         shadowColor: Colors.black54,
@@ -348,8 +356,8 @@ class BlueDarkTheme extends AppBaseThemeItem {
         errorContainer: Colors.white,
         background: Color(0xff111b2b),
         onBackground: Color(0xff111b2b),
-        surface: Color(0xff364e80),
-        onSurface: Color(0xff364e80),
+        surface: Colors.black,
+        onSurface: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Colors.black,

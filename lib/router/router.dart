@@ -5,7 +5,6 @@ import 'package:bfban/pages/not_found/index.dart';
 import 'package:bfban/pages/profile/account/achievement.dart';
 import 'package:bfban/pages/profile/account/change_password.dart';
 import 'package:bfban/pages/profile/account/history.dart';
-import 'package:bfban/pages/profile/account/setuser_name.dart';
 import 'package:bfban/pages/index/setting/destock.dart';
 import 'package:bfban/pages/index/setting/language.dart';
 import 'package:bfban/pages/index/setting/notice.dart';
@@ -17,7 +16,7 @@ import 'package:fluro/fluro.dart';
 // S Pages
 import 'package:bfban/pages/guide/guide.dart';
 import 'package:bfban/pages/report/report.dart';
-import 'package:bfban/pages/report/publish_results.dart';
+import 'package:bfban/pages/report/report_publish_results.dart';
 import 'package:bfban/pages/player/reply.dart';
 import 'package:bfban/pages/index/index.dart';
 import 'package:bfban/pages/report/judgement.dart';
@@ -30,7 +29,7 @@ import 'package:bfban/pages/chat/chat_list.dart';
 import 'package:bfban/pages/chat/chat_detail.dart';
 
 import '../component/_customReply/customReplyEdit.dart';
-import '../component/_customReply/customReplyList.dart';
+import '../pages/profile/account/custom_reply_list.dart';
 import '../pages/camera/index.dart';
 import '../pages/login/index.dart';
 import '../pages/login/signup.dart';
@@ -43,6 +42,7 @@ import '../pages/profile/account/achievement_detail.dart';
 import '../pages/profile/account/information.dart';
 import '../pages/index/setting/app_network.dart';
 import '../pages/index/setting/app_version_package.dart';
+import '../pages/profile/account/setuser_name.dart';
 import '../pages/space/index.dart';
 import '../pages/splash.dart';
 // E Pages
@@ -143,7 +143,7 @@ class Routes {
     {
       "url": "/account/information/setUserName",
       "item": (context, params) {
-        return const UserSetuserNamePage();
+        return const UserSetUserNamePage();
       }
     },
     {
@@ -205,7 +205,7 @@ class Routes {
     {
       "url": "/report/publish_results/:type",
       "item": (context, params) {
-        return PublishResultsPage(
+        return ReportPublishResultsPage(
           type: params["type"][0],
         );
       }

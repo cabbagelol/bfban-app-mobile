@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_empty/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +16,8 @@ import '../../provider/userinfo_provider.dart';
 import '../../utils/index.dart';
 import '../../widgets/hint_login.dart';
 import '../../widgets/photo.dart';
+import '/component/_Time/index.dart';
+import '/component/_empty/index.dart';
 
 class MediaPage extends StatefulWidget {
   bool? isSelectFile;
@@ -190,6 +190,7 @@ class _mediaPageState extends State<MediaPage> {
   /// 获取本地媒体列表
   Future _getLocalMediaFiles() async {
     List pathFiles = await dirProvider!.getAllFile(laterPath: '/media');
+
     setState(() {
       if (pathFiles.isNotEmpty) {
         mediaStatus.setList(pathFiles, MediaType.Local);
@@ -393,14 +394,13 @@ class _mediaPageState extends State<MediaPage> {
     );
   }
 
-  /// [Event]
-  /// 导出
-  void _onExportFile(context, i) async {
+  ///
+  void _onExportFile(originalFilePath, DirItemStorePath newFilePath) async {
     try {
-      String fileName = fileManagement.splitFileUrl(i.file.path)["fileName"];
-      String newPath = "${dirProvider!.fileAllPath.downloadsDirectory!.path}/$fileName";
+      String fileName = fileManagement.splitFileUrl(originalFilePath.file.path)["fileName"];
+      String newPath = "${dirProvider?.paths.where((element) => element.dirName == newFilePath.dirName).first.basicPath}/$fileName";
 
-      await File(i.file.path).copy(newPath);
+      await File(originalFilePath.file.path).copy(newPath);
 
       EluiMessageComponent.success(context)(
         child: Column(
@@ -409,6 +409,41 @@ class _mediaPageState extends State<MediaPage> {
             Text(newPath),
           ],
         ),
+      );
+      Navigator.pop(context);
+    } catch (err) {
+      EluiMessageComponent.error(context)(
+        child: Text(err.toString()),
+      );
+    }
+  }
+
+  /// [Event]
+  /// 导出
+  void _onPenExportFileModel(context, MediaFileLocalData i) async {
+    try {
+      showModalBottomSheet<void>(
+        context: context,
+        clipBehavior: Clip.hardEdge,
+        useRootNavigator: true,
+        builder: (BuildContext context) {
+          return Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              leading: const CloseButton(),
+              title: Text(FlutterI18n.translate(context, "app.media.export")),
+            ),
+            body: ListView(
+              children: dirProvider!.paths.map((DirItemStorePath dir) {
+                return ListTile(
+                  title: Text(FlutterI18n.translate(context, "app.media.directory.${dir.translate!.key!}", translationParams: dir.translate!.param)),
+                  subtitle: Text(dir.basicPath),
+                  onTap: () => _onExportFile(i, dir),
+                );
+              }).toList(),
+            ),
+          );
+        },
       );
     } catch (err) {
       EluiMessageComponent.error(context)(
@@ -509,259 +544,256 @@ class _mediaPageState extends State<MediaPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(FlutterI18n.translate(context, "app.setting.cell.media.title")),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _urlUtil.opEnPage(context, "/profile/dir/configuration").then((value) {
-                _onRefresh(MediaType.Local);
-              });
-            },
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-      ),
-      body: DefaultTabController(
-        length: 2,
-        child: Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider userinfo, Widget? child) {
-          return Column(
-            children: [
-              TabBar(
-                isScrollable: true,
-                labelStyle: const TextStyle(fontSize: 16),
-                controller: _tabController,
-                tabs: [
-                  Tab(
-                    child: Row(
-                      children: [
-                        Text(FlutterI18n.translate(context, "app.media.tab.local")),
-                      ],
-                    ),
-                  ),
-                  Tab(
-                    child: Row(
-                      children: [
-                        Text(FlutterI18n.translate(context, "app.media.tab.cloud")),
-                        if (cloudMediaInfoStatus.load!) const SizedBox(width: 5),
-                        if (cloudMediaInfoStatus.load!)
-                          ELuiLoadComponent(
-                            type: "line",
-                            lineWidth: 2,
-                            color: Theme.of(context).progressIndicatorTheme.color!,
-                            size: 13,
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(FlutterI18n.translate(context, "app.setting.cell.media.title")),
+          actions: [
+            IconButton(
+              onPressed: () {
+                _urlUtil.opEnPage(context, "/profile/dir/configuration").then((value) {
+                  _onRefresh(MediaType.Local);
+                });
+              },
+              icon: const Icon(Icons.settings),
+            ),
+          ],
+          bottom: TabBar(
+            labelStyle: const TextStyle(fontSize: 16),
+            controller: _tabController,
+            tabs: [
+              Tab(
+                child: Text(FlutterI18n.translate(context, "app.media.tab.local")),
               ),
-              const Divider(height: 1),
-              Expanded(
-                flex: 1,
-                child: TabBarView(
-                  controller: _tabController,
+              Tab(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    /// 本地媒体库
-                    RefreshIndicator(
-                      key: _refreshLocalIndicatorKey,
-                      onRefresh: () => _onRefresh(MediaType.Local),
-                      child: Column(
-                        crossAxisAlignment: EluiCellTextAlign.left,
-                        children: [
-                          Container(
-                            height: 40,
-                            margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Wrap(
-                                    spacing: 7,
-                                    children: [
-                                      Wrap(
-                                        spacing: 2,
-                                        crossAxisAlignment: WrapCrossAlignment.center,
-                                        children: [
-                                          const Icon(Icons.file_present_sharp),
-                                          Text("${mediaStatus.list.length} file"),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    _openCamera();
-                                  },
-                                  child: const Icon(Icons.camera),
-                                ),
-                                const SizedBox(width: 5),
-                                TextButton(
-                                  onPressed: () async {
-                                    await importingFiles();
-                                    _getLocalMediaFiles();
-                                  },
-                                  child: const Icon(Icons.file_open),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Divider(height: 1),
-                          Expanded(
-                            flex: 1,
-                            child: mediaStatus.list.isNotEmpty
-                                ? GridView.builder(
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      mainAxisSpacing: 20.0,
-                                      crossAxisSpacing: 10.0,
-                                      childAspectRatio: 1.0,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                    itemCount: mediaStatus.list.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      MediaFileLocalData i = mediaStatus.list[index];
-                                      return MediaCard(
-                                        i: i,
-                                        isSelectFile: widget.isSelectFile,
-                                        onTapDelete: () async {
-                                          await _deleteLocalFile(i.file);
-                                          _getLocalMediaFiles();
-                                        },
-                                        onTapOpenFile: () {
-                                          _onEnImageInfo(context, i);
-                                        },
-                                        onTapFileInfo: () {
-                                          _onEnFileInfo(context, i);
-                                        },
-                                        onTapUploadFile: () {
-                                          _onUploadFile(context, i);
-                                        },
-                                        onTagExportFile: () {
-                                          _onExportFile(context, i);
-                                        },
-                                      );
-                                    },
-                                  )
-                                : const EmptyWidget(),
-                          ),
-                        ],
+                    Text(FlutterI18n.translate(context, "app.media.tab.cloud")),
+                    if (cloudMediaInfoStatus.load!) const SizedBox(width: 5),
+                    if (cloudMediaInfoStatus.load!)
+                      ELuiLoadComponent(
+                        type: "line",
+                        lineWidth: 2,
+                        color: Theme.of(context).progressIndicatorTheme.color!,
+                        size: 13,
                       ),
-                    ),
-
-                    /// 云媒体库
-                    RefreshIndicator(
-                      key: _refreshNetworkIndicatorKey,
-                      onRefresh: () => _onRefresh(MediaType.Network),
-                      child: userinfo.isLogin
-                          ? Column(
-                              children: [
-                                Container(
-                                  height: 40,
-                                  margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: GestureDetector(
-                                          onTap: () => _opEnCloudMediaInfo(),
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              cloudMediaInfoStatus.data!.isEmpty
-                                                  ? ELuiLoadComponent(
-                                                      type: "line",
-                                                      lineWidth: 1,
-                                                      color: Theme.of(context).progressIndicatorTheme.color!,
-                                                      size: 16,
-                                                    )
-                                                  : Row(
-                                                      children: [
-                                                        const Icon(Icons.info_outline, size: 18),
-                                                        const SizedBox(width: 10),
-                                                        Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            Row(
-                                                              children: [
-                                                                Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
-                                                                const Text("/"),
-                                                                Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
-                                                              ],
-                                                            ),
-                                                            if (cloudMediaInfoStatus.data!["usedStorageQuota"] != null && cloudMediaInfoStatus.data!["totalStorageQuota"] != null)
-                                                              Container(
-                                                                margin: const EdgeInsets.only(top: 10),
-                                                                width: 150,
-                                                                child: LinearProgressIndicator(
-                                                                  value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
-                                                                  minHeight: 4,
-                                                                  backgroundColor: Theme.of(context).cardTheme.color,
-                                                                ),
-                                                              )
-                                                          ],
-                                                        )
-                                                      ],
-                                                    ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () => _onRefresh(MediaType.Network),
-                                        child: const Icon(Icons.restart_alt_rounded),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const Divider(height: 1),
-                                Expanded(
-                                  flex: 1,
-                                  child: cloudMediaStatus.list.isNotEmpty
-                                      ? GridView.builder(
-                                          controller: _scrollNetworkController,
-                                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 2,
-                                            mainAxisSpacing: 20.0,
-                                            crossAxisSpacing: 10.0,
-                                            childAspectRatio: 1.0,
-                                          ),
-                                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                          itemCount: cloudMediaStatus.list.length,
-                                          itemBuilder: (BuildContext context, int index) {
-                                            MediaFileNetworkData i = cloudMediaStatus.list[index];
-                                            return MediaCard(
-                                              i: i,
-                                              isSelectFile: widget.isSelectFile,
-                                              // 云端不支持删除
-                                              onTapDelete: null,
-                                              onTapOpenFile: () {
-                                                _onEnImageInfo(context, i);
-                                              },
-                                              onTapFileInfo: () {
-                                                _onEnFileInfo(context, i);
-                                              },
-                                              onTagSelectFile: () {
-                                                _onSelectFile(i);
-                                              },
-                                            );
-                                          },
-                                        )
-                                      : const EmptyWidget(),
-                                ),
-                              ],
-                            )
-                          : const Center(child: HintLoginWidget()),
-                    ),
                   ],
                 ),
               ),
             ],
-          );
-        }),
+          ),
+        ),
+        body: Consumer<UserInfoProvider>(
+          builder: (BuildContext context, UserInfoProvider userinfo, Widget? child) {
+            return Column(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      /// 本地媒体库
+                      RefreshIndicator(
+                        key: _refreshLocalIndicatorKey,
+                        onRefresh: () => _onRefresh(MediaType.Local),
+                        child: Column(
+                          crossAxisAlignment: EluiCellTextAlign.left,
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: mediaStatus.list.isNotEmpty
+                                  ? GridView.builder(
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        mainAxisSpacing: 5,
+                                        crossAxisSpacing: 5,
+                                        childAspectRatio: 1.0,
+                                      ),
+                                      padding: const EdgeInsets.all(5),
+                                      itemCount: mediaStatus.list.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        MediaFileLocalData i = mediaStatus.list[index];
+                                        return MediaCard(
+                                          i: i,
+                                          isSelectFile: widget.isSelectFile,
+                                          onTapDelete: () async {
+                                            await _deleteLocalFile(i.file);
+                                            _getLocalMediaFiles();
+                                          },
+                                          onTapOpenFile: () {
+                                            _onEnImageInfo(context, i);
+                                          },
+                                          onTapFileInfo: () {
+                                            _onEnFileInfo(context, i);
+                                          },
+                                          onTapUploadFile: () {
+                                            _onUploadFile(context, i);
+                                          },
+                                          onTagExportFile: () {
+                                            _onPenExportFileModel(context, i);
+                                          },
+                                        );
+                                      },
+                                    )
+                                  : const EmptyWidget(),
+                            ),
+                            const Divider(height: 1),
+                            Container(
+                              color: Theme.of(context).bottomAppBarTheme.color,
+                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Wrap(
+                                      spacing: 7,
+                                      children: [
+                                        Wrap(
+                                          spacing: 2,
+                                          crossAxisAlignment: WrapCrossAlignment.center,
+                                          children: [
+                                            const Icon(Icons.file_present_sharp),
+                                            Text("${mediaStatus.list.length} file"),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      _openCamera();
+                                    },
+                                    child: const Icon(Icons.camera),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  TextButton(
+                                    onPressed: () async {
+                                      await importingFiles();
+                                      _getLocalMediaFiles();
+                                    },
+                                    child: const Icon(Icons.file_open),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      /// 云媒体库
+                      RefreshIndicator(
+                        key: _refreshNetworkIndicatorKey,
+                        onRefresh: () => _onRefresh(MediaType.Network),
+                        child: userinfo.isLogin
+                            ? Column(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: cloudMediaStatus.list.isNotEmpty
+                                        ? GridView.builder(
+                                            controller: _scrollNetworkController,
+                                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 3,
+                                              mainAxisSpacing: 5,
+                                              crossAxisSpacing: 5,
+                                              childAspectRatio: 1.0,
+                                            ),
+                                            padding: const EdgeInsets.all(5),
+                                            itemCount: cloudMediaStatus.list.length,
+                                            itemBuilder: (BuildContext context, int index) {
+                                              MediaFileNetworkData i = cloudMediaStatus.list[index];
+                                              return MediaCard(
+                                                i: i,
+                                                isSelectFile: widget.isSelectFile,
+                                                // 云端不支持删除
+                                                onTapDelete: null,
+                                                onTapOpenFile: () {
+                                                  _onEnImageInfo(context, i);
+                                                },
+                                                onTapFileInfo: () {
+                                                  _onEnFileInfo(context, i);
+                                                },
+                                                onTagSelectFile: () {
+                                                  _onSelectFile(i);
+                                                },
+                                              );
+                                            },
+                                          )
+                                        : const EmptyWidget(),
+                                  ),
+                                  const Divider(height: 1),
+                                  Container(
+                                    color: Theme.of(context).bottomAppBarTheme.color,
+                                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: GestureDetector(
+                                            onTap: () => _opEnCloudMediaInfo(),
+                                            child: Row(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                cloudMediaInfoStatus.data!.isEmpty
+                                                    ? ELuiLoadComponent(
+                                                        type: "line",
+                                                        lineWidth: 1,
+                                                        color: Theme.of(context).progressIndicatorTheme.color!,
+                                                        size: 16,
+                                                      )
+                                                    : Row(
+                                                        children: [
+                                                          const Icon(Icons.info_outline, size: 18),
+                                                          const SizedBox(width: 10),
+                                                          Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['usedStorageQuota'])),
+                                                                  const Text("/"),
+                                                                  Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
+                                                                ],
+                                                              ),
+                                                              if (cloudMediaInfoStatus.data!["usedStorageQuota"] != null && cloudMediaInfoStatus.data!["totalStorageQuota"] != null)
+                                                                Container(
+                                                                  margin: const EdgeInsets.only(top: 10),
+                                                                  width: 150,
+                                                                  child: LinearProgressIndicator(
+                                                                    value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
+                                                                    minHeight: 4,
+                                                                    backgroundColor: Theme.of(context).cardTheme.color,
+                                                                  ),
+                                                                )
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () => _onRefresh(MediaType.Network),
+                                          child: const Icon(Icons.restart_alt_rounded),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : const Center(child: HintLoginWidget()),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -808,7 +840,7 @@ class _MediaCardState extends State<MediaCard> {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(3),
+        borderRadius: BorderRadius.circular(0),
         side: BorderSide(
           color: Theme.of(context).dividerTheme.color!,
           width: 1,
@@ -954,11 +986,7 @@ class _MediaCardState extends State<MediaCard> {
 
                 /// 远程获取信息遮盖
                 if (widget.i.type == MediaType.Network && widget.i.fileDetailLoad)
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
+                  Positioned.fill(
                     child: Container(
                       color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
                       child: ELuiLoadComponent(
@@ -972,11 +1000,7 @@ class _MediaCardState extends State<MediaCard> {
 
                 /// 上传遮盖
                 if (widget.i.type == MediaType.Local && widget.i.upload)
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
+                  Positioned.fill(
                     child: Container(
                       color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
                       child: ELuiLoadComponent(

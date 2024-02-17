@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../data/index.dart';
 
@@ -121,6 +122,9 @@ class LightnesTheme extends AppBaseThemeItem {
         splashColor: Colors.black38,
         borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
+      scrollbarTheme: const ScrollbarThemeData(
+        thumbColor: MaterialStatePropertyAll(Colors.black12),
+      ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.black87,
         linearTrackColor: Colors.black12,
@@ -137,11 +141,14 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
         textStyle: const TextStyle(color: Colors.black),
       ),
-      popupMenuTheme: const PopupMenuThemeData(
+      popupMenuTheme: PopupMenuThemeData(
         color: Colors.white,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
+        labelTextStyle: MaterialStateProperty.all(const TextStyle(
+          color: Colors.black,
+        )),
         elevation: 2,
       ),
       listTileTheme: const ListTileThemeData(
@@ -246,14 +253,18 @@ class LightnesTheme extends AppBaseThemeItem {
           fontSize: 14,
         ),
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.white,
-        foregroundColor: Color(0xff364e80),
+        foregroundColor: const Color(0xff364e80),
         shadowColor: Colors.black26,
         elevation: 0,
         scrolledUnderElevation: 0,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Color(0xff364e80),
+        ),
+        titleTextStyle: TextStyle(
+          color: const Color(0xff364e80),
+          fontSize: FontSize.xLarge.value,
         ),
       ),
       primaryColor: Colors.white,
@@ -319,20 +330,20 @@ class LightnesTheme extends AppBaseThemeItem {
           color: Colors.black,
         ),
       ),
-      colorScheme: ColorScheme(
+      colorScheme: const ColorScheme(
         brightness: Brightness.light,
-        primary: const Color(0xff364e80),
+        primary: Color(0xff364e80),
         primaryContainer: Colors.white,
-        onPrimary: const Color(0xff364e80),
-        secondary: const Color(0xff99acd2),
-        onSecondary: const Color(0xff99acd2),
+        onPrimary: Color(0xff364e80),
+        secondary: Color(0xff99acd2),
+        onSecondary: Color(0xff99acd2),
         error: Colors.red,
         onError: Colors.red,
-        errorContainer: Colors.red.shade800,
+        errorContainer: Colors.white,
         background: Colors.white,
         onBackground: Colors.white,
-        surface: Colors.black,
-        onSurface: Colors.black,
+        surface: Colors.white,
+        onSurface: Colors.white,
       ).copyWith(
         background: const Color(0xffffffff),
       ),

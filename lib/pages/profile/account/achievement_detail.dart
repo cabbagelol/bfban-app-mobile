@@ -11,7 +11,7 @@ import '/utils/index.dart';
 class UserAchievementDetailPage extends StatefulWidget {
   String? id;
 
-  UserAchievementDetailPage({this.id = ""});
+  UserAchievementDetailPage({Key? key, this.id = ""}) : super(key: key);
 
   @override
   State<UserAchievementDetailPage> createState() => _UserAchievementPageState();
@@ -77,59 +77,75 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ListView(
-        children: [
-          ClipPath(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              color: Theme.of(context).cardTheme.color,
-              height: 300,
-              child: Center(
-                child: Stack(
-                  children: [
-                    Image.asset(
-                      achievementUtil.getIcon(achievementDetailInfo["iconPath"]),
-                      width: 100,
-                      height: 100,
-                    ),
-                    Positioned(
-                      child: BackdropFilter(
-                        filter: ui.ImageFilter.blur(
-                          sigmaX: 50.0,
-                          sigmaY: 50.0,
-                        ),
-                        child: Image.asset(
-                          achievementUtil.getIcon(achievementDetailInfo["iconPath"]),
-                          width: 100,
-                          height: 100,
-                        ),
+      body: Scrollbar(
+        child: ListView(
+          children: [
+            ClipPath(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                color: Theme.of(context).cardTheme.color,
+                height: 300,
+                child: Center(
+                  child: Stack(
+                    children: [
+                      Image.network(
+                        achievementUtil.getIcon(achievementDetailInfo["iconPath"]),
+                        width: 100,
+                        height: 100,
+                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                          return Container(
+                            color: Theme.of(context).dividerTheme.color,
+                            width: 100,
+                            height: 100,
+                          );
+                        },
                       ),
-                    )
-                  ],
+                      Positioned(
+                        child: BackdropFilter(
+                          filter: ui.ImageFilter.blur(
+                            sigmaX: 50.0,
+                            sigmaY: 50.0,
+                          ),
+                          child: Image.network(
+                            achievementUtil.getIcon(achievementDetailInfo["iconPath"]),
+                            width: 100,
+                            height: 100,
+                            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+                              return Container(
+                                color: Theme.of(context).dividerTheme.color,
+                                width: 100,
+                                height: 100,
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.name"),
-                  style: TextStyle(fontSize: FontSize.xLarge.value, fontWeight: FontWeight.bold),
-                ),
-                const Divider(),
-                HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.description")),
-                HtmlCore(
-                  data: FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.conditions"),
-                  style: {'*': Style(color: Colors.white54)},
-                ),
-              ],
-            ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.name"),
+                    style: TextStyle(fontSize: FontSize.xLarge.value, fontWeight: FontWeight.bold),
+                  ),
+                  const Divider(),
+                  HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.description")),
+                  HtmlCore(
+                    data: FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.conditions"),
+                    style: {'*': Style(color: Colors.white54)},
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: (achievementDetailInfo.containsKey("acquisition") && achievementDetailInfo["acquisition"].indexOf("active") >= 0)
           ? Container(

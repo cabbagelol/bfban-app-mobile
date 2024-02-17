@@ -7,6 +7,7 @@ import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tip/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:provider/provider.dart';
 
 import '/constants/api.dart';
 import '/data/index.dart';
@@ -36,6 +37,8 @@ class _InformationPageState extends State<InformationPage> {
 
   bool langLocalSync = true;
 
+  bool accountLoading = false;
+
   /// 异步
   Future? futureBuilder;
 
@@ -55,6 +58,16 @@ class _InformationPageState extends State<InformationPage> {
     });
     await getLanguageList();
     futureBuilder = _getUserInfo();
+  }
+
+  /// [Response]
+  /// 注销用户信息
+  Future<void> removeUserInfo(UserInfoProvider userProvider) async {
+    if (accountLoading) return;
+
+    setState(() => accountLoading = true);
+    await userProvider.accountQuit(context);
+    setState(() => accountLoading = false);
   }
 
   /// [Response]
@@ -201,200 +214,225 @@ class _InformationPageState extends State<InformationPage> {
               ),
               body: RefreshIndicator(
                 onRefresh: _onRefreshUserInfo,
-                child: ListView(
-                  children: [
-                    Form(
-                      onChanged: () {
-                        setState(() {});
-                      },
-                      child: Column(
+                child: Consumer<UserInfoProvider>(
+                  builder: (context, UserInfoProvider data, child) {
+                    return Scrollbar(
+                      child: ListView(
                         children: [
-                          EluiCellComponent(
-                            title: "Avatar",
-                            label: "Avatar support is provided by third parties, click to register",
-                            islink: true,
-                            onTap: () {
-                              _opEnWebUserAvatar();
+                          Form(
+                            onChanged: () {
+                              setState(() {});
                             },
-                            cont: ClipOval(
-                              clipBehavior: Clip.hardEdge,
-                              child: informationStatus.data!.toMap.containsKey('userAvatar')
-                                  ? EluiImgComponent(
-                                      src: informationStatus.data!.userAvatar!,
-                                      width: 40,
-                                      height: 40,
-                                    )
-                                  : const CircleAvatar(
-                                      minRadius: 4,
-                                      child: Icon(
-                                        Icons.account_circle,
-                                        size: 10.0,
+                            child: Column(
+                              children: [
+                                EluiCellComponent(
+                                  title: "Avatar",
+                                  label: "Avatar support is provided by third parties, click to register",
+                                  islink: true,
+                                  onTap: () {
+                                    _opEnWebUserAvatar();
+                                  },
+                                  cont: ClipOval(
+                                    clipBehavior: Clip.hardEdge,
+                                    child: informationStatus.data!.toMap.containsKey('userAvatar')
+                                        ? EluiImgComponent(
+                                            src: informationStatus.data!.userAvatar!,
+                                            width: 40,
+                                            height: 40,
+                                          )
+                                        : const CircleAvatar(
+                                            minRadius: 4,
+                                            child: Icon(
+                                              Icons.account_circle,
+                                              size: 10.0,
+                                            ),
+                                          ),
+                                  ),
+                                ),
+                                const Divider(height: 5),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "signup.form.username"),
+                                  cont: Row(
+                                    children: [
+                                      SelectionArea(
+                                        child: Text(
+                                          informationStatus.data!.username.toString(),
+                                          style: const TextStyle(
+                                            decoration: TextDecoration.underline,
+                                            decorationStyle: TextDecorationStyle.dashed,
+                                            decorationThickness: 1,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                            ),
-                          ),
-                          const Divider(height: 5),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "signup.form.username"),
-                            cont: Row(
-                              children: [
-                                SelectionArea(
-                                  child: Text(
-                                    informationStatus.data!.username.toString(),
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      decorationStyle: TextDecorationStyle.dashed,
-                                      decorationThickness: 1,
-                                    ),
+                                      const SizedBox(width: 8),
+                                      OutlinedButton(
+                                        onPressed: () {
+                                          _opEnSetUserName();
+                                        },
+                                        child: const Icon(Icons.edit),
+                                      )
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                OutlinedButton(
-                                  onPressed: () {
-                                    _opEnSetUserName();
-                                  },
-                                  child: const Icon(Icons.edit),
-                                )
-                              ],
-                            ),
-                          ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "signup.form.password"),
-                            cont: Row(
-                              children: [
-                                const Text("******"),
-                                const SizedBox(width: 8),
-                                OutlinedButton(
-                                  onPressed: () {
-                                    _opEnChangePassword();
-                                  },
-                                  child: const Icon(Icons.edit),
-                                )
-                              ],
-                            ),
-                          ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "account.joinedAt"),
-                            cont: Wrap(
-                              spacing: 5,
-                              children: [
-                                const Icon(Icons.date_range, size: 18),
-                                TimeWidget(data: informationStatus.data!.joinTime.toString()),
-                              ],
-                            ),
-                          ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "account.lastOnlineTime"),
-                            cont: Wrap(
-                              spacing: 5,
-                              children: [
-                                const Icon(Icons.date_range, size: 18),
-                                TimeWidget(data: informationStatus.data!.lastOnlineTime.toString()),
-                              ],
-                            ),
-                          ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.space.form.privileges"),
-                            cont: Container(
-                              constraints: const BoxConstraints(maxWidth: 150),
-                              child: PrivilegesTagWidget(
-                                data: informationStatus.data!.privilege,
-                              ),
-                            ),
-                          ),
-                          const Divider(height: 5),
-                          if (!isBindAccount())
-                            EluiTipComponent(
-                              type: EluiTip.warning,
-                              child: Wrap(
-                                children: [
-                                  Text(FlutterI18n.translate(context, "account.bindOrigin.title")),
-                                  Text(FlutterI18n.translate(context, "account.bindOrigin.content")),
-                                ],
-                              ),
-                            ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "signup.form.originName"),
-                            cont: SelectionArea(
-                              child: Text(informationStatus.data!.origin!['originName'].toString()),
-                            ),
-                          ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "signup.form.originId"),
-                            cont: SelectionArea(
-                              child: Text(informationStatus.data!.origin!['originUserId'].toString()),
-                            ),
-                          ),
-                          const Divider(height: 5),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.space.form.language"),
-                            label: FlutterI18n.translate(context, "profile.space.form.languageSyncDescribe"),
-                            cont: Row(
-                              children: [
-                                if (langLocalSync)
-                                  Container(
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "signup.form.password"),
+                                  cont: Row(
+                                    children: [
+                                      const Text("******"),
+                                      const SizedBox(width: 8),
+                                      OutlinedButton(
+                                        onPressed: () {
+                                          _opEnChangePassword();
+                                        },
+                                        child: const Icon(Icons.edit),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "account.joinedAt"),
+                                  cont: Wrap(
+                                    spacing: 5,
+                                    children: [
+                                      const Icon(Icons.date_range, size: 18),
+                                      TimeWidget(data: informationStatus.data!.joinTime.toString()),
+                                    ],
+                                  ),
+                                ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "account.lastOnlineTime"),
+                                  cont: Wrap(
+                                    spacing: 5,
+                                    children: [
+                                      const Icon(Icons.date_range, size: 18),
+                                      TimeWidget(data: informationStatus.data!.lastOnlineTime.toString()),
+                                    ],
+                                  ),
+                                ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "profile.space.form.privileges"),
+                                  cont: Container(
                                     constraints: const BoxConstraints(maxWidth: 150),
-                                    child: DropdownButton(
-                                      isDense: false,
-                                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                                      style: Theme.of(context).dropdownMenuTheme.textStyle,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          informationStatus.data!.attr!.language = value.toString();
-                                        });
-                                      },
-                                      value: informationStatus.data!.attr!.language,
-                                      items: languages.where((lang) {
-                                        return !(lang["ignoreSave"] == true);
-                                      }).map<DropdownMenuItem<String>>((i) {
-                                        return DropdownMenuItem(
-                                          value: i["name"].toString(),
-                                          child: Text(i["label"].toString()),
-                                        );
-                                      }).toList(),
+                                    child: PrivilegesTagWidget(
+                                      data: informationStatus.data!.privilege,
                                     ),
                                   ),
-                                const SizedBox(width: 5),
-                                Checkbox(
-                                  value: langLocalSync,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      langLocalSync = value!;
-                                      storageAccount.updateConfiguration('langLocalSync', langLocalSync);
-                                    });
-                                  },
+                                ),
+                                const Divider(height: 5),
+                                if (!isBindAccount())
+                                  EluiTipComponent(
+                                    type: EluiTip.warning,
+                                    child: Wrap(
+                                      children: [
+                                        Text(FlutterI18n.translate(context, "account.bindOrigin.title")),
+                                        Text(FlutterI18n.translate(context, "account.bindOrigin.content")),
+                                      ],
+                                    ),
+                                  ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "signup.form.originName"),
+                                  cont: SelectionArea(
+                                    child: Text(informationStatus.data!.origin!['originName'].toString()),
+                                  ),
+                                ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "signup.form.originId"),
+                                  cont: SelectionArea(
+                                    child: Text(informationStatus.data!.origin!['originUserId'].toString()),
+                                  ),
+                                ),
+                                const Divider(height: 5),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "profile.space.form.language"),
+                                  label: FlutterI18n.translate(context, "profile.space.form.languageSyncDescribe"),
+                                  cont: Row(
+                                    children: [
+                                      if (langLocalSync)
+                                        Container(
+                                          constraints: const BoxConstraints(maxWidth: 150),
+                                          child: DropdownButton(
+                                            isDense: false,
+                                            dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                                            style: Theme.of(context).dropdownMenuTheme.textStyle,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                informationStatus.data!.attr!.language = value.toString();
+                                              });
+                                            },
+                                            value: informationStatus.data!.attr!.language,
+                                            items: languages.where((lang) {
+                                              return !(lang["ignoreSave"] == true);
+                                            }).map<DropdownMenuItem<String>>((i) {
+                                              return DropdownMenuItem(
+                                                value: i["name"].toString(),
+                                                child: Text(i["label"].toString()),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      const SizedBox(width: 5),
+                                      Checkbox(
+                                        value: langLocalSync,
+                                        onChanged: (bool? value) {
+                                          setState(() {
+                                            langLocalSync = value!;
+                                            storageAccount.updateConfiguration('langLocalSync', langLocalSync);
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "profile.space.form.showOrigin"),
+                                  label: FlutterI18n.translate(context, "profile.space.form.showOriginDescribe"),
+                                  cont: Checkbox(
+                                    value: informationStatus.data!.attr!.showOrigin ?? false,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        informationStatus.data!.attr!.showOrigin = !informationStatus.data!.attr!.showOrigin!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "profile.space.form.allowDM"),
+                                  label: FlutterI18n.translate(context, "profile.space.form.allowDMdescribe"),
+                                  cont: Checkbox(
+                                    value: informationStatus.data!.attr!.allowDM ?? false,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        informationStatus.data!.attr!.allowDM = !informationStatus.data!.attr!.allowDM!;
+                                      });
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.space.form.showOrigin"),
-                            label: FlutterI18n.translate(context, "profile.space.form.showOriginDescribe"),
-                            cont: Checkbox(
-                              value: informationStatus.data!.attr!.showOrigin ?? false,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  informationStatus.data!.attr!.showOrigin = !informationStatus.data!.attr!.showOrigin!;
-                                });
-                              },
+                          const Divider(),
+                          if (data.isLogin && accountLoading)
+                            LinearProgressIndicator(
+                              minHeight: 1,
+                              color: Theme.of(context).colorScheme.primary,
+                              backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
                             ),
-                          ),
-                          EluiCellComponent(
-                            title: FlutterI18n.translate(context, "profile.space.form.allowDM"),
-                            label: FlutterI18n.translate(context, "profile.space.form.allowDMdescribe"),
-                            cont: Checkbox(
-                              value: informationStatus.data!.attr!.allowDM ?? false,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  informationStatus.data!.attr!.allowDM = !informationStatus.data!.attr!.allowDM!;
-                                });
-                              },
+                          if (data.isLogin)
+                            EluiCellComponent(
+                              title: FlutterI18n.translate(context, "header.signout"),
+                              icons: const Icon(Icons.exit_to_app),
+                              theme: EluiCellTheme(
+                                titleColor: Theme.of(context).textTheme.titleMedium?.color,
+                                labelColor: Theme.of(context).textTheme.displayMedium?.color,
+                                linkColor: Theme.of(context).textTheme.titleMedium?.color,
+                                backgroundColor: Theme.of(context).cardTheme.color,
+                              ),
+                              onTap: () => removeUserInfo(data),
                             ),
-                          ),
                         ],
                       ),
-                    )
-                  ],
+                    );
+                  },
                 ),
               ),
             );

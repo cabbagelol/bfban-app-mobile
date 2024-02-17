@@ -86,40 +86,41 @@ class UpdateTimeFilterPanelState extends State<UpdateTimeFilterPanel> {
               ),
             ),
             Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
-                child: SfDateRangePicker(
-                  onSelectionChanged: _onSelectionChanged,
-                  selectionShape: DateRangePickerSelectionShape.rectangle,
-                  selectionTextStyle: Theme.of(context).textTheme.bodyMedium,
-                  headerStyle: DateRangePickerHeaderStyle(
-                    textStyle: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  yearCellStyle: DateRangePickerYearCellStyle(
-                    textStyle: Theme.of(context).textTheme.bodyMedium,
-                    disabledDatesTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.4),
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+              child: SfDateRangePicker(
+                onSelectionChanged: _onSelectionChanged,
+                selectionShape: DateRangePickerSelectionShape.rectangle,
+                selectionTextStyle: Theme.of(context).textTheme.bodyMedium,
+                headerStyle: DateRangePickerHeaderStyle(
+                  textStyle: Theme.of(context).textTheme.bodyMedium,
+                ),
+                yearCellStyle: DateRangePickerYearCellStyle(
+                  textStyle: Theme.of(context).textTheme.bodyMedium,
+                  disabledDatesTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.4),
+                      ),
+                ),
+                monthCellStyle: DateRangePickerMonthCellStyle(
+                  textStyle: Theme.of(context).textTheme.bodyMedium,
+                  disabledDatesTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.4),
+                      ),
+                ),
+                monthViewSettings: DateRangePickerMonthViewSettings(
+                  viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                    textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: 15,
                         ),
                   ),
-                  monthCellStyle: DateRangePickerMonthCellStyle(
-                    textStyle: Theme.of(context).textTheme.bodyMedium,
-                    disabledDatesTextStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          color: Theme.of(context).textTheme.bodyMedium!.color!.withOpacity(.4),
-                        ),
-                  ),
-                  monthViewSettings: DateRangePickerMonthViewSettings(
-                    viewHeaderStyle: DateRangePickerViewHeaderStyle(
-                      textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontSize: 15,
-                          ),
-                    ),
-                    weekNumberStyle: DateRangePickerWeekNumberStyle(textStyle: Theme.of(context).textTheme.bodyMedium!),
-                  ),
-                  view: DateRangePickerView.month,
-                  selectionMode: DateRangePickerSelectionMode.range,
-                  maxDate: DateTime.now(),
-                  minDate: DateTime.fromMicrosecondsSinceEpoch(1514764800000),
-                  navigationDirection: DateRangePickerNavigationDirection.vertical,
-                )),
+                  weekNumberStyle: DateRangePickerWeekNumberStyle(textStyle: Theme.of(context).textTheme.bodyMedium!),
+                ),
+                view: DateRangePickerView.month,
+                selectionMode: DateRangePickerSelectionMode.range,
+                maxDate: DateTime.now(),
+                minDate: DateTime.fromMicrosecondsSinceEpoch(1514764800000),
+                navigationDirection: DateRangePickerNavigationDirection.vertical,
+              ),
+            ),
           ],
         );
       },

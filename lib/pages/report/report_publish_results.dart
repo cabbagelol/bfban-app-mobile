@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../router/router.dart';
-
 enum PublishResultsType { error, success }
 
-class PublishResultsPage extends StatefulWidget {
+class ReportPublishResultsPage extends StatefulWidget {
   final String? type;
   List types = ["error", "success"];
 
-  PublishResultsPage({
+  ReportPublishResultsPage({
     Key? key,
     this.type = "success",
   }) : super(key: key);
@@ -21,7 +19,7 @@ class PublishResultsPage extends StatefulWidget {
   _PublishResultsPageState createState() => _PublishResultsPageState();
 }
 
-class _PublishResultsPageState extends State<PublishResultsPage> {
+class _PublishResultsPageState extends State<ReportPublishResultsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
