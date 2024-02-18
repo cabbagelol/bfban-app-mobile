@@ -551,6 +551,7 @@ class _mediaPageState extends State<MediaPage> {
           title: Text(FlutterI18n.translate(context, "app.setting.cell.media.title")),
           actions: [
             IconButton(
+              padding: const EdgeInsets.all(16),
               onPressed: () {
                 _urlUtil.opEnPage(context, "/profile/dir/configuration").then((value) {
                   _onRefresh(MediaType.Local);

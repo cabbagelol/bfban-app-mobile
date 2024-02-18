@@ -547,6 +547,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                 elevation: 0,
                 actions: <Widget>[
                   PopupMenuButton(
+                    padding: const EdgeInsets.all(16),
                     icon: Icon(
                       Icons.adaptive.more,
                       color: Theme.of(context).iconTheme.color,

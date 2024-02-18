@@ -59,6 +59,7 @@ class _directoryConfigurationPageState extends State<directoryConfigurationPage>
             title: Text(FlutterI18n.translate(context, "app.setting.cell.dirConfiguration.title")),
             actions: [
               IconButton(
+                padding: const EdgeInsets.all(16),
                 onPressed: () => onSave(dirData),
                 icon: const Icon(Icons.done),
               )

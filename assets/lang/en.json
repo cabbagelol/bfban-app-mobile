@@ -42,7 +42,7 @@
       "tabs": {
         "activities": "Website dynamics",
         "tourRecord": "tour Record",
-        "subscribes": "Subscribes",
+        "subscribes": "Tracing",
         "trend": "Hot case"
       },
       "screen": {
@@ -126,6 +126,18 @@
     "setting": {
       "title": "Application Settings",
       "cell": {
+        "achievement": {
+          "title": "Achievements",
+          "describe": "User Achievements"
+        },
+        "history": {
+          "title": "Visit",
+          "describe": "View Past Content"
+        },
+        "subscribes": {
+          "title": "Case Focus",
+          "describe": "Subscribe to cases"
+        },
         "information": {
           "title": "Account",
           "describe": "Change user name, change password, account Settings"
@@ -139,7 +151,8 @@
           "describe": "Pictures, video, upload files, and management"
         },
         "dirConfiguration": {
-          "title": "storage configuration",
+          "title": "Folder Configuration",
+          "describe": "Default Folder, Document Scanning",
           "scanDirectoryTitle": "Scan directory",
           "scanDirectoryDescription": "Select the file directory to scan (multiple options)",
           "defaultSavePathTitle": "Default download location",
@@ -264,4 +277,3 @@
     }
   }
 }
-

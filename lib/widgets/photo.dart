@@ -182,6 +182,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
           if (widget.type == PhotoViewFileType.network)
             imageSaveStatus
                 ? IconButton(
+              padding: const EdgeInsets.all(16),
                     onPressed: () {},
                     icon: ELuiLoadComponent(
                       type: "line",
@@ -191,6 +192,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
                     ),
                   )
                 : IconButton(
+              padding: const EdgeInsets.all(16),
                     icon: const Icon(
                       Icons.file_download,
                       size: 25,

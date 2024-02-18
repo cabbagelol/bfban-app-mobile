@@ -198,6 +198,7 @@ class _InformationPageState extends State<InformationPage> {
                 actions: [
                   if (!_contrastModification(informationDiffData, informationStatus.data!))
                     IconButton(
+                      padding: const EdgeInsets.all(16),
                       onPressed: () {
                         _onSave();
                       },

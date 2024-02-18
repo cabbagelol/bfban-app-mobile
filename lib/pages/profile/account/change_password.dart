@@ -67,6 +67,7 @@ class _changePasswordPageState extends State<UserChangePasswordPage> {
         title: Text(FlutterI18n.translate(context, "reset.title")),
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () {
               _onSaveChangePassword();
             },

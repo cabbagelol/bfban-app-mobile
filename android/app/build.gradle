@@ -32,6 +32,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    namespace 'com.cabbagelol.bfban'
     compileSdkVersion 33
 
     lintOptions {
@@ -39,12 +40,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -55,17 +56,18 @@ android {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.cabbagelol.bfban"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         ndk {
+            abiFilters "arm64-v8a"
             abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
         manifestPlaceholders = [
-            JPUSH_PKGNAME : "com.cabbagelol.bfban",
-            JPUSH_APPKEY : "966c3770c8bb47ffcbaacff1", // NOTE: JPush 上注册的包名对应的 Appkey.
-            JPUSH_CHANNEL : "developer-default", // 暂时填写默认值即可.
+                JPUSH_PKGNAME: "com.cabbagelol.bfban",
+                JPUSH_APPKEY : "966c3770c8bb47ffcbaacff1", // NOTE: JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL: "developer-default", // 暂时填写默认值即可.
         ]
     }
 
@@ -89,6 +91,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    ndkVersion '23.1.7779620'
 }
 
 flutter {
@@ -99,3 +102,4 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 //    implementation files('libs/sunjce_provider.jar.jar')
 }
+

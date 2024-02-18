@@ -149,8 +149,9 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                             ),
                                           ),
                                         if (data.userinfo["userAvatar"] != null)
-                                          Row(
-                                            children: [PrivilegesTagWidget(data: data.userinfo["privilege"])],
+                                          SizedBox(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: PrivilegesTagWidget(data: data.userinfo["privilege"]),
                                           ),
                                       ],
                                     ),

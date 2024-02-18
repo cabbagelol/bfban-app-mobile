@@ -143,27 +143,26 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
                   ),
                 ],
               ),
-            )
+            ),
+            if ((achievementDetailInfo.containsKey("acquisition") && achievementDetailInfo["acquisition"].indexOf("active") >= 0))
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: ElevatedButton(
+                  onPressed: () {
+                    onActiveAchievement();
+                  },
+                  child: activeButtonload
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : Text(FlutterI18n.translate(context, "profile.achievement.getButton")),
+                ),
+              )
           ],
         ),
       ),
-      bottomNavigationBar: (achievementDetailInfo.containsKey("acquisition") && achievementDetailInfo["acquisition"].indexOf("active") >= 0)
-          ? Container(
-              padding: const EdgeInsets.all(10),
-              child: ElevatedButton(
-                onPressed: () {
-                  onActiveAchievement();
-                },
-                child: activeButtonload
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : Text(FlutterI18n.translate(context, "profile.achievement.getButton")),
-              ),
-            )
-          : null,
     );
   }
 }

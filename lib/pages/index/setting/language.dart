@@ -109,6 +109,7 @@ class _LanguagePageState extends State<LanguagePage> {
         actions: [
           if (load)
             IconButton(
+              padding: const EdgeInsets.all(16),
               onPressed: () {},
               icon: ELuiLoadComponent(
                 type: "line",

@@ -95,6 +95,7 @@ class _ChatPageState extends State<ChatListPage> {
               appBar: AppBar(
                 actions: [
                   IconButton(
+                    padding: const EdgeInsets.all(16),
                     onPressed: () async {
                       _urlUtil.opEnPage(context, "/profile/notice");
                     },
@@ -195,6 +196,7 @@ class _ChatPageState extends State<ChatListPage> {
               appBar: AppBar(
                 actions: [
                   IconButton(
+                    padding: const EdgeInsets.all(16),
                     onPressed: () async {
                       _urlUtil.opEnPage(context, "/profile/notice");
                     },

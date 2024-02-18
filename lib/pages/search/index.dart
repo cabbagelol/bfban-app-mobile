@@ -309,8 +309,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       length: searchTabs.length,
       child: Scaffold(
         appBar: AppBar(
-          leading: Container(),
-          leadingWidth: 0,
           actionsIconTheme: Theme.of(context).appBarTheme.iconTheme,
           titleSpacing: 3,
           title: Container(
@@ -329,11 +327,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           ),
           actions: [
             IconButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
-                backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
-              ),
-              highlightColor: searchStatus.load ? Colors.transparent : Theme.of(context).highlightColor,
+              padding: const EdgeInsets.all(16),
+              style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))), backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor)),
+              // highlightColor: searchStatus.load ? Colors.transparent : Theme.of(context).highlightColor,
               onPressed: () => _onSearch(),
               icon: AnimatedSwitcher(
                 transitionBuilder: (child, anim) {
@@ -344,7 +340,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     ? ELuiLoadComponent(
                         type: "line",
                         color: Theme.of(context).progressIndicatorTheme.color!,
-                        size: 20,
                         lineWidth: 2,
                 )
                     : Icon(

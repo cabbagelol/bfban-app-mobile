@@ -91,6 +91,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
             title: Text(FlutterI18n.translate(context, "app.setting.publicTranslator.title")),
             actions: [
               IconButton(
+                padding: const EdgeInsets.all(16),
                 onPressed: () {
                   _onAddItem();
                 },
@@ -98,6 +99,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
               ),
               const VerticalDivider(),
               IconButton(
+                padding: const EdgeInsets.all(16),
                 onPressed: () {
                   _onSave();
                 },

@@ -159,6 +159,7 @@ class _ReplyPageState extends State<ReplyPage> {
                       ),
                     )
                   : IconButton(
+                padding: const EdgeInsets.all(16),
                       icon: const Icon(Icons.done),
                       onPressed: () => _onReply(),
                     ),

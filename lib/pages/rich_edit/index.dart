@@ -71,6 +71,7 @@ class _richEditPageState extends State<RichEditPage> {
         ),
         actions: <Widget>[
           IconButton(
+            padding: const EdgeInsets.all(16),
             icon: const Icon(Icons.done),
             onPressed: () => _onSubmit(),
           ),

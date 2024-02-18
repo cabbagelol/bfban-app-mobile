@@ -43,7 +43,7 @@ class _IndexPageState extends State<IndexPage> {
   GlobalKey<DragContainerState>? _drawerWidget = GlobalKey<DragContainerState>();
 
   // 首页下标
-  int _currentPageIndex = 1;
+  int _currentPageIndex = 0;
 
   // 首页Widget列表
   List<Widget> _listWidgetPage = [];
@@ -300,6 +300,7 @@ class _IndexPageState extends State<IndexPage> {
                     ),
                     actions: <Widget>[
                       IconButton(
+                        padding: const EdgeInsets.all(16),
                         onPressed: () {
                           UrlUtil().opEnPage(context, '/search/${jsonEncode({"text": ''})}');
                         },
@@ -307,6 +308,7 @@ class _IndexPageState extends State<IndexPage> {
                       ),
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(
+                          padding: const EdgeInsets.all(16),
                           icon: Icon(
                             Icons.adaptive.more,
                             color: Theme.of(context).appBarTheme.iconTheme!.color,
@@ -464,6 +466,7 @@ class _IndexPageState extends State<IndexPage> {
                     actions: <Widget>[
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(
+                          padding: const EdgeInsets.all(16),
                           icon: Icon(
                             Icons.adaptive.more,
                             color: Theme.of(context).iconTheme.color,

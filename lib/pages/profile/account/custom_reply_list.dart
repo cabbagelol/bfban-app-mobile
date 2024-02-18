@@ -122,6 +122,7 @@ class _customReplyPageState extends State<CustomReplyListPage> {
         ),
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () => _addTemplate(),
             icon: const Icon(Icons.add),
           )

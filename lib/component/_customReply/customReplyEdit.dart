@@ -144,6 +144,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
       appBar: AppBar(
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () => _done(),
             icon: const Icon(Icons.done),
           ),

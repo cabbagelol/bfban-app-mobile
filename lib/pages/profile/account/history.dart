@@ -175,6 +175,7 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
         title: Text(FlutterI18n.translate(context, "app.setting.cell.history.title")),
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () {
               setState(() {
                 isEdit = !isEdit;

@@ -44,6 +44,7 @@ class _SupportPageState extends State<SupportPage> {
         title: Text(FlutterI18n.translate(context, "app.setting.support.title")),
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () => _opEnNetwork(),
             icon: const Icon(Icons.electrical_services),
           ),

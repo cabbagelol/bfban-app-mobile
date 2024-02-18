@@ -95,6 +95,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
         title: Text(FlutterI18n.translate(context, "app.setting.versions.title")),
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () {
               _urlUtil.opEnPage(context, "/network");
             },
