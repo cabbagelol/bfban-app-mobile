@@ -646,82 +646,76 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                       ),
                                     ),
                                     Positioned.fill(
-                                      child: BackdropFilter(
-                                        filter: ui.ImageFilter.blur(
-                                          sigmaX: 1,
-                                          sigmaY: 1,
-                                        ),
-                                        child: Center(
-                                          child: GestureDetector(
-                                            onTap: () => _onEnImgInfo(context),
-                                            child: Container(
-                                              margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
-                                              child: Center(
-                                                child: Card(
-                                                  elevation: 0,
-                                                  clipBehavior: Clip.antiAlias,
-                                                  child: Stack(
-                                                    children: [
-                                                      Positioned(
-                                                        top: 0,
-                                                        child: Image.asset(
-                                                          "assets/images/default-player-avatar.jpg",
-                                                          width: 150,
-                                                          height: 150,
-                                                          cacheHeight: 150,
-                                                          cacheWidth: 150,
-                                                        ),
-                                                      ),
-                                                      ExtendedImage.network(
-                                                        snapshot.data!["avatarLink"],
-                                                        key: ValueKey<String>(const Uuid().v4(options: {
-                                                          'name': 'avatarLink-up',
-                                                          'url': snapshot.data!["avatarLink"],
-                                                          'time': DateTime.now().millisecondsSinceEpoch,
-                                                        })),
+                                      child: Center(
+                                        child: GestureDetector(
+                                          onTap: () => _onEnImgInfo(context),
+                                          child: Container(
+                                            margin: const EdgeInsets.only(top: 100, right: 10, left: 10),
+                                            child: Center(
+                                              child: Card(
+                                                elevation: 0,
+                                                clipBehavior: Clip.antiAlias,
+                                                child: Stack(
+                                                  children: [
+                                                    Positioned(
+                                                      top: 0,
+                                                      child: Image.asset(
+                                                        "assets/images/default-player-avatar.jpg",
                                                         width: 150,
                                                         height: 150,
-                                                        fit: BoxFit.contain,
-                                                        cache: true,
-                                                        cacheWidth: 150,
                                                         cacheHeight: 150,
-                                                        clearMemoryCacheWhenDispose: true,
-                                                        printError: false,
-                                                        loadStateChanged: (ExtendedImageState state) {
-                                                          switch (state.extendedImageLoadState) {
-                                                            case LoadState.completed:
-                                                              return state.completedWidget;
-                                                            case LoadState.failed:
-                                                            default:
-                                                              return Image.asset("assets/images/default-player-avatar.jpg");
-                                                          }
-                                                        },
+                                                        cacheWidth: 150,
                                                       ),
-                                                      Positioned(
-                                                        right: 0,
-                                                        bottom: 0,
-                                                        child: Container(
-                                                          padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
-                                                          decoration: const BoxDecoration(
-                                                            gradient: LinearGradient(
-                                                              begin: Alignment.topLeft,
-                                                              end: Alignment.bottomRight,
-                                                              colors: [
-                                                                Colors.transparent,
-                                                                Colors.transparent,
-                                                                Colors.black87,
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          child: const Icon(
-                                                            Icons.search,
-                                                            color: Colors.white70,
-                                                            size: 30,
+                                                    ),
+                                                    ExtendedImage.network(
+                                                      snapshot.data!["avatarLink"],
+                                                      key: ValueKey<String>(const Uuid().v4(options: {
+                                                        'name': 'avatarLink-up',
+                                                        'url': snapshot.data!["avatarLink"],
+                                                        'time': DateTime.now().millisecondsSinceEpoch,
+                                                      })),
+                                                      width: 150,
+                                                      height: 150,
+                                                      cacheWidth: 100,
+                                                      cacheHeight: 100,
+                                                      fit: BoxFit.contain,
+                                                      cache: true,
+                                                      clearMemoryCacheWhenDispose: true,
+                                                      printError: false,
+                                                      loadStateChanged: (ExtendedImageState state) {
+                                                        switch (state.extendedImageLoadState) {
+                                                          case LoadState.completed:
+                                                            return state.completedWidget;
+                                                          case LoadState.failed:
+                                                          default:
+                                                            return Image.asset("assets/images/default-player-avatar.jpg");
+                                                        }
+                                                      },
+                                                    ),
+                                                    Positioned(
+                                                      right: 0,
+                                                      bottom: 0,
+                                                      child: Container(
+                                                        padding: const EdgeInsets.only(top: 40, left: 40, right: 5, bottom: 5),
+                                                        decoration: const BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            begin: Alignment.topLeft,
+                                                            end: Alignment.bottomRight,
+                                                            colors: [
+                                                              Colors.transparent,
+                                                              Colors.transparent,
+                                                              Colors.black87,
+                                                            ],
                                                           ),
                                                         ),
+                                                        child: const Icon(
+                                                          Icons.search,
+                                                          color: Colors.white70,
+                                                          size: 30,
+                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ),

@@ -61,9 +61,9 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
     Future.wait([
       _onToken(),
-      _initNotice(),
       _initLang(),
       _initUserData(),
+      _initChat(),
     ]).catchError((onError) => []).whenComplete(() async {
       if (!await _onGuide()) return;
 
@@ -100,14 +100,14 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
 
   /// [Event]
   /// 通知初始
-  Future _initNotice() async {
+  Future _initChat() async {
     await providerUtil.ofChat(context).init();
 
     return true;
   }
 
   /// [Event]
-  /// 初始用户数据
+  /// 初始与用户相关数据
   Future _initUserData() async {
     StorageData loginData = await storage.get("login");
     dynamic user = loginData.value;

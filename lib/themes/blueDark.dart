@@ -289,7 +289,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         focusColor: Color(0xff364e80),
       ),
       iconButtonTheme: IconButtonThemeData(
-        style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent)),
+        style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent), iconColor: const MaterialStatePropertyAll(Colors.white)),
       ),
       iconTheme: const IconThemeData(
         color: Colors.white,

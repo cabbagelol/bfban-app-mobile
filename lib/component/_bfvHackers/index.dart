@@ -100,25 +100,25 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
     var hackScoreCurrent = hackersData["hack_score_current"] ?? 0;
     var hackScoreLevels = hackersData["hack_score_levels"] ?? {"hack": 10, "v_sus": 20, "sus": 100};
 
-    if (hackScoreCurrent < hackScoreLevels["hack"]) {
+    if (!hackerLoad && hackScoreCurrent < hackScoreLevels["hack"]) {
       return BfvHackerScoreLevelColor(
         color: Colors.green,
         textColor: Colors.green,
       );
-    } else if (hackScoreCurrent < hackScoreLevels["v_sus"]) {
+    } else if (!hackerLoad && hackScoreCurrent < hackScoreLevels["v_sus"]) {
       return BfvHackerScoreLevelColor(
         color: Colors.yellow,
         textColor: Colors.yellow.shade800,
       );
-    } else if (hackScoreCurrent >= hackScoreLevels["sus"]) {
+    } else if (!hackerLoad && hackScoreCurrent >= hackScoreLevels["sus"]) {
       return BfvHackerScoreLevelColor(
         color: Colors.red,
         textColor: Colors.red.shade900,
       );
     }
     return BfvHackerScoreLevelColor(
-      color: Colors.transparent,
-      textColor: Colors.transparent,
+      color: Colors.grey,
+      textColor: Theme.of(context).textTheme.titleMedium!.color,
     );
   }
 
@@ -126,7 +126,7 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
   Widget build(BuildContext context) {
     return widget.data!["games"].contains("bfv")
         ? InkWell(
-            child: Container(
+      child: AnimatedContainer(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               decoration: BoxDecoration(
                 color: _checkScoreLevels().color!.withOpacity(.2),
@@ -135,6 +135,7 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
                 ),
                 borderRadius: BorderRadius.circular(3),
               ),
+              duration: const Duration(milliseconds: 350),
               child: Wrap(
                 spacing: 5,
                 crossAxisAlignment: WrapCrossAlignment.center,
@@ -152,7 +153,7 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
                     )
                   else
                     Text(
-                      "Hack Score: ${hackersData["hack_score_current"] ?? 0}",
+                      "${hackersData["hack_score_current"] ?? 0}",
                       style: TextStyle(color: _checkScoreLevels().textColor),
                     ),
                   Container(
