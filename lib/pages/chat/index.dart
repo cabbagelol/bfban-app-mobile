@@ -195,7 +195,7 @@ class _MessagePageState extends State<MessagePage> {
   /// 对消息列表数据处理
   /// 排序 and 筛选
   _getData(ChatProvider data) {
-    Date date = Date();
+    Time time = Time();
     List list = data.list;
 
     // 筛选
@@ -208,7 +208,7 @@ class _MessagePageState extends State<MessagePage> {
     }).toList();
 
     // 排序
-    list.sort((a, b) => date.getTurnTheTimestamp(a["createTime"])["millisecondsSinceEpoch"].compareTo(date.getTurnTheTimestamp(b["createTime"])["millisecondsSinceEpoch"]));
+    list.sort((a, b) => time.parse(a["createTime"]).getExtendSecondDate.millisecondsSinceEpoch.toString().compareTo(time.parse(b["createTime"]).getExtendSecondDate.millisecondsSinceEpoch.toString()));
 
     return list;
   }

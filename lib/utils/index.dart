@@ -2,7 +2,7 @@ export 'screen_util.dart';
 export 'url.dart';
 export 'http.dart';
 export 'http_token.dart';
-export 'date.dart';
+export 'time.dart';
 export 'storage.dart';
 export 'storage_account.dart';
 export 'storage_player.dart';
