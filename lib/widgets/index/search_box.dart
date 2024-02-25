@@ -42,14 +42,11 @@ class SearchAppBarWidget extends StatefulWidget {
 
   final Function(String data)? onChanged;
 
-  final Widget? child;
-
   final TextEditingController controller;
 
   const SearchAppBarWidget({
     Key? key,
     this.theme = titleSearchTheme.black,
-    this.child,
     this.onSubmitted,
     this.onChanged,
     required this.controller,
@@ -163,9 +160,6 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                 ),
               ),
             ),
-
-            // 尾部
-            if (widget.child != null) widget.child!,
           ],
         ),
       ),

@@ -76,7 +76,7 @@ class AppealCard extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                        text: "\t·\t${Time().parse(data['createTime']).getExtendDate.Y_D_M}",
                       )
                     ],
                   ),

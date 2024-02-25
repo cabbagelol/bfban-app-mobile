@@ -36,7 +36,7 @@ class HistoryNameCard extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: "\t·\t${Date().getTimestampTransferCharacter(data["fromTime"])["Y_D_M"]}",
+                text: "\t·\t${Time().parse(data["fromTime"]).getExtendDate.Y_D_M}",
               )
             ],
           ),

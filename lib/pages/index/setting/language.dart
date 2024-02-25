@@ -158,6 +158,8 @@ class _LanguagePageState extends State<LanguagePage> {
                   style: Theme.of(context).listTileTheme.titleTextStyle,
                 ),
                 subtitle: Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
                   children: [
                     if (lang["members"] != null && lang["members"].isNotEmpty)
                       Wrap(

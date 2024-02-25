@@ -2,14 +2,16 @@ import 'package:bfban/component/_userAvatar/index.dart';
 import 'package:flutter/material.dart';
 
 import '../../component/_privilegesTag/index.dart';
-import '../../utils/date.dart';
+import '../../utils/index.dart';
 
 class SearchInUserCard extends StatelessWidget {
   final Map? item;
 
   final Function? onTap;
 
-  const SearchInUserCard({
+  final Time time = Time();
+
+  SearchInUserCard({
     Key? key,
     required this.item,
     this.onTap,
@@ -53,7 +55,7 @@ class SearchInUserCard extends StatelessWidget {
         children: [
           if (item!["joinTime"] != null)
             Text(
-              Date().getTimestampTransferCharacter(item!["joinTime"])["Y_D_M"],
+              time.parse(item!["joinTime"]).getExtendDate.Y_D_M,
               style: TextStyle(
                 color: Theme.of(context).textTheme.titleSmall!.color,
                 fontSize: 9,
@@ -64,7 +66,7 @@ class SearchInUserCard extends StatelessWidget {
           const SizedBox(width: 8),
           if (item!["updateTime"] != null)
             Text(
-              Date().getTimestampTransferCharacter(item!["updateTime"])["Y_D_M"],
+              time.parse(item!["updateTime"]).getExtendDate.Y_D_M,
               style: TextStyle(
                 color: Theme.of(context).textTheme.titleSmall!.color,
                 fontSize: 9,

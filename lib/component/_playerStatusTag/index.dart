@@ -39,7 +39,8 @@ class _PlayerStatusTagWidgetState extends State<PlayerStatusTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 350),
       padding: EdgeInsets.symmetric(
         horizontal: statusSizes[widget.size]!['horizontal'] as double,
         vertical: statusSizes[widget.size]!['vertical'] as double,

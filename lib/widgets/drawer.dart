@@ -5,7 +5,7 @@ class FlutterPluginDrawer extends StatefulWidget {
   final Widget body;
   final DragContainer dragContainer;
 
-  FlutterPluginDrawer({
+  const FlutterPluginDrawer({
     Key? key,
     required this.body,
     required this.dragContainer,

@@ -50,7 +50,7 @@ class _QuoteCardState extends State<QuoteCard> {
                   ),
                 ),
               ),
-              Text(Date().getTimestampTransferCharacter(quote!['createTime'])["Y_D_M"])
+              Text(Time().parse(quote!['createTime']).getExtendDate.Y_D_M)
             ],
           ),
           const SizedBox(height: 5),

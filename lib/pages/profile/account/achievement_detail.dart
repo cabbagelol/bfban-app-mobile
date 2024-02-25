@@ -135,6 +135,16 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
                     FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.name"),
                     style: TextStyle(fontSize: FontSize.xLarge.value, fontWeight: FontWeight.bold),
                   ),
+                  if (achievementDetailInfo["rarity"] != null)
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      child: InputChip(
+                        visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                        label: Text(
+                          FlutterI18n.translate(context, "profile.achievement.rarity.${achievementDetailInfo["rarity"]}"),
+                        ),
+                      ),
+                    ),
                   const Divider(),
                   HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.description")),
                   HtmlCore(

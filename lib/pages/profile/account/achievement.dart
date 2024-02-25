@@ -78,6 +78,7 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
         child: Scrollbar(
           child: ListView(
             children: [
+              /// header
               Container(
                 color: Theme.of(context).cardTheme.color,
                 padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
@@ -112,6 +113,8 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
                   ],
                 ),
               ),
+
+              /// list
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -167,6 +170,16 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: FontSize.large.value),
                           ),
                           HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${e["value"]}.conditions"), style: style),
+                          if (e["rarity"] != null)
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 5),
+                              child: InputChip(
+                                visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                label: Text(
+                                  FlutterI18n.translate(context, "profile.achievement.rarity.${e["rarity"]}"),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),

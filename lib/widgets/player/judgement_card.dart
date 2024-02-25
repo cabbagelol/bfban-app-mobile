@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
-import '../../utils/date.dart';
 import '../../utils/index.dart';
 import 'basic_quote_card.dart';
 import 'basic_card_types.dart';
@@ -84,7 +83,7 @@ class JudgementCard extends StatelessWidget {
                 WidgetSpan(
                   child: CheatMethodsTagWidget(data: data["cheatMethods"]),
                 ),
-              TextSpan(text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}")
+              TextSpan(text: "\t·\t${Time().parse(data['createTime']).getExtendDate.Y_D_M}")
             ],
           ),
         ),

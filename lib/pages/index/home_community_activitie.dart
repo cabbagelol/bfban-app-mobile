@@ -216,6 +216,8 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                             Wrap(
                               spacing: 5,
                               runSpacing: 5,
+                              runAlignment: WrapAlignment.center,
+                              alignment: WrapAlignment.center,
                               children: chipWidgets,
                             )
                           ],

@@ -310,7 +310,8 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           actionsIconTheme: Theme.of(context).appBarTheme.iconTheme,
-          titleSpacing: 3,
+          titleSpacing: 5,
+          centerTitle: true,
           title: Container(
             margin: const EdgeInsets.only(left: 5),
             child: SearchAppBarWidget(
@@ -329,7 +330,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             IconButton(
               padding: const EdgeInsets.all(16),
               style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))), backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor)),
-              // highlightColor: searchStatus.load ? Colors.transparent : Theme.of(context).highlightColor,
+              highlightColor: searchStatus.load ? Colors.transparent : Theme.of(context).highlightColor,
               onPressed: () => _onSearch(),
               icon: AnimatedSwitcher(
                 transitionBuilder: (child, anim) {
@@ -337,13 +338,15 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                 },
                 duration: const Duration(milliseconds: 300),
                 child: searchStatus.load
-                    ? ELuiLoadComponent(
-                        type: "line",
-                        color: Theme.of(context).progressIndicatorTheme.color!,
-                        lineWidth: 2,
-                )
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
+                      )
                     : Icon(
-                  Icons.search,
+                        Icons.search,
                         color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
                       ),
               ),
