@@ -134,6 +134,7 @@ class _GuidePageState extends State<GuidePage> {
             ),
             actions: [
               IconButton(
+                padding: const EdgeInsets.all(16),
                 onPressed: () {
                   _urlUtil.opEnPage(context, "/network");
                 },

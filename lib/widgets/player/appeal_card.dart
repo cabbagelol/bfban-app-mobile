@@ -50,6 +50,7 @@ class AppealCard extends StatelessWidget {
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,
+                          decorationThickness: 4,
                           decorationStyle: TextDecorationStyle.dotted,
                         ),
                         recognizer: TapGestureRecognizer()
@@ -75,7 +76,7 @@ class AppealCard extends StatelessWidget {
                         ),
                       ),
                       TextSpan(
-                        text: "\t·\t${Date().getTimestampTransferCharacter(data['createTime'])["Y_D_M"]}",
+                        text: "\t·\t${Time().parse(data['createTime']).getExtendDate.Y_D_M}",
                       )
                     ],
                   ),

@@ -71,6 +71,9 @@ class UserInfoProvider with ChangeNotifier {
 
     if (userinfo != null) {
       _userdata = userinfo;
+
+      bool isTimeOut = checkLocalLoginDataTimeout();
+      if (isTimeOut) eventUtil.emit('user-token-expired', null);
     }
 
     return _userdata;
@@ -82,6 +85,17 @@ class UserInfoProvider with ChangeNotifier {
     if (!isLogin) _urlUtil.opEnPage(context!, "login/panel");
 
     return isLogin;
+  }
+
+  /// [Event]
+  /// 检查本地储存的登陆信息状态
+  bool checkLocalLoginDataTimeout() {
+    if (!isLogin) return false;
+
+    DateTime localUserDataTime = DateTime.fromMillisecondsSinceEpoch(_userdata["userinfo"]["signWhen"]);
+    DateTime maxLocalLoginTimeoutTime = DateTime.fromMillisecondsSinceEpoch(_userdata["userinfo"]["signWhen"] + _userdata["userinfo"]["expiresIn"]);
+
+    return localUserDataTime.millisecondsSinceEpoch > maxLocalLoginTimeoutTime.millisecondsSinceEpoch;
   }
 
   /// [Event]

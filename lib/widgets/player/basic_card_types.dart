@@ -274,13 +274,18 @@ class _TimeLineItemBottomBtnState extends State<TimeLineItemBottomBtn> {
               if (widget.data!["id"] != null) const TextSpan(text: "-"),
               if (widget.data!["id"] != null)
                 WidgetSpan(
+                  alignment: PlaceholderAlignment.middle,
                   child: Opacity(
                     opacity: .5,
-                    child: Text("${widget.data!["id"]}"),
+                    child: Text(
+                      "${widget.data!["id"]}",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
                   ),
                 ),
             ],
           ),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
     );

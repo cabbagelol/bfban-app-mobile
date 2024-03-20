@@ -36,7 +36,6 @@ class StorageAccount extends Storage {
     Map data = userData.value ??= {};
 
     data[key] = value;
-    // store.commit("syncLoaclConfiguration", data.data.value)
     super.set(NAME, value: data);
   }
 

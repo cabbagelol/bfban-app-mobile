@@ -32,18 +32,18 @@ class TimeWidget extends StatefulWidget {
 class _TimeWidgetState extends State<TimeWidget> {
   String? value;
 
-  Date date = Date();
+  Time time = Time();
 
   /// [Event]
   /// 时间转换可读时间刻
-  String getFriendlyDescriptionTime(String date, {type = "Y_D_M_M"}) {
+  String getFriendlyDescriptionTime(String date, {typeTime = "Y_D_M_M"}) {
     if (date.isEmpty) return "N/A";
 
     var time = DateTime.parse(date);
     var now = DateTime.now();
     var d = now.difference(time);
 
-    switch (type) {
+    switch (widget.type) {
       case TimeWidgetType.convert:
         if (d.inDays == 0) {
           // 一天之内
@@ -75,15 +75,15 @@ class _TimeWidgetState extends State<TimeWidget> {
         break;
       case TimeWidgetType.full:
       default:
-        return this.date.getTimestampTransferCharacter(date)[type];
+      return this.time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
     }
-    return this.date.getTimestampTransferCharacter(date)[type];
+    return this.time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
   }
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      getFriendlyDescriptionTime(widget.data, type: widget.timeType),
+      getFriendlyDescriptionTime(widget.data, typeTime: widget.timeType),
       style: widget.style ??= null,
       overflow: widget.overflow ??= null,
       maxLines: widget.maxLines ??= null,

@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../utils/index.dart';
-import '../_html/htmlWidget.dart';
-import 'customReply.dart';
+import '/utils/index.dart';
+import '/component/_html/htmlWidget.dart';
+import '/component/_customReply/customReply.dart';
 
 class CustomReplyListPage extends StatefulWidget {
   const CustomReplyListPage({Key? key}) : super(key: key);
@@ -122,73 +122,76 @@ class _customReplyPageState extends State<CustomReplyListPage> {
         ),
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () => _addTemplate(),
             icon: const Icon(Icons.add),
           )
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        children: list.isNotEmpty
-            ? list.map((i) {
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text.rich(
-                              TextSpan(children: [
-                                if (i.template!) const WidgetSpan(child: Icon(Icons.text_snippet, size: 18)),
-                                TextSpan(
-                                  text: i.template! ? "" : "${i.title}\t",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+      body: Scrollbar(
+        child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          children: list.isNotEmpty
+              ? list.map((i) {
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text.rich(
+                                TextSpan(children: [
+                                  if (i.template!) const WidgetSpan(child: Icon(Icons.text_snippet, size: 18)),
+                                  TextSpan(
+                                    text: i.template! ? "" : "${i.title}\t",
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                ),
-                                TextSpan(text: i.template! ? "\t${i.content}\t" : "\t[${i.language}]\t"),
-                                if (i.creationTime != null && i.creationTime! > 0)
-                                  WidgetSpan(
-                                    child: TimeWidget(data: DateTime.fromMillisecondsSinceEpoch(i.creationTime as int).toString()),
-                                  )
-                              ]),
+                                  TextSpan(text: i.template! ? "\t${i.content}\t" : "\t[${i.language}]\t"),
+                                  if (i.creationTime != null && i.creationTime! > 0)
+                                    WidgetSpan(
+                                      child: TimeWidget(data: DateTime.fromMillisecondsSinceEpoch(i.creationTime as int).toString()),
+                                    )
+                                ]),
+                              ),
                             ),
-                          ),
-                          PopupMenuButton(
-                            itemBuilder: (context) => [
-                              PopupMenuItem(
-                                value: 1,
-                                enabled: !i.template!,
-                                child: const Text("Edit"),
-                              ),
-                              PopupMenuItem(
-                                value: 2,
-                                enabled: !i.template!,
-                                child: const Text("Delete"),
-                              ),
-                            ],
-                            onSelected: (index) {
-                              switch (index) {
-                                case 1:
-                                  _openEditTemplate(i);
-                                  break;
-                                case 2:
-                                  _fastReplyDel(i);
-                                  break;
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                      HtmlWidget(content: i.content),
-                    ],
-                  ),
-                );
-              }).toList()
-            : [const EmptyWidget()],
+                            PopupMenuButton(
+                              itemBuilder: (context) => [
+                                PopupMenuItem(
+                                  value: 1,
+                                  enabled: !i.template!,
+                                  child: const Text("Edit"),
+                                ),
+                                PopupMenuItem(
+                                  value: 2,
+                                  enabled: !i.template!,
+                                  child: const Text("Delete"),
+                                ),
+                              ],
+                              onSelected: (index) {
+                                switch (index) {
+                                  case 1:
+                                    _openEditTemplate(i);
+                                    break;
+                                  case 2:
+                                    _fastReplyDel(i);
+                                    break;
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        HtmlWidget(content: i.content),
+                      ],
+                    ),
+                  );
+                }).toList()
+              : [const EmptyWidget()],
+        ),
       ),
     );
   }

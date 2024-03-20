@@ -28,18 +28,6 @@ class UserCenterPage extends StatefulWidget {
 class _UserCenterPageState extends State<UserCenterPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  bool accountLoading = false;
-
-  /// [Response]
-  /// 注销用户信息
-  Future<void> removeUserInfo(UserInfoProvider userProvider) async {
-    if (accountLoading) return;
-
-    setState(() => accountLoading = true);
-    await userProvider.accountQuit(context);
-    setState(() => accountLoading = false);
-  }
-
   /// [Event]
   /// 应用设置
   void _opEnSetting() {
@@ -83,7 +71,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                     if (data.userinfo["username"] != null)
                       Text(
                         data.userinfo["username"],
-                        style: TextStyle(fontSize: FontSize.xLarge.value),
+                        style: Theme.of(context).appBarTheme.titleTextStyle!.copyWith(fontSize: FontSize.xLarge.value),
                         overflow: TextOverflow.ellipsis,
                         textWidthBasis: TextWidthBasis.longestLine,
                         maxLines: 1,
@@ -91,6 +79,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                     else
                       Text(
                         FlutterI18n.translate(context, "profile.title"),
+                        style: Theme.of(context).appBarTheme.titleTextStyle,
                       )
                   ],
                 ),
@@ -159,7 +148,11 @@ class _UserCenterPageState extends State<UserCenterPage> {
                                               fontSize: FontSize.xLarge.value,
                                             ),
                                           ),
-                                        if (data.userinfo["userAvatar"] != null) PrivilegesTagWidget(data: data.userinfo["privilege"]),
+                                        if (data.userinfo["userAvatar"] != null)
+                                          SizedBox(
+                                            width: MediaQuery.of(context).size.width,
+                                            child: PrivilegesTagWidget(data: data.userinfo["privilege"]),
+                                          ),
                                       ],
                                     ),
                                   ),
@@ -171,7 +164,7 @@ class _UserCenterPageState extends State<UserCenterPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     if (data.isLogin)
                       EluiCellComponent(
                         title: FlutterI18n.translate(context, "app.setting.cell.information.title"),
@@ -274,25 +267,6 @@ class _UserCenterPageState extends State<UserCenterPage> {
                       islink: true,
                       onTap: () => _opEnSetting(),
                     ),
-                    const SizedBox(height: 20),
-                    if (data.isLogin && accountLoading)
-                      LinearProgressIndicator(
-                        minHeight: 1,
-                        color: Theme.of(context).colorScheme.primary,
-                        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-                      ),
-                    if (data.isLogin)
-                      EluiCellComponent(
-                        title: FlutterI18n.translate(context, "header.signout"),
-                        icons: const Icon(Icons.exit_to_app),
-                        theme: EluiCellTheme(
-                          titleColor: Theme.of(context).textTheme.titleMedium?.color,
-                          labelColor: Theme.of(context).textTheme.displayMedium?.color,
-                          linkColor: Theme.of(context).textTheme.titleMedium?.color,
-                          backgroundColor: Theme.of(context).cardTheme.color,
-                        ),
-                        onTap: () => removeUserInfo(data),
-                      ),
                   ],
                 ),
               ),

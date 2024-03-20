@@ -10,6 +10,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
+import '../../component/_refresh/index.dart';
 import '/widgets/drawer.dart';
 import '/data/index.dart';
 import '/constants/api.dart';
@@ -17,9 +18,9 @@ import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
 
 class HomeFooterBarPanel extends StatefulWidget {
-  final GlobalKey<DragContainerState>? dragContainerKey;
+  GlobalKey<DragContainerState>? dragContainerKey;
 
-  const HomeFooterBarPanel({
+  HomeFooterBarPanel({
     Key? key,
     this.dragContainerKey,
   }) : super(key: key);
@@ -31,9 +32,13 @@ class HomeFooterBarPanel extends StatefulWidget {
 class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  Storage storage = Storage();
+  final Storage storage = Storage();
+
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   bool modalStatus = false;
+
+  bool modalOpenOne = false;
 
   // 统计数据
   Statistics statistics = Statistics(
@@ -59,19 +64,27 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
 
   @override
   void initState() {
-    _getTourRecordList();
-
     widget.dragContainerKey!.currentState!.offstage.addListener(() {
       modalStatus = widget.dragContainerKey!.currentState!.offstage.value;
 
-      if (modalStatus) {
+      if (modalStatus && !modalOpenOne) {
         _getStatisticsInfo();
         _getTourRecordList();
         _getSubscribesList();
+
+        modalOpenOne = true;
       }
     });
 
     super.initState();
+  }
+
+  Future _onRefresh() async {
+    _getStatisticsInfo();
+    _getTourRecordList();
+    _getSubscribesList();
+
+    _refreshKey.currentState!.controller.finishRefresh();
   }
 
   /// [Result]
@@ -130,9 +143,10 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
   Future _getSubscribesList() async {
     if (traceStatus.load == true) return;
 
-    setState(() {
-      traceStatus.load = true;
-    });
+    if (mounted)
+      setState(() {
+        traceStatus.load = true;
+      });
 
     Response result = await HttpToken.request(
       Config.httpHost["user_subscribes"],
@@ -151,9 +165,10 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
       return;
     }
 
-    setState(() {
-      traceStatus.load = false;
-    });
+    if (mounted)
+      setState(() {
+        traceStatus.load = false;
+      });
   }
 
   /// [Response]
@@ -173,9 +188,10 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
     );
 
     if (result.data["success"] == 1) {
-      setState(() {
-        statistics.data?.setData(result.data["data"]);
-      });
+      if (mounted)
+        setState(() {
+          statistics.data?.setData(result.data["data"]);
+        });
     }
 
     if (mounted)
@@ -199,54 +215,57 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
     return Consumer<UserInfoProvider>(
       builder: (context, userData, child) {
         return MediaQuery.removeViewPadding(
-            context: context,
-            removeTop: true,
-            removeBottom: true,
+          context: context,
+          removeTop: true,
+          removeBottom: true,
+          child: Refresh(
+            key: _refreshKey,
+            onRefresh: _onRefresh,
             child: ListView(
               children: [
                 // 订阅用户
-                Container(
-                  margin: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        FlutterI18n.translate(context, "app.setting.cell.subscribes.title"),
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Wrap(
-                              spacing: 10,
-                              runSpacing: 10,
-                              children: traceStatus.list!.map((e) {
-                                return GestureDetector(
-                                  child: EluiImgComponent(
-                                    width: 40,
-                                    height: 40,
-                                    src: e["avatarLink"],
-                                  ),
-                                  onTap: () => _urlUtil.opEnPage(context, "/account/subscribes/"),
-                                );
-                              }).toList(),
+                if (userData.isLogin)
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          FlutterI18n.translate(context, "app.setting.cell.subscribes.title"),
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Wrap(
+                                spacing: 10,
+                                runSpacing: 10,
+                                children: traceStatus.list!.map((e) {
+                                  return GestureDetector(
+                                    child: EluiImgComponent(
+                                      width: 40,
+                                      height: 40,
+                                      src: e["avatarLink"],
+                                    ),
+                                    onTap: () => _urlUtil.opEnPage(context, "/player/personaId/${e["originPersonaId"]}"),
+                                  );
+                                }).toList(),
+                              ),
                             ),
-                          ),
-                          IconButton.outlined(
-                            onPressed: () => _urlUtil.opEnPage(context, "/account/subscribes/"),
-                            icon: Icon(
-                              Icons.more_horiz,
-                              size: FontSize.xxLarge.value,
+                            IconButton.outlined(
+                              onPressed: () => _urlUtil.opEnPage(context, "/account/subscribes/"),
+                              icon: Icon(
+                                Icons.more_horiz,
+                                size: FontSize.xxLarge.value,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-
-                // 管理 处理下一个案件处理
 
                 // 游览记录
                 Container(
@@ -306,8 +325,8 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                                       height: 70,
                                       fit: BoxFit.contain,
                                       clearMemoryCacheWhenDispose: true,
-                                      cacheHeight: 50,
-                                      cacheWidth: 50,
+                                      cacheHeight: 70,
+                                      cacheWidth: 70,
                                     ),
                                   )
                                 ],
@@ -451,15 +470,9 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                           opacity: userData.isLogin ? 1 : .3,
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: TextButton(
-                              child: Row(
-                                children: [
-                                  const Icon(Icons.add),
-                                  Text(
-                                    FlutterI18n.translate(context, "report.title"),
-                                  ),
-                                ],
-                              ),
+                            child: ElevatedButton.icon(
+                              icon: const Icon(Icons.front_hand),
+                              label: Text(FlutterI18n.translate(context, "report.title")),
                               onPressed: () => userData.isLogin ? _openReply() : null,
                             ),
                           ),
@@ -590,7 +603,9 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                   ),
                 ),
               ],
-            ));
+            ),
+          ),
+        );
       },
     );
   }

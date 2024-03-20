@@ -5,6 +5,8 @@ import '../utils/index.dart';
 
 // 程序国际化
 class TranslationProvider with ChangeNotifier {
+  Storage storage = Storage();
+
   // 包名
   String packageName = "language";
 
@@ -41,14 +43,12 @@ class TranslationProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Storage storage = Storage();
-
   // 初始化
   Future init() async {
     Map localLang = await getLocalLang();
 
     if (_listDictionaryFrom.isEmpty && localLang.isEmpty) {
-      await getLangFrom();
+      await getNetworkLangListDictionary();
       await updateLocalLang();
     }
 
@@ -74,7 +74,11 @@ class TranslationProvider with ChangeNotifier {
   // [Event]
   // 写入本地消息内容
   Future<bool> setLocalLang() async {
-    Map data = {'currentLang': currentLang, 'listDictionaryFrom': await getLangFrom(), 'listConf': await getLangConf(currentLang)};
+    Map data = {
+      "currentLang": currentLang,
+      "listDictionaryFrom": await getNetworkLangListDictionary(), // 所有可用语言字典表
+      "listLangs": await getNetworkLangData(currentLang),
+    };
 
     await storage.set(packageName, value: data);
     return true;
@@ -82,16 +86,16 @@ class TranslationProvider with ChangeNotifier {
 
   // 更新国际化配置到本地
   Future updateLocalLang() async {
-    for (var element in _listDictionaryFrom) {
+    for (var i in _listDictionaryFrom) {
       // 不需要同步
-      await getLangConf(element["fileName"]);
+      await getNetworkLangData(i["fileName"]);
     }
 
     setLocalLang();
   }
 
   // 获取国际化字典表
-  Future getLangFrom() async {
+  Future getNetworkLangListDictionary() async {
     notifyListeners();
     Response result = await Http.request(
       "config/languages.json",
@@ -108,7 +112,7 @@ class TranslationProvider with ChangeNotifier {
   }
 
   // 获取国际化对应的语言文本
-  Future getLangConf(currentLang) async {
+  Future getNetworkLangData(currentLang) async {
     notifyListeners();
     Response result = await Http.request(
       "lang/$currentLang.json",
@@ -118,6 +122,7 @@ class TranslationProvider with ChangeNotifier {
 
     if (result.data.toString().isNotEmpty) {
       _list[currentLang] = result.data;
+      _list[currentLang].addAll({"updateTime": DateTime.now().millisecondsSinceEpoch});
     }
 
     notifyListeners();

@@ -88,6 +88,40 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     super.dispose();
   }
 
+  // 消息筛选
+  List<Widget> get chipWidgets {
+    // 动态筛选标签
+    List chips = [];
+
+    chipCont["list"].asMap().keys.forEach((index) {
+      chips.add(
+        FilterChip(
+          backgroundColor: Theme.of(context).chipTheme.backgroundColor,
+          selectedColor: Theme.of(context).chipTheme.selectedColor,
+          selected: restorablebool[index].value,
+          visualDensity: const VisualDensity(horizontal: 3, vertical: -2),
+          label: Text(FlutterI18n.translate(context, chipCont["list"][index]["name"])),
+          onSelected: (value) {
+            setState(() {
+              restorablebool[index].value = !restorablebool[index].value;
+            });
+          },
+        ),
+      );
+    });
+    return chips.map<Widget>((chip) => chip).toList();
+  }
+
+  // 消息筛选是否可见
+  bool _isShow(i) {
+    var item = chipCont["list"].where((element) => element["value"] == i["type"]).toList();
+    var is_ = item.length > 0 ? restorablebool[item[0]["index"]].value : false;
+
+    if (restorablebool.where((element) => element.value).isEmpty) is_ = true;
+
+    return is_;
+  }
+
   /// [Response]
   /// 获取近期活动
   Future _getActivity() async {
@@ -154,41 +188,6 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    // 消息筛选
-    List<Widget> chipWidgets() {
-      // 动态筛选标签
-      List chips = [];
-
-      chipCont["list"].asMap().keys.forEach((index) {
-        chips.add(
-          FilterChip(
-            backgroundColor: Theme.of(context).chipTheme.backgroundColor,
-            selectedColor: Theme.of(context).chipTheme.selectedColor,
-            selected: restorablebool[index].value,
-            visualDensity: const VisualDensity(horizontal: 3, vertical: -4),
-            label: Text(FlutterI18n.translate(context, chipCont["list"][index]["name"])),
-            onSelected: (value) {
-              setState(() {
-                restorablebool[index].value = !restorablebool[index].value;
-              });
-            },
-          ),
-        );
-      });
-      return chips.map<Widget>((chip) => chip).toList();
-    }
-
-    // 消息筛选是否可见
-    bool _isShow(i) {
-      var item = chipCont["list"].where((element) => element["value"] == i["type"]).toList();
-      var is_ = item.length > 0 ? restorablebool[item[0]["index"]].value : false;
-
-      if (restorablebool.where((element) => element.value).isEmpty) is_ = true;
-
-      return is_;
-    }
-
     return Refresh(
       key: _refreshKey,
       onRefresh: _onRefresh,
@@ -196,218 +195,217 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
         context: context,
         removeTop: true,
         removeBottom: true,
-        child: activityStatus.list!.isNotEmpty && !activityStatus.load
-            ? ListView.builder(
-                padding: EdgeInsets.only(bottom: MediaQuery.of(context).systemGestureInsets.bottom + kBottomNavigationBarHeight),
-                controller: _scrollController,
-                itemCount: activityStatus.list!.length + 1,
-                itemBuilder: (BuildContext context, int index) {
-                  // 筛选
-                  if (index == 0) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                      height: 40,
-                      color: Theme.of(context).primaryColorDark.withOpacity(.1),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          const Icon(Icons.filter_list_outlined),
-                          const SizedBox(width: 5),
-                          Wrap(
-                            spacing: 5,
-                            runSpacing: 5,
-                            children: chipWidgets(),
-                          )
-                        ],
+        child: Scrollbar(
+          child: activityStatus.list!.isNotEmpty && !activityStatus.load
+              ? ListView.builder(
+                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).systemGestureInsets.bottom + kBottomNavigationBarHeight),
+                  controller: _scrollController,
+                  itemCount: activityStatus.list!.length + 1,
+                  itemBuilder: (BuildContext context, int index) {
+                    // 筛选
+                    if (index == 0) {
+                      return Container(
+                        height: 45,
+                        color: Theme.of(context).primaryColorDark.withOpacity(.1),
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          children: [
+                            const Icon(Icons.filter_list_outlined),
+                            const SizedBox(width: 5),
+                            Wrap(
+                              spacing: 5,
+                              runSpacing: 5,
+                              runAlignment: WrapAlignment.center,
+                              alignment: WrapAlignment.center,
+                              children: chipWidgets,
+                            )
+                          ],
+                        ),
+                      );
+                    }
+
+                    Map i = activityStatus.list![index - 1];
+
+                    return Visibility(
+                      visible: _isShow(i),
+                      child: InkWell(
+                        child: Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      if (i["playerAvatarLink"] != null)
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: ExtendedImage.network(
+                                            i["playerAvatarLink"],
+                                            width: 30,
+                                            height: 30,
+                                            fit: BoxFit.fill,
+                                            cacheWidth: 30,
+                                            cacheHeight: 30,
+                                            cache: true,
+                                            printError: false,
+                                            loadStateChanged: (ExtendedImageState state) {
+                                              switch (state.extendedImageLoadState) {
+                                                case LoadState.completed:
+                                                  return state.completedWidget;
+                                                case LoadState.failed:
+                                                default:
+                                                  return Image.asset(
+                                                    "assets/images/default-player-avatar.jpg",
+                                                    cacheWidth: 30,
+                                                    cacheHeight: 30,
+                                                  );
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      else
+                                        CircleAvatar(
+                                          radius: 15,
+                                          child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString().toUpperCase()),
+                                        ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        (i["username"] ?? i["toPlayerName"]).toString(),
+                                        style: const TextStyle(fontSize: 20, fontFamily: "UbuntuMono"),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: TimeWidget(
+                                          data: i["createTime"],
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          ),
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  WidgetStateText(itemData: i),
+                                ],
+                              ),
+                            ),
+                            Positioned(
+                              top: 5,
+                              right: 0,
+                              child: Icon(
+                                iconTypes[i["type"]] ?? Icons.message_outlined,
+                                size: 70,
+                                color: Theme.of(context).textTheme.titleSmall!.color!.withOpacity(.02),
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () => _opEnDynamicDetail(i),
                       ),
                     );
-                  }
-
-                  Map i = activityStatus.list![index - 1];
-
-                  return Visibility(
-                    visible: _isShow(i),
-                    child: InkWell(
-                      child: Column(
+                  },
+                )
+              : ListView.builder(
+                  controller: _scrollController,
+                  itemCount: 8,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Opacity(
+                      opacity: 1 - (.1 * index),
+                      child: Stack(
                         children: [
-                          Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
                                   children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        if (i["playerAvatarLink"] != null)
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(20),
-                                            child: ExtendedImage.network(
-                                              i["playerAvatarLink"],
-                                              width: 30,
-                                              height: 30,
-                                              fit: BoxFit.fill,
-                                              cacheWidth: 30,
-                                              cacheHeight: 30,
-                                              cache: true,
-                                              printError: false,
-                                              loadStateChanged: (ExtendedImageState state) {
-                                                switch (state.extendedImageLoadState) {
-                                                  case LoadState.completed:
-                                                    return state.completedWidget;
-                                                  case LoadState.failed:
-                                                  default:
-                                                    return Image.asset(
-                                                      "assets/images/default-player-avatar.jpg",
-                                                      cacheWidth: 30,
-                                                      cacheHeight: 30,
-                                                    );
-                                                }
-                                              },
-                                            ),
-                                          )
-                                        else
-                                          CircleAvatar(
-                                            radius: 15,
-                                            child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString().toUpperCase()),
-                                          ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          (i["username"] ?? i["toPlayerName"]).toString(),
-                                          style: const TextStyle(fontSize: 20, fontFamily: "UbuntuMono"),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Placeholder(
+                                        color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                        strokeWidth: 20,
+                                        child: const SizedBox(
+                                          width: 30,
+                                          height: 30,
                                         ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: TimeWidget(
-                                            data: i["createTime"],
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                            ),
-                                            textAlign: TextAlign.end,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    WidgetStateText(itemData: i),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                top: 5,
-                                right: 0,
-                                child: Icon(
-                                  iconTypes[i["type"]] ?? Icons.message_outlined,
-                                  size: 70,
-                                  color: Theme.of(context).textTheme.titleSmall!.color!.withOpacity(.02),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(height: 1),
-                        ],
-                      ),
-                      onTap: () => _opEnDynamicDetail(i),
-                    ),
-                  );
-                },
-              )
-            : ListView.builder(
-                controller: _scrollController,
-                itemCount: 8,
-                itemBuilder: (BuildContext context, int index) {
-                  return Opacity(
-                    opacity: 1 - (.1 * index),
-                    child: Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Placeholder(
-                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                      strokeWidth: 20,
-                                      child: const SizedBox(
-                                        width: 30,
-                                        height: 30,
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Placeholder(
-                                    color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
-                                    child: const SizedBox(
-                                      width: 30,
-                                      height: 8,
+                                    const SizedBox(width: 10),
+                                    Placeholder(
+                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                      strokeWidth: 10,
+                                      child: const SizedBox(
+                                        width: 30,
+                                        height: 8,
+                                      ),
                                     ),
-                                  ),
-                                  const Expanded(flex: 1, child: SizedBox()),
-                                  Placeholder(
-                                    color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
-                                    child: const SizedBox(
-                                      width: 50,
-                                      height: 6,
+                                    const Expanded(flex: 1, child: SizedBox()),
+                                    Placeholder(
+                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                      strokeWidth: 10,
+                                      child: const SizedBox(
+                                        width: 50,
+                                        height: 6,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  Placeholder(
-                                    color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
-                                    child: const SizedBox(
-                                      width: 120,
-                                      height: 5,
+                                  ],
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Placeholder(
+                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                      strokeWidth: 10,
+                                      child: const SizedBox(
+                                        width: 120,
+                                        height: 5,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 20),
-                                  Placeholder(
-                                    color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                    strokeWidth: 10,
-                                    child: const SizedBox(
-                                      width: 120,
-                                      height: 5,
+                                    const SizedBox(width: 20),
+                                    Placeholder(
+                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                      strokeWidth: 10,
+                                      child: const SizedBox(
+                                        width: 120,
+                                        height: 5,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 5),
-                            ],
+                                  ],
+                                ),
+                                const SizedBox(height: 5),
+                              ],
+                            ),
                           ),
-                        ),
-                        Positioned(
-                          top: 35,
-                          right: 0,
-                          child: Opacity(
-                            opacity: .5,
-                            child: Placeholder(
-                              color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                              strokeWidth: 50,
-                              child: const SizedBox(
-                                width: 70,
-                                height: 70,
+                          Positioned(
+                            top: 35,
+                            right: 0,
+                            child: Opacity(
+                              opacity: .5,
+                              child: Placeholder(
+                                color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                                strokeWidth: 50,
+                                child: const SizedBox(
+                                  width: 70,
+                                  height: 70,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+        ),
       ),
     );
   }

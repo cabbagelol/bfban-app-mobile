@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../data/index.dart';
 
@@ -93,6 +94,9 @@ class GreenTheme extends AppBaseThemeItem {
         selectedBorderColor: Colors.green.shade800,
         splashColor: Colors.black38,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
+      scrollbarTheme: const ScrollbarThemeData(
+        thumbColor: MaterialStatePropertyAll(Colors.green),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.green,
@@ -203,6 +207,10 @@ class GreenTheme extends AppBaseThemeItem {
         iconTheme: IconThemeData(
           color: Colors.green.shade900,
         ),
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: FontSize.xLarge.value,
+        ),
       ),
       primaryColor: Colors.green,
       tabBarTheme: TabBarTheme(
@@ -277,8 +285,8 @@ class GreenTheme extends AppBaseThemeItem {
         error: Colors.redAccent,
         onError: Colors.redAccent,
         errorContainer: Colors.white,
-        background: const Color(0xff111b2b),
-        onBackground: const Color(0xff111b2b),
+        background: Colors.white,
+        onBackground: Colors.white,
         surface: Colors.white,
         onSurface: Colors.white,
         // background: Colors.black,

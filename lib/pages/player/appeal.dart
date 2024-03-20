@@ -171,6 +171,7 @@ class _AppealPageState extends State<AppealPage> {
                   ),
                 )
               : IconButton(
+            padding: const EdgeInsets.all(16),
                   icon: const Icon(Icons.done),
                   onPressed: () => _onAppeal(),
                 ),

@@ -172,11 +172,13 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Response]
   /// 账户搜索
   void _onSearch({isButtonClick = true}) async {
-    if (searchStatus.load && !isButtonClick && searchStatus.params.param == "" && searchStatus.params.param!.length < 3) return;
+    _titleSearchWidgetKey.currentState?.unFocus();
+
+    if (searchStatus.load && !isButtonClick) return;
+    if (searchStatus.params.param!.isEmpty || searchStatus.params.param!.length < 3) return;
 
     setState(() {
       searchStatus.load = true;
-      _titleSearchWidgetKey.currentState?.unFocus();
     });
 
     request = Http.request(
@@ -203,7 +205,6 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       isFirstScreen = false;
     });
 
-    // TODO add i18n
     EluiMessageComponent.error(context)(
       child: Text(FlutterI18n.translate(context, result.toString())),
     );
@@ -308,39 +309,44 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       length: searchTabs.length,
       child: Scaffold(
         appBar: AppBar(
-          titleSpacing: 3,
-          title: SearchAppBarWidget(
-            key: _titleSearchWidgetKey,
-            controller: _searchController,
-            theme: titleSearchTheme.white,
-            onChanged: (String value) {
-              setState(() {
-                searchStatus.params.param = value;
-              });
-            },
-            onSubmitted: (dynamic data) => _onSearch(isButtonClick: true),
+          actionsIconTheme: Theme.of(context).appBarTheme.iconTheme,
+          titleSpacing: 5,
+          centerTitle: true,
+          title: Container(
+            margin: const EdgeInsets.only(left: 5),
+            child: SearchAppBarWidget(
+              key: _titleSearchWidgetKey,
+              controller: _searchController,
+              theme: titleSearchTheme.white,
+              onChanged: (String value) {
+                setState(() {
+                  searchStatus.params.param = value;
+                });
+              },
+              onSubmitted: (dynamic data) => _onSearch(isButtonClick: true),
+            ),
           ),
           actions: [
             IconButton(
-              style: ButtonStyle(
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))),
-                backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor),
-              ),
-              onPressed: () => searchStatus.params.param!.isNotEmpty ? _onSearch() : null,
+              padding: const EdgeInsets.all(16),
+              style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))), backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor)),
+              highlightColor: searchStatus.load ? Colors.transparent : Theme.of(context).highlightColor,
+              onPressed: () => _onSearch(),
               icon: AnimatedSwitcher(
                 transitionBuilder: (child, anim) {
                   return ScaleTransition(scale: anim, child: child);
                 },
                 duration: const Duration(milliseconds: 300),
                 child: searchStatus.load
-                    ? ELuiLoadComponent(
-                        type: "line",
-                        color: Theme.of(context).progressIndicatorTheme.color!,
-                        size: 20,
-                        lineWidth: 2,
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        ),
                       )
                     : Icon(
-                  Icons.search,
+                        Icons.search,
                         color: Theme.of(context).appBarTheme.iconTheme?.color as Color,
                       ),
               ),
@@ -366,157 +372,159 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             const Divider(height: 1),
             Expanded(
               flex: 1,
-              child: isFirstScreen
-                  ? ListView(
-                      padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
-                      children: <Widget>[
-                        const SizedBox(height: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Wrap(
-                                  spacing: 10,
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: <Widget>[
-                                    const Icon(Icons.history),
-                                    I18nText("app.search.historySearch", child: const Text("", style: TextStyle())),
-                                  ],
-                                ),
-                                EluiTagComponent(
-                                  color: EluiTagType.none,
-                                  size: EluiTagSize.no2,
-                                  value: "${searchStatus.historyList!.length}/20",
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            searchStatus.historyList!.isNotEmpty
-                                ? Wrap(
-                              spacing: 10,
-                                    runSpacing: 5,
-                                    children: searchStatus.historyList!.map((i) {
-                                      return InputChip(
-                                        label: GestureDetector(
-                                          child: Wrap(
-                                            crossAxisAlignment: WrapCrossAlignment.center,
-                                            children: [
-                                              Text("${FlutterI18n.translate(context, "search.tabs.${i['type']}")}:\t"),
-                                              Text(i["keyword"]),
-                                            ],
-                                          ),
-                                          onTap: () => _onPenByType(i),
-                                        ),
-                                        onDeleted: () => _deleteSearchLog(i),
-                                      );
-                                    }).toList(),
+              child: Scrollbar(
+                child: isFirstScreen
+                    ? ListView(
+                        padding: const EdgeInsets.only(left: 15, right: 15, top: 5),
+                        children: <Widget>[
+                          const SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Wrap(
+                                    spacing: 10,
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    children: <Widget>[
+                                      const Icon(Icons.history),
+                                      I18nText("app.search.historySearch", child: const Text("", style: TextStyle())),
+                                    ],
+                                  ),
+                                  EluiTagComponent(
+                                    color: EluiTagType.none,
+                                    size: EluiTagSize.no2,
+                                    value: "${searchStatus.historyList!.length}/20",
                                   )
-                                : const EmptyWidget(),
-                          ],
-                        ),
-                        const SizedBox(height: 30),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Wrap(
-                              spacing: 10,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: <Widget>[
-                                const Icon(Icons.local_fire_department_rounded),
-                                I18nText("app.search.hotRecommendation", child: const Text("", style: TextStyle())),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            if (isHotRecommendationLoad)
-                              ELuiLoadComponent(
-                                type: "line",
-                                color: Theme.of(context).progressIndicatorTheme.color!,
-                                size: 20,
-                                lineWidth: 2,
-                              )
-                            else
-                              searchTrends.isNotEmpty
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              searchStatus.historyList!.isNotEmpty
                                   ? Wrap(
                                       spacing: 10,
-                                      runSpacing: 10,
-                                      children: searchTrends.map((i) {
+                                      runSpacing: 5,
+                                      children: searchStatus.historyList!.map((i) {
                                         return InputChip(
-                                          label: Wrap(
-                                            crossAxisAlignment: WrapCrossAlignment.center,
-                                            children: [
-                                              Icon(
-                                                Icons.person,
-                                                size: 16,
-                                                color: Theme.of(context).chipTheme.iconTheme!.color,
-                                              ),
-                                              Text(i["originName"]),
-                                              const SizedBox(width: 5),
-                                              Icon(
-                                                Icons.local_fire_department_outlined,
-                                                size: 16,
-                                                color: Theme.of(context).chipTheme.iconTheme!.color,
-                                              ),
-                                              Text(i["hot"].toString()),
-                                            ],
+                                          label: GestureDetector(
+                                            child: Wrap(
+                                              crossAxisAlignment: WrapCrossAlignment.center,
+                                              children: [
+                                                Text("${FlutterI18n.translate(context, "search.tabs.${i['type']}")}:\t"),
+                                                Text(i["keyword"]),
+                                              ],
+                                            ),
+                                            onTap: () => _onPenByType(i),
                                           ),
-                                          onSelected: (select) {
-                                            _onPenPlayerDetail(i);
-                                          },
+                                          onDeleted: () => _deleteSearchLog(i),
                                         );
                                       }).toList(),
                                     )
                                   : const EmptyWidget(),
-                          ],
-                        ),
-                      ],
-                    )
-                  : TabBarView(
-                      controller: tabController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: [
-                        ListView(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: searchStatus.list.data("player").isNotEmpty
-                                  ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: searchStatus.list.data("player").map((i) {
-                                        return CheatListCard(
-                                          item: i,
-                                        );
-                                      }).toList(),
-                                    )
-                                  : const EmptyWidget(),
-                            ),
-                          ],
-                        ),
-                        ListView(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(top: 10),
-                              child: searchStatus.list.data("user").isNotEmpty
-                                  ? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: searchStatus.list.data("user").map((i) {
-                                        return SearchInUserCard(
-                                          item: i,
-                                          onTap: () {
-                                            _onPenInUserDetail(i);
-                                          },
-                                        );
-                                      }).toList(),
-                                    )
-                                  : const EmptyWidget(),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            ],
+                          ),
+                          const SizedBox(height: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Wrap(
+                                spacing: 10,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: <Widget>[
+                                  const Icon(Icons.local_fire_department_rounded),
+                                  I18nText("app.search.hotRecommendation", child: const Text("", style: TextStyle())),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+                              if (isHotRecommendationLoad)
+                                ELuiLoadComponent(
+                                  type: "line",
+                                  color: Theme.of(context).progressIndicatorTheme.color!,
+                                  size: 20,
+                                  lineWidth: 2,
+                                )
+                              else
+                                searchTrends.isNotEmpty
+                                    ? Wrap(
+                                        spacing: 10,
+                                        runSpacing: 10,
+                                        children: searchTrends.map((i) {
+                                          return InputChip(
+                                            label: Wrap(
+                                              crossAxisAlignment: WrapCrossAlignment.center,
+                                              children: [
+                                                Icon(
+                                                  Icons.person,
+                                                  size: 16,
+                                                  color: Theme.of(context).chipTheme.iconTheme!.color,
+                                                ),
+                                                Text(i["originName"]),
+                                                const SizedBox(width: 5),
+                                                Icon(
+                                                  Icons.local_fire_department_outlined,
+                                                  size: 16,
+                                                  color: Theme.of(context).chipTheme.iconTheme!.color,
+                                                ),
+                                                Text(i["hot"].toString()),
+                                              ],
+                                            ),
+                                            onSelected: (select) {
+                                              _onPenPlayerDetail(i);
+                                            },
+                                          );
+                                        }).toList(),
+                                      )
+                                    : const EmptyWidget(),
+                            ],
+                          ),
+                        ],
+                      )
+                    : TabBarView(
+                        controller: tabController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          ListView(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: searchStatus.list.data("player").isNotEmpty
+                                    ? Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: searchStatus.list.data("player").map((i) {
+                                          return CheatListCard(
+                                            item: i,
+                                          );
+                                        }).toList(),
+                                      )
+                                    : const EmptyWidget(),
+                              ),
+                            ],
+                          ),
+                          ListView(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(top: 10),
+                                child: searchStatus.list.data("user").isNotEmpty
+                                    ? Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: searchStatus.list.data("user").map((i) {
+                                          return SearchInUserCard(
+                                            item: i,
+                                            onTap: () {
+                                              _onPenInUserDetail(i);
+                                            },
+                                          );
+                                        }).toList(),
+                                      )
+                                    : const EmptyWidget(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+              ),
             ),
           ],
         ),

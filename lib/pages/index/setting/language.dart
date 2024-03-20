@@ -109,6 +109,7 @@ class _LanguagePageState extends State<LanguagePage> {
         actions: [
           if (load)
             IconButton(
+              padding: const EdgeInsets.all(16),
               onPressed: () {},
               icon: ELuiLoadComponent(
                 type: "line",
@@ -154,11 +155,11 @@ class _LanguagePageState extends State<LanguagePage> {
                 groupValue: currentPageSelectLang,
                 title: Text(
                   lang["label"].toString(),
-                  style: TextStyle(
-                    color: Theme.of(context).textTheme.bodyMedium!.color,
-                  ),
+                  style: Theme.of(context).listTileTheme.titleTextStyle,
                 ),
                 subtitle: Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
                   children: [
                     if (lang["members"] != null && lang["members"].isNotEmpty)
                       Wrap(
@@ -170,11 +171,15 @@ class _LanguagePageState extends State<LanguagePage> {
                       const Text("N/A")
                   ],
                 ),
-                secondary: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                    child: Text(lang["name"]),
-                  ),
+                secondary: Wrap(
+                  children: [
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        child: Text(lang["name"]),
+                      ),
+                    ),
+                  ],
                 ),
                 selected: true,
               );

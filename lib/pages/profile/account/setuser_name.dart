@@ -1,4 +1,3 @@
-import 'package:bfban/component/_captcha/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
@@ -10,15 +9,16 @@ import '/constants/api.dart';
 import '/data/index.dart';
 import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
+import '/component/_captcha/index.dart';
 
-class UserSetuserNamePage extends StatefulWidget {
-  const UserSetuserNamePage({key});
+class UserSetUserNamePage extends StatefulWidget {
+  const UserSetUserNamePage({Key? key}) : super(key: key);
 
   @override
-  State<UserSetuserNamePage> createState() => _setuserNamePageState();
+  State<UserSetUserNamePage> createState() => _setuserNamePageState();
 }
 
-class _setuserNamePageState extends State<UserSetuserNamePage> {
+class _setuserNamePageState extends State<UserSetUserNamePage> {
   int stepIndex = 0;
 
   int maxStep = 2;

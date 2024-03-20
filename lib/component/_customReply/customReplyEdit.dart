@@ -144,6 +144,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
       appBar: AppBar(
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () => _done(),
             icon: const Icon(Icons.done),
           ),
@@ -198,11 +199,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
                   fit: StackFit.expand,
                   children: [
                     Html(data: data.content),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      bottom: 0,
-                      right: 0,
+                    Positioned.fill(
                       child: Container(
                         color: const Color.fromRGBO(0, 0, 0, 0.2),
                         child: Center(

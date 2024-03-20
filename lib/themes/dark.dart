@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 import '../data/index.dart';
 
@@ -119,8 +120,11 @@ class DarkTheme extends AppBaseThemeItem {
         splashColor: Colors.black38,
         borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: Colors.white,
+      scrollbarTheme: const ScrollbarThemeData(
+        thumbColor: MaterialStatePropertyAll(Color(0xff364e80)),
+      ),
+      progressIndicatorTheme: ProgressIndicatorThemeData(
+        color: Colors.black12,
       ),
       tooltipTheme: TooltipThemeData(
         decoration: BoxDecoration(
@@ -243,15 +247,16 @@ class DarkTheme extends AppBaseThemeItem {
           fontSize: 14,
         ),
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.black,
         foregroundColor: Colors.black54,
         shadowColor: Colors.black26,
         elevation: 0,
         scrolledUnderElevation: 0,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: FontSize.xLarge.value),
       ),
       primaryColor: Colors.black,
       tabBarTheme: TabBarTheme(

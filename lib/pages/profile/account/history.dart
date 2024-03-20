@@ -175,6 +175,7 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
         title: Text(FlutterI18n.translate(context, "app.setting.cell.history.title")),
         actions: [
           IconButton(
+            padding: const EdgeInsets.all(16),
             onPressed: () {
               setState(() {
                 isEdit = !isEdit;
@@ -189,79 +190,87 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
           return Refresh(
             key: _refreshKey,
             onRefresh: _onRefresh,
-            child: Column(
-              children: [
-                /// toolbar
-                if (isEdit)
-                  Container(
-                    padding: const EdgeInsets.only(top: 5, bottom: 5, right: 15),
-                    color: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.5),
-                    height: 35,
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: selectAll,
-                          onChanged: (status) => _selectAllItem(status!),
-                        ),
-                        TextButton(
-                          onPressed: () => _selectDeleteItem(),
-                          child: const Icon(Icons.delete, size: 15),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                /// Content List
-                if (!tourRecordStatus.load!)
-                  Expanded(
-                    flex: 1,
-                    child: ListView(
-                      controller: _scrollController,
-                      children: [
-                        // 列表
-                        if (tourRecordStatus.list!.isNotEmpty)
-                          Column(
-                            children: tourRecordStatus.list!.map((i) {
-                              return Row(
-                                children: [
-                                  if (isEdit)
-                                    Container(
-                                      margin: const EdgeInsets.only(left: 0),
-                                      child: Checkbox(
-                                        visualDensity: VisualDensity.standard,
-                                        value: selectMap[i.id] ?? false,
-                                        onChanged: (status) {
-                                          setState(() {
-                                            selectMap[i.id] = status;
-                                          });
-                                        },
+            child: Scrollbar(
+              child: Column(
+                children: [
+                  /// Content List
+                  if (!tourRecordStatus.load!)
+                    Expanded(
+                      flex: 1,
+                      child: ListView(
+                        controller: _scrollController,
+                        children: [
+                          // 列表
+                          if (tourRecordStatus.list!.isNotEmpty)
+                            Column(
+                              children: tourRecordStatus.list!.map((i) {
+                                return Row(
+                                  children: [
+                                    if (isEdit)
+                                      Container(
+                                        margin: const EdgeInsets.only(left: 0),
+                                        child: Checkbox(
+                                          visualDensity: VisualDensity.standard,
+                                          value: selectMap[i.id] ?? false,
+                                          onChanged: (status) {
+                                            setState(() {
+                                              selectMap[i.id] = status;
+                                            });
+                                          },
+                                        ),
                                       ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: CheatListCard(item: i.toMap),
                                     ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: CheatListCard(item: i.toMap),
-                                  ),
-                                ],
-                              );
-                            }).toList(),
-                          )
-                        else if (tourRecordStatus.list!.isEmpty && !tourRecordStatus.load!)
-                          const EmptyWidget(),
-                      ],
+                                  ],
+                                );
+                              }).toList(),
+                            )
+                          else if (tourRecordStatus.list!.isEmpty && !tourRecordStatus.load!)
+                            const EmptyWidget(),
+                        ],
+                      ),
+                    )
+                  else
+                    const Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
                     ),
-                  )
-                else
-                  const Expanded(
-                    flex: 1,
-                    child: Center(
-                      child: Center(child: CircularProgressIndicator()),
-                    ),
-                  ),
-              ],
+                ],
+              ),
             ),
           );
         },
       ),
+
+      /// toolbar
+      bottomNavigationBar: isEdit
+          ? SafeArea(
+              child: Container(
+                padding: const EdgeInsets.only(top: 5, bottom: 5, right: 15),
+                color: Theme.of(context).bottomAppBarTheme.color,
+                child: Row(
+                  children: [
+                    Checkbox(
+                      value: selectAll,
+                      onChanged: (status) => _selectAllItem(status!),
+                    ),
+                    const Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    IconButton(
+                      onPressed: () => _selectDeleteItem(),
+                      icon: const Icon(Icons.delete),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

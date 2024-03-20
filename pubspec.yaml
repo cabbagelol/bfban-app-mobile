@@ -91,9 +91,6 @@ dependencies:
   flutter_translate: ^4.0.3
   flutter_i18n: ^0.34.0
 
-  # 图片保存 https://pub.dev/packages/image_gallery_saver
-  image_gallery_saver: ^2.0.0
-
   # 哨兵 https://pub.dev/packages/sentry
   sentry: ^7.16.0
 
@@ -148,7 +145,6 @@ flutter:
     - assets/lang/
     - assets/video/
     - assets/images/
-    - assets/images/achievement/
     - assets/images/recordPlatforms/
     - assets/images/games/bf1/
     - assets/images/games/bf6/

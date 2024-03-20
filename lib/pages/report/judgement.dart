@@ -1,18 +1,16 @@
-import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bfban/utils/index.dart';
-import 'package:bfban/constants/api.dart';
-import 'package:bfban/data/index.dart';
-
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../component/_customReply/customReply.dart';
-import '../../component/_html/html.dart';
-import '../../widgets/edit/game_type_radio.dart';
+import '/utils/index.dart';
+import '/constants/api.dart';
+import '/data/index.dart';
+import '/component/_privilegesTag/index.dart';
+import '/component/_customReply/customReply.dart';
+import '/component/_html/html.dart';
+import '/widgets/edit/game_type_radio.dart';
 
 class JudgementPage extends StatefulWidget {
   final String? id;
@@ -31,7 +29,7 @@ class _JudgementPageState extends State<JudgementPage> {
 
   final Util _util = Util();
 
-  Storage _storage = Storage();
+  final Storage _storage = Storage();
 
   final List _reportInfoCheatMethods = [];
 
@@ -163,6 +161,7 @@ class _JudgementPageState extends State<JudgementPage> {
                   ),
                 )
               : IconButton(
+            padding: const EdgeInsets.all(16),
                   onPressed: () => _onRelease(),
                   icon: const Icon(Icons.done),
                 ),
@@ -282,7 +281,10 @@ class _JudgementPageState extends State<JudgementPage> {
                                     index: method["select"],
                                     child: Tooltip(
                                       message: FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.describe"),
-                                      child: Text(FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.title")),
+                                      child: Text(
+                                        FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.title"),
+                                        style: Theme.of(context).chipTheme.labelStyle,
+                                      ),
                                     ),
                                     onTap: () {
                                       field.setState(() {

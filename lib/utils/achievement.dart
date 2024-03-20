@@ -6,7 +6,7 @@ import '../constants/api.dart';
 class AchievementUtil {
   /// 拼接图标地址
   String getIcon(String path) {
-    return path.isNotEmpty ? "assets/images/achievement/$path" : "";
+    return path.isNotEmpty ? "${Config.apis["web_site"]!.url}/images/achievement/$path" : "";
   }
 
   /// 获取成就信息

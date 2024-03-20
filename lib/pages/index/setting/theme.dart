@@ -105,6 +105,7 @@ class _ThemePageState extends State<ThemePage> {
             actions: [
               if (!_contrastModification(themeDiffFromData, fromData))
                 IconButton(
+                  padding: const EdgeInsets.all(16),
                   onPressed: () {
                     _onSave(themeData, context);
                   },

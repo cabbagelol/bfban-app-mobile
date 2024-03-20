@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 import 'dart:math';
+import 'dart:ui';
 
-import 'package:animations/animations.dart';
 import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
@@ -19,7 +19,6 @@ import 'package:bfban/utils/index.dart';
 
 import '../../constants/api.dart';
 import '../../widgets/drawer.dart';
-import '../../widgets/index/search_box.dart';
 import 'user_center.dart';
 import 'home_footer_bar_panel.dart';
 import 'home.dart';
@@ -301,6 +300,7 @@ class _IndexPageState extends State<IndexPage> {
                     ),
                     actions: <Widget>[
                       IconButton(
+                        padding: const EdgeInsets.all(16),
                         onPressed: () {
                           UrlUtil().opEnPage(context, '/search/${jsonEncode({"text": ''})}');
                         },
@@ -308,6 +308,7 @@ class _IndexPageState extends State<IndexPage> {
                       ),
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(
+                          padding: const EdgeInsets.all(16),
                           icon: Icon(
                             Icons.adaptive.more,
                             color: Theme.of(context).appBarTheme.iconTheme!.color,
@@ -411,18 +412,6 @@ class _IndexPageState extends State<IndexPage> {
                       drawer: Container(
                         decoration: BoxDecoration(
                           color: Theme.of(context).bottomSheetTheme.backgroundColor,
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: Theme.of(context).dividerTheme.color!,
-                          //     spreadRadius: 1,
-                          //     blurRadius: 0,
-                          //   ),
-                          //   BoxShadow(
-                          //     color: Theme.of(context).scaffoldBackgroundColor,
-                          //     spreadRadius: .2,
-                          //     blurRadius: 2,
-                          //   ),
-                          // ],
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),
@@ -443,7 +432,7 @@ class _IndexPageState extends State<IndexPage> {
                               ),
                             ),
                             SizedBox(
-                              height: screenHeight * 0.65 - screenBarHeight,
+                              height: screenHeight * 0.55 - screenBarHeight,
                               child: HomeFooterBarPanel(
                                 dragContainerKey: _drawerWidget,
                               ),
@@ -452,7 +441,7 @@ class _IndexPageState extends State<IndexPage> {
                         ),
                       ),
                       defaultShowHeight: screenBarHeight,
-                      height: screenHeight * .65,
+                      height: screenHeight * .55,
                     ),
                   ),
                   bottomNavigationBar: BottomNavigationBar(
@@ -477,6 +466,7 @@ class _IndexPageState extends State<IndexPage> {
                     actions: <Widget>[
                       Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
                         return PopupMenuButton(
+                          padding: const EdgeInsets.all(16),
                           icon: Icon(
                             Icons.adaptive.more,
                             color: Theme.of(context).iconTheme.color,

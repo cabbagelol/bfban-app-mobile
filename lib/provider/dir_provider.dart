@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../utils/index.dart';
@@ -27,24 +28,48 @@ class DirProvider with ChangeNotifier {
   // 获取默认选择保存的完整地址
   get currentDefaultSavePath => getPaths().where((element) => element.dirName == defaultSavePathValue).first.basicPath;
 
+  Future<Directory?> a() async {
+    return Directory("");
+  }
+
+  Future<List<Directory?>> b() async {
+    return [];
+  }
+
   init() async {
     try {
       List<Future> waitMode = [];
       if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) waitMode.insert(0, getApplicationSupportDirectory());
-      if (Platform.isAndroid) waitMode.insert(1, getExternalStorageDirectories());
-      if (Platform.isAndroid) waitMode.insert(2, getDownloadsDirectory());
+      if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) waitMode.insert(1, getTemporaryDirectory());
+      if (Platform.isIOS || Platform.isMacOS)
+        waitMode.insert(2, getLibraryDirectory());
+      else
+        waitMode.insert(2, a());
+      if (Platform.isAndroid) waitMode.insert(3, getExternalStorageDirectories());
+      if (Platform.isAndroid) waitMode.insert(4, getDownloadsDirectory());
+
+      waitMode.map((element) {
+        if (element is Directory && element == null) {
+          return a();
+        } else if (element is List && (element as List).isEmpty) {
+          return b();
+        }
+        return a();
+      });
 
       List futurePath = await Future.wait(waitMode);
 
       fileAllPath = FileAllPath(
         applicationSupportDirectory: futurePath[0],
+        appTemporaryDirectory: futurePath[1],
+        libraryDirectory: futurePath[2],
         externalCacheDirectories: [],
         downloadsDirectory: Directory(""),
         applicationDocumentsDirectory: Directory(""),
       );
 
-      if (Platform.isAndroid) fileAllPath.externalCacheDirectories = futurePath[1];
-      if (Platform.isAndroid) fileAllPath.downloadsDirectory = futurePath[2];
+      if (Platform.isAndroid) fileAllPath.externalCacheDirectories = futurePath[3];
+      if (Platform.isAndroid) fileAllPath.downloadsDirectory = futurePath[4];
 
       _initDirectory();
 
@@ -70,13 +95,29 @@ class DirProvider with ChangeNotifier {
     if (fileAllPath.applicationSupportDirectory!.existsSync()) {
       list.add(DirItemStorePath(
         dirName: "appInteriorDir",
+        translate: DirTranslate(),
         check: true,
         basicPath: fileAllPath.applicationSupportDirectory!.path,
+      ));
+    }
+    if (fileAllPath.appTemporaryDirectory!.existsSync()) {
+      list.add(DirItemStorePath(
+        dirName: "temporaryDirectory",
+        translate: DirTranslate(),
+        basicPath: fileAllPath.appTemporaryDirectory!.path,
+      ));
+    }
+    if (fileAllPath.libraryDirectory!.existsSync()) {
+      list.add(DirItemStorePath(
+        dirName: "libraryDirectory",
+        translate: DirTranslate(),
+        basicPath: fileAllPath.libraryDirectory!.path,
       ));
     }
     if (fileAllPath.downloadsDirectory!.existsSync()) {
       list.add(DirItemStorePath(
         dirName: "downloadsDirectory",
+        translate: DirTranslate(),
         basicPath: fileAllPath.downloadsDirectory!.path,
       ));
     }
@@ -85,6 +126,10 @@ class DirProvider with ChangeNotifier {
         if (!externalDir.$2.existsSync())
           // ignore: curly_braces_in_flow_control_structures
           list.add(DirItemStorePath(
+            translate: DirTranslate(
+              key: "external",
+              param: {"index": externalDir.$1.toString()},
+            ),
             dirName: "external${externalDir.$1}",
             basicPath: externalDir.$2.path,
           ));
@@ -166,9 +211,22 @@ class DirBasicItem {
   // 基本地址
   String basicPath = "";
 
+  DirTranslate? translate;
+
   DirBasicItem({
     this.check,
+    this.translate,
     required this.basicPath,
+  });
+}
+
+class DirTranslate {
+  String? key;
+  Map<String, String>? param;
+
+  DirTranslate({
+    this.key = "",
+    this.param,
   });
 }
 
@@ -178,12 +236,17 @@ class DirItemStorePath extends DirBasicItem {
 
   DirItemStorePath({
     required this.dirName,
+    DirTranslate? translate,
     bool check = false,
     required String basicPath,
-  }) : super(check: check, basicPath: basicPath);
+  }) : super(check: check, basicPath: basicPath, translate: translate) {
+    this.translate!.key = dirName;
+  }
 
-  Map<String, dynamic> get toMap => {
+  Map<String, dynamic> get toMap =>
+      {
         "dirName": dirName,
+        "translate": translate,
         "check": check,
         "basicPath": basicPath,
       };
@@ -192,6 +255,12 @@ class DirItemStorePath extends DirBasicItem {
 class FileAllPath {
   // 应用支持目录
   Directory? applicationSupportDirectory;
+
+  // 共享
+  Directory? appTemporaryDirectory;
+
+  // 公共
+  Directory? libraryDirectory;
 
   // 外部存储目录 所有
   List<Directory>? externalCacheDirectories;
@@ -203,6 +272,8 @@ class FileAllPath {
 
   FileAllPath({
     this.applicationSupportDirectory,
+    this.appTemporaryDirectory,
+    this.libraryDirectory,
     this.externalCacheDirectories,
     this.downloadsDirectory,
     this.applicationDocumentsDirectory,

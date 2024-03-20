@@ -51,6 +51,7 @@ class _LoginPanelState extends State<LoginPanelPage> {
           automaticallyImplyLeading: false,
           actions: [
             IconButton(
+              padding: const EdgeInsets.all(16),
               onPressed: () {
                 _urlUtil.opEnPage(context, "/network");
               },

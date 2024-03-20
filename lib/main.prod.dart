@@ -12,7 +12,7 @@ void main() async {
       "app_web_site": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban-app.cabbagelol.net"),
       "web_site": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.com"),
       "network_bfv_hackers_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfvhackers.com", pathname: "/api/v1"),
-      "network_service_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.gametools.network", pathname: "/api"),
+      "network_service_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "api.bfban.com", pathname: "/api"),
     },
     jiguan: {
       // In Disuse

@@ -65,6 +65,7 @@ class TokenInterceptor extends Interceptor {
     const errorCode = ['user.tokenClientException', 'user.tokenExpired', 'user.invalid'];
     if (errorCode.contains(response.data['code'])) {
       eventUtil.emit('user-token-expired', response);
+      HttpToken.TOKEN = "";
     }
   }
 }

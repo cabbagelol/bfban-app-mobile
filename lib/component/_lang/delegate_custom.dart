@@ -8,7 +8,7 @@ import 'package:bfban/utils/index.dart';
 
 class CustomTranslationLoader extends FileTranslationLoader {
   // 包名
-  // 与[lang_provider]packageName一致
+  // 与[translation_provider]packageName一致
   String packageName = "language";
 
   final Uri baseUri;
@@ -56,24 +56,24 @@ class CustomTranslationLoader extends FileTranslationLoader {
         networkLanguageResult = jsonDecode(networkLang.data);
       }
     } else {
-      networkLanguageResult = local["listConf"];
+      networkLanguageResult = local["listLangs"];
     }
 
     // 本地载入
     String localLanguagePath = "$basePath/${composeFileName()}.json";
-    String loadString = await assetBundle.loadString(localLanguagePath, cache: false);
+    String loadString = await assetBundle.loadString(localLanguagePath, cache: true);
     if (loadString.isEmpty) {
       String localFallbackFilePath = "$basePath/$fallbackFile.json";
-      localLanguageResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: false));
+      localLanguageResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: true));
     } else {
       localLanguageResult = jsonDecode(loadString);
     }
 
     String localStatusCodePath = "$basePath/${composeFileName()}_status_code.json";
-    String loadStatusCodeString = await assetBundle.loadString(localStatusCodePath, cache: false);
+    String loadStatusCodeString = await assetBundle.loadString(localStatusCodePath, cache: true);
     if (loadStatusCodeString.isEmpty) {
       String localFallbackFilePath = "$basePath/${fallbackFile}_status_code.json";
-      localStatusCodeResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: false));
+      localStatusCodeResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: true));
     } else {
       localStatusCodeResult = jsonDecode(loadStatusCodeString);
     }
