@@ -1,7 +1,7 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.2.9'
+version: '0.2.10'
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -137,8 +137,8 @@ flutter:
   fonts:
     - family: UbuntuMono
       fonts:
-        - asset: fonts/Ubuntu_Mono/UbuntuMono-Italic.ttf
-        - asset: fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf
+        - asset: assets/fonts/Ubuntu_Mono/UbuntuMono-Italic.ttf
+        - asset: assets/fonts/Ubuntu_Mono/UbuntuMono-Regular.ttf
           style: italic
   assets:
     - assets/
@@ -150,5 +150,5 @@ flutter:
     - assets/images/games/bf6/
     - assets/images/games/bfv/
     - assets/splash/
-    - fonts/
-    - fonts/Ubuntu_Mono/
+    - assets/fonts/
+    - assets/fonts/Ubuntu_Mono/
