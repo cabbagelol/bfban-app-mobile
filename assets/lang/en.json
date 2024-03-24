@@ -30,6 +30,13 @@
       "fileInfo": "Detailed information",
       "uploadFile": "Upload files",
       "export": "Export file",
+      "directory": {
+        "appInteriorDir": "in-app",
+        "libraryDirectory": "commonality",
+        "temporaryDirectory": "cache",
+        "downloadsDirectory": "Download",
+        "external": "扩展${索引}"
+      },
       "tab": {
         "local": "Local",
         "cloud": "Cloud Gallery"
@@ -131,7 +138,7 @@
           "describe": "User Achievements"
         },
         "history": {
-          "title": "Visit",
+          "title": "Tour history",
           "describe": "View Past Content"
         },
         "subscribes": {
@@ -277,3 +284,4 @@
     }
   }
 }
+
