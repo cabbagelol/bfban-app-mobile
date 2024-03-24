@@ -35,7 +35,7 @@
         "libraryDirectory": "commonality",
         "temporaryDirectory": "cache",
         "downloadsDirectory": "Download",
-        "external": "扩展${索引}"
+        "external": "Extension ${index}"
       },
       "tab": {
         "local": "Local",
