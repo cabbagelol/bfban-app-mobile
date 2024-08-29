@@ -82,7 +82,7 @@ class _CameraPageState extends State<CameraPage> {
           child: CircularProgressIndicator(),
         ),
       ),
-      builder: (CameraState state, size, rect) {
+      builder: (state, previewSize) {
         return Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(

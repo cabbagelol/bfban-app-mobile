@@ -20,6 +20,11 @@ class TrendStatus {
     }
   }
 
+  TrendStatus clear() {
+    _list.clear();
+    return this;
+  }
+
   List<TrendPlayerBaseData> get list => _list;
 }
 

@@ -320,6 +320,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                         child: TabBar(
                           controller: _tabController,
                           isScrollable: true,
+                          tabAlignment: TabAlignment.start,
                           automaticIndicatorColorAdjustment: false,
                           onTap: (index) => _onSwitchTab(index),
                           tabs: cheaterStatus!.map((i) {

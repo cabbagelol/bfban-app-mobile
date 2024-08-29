@@ -116,7 +116,6 @@ class TranslationProvider with ChangeNotifier {
     notifyListeners();
     Response result = await Http.request(
       "lang/$currentLang.json",
-      httpDioValue: "web_site",
       method: Http.GET,
     );
 

@@ -51,7 +51,10 @@ class CustomTranslationLoader extends FileTranslationLoader {
 
     // 从远程服务器取得LANG配置单，如果缓存则使用本地
     if (local == null || local.toString().isEmpty) {
-      Response networkLang = await Http.request(resolvedUri.path);
+      Response networkLang = await Http.request(
+        resolvedUri.path,
+        httpDioValue: "web_site",
+      );
       if (networkLang.statusCode != null) {
         networkLanguageResult = jsonDecode(networkLang.data);
       }

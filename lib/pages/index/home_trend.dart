@@ -7,7 +7,6 @@ import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../provider/userinfo_provider.dart';
 import '../../utils/http.dart';
-import '../../widgets/hint_login.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class HomeTrendPage extends StatefulWidget {
@@ -19,6 +18,7 @@ class HomeTrendPage extends StatefulWidget {
 
 class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveClientMixin {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
   // 列表视图控制器
   final ScrollController _scrollController = ScrollController();
@@ -26,7 +26,7 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
   TrendStatus trendStatus = TrendStatus(
     load: false,
     parame: TrendStatusParame(
-      limit: 20,
+      limit: 10,
       time: TrendStatusParameTime.yearly,
     ),
   );
@@ -68,7 +68,7 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
 
     if (result.data["success"] == 1) {
       setState(() {
-        trendStatus.list = result.data["data"];
+        trendStatus.clear().list = result.data["data"];
         trendStatus.load = false;
       });
       return;
@@ -85,6 +85,9 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
     trendStatus.parame.resetPage();
 
     await getTrendList();
+
+    _refreshKey.currentState?.controller.finishRefresh();
+    _refreshKey.currentState?.controller.resetFooter();
   }
 
   /// [Event]
@@ -101,33 +104,31 @@ class HomeTrendPageState extends State<HomeTrendPage> with AutomaticKeepAliveCli
     super.build(context);
     return Consumer<UserInfoProvider>(
       builder: (context, data, child) {
-        return data.userinfo.isEmpty
-            ? const HintLoginWidget()
-            : Refresh(
-                key: _refreshIndicatorKey,
-                onRefresh: _onRefresh,
-                child: MediaQuery.removePadding(
-                  context: context,
-                  removeTop: true,
-                  removeBottom: true,
-                  child: Scrollbar(
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      itemCount: trendStatus.list.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (trendStatus.list.isEmpty) {
-                          return const EmptyWidget();
-                        }
+        return Refresh(
+          key: _refreshKey,
+          onRefresh: _onRefresh,
+          child: MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            removeBottom: true,
+            child: Scrollbar(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: trendStatus.list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  if (trendStatus.list.isEmpty) {
+                    return const EmptyWidget();
+                  }
 
-                        return CheatListCard(
-                          item: trendStatus.list[index].toMap,
-                          isIconHotView: true,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              );
+                  return CheatListCard(
+                    item: trendStatus.list[index].toMap,
+                    isIconHotView: true,
+                  );
+                },
+              ),
+            ),
+          ),
+        );
       },
     );
   }

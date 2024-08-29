@@ -1,5 +1,5 @@
 /// 全局状态管理
-import 'dart:convert';
+import 'dart:convert' show jsonEncode;
 
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
@@ -37,8 +37,9 @@ class AppInfoNetwrokStatus with ChangeNotifier {
 
   Future init(context) async {
     await getConnectivityResult();
-    _connectivity.onConnectivityChanged.listen((ConnectivityResult result) {
-      _connectivityResult = result;
+    _connectivity.onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      if (result.isEmpty) return;
+      _connectivityResult = result.first;
       if (!isNetwork) eventUtil.emit("not-network");
       notifyListeners();
     });
@@ -63,11 +64,11 @@ class AppInfoNetwrokStatus with ChangeNotifier {
   /// ConnectivityResult.none
   /// 获取连接的网络类型
   Future<ConnectivityResult> getConnectivityResult() async {
-    ConnectivityResult connectivityResult = await (_connectivity.checkConnectivity());
-    _connectivityResult = connectivityResult;
+    final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+    _connectivityResult = connectivityResult.first;
     if (!isNetwork) eventUtil.emit("not-network");
     notifyListeners();
-    return connectivityResult;
+    return connectivityResult.first;
   }
 }
 
@@ -188,11 +189,10 @@ class AppUniLinks with ChangeNotifier {
 
   Future init(BuildContext context) async {
     appLinksContext = context;
-
-    final uri = await _appLinks.getInitialAppLink();
+    final uri = await _appLinks.getInitialLink();
     if (uri != null) _onUnlLink(uri);
 
-    _appLinks.allUriLinkStream.listen((Uri uri) {
+    _appLinks.uriLinkStream.listen((Uri uri) {
       _onUnlLink(uri);
     });
 
