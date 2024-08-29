@@ -391,7 +391,7 @@ class _ReportPageState extends State<ReportPage> {
                     }).toList(),
                     child: EluiCellComponent(
                       title: FlutterI18n.translate(context, "report.labels.game"),
-                      theme: EluiCellTheme(backgroundColor: Colors.transparent, labelColor: Theme.of(context).textTheme.subtitle2!.color),
+                      theme: EluiCellTheme(backgroundColor: Colors.transparent, labelColor: Theme.of(context).textTheme.labelLarge!.color),
                       cont: Wrap(
                         runAlignment: WrapAlignment.center,
                         alignment: WrapAlignment.center,

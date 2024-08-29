@@ -138,7 +138,7 @@ class _ChatPageState extends State<ChatListPage> {
                           subtitle: TimeWidget(
                             data: i["createTime"],
                             style: TextStyle(
-                              color: Theme.of(context).textTheme.subtitle2!.color,
+                              color: Theme.of(context).textTheme.labelLarge!.color,
                             ),
                           ),
                           trailing: PopupMenuButton(

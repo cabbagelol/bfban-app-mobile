@@ -50,7 +50,7 @@ class _GuideLoginPageState extends State<GuideLoginPage> {
                     Text(
                       FlutterI18n.translate(context, "app.guide.login.${data.isLogin ? 'welcomeBack' : 'label'}"),
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle2!.color,
+                        color: Theme.of(context).textTheme.labelLarge!.color,
                       ),
                       textAlign: TextAlign.center,
                     ),

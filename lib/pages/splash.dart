@@ -234,7 +234,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                       FlutterI18n.translate(context, loadTip.toString()),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.subtitle2!.color,
+                        color: Theme.of(context).textTheme.labelLarge!.color,
                       ),
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,

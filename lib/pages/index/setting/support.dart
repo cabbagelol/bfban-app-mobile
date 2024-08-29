@@ -56,7 +56,7 @@ class _SupportPageState extends State<SupportPage> {
             title: FlutterI18n.translate(context, "app.setting.support.guide"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.titleMedium?.color,
-              labelColor: Theme.of(context).textTheme.subtitle2?.color,
+              labelColor: Theme.of(context).textTheme.labelLarge?.color,
               linkColor: Theme.of(context).textTheme.titleMedium?.color,
               backgroundColor: Theme.of(context).cardTheme.color,
             ),
@@ -69,7 +69,7 @@ class _SupportPageState extends State<SupportPage> {
             label: FlutterI18n.translate(context, "app.setting.support.githubDescription"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.titleMedium?.color,
-              labelColor: Theme.of(context).textTheme.subtitle2?.color,
+              labelColor: Theme.of(context).textTheme.labelLarge?.color,
               linkColor: Theme.of(context).textTheme.titleMedium?.color,
               backgroundColor: Theme.of(context).cardTheme.color,
             ),
