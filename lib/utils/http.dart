@@ -55,26 +55,12 @@ class Http extends ScaffoldState {
     method = GET,
     Map<String, dynamic>? headers,
   }) async {
-    Response result = Response(
-        data: {},
-        requestOptions: RequestOptions(
-          path: '/',
-          validateStatus: (_) => true,
-        ));
+    Response result = Response(data: {}, requestOptions: RequestOptions(path: '/', validateStatus: (_) => true));
     headers = headers ?? {};
 
     if (headers.isNotEmpty && Http.USERAGENT.isNotEmpty) {
       headers.addAll({HttpHeaders.userAgentHeader: Http.USERAGENT});
     }
-
-    /// restful 请求处理
-    // if (data is Map && data.isNotEmpty) {
-    //   data.forEach((key, value) {
-    //     if (url.contains(key)) {
-    //       url = url.replaceAll(':$key', value.toString());
-    //     }
-    //   });
-    // }
 
     String domain = "";
     switch (httpDioType) {
