@@ -82,10 +82,6 @@ class RichEditCoreState extends State<RichEditCore> {
         ],
       ),
     ];
-
-    Future.delayed(const Duration(seconds: 1)).then((value) {
-      controller.setFocus();
-    });
     super.didChangeDependencies();
   }
 

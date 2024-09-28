@@ -35,9 +35,9 @@ class GreenTheme extends AppBaseThemeItem {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0),
-          foregroundColor: MaterialStateProperty.all(Colors.green.shade300),
-          textStyle: MaterialStateProperty.all(
+          elevation: WidgetStateProperty.all(0),
+          foregroundColor: WidgetStateProperty.all(Colors.green.shade300),
+          textStyle: WidgetStateProperty.all(
             TextStyle(color: Colors.green.shade300),
           ),
         ),
@@ -63,8 +63,8 @@ class GreenTheme extends AppBaseThemeItem {
         bodySmall: TextStyle(color: Color(0xFF072F07)),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(Colors.green.shade300.withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(Colors.green.shade300),
+        trackColor: WidgetStateProperty.all(Colors.green.shade300.withOpacity(.2)),
+        thumbColor: WidgetStateProperty.all(Colors.green.shade300),
       ),
       textSelectionTheme: TextSelectionThemeData(
         selectionColor: Colors.green.shade300.withOpacity(.1),
@@ -96,7 +96,7 @@ class GreenTheme extends AppBaseThemeItem {
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       scrollbarTheme: const ScrollbarThemeData(
-        thumbColor: MaterialStatePropertyAll(Colors.green),
+        thumbColor: WidgetStatePropertyAll(Colors.green),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.green,
@@ -144,21 +144,21 @@ class GreenTheme extends AppBaseThemeItem {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(
+          textStyle: WidgetStateProperty.all(
             TextStyle(
               color: Colors.green.shade300,
             ),
           ),
-          elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(Colors.green.shade300),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
+          elevation: WidgetStateProperty.all(0.2),
+          backgroundColor: WidgetStateProperty.all(Colors.green.shade300),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
-          shadowColor: MaterialStateProperty.all(Colors.transparent),
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-          mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+          shadowColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          mouseCursor: WidgetStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
               side: const BorderSide(
@@ -176,9 +176,6 @@ class GreenTheme extends AppBaseThemeItem {
       buttonTheme: ButtonThemeData(
         buttonColor: Colors.green.shade300,
         disabledColor: Colors.green.shade300.withOpacity(.2),
-      ),
-      buttonBarTheme: const ButtonBarThemeData(
-        layoutBehavior: ButtonBarLayoutBehavior.constrained,
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.green.shade50,
@@ -217,7 +214,7 @@ class GreenTheme extends AppBaseThemeItem {
         unselectedLabelColor: Colors.green.shade100,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
         labelColor: Colors.white,
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         indicator: const UnderlineTabIndicator(
@@ -248,13 +245,13 @@ class GreenTheme extends AppBaseThemeItem {
         ),
       ),
       radioTheme: RadioThemeData(
-        mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
-        overlayColor: MaterialStateProperty.all(Colors.green.withOpacity(.7)),
-        fillColor: MaterialStateProperty.all(Colors.green),
+        mouseCursor: WidgetStateProperty.all(MouseCursor.uncontrolled),
+        overlayColor: WidgetStateProperty.all(Colors.green.withOpacity(.7)),
+        fillColor: WidgetStateProperty.all(Colors.green),
       ),
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all(Colors.white),
-        fillColor: MaterialStateProperty.all(Colors.green.shade300),
+        checkColor: WidgetStateProperty.all(Colors.white),
+        fillColor: WidgetStateProperty.all(Colors.green.shade300),
         side: const BorderSide(
           color: Colors.black12,
           width: 3,
@@ -285,11 +282,8 @@ class GreenTheme extends AppBaseThemeItem {
         error: Colors.redAccent,
         onError: Colors.redAccent,
         errorContainer: Colors.white,
-        background: Colors.white,
-        onBackground: Colors.white,
         surface: Colors.white,
         onSurface: Colors.white,
-        // background: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Color(0xFFFFFDFD),

@@ -34,9 +34,9 @@ class PinkTheme extends AppBaseThemeItem {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0),
-          foregroundColor: MaterialStateProperty.all(Colors.pink.shade300),
-          textStyle: MaterialStateProperty.all(
+          elevation: WidgetStateProperty.all(0),
+          foregroundColor: WidgetStateProperty.all(Colors.pink.shade300),
+          textStyle: WidgetStateProperty.all(
             TextStyle(color: Colors.pink.shade300),
           ),
         ),
@@ -62,8 +62,8 @@ class PinkTheme extends AppBaseThemeItem {
         bodySmall: TextStyle(color: Color(0xFF2C1A2C)),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(Colors.pink.shade300.withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(Colors.pink.shade300),
+        trackColor: WidgetStateProperty.all(Colors.pink.shade300.withOpacity(.2)),
+        thumbColor: WidgetStateProperty.all(Colors.pink.shade300),
       ),
       textSelectionTheme: TextSelectionThemeData(
         selectionColor: Colors.pink.shade300.withOpacity(.1),
@@ -95,7 +95,7 @@ class PinkTheme extends AppBaseThemeItem {
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       scrollbarTheme: const ScrollbarThemeData(
-        thumbColor: MaterialStatePropertyAll(Colors.pink),
+        thumbColor: WidgetStatePropertyAll(Colors.pink),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.pink,
@@ -119,7 +119,7 @@ class PinkTheme extends AppBaseThemeItem {
         textStyle: const TextStyle(
           color: Colors.black,
         ),
-        labelTextStyle: MaterialStateProperty.all(TextStyle(color: Colors.pinkAccent.shade100)),
+        labelTextStyle: WidgetStateProperty.all(TextStyle(color: Colors.pinkAccent.shade100)),
         elevation: 2,
       ),
       listTileTheme: const ListTileThemeData(
@@ -135,25 +135,25 @@ class PinkTheme extends AppBaseThemeItem {
         color: Colors.pink.withOpacity(.2),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.white)),
+        style: ButtonStyle(foregroundColor: WidgetStateProperty.all(Colors.white)),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(
+          textStyle: WidgetStateProperty.all(
             TextStyle(
               color: Colors.pink.shade300,
             ),
           ),
-          elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(Colors.pink.shade300),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
+          elevation: WidgetStateProperty.all(0.2),
+          backgroundColor: WidgetStateProperty.all(Colors.pink.shade300),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
-          shadowColor: MaterialStateProperty.all(Colors.transparent),
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-          mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+          shadowColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          mouseCursor: WidgetStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
               side: const BorderSide(
@@ -171,9 +171,6 @@ class PinkTheme extends AppBaseThemeItem {
       buttonTheme: ButtonThemeData(
         buttonColor: Colors.pink.shade300,
         disabledColor: Colors.pink.shade300.withOpacity(.2),
-      ),
-      buttonBarTheme: const ButtonBarThemeData(
-        layoutBehavior: ButtonBarLayoutBehavior.constrained,
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.pink.shade50,
@@ -212,7 +209,7 @@ class PinkTheme extends AppBaseThemeItem {
         unselectedLabelColor: Colors.pink.shade100,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
         labelColor: Colors.white,
         indicator: const UnderlineTabIndicator(
           borderSide: BorderSide(
@@ -242,20 +239,20 @@ class PinkTheme extends AppBaseThemeItem {
         ),
       ),
       radioTheme: RadioThemeData(
-        mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
-        overlayColor: MaterialStateProperty.all(Colors.pink.withOpacity(.7)),
-        fillColor: MaterialStateProperty.all(Colors.pink),
+        mouseCursor: WidgetStateProperty.all(MouseCursor.uncontrolled),
+        overlayColor: WidgetStateProperty.all(Colors.pink.withOpacity(.7)),
+        fillColor: WidgetStateProperty.all(Colors.pink),
       ),
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all(Colors.white),
-        fillColor: MaterialStateProperty.all(Colors.pink.shade300),
+        checkColor: WidgetStateProperty.all(Colors.white),
+        fillColor: WidgetStateProperty.all(Colors.pink.shade300),
         side: const BorderSide(
           color: Colors.black12,
           width: 3,
         ),
       ),
       chipTheme: ChipThemeData(
-        color: MaterialStateProperty.all(Colors.black12),
+        color: WidgetStateProperty.all(Colors.black12),
         selectedColor: Colors.yellow,
         secondarySelectedColor: Colors.white,
         secondaryLabelStyle: TextStyle(
@@ -280,11 +277,8 @@ class PinkTheme extends AppBaseThemeItem {
         error: const Color(0xffd00649),
         onError: const Color(0xffd00649),
         errorContainer: Colors.white,
-        background: Colors.white70,
-        onBackground: Colors.white70,
         surface: Colors.white,
         onSurface: Colors.white,
-        // background: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Color(0xFFFFFDFD),

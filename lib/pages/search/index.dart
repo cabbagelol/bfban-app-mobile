@@ -329,7 +329,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           actions: [
             IconButton(
               padding: const EdgeInsets.all(16),
-              style: ButtonStyle(shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))), backgroundColor: MaterialStateProperty.all(Theme.of(context).appBarTheme.backgroundColor)),
+              style: ButtonStyle(shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(50))), backgroundColor: WidgetStateProperty.all(Theme.of(context).appBarTheme.backgroundColor)),
               highlightColor: searchStatus.load ? Colors.transparent : Theme.of(context).highlightColor,
               onPressed: () => _onSearch(),
               icon: AnimatedSwitcher(

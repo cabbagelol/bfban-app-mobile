@@ -115,7 +115,6 @@ class _ChatPageState extends State<ChatListPage> {
                         Map i = data.list.where((element) => element["byUserId"] != selfInfo!["userId"]).toList()[index];
 
                         return ListTile(
-                          horizontalTitleGap: 10,
                           title: Wrap(
                             children: [
                               Text(
@@ -123,7 +122,7 @@ class _ChatPageState extends State<ChatListPage> {
                                 softWrap: true,
                                 textAlign: TextAlign.left,
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                                maxLines: 3,
                                 style: const TextStyle(
                                   fontSize: 14,
                                 ),
@@ -142,6 +141,7 @@ class _ChatPageState extends State<ChatListPage> {
                             ),
                           ),
                           trailing: PopupMenuButton(
+                            iconColor: Theme.of(context).iconTheme.color,
                             onSelected: (index) {
                               switch (index) {
                                 case 1:

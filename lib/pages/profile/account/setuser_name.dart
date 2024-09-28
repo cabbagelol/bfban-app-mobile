@@ -91,7 +91,7 @@ class _setuserNamePageState extends State<UserSetUserNamePage> {
           ),
           body: Stepper(
             currentStep: stepIndex,
-            connectorColor: MaterialStateProperty.all(Theme.of(context).cardTheme.color!),
+            connectorColor: WidgetStateProperty.all(Theme.of(context).cardTheme.color!),
             controlsBuilder: (BuildContext context, ControlsDetails controlsDetails) {
               return Container(
                 margin: const EdgeInsets.only(top: 10),

@@ -37,21 +37,21 @@ class BlueDarkTheme extends AppBaseThemeItem {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white)),
+          textStyle: WidgetStateProperty.all(const TextStyle(color: Colors.white)),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(const Color(0x7a364e80)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          textStyle: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(const Color(0x7a364e80)),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          textStyle: WidgetStateProperty.all(
             const TextStyle(color: Colors.white),
           ),
-          side: MaterialStateProperty.all(const BorderSide(
+          side: WidgetStateProperty.all(const BorderSide(
             color: Colors.white12,
             width: 1,
           )),
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
               side: const BorderSide(
@@ -82,8 +82,8 @@ class BlueDarkTheme extends AppBaseThemeItem {
         bodySmall: TextStyle(color: Colors.white),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(Colors.yellow),
+        trackColor: WidgetStateProperty.all(Colors.yellow.withOpacity(.2)),
+        thumbColor: WidgetStateProperty.all(Colors.yellow),
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
         textStyle: const TextStyle(
@@ -91,9 +91,9 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
         inputDecorationTheme: const InputDecorationTheme(),
         menuStyle: MenuStyle(
-          elevation: MaterialStateProperty.all(2),
-          backgroundColor: MaterialStateProperty.all(Colors.black),
-          surfaceTintColor: MaterialStateProperty.all(Colors.white),
+          elevation: WidgetStateProperty.all(2),
+          backgroundColor: WidgetStateProperty.all(Colors.black),
+          surfaceTintColor: WidgetStateProperty.all(Colors.white),
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
@@ -123,7 +123,12 @@ class BlueDarkTheme extends AppBaseThemeItem {
         splashColor: Colors.black38,
         borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
-      scrollbarTheme: const ScrollbarThemeData(thumbColor: MaterialStatePropertyAll(Color(0xff2e426b)), radius: Radius.circular(3)),
+      scrollbarTheme: const ScrollbarThemeData(
+        thumbColor: WidgetStatePropertyAll(Color(0xff2e426b)),
+        trackColor: WidgetStatePropertyAll(Color(0xff2e426b)),
+        trackBorderColor: WidgetStatePropertyAll(Color(0xff2e426b)),
+        radius: Radius.circular(3),
+      ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: Colors.white,
         circularTrackColor: Colors.transparent,
@@ -146,7 +151,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         textStyle: const TextStyle(
           color: Colors.white,
         ),
-        labelTextStyle: MaterialStateProperty.all(const TextStyle(color: Colors.white70)),
+        labelTextStyle: WidgetStateProperty.all(const TextStyle(color: Colors.white70)),
         elevation: 2,
       ),
       listTileTheme: const ListTileThemeData(
@@ -163,16 +168,16 @@ class BlueDarkTheme extends AppBaseThemeItem {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(const Color(0xff1c3762)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
+          elevation: WidgetStateProperty.all(0),
+          backgroundColor: WidgetStateProperty.all(const Color(0xff1c3762)),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
-          shadowColor: MaterialStateProperty.all(Colors.black),
-          overlayColor: MaterialStateProperty.all(const Color(0xff09121e)),
-          mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+          shadowColor: WidgetStateProperty.all(Colors.black),
+          overlayColor: WidgetStateProperty.all(const Color(0xff09121e)),
+          mouseCursor: WidgetStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
               side: const BorderSide(
@@ -191,21 +196,21 @@ class BlueDarkTheme extends AppBaseThemeItem {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(
+          textStyle: WidgetStateProperty.all(
             const TextStyle(
               color: Colors.white,
             ),
           ),
-          elevation: MaterialStateProperty.all(0),
-          backgroundColor: MaterialStateProperty.all(const Color(0xff1a2a44)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
+          elevation: WidgetStateProperty.all(0),
+          backgroundColor: WidgetStateProperty.all(const Color(0xff1a2a44)),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
-          shadowColor: MaterialStateProperty.all(Colors.black),
-          overlayColor: MaterialStateProperty.all(const Color(0xff09121e)),
-          mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+          shadowColor: WidgetStateProperty.all(Colors.black),
+          overlayColor: WidgetStateProperty.all(const Color(0xff09121e)),
+          mouseCursor: WidgetStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
               side: const BorderSide(
@@ -230,9 +235,6 @@ class BlueDarkTheme extends AppBaseThemeItem {
             width: 1,
           ),
         ),
-      ),
-      buttonBarTheme: const ButtonBarThemeData(
-        layoutBehavior: ButtonBarLayoutBehavior.constrained,
       ),
       navigationBarTheme: const NavigationBarThemeData(
         backgroundColor: Colors.black,
@@ -274,7 +276,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         unselectedLabelColor: Colors.white38,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
         indicatorSize: TabBarIndicatorSize.tab,
         labelColor: Colors.yellow,
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -290,7 +292,10 @@ class BlueDarkTheme extends AppBaseThemeItem {
         focusColor: Color(0xff364e80),
       ),
       iconButtonTheme: IconButtonThemeData(
-        style: ButtonStyle(overlayColor: MaterialStateProperty.all(Colors.transparent), iconColor: const MaterialStatePropertyAll(Colors.white)),
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          iconColor: const WidgetStatePropertyAll(Colors.white),
+        ),
       ),
       iconTheme: const IconThemeData(
         color: Colors.white,
@@ -309,9 +314,9 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       radioTheme: RadioThemeData(
-        mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
-        overlayColor: MaterialStateProperty.all(Colors.yellow.withOpacity(.7)),
-        fillColor: MaterialStateProperty.all(Colors.yellow),
+        mouseCursor: WidgetStateProperty.all(MouseCursor.uncontrolled),
+        overlayColor: WidgetStateProperty.all(Colors.yellow.withOpacity(.7)),
+        fillColor: WidgetStateProperty.all(Colors.yellow),
       ),
       primaryTextTheme: const TextTheme(
         displayLarge: TextStyle(color: Colors.white),
@@ -322,8 +327,8 @@ class BlueDarkTheme extends AppBaseThemeItem {
         titleLarge: TextStyle(color: Colors.white12),
       ),
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all(Colors.white),
-        fillColor: MaterialStateProperty.all(const Color(0xff364e80)),
+        checkColor: WidgetStateProperty.all(Colors.white),
+        fillColor: WidgetStateProperty.all(const Color(0xff364e80)),
         side: const BorderSide(
           color: Colors.white12,
           width: 3,
@@ -344,7 +349,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
           color: Colors.black,
         ),
       ),
-      colorScheme: const ColorScheme(
+      colorScheme: ColorScheme(
         outline: Colors.white10,
         brightness: Brightness.dark,
         primary: Color(0xff364e80),
@@ -355,10 +360,8 @@ class BlueDarkTheme extends AppBaseThemeItem {
         error: Colors.redAccent,
         onError: Colors.redAccent,
         errorContainer: Colors.white,
-        background: Color(0xff111b2b),
-        onBackground: Color(0xff111b2b),
-        surface: Colors.black,
-        onSurface: Colors.black,
+        surface: Color(0xff0a101a),
+        onSurface: Color(0xff0a101a),
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Colors.black,

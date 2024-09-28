@@ -16,7 +16,7 @@ dependencies:
   # 时间选择器 https://pub.dev/packages/syncfusion_flutter_datepicker
   # 临时保留23.2.4版本，后版存在问题
   # https://github.com/syncfusion/flutter-widgets/issues/1547
-  syncfusion_flutter_datepicker: ^26.2.11
+  syncfusion_flutter_datepicker: ^27.1.50
 
   # 请求模块 https://pub.dev/packages/dio
   dio: ^5.0.0
@@ -116,7 +116,7 @@ dev_dependencies:
     sdk: flutter
 
   logger: ^2.4.0
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
   # 启动屏幕 https://pub.flutter-io.cn/packages/flutter_native_splash
   flutter_native_splash: ^2.2.10+1

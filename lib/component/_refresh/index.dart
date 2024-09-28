@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class Refresh extends StatefulWidget {
-  final FutureOr Function()? onRefresh;
-  final FutureOr Function()? onLoad;
+  final FutureOr<dynamic> Function()? onRefresh;
+  final FutureOr<dynamic> Function()? onLoad;
   final double edgeOffset;
   final double triggerOffset;
   final Widget child;

@@ -254,7 +254,7 @@ class _InsertSelectState extends State<InsertSelect> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                  style: ButtonStyle(padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
+                  style: ButtonStyle(padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
                   onPressed: () => _onUploadFile(),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -293,7 +293,7 @@ class _InsertSelectState extends State<InsertSelect> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                  style: ButtonStyle(padding: MaterialStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
+                  style: ButtonStyle(padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
                   onPressed: () => _onMediaPage(),
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,

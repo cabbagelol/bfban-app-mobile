@@ -311,14 +311,14 @@ class DestockItemData {
     List envAndAppName = a[0].split(".");
     String key = a[1];
 
-    this.fullName = value;
-    this.env = envAndAppName[1];
-    this.appName = envAndAppName[0];
+    fullName = value;
+    env = envAndAppName[1];
+    appName = envAndAppName[0];
     this.key = key.replaceAll(".", " ").toUpperCase();
   }
 
   setValue(dynamic value) {
     this.value = value;
-    this.byes = _fileManagement.onUnitConversion(this.value.toString().length);
+    byes = _fileManagement.onUnitConversion(this.value.toString().length);
   }
 }

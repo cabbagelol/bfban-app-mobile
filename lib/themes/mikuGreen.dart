@@ -47,9 +47,9 @@ class MikuGreenTheme extends AppBaseThemeItem {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: ButtonStyle(
-          elevation: MaterialStateProperty.all(0),
-          foregroundColor: MaterialStateProperty.all(color),
-          textStyle: MaterialStateProperty.all(
+          elevation: WidgetStateProperty.all(0),
+          foregroundColor: WidgetStateProperty.all(color),
+          textStyle: WidgetStateProperty.all(
             TextStyle(color: color),
           ),
         ),
@@ -75,8 +75,8 @@ class MikuGreenTheme extends AppBaseThemeItem {
         bodySmall: TextStyle(color: color800),
       ),
       switchTheme: const SwitchThemeData().copyWith(
-        trackColor: MaterialStateProperty.all(color.withOpacity(.2)),
-        thumbColor: MaterialStateProperty.all(color),
+        trackColor: WidgetStateProperty.all(color.withOpacity(.2)),
+        thumbColor: WidgetStateProperty.all(color),
       ),
       textSelectionTheme: TextSelectionThemeData(
         selectionColor: color300.withOpacity(.5),
@@ -108,7 +108,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       scrollbarTheme: ScrollbarThemeData(
-        thumbColor: MaterialStatePropertyAll(color),
+        thumbColor: WidgetStatePropertyAll(color),
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: color,
@@ -132,7 +132,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         textStyle: const TextStyle(
           color: Colors.black,
         ),
-        labelTextStyle: MaterialStateProperty.all(const TextStyle(color: Colors.black54)),
+        labelTextStyle: WidgetStateProperty.all(const TextStyle(color: Colors.black54)),
         elevation: 2,
       ),
       listTileTheme: const ListTileThemeData(
@@ -159,21 +159,21 @@ class MikuGreenTheme extends AppBaseThemeItem {
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
-          textStyle: MaterialStateProperty.all(
+          textStyle: WidgetStateProperty.all(
             TextStyle(
               color: color,
             ),
           ),
-          elevation: MaterialStateProperty.all(0.2),
-          backgroundColor: MaterialStateProperty.all(color),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
+          elevation: WidgetStateProperty.all(0.2),
+          backgroundColor: WidgetStateProperty.all(color),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
           visualDensity: VisualDensity.comfortable,
-          shadowColor: MaterialStateProperty.all(Colors.transparent),
-          overlayColor: MaterialStateProperty.all(Colors.transparent),
-          mouseCursor: MaterialStateProperty.all(MouseCursor.defer),
+          shadowColor: WidgetStateProperty.all(Colors.transparent),
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          mouseCursor: WidgetStateProperty.all(MouseCursor.defer),
           enableFeedback: true,
           splashFactory: NoSplash.splashFactory,
-          shape: MaterialStateProperty.all(
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(3),
               side: const BorderSide(
@@ -191,9 +191,6 @@ class MikuGreenTheme extends AppBaseThemeItem {
       buttonTheme: ButtonThemeData(
         buttonColor: color,
         disabledColor: color300.withOpacity(.2),
-      ),
-      buttonBarTheme: const ButtonBarThemeData(
-        layoutBehavior: ButtonBarLayoutBehavior.constrained,
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: color.withOpacity(.4),
@@ -231,9 +228,8 @@ class MikuGreenTheme extends AppBaseThemeItem {
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: color300,
         dividerColor: Colors.transparent,
-        overlayColor: MaterialStateProperty.all(Colors.transparent),
+        overlayColor: WidgetStateProperty.all(Colors.transparent),
         indicatorColor: Colors.transparent,
-        labelColor: color900,
         labelStyle: const TextStyle(fontWeight: FontWeight.bold),
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(
@@ -250,7 +246,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         color: color800,
       ),
       cardTheme: CardTheme(
-        color: color0,
+        color: Colors.white,
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
         elevation: 0,
@@ -263,13 +259,13 @@ class MikuGreenTheme extends AppBaseThemeItem {
         ),
       ),
       radioTheme: RadioThemeData(
-        mouseCursor: MaterialStateProperty.all(MouseCursor.uncontrolled),
-        overlayColor: MaterialStateProperty.all(color.withOpacity(.7)),
-        fillColor: MaterialStateProperty.all(color),
+        mouseCursor: WidgetStateProperty.all(MouseCursor.uncontrolled),
+        overlayColor: WidgetStateProperty.all(color.withOpacity(.7)),
+        fillColor: WidgetStateProperty.all(color),
       ),
       checkboxTheme: CheckboxThemeData(
-        checkColor: MaterialStateProperty.all(Colors.white),
-        fillColor: MaterialStateProperty.all(color),
+        checkColor: WidgetStateProperty.all(Colors.white),
+        fillColor: WidgetStateProperty.all(color),
         side: const BorderSide(
           color: Colors.black12,
           width: 3,
@@ -302,11 +298,8 @@ class MikuGreenTheme extends AppBaseThemeItem {
         error: const Color(0xffFC4952),
         onError: const Color(0xffA4181F),
         errorContainer: Colors.white,
-        background: Colors.white,
-        onBackground: Colors.white,
-        surface: Colors.white,
-        onSurface: Colors.white,
-        // background: Colors.black,
+        surface: color0,
+        onSurface: color0,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Color(0xFFFFFDFD),

@@ -132,9 +132,9 @@ class _HtmlTextTranslatorState extends State<HtmlTextTranslator> {
                             });
                           },
                           style: ButtonStyle(
-                            padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 2, vertical: 1)),
+                            padding: WidgetStateProperty.all(const EdgeInsets.symmetric(horizontal: 2, vertical: 1)),
                             //设置按钮的大小
-                            minimumSize: MaterialStateProperty.all(const Size(2, 2)),
+                            minimumSize: WidgetStateProperty.all(const Size(2, 2)),
                           ),
                           child: load
                               ? Container(

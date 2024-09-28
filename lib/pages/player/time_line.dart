@@ -189,7 +189,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
 
   /// [Event]
   /// 下拉加载
-  Future<void> _getMore() async {
+  _getMore() async {
     playerTimelineStatus.parame.nextPage(count: playerTimelineStatus.parame.limit!);
     await getTimeline();
   }

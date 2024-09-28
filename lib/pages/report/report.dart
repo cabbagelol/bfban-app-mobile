@@ -341,6 +341,9 @@ class _ReportPageState extends State<ReportPage> {
                             field.setState(() {
                               field.setValue(value);
                             });
+                            setState(() {
+                              reportStatus.param!.originName = data["value"];
+                            });
                           },
                         )..setValue = reportStatus.param!.originName!,
                         const Divider(height: 1),
@@ -357,7 +360,6 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 );
               },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               initialValue: reportStatus.param!.originName,
               onSaved: (value) {
                 _changeReportUserInput(value as String);
@@ -381,6 +383,9 @@ class _ReportPageState extends State<ReportPage> {
                     onSelected: (value) {
                       field.setState(() {
                         field.setValue(value);
+                      });
+                      setState(() {
+                        reportStatus.param!.game = value as String;
                       });
                     },
                     itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
@@ -453,7 +458,6 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 );
               },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               initialValue: reportStatus.param!.game,
               onSaved: (value) {
                 setState(() {
@@ -503,6 +507,10 @@ class _ReportPageState extends State<ReportPage> {
 
                                   field.setValue(reportInfoCheatMethods);
                                 });
+
+                                setState(() {
+                                  reportStatus.param!.cheatMethods = reportInfoCheatMethods as List?;
+                                });
                               },
                             );
                           }).toList(),
@@ -512,7 +520,6 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 );
               },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               initialValue: reportStatus.param!.cheatMethods,
               onSaved: (value) {
                 setState(() {
@@ -563,7 +570,7 @@ class _ReportPageState extends State<ReportPage> {
                         Text(FlutterI18n.translate(context, "app.report.overflowLength")),
                         TextButton(
                           onPressed: () => _addOverflowVideoLinkDescriptionBox(),
-                          style: ButtonStyle(padding: MaterialStateProperty.all(const EdgeInsets.all(0)), textStyle: MaterialStateProperty.all(const TextStyle(fontSize: 12)), visualDensity: const VisualDensity(vertical: -3, horizontal: 2)),
+                          style: ButtonStyle(padding: WidgetStateProperty.all(const EdgeInsets.all(0)), textStyle: WidgetStateProperty.all(const TextStyle(fontSize: 12)), visualDensity: const VisualDensity(vertical: -3, horizontal: 2)),
                           child: Text(FlutterI18n.translate(context, "app.report.overflowLengthButton")),
                         ),
                       ],
@@ -686,7 +693,6 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 );
               },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               initialValue: reportStatus.param!.description,
               onSaved: (value) {
                 setState(() {
@@ -724,6 +730,9 @@ class _ReportPageState extends State<ReportPage> {
                         field.setState(() {
                           field.setValue(data["value"]);
                         });
+                        setState(() {
+                          reportStatus.param!.value = data["value"];
+                        });
                       },
                       right: CaptchaWidget(
                         onChange: (Captcha captcha) => reportStatus.param!.setCaptcha(captcha),
@@ -734,11 +743,14 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 );
               },
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               initialValue: reportStatus.param!.value,
               onSaved: (value) {
+                if ((value as String).isEmpty) {
+                  return;
+                }
+
                 setState(() {
-                  reportStatus.param!.value = value as String;
+                  reportStatus.param!.value = value;
                 });
               },
               validator: (value) {
