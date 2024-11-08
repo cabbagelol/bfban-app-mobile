@@ -338,7 +338,7 @@ class LightnesTheme extends AppBaseThemeItem {
         onError: Colors.red,
         errorContainer: Colors.white,
         surface: Colors.white,
-        onSurface: Colors.white,
+        onSurface: Colors.black,
       ),
     ),
   );

@@ -278,7 +278,7 @@ class PinkTheme extends AppBaseThemeItem {
         onError: const Color(0xffd00649),
         errorContainer: Colors.white,
         surface: Colors.white,
-        onSurface: Colors.white,
+        onSurface: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Color(0xFFFFFDFD),

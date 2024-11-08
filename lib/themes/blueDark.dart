@@ -350,8 +350,8 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       colorScheme: ColorScheme(
-        outline: Colors.white10,
         brightness: Brightness.dark,
+        outline: Colors.white10,
         primary: Color(0xff364e80),
         primaryContainer: Colors.white,
         onPrimary: Color(0xff364e80),
@@ -361,7 +361,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         onError: Colors.redAccent,
         errorContainer: Colors.white,
         surface: Color(0xff0a101a),
-        onSurface: Color(0xff0a101a),
+        onSurface: Colors.white,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Colors.black,

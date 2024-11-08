@@ -10,17 +10,17 @@ class RichEditPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _richEditPageState createState() => _richEditPageState();
+  _RichEditPageState createState() => _RichEditPageState();
 }
 
-class _richEditPageState extends State<RichEditPage> {
+class _RichEditPageState extends State<RichEditPage> {
   final Storage _storage = Storage();
 
   final GlobalKey<RichEditCoreState> _richEditCoreKey = GlobalKey<RichEditCoreState>();
 
   late String data = "";
 
-  bool richeditLoad = true;
+  bool richEditLoading = true;
 
   // 异步
   Future? futureBuilder;
@@ -32,14 +32,14 @@ class _richEditPageState extends State<RichEditPage> {
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
       setState(() {
-        richeditLoad = false;
+        richEditLoading = false;
       });
     });
   }
 
   Future _ready() async {
-    StorageData richeditData = await _storage.get("richedit");
-    data = richeditData.value;
+    StorageData richEditData = await _storage.get("richedit");
+    data = richEditData.value;
     return data;
   }
 

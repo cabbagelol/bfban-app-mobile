@@ -283,7 +283,7 @@ class GreenTheme extends AppBaseThemeItem {
         onError: Colors.redAccent,
         errorContainer: Colors.white,
         surface: Colors.white,
-        onSurface: Colors.white,
+        onSurface: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Color(0xFFFFFDFD),

@@ -299,7 +299,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         onError: const Color(0xffA4181F),
         errorContainer: Colors.white,
         surface: color0,
-        onSurface: color0,
+        onSurface: Colors.black,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Color(0xFFFFFDFD),

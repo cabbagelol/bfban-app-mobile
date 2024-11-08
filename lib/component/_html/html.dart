@@ -106,7 +106,6 @@ class _HtmlCoreState extends State<HtmlCore> {
       data: renderView,
       style: widget.style ?? _detailApi.styleHtml(context),
       extensions: _detailApi.customRenders(),
-      shrinkWrap: true,
     );
   }
 }

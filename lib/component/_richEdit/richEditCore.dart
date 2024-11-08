@@ -29,6 +29,8 @@ class RichEditCoreState extends State<RichEditCore> {
   @override
   void didChangeDependencies() {
     controller = HtmlEditorController(
+      processOutputHtml: true,
+      processNewLineAsBr: true,
       toolbarOptions: HtmlToolbarOptions(
         toolbarPosition: ToolbarPosition.custom,
         toolbarType: ToolbarType.nativeGrid,

@@ -340,7 +340,7 @@ class DarkTheme extends AppBaseThemeItem {
         onError: Colors.red,
         errorContainer: Colors.white,
         surface: Color(0xff111b2b),
-        onSurface: Color(0xff111b2b),
+        onSurface: Colors.white,
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Colors.black,

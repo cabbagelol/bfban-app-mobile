@@ -1,3 +1,4 @@
+import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -152,19 +153,19 @@ class _JudgementPageState extends State<JudgementPage> {
         actions: [
           manageStatus.load!
               ? ElevatedButton(
-                  onPressed: () {},
-                  child: ELuiLoadComponent(
-                    type: "line",
-                    lineWidth: 2,
-                    size: 20,
-                    color: Theme.of(context).progressIndicatorTheme.color!,
-                  ),
-                )
+            onPressed: () {},
+            child: ELuiLoadComponent(
+              type: "line",
+              lineWidth: 2,
+              size: 20,
+              color: Theme.of(context).progressIndicatorTheme.color!,
+            ),
+          )
               : IconButton(
             padding: const EdgeInsets.all(16),
-                  onPressed: () => _onRelease(),
-                  icon: const Icon(Icons.done),
-                ),
+            onPressed: () => _onRelease(),
+            icon: const Icon(Icons.done),
+          ),
         ],
       ),
       body: Consumer<AppInfoProvider>(
@@ -173,6 +174,7 @@ class _JudgementPageState extends State<JudgementPage> {
             key: _judgementFormKey,
             child: ListView(
               children: [
+
                 /// S 处理意见
                 FormField(
                   builder: (FormFieldState field) {
@@ -336,10 +338,10 @@ class _JudgementPageState extends State<JudgementPage> {
                             cont: field.isValid
                                 ? null
                                 : Icon(
-                                    Icons.help,
-                                    color: Theme.of(context).colorScheme.error,
-                                    size: 15,
-                                  ),
+                              Icons.help,
+                              color: Theme.of(context).colorScheme.error,
+                              size: 15,
+                            ),
                           ),
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 15),
