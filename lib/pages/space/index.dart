@@ -259,13 +259,6 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                       },
                     ),
                   ],
-                  title: TabBar(
-                    controller: tabController,
-                    tabs: const [
-                      Tab(child: Icon(Icons.info_outline_rounded)),
-                      Tab(child: Icon(Icons.front_hand)),
-                    ],
-                  ),
                 ),
                 body: DefaultTabController(
                   length: 2,
@@ -322,191 +315,211 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                           )
                         ];
                       },
-                      body: MediaQuery.removePadding(
-                        context: context,
-                        removeTop: true,
-                        child: TabBarView(
-                          controller: tabController,
-                          children: [
-                            /// 1
-                            SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                      body: Column(
+                        children: [
+                          Divider(height: 1),
+                          SizedBox(
+                            height: 60,
+                            child: TabBar(
+                              controller: tabController,
+                              tabs: const [
+                                Tab(child: Icon(Icons.info_outline_rounded)),
+                                Tab(child: Icon(Icons.front_hand)),
+                              ],
+                            ),
+                          ),
+                          Divider(height: 1),
+                          Flexible(
+                            flex: 1,
+                            child: MediaQuery.removePadding(
+                              context: context,
+                              child: TabBarView(
+                                controller: tabController,
                                 children: [
-                                  /// user info
-                                  Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    margin: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Card(
-                                      margin: EdgeInsets.zero,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20),
-                                        child: Wrap(
-                                          spacing: 40,
-                                          runSpacing: 25,
-                                          children: [
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Opacity(
-                                                  opacity: .5,
-                                                  child: Text(
-                                                    FlutterI18n.translate(context, "account.role"),
-                                                    style: const TextStyle(fontSize: 20),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                PrivilegesTagWidget(data: snapshot.data["privilege"]),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Opacity(
-                                                  opacity: .5,
-                                                  child: Text(
-                                                    FlutterI18n.translate(context, "account.joinedAt"),
-                                                    style: const TextStyle(fontSize: 20),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                TimeWidget(
-                                                  data: snapshot.data["joinTime"],
-                                                  style: const TextStyle(fontSize: 18),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Opacity(
-                                                  opacity: .5,
-                                                  child: Text(
-                                                    FlutterI18n.translate(context, "account.lastOnlineTime"),
-                                                    style: const TextStyle(fontSize: 20),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                TimeWidget(
-                                                  data: snapshot.data["lastOnlineTime"],
-                                                  style: const TextStyle(fontSize: 18),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                ),
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Opacity(
-                                                  opacity: .5,
-                                                  child: Text(
-                                                    FlutterI18n.translate(context, "account.reportNum"),
-                                                    style: const TextStyle(fontSize: 20),
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                Text(
-                                                  snapshot.data["reportNum"].toString(),
-                                                  style: const TextStyle(fontSize: 18),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                )
-                                              ],
-                                            ),
-                                            if (snapshot.data["statusNum"] != null)
-                                              Wrap(
+                                  /// 1
+                                  SingleChildScrollView(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(height: 10),
+
+                                        /// user info
+                                        Container(
+                                          width: MediaQuery.of(context).size.width,
+                                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                                          child: Card(
+                                            margin: EdgeInsets.zero,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(20),
+                                              child: Wrap(
                                                 spacing: 40,
                                                 runSpacing: 25,
-                                                children: Map.from(snapshot.data["statusNum"]).entries.map((statusNumItem) {
-                                                  return Column(
+                                                children: [
+                                                  Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: <Widget>[
                                                       Opacity(
                                                         opacity: .5,
                                                         child: Text(
-                                                          FlutterI18n.translate(context, "basic.status.${statusNumItem.key}.text"),
+                                                          FlutterI18n.translate(context, "account.role"),
                                                           style: const TextStyle(fontSize: 20),
                                                         ),
                                                       ),
                                                       const SizedBox(height: 5),
-                                                      Text(
-                                                        snapshot.data["statusNum"][statusNumItem.key].toString(),
+                                                      PrivilegesTagWidget(data: snapshot.data["privilege"]),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Opacity(
+                                                        opacity: .5,
+                                                        child: Text(
+                                                          FlutterI18n.translate(context, "account.joinedAt"),
+                                                          style: const TextStyle(fontSize: 20),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      TimeWidget(
+                                                        data: snapshot.data["joinTime"],
                                                         style: const TextStyle(fontSize: 18),
                                                         overflow: TextOverflow.ellipsis,
                                                         maxLines: 1,
                                                       ),
                                                     ],
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Opacity(
-                                                  opacity: .5,
-                                                  child: Text(
-                                                    FlutterI18n.translate(context, "profile.achievement.title"),
-                                                    style: const TextStyle(fontSize: 20),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 5),
-                                                achievementWidget(
-                                                  data: snapshot.data["attr"]["achievements"],
-                                                )
-                                              ],
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Opacity(
+                                                        opacity: .5,
+                                                        child: Text(
+                                                          FlutterI18n.translate(context, "account.lastOnlineTime"),
+                                                          style: const TextStyle(fontSize: 20),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      TimeWidget(
+                                                        data: snapshot.data["lastOnlineTime"],
+                                                        style: const TextStyle(fontSize: 18),
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: 1,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Opacity(
+                                                        opacity: .5,
+                                                        child: Text(
+                                                          FlutterI18n.translate(context, "account.reportNum"),
+                                                          style: const TextStyle(fontSize: 20),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      Text(
+                                                        snapshot.data["reportNum"].toString(),
+                                                        style: const TextStyle(fontSize: 18),
+                                                        overflow: TextOverflow.ellipsis,
+                                                        maxLines: 1,
+                                                      )
+                                                    ],
+                                                  ),
+                                                  if (snapshot.data["statusNum"] != null)
+                                                    Wrap(
+                                                      spacing: 40,
+                                                      runSpacing: 25,
+                                                      children: Map.from(snapshot.data["statusNum"]).entries.map((statusNumItem) {
+                                                        return Column(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: <Widget>[
+                                                            Opacity(
+                                                              opacity: .5,
+                                                              child: Text(
+                                                                FlutterI18n.translate(context, "basic.status.${statusNumItem.key}.text"),
+                                                                style: const TextStyle(fontSize: 20),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(height: 5),
+                                                            Text(
+                                                              snapshot.data["statusNum"][statusNumItem.key].toString(),
+                                                              style: const TextStyle(fontSize: 18),
+                                                              overflow: TextOverflow.ellipsis,
+                                                              maxLines: 1,
+                                                            ),
+                                                          ],
+                                                        );
+                                                      }).toList(),
+                                                    ),
+                                                  Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Opacity(
+                                                        opacity: .5,
+                                                        child: Text(
+                                                          FlutterI18n.translate(context, "profile.achievement.title"),
+                                                          style: const TextStyle(fontSize: 20),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 5),
+                                                      achievementWidget(
+                                                        data: snapshot.data["attr"]["achievements"],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ],
+                                          ),
                                         ),
+                                        Container(height: 20),
+
+                                        /// introduction
+                                        if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
+                                          Container(
+                                            width: MediaQuery.of(context).size.width,
+                                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                                            child: Text(
+                                              FlutterI18n.translate(context, "profile.space.form.introduction"),
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
+                                          SelectionArea(
+                                            child: HtmlCore(
+                                              data: snapshot.data["attr"]["introduction"],
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  /// 2
+                                  Refresh(
+                                    key: _refreshKey,
+                                    onRefresh: _onRefresh,
+                                    onLoad: _getMore,
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        children: reportListStatus.list.map((ReportListPlayerData item) {
+                                          return CheatListCard(
+                                            item: item.toMap,
+                                            isIconHotView: false,
+                                            isIconCommendView: false,
+                                            isIconView: false,
+                                          );
+                                        }).toList(),
                                       ),
                                     ),
                                   ),
-                                  Container(height: 20),
-
-                                  /// introduction
-                                  if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      margin: const EdgeInsets.symmetric(horizontal: 5),
-                                      child: Text(
-                                        FlutterI18n.translate(context, "profile.space.form.introduction"),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
-                                    SelectionArea(
-                                      child: HtmlCore(
-                                        data: snapshot.data["attr"]["introduction"],
-                                      ),
-                                    ),
                                 ],
                               ),
                             ),
-
-                            /// 2
-                            Refresh(
-                              key: _refreshKey,
-                              onRefresh: _onRefresh,
-                              onLoad: _getMore,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: reportListStatus.list.map((ReportListPlayerData item) {
-                                    return CheatListCard(
-                                      item: item.toMap,
-                                      isIconHotView: false,
-                                      isIconCommendView: false,
-                                      isIconView: false,
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

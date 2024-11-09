@@ -71,9 +71,6 @@ dependencies:
   # 网络状态 https://pub.flutter-io.cn/packages/connectivity_plus
   connectivity_plus: ^6.0.5
 
-  # 本地通知x消息 https://pub.flutter-io.cn/packages/flutter_local_notifications
-  flutter_local_notifications: ^17.2.2
-
   # 相机(扫码 and 拍摄) https://pub.flutter-io.cn/packages/camerawesome
   camerawesome: ^2.1.0
 
