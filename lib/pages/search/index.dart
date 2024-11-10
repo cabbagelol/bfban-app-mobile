@@ -17,6 +17,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_empty/index.dart';
 import '../../widgets/index/search_in_user.dart';
+import '../../widgets/search/filter/index.dart';
 
 class SearchPage extends StatefulWidget {
   final dynamic data;
@@ -175,7 +176,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
     _titleSearchWidgetKey.currentState?.unFocus();
 
     if (searchStatus.load && !isButtonClick) return;
-    if (searchStatus.params.param!.isEmpty || searchStatus.params.param!.length < 3) return;
+    if (searchStatus.params.param.isEmpty || searchStatus.params.param.length < 3) return;
 
     setState(() {
       searchStatus.load = true;
@@ -260,10 +261,10 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           break;
       }
       searchStatus.params.param = item["keyword"];
-      _searchController.text = searchStatus.params.param!;
+      _searchController.text = searchStatus.params.param;
       tabController.index = searchTabsIndex;
     });
-    if (searchStatus.params.param!.isNotEmpty) _onSearch();
+    if (searchStatus.params.param.isNotEmpty) _onSearch();
   }
 
   /// [Event]
@@ -318,6 +319,18 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
               key: _titleSearchWidgetKey,
               controller: _searchController,
               theme: titleSearchTheme.white,
+              laterInterChild: _searchController.text.isNotEmpty
+                  ? SearchFilterPanel(
+                      onChange: (Map value) {
+                        if (value.isEmpty) return;
+
+                        SearchPlayerParams d = searchStatus.params as SearchPlayerParams;
+                        d.gameSort = value["sort"];
+
+                        _onSearch(isButtonClick: false);
+                      },
+                    )
+                  : null,
               onChanged: (String value) {
                 setState(() {
                   searchStatus.params.param = value;

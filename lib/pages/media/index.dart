@@ -23,9 +23,9 @@ class MediaPage extends StatefulWidget {
   bool? isSelectFile;
 
   MediaPage({
-    Key? key,
+    super.key,
     this.isSelectFile = false,
-  }) : super(key: key);
+  });
 
   @override
   State<MediaPage> createState() => _mediaPageState();
@@ -759,16 +759,6 @@ class _mediaPageState extends State<MediaPage> {
                                                                   Text(_fileManagement.onUnitConversion(cloudMediaInfoStatus.data!['totalStorageQuota'])),
                                                                 ],
                                                               ),
-                                                              if (cloudMediaInfoStatus.data!["usedStorageQuota"] != null && cloudMediaInfoStatus.data!["totalStorageQuota"] != null)
-                                                                Container(
-                                                                  margin: const EdgeInsets.only(top: 10),
-                                                                  width: 150,
-                                                                  child: LinearProgressIndicator(
-                                                                    value: cloudMediaInfoStatus.data!["usedStorageQuota"] / cloudMediaInfoStatus.data!["totalStorageQuota"] * 100,
-                                                                    minHeight: 4,
-                                                                    backgroundColor: Theme.of(context).cardTheme.color,
-                                                                  ),
-                                                                )
                                                             ],
                                                           )
                                                         ],
@@ -800,6 +790,7 @@ class _mediaPageState extends State<MediaPage> {
   }
 }
 
+// ignore: must_be_immutable
 class MediaCard extends StatefulWidget {
   dynamic i;
   bool? isSelectFile;

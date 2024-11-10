@@ -46,8 +46,8 @@ class CheatUserCheatersCard extends StatelessWidget {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
-                  decorationThickness: 4,
-                  decorationStyle: TextDecorationStyle.dotted,
+                  decorationThickness: 1,
+                  decorationStyle: TextDecorationStyle.wavy,
                 ),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {

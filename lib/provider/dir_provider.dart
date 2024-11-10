@@ -153,7 +153,7 @@ class DirProvider with ChangeNotifier {
       Directory directory = Directory(i.basicPath + laterPath);
       directory.createSync(recursive: true);
       List files = directory.listSync(recursive: true);
-      fileList.addAll(files ??= []);
+      fileList.addAll(files);
     }
     return fileList;
   }

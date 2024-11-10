@@ -23,7 +23,6 @@ class DarkTheme extends AppBaseThemeItem {
   @override
   get d => data;
 
-  @override
   static dynamic data = AppThemeItem(
     name: "dark",
     isDefault: true,
@@ -35,23 +34,6 @@ class DarkTheme extends AppBaseThemeItem {
       sliderTheme: const SliderThemeData(
         valueIndicatorTextStyle: TextStyle(
           color: Colors.white,
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          foregroundColor: WidgetStateProperty.all(Colors.white),
-          textStyle: WidgetStateProperty.all(
-            const TextStyle(color: Colors.white),
-          ),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
-              side: const BorderSide(
-                color: Colors.white12,
-                width: 1,
-              ),
-            ),
-          ),
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
@@ -108,18 +90,6 @@ class DarkTheme extends AppBaseThemeItem {
         ),
       ),
       highlightColor: Colors.transparent,
-      toggleButtonsTheme: const ToggleButtonsThemeData(
-        color: Color(0xff171414),
-        fillColor: Colors.black38,
-        textStyle: TextStyle(
-          color: Colors.white60,
-        ),
-        focusColor: Colors.white60,
-        selectedColor: Colors.white,
-        selectedBorderColor: Colors.black38,
-        splashColor: Colors.black38,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-      ),
       scrollbarTheme: const ScrollbarThemeData(
         thumbColor: WidgetStatePropertyAll(Color(0xff364e80)),
       ),
@@ -157,6 +127,48 @@ class DarkTheme extends AppBaseThemeItem {
       dividerTheme: const DividerThemeData(
         color: Colors.white12,
       ),
+      dataTableTheme: const DataTableThemeData(
+        horizontalMargin: 10,
+        columnSpacing: 20,
+        headingRowHeight: 40,
+        checkboxHorizontalMargin: 40,
+      ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      bannerTheme: const MaterialBannerThemeData(
+        backgroundColor: Color(0xff364e80),
+      ),
+
+      // 按钮 S
+      buttonTheme: ButtonThemeData(
+        buttonColor: Colors.white,
+        disabledColor: const Color(0xff364e80).withOpacity(.2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3),
+          side: const BorderSide(
+            color: Colors.white12,
+            width: 1,
+          ),
+        ),
+      ),
+      toggleButtonsTheme: const ToggleButtonsThemeData(
+        color: Color(0xff171414),
+        fillColor: Colors.black38,
+        textStyle: TextStyle(
+          color: Colors.white60,
+        ),
+        focusColor: Colors.white60,
+        selectedColor: Colors.white,
+        selectedBorderColor: Colors.black38,
+        splashColor: Colors.black38,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Colors.yellow,
+        focusColor: Color(0xff171718),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           elevation: WidgetStateProperty.all(0),
@@ -179,11 +191,22 @@ class DarkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      dataTableTheme: const DataTableThemeData(
-        horizontalMargin: 10,
-        columnSpacing: 20,
-        headingRowHeight: 40,
-        checkboxHorizontalMargin: 40,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          textStyle: WidgetStateProperty.all(
+            const TextStyle(color: Colors.white),
+          ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -212,21 +235,13 @@ class DarkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      bannerTheme: const MaterialBannerThemeData(
-        backgroundColor: Color(0xff364e80),
-      ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: Colors.white,
-        disabledColor: const Color(0xff364e80).withOpacity(.2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3),
-          side: const BorderSide(
-            color: Colors.white12,
-            width: 1,
-          ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Colors.white),
         ),
       ),
+      // 按钮 E
+
       navigationBarTheme: const NavigationBarThemeData(
         backgroundColor: Colors.black,
       ),
@@ -270,16 +285,6 @@ class DarkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Colors.yellow,
-        focusColor: Color(0xff171718),
-      ),
-      iconButtonTheme: IconButtonThemeData(
-        style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
-      ),
-      // iconTheme: const IconThemeData(
-      //   color: Colors.white,
-      // ),
       cardTheme: CardTheme(
         color: const Color(0xff000000),
         shadowColor: Colors.black54,

@@ -21,7 +21,6 @@ class BlueDarkTheme extends AppBaseThemeItem {
   @override
   get d => data;
 
-  @override
   static dynamic data = AppThemeItem(
     name: "blueDark",
     isDefault: true,
@@ -33,33 +32,6 @@ class BlueDarkTheme extends AppBaseThemeItem {
       sliderTheme: const SliderThemeData(
         valueIndicatorTextStyle: TextStyle(
           color: Colors.white,
-        ),
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: ButtonStyle(
-          textStyle: WidgetStateProperty.all(const TextStyle(color: Colors.white)),
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(const Color(0x7a364e80)),
-          foregroundColor: WidgetStateProperty.all(Colors.white),
-          textStyle: WidgetStateProperty.all(
-            const TextStyle(color: Colors.white),
-          ),
-          side: WidgetStateProperty.all(const BorderSide(
-            color: Colors.white12,
-            width: 1,
-          )),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
-              side: const BorderSide(
-                color: Colors.white12,
-                width: 1,
-              ),
-            ),
-          ),
         ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
@@ -111,18 +83,6 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       highlightColor: Colors.transparent,
-      toggleButtonsTheme: const ToggleButtonsThemeData(
-        color: Color(0xff111b2b),
-        fillColor: Colors.black38,
-        textStyle: TextStyle(
-          color: Colors.white60,
-        ),
-        focusColor: Colors.white60,
-        selectedColor: Colors.white,
-        selectedBorderColor: Colors.black38,
-        splashColor: Colors.black38,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-      ),
       scrollbarTheme: const ScrollbarThemeData(
         thumbColor: WidgetStatePropertyAll(Color(0xff2e426b)),
         trackColor: WidgetStatePropertyAll(Color(0xff2e426b)),
@@ -166,6 +126,51 @@ class BlueDarkTheme extends AppBaseThemeItem {
       dividerTheme: const DividerThemeData(
         color: Colors.white10,
       ),
+      dataTableTheme: const DataTableThemeData(
+        horizontalMargin: 10,
+        columnSpacing: 20,
+        headingRowHeight: 40,
+        checkboxHorizontalMargin: 40,
+      ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      bannerTheme: const MaterialBannerThemeData(
+        backgroundColor: Color(0xff364e80),
+      ),
+
+      // 按钮 S
+      buttonTheme: ButtonThemeData(
+        buttonColor: const Color(0xff364e80),
+        disabledColor: const Color(0xff364e80).withOpacity(.2),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(3),
+          side: const BorderSide(
+            color: Colors.white12,
+            width: 1,
+          ),
+        ),
+      ),
+      toggleButtonsTheme: const ToggleButtonsThemeData(
+        color: Color(0xff111b2b),
+        fillColor: Colors.black38,
+        textStyle: TextStyle(
+          color: Colors.white60,
+        ),
+        focusColor: Colors.white60,
+        selectedColor: Colors.white,
+        selectedBorderColor: Colors.black38,
+        splashColor: Colors.black38,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Colors.yellow,
+        focusColor: Color(0xff364e80),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          iconColor: const WidgetStatePropertyAll(Colors.white),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           elevation: WidgetStateProperty.all(0),
@@ -188,11 +193,27 @@ class BlueDarkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      dataTableTheme: const DataTableThemeData(
-        horizontalMargin: 10,
-        columnSpacing: 20,
-        headingRowHeight: 40,
-        checkboxHorizontalMargin: 40,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(const Color(0x7a364e80)),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          textStyle: WidgetStateProperty.all(
+            const TextStyle(color: Colors.white),
+          ),
+          side: WidgetStateProperty.all(const BorderSide(
+            color: Colors.white12,
+            width: 1,
+          )),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -221,21 +242,13 @@ class BlueDarkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      bannerTheme: const MaterialBannerThemeData(
-        backgroundColor: Color(0xff364e80),
-      ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: const Color(0xff364e80),
-        disabledColor: const Color(0xff364e80).withOpacity(.2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3),
-          side: const BorderSide(
-            color: Colors.white12,
-            width: 1,
-          ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Colors.white),
         ),
       ),
+      // 按钮 E
+
       navigationBarTheme: const NavigationBarThemeData(
         backgroundColor: Colors.black,
       ),
@@ -287,16 +300,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Colors.yellow,
-        focusColor: Color(0xff364e80),
-      ),
-      iconButtonTheme: IconButtonThemeData(
-        style: ButtonStyle(
-          overlayColor: WidgetStateProperty.all(Colors.transparent),
-          iconColor: const WidgetStatePropertyAll(Colors.white),
-        ),
-      ),
+
       iconTheme: const IconThemeData(
         color: Colors.white,
       ),

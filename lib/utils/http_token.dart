@@ -12,9 +12,22 @@ class HttpToken {
     return TOKEN = value;
   }
 
-  HttpToken() {
-    // Token有效
-    Http.dio.interceptors.add(TokenInterceptor());
+  // static checkToken() {
+  //   // Token有效
+  //   Http.dio.interceptors.add(TokenInterceptor());
+  // }
+
+  /// [Event]
+  /// 检查token是否失效
+  static Future<bool> isTokenVain(Response<dynamic> response) async {
+    const errorCode = ['user.tokenClientException', 'user.tokenExpired', 'user.invalid'];
+    if ((response.data as Map).isNotEmpty && errorCode.contains(response.data['code'])) {
+      eventUtil.emit('user-token-expired', response);
+      HttpToken.TOKEN = "";
+      return true;
+    }
+
+    return false;
   }
 
   static Future request(
@@ -63,7 +76,7 @@ class TokenInterceptor extends Interceptor {
   /// 检查token
   static _checkToken(Response<dynamic> response) {
     const errorCode = ['user.tokenClientException', 'user.tokenExpired', 'user.invalid'];
-    if (errorCode.contains(response.data['code'])) {
+    if ((response.data as Map).isNotEmpty && errorCode.contains(response.data['code'])) {
       eventUtil.emit('user-token-expired', response);
       HttpToken.TOKEN = "";
     }

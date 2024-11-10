@@ -124,6 +124,7 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return widget.data!["games"].contains("bfv")
         ? InkWell(
       child: AnimatedContainer(

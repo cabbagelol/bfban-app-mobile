@@ -81,13 +81,13 @@ class _IndexPageState extends State<IndexPage> {
       PlayerListPage(key: playerListPage),
       const UserCenterPage(),
     ];
+    _onUserTokenExpired();
 
     super.initState();
   }
 
   @override
   void deactivate() {
-    _onUserTokenExpired();
     _onNotNetwork();
     super.deactivate();
   }
@@ -411,7 +411,7 @@ class _IndexPageState extends State<IndexPage> {
                       key: _drawerWidget,
                       drawer: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).bottomSheetTheme.backgroundColor,
+                          color: Color.alphaBlend(Theme.of(context).bottomAppBarTheme.color!, Theme.of(context).bottomSheetTheme.backgroundColor!),
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(20),
                             topRight: Radius.circular(20),

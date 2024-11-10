@@ -18,9 +18,9 @@ class PinkTheme extends AppBaseThemeItem {
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
+  @override
   get d => data;
 
-  @override
   static dynamic data = AppThemeItem(
     name: "pink",
     isDefault: false,
@@ -31,15 +31,6 @@ class PinkTheme extends AppBaseThemeItem {
       // COLOR
       sliderTheme: SliderThemeData(
         valueIndicatorColor: Colors.pink.shade50,
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          elevation: WidgetStateProperty.all(0),
-          foregroundColor: WidgetStateProperty.all(Colors.pink.shade300),
-          textStyle: WidgetStateProperty.all(
-            TextStyle(color: Colors.pink.shade300),
-          ),
-        ),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.white,
@@ -134,8 +125,25 @@ class PinkTheme extends AppBaseThemeItem {
       dividerTheme: DividerThemeData(
         color: Colors.pink.withOpacity(.2),
       ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      bannerTheme: MaterialBannerThemeData(
+        backgroundColor: Colors.pink.shade300,
+      ),
+      buttonTheme: ButtonThemeData(
+        buttonColor: Colors.pink.shade300,
+        disabledColor: Colors.pink.shade300.withOpacity(.2),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(foregroundColor: WidgetStateProperty.all(Colors.white)),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          elevation: WidgetStateProperty.all(0),
+          foregroundColor: WidgetStateProperty.all(Colors.pink.shade300),
+          textStyle: WidgetStateProperty.all(
+            TextStyle(color: Colors.pink.shade300),
+          ),
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -164,13 +172,10 @@ class PinkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      bannerTheme: MaterialBannerThemeData(
+      filledButtonTheme: FilledButtonThemeData(style: ButtonStyle(surfaceTintColor: WidgetStatePropertyAll(Colors.white), foregroundColor: WidgetStatePropertyAll(Colors.white))),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: Colors.pink.shade300,
-      ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: Colors.pink.shade300,
-        disabledColor: Colors.pink.shade300.withOpacity(.2),
+        focusColor: Colors.white,
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.pink.shade50,
@@ -218,10 +223,7 @@ class PinkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Colors.pink.shade300,
-        focusColor: Colors.white,
-      ),
+
       iconTheme: const IconThemeData(
         color: Color(0xFFB22554),
       ),

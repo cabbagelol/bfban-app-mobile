@@ -93,7 +93,6 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      extendBodyBehindAppBar: true,
       body: Consumer<TranslationProvider>(
         builder: (BuildContext context, TranslationProvider data, Widget? child) {
           return ListView(

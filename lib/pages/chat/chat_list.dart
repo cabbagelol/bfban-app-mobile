@@ -91,7 +91,6 @@ class _ChatPageState extends State<ChatListPage> {
             }
 
             return Scaffold(
-              extendBodyBehindAppBar: true,
               appBar: AppBar(
                 actions: [
                   IconButton(

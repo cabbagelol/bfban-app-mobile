@@ -40,7 +40,6 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
 
   Map selectMap = {};
 
-  @override
   bool get wantKeepAlive => true;
 
   @override

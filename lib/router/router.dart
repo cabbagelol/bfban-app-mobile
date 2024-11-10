@@ -19,7 +19,7 @@ import 'package:bfban/pages/report/report.dart';
 import 'package:bfban/pages/report/report_publish_results.dart';
 import 'package:bfban/pages/player/reply.dart';
 import 'package:bfban/pages/index/index.dart';
-import 'package:bfban/pages/report/judgement.dart';
+import 'package:bfban/pages/judgement/index.dart';
 import 'package:bfban/pages/login/signin.dart';
 import 'package:bfban/pages/search/index.dart';
 import 'package:bfban/pages/index/setting/support.dart';

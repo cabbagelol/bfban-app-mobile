@@ -5,13 +5,13 @@ import 'package:provider/provider.dart';
 import '../../utils/index.dart';
 
 class NotNetworkPage extends StatefulWidget {
-  const NotNetworkPage({Key? key}) : super(key: key);
+  const NotNetworkPage({super.key});
 
   @override
-  State<NotNetworkPage> createState() => _notNetworkPageState();
+  State<NotNetworkPage> createState() => _NotNetworkPageState();
 }
 
-class _notNetworkPageState extends State<NotNetworkPage> {
+class _NotNetworkPageState extends State<NotNetworkPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppInfoProvider>(

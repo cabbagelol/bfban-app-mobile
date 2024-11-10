@@ -17,13 +17,13 @@ import 'package:provider/provider.dart';
 import '../../provider/userinfo_provider.dart';
 
 class SigninPage extends StatefulWidget {
-  const SigninPage({Key? key}) : super(key: key);
+  const SigninPage({super.key});
 
   @override
-  _SigninPageState createState() => _SigninPageState();
+  SigninPageState createState() => SigninPageState();
 }
 
-class _SigninPageState extends State<SigninPage> {
+class SigninPageState extends State<SigninPage> {
   final Storage _storage = Storage();
 
   /// 登录数据
@@ -178,7 +178,6 @@ class _SigninPageState extends State<SigninPage> {
     double? avater = 40;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),

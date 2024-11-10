@@ -1,4 +1,3 @@
-import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -17,15 +16,15 @@ class JudgementPage extends StatefulWidget {
   final String? id;
 
   const JudgementPage({
-    Key? key,
+    super.key,
     this.id,
-  }) : super(key: key);
+  });
 
   @override
-  _JudgementPageState createState() => _JudgementPageState();
+  JudgementPageState createState() => JudgementPageState();
 }
 
-class _JudgementPageState extends State<JudgementPage> {
+class JudgementPageState extends State<JudgementPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   final Util _util = Util();
@@ -145,7 +144,6 @@ class _JudgementPageState extends State<JudgementPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,

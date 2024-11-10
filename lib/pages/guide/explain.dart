@@ -67,7 +67,6 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      extendBodyBehindAppBar: true,
       body: Consumer<TranslationProvider>(
         builder: (BuildContext context, data, Widget? child) {
           return ListView(

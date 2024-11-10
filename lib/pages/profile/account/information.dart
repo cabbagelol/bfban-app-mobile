@@ -62,7 +62,7 @@ class _InformationPageState extends State<InformationPage> {
 
   /// [Response]
   /// 注销用户信息
-  Future<void> removeUserInfo(UserInfoProvider userProvider) async {
+  Future<void> _removeUserInfo(UserInfoProvider userProvider) async {
     if (accountLoading) return;
 
     setState(() => accountLoading = true);
@@ -422,13 +422,7 @@ class _InformationPageState extends State<InformationPage> {
                             EluiCellComponent(
                               title: FlutterI18n.translate(context, "header.signout"),
                               icons: const Icon(Icons.exit_to_app),
-                              theme: EluiCellTheme(
-                                titleColor: Theme.of(context).textTheme.titleMedium?.color,
-                                labelColor: Theme.of(context).textTheme.displayMedium?.color,
-                                linkColor: Theme.of(context).textTheme.titleMedium?.color,
-                                backgroundColor: Theme.of(context).cardTheme.color,
-                              ),
-                              onTap: () => removeUserInfo(data),
+                              onTap: () => _removeUserInfo(data),
                             ),
                         ],
                       ),

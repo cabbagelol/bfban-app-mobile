@@ -90,6 +90,9 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
         if (playerTimelineStatus.parame.skip! <= 0) {
           playerTimelineStatus.list = d["result"];
           _onMergeHistoryName();
+
+          _refreshKey.currentState?.controller.finishRefresh();
+          _refreshKey.currentState?.controller.resetFooter();
           return;
         }
 

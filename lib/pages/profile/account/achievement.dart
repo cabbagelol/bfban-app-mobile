@@ -53,6 +53,7 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
       _userAchievementStatus.data!.setData(d["data"]);
     }
 
+    if (!mounted) return;
     setState(() {
       _userAchievementStatus.load = false;
     });

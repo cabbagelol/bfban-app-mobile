@@ -281,7 +281,6 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         centerTitle: true,
         title: Text(FlutterI18n.translate(context, "app.report.title")),

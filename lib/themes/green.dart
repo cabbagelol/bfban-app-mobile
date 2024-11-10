@@ -21,7 +21,6 @@ class GreenTheme extends AppBaseThemeItem {
   @override
   get d => data;
 
-  @override
   static dynamic data = AppThemeItem(
     name: "green",
     isDefault: false,
@@ -33,15 +32,7 @@ class GreenTheme extends AppBaseThemeItem {
       sliderTheme: SliderThemeData(
         valueIndicatorColor: Colors.pink.shade50,
       ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          elevation: WidgetStateProperty.all(0),
-          foregroundColor: WidgetStateProperty.all(Colors.green.shade300),
-          textStyle: WidgetStateProperty.all(
-            TextStyle(color: Colors.green.shade300),
-          ),
-        ),
-      ),
+
       bottomSheetTheme: BottomSheetThemeData(
         backgroundColor: Colors.green.withOpacity(.1),
         modalBackgroundColor: Colors.green.withOpacity(.1),
@@ -83,18 +74,6 @@ class GreenTheme extends AppBaseThemeItem {
         ),
       ),
       highlightColor: Colors.transparent,
-      toggleButtonsTheme: ToggleButtonsThemeData(
-        color: Colors.green.shade50,
-        fillColor: Colors.green.shade50,
-        textStyle: TextStyle(
-          color: Colors.green.shade300,
-        ),
-        focusColor: Colors.white60,
-        selectedColor: Colors.white,
-        selectedBorderColor: Colors.green.shade800,
-        splashColor: Colors.black38,
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-      ),
       scrollbarTheme: const ScrollbarThemeData(
         thumbColor: WidgetStatePropertyAll(Colors.green),
       ),
@@ -133,6 +112,35 @@ class GreenTheme extends AppBaseThemeItem {
       dividerTheme: DividerThemeData(
         color: Colors.green.shade50,
       ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      bannerTheme: MaterialBannerThemeData(
+        backgroundColor: Colors.green.shade300,
+      ),
+
+      // 按钮 S
+      buttonTheme: ButtonThemeData(
+        buttonColor: Colors.green.shade300,
+        disabledColor: Colors.green.shade300.withOpacity(.2),
+      ),
+      toggleButtonsTheme: ToggleButtonsThemeData(
+        color: Colors.green.shade50,
+        fillColor: Colors.green.shade50,
+        textStyle: TextStyle(
+          color: Colors.green.shade300,
+        ),
+        focusColor: Colors.white60,
+        selectedColor: Colors.white,
+        selectedBorderColor: Colors.green.shade800,
+        splashColor: Colors.black38,
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.green.shade300,
+        focusColor: Colors.white,
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(overlayColor: WidgetStateProperty.all(Colors.transparent)),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           elevation: 0,
@@ -140,6 +148,15 @@ class GreenTheme extends AppBaseThemeItem {
           foregroundColor: Colors.white,
           disabledBackgroundColor: Colors.green.shade300,
           disabledForegroundColor: Colors.green.shade300,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          elevation: WidgetStateProperty.all(0),
+          foregroundColor: WidgetStateProperty.all(Colors.green.shade300),
+          textStyle: WidgetStateProperty.all(
+            TextStyle(color: Colors.green.shade300),
+          ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -169,14 +186,13 @@ class GreenTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      bannerTheme: MaterialBannerThemeData(
-        backgroundColor: Colors.green.shade300,
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+        ),
       ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: Colors.green.shade300,
-        disabledColor: Colors.green.shade300.withOpacity(.2),
-      ),
+      // 按钮 E
+
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: Colors.green.shade50,
       ),
@@ -223,10 +239,6 @@ class GreenTheme extends AppBaseThemeItem {
             width: 3,
           ),
         ),
-      ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Colors.green.shade300,
-        focusColor: Colors.white,
       ),
       iconTheme: IconThemeData(
         color: Colors.green.shade900,

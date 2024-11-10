@@ -140,7 +140,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
       MaterialPageRoute(
         builder: (BuildContext context) {
           return HtmlFullScreen(
-            content: widget.content! ?? "",
+            content: widget.content!,
             style: htmlStyle[2],
           );
         },

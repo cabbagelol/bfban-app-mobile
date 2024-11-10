@@ -9,13 +9,13 @@ import '../../provider/userinfo_provider.dart';
 import '../../widgets/wave_border.dart';
 
 class LoginPanelPage extends StatefulWidget {
-  const LoginPanelPage({Key? key}) : super(key: key);
+  const LoginPanelPage({super.key});
 
   @override
-  _LoginPanelState createState() => _LoginPanelState();
+  LoginPanelState createState() => LoginPanelState();
 }
 
-class _LoginPanelState extends State<LoginPanelPage> {
+class LoginPanelState extends State<LoginPanelPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   /// [Event]
@@ -45,7 +45,6 @@ class _LoginPanelState extends State<LoginPanelPage> {
     return SafeArea(
       top: false,
       child: Scaffold(
-        extendBodyBehindAppBar: true,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           automaticallyImplyLeading: false,
@@ -107,18 +106,16 @@ class _LoginPanelState extends State<LoginPanelPage> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 50),
-                        MaterialButton(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          color: Theme.of(context).colorScheme.primary,
-                          elevation: 2,
+                        FilledButton(
+                          style: ButtonStyle(
+                            padding: WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 15)),
+                          ),
                           onPressed: () => _openSignin(),
                           child: Text(FlutterI18n.translate(context, "app.signin.panel.BfbanAccountButton")),
                         ),
                         const SizedBox(height: 20),
-                        MaterialButton(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          color: Theme.of(context).colorScheme.secondary.withOpacity(.8),
-                          elevation: 0,
+                        FilledButton(
+                          style: ButtonStyle(padding: WidgetStatePropertyAll(const EdgeInsets.symmetric(vertical: 15)), backgroundColor: WidgetStatePropertyAll(Color.lerp(Theme.of(context).colorScheme.secondary, Theme.of(context).colorScheme.primaryContainer, .8)), foregroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.primary)),
                           onPressed: () => _pop(),
                           child: Text(FlutterI18n.translate(context, "app.signin.panel.cancelButton")),
                         ),

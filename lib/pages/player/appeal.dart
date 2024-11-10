@@ -101,9 +101,6 @@ class _AppealPageState extends State<AppealPage> {
       FormState? reportFormKey = _appealFormKey.currentState;
       bool validate = reportFormKey!.validate();
 
-      print(validate);
-      print(appealStatus.parame!.toMap);
-
       if (!validate) return;
       reportFormKey.save();
 
@@ -160,7 +157,7 @@ class _AppealPageState extends State<AppealPage> {
       appBar: AppBar(
         title: Text(FlutterI18n.translate(context, "detail.appeal.dealAppeal")),
         actions: <Widget>[
-          playerStatus.load!
+          playerStatus.load
               ? ElevatedButton(
                   onPressed: () {},
                   child: ELuiLoadComponent(

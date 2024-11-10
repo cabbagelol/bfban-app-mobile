@@ -22,7 +22,6 @@ class LightnesTheme extends AppBaseThemeItem {
   @override
   get d => data;
 
-  @override
   static dynamic data = AppThemeItem(
     name: "lightnes",
     isDefault: true,

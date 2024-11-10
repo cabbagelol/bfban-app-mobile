@@ -22,7 +22,7 @@ class StorageAccount extends Storage {
       Futures.add(super.remove(element["name"]));
     }
 
-    await Future.wait(Futures);
+    await Future.any(Futures);
 
     // 清空 用户状态管理机
     ProviderUtil().ofUser(context).clear();

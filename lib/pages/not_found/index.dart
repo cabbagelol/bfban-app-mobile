@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotFoundPage extends StatefulWidget {
-  const NotFoundPage({Key? key}) : super(key: key);
+  const NotFoundPage({super.key});
 
   @override
   State<NotFoundPage> createState() => _NotFoundPageState();

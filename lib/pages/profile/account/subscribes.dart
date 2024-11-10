@@ -37,7 +37,6 @@ class _UserSubscribesPageState extends State<UserSubscribesPage> {
 
   StoragePlayer storagePlayer = StoragePlayer();
 
-  @override
   bool get wantKeepAlive => true;
 
   @override

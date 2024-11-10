@@ -52,7 +52,7 @@ class RefreshState extends State<Refresh> {
       backgroundColor: Theme.of(context).canvasColor,
       color: Theme.of(context).colorScheme.primary,
     );
-    return {'ios': ch, 'macos': ch, 'android': mh}['android' ?? Platform.operatingSystem] ?? mh;
+    return {'ios': ch, 'macos': ch, 'android': mh}['android'] ?? mh;
   }
 
   @override

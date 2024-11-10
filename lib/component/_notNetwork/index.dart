@@ -15,7 +15,7 @@ class notNetworkWidget extends StatelessWidget {
         children: [
           Icon(Icons.error, size: FontSize.xxLarge.value),
           const SizedBox(height: 15),
-          Text(appData.connectivity.currentAppNetwork.toString() ?? "-"),
+          Text(appData.connectivity.currentAppNetwork.toString()),
           HtmlLink(url: "https://cabbagelol.github.io/bfban-app-mobile-docs/"),
         ],
       );

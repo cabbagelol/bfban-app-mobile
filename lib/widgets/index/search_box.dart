@@ -42,6 +42,8 @@ class SearchAppBarWidget extends StatefulWidget {
 
   final Function(String data)? onChanged;
 
+  final Widget? laterInterChild;
+
   final TextEditingController controller;
 
   const SearchAppBarWidget({
@@ -49,6 +51,7 @@ class SearchAppBarWidget extends StatefulWidget {
     this.theme = titleSearchTheme.black,
     this.onSubmitted,
     this.onChanged,
+    this.laterInterChild,
     required this.controller,
   }) : super(key: key);
 
@@ -104,7 +107,8 @@ class TitleSearchState extends State<SearchAppBarWidget> {
             Expanded(
               flex: 1,
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                constraints: BoxConstraints(minHeight: 50),
                 decoration: BoxDecoration(
                   color: titleSearchColor(widget.theme).color,
                   border: Border.all(color: Theme.of(context).dividerTheme.color!.withOpacity(.3), width: 1),
@@ -118,7 +122,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                           ? TextField(
                               controller: controller,
                               focusNode: controllerFocus,
-                        decoration: InputDecoration(
+                              decoration: InputDecoration(
                                 border: InputBorder.none,
                                 isCollapsed: true,
                                 contentPadding: EdgeInsets.zero,
@@ -156,6 +160,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                               ),
                             ),
                     ),
+                    widget.laterInterChild ?? SizedBox()
                   ],
                 ),
               ),

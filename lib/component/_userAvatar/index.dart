@@ -35,6 +35,10 @@ class _UserAvatarState extends State<UserAvatar> {
 
                 mirrorImageIndex += 1;
               });
+              break;
+            case LoadState.loading:
+            case LoadState.completed:
+              break;
           }
         },
       ),

@@ -72,6 +72,7 @@ class Storage {
         case StorageType.bool:
           _prefs!.setBool(name, value);
           break;
+        case StorageType.none:
         case StorageType.string:
           int time = DateTime.now().millisecondsSinceEpoch;
           Map<dynamic, dynamic> val = {"time": time, "value": value};
@@ -91,17 +92,17 @@ class Storage {
   /// 删除
   Future remove(String name, {String type = "name"}) async {
     try {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       switch (type) {
         case "all":
-          _prefs.clear();
+          prefs.clear();
           break;
         case "name":
-          _prefs.remove("$_preName$name"); //删除指定键
+          prefs.remove("$_preName$name"); //删除指定键
           break;
       }
 
-      return _prefs;
+      return prefs;
     } catch (E) {
       rethrow;
     }

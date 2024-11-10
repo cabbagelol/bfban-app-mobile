@@ -71,6 +71,12 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
 
   GlobalKey appBarKey = GlobalKey();
 
+  late ScrollController _scrollController;
+
+  bool get _isSliverAppBarExpanded {
+    return _scrollController.hasClients && _scrollController.offset > (220 - kToolbarHeight);
+  }
+
   @override
   void initState() {
     tabController = TabController(
@@ -78,6 +84,14 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
       length: 2,
       initialIndex: 0,
     );
+
+    _scrollController = ScrollController()
+      ..addListener(() {
+        setState(() {
+          // print(_isSliverAppBarExpanded);
+          // _isShowUserInfo = _isSliverAppBarExpanded;
+        });
+      });
 
     ready();
     super.initState();
@@ -151,7 +165,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
       setState(() {
         // 追加数据预期状态
         if (d["data"].isEmpty || d["data"].length < reportListStatus.parame.limit) {
-          _refreshKey.currentState!.controller.finishLoad(IndicatorResult.noMore);
+          _refreshKey.currentState?.controller.finishLoad(IndicatorResult.noMore);
         }
 
         // 首页数据
@@ -232,6 +246,26 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                 extendBodyBehindAppBar: true,
                 appBar: AppBar(
                   backgroundColor: Colors.transparent,
+                  title: _isSliverAppBarExpanded
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(50),
+                              child: CircleAvatar(
+                                radius: 15,
+                                child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
+                                    ? UserAvatar(src: snapshot.data["userAvatar"])
+                                    : Text(
+                                        snapshot.data["username"][0].toString().toUpperCase(),
+                                      ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Text(snapshot.data["username"]),
+                          ],
+                        )
+                      : SizedBox(),
                   actions: [
                     PopupMenuButton(
                       onSelected: (value) {
@@ -263,72 +297,77 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                 body: DefaultTabController(
                   length: 2,
                   child: Scrollbar(
+                    controller: _scrollController,
                     child: NestedScrollView(
+                      controller: _scrollController,
                       headerSliverBuilder: (context, innerBoxIsScrolled) {
                         return <Widget>[
                           SliverAppBar(
+                            pinned: true,
+                            primary: true,
                             automaticallyImplyLeading: false,
-                            backgroundColor: Colors.transparent,
+                            backgroundColor: _isSliverAppBarExpanded ? Theme.of(context).appBarTheme.backgroundColor : Theme.of(context).colorScheme.surface,
                             toolbarHeight: 0,
-                            expandedHeight: 180,
+                            expandedHeight: 220,
                             flexibleSpace: FlexibleSpaceBar(
                               key: appBarKey,
                               expandedTitleScale: 1,
                               centerTitle: true,
                               background: snapshot.data["userAvatar"] != null ? Background(src: snapshot.data["userAvatar"].toString()) : null,
                               stretchModes: const [StretchMode.blurBackground, StretchMode.zoomBackground],
-                              titlePadding: const EdgeInsets.only(top: 85),
-                              title: OverflowBox(
-                                maxHeight: 180,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(50),
-                                      child: CircleAvatar(
-                                        radius: 35,
-                                        child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
-                                            ? UserAvatar(src: snapshot.data["userAvatar"])
-                                            : Text(
-                                                snapshot.data["username"][0].toString().toUpperCase(),
-                                                style: const TextStyle(fontSize: 25),
-                                              ),
+                              titlePadding: EdgeInsets.only(top: _isSliverAppBarExpanded ? 0 : 80),
+                              title: AnimatedOpacity(
+                                duration: Duration(milliseconds: 150),
+                                opacity: _isSliverAppBarExpanded ? 0 : 1,
+                                child: OverflowBox(
+                                  maxHeight: 220,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: CircleAvatar(
+                                          radius: 35,
+                                          child: (snapshot.data["userAvatar"] != null && snapshot.data["userAvatar"].isNotEmpty)
+                                              ? UserAvatar(src: snapshot.data["userAvatar"])
+                                              : Text(
+                                                  snapshot.data["username"][0].toString().toUpperCase(),
+                                                  style: const TextStyle(fontSize: 25),
+                                                ),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    snapshot.data["username"] != null
-                                        ? Column(
-                                            children: [
-                                              Text(snapshot.data["username"]),
-                                              Text(
-                                                snapshot.data["id"],
-                                                style: TextStyle(fontSize: FontSize.medium.value, color: Theme.of(context).textTheme.displayMedium!.color),
-                                              ),
-                                            ],
-                                          )
-                                        : I18nText("account.title", child: const Text("")),
-                                  ],
+                                      const SizedBox(height: 10),
+                                      snapshot.data["username"] != null
+                                          ? Column(
+                                              children: [
+                                                Text(snapshot.data["username"]),
+                                                Text(
+                                                  snapshot.data["id"],
+                                                  style: TextStyle(fontSize: FontSize.medium.value, color: Theme.of(context).textTheme.displayMedium!.color),
+                                                ),
+                                              ],
+                                            )
+                                          : I18nText("account.title", child: const Text("")),
+                                    ],
+                                  ),
                                 ),
                               ),
+                            ),
+                            bottom: TabBar(
+                              controller: tabController,
+                              indicatorWeight: 6,
+                              tabs: const [
+                                Tab(child: Icon(Icons.info_outline_rounded)),
+                                Tab(child: Icon(Icons.front_hand)),
+                              ],
+                              dividerColor: Theme.of(context).dividerColor,
                             ),
                           )
                         ];
                       },
                       body: Column(
                         children: [
-                          Divider(height: 1),
-                          SizedBox(
-                            height: 60,
-                            child: TabBar(
-                              controller: tabController,
-                              tabs: const [
-                                Tab(child: Icon(Icons.info_outline_rounded)),
-                                Tab(child: Icon(Icons.front_hand)),
-                              ],
-                            ),
-                          ),
-                          Divider(height: 1),
                           Flexible(
                             flex: 1,
                             child: MediaQuery.removePadding(
@@ -341,7 +380,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(height: 10),
+                                        SizedBox(height: 20),
 
                                         /// user info
                                         Container(
@@ -488,9 +527,17 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                             ),
                                           ),
                                         if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
-                                          SelectionArea(
-                                            child: HtmlCore(
-                                              data: snapshot.data["attr"]["introduction"],
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 13),
+                                            child: Card(
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(10),
+                                                child: SelectionArea(
+                                                  child: HtmlCore(
+                                                    data: snapshot.data["attr"]["introduction"],
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
                                       ],

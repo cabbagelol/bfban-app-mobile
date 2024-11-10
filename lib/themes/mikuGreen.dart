@@ -31,9 +31,9 @@ class MikuGreenTheme extends AppBaseThemeItem {
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   }
 
+  @override
   get d => data;
 
-  @override
   static dynamic data = AppThemeItem(
     name: "mikuGreen",
     isDefault: false,

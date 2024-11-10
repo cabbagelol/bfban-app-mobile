@@ -1,5 +1,3 @@
-/// 图片查看
-
 import 'dart:io';
 
 import 'package:extended_image/extended_image.dart';
@@ -15,23 +13,23 @@ import '../provider/dir_provider.dart';
 enum PhotoViewFileType { file, network }
 
 class PhotoViewSimpleScreen extends StatefulWidget {
-  PhotoViewFileType? type;
+  final PhotoViewFileType? type;
 
-  String? imageUrl;
+  final String? imageUrl;
 
-  PhotoViewSimpleScreen({
-    Key? key,
+  const PhotoViewSimpleScreen({
+    super.key,
     this.type = PhotoViewFileType.network,
     this.imageUrl = "",
-  }) : super(key: key);
+  });
 
   @override
-  _PhotoViewSimpleScreenState createState() => _PhotoViewSimpleScreenState();
+  PhotoViewSimpleScreenState createState() => PhotoViewSimpleScreenState();
 }
 
 typedef DoubleClickAnimationListener = void Function();
 
-class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with TickerProviderStateMixin {
+class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with TickerProviderStateMixin {
   // 加载状态
   bool imageSaveStatus = false;
 
@@ -44,6 +42,12 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
   late DoubleClickAnimationListener _doubleClickAnimationListener;
   List<double> doubleTapScales = <double>[1.0, 2.0];
   Animation<double>? _doubleClickAnimation;
+
+  // 地址后缀内容
+  String get appBarTitle {
+    Uri uri = Uri.parse(widget.imageUrl!);
+    return uri.pathSegments[uri.pathSegments.length - 1].toString();
+  }
 
   @override
   void initState() {
@@ -90,9 +94,6 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
       inPageView: false,
       initialAlignment: InitialAlignment.center,
       reverseMousePointerScrollDirection: true,
-      gestureDetailsIsChanged: (GestureDetails? details) {
-        //print(details?.totalScale);
-      },
     );
   }
 
@@ -148,7 +149,8 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
     return null;
   }
 
-  Widget _ImageWidget(int index) {
+  // 获取图片视图
+  Widget _getImageItemWidget(int index) {
     return [
       ExtendedImage.file(
         File(widget.imageUrl!),
@@ -176,13 +178,19 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.imageUrl!.isNotEmpty ? Text(widget.imageUrl!.toString()) : Container(),
+        title: widget.imageUrl!.isNotEmpty
+            ? Text(
+                appBarTitle,
+                style: TextStyle(overflow: TextOverflow.ellipsis),
+                maxLines: 2,
+              )
+            : SizedBox(),
         centerTitle: true,
         actions: [
           if (widget.type == PhotoViewFileType.network)
             imageSaveStatus
                 ? IconButton(
-              padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     onPressed: () {},
                     icon: ELuiLoadComponent(
                       type: "line",
@@ -192,7 +200,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
                     ),
                   )
                 : IconButton(
-              padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     icon: const Icon(
                       Icons.file_download,
                       size: 25,
@@ -210,7 +218,7 @@ class _PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Tick
           children: [
             Expanded(
               flex: 1,
-              child: _ImageWidget(widget.type!.index),
+              child: _getImageItemWidget(widget.type!.index),
             )
           ],
         ),

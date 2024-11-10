@@ -59,13 +59,13 @@ class SearchResultData {
 }
 
 class SearchBaseParams {
-  late String? param;
+  late String param;
 
   SearchBaseParams({
     this.param = "",
   });
 
-  get toMap => {"param": param};
+  get toMap => {"param": param.replaceAll(' ', '').trim()};
 }
 
 class SearchScopeTime {
@@ -132,7 +132,7 @@ class SearchPlayerParams implements SearchBaseParams, SearchPageParams, SearchSc
   num? limit;
 
   @override
-  String? param;
+  String param;
 
   @override
   num? skip;
@@ -150,7 +150,7 @@ class SearchInStationUser implements SearchBaseParams, SearchPageParams, SearchS
   final List _userSortType = ["default", "joinedAt", "lastOnlineTime"];
 
   SearchInStationUser({
-    this.param,
+    required this.param,
     this.type = "user",
     UserSortType gameSort = UserSortType.byDefault,
     this.createTimeFrom,
@@ -185,7 +185,7 @@ class SearchInStationUser implements SearchBaseParams, SearchPageParams, SearchS
   num? limit;
 
   @override
-  String? param;
+  String param;
 
   @override
   num? skip;
@@ -195,7 +195,7 @@ class SearchCommentParams implements SearchBaseParams, SearchPageParams, SearchS
   late String type;
 
   SearchCommentParams({
-    this.param,
+    required this.param,
     this.type = "comment",
     this.createTimeFrom,
     this.createTimeTo,
@@ -226,7 +226,7 @@ class SearchCommentParams implements SearchBaseParams, SearchPageParams, SearchS
   num? limit;
 
   @override
-  String? param;
+  String param;
 
   @override
   num? skip;

@@ -31,22 +31,17 @@ class UserInfoProvider with ChangeNotifier {
 
   // 是否管理员一类
   bool get isAdmin {
-    return isLogin &&
-        userinfo["privilege"]
-            .any((i) => ["admin", "super", "root"].contains(i));
+    return isLogin && userinfo["privilege"].any((i) => ["admin", "super", "root"].contains(i));
   }
 
   bool get isAdminL1 => isAdmin;
 
   bool get isAdminL2 {
-    return isLogin &&
-        userinfo["privilege"]
-            .any((i) => ["admin", "super", "root"].contains(i));
+    return isLogin && userinfo["privilege"].any((i) => ["admin", "super", "root"].contains(i));
   }
 
   bool get isAdminL3 {
-    return isLogin &&
-        userinfo["privilege"].any((i) => ["super", "root"].contains(i));
+    return isLogin && userinfo["privilege"].any((i) => ["super", "root"].contains(i));
   }
 
   bool get isAdminL4 {
@@ -112,13 +107,13 @@ class UserInfoProvider with ChangeNotifier {
       Config.httpHost["user_me"],
       method: Http.GET,
     );
-
+    await HttpToken.isTokenVain(result);
     return result;
   }
 
   /// [Response]
   /// 账户注销
-  Future accountQuit(BuildContext context) async {
+  Future accountQuit(BuildContext? context) async {
     try {
       Response result = await HttpToken.request(
         Config.httpHost["account_signout"],
@@ -128,7 +123,7 @@ class UserInfoProvider with ChangeNotifier {
         method: Http.POST,
       );
 
-      _providerUtil.ofChat(context).clearNetworkLocalMessage(); // 消息计数
+      _providerUtil.ofChat(context!).clearNetworkLocalMessage(); // 消息计数
       _storageAccount.clearAll(context); // 擦除持久数据账户相关key
       clear(); // 擦除状态机的账户信息
 
@@ -158,9 +153,10 @@ class UserInfoProvider with ChangeNotifier {
 
       return result;
     } catch (err) {
-      EluiMessageComponent.error(context)(
-        child: Text(err.toString()),
-      );
+      if (context != null)
+        EluiMessageComponent.error(context)(
+          child: Text(err.toString()),
+        );
     }
   }
 

@@ -526,7 +526,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
             }
 
             return Scaffold(
-              extendBodyBehindAppBar: true,
               appBar: AppBar(
                 backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
                 flexibleSpace: FlexibleSpaceBar(
@@ -537,14 +536,15 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                     blendMode: BlendMode.srcIn,
                     child: const SizedBox(),
                   ),
-                  title: TabBar(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
+                  title: TabBar.secondary(
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.center,
                     labelStyle: Theme.of(context).textTheme.titleMedium,
+                    dividerColor: Theme.of(context).dividerColor,
                     controller: _tabController,
                     tabs: cheatersTabs,
                   ),
                 ),
-                elevation: 0,
                 actions: <Widget>[
                   PopupMenuButton(
                     padding: const EdgeInsets.all(16),

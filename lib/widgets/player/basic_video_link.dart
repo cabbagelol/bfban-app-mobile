@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class VideoLink extends StatelessWidget {
-  Map data;
+  final Map data;
 
-  VideoLink({
-    Key? key,
+  const VideoLink({
+    super.key,
     required this.data,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
