@@ -45,17 +45,17 @@ class UrlUtil {
   }
 
   /// 唤起内部webview，访问地址
-  Future<Map> opEnWebView(String url) async {
+  Future<Map> opEnWebView(String url, bool? isUseToken) async {
     try {
-      if (await canLaunchUrl(Uri(path: url))) {
-        await launch(
-          url,
-          forceSafariVC: true,
-          forceWebView: true,
-          headers: <String, String>{
-            "webview_type": "bfban",
-          },
-          statusBarBrightness: Brightness.dark,
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(
+          Uri.parse(url),
+          webViewConfiguration: WebViewConfiguration(
+            headers: <String, String>{
+              "webview_type": "bfban",
+            },
+          ),
+          browserConfiguration: BrowserConfiguration(),
           webOnlyWindowName: url.toString(),
         );
       } else {

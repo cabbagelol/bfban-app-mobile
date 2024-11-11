@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -574,9 +575,7 @@ class _mediaPageState extends State<MediaPage> {
                     Text(FlutterI18n.translate(context, "app.media.tab.cloud")),
                     if (cloudMediaInfoStatus.load!) const SizedBox(width: 5),
                     if (cloudMediaInfoStatus.load!)
-                      ELuiLoadComponent(
-                        type: "line",
-                        lineWidth: 2,
+                      LoadingWidget(
                         color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 13,
                       ),
@@ -739,9 +738,7 @@ class _mediaPageState extends State<MediaPage> {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 cloudMediaInfoStatus.data!.isEmpty
-                                                    ? ELuiLoadComponent(
-                                                        type: "line",
-                                                        lineWidth: 1,
+                                                    ? LoadingWidget(
                                                         color: Theme.of(context).progressIndicatorTheme.color!,
                                                         size: 16,
                                                       )
@@ -981,9 +978,7 @@ class _MediaCardState extends State<MediaCard> {
                   Positioned.fill(
                     child: Container(
                       color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
-                      child: ELuiLoadComponent(
-                        type: "line",
-                        lineWidth: 2,
+                      child: LoadingWidget(
                         color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 30,
                       ),
@@ -995,9 +990,7 @@ class _MediaCardState extends State<MediaCard> {
                   Positioned.fill(
                     child: Container(
                       color: Theme.of(context).scaffoldBackgroundColor.withOpacity(.8),
-                      child: ELuiLoadComponent(
-                        type: "line",
-                        lineWidth: 2,
+                      child: LoadingWidget(
                         color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 30,
                       ),

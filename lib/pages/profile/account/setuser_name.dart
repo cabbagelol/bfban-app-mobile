@@ -1,3 +1,4 @@
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
@@ -122,9 +123,7 @@ class _setuserNamePageState extends State<UserSetUserNamePage> {
                               spacing: 5,
                               children: [
                                 if (load)
-                                  ELuiLoadComponent(
-                                    type: "line",
-                                    lineWidth: 2,
+                                  LoadingWidget(
                                     color: Theme.of(context).progressIndicatorTheme.color!,
                                     size: 20,
                                   ),

@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -169,11 +169,10 @@ class _CaptchaWidgetState extends State<CaptchaWidget> {
                   if (captchaStatus.captchaSvg.isEmpty && !captchaStatus.load!)
                     Text(FlutterI18n.translate(context, "captcha.get"))
                   else if (captchaStatus.load!)
-                    ELuiLoadComponent(
-                      type: "line",
-                      lineWidth: 1,
-                      color: Theme.of(context).progressIndicatorTheme.color!,
-                      size: 16,
+                    Center(
+                      child: LoadingWidget(
+                        size: 16,
+                      ),
                     )
                   else
                     SvgPicture.string(

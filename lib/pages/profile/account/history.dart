@@ -1,3 +1,4 @@
+import 'package:bfban/component/_loading/index.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -235,7 +236,7 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
                     const Expanded(
                       flex: 1,
                       child: Center(
-                        child: Center(child: CircularProgressIndicator()),
+                        child: Center(child: LoadingWidget()),
                       ),
                     ),
                 ],

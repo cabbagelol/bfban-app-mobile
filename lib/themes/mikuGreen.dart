@@ -253,7 +253,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(3),
           side: BorderSide(
-            color: color100,
+            color: color50,
             width: 1,
           ),
         ),
@@ -294,7 +294,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         onPrimary: Colors.white,
         onPrimaryContainer: color,
         secondary: color,
-        onSecondary: color,
+        onSecondary: Colors.white,
         error: const Color(0xffFC4952),
         onError: const Color(0xffA4181F),
         errorContainer: Colors.white,

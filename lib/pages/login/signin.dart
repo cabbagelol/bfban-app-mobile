@@ -3,6 +3,7 @@
 import 'dart:ui' as ui;
 
 import 'package:bfban/component/_captcha/index.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/data/index.dart';
 import 'package:bfban/utils/http_token.dart';
@@ -175,7 +176,7 @@ class SigninPageState extends State<SigninPage> {
 
   @override
   Widget build(BuildContext context) {
-    double? avater = 40;
+    double avater = 40;
 
     return Scaffold(
       appBar: AppBar(
@@ -298,11 +299,11 @@ class SigninPageState extends State<SigninPage> {
                       child: loginStatus.load!
                           ? SizedBox(
                               height: 40,
-                              child: ELuiLoadComponent(
-                                type: "line",
-                                lineWidth: 2,
-                                color: Theme.of(context).progressIndicatorTheme.color!,
-                                size: 25,
+                              child: Center(
+                                child: LoadingWidget(
+                                  color: Theme.of(context).progressIndicatorTheme.color!,
+                                  size: 25,
+                                ),
                               ),
                             )
                           : const SizedBox(

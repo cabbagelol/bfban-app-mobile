@@ -205,11 +205,11 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                     // 筛选
                     if (index == 0) {
                       return Container(
-                        height: 45,
-                        color: Theme.of(context).primaryColorDark.withOpacity(.1),
+                        height: 59,
+                        color: Theme.of(context).primaryColorDark.withOpacity(.03),
                         child: ListView(
                           scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
                           children: [
                             const Icon(Icons.filter_list_outlined),
                             const SizedBox(width: 5),

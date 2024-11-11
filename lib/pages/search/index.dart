@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/data/Games.dart';
 import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
@@ -354,7 +355,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(
+                        child: LoadingWidget(
                           strokeWidth: 2,
                         ),
                       )
@@ -452,11 +453,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               ),
                               const SizedBox(height: 10),
                               if (isHotRecommendationLoad)
-                                ELuiLoadComponent(
-                                  type: "line",
+                                LoadingWidget(
                                   color: Theme.of(context).progressIndicatorTheme.color!,
                                   size: 20,
-                                  lineWidth: 2,
                                 )
                               else
                                 searchTrends.isNotEmpty

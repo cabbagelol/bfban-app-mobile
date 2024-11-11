@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/pages/not_found/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -935,7 +936,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                               icon: const SizedBox(
                                                 width: 16,
                                                 height: 16,
-                                                child: CircularProgressIndicator(
+                                                child: LoadingWidget(
                                                   strokeWidth: 2,
                                                 ),
                                               ),
@@ -1033,9 +1034,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                               TextButton(
                                 onPressed: () => _onSubscribes(data.isLogin),
                                 child: subscribes["load"]
-                                    ? ELuiLoadComponent(
-                                        type: "line",
-                                        lineWidth: 1,
+                                    ? LoadingWidget(
                                         color: Theme.of(context).progressIndicatorTheme.color!,
                                         size: 16,
                                       )
@@ -1129,7 +1128,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                 centerTitle: true,
               ),
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               ),
             );
         }

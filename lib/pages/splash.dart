@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/appBuildContent.dart';
@@ -205,7 +206,7 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
         builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
           return Scaffold(
             body: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Container(
@@ -250,12 +251,13 @@ class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateM
                       )
                   ],
                 ),
-                const SizedBox(height: 10),
-                LinearProgressIndicator(
-                  minHeight: 1,
-                  color: Theme.of(context).colorScheme.primary,
-                  backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+                Container(
+                  child: LoadingAnimationWidget.progressiveDots(
+                    size: 28,
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                  ),
                 ),
+                Divider(height: 1),
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 38),
                   color: Theme.of(context).bottomAppBarTheme.color,

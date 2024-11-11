@@ -14,8 +14,6 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # 时间选择器 https://pub.dev/packages/syncfusion_flutter_datepicker
-  # 临时保留23.2.4版本，后版存在问题
-  # https://github.com/syncfusion/flutter-widgets/issues/1547
   syncfusion_flutter_datepicker: ^27.1.50
 
   # 请求模块 https://pub.dev/packages/dio
@@ -87,6 +85,9 @@ dependencies:
   # https://www.unicode.org/reports/tr35/#Unicode_language_identifier
   flutter_translate: ^4.0.3
   flutter_i18n: ^0.36.2
+
+  # loading
+  loading_animation_widget: ^1.3.0
 
   # 哨兵 https://pub.dev/packages/sentry
   sentry: ^8.8.0

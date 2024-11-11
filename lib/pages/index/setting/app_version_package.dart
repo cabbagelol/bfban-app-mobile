@@ -1,5 +1,6 @@
 /// 版本
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_popup/index.dart';
@@ -131,7 +132,7 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                     label: data.isNewVersion ? FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_new") : FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_old"),
                     theme: EluiCellTheme(labelColor: Theme.of(context).textTheme.displayMedium!.color),
                     islink: true,
-                    cont: data.onlineVersion.isNotEmpty ? Text(data.onlineVersion.toString()) : const CircularProgressIndicator(strokeWidth: 2),
+                    cont: data.onlineVersion.isNotEmpty ? Text(data.onlineVersion.toString()) : const LoadingWidget(strokeWidth: 2),
                     onTap: () => _urlUtil.onPeUrl(Config.apiHost["app_web_site"]!.url),
                   ),
                 ),

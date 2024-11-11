@@ -1,3 +1,4 @@
+import 'package:bfban/component/_loading/index.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -160,9 +161,7 @@ class _AppealPageState extends State<AppealPage> {
           playerStatus.load
               ? ElevatedButton(
                   onPressed: () {},
-                  child: ELuiLoadComponent(
-                    type: "line",
-                    lineWidth: 2,
+                  child: LoadingWidget(
                     size: 20,
                     color: Theme.of(context).progressIndicatorTheme.color!,
                   ),

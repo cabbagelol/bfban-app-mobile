@@ -1,4 +1,5 @@
 import 'package:bfban/component/_empty/index.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -112,9 +113,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
                     ),
                     const SizedBox(width: 10),
                     if (load)
-                      ELuiLoadComponent(
-                        type: "line",
-                        lineWidth: 1,
+                      LoadingWidget(
                         color: Theme.of(context).progressIndicatorTheme.color!,
                         size: 16,
                       ),

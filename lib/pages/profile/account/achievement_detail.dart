@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:bfban/component/_html/html.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -165,7 +166,7 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
                       ? const SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: LoadingWidget(strokeWidth: 2),
                         )
                       : Text(FlutterI18n.translate(context, "profile.achievement.getButton")),
                 ),

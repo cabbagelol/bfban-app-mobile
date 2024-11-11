@@ -2,6 +2,7 @@
 
 import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:bfban/component/_html/htmlWidget.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/provider/translation_provider.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
@@ -149,7 +150,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                           ? const SizedBox(
                               height: 100,
                               child: Center(
-                                child: SizedBox(width: 30, height: 30, child: CircularProgressIndicator(strokeWidth: 2)),
+                                child: SizedBox(width: 30, height: 30, child: LoadingWidget(strokeWidth: 2)),
                               ),
                             )
                           : HtmlWidget(

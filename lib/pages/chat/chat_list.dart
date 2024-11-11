@@ -1,6 +1,7 @@
 /// 消息中心
 
 import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -204,7 +205,7 @@ class _ChatPageState extends State<ChatListPage> {
                 ],
               ),
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               ),
             );
         }

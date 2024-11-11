@@ -1,4 +1,5 @@
 import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
@@ -203,9 +204,7 @@ class _InformationPageState extends State<InformationPage> {
                         _onSave();
                       },
                       icon: saveLoad
-                          ? ELuiLoadComponent(
-                              type: "line",
-                              lineWidth: 2,
+                          ? LoadingWidget(
                               color: Theme.of(context).progressIndicatorTheme.color!,
                               size: 20,
                             )
@@ -439,7 +438,7 @@ class _InformationPageState extends State<InformationPage> {
                 centerTitle: true,
               ),
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               ),
             );
         }

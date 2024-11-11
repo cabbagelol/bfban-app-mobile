@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +80,7 @@ class _CameraPageState extends State<CameraPage> {
       progressIndicator: Scaffold(
         appBar: AppBar(),
         body: const Center(
-          child: CircularProgressIndicator(),
+          child: LoadingWidget(),
         ),
       ),
       builder: (state, previewSize) {

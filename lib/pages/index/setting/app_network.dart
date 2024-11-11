@@ -1,3 +1,4 @@
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -298,7 +299,7 @@ class _AppNetworkPageState extends State<AppNetworkPage> {
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: CircularProgressIndicator(
+                                child: LoadingWidget(
                                   strokeWidth: 2,
                                 ),
                               )

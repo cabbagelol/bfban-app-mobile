@@ -303,7 +303,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 primary: true,
                 automaticallyImplyLeading: false,
                 expandedHeight: 0,
-                toolbarHeight: 38,
+                toolbarHeight: 40,
                 backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
                 flexibleSpace: FlexibleSpaceBar(
                   expandedTitleScale: 1,
@@ -317,7 +317,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     children: [
                       Flexible(
                         flex: 1,
-                        child: TabBar(
+                        child: TabBar.secondary(
                           controller: _tabController,
                           isScrollable: true,
                           tabAlignment: TabAlignment.start,

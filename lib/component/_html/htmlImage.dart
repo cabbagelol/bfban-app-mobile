@@ -1,4 +1,5 @@
 import 'package:bfban/component/_html/htmlLink.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
@@ -73,11 +74,8 @@ class _HtmlImageState extends State<HtmlImage> {
                           Positioned(
                             top: -2,
                             right: -2,
-                            child: ELuiLoadComponent(
-                              type: "line",
-                              color: Theme.of(context).progressIndicatorTheme.color!,
+                            child: LoadingWidget(
                               size: 17,
-                              lineWidth: 2,
                             ),
                           ),
                         ],

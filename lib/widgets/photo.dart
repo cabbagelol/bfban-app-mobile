@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_load/index.dart';
@@ -192,10 +193,8 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
                 ? IconButton(
                     padding: const EdgeInsets.all(16),
                     onPressed: () {},
-                    icon: ELuiLoadComponent(
-                      type: "line",
+                    icon: LoadingWidget(
                       color: Theme.of(context).progressIndicatorTheme.color!,
-                      lineWidth: 2,
                       size: 25,
                     ),
                   )

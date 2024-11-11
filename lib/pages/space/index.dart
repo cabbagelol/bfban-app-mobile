@@ -3,6 +3,7 @@ import 'package:bfban/component/_achievement/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/component/_html/html.dart';
 import 'package:bfban/component/_html/htmlWidget.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
@@ -357,6 +358,10 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                             bottom: TabBar(
                               controller: tabController,
                               indicatorWeight: 6,
+                              labelColor: Color.lerp(Theme.of(context).tabBarTheme.labelColor, Theme.of(context).colorScheme.primary, .9),
+                              indicator: UnderlineTabIndicator(
+                                borderSide: BorderSide(color: Color.lerp(Theme.of(context).tabBarTheme.labelColor, Theme.of(context).colorScheme.primary, .9)!, width: 3),
+                              ),
                               tabs: const [
                                 Tab(child: Icon(Icons.info_outline_rounded)),
                                 Tab(child: Icon(Icons.front_hand)),
@@ -581,7 +586,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                 centerTitle: true,
               ),
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               ),
             );
         }

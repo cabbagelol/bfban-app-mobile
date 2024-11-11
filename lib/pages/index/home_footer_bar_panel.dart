@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
@@ -369,9 +370,7 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                                 statistics.load
                                     ? Column(
                                         children: [
-                                          ELuiLoadComponent(
-                                            type: "line",
-                                            lineWidth: 1,
+                                          LoadingWidget(
                                             color: Theme.of(context).progressIndicatorTheme.color!,
                                             size: 18,
                                           ),
@@ -424,9 +423,7 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                                 statistics.load
                                     ? Column(
                                         children: [
-                                          ELuiLoadComponent(
-                                            type: "line",
-                                            lineWidth: 1,
+                                          LoadingWidget(
                                             color: Theme.of(context).progressIndicatorTheme.color!,
                                             size: 18,
                                           ),
@@ -502,9 +499,7 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                         if (statistics.load)
                           Column(
                             children: [
-                              ELuiLoadComponent(
-                                type: "line",
-                                lineWidth: 1,
+                              LoadingWidget(
                                 color: Theme.of(context).progressIndicatorTheme.color!,
                                 size: 18,
                               ),
@@ -542,9 +537,7 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                         if (statistics.load)
                           Column(
                             children: [
-                              ELuiLoadComponent(
-                                type: "line",
-                                lineWidth: 1,
+                              LoadingWidget(
                                 color: Theme.of(context).progressIndicatorTheme.color!,
                                 size: 18,
                               ),
@@ -582,9 +575,7 @@ class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                         if (statistics.load)
                           Column(
                             children: [
-                              ELuiLoadComponent(
-                                type: "line",
-                                lineWidth: 1,
+                              LoadingWidget(
                                 color: Theme.of(context).progressIndicatorTheme.color!,
                                 size: 18,
                               ),

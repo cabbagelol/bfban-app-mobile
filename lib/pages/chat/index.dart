@@ -1,5 +1,6 @@
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_html/htmlWidget.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -377,7 +378,7 @@ class _MessagePageState extends State<MessagePage> {
                             : const SizedBox(
                                 height: 20,
                                 width: 20,
-                                child: CircularProgressIndicator(
+                                child: LoadingWidget(
                                   strokeWidth: 2,
                                 ),
                               ),
@@ -391,7 +392,7 @@ class _MessagePageState extends State<MessagePage> {
             return Scaffold(
               appBar: AppBar(),
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               ),
             );
         }

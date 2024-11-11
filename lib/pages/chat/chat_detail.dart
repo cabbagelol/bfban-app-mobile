@@ -1,3 +1,4 @@
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/data/index.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
@@ -141,7 +142,7 @@ class _chatDetailPageState extends State<ChatDetailPage> {
                 title: Text(userinfo.data!.username.toString()),
               ),
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               ),
             );
         }

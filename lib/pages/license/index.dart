@@ -1,4 +1,5 @@
 import 'package:bfban/component/_empty/index.dart';
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_license_page/flutter_custom_license_page.dart';
@@ -69,7 +70,7 @@ class _LicensePageState extends State<LicensePage> {
 
             case ConnectionState.waiting:
               return const Center(
-                child: CircularProgressIndicator(),
+                child: LoadingWidget(),
               );
             default:
               return const EmptyWidget();

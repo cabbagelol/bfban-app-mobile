@@ -1,3 +1,4 @@
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -141,7 +142,7 @@ class _HtmlTextTranslatorState extends State<HtmlTextTranslator> {
                                   margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 2),
                                   width: 10,
                                   height: 10,
-                                  child: const CircularProgressIndicator(strokeWidth: 1),
+                                  child: const LoadingWidget(strokeWidth: 1),
                                 )
                               : const Text('翻译'),
                         )

@@ -1,4 +1,5 @@
 /// 语言选择器
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/_load/index.dart';
@@ -111,10 +112,7 @@ class _LanguagePageState extends State<LanguagePage> {
             IconButton(
               padding: const EdgeInsets.all(16),
               onPressed: () {},
-              icon: ELuiLoadComponent(
-                type: "line",
-                lineWidth: 2,
-                color: Theme.of(context).progressIndicatorTheme.color!,
+              icon: LoadingWidget(
                 size: 20,
               ),
             )
