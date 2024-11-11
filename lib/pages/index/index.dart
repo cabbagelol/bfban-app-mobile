@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
@@ -167,29 +168,15 @@ class _IndexPageState extends State<IndexPage> {
         return Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 20),
-            child: Card(
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.9),
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 160),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-                child: Wrap(
-                  spacing: 10,
-                  children: [
-                    const SizedBox(
-                      height: 25,
-                      child: Center(
-                        child: Icon(Icons.casino_outlined, size: 25),
-                      ),
-                    ),
-                    const SizedBox(height: 20, width: 160),
-                    SizedBox(
-                      width: 150,
-                      child: LinearProgressIndicator(
-                        minHeight: 1,
-                        color: Theme.of(context).colorScheme.primary,
-                        backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-                      ),
-                    ),
-                  ],
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                child: LoadingAnimationWidget.beat(
+                  size: 50,
+                  color: Theme.of(context).colorScheme.primaryContainer,
                 ),
               ),
             ),

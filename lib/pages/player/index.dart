@@ -322,6 +322,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       _checkSubscribesStatus(result.data["data"]["subscribes"]);
     }
 
+    if (!mounted) return result;
     setState(() {
       subscribes["load"] = false;
     });

@@ -316,7 +316,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                               centerTitle: true,
                               background: snapshot.data["userAvatar"] != null ? Background(src: snapshot.data["userAvatar"].toString()) : null,
                               stretchModes: const [StretchMode.blurBackground, StretchMode.zoomBackground],
-                              titlePadding: EdgeInsets.only(top: _isSliverAppBarExpanded ? 0 : 80),
+                              titlePadding: EdgeInsets.only(top: _isSliverAppBarExpanded ? 0 : 40),
                               title: AnimatedOpacity(
                                 duration: Duration(milliseconds: 150),
                                 opacity: _isSliverAppBarExpanded ? 0 : 1,
@@ -358,13 +358,32 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                             bottom: TabBar(
                               controller: tabController,
                               indicatorWeight: 6,
-                              labelColor: Color.lerp(Theme.of(context).tabBarTheme.labelColor, Theme.of(context).colorScheme.primary, .9),
+                              labelColor: _isSliverAppBarExpanded ? Color.lerp(Theme.of(context).colorScheme.primaryContainer, Theme.of(context).colorScheme.primary, .5) : Color.lerp(Theme.of(context).tabBarTheme.labelColor, Theme.of(context).colorScheme.primary, .9),
                               indicator: UnderlineTabIndicator(
-                                borderSide: BorderSide(color: Color.lerp(Theme.of(context).tabBarTheme.labelColor, Theme.of(context).colorScheme.primary, .9)!, width: 3),
+                                borderSide: BorderSide(
+                                  color: _isSliverAppBarExpanded ? Color.lerp(Theme.of(context).colorScheme.primaryContainer, Theme.of(context).colorScheme.primary, .5)! : Color.lerp(Theme.of(context).tabBarTheme.labelColor, Theme.of(context).colorScheme.primary, .9)!,
+                                  width: 3,
+                                ),
                               ),
-                              tabs: const [
-                                Tab(child: Icon(Icons.info_outline_rounded)),
-                                Tab(child: Icon(Icons.front_hand)),
+                              tabs: [
+                                Tab(
+                                  child: Wrap(
+                                    spacing: 5,
+                                    children: [
+                                      Icon(Icons.info_outline_rounded),
+                                      Text(FlutterI18n.translate(context, "account.title")),
+                                    ],
+                                  ),
+                                ),
+                                Tab(
+                                  child: Wrap(
+                                    spacing: 5,
+                                    children: [
+                                      Icon(Icons.front_hand),
+                                      Text(FlutterI18n.translate(context, "report.title")),
+                                    ],
+                                  ),
+                                ),
                               ],
                               dividerColor: Theme.of(context).dividerColor,
                             ),
@@ -390,7 +409,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                         /// user info
                                         Container(
                                           width: MediaQuery.of(context).size.width,
-                                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                                          margin: const EdgeInsets.symmetric(horizontal: 15),
                                           child: Card(
                                             margin: EdgeInsets.zero,
                                             child: Padding(
@@ -523,7 +542,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                         if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
                                           Container(
                                             width: MediaQuery.of(context).size.width,
-                                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                                            margin: const EdgeInsets.symmetric(horizontal: 15),
                                             child: Text(
                                               FlutterI18n.translate(context, "profile.space.form.introduction"),
                                               style: const TextStyle(
@@ -533,7 +552,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                           ),
                                         if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
                                           Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 13),
+                                            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                                             child: Card(
                                               child: Padding(
                                                 padding: const EdgeInsets.all(10),
