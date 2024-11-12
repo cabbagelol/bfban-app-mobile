@@ -510,6 +510,102 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
     };
   }
 
+  /// [Event]
+  /// 详情更多
+  void _onPlayerMoreBottomSheet(context, snapshot) {
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      isDismissible: true,
+      isScrollControlled: false,
+      showDragHandle: true,
+      scrollControlDisabledMaxHeightRatio: .25,
+      clipBehavior: Clip.hardEdge,
+      builder: (BuildContext context) {
+        return Column(
+          children: <Widget>[
+            SizedBox(
+              height: 90 + 30 + 15,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                children: [
+                  // 分享
+                  GestureDetector(
+                    onTap: () => _onShare(snapshot.data),
+                    child: Column(
+                      children: [
+                        Card.outlined(
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            constraints: BoxConstraints(maxWidth: 70),
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.share_outlined,
+                                  color: Theme.of(context).iconTheme.color,
+                                  size: 30,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          FlutterI18n.translate(context, "share.title"),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  // 外部游览
+                  GestureDetector(
+                    onTap: () => _opEnExplorePlayerDetail(snapshot.data),
+                    child: Column(
+                      children: [
+                        Card.filled(
+                          child: Container(
+                            width: 70,
+                            height: 70,
+                            constraints: BoxConstraints(maxWidth: 70),
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.explore,
+                                  color: Theme.of(context).iconTheme.color,
+                                  size: 30,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          FlutterI18n.translate(context, "app.detail.openExplorePlayerDetail"),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     cheatersTabs = <Tab>[
@@ -548,62 +644,11 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                   ),
                 ),
                 actions: <Widget>[
-                  PopupMenuButton(
-                    padding: const EdgeInsets.all(16),
-                    icon: Icon(
-                      Icons.adaptive.more,
-                      color: Theme.of(context).iconTheme.color,
-                    ),
-                    offset: const Offset(0, 45),
-                    onSelected: (value) {
-                      switch (value) {
-                        case 1:
-                          _onShare(snapshot.data);
-                          break;
-                        case 2:
-                          _opEnExplorePlayerDetail(snapshot.data);
-                          break;
-                      }
-                    },
-                    itemBuilder: (context) {
-                      return [
-                        PopupMenuItem(
-                          value: 1,
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.share_outlined,
-                                color: Theme.of(context).iconTheme.color,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                FlutterI18n.translate(context, "share.title"),
-                                // style: TextStyle(color: Theme.of(context).popupMenuTheme.textStyle!.color),
-                              ),
-                            ],
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: 2,
-                          child: Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.explore,
-                                color: Theme.of(context).iconTheme.color,
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                FlutterI18n.translate(context, "app.detail.openExplorePlayerDetail"),
-                                // style: TextStyle(color: Theme.of(context).popupMenuTheme.textStyle!.color),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ];
-                    },
-                  ),
+                  IconButton(
+                      onPressed: () => _onPlayerMoreBottomSheet(context, snapshot),
+                      icon: Icon(
+                        Icons.adaptive.more,
+                      )),
                 ],
               ),
 

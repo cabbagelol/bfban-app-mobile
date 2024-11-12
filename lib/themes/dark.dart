@@ -27,6 +27,7 @@ class DarkTheme extends AppBaseThemeItem {
     name: "dark",
     isDefault: true,
     themeData: ThemeData(
+      brightness: Brightness.dark,
       // GENERAL CONFIGURATION
       applyElevationOverlayColor: true,
       useMaterial3: true,

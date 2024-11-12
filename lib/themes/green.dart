@@ -25,6 +25,7 @@ class GreenTheme extends AppBaseThemeItem {
     name: "green",
     isDefault: false,
     themeData: ThemeData(
+      brightness: Brightness.light,
       // GENERAL CONFIGURATION
       applyElevationOverlayColor: true,
       useMaterial3: true,

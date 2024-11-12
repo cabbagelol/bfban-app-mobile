@@ -26,6 +26,7 @@ class LightnesTheme extends AppBaseThemeItem {
     name: "lightnes",
     isDefault: true,
     themeData: ThemeData(
+      brightness: Brightness.light,
       // GENERAL CONFIGURATION
       applyElevationOverlayColor: true,
       useMaterial3: true,

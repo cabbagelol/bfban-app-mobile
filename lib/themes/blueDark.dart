@@ -25,6 +25,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
     name: "blueDark",
     isDefault: true,
     themeData: ThemeData(
+      brightness: Brightness.dark,
       // GENERAL CONFIGURATION
       applyElevationOverlayColor: true,
       useMaterial3: true,

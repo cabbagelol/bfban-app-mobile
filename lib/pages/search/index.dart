@@ -24,15 +24,15 @@ class SearchPage extends StatefulWidget {
   final dynamic data;
 
   const SearchPage({
-    Key? key,
+    super.key,
     this.data,
-  }) : super(key: key);
+  });
 
   @override
-  _SearchPageState createState() => _SearchPageState();
+  SearchPageState createState() => SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
+class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
   final Storage _storage = Storage();
@@ -453,9 +453,11 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                               ),
                               const SizedBox(height: 10),
                               if (isHotRecommendationLoad)
-                                LoadingWidget(
-                                  color: Theme.of(context).progressIndicatorTheme.color!,
-                                  size: 20,
+                                Center(
+                                  child: LoadingWidget(
+                                    color: Theme.of(context).progressIndicatorTheme.color!,
+                                    size: 20,
+                                  ),
                                 )
                               else
                                 searchTrends.isNotEmpty

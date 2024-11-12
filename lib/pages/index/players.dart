@@ -413,8 +413,11 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                   },
                 )
               else
-                const SliverFillRemaining(
-                  child: EmptyWidget(),
+                SliverFillRemaining(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 60),
+                    child: EmptyWidget(),
+                  ),
                 )
             ],
           ),

@@ -25,6 +25,7 @@ class PinkTheme extends AppBaseThemeItem {
     name: "pink",
     isDefault: false,
     themeData: ThemeData(
+      brightness: Brightness.light,
       // GENERAL CONFIGURATION
       applyElevationOverlayColor: true,
       useMaterial3: true,

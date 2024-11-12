@@ -1,6 +1,9 @@
 import 'package:bfban/provider/appInfo_provider.dart';
+import 'package:bfban/provider/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../_notNetwork/index.dart';
@@ -15,22 +18,33 @@ class EmptyWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AppInfoProvider>(builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
-      if (isChenkNetork && !appInfo.connectivity.isNetwork) {
+    return Consumer2<AppInfoProvider, ThemeProvider>(
+      builder: (BuildContext context, AppInfoProvider appInfo, ThemeProvider themeInfo, Widget? child) {
+        if (isChenkNetork && !appInfo.connectivity.isNetwork) {
+          return Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.symmetric(vertical: 20),
+            child: const Center(
+              child: notNetworkWidget(),
+            ),
+          );
+        }
+
         return Container(
           alignment: Alignment.center,
           margin: const EdgeInsets.symmetric(vertical: 20),
-          child: const Center(
-            child: notNetworkWidget(),
+          child: Opacity(
+            opacity: .6,
+            child: Column(
+              children: [
+                SvgPicture.asset("assets/images/empty_${themeInfo.currentThemeData.brightness.name}.svg"),
+                SizedBox(height: 8),
+                Text(FlutterI18n.translate(context, "basic.tip.notContent")),
+              ],
+            ),
           ),
         );
-      }
-
-      return Container(
-        alignment: Alignment.center,
-        margin: const EdgeInsets.symmetric(vertical: 20),
-        child: I18nText("basic.tip.notContent"),
-      );
-    });
+      },
+    );
   }
 }

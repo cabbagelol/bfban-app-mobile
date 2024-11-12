@@ -38,6 +38,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
     name: "mikuGreen",
     isDefault: false,
     themeData: ThemeData(
+      brightness: Brightness.light,
       // GENERAL CONFIGURATION
       applyElevationOverlayColor: true,
       useMaterial3: true,
