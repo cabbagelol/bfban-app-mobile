@@ -41,17 +41,24 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# Ios
+/ios/Podfile.lock
+
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
 /android/app/release
 /android/app/src/keystore
+/android/gradle/wrapper/gradle-wrapper.properties
+/android/Gemfile
+/android/Gemfile.lock
 
 # Flutter
 /linux
 /macos
 /windows
 /web
+/*.lock
 ./lib/main.*.dart
 ./lib/main.dev.dart
 ./lib/main.prod.dart
