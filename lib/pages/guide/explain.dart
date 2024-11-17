@@ -11,13 +11,13 @@ import '../../provider/translation_provider.dart';
 import '../../utils/http.dart';
 
 class GuideExplainPage extends StatefulWidget {
-  const GuideExplainPage({Key? key}) : super(key: key);
+  const GuideExplainPage({super.key});
 
   @override
-  _ExplainPageState createState() => _ExplainPageState();
+  ExplainPageState createState() => ExplainPageState();
 }
 
-class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveClientMixin {
+class ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveClientMixin {
   bool load = false;
 
   List news = [];
@@ -27,8 +27,8 @@ class _ExplainPageState extends State<GuideExplainPage> with AutomaticKeepAliveC
 
   @override
   void initState() {
-    super.initState();
     getNews();
+    super.initState();
   }
 
   /// [Response]

@@ -24,6 +24,24 @@ import 'user_center.dart';
 import 'home_footer_bar_panel.dart';
 import 'home.dart';
 
+List<dynamic> navs = [
+  {
+    "name": "home",
+    "icon": const Icon(Icons.home_outlined, size: 30),
+    "activeIcon": const Icon(Icons.home_sharp, size: 30),
+  },
+  {
+    "name": "player_list",
+    "icon": const Icon(Icons.view_list_outlined, size: 30),
+    "activeIcon": const Icon(Icons.view_list, size: 30),
+  },
+  {
+    "name": "profile",
+    "icon": const Icon(Icons.person_outline, size: 30),
+    "activeIcon": const Icon(Icons.person_sharp, size: 30),
+  },
+];
+
 class IndexPage extends StatefulWidget {
   const IndexPage({
     Key? key,
@@ -43,6 +61,8 @@ class _IndexPageState extends State<IndexPage> {
 
   GlobalKey<DragContainerState>? _drawerWidget = GlobalKey<DragContainerState>();
 
+  final StorageAccount _storageAccount = StorageAccount();
+
   // 首页下标
   int _currentPageIndex = 0;
 
@@ -50,24 +70,6 @@ class _IndexPageState extends State<IndexPage> {
   List<Widget> _listWidgetPage = [];
 
   DateTime? _lastPressedAt = DateTime(0); //上次点击时间
-
-  List<dynamic> navs = [
-    {
-      "name": "home",
-      "icon": const Icon(Icons.home_outlined, size: 30),
-      "activeIcon": const Icon(Icons.home_sharp, size: 30),
-    },
-    {
-      "name": "player_list",
-      "icon": const Icon(Icons.view_list_outlined, size: 30),
-      "activeIcon": const Icon(Icons.view_list, size: 30),
-    },
-    {
-      "name": "profile",
-      "icon": const Icon(Icons.person_outline, size: 30),
-      "activeIcon": const Icon(Icons.person_sharp, size: 30),
-    },
-  ];
 
   num reportsCount = 1;
 
@@ -83,6 +85,7 @@ class _IndexPageState extends State<IndexPage> {
       const UserCenterPage(),
     ];
     _onUserTokenExpired();
+    _onNavInit();
 
     super.initState();
   }
@@ -117,6 +120,19 @@ class _IndexPageState extends State<IndexPage> {
     }
 
     return reportsCount;
+  }
+
+  /// [Event]
+  /// 初始导航位置
+  void _onNavInit() async {
+    if (!mounted) return;
+
+    int localNavIndex = await _storageAccount.getConfiguration("userHomeNavPageIndex");
+    if (localNavIndex != _currentPageIndex) {
+      setState(() {
+        _currentPageIndex = localNavIndex;
+      });
+    }
   }
 
   /// [Event]

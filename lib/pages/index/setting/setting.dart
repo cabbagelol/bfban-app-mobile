@@ -1,13 +1,16 @@
 /// 设置中心
 
 import 'package:bfban/provider/theme_provider.dart';
+import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
+import '../index.dart';
 import '/provider/translation_provider.dart';
 import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
@@ -21,6 +24,25 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   final UrlUtil _urlUtil = UrlUtil();
+
+  final StorageAccount _storageAccount = StorageAccount();
+
+  int currNavIndex = 0;
+
+  @override
+  void initState() {
+    _getHomeNav();
+    super.initState();
+  }
+
+  /// [Event]
+  /// 读取首页加载模块配置
+  void _getHomeNav() async {
+    dynamic localNavIndex = await _storageAccount.getConfiguration("userHomeNavPageIndex"); // type int or bool
+    setState(() {
+      currNavIndex = localNavIndex ?? 0;
+    });
+  }
 
   /// [Event]
   /// 打开权限中心
@@ -141,6 +163,44 @@ class _SettingPageState extends State<SettingPage> {
             ),
             islink: true,
             onTap: () => _opEnTheme(),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, "app.setting.firstPage.title"),
+            label: FlutterI18n.translate(context, "app.setting.firstPage.describe"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            cont: Consumer<ThemeProvider>(
+              builder: (context, data, child) {
+                return Row(
+                  children: [
+                    DropdownButton(
+                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                      style: Theme.of(context).dropdownMenuTheme.textStyle,
+                      onChanged: (value) {
+                        setState(() {
+                          currNavIndex = value as int;
+                          _storageAccount.updateConfiguration("userHomeNavPageIndex", currNavIndex);
+                        });
+                      },
+                      value: currNavIndex,
+                      items: navs.asMap().entries.map<DropdownMenuItem<int>>((i) {
+                        return DropdownMenuItem(
+                          value: i.key,
+                          child: Text(
+                            FlutterI18n.translate(context, "${i.value['name']}.title"),
+                            style: TextStyle(fontSize: FontSize.large.value),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           const SizedBox(height: 10),
           EluiCellComponent(

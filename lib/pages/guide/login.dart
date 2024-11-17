@@ -7,13 +7,13 @@ import '../../utils/url.dart';
 import '../../widgets/wave_border.dart';
 
 class GuideLoginPage extends StatefulWidget {
-  const GuideLoginPage({Key? key}) : super(key: key);
+  const GuideLoginPage({super.key});
 
   @override
-  _GuideLoginPageState createState() => _GuideLoginPageState();
+  GuideLoginPageState createState() => GuideLoginPageState();
 }
 
-class _GuideLoginPageState extends State<GuideLoginPage> {
+class GuideLoginPageState extends State<GuideLoginPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   late String username = "";

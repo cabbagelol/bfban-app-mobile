@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_input/index.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -10,14 +9,15 @@ import '../../utils/index.dart';
 import 'customReply.dart';
 
 class CustomReplyEditPage extends StatefulWidget {
-  bool isEdit;
-  dynamic data;
+  final bool isEdit;
 
-  CustomReplyEditPage({
-    Key? key,
+  final dynamic data;
+
+  const CustomReplyEditPage({
+    super.key,
     this.isEdit = false,
     this.data,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomReplyEditPage> createState() => _CustomReplyEditPageState();
@@ -65,13 +65,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
 
   /// [Event]
   /// 添加模板
-  void _addTemplate() async {
-    dynamic ofLang = ProviderUtil().ofLang(context);
-    List languageFrom = await ofLang.getLangFrom();
-
-    // 从bfban-app网站配置清单中换取与bfban网站一致的lang语言
-    data.language = languageFrom.where((i) => i["fileName"] == ofLang.currentLang).last["name"];
-
+  void _onAddTemplate() async {
     StorageData customReplyData = await storage.get("customReply");
     List customReplyList = customReplyData.value ?? [];
     List list = customReplyList.where((i) => i["template"] == false).toList();
@@ -88,7 +82,11 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
       return;
     }
 
+    /// 当前模板创建时间戳
     data.creationTime = DateTime.now().millisecondsSinceEpoch;
+
+    /// 当前创建模板使用语言
+    data.language = ProviderUtil().ofLang(context).currentLang;
 
     /// 转义JSON格式，对齐bfban导出导入格式统一
     list.add(data.objectAsMap);
@@ -100,7 +98,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
 
   /// [Event]
   /// 编辑模板
-  void _editTemplate() async {
+  void _onEditTemplate() async {
     StorageData customReplyData = await storage.get("customReply");
     List customReplyList = customReplyData.value ?? [];
 
@@ -120,7 +118,7 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
   /// [Event]
   /// 确认模板
   void _done() async {
-    widget.isEdit ? _editTemplate() : _addTemplate();
+    widget.isEdit ? _onEditTemplate() : _onAddTemplate();
   }
 
   /// [Event]

@@ -239,6 +239,8 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   /// [Response]
   /// 获取追踪状态
   void _getIsSubscribes() async {
+    if (!mounted) return;
+
     setState(() {
       subscribes["load"] = true;
     });

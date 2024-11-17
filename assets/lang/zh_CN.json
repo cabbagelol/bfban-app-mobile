@@ -193,6 +193,10 @@
         "describe": "颜色外观,定时主题切换,字体大小",
         "textScaleFactor": "字体大小"
       },
+      "firstPage": {
+        "title": "首屏显示",
+        "describe": "控制程序首屏显示页"
+      },
       "cleanManagement": {
         "title": "清理",
         "describe": "删除本地数据,谨慎操作"
@@ -260,7 +264,7 @@
       "overflowLengthButton": "好的,添加描述框中"
     },
     "detail": {
-      "openExplorePlayerDetail": "游览器查看案件"
+      "openExplorePlayerDetail": "游览器查看"
     },
     "signin": {
       "title": "登录",

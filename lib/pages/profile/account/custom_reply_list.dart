@@ -11,13 +11,13 @@ import '/component/_html/htmlWidget.dart';
 import '/component/_customReply/customReply.dart';
 
 class CustomReplyListPage extends StatefulWidget {
-  const CustomReplyListPage({Key? key}) : super(key: key);
+  const CustomReplyListPage({super.key});
 
   @override
-  State<CustomReplyListPage> createState() => _customReplyPageState();
+  State<CustomReplyListPage> createState() => CustomReplyPageState();
 }
 
-class _customReplyPageState extends State<CustomReplyListPage> {
+class CustomReplyPageState extends State<CustomReplyListPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   final Storage storage = Storage();

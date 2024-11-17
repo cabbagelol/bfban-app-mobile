@@ -13,27 +13,27 @@ import 'package:provider/provider.dart';
 import '../../constants/api.dart';
 
 class CaptchaWidget extends StatefulWidget {
-  Function(Captcha)? onChange;
+  final Function(Captcha)? onChange;
 
-  String? id;
+  final String? id;
 
-  bool? disable;
+  final bool? disable;
 
-  int? seconds;
+  final int? seconds;
 
-  double? height;
+  final double? height;
 
-  BuildContext? context;
+  final BuildContext? context;
 
-  CaptchaWidget({
-    Key? key,
+  const CaptchaWidget({
+    super.key,
     this.context,
     this.id = "0",
     this.onChange,
     this.disable = false,
     this.seconds = 60,
     this.height = 45,
-  }) : super(key: key);
+  });
 
   @override
   State<CaptchaWidget> createState() => _CaptchaWidgetState();
@@ -177,7 +177,7 @@ class _CaptchaWidgetState extends State<CaptchaWidget> {
                   else
                     SvgPicture.string(
                       captchaStatus.captchaSvg,
-                      color: Theme.of(context).textTheme.bodyMedium!.color,
+                      colorFilter: ui.ColorFilter.mode(Theme.of(context).textTheme.bodyMedium!.color!, ui.BlendMode.srcIn),
                     ),
                 ],
               ),

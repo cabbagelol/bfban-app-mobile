@@ -52,6 +52,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
   /// [Response]
   /// 获取语言列表
   void getLanguageList() async {
+    if (!mounted) return;
     setState(() {
       load = true;
     });
@@ -62,7 +63,7 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
       method: Http.GET,
     );
 
-    if (result.statusCode == 200 && result.data.toString().isNotEmpty) {
+    if (result.data.toString().isNotEmpty) {
       setState(() {
         languages = result.data["child"] ??= [];
       });
