@@ -186,6 +186,10 @@
         "describe": "Color appearance, timed theme switching, font size",
         "textScaleFactor": "The font size"
       },
+      "firstPage": {
+        "title": "First Page",
+        "describe": "Control program first screen display page"
+      },
       "cleanManagement": {
         "title": "clean up",
         "describe": "Delete local data, and proceed with caution"

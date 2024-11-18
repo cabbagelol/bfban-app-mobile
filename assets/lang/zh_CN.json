@@ -151,7 +151,7 @@
         },
         "customReply": {
           "title": "自定义模板",
-          "describe": "回复模板"
+          "describe": "回复、判决、举报模板"
         },
         "media": {
           "title": "媒体库",
