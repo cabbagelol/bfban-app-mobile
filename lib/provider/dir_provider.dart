@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../utils/index.dart';
@@ -41,10 +40,11 @@ class DirProvider with ChangeNotifier {
       List<Future> waitMode = [];
       if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) waitMode.insert(0, getApplicationSupportDirectory());
       if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) waitMode.insert(1, getTemporaryDirectory());
-      if (Platform.isIOS || Platform.isMacOS)
+      if (Platform.isIOS || Platform.isMacOS) {
         waitMode.insert(2, getLibraryDirectory());
-      else
+      } else {
         waitMode.insert(2, a());
+      }
       if (Platform.isAndroid) waitMode.insert(3, getExternalStorageDirectories());
       if (Platform.isAndroid) waitMode.insert(4, getDownloadsDirectory());
 

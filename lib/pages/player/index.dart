@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 import 'dart:async';
-import 'dart:ui' as ui;
 import 'dart:ui';
 
 import 'package:bfban/component/_Time/index.dart';
@@ -485,7 +484,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
 
       String parameter = "";
 
-      switch (type) {
+      switch (int.parse(type.toString())) {
         case 0:
           // 回复
           parameter = jsonEncode({

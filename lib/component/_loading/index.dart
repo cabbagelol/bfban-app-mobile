@@ -17,7 +17,7 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return LoadingAnimationWidget.discreteCircle(
       size: size ?? 30,
-      color: color ?? Color.alphaBlend(Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryContainer)!,
+      color: color ?? Color.alphaBlend(Theme.of(context).colorScheme.primary, Theme.of(context).colorScheme.primaryContainer),
       secondRingColor: Theme.of(context).colorScheme.secondary,
       thirdRingColor: Theme.of(context).colorScheme.surface,
     );

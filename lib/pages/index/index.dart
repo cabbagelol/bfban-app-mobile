@@ -54,8 +54,6 @@ class IndexPage extends StatefulWidget {
 class _IndexPageState extends State<IndexPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
-  late BuildContext? _context;
-
   // 玩家列表
   GlobalKey<PlayerListPageState>? playerListPage = GlobalKey<PlayerListPageState>();
 
@@ -228,7 +226,6 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
 
     return WillPopScope(
       onWillPop: () async {

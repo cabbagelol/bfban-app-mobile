@@ -216,14 +216,12 @@ class _ReplyPageState extends State<ReplyPage> {
                                     ),
                                     onTap: () async {
                                       String html = await _opEnRichEdit(updateValue: field.value);
-                                      field.setState(() {
-                                        field.setValue(html);
-                                      });
+                                      field.didChange(html);
                                     },
                                   ),
                                   const Divider(height: 1),
                                   CustomReplyWidget(
-                                    type: CustomReplyType.General,
+                                    type: CustomReplyType.general,
                                     onChange: (String selectTemp) {
                                       setState(() {
                                         replyStatus.parame!.content = selectTemp;
@@ -272,9 +270,7 @@ class _ReplyPageState extends State<ReplyPage> {
                           theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
                           textInputAction: TextInputAction.done,
                           onChange: (data) {
-                            field.setState(() {
-                              field.setValue(data["value"]);
-                            });
+                            field.didChange(data["value"]);
                           },
                           right: CaptchaWidget(
                             onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),

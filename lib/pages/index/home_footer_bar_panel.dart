@@ -1,4 +1,5 @@
 /// 首页活动面板
+library homeFooterBarPanel;
 
 import 'dart:convert';
 
@@ -6,7 +7,6 @@ import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';

@@ -2,8 +2,6 @@
 /// 存放日历卡片的模板
 
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_button/index.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';

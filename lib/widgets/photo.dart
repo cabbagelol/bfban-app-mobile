@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/utils/index.dart';
 
-import '../provider/dir_provider.dart';
 
 enum PhotoViewFileType { file, network }
 

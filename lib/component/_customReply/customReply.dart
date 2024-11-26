@@ -4,23 +4,23 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../utils/index.dart';
 
-enum CustomReplyType { General, Report, Judgement }
+enum CustomReplyType { general, report, judgement }
 
 class CustomReplyWidget extends StatefulWidget {
-  Function? onChange;
-  CustomReplyType type;
+  final Function? onChange;
+  final CustomReplyType type;
 
-  CustomReplyWidget({
-    Key? key,
+  const CustomReplyWidget({
+    super.key,
     this.onChange,
     required this.type,
-  }) : super(key: key);
+  });
 
   @override
-  State<CustomReplyWidget> createState() => _customReplyWidgetState();
+  State<CustomReplyWidget> createState() => CustomReplyWidgetState();
 }
 
-class _customReplyWidgetState extends State<CustomReplyWidget> {
+class CustomReplyWidgetState extends State<CustomReplyWidget> {
   final UrlUtil _urlUtil = UrlUtil();
 
   final Storage storage = Storage();
@@ -57,32 +57,34 @@ class _customReplyWidgetState extends State<CustomReplyWidget> {
     StorageData customReplyData = await storage.get("customReply");
     List localReplyList = customReplyData.value ?? [];
 
+    if (!context.mounted) return;
+
     list.clear();
     switch (widget.type) {
-      case CustomReplyType.Judgement:
+      case CustomReplyType.judgement:
         list.addAll([
           CustomReplyItem(
             title: "stats",
             template: true,
             content: FlutterI18n.translate(context, "detail.info.fastReplies.stats"),
-            scopeUse: [CustomReplyType.Judgement],
+            scopeUse: [CustomReplyType.judgement],
           ),
           CustomReplyItem(
             title: "evidencePic",
             template: true,
             content: FlutterI18n.translate(context, "detail.info.fastReplies.evidencePic"),
-            scopeUse: [CustomReplyType.Judgement],
+            scopeUse: [CustomReplyType.judgement],
           ),
           CustomReplyItem(
             title: "evidenceVid",
             template: true,
             content: FlutterI18n.translate(context, "detail.info.fastReplies.evidenceVid"),
-            scopeUse: [CustomReplyType.Judgement],
+            scopeUse: [CustomReplyType.judgement],
           ),
         ]);
         break;
-      case CustomReplyType.Report:
-      case CustomReplyType.General:
+      case CustomReplyType.report:
+      case CustomReplyType.general:
       default:
         break;
     }

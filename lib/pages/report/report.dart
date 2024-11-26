@@ -4,13 +4,11 @@ import 'dart:core';
 import 'dart:convert';
 
 import 'package:bfban/component/_captcha/index.dart';
-import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/constants/api.dart';
@@ -336,9 +334,7 @@ class _ReportPageState extends State<ReportPage> {
                           placeholder: FlutterI18n.translate(context, "report.labels.hackerId"),
                           onChange: (data) {
                             String value = data["value"];
-                            field.setState(() {
-                              field.setValue(value);
-                            });
+                            field.didChange(value);
                             setState(() {
                               reportStatus.param!.originName = data["value"];
                             });
@@ -379,9 +375,7 @@ class _ReportPageState extends State<ReportPage> {
                   child: PopupMenuButton(
                     offset: const Offset(1, 55),
                     onSelected: (value) {
-                      field.setState(() {
-                        field.setValue(value);
-                      });
+                      field.didChange(value);
                       setState(() {
                         reportStatus.param!.game = value as String;
                       });
@@ -444,9 +438,7 @@ class _ReportPageState extends State<ReportPage> {
                           if (field.isValid)
                             IconButton(
                               onPressed: () {
-                                field.setState(() {
-                                  field.setValue("");
-                                });
+                                field.didChange("");
                               },
                               icon: const Icon(Icons.clear),
                             )
@@ -494,18 +486,15 @@ class _ReportPageState extends State<ReportPage> {
                                 child: Text(FlutterI18n.translate(context, "cheatMethods.${_util.queryCheatMethodsGlossary(method["value"])}.title")),
                               ),
                               onTap: () {
-                                field.setState(() {
-                                  method["select"] = method["select"] != true;
+                                method["select"] = method["select"] != true;
 
-                                  if (method["select"]) {
-                                    reportInfoCheatMethods.add(method["value"]);
-                                  } else {
-                                    reportInfoCheatMethods.remove(method["value"]);
-                                  }
+                                if (method["select"]) {
+                                  reportInfoCheatMethods.add(method["value"]);
+                                } else {
+                                  reportInfoCheatMethods.remove(method["value"]);
+                                }
 
-                                  field.setValue(reportInfoCheatMethods);
-                                });
-
+                                field.didChange(reportInfoCheatMethods);
                                 setState(() {
                                   reportStatus.param!.cheatMethods = reportInfoCheatMethods as List?;
                                 });
@@ -669,14 +658,12 @@ class _ReportPageState extends State<ReportPage> {
                                 ),
                                 onTap: () async {
                                   String html = await _opEnRichEdit(updateValue: field.value);
-                                  field.setState(() {
-                                    field.setValue(html);
-                                  });
+                                  field.didChange(html);
                                 },
                               ),
                               const Divider(height: 1),
                               CustomReplyWidget(
-                                type: CustomReplyType.General,
+                                type: CustomReplyType.general,
                                 onChange: (String selectTemp) {
                                   setState(() {
                                     reportStatus.param!.description = selectTemp;
@@ -725,9 +712,7 @@ class _ReportPageState extends State<ReportPage> {
                       theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
                       textInputAction: TextInputAction.done,
                       onChange: (data) {
-                        field.setState(() {
-                          field.setValue(data["value"]);
-                        });
+                        field.didChange(data["value"]);
                         setState(() {
                           reportStatus.param!.value = data["value"];
                         });

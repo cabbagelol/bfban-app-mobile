@@ -4,7 +4,6 @@ import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tip/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';

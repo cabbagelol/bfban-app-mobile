@@ -104,7 +104,7 @@ class _HtmlCoreState extends State<HtmlCore> {
   Widget build(BuildContext context) {
     return Html(
       data: renderView,
-      style: widget.style ?? _detailApi.styleHtml(context) ?? {},
+      style: widget.style ?? _detailApi.styleHtml(context),
       extensions: _detailApi.customRenders(),
     );
   }

@@ -10,7 +10,7 @@ enum GamesTagSize {
 class GamesTagWidget extends StatefulWidget {
   final dynamic data;
   final Widget? splitChar;
-  GamesTagSize? size;
+  late GamesTagSize? size;
 
   List<GamesTagSizeConfig>? sizeType = [
     GamesTagSizeConfig(
@@ -41,11 +41,11 @@ class GamesTagWidget extends StatefulWidget {
   );
 
   GamesTagWidget({
-    Key? key,
+    super.key,
     this.data,
     this.splitChar,
     GamesTagSize size = GamesTagSize.no2,
-  }) : super(key: key) {
+  }) {
     currentSizeType = sizeType![size.index];
   }
 

@@ -7,7 +7,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../constants/api.dart';
 import '../utils/index.dart';
-import 'appBuildContent.dart';
 
 class AppInfoProvider with ChangeNotifier {
   NetwrokConf conf = NetwrokConf();

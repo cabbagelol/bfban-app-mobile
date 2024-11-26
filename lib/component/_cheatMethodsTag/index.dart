@@ -8,9 +8,9 @@ class CheatMethodsTagWidget extends StatefulWidget {
   late List data;
 
   CheatMethodsTagWidget({
-    Key? key,
+    super.key,
     required this.data,
-  }) : super(key: key);
+  });
 
   @override
   State<CheatMethodsTagWidget> createState() => _CheatMethodsTagWidgetState();

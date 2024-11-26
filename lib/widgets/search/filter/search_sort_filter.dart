@@ -3,15 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import 'package:bfban/constants/api.dart';
-
 import '../../player/filter/class.dart';
 import '../../player/filter/framework.dart';
 
 class SearchSortFilterPanel extends FilterPanelWidget {
-  SearchSortFilterPanel({
-    Key? key,
-  }) : super(key: key);
+  SearchSortFilterPanel({super.key});
 
   @override
   SearchSortFilterPanelState createState() => SearchSortFilterPanelState();
@@ -59,9 +55,7 @@ class SearchSortFilterPanelState extends State<SearchSortFilterPanel> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 style: Theme.of(context).dropdownMenuTheme.textStyle,
                 onChanged: (value) {
-                  field.setState(() {
-                    field.setValue(value.toString());
-                  });
+                  field.didChange(value.toString());
 
                   setState(() {
                     widget.data!.values[0] = field.value;

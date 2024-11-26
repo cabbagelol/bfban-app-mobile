@@ -200,9 +200,7 @@ class JudgementPageState extends State<JudgementPage> {
                                     padding: const EdgeInsets.symmetric(horizontal: 10),
                                     style: Theme.of(context).dropdownMenuTheme.textStyle,
                                     onChanged: (value) {
-                                      field.setState(() {
-                                        field.setValue(value.toString());
-                                      });
+                                      field.didChange(value.toString());
 
                                       setState(() {
                                         manageStatus.parame!.action = field.value;
@@ -295,7 +293,7 @@ class JudgementPageState extends State<JudgementPage> {
                                           _reportInfoCheatMethods.remove(method["value"]);
                                         }
 
-                                        field.setValue(_reportInfoCheatMethods);
+                                        field.didChange(_reportInfoCheatMethods);
                                       });
                                     },
                                   );
@@ -365,18 +363,14 @@ class JudgementPageState extends State<JudgementPage> {
                                     ),
                                     onTap: () async {
                                       String html = await _opEnRichEdit(updateValue: field.value);
-                                      field.setState(() {
-                                        field.setValue(html);
-                                      });
+                                      field.didChange(html);
                                     },
                                   ),
                                   const Divider(height: 1),
                                   CustomReplyWidget(
-                                    type: CustomReplyType.Judgement,
+                                    type: CustomReplyType.judgement,
                                     onChange: (String selectTemp) {
-                                      field.setState(() {
-                                        field.setValue(selectTemp);
-                                      });
+                                      field.didChange(selectTemp);
                                       setState(() {
                                         manageStatus.parame!.content = selectTemp;
                                       });

@@ -1,7 +1,6 @@
 /// 设置中心
 
 import 'package:bfban/provider/theme_provider.dart';
-import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
@@ -12,7 +11,6 @@ import 'package:provider/provider.dart';
 
 import '../index.dart';
 import '/provider/translation_provider.dart';
-import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
 
 class SettingPage extends StatefulWidget {

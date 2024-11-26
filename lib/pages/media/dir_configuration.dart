@@ -2,18 +2,17 @@ import 'package:bfban/provider/dir_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-class directoryConfigurationPage extends StatefulWidget {
-  const directoryConfigurationPage();
+class DirectoryConfigurationPage extends StatefulWidget {
+  const DirectoryConfigurationPage({super.key});
 
   @override
-  State<directoryConfigurationPage> createState() => _directoryConfigurationPageState();
+  State<DirectoryConfigurationPage> createState() => DirectoryConfigurationPageState();
 }
 
-class _directoryConfigurationPageState extends State<directoryConfigurationPage> {
+class DirectoryConfigurationPageState extends State<DirectoryConfigurationPage> {
   List<DirItemStorePath> paths = [];
 
   Map configuration = {};

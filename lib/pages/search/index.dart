@@ -1,4 +1,5 @@
 /// 搜索
+library;
 
 import 'dart:convert';
 
@@ -10,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:bfban/widgets/index.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
 
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
@@ -118,9 +118,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       searchStatus.historyList = history;
 
       /// 如果初始页面包含内容则直接搜索
-      if (searchStatus.params.param != null) {
-        _onPenByType({"type": param["type"], "keyword": param["text"] ?? "player"});
-      }
+      _onPenByType({"type": param["type"], "keyword": param["text"] ?? "player"});
     });
   }
 

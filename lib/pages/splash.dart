@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:app_links/app_links.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
@@ -24,8 +22,6 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   final UrlUtil _urlUtil = UrlUtil();
 
   final Storage storage = Storage();
-
-  final _appLinks = AppLinks();
 
   // 状态机
   ProviderUtil providerUtil = ProviderUtil();

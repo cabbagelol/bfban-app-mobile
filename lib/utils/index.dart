@@ -1,5 +1,3 @@
-import './http_token.dart';
-
 export 'screen_util.dart';
 export 'url.dart';
 export 'http.dart';

@@ -173,7 +173,7 @@ class Routes {
     {
       "url": "/profile/dir/configuration",
       "item": (context, params) {
-        return const directoryConfigurationPage();
+        return const DirectoryConfigurationPage();
       },
     },
     {

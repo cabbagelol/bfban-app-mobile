@@ -188,6 +188,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Refresh(
       key: _refreshKey,
       onRefresh: _onRefresh,

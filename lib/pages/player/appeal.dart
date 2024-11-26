@@ -55,8 +55,6 @@ class _AppealPageState extends State<AppealPage> {
 
   @override
   void initState() {
-    if (widget.personaId! == null) Navigator.pop(context);
-
     playerStatus.parame!.dbId = widget.personaId!;
     _getCheatersInfo();
 
@@ -108,8 +106,6 @@ class _AppealPageState extends State<AppealPage> {
       setState(() {
         appealStatus.load = true;
       });
-
-      return;
 
       Response result = await Http.request(
         Config.httpHost["cheaters"],
@@ -380,9 +376,7 @@ class _AppealPageState extends State<AppealPage> {
                                       ),
                                       onTap: () async {
                                         String html = await _opEnRichEdit(updateValue: field.value);
-                                        field.setState(() {
-                                          field.setValue(html);
-                                        });
+                                        field.didChange(html);
                                       },
                                     ),
                                     const Divider(height: 1),

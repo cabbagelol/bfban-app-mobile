@@ -54,9 +54,7 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 style: Theme.of(context).dropdownMenuTheme.textStyle,
                 onChanged: (value) {
-                  field.setState(() {
-                    field.setValue(value.toString());
-                  });
+                  field.didChange(value.toString());
 
                   setState(() {
                     widget.data!.values[0] = field.value;

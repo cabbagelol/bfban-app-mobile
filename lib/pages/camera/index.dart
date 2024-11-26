@@ -4,22 +4,20 @@ import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:bfban/constants/api.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/dir_provider.dart';
-import '../../utils/url.dart';
 
 class CameraPage extends StatefulWidget {
-  const CameraPage({Key? key}) : super(key: key);
+  const CameraPage({super.key});
 
   @override
-  _CameraPageState createState() => _CameraPageState();
+  CameraPageState createState() => CameraPageState();
 }
 
-class _CameraPageState extends State<CameraPage> {
+class CameraPageState extends State<CameraPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   dynamic firstCamera;
@@ -194,6 +192,7 @@ class OpenMediaButton extends StatelessWidget {
   final void Function(CameraState) onTap;
 
   OpenMediaButton({
+    super.key,
     required this.state,
     this.theme,
     Widget Function()? iconBuilder,

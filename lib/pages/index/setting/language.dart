@@ -2,7 +2,6 @@
 import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 

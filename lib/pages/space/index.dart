@@ -1,8 +1,6 @@
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_achievement/index.dart';
-import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/component/_html/html.dart';
-import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:easy_refresh/easy_refresh.dart';

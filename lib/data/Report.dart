@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 
 import 'Captcha.dart';
 import 'Paging.dart';

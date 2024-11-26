@@ -1,7 +1,6 @@
 import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_input/index.dart';
-import 'package:flutter_elui_plugin/_load/index.dart';
 import 'package:flutter_elui_plugin/_tip/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -13,18 +12,18 @@ import '/utils/index.dart';
 import '/component/_captcha/index.dart';
 
 class UserSetUserNamePage extends StatefulWidget {
-  const UserSetUserNamePage({Key? key}) : super(key: key);
+  const UserSetUserNamePage({super.key});
 
   @override
-  State<UserSetUserNamePage> createState() => _setuserNamePageState();
+  State<UserSetUserNamePage> createState() => SetuserNamePageState();
 }
 
-class _setuserNamePageState extends State<UserSetUserNamePage> {
+class SetuserNamePageState extends State<UserSetUserNamePage> {
   int stepIndex = 0;
 
   int maxStep = 2;
 
-  String newname = "";
+  String newName = "";
 
   Map userInfo = {
     "attr": {"changeNameLeft": 0}
@@ -56,7 +55,7 @@ class _setuserNamePageState extends State<UserSetUserNamePage> {
   /// [Response]
   /// 保存表单
   void _onSave() async {
-    if (newname.isEmpty && captcha.value.isEmpty) return;
+    if (newName.isEmpty && captcha.value.isEmpty) return;
 
     setState(() {
       load = true;
@@ -64,7 +63,7 @@ class _setuserNamePageState extends State<UserSetUserNamePage> {
 
     Response result = await HttpToken.request(Config.httpHost["user_changeName"], method: Http.POST, data: {
       "data": {
-        "newname": newname,
+        "newname": newName,
       },
       "encryptCaptcha": captcha.hashCode,
       "captcha": captcha.value
@@ -207,7 +206,7 @@ class _setuserNamePageState extends State<UserSetUserNamePage> {
                         placeholder: FlutterI18n.translate(context, "signup.form.newUsername"),
                         onChange: (value) {
                           setState(() {
-                            newname = value;
+                            newName = value;
                           });
                         },
                       ),

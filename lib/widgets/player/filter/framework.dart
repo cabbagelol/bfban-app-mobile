@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'class.dart';
 
 abstract class FilterPanelWidget extends StatefulWidget {
-  FilterPanelData? data;
+  late FilterPanelData? data;
 
   FilterPanelWidget({
-    Key? key,
+    super.key,
     this.data,
-  }) : super(key: key);
+  });
 }

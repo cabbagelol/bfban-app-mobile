@@ -40,6 +40,7 @@ class _UserAvatarState extends State<UserAvatar> {
             case LoadState.completed:
               break;
           }
+          return null;
         },
       ),
     );
