@@ -10,6 +10,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../component/_refresh/index.dart';
 import '/constants/api.dart';
 import '/provider/package_provider.dart';
 import '/utils/index.dart';
@@ -24,6 +25,11 @@ class AppVersionPackagePage extends StatefulWidget {
 class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  PackageProvider _providerUtil = PackageProvider();
+
+  /// 列表
+  final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
+
   @override
   initState() {
     super.initState();
@@ -37,56 +43,131 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
     i["platform"].keys.toList().forEach((i) {
       platform.add(i);
     });
-    EluiPopupComponent(context)(
-      placement: EluiPopupPlacement.bottom,
-      theme: EluiPopupTheme(
-        popupBackgroundColor: Theme.of(context).bottomAppBarTheme.color!,
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${i["version"]}",
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(
-              height: 30,
-              child: Divider(height: 1),
-            ),
-            Wrap(
-              children: platform.map((item) {
-                return Row(
+
+    showModalBottomSheet<void>(
+      context: context,
+      useSafeArea: true,
+      isDismissible: true,
+      isScrollControlled: false,
+      showDragHandle: true,
+      clipBehavior: Clip.hardEdge,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "${i["version"]}",
+                style: const TextStyle(fontSize: 20),
+              ),
+              const SizedBox(
+                height: 30,
+                child: Divider(height: 1),
+              ),
+              Expanded(
+                flex: 1,
+                child: ListView(
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: Wrap(
-                        children: [
-                          const Icon(Icons.link_outlined),
-                          const SizedBox(width: 5),
-                          Text(item.toString()),
-                        ],
-                      ),
-                    ),
-                    if (i["platform"][item]["url"] != null || i["platform"][item]["url"] != "")
-                      GestureDetector(
-                        onTap: () {
-                          _urlUtil.onPeUrl(
-                            i["platform"][item]["url"],
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                        child: const Icon(Icons.download_for_offline),
-                      ),
+                    ...platform.map((item) {
+                      return Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Wrap(
+                                    children: [
+                                      const Icon(Icons.link_outlined),
+                                      const SizedBox(width: 5),
+                                      Text(item.toString()),
+                                    ],
+                                  ),
+                                ),
+                                if (i["platform"][item]["url"] != null || i["platform"][item]["url"] != "")
+                                  GestureDetector(
+                                    onTap: () {
+                                      _urlUtil.onPeUrl(
+                                        i["platform"][item]["url"],
+                                        mode: LaunchMode.externalApplication,
+                                      );
+                                    },
+                                    child: const Icon(Icons.download_for_offline),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    })
                   ],
-                );
-              }).toList(),
-            ),
-          ],
-        ),
-      ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
+    // EluiPopupComponent(context)(
+    //   placement: EluiPopupPlacement.bottom,
+    //   theme: EluiPopupTheme(
+    //     popupBackgroundColor: Theme.of(context).bottomAppBarTheme.color!,
+    //   ),
+    //   child: Container(
+    //     padding: const EdgeInsets.all(20),
+    //     child: Column(
+    //       crossAxisAlignment: CrossAxisAlignment.start,
+    //       children: [
+    //         Text(
+    //           "${i["version"]}",
+    //           style: const TextStyle(fontSize: 20),
+    //         ),
+    //         const SizedBox(
+    //           height: 30,
+    //           child: Divider(height: 1),
+    //         ),
+    //         Wrap(
+    //           children: platform.map((item) {
+    //             return Row(
+    //               children: [
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: Wrap(
+    //                     children: [
+    //                       const Icon(Icons.link_outlined),
+    //                       const SizedBox(width: 5),
+    //                       Text(item.toString()),
+    //                     ],
+    //                   ),
+    //                 ),
+    //                 if (i["platform"][item]["url"] != null || i["platform"][item]["url"] != "")
+    //                   GestureDetector(
+    //                     onTap: () {
+    //                       _urlUtil.onPeUrl(
+    //                         i["platform"][item]["url"],
+    //                         mode: LaunchMode.externalApplication,
+    //                       );
+    //                     },
+    //                     child: const Icon(Icons.download_for_offline),
+    //                   ),
+    //               ],
+    //             );
+    //           }).toList(),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+  }
+
+  Future _onRefresh() async {
+    _providerUtil.getOnlinePackage();
+
+    _refreshKey.currentState?.controller.finishRefresh();
+    _refreshKey.currentState?.controller.resetFooter();
   }
 
   @override
@@ -106,8 +187,9 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
       ),
       body: Consumer<PackageProvider>(
         builder: (BuildContext context, data, child) {
-          return RefreshIndicator(
-            onRefresh: data.getOnlinePackage,
+          return Refresh(
+            key: _refreshKey,
+            onRefresh: _onRefresh,
             child: Column(
               children: [
                 const SizedBox(height: 10),
@@ -116,11 +198,14 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
-                    cont: ClipRRect(
-                      child: Row(
+                    cont: Text.rich(
+                      TextSpan(
+                        style: TextStyle(
+                          fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
+                        ),
                         children: [
-                          Text(data.currentVersion.toString()),
-                          Text("\t(${data.buildNumber.toString()})"),
+                          TextSpan(text: data.currentVersion.toString()),
+                          TextSpan(text: "\t(${data.buildNumber.toString()})"),
                         ],
                       ),
                     ),
@@ -134,64 +219,73 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                     label: data.isNewVersion ? FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_new") : FlutterI18n.translate(context, "app.setting.versions.newVersionDescribe_old"),
                     theme: EluiCellTheme(labelColor: Theme.of(context).textTheme.displayMedium!.color),
                     islink: true,
-                    cont: data.onlineVersion.isNotEmpty ? Text(data.onlineVersion.toString()) : const LoadingWidget(strokeWidth: 2),
+                    cont: data.onlineVersion.isNotEmpty
+                        ? Text.rich(
+                            style: TextStyle(
+                              fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
+                            ),
+                            TextSpan(text: data.onlineVersion.toString()),
+                          )
+                        : const LoadingWidget(strokeWidth: 2),
                     onTap: () => _urlUtil.onPeUrl(Config.apiHost["app_web_site"]!.url),
                   ),
                 ),
-                const SizedBox(
-                  height: 20,
-                  child: Divider(height: 1),
-                ),
-                data.list.where((i) => i["version"] == data.currentVersion).toList().isEmpty
-                    ? SizedBox(
-                        height: 50,
-                        child: EluiTipComponent(
-                          type: EluiTip.warning,
-                          child: Text(FlutterI18n.translate(context, "app.setting.versions.superHairVersionTip")),
-                        ),
-                      )
-                    : Container(),
-                const SizedBox(height: 10),
+                SizedBox(height: 15),
+                Divider(height: 1),
                 Expanded(
                   flex: 1,
                   child: ListView(
-                    children: data.list.map((e) {
-                      return ListTile(
-                        title: Wrap(
-                          runAlignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            Text(e["version"].toString()),
-                            const SizedBox(width: 10),
-                            EluiTagComponent(
-                              value: "${FlutterI18n.translate(context, "app.setting.versions.type")}: ${e["stage"].toUpperCase()}",
-                              color: EluiTagType.none,
-                              size: EluiTagSize.no2,
-                              theme: EluiTagTheme(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    children: [
+                      data.list.where((i) => i["version"] == data.currentVersion).toList().isEmpty
+                          ? SizedBox(
+                              height: 50,
+                              child: RawChip(
+                                backgroundColor: Color.lerp(Theme.of(context).colorScheme.primary, Color(0xffc59b0b), .6),
+                                avatar: Icon(Icons.info_outline),
+                                label: Text(FlutterI18n.translate(context, "app.setting.versions.superHairVersionTip")),
                               ),
-                              onTap: () {},
-                            ),
-                            const SizedBox(width: 10),
-                            e["version"] == data.currentVersion
-                                ? EluiTagComponent(
-                                    value: "Current Version",
-                                    color: EluiTagType.none,
-                                    size: EluiTagSize.no2,
-                                    theme: EluiTagTheme(
-                                      backgroundColor: Theme.of(context).colorScheme.primary,
-                                      borderColor: Theme.of(context).bottomAppBarTheme.color!,
-                                    ),
-                                    onTap: () {},
-                                  )
-                                : Container(),
-                          ],
-                        ),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => _openAppDown(e),
-                      );
-                    }).toList(),
+                            )
+                          : Container(),
+                      const SizedBox(height: 10),
+                      ...data.list.map((e) {
+                        return ListTile(
+                          title: Text(
+                            e["version"].toString(),
+                            style: TextStyle(fontSize: Theme.of(context).textTheme.titleLarge!.fontSize),
+                          ),
+                          subtitle: Wrap(
+                            children: [
+                              EluiTagComponent(
+                                value: "${FlutterI18n.translate(context, "app.setting.versions.type")}: ${e["stage"].toUpperCase()}",
+                                color: EluiTagType.none,
+                                size: EluiTagSize.no2,
+                                theme: EluiTagTheme(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                                ),
+                                onTap: () {},
+                              ),
+                              const SizedBox(width: 10),
+                              e["version"] == data.currentVersion
+                                  ? EluiTagComponent(
+                                      value: "Current Version",
+                                      color: EluiTagType.none,
+                                      size: EluiTagSize.no2,
+                                      theme: EluiTagTheme(
+                                        backgroundColor: Theme.of(context).colorScheme.primary,
+                                        borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                                      ),
+                                      onTap: () {},
+                                    )
+                                  : Container(),
+                            ],
+                          ),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () => _openAppDown(e),
+                        );
+                      }),
+                    ],
                   ),
                 ),
               ],

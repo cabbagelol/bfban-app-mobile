@@ -156,7 +156,7 @@ class _SettingPageState extends State<SettingPage> {
                       child: const SizedBox(width: 20, height: 20),
                     ),
                     const SizedBox(width: 5),
-                    Text(data.currentThemeName),
+                    Text(data.currentThemeName.toUpperCase()),
                   ],
                 );
               },
@@ -180,6 +180,7 @@ class _SettingPageState extends State<SettingPage> {
                     DropdownButton(
                       dropdownColor: Theme.of(context).bottomAppBarTheme.color,
                       style: Theme.of(context).dropdownMenuTheme.textStyle,
+                      underline: SizedBox(),
                       onChanged: (value) {
                         setState(() {
                           currNavIndex = value as int;

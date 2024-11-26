@@ -1,21 +1,18 @@
-import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
 import '../../utils/index.dart';
-import '../../widgets/index.dart';
 
 class HtmlEmoji extends StatefulWidget {
-  Map? attributes;
-  Color? color;
-  Color? backgroundColor;
+  final Map? attributes;
+  final Color? color;
+  final Color? backgroundColor;
 
-  HtmlEmoji({
-    Key? key,
+  const HtmlEmoji({
+    super.key,
     this.attributes,
     this.color,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   State<HtmlEmoji> createState() => _HtmlImageState();

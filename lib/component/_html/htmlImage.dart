@@ -2,22 +2,21 @@ import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/elui.dart';
 
 import '../../utils/index.dart';
 import '../../widgets/index.dart';
 
 class HtmlImage extends StatefulWidget {
-  String? src;
-  Color? color;
-  Color? backgroundColor;
+  final String? src;
+  final Color? color;
+  final Color? backgroundColor;
 
-  HtmlImage({
-    Key? key,
+  const HtmlImage({
+    super.key,
     this.src,
     this.color,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   State<HtmlImage> createState() => _HtmlImageState();

@@ -1,0 +1,49 @@
+variables:
+  PLAYSTORE_CREDENTIALS: "/Users/cabbagelol/Code/bfban/bfban_app/script/bfban-assistant-app-95c5812d55bf.json"
+  APPSTORE_APIKEY: "QW779RO2G9MK"
+  APPSTORE_APIISSUER: "3ca124e7-eb3f-47a6-b21b-c288433feec4"
+output: installation/
+# flutter_distributor release --name build
+
+releases:
+  - name: build
+    jobs:
+      # Build and publish your ipa pkg to playstore
+      #      - name: build-aab
+      #        package:
+      #          platform: android
+      #          target: aab
+      #          build_args:
+      #
+      #            target: lib/main.prod.dart
+      #            target-platform: android-arm
+      #        # Publish to playstore
+      #        publish:
+      #          target: playstore
+      #          args:
+      #            build-number: "45"
+      #            package-name: com.cabbagelol.bfban
+      #            track: alpha
+
+      - name: build-android
+        package:
+          platform: android
+          target: apk
+          build_args:
+            target: lib/main.prod.dart
+            target-platform: android-arm
+        publish:
+          target: appcenter
+          args:
+            build-number: "45"
+
+
+      # Build and publish your ipa pkg to appstore
+#      - name: release-prod-ios
+#        package:
+#          platform: ios
+#          target: ipa
+#          build_args:
+#            target: lib/main.prod.dart
+#            export-options-plist: ios/dev_ExportOptions.plist
+#        publish_to: appstore
