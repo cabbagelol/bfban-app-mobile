@@ -116,11 +116,13 @@ class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
                   margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   child: EluiCellComponent(
                     title: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
-                    cont: Row(
-                      children: [
-                        Text(data.currentVersion.toString()),
-                        Text("\t(${data.buildNumber.toString()})"),
-                      ],
+                    cont: ClipRRect(
+                      child: Row(
+                        children: [
+                          Text(data.currentVersion.toString()),
+                          Text("\t(${data.buildNumber.toString()})"),
+                        ],
+                      ),
                     ),
                   ),
                 ),

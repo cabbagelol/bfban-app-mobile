@@ -24,12 +24,12 @@ import '../not_found/index.dart';
 
 class UserSpacePage extends StatefulWidget {
   // users Db id
-  late String? id;
+  final String? id;
 
-  UserSpacePage({
-    Key? key,
+  const UserSpacePage({
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
   UserSpacePageState createState() => UserSpacePageState();
@@ -357,7 +357,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                             ),
                             bottom: TabBar(
                               controller: tabController,
-                              indicatorWeight: 6,
+                              indicatorWeight: 8,
                               labelColor: _isSliverAppBarExpanded ? Color.lerp(Theme.of(context).colorScheme.primaryContainer, Theme.of(context).colorScheme.primary, .5) : Color.lerp(Theme.of(context).tabBarTheme.labelColor, Theme.of(context).colorScheme.primary, .9),
                               indicator: UnderlineTabIndicator(
                                 borderSide: BorderSide(
@@ -366,22 +366,26 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                 ),
                               ),
                               tabs: [
-                                Tab(
-                                  child: Wrap(
-                                    spacing: 5,
-                                    children: [
-                                      Icon(Icons.info_outline_rounded),
-                                      Text(FlutterI18n.translate(context, "account.title")),
-                                    ],
-                                  ),
-                                ),
-                                Tab(
-                                  child: Wrap(
-                                    spacing: 5,
-                                    children: [
-                                      Icon(Icons.front_hand),
-                                      Text(FlutterI18n.translate(context, "report.title")),
-                                    ],
+                                ...[
+                                  {"icon": Icons.info_outline_rounded, "text": "account.title"},
+                                  {"icon": Icons.front_hand, "text": "report.title"}
+                                ].map(
+                                  (tabItem) => Tab(
+                                    child: Wrap(
+                                      alignment: WrapAlignment.center,
+                                      spacing: 15,
+                                      runSpacing: 1,
+                                      children: [
+                                        Icon(tabItem["icon"] as IconData),
+                                        Text(
+                                          FlutterI18n.translate(context, tabItem["text"] as String),
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

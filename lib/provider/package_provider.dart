@@ -58,8 +58,8 @@ class PackageProvider with ChangeNotifier {
   /// [Event]
   /// 初始
   Future init() async {
-    await getPackage();
-    await getOnlinePackage();
+    // info: 由于getOnlinePackage在初始消耗大量时间，修改为Future.any 时代任意完成既可
+    await Future.any([getPackage(), getOnlinePackage()]);
 
     notifyListeners();
     return true;

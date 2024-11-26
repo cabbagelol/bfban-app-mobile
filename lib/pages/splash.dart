@@ -14,13 +14,13 @@ import '../provider/appBuildContent.dart';
 import '../provider/package_provider.dart';
 
 class SplashPage extends StatefulWidget {
-  const SplashPage({Key? key}) : super(key: key);
+  const SplashPage({super.key});
 
   @override
-  _SplashPageState createState() => _SplashPageState();
+  SplashPageState createState() => SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
+class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
   final Storage storage = Storage();
