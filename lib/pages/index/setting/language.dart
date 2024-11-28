@@ -152,7 +152,7 @@ class _LanguagePageState extends State<LanguagePage> {
                 groupValue: currentPageSelectLang,
                 title: Text(
                   lang["label"].toString(),
-                  style: Theme.of(context).listTileTheme.titleTextStyle,
+                  style: Theme.of(context).listTileTheme.titleTextStyle!.copyWith(fontSize: Theme.of(context).textTheme.titleLarge!.fontSize),
                 ),
                 subtitle: Wrap(
                   spacing: 4,
@@ -160,8 +160,13 @@ class _LanguagePageState extends State<LanguagePage> {
                   children: [
                     if (lang["members"] != null && lang["members"].isNotEmpty)
                       Wrap(
+                        spacing: 5,
+                        runSpacing: 3,
                         children: lang["members"].map<Widget>((i) {
-                          return Text(i["name"].toString());
+                          return ActionChip(
+                            label: Text(i["name"]),
+                            visualDensity: VisualDensity.compact,
+                          );
                         }).toList(),
                       )
                     else
