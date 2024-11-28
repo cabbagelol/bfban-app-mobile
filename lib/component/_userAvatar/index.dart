@@ -1,3 +1,4 @@
+import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:extended_image/extended_image.dart';
 
@@ -35,8 +36,9 @@ class _UserAvatarState extends State<UserAvatar> {
 
                 mirrorImageIndex += 1;
               });
-              break;
+              return Icon(Icons.image_not_supported_outlined);
             case LoadState.loading:
+              return LoadingWidget();
             case LoadState.completed:
               break;
           }

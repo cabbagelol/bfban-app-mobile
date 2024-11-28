@@ -117,81 +117,76 @@ class _GuidePageState extends State<GuidePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: SafeArea(
-        top: false,
-        child: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomRight,
-                  colors: ProviderUtil().ofTheme(context).currentThemeName == "default" ? [Colors.transparent, Colors.black54] : [Colors.transparent, Colors.black12],
-                ),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomRight,
+                colors: ProviderUtil().ofTheme(context).currentThemeName == "default" ? [Colors.transparent, Colors.black54] : [Colors.transparent, Colors.black12],
               ),
             ),
-            actions: [
-              IconButton(
-                padding: const EdgeInsets.all(16),
-                onPressed: () {
-                  _urlUtil.opEnPage(context, "/network");
-                },
-                icon: const Icon(Icons.electrical_services),
+          ),
+          actions: [
+            IconButton(
+              padding: const EdgeInsets.all(16),
+              onPressed: () {
+                _urlUtil.opEnPage(context, "/network");
+              },
+              icon: const Icon(Icons.electrical_services),
+            ),
+          ],
+          backgroundColor: Colors.transparent,
+        ),
+        body: PageTransitionSwitcher(
+          duration: const Duration(milliseconds: 150),
+          transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
+            return SharedAxisTransition(
+              fillColor: Theme.of(context).scaffoldBackgroundColor,
+              animation: primaryAnimation,
+              secondaryAnimation: secondaryAnimation,
+              transitionType: SharedAxisTransitionType.horizontal,
+              child: child,
+            );
+          },
+          child: guideListPage[guideListPageIndex],
+        ),
+        bottomNavigationBar: Container(
+          color: Theme.of(context).bottomSheetTheme.backgroundColor,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              AnimatedOpacity(
+                opacity: guideListPageIndex == 0 ? 0 : 1,
+                duration: const Duration(milliseconds: 300),
+                child: TextButton(
+                  onPressed: disablePrev ? null : _onBacktrack,
+                  child: Text(FlutterI18n.translate(context, "basic.button.prev")),
+                ),
+              ),
+              Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
+              ElevatedButton(
+                onPressed: disableNext ? null : _onNext,
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  disabledForegroundColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
+                  disabledBackgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.2),
+                ),
+                child: guideListPageIndex + 1 < guideListPage.length
+                    ? Text(FlutterI18n.translate(context, "basic.button.next"))
+                    : Text(
+                        FlutterI18n.translate(context, "app.guide.endNext"),
+                      ),
               ),
             ],
-            backgroundColor: Colors.transparent,
-          ),
-          body: PageTransitionSwitcher(
-            duration: const Duration(milliseconds: 150),
-            transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
-              return SharedAxisTransition(
-                fillColor: Theme.of(context).scaffoldBackgroundColor,
-                animation: primaryAnimation,
-                secondaryAnimation: secondaryAnimation,
-                transitionType: SharedAxisTransitionType.horizontal,
-                child: child,
-              );
-            },
-            child: guideListPage[guideListPageIndex],
-          ),
-          bottomNavigationBar: Container(
-            color: Theme.of(context).bottomSheetTheme.backgroundColor,
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                AnimatedOpacity(
-                  opacity: guideListPageIndex == 0 ? 0 : 1,
-                  duration: const Duration(milliseconds: 300),
-                  child: TextButton(
-                    onPressed: disablePrev ? null : _onBacktrack,
-                    child: Text(FlutterI18n.translate(context, "basic.button.prev")),
-                  ),
-                ),
-                Text("${guideListPageIndex + 1} / ${guideListPage.length}"),
-                ElevatedButton(
-                  onPressed: disableNext ? null : _onNext,
-                  style: ElevatedButton.styleFrom(
-                    elevation: 0,
-                    disabledForegroundColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
-                    disabledBackgroundColor: Theme.of(context).colorScheme.primary.withOpacity(.2),
-                  ),
-                  child: guideListPageIndex + 1 < guideListPage.length
-                      ? Text(FlutterI18n.translate(context, "basic.button.next"))
-                      : Text(
-                          FlutterI18n.translate(context, "app.guide.endNext"),
-                        ),
-                ),
-              ],
-            ),
           ),
         ),
       ),
-      onWillPop: () async {
-        return false;
-      },
     );
   }
 }

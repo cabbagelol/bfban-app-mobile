@@ -153,7 +153,7 @@ class _AppIndicatorState extends State<AppIndicator> {
             child: CircleAvatar(
               radius: 20,
               child: LoadingWidget(
-                size: 26,
+                size: 18,
                 color: _color,
               ),
             ),

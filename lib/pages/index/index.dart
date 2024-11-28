@@ -226,19 +226,20 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (_lastPressedAt == null || DateTime.now().difference(_lastPressedAt!) > const Duration(seconds: 1)) {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (status, data) {
+        // 在这里处理返回事件
+        if (_lastPressedAt == null || DateTime.now().difference(_lastPressedAt!) >= const Duration(seconds: 1)) {
           _lastPressedAt = DateTime.now();
 
-          EluiMessageComponent.warning(context)(
-            child: Text(FlutterI18n.translate(context, "app.basic.app_exit")),
-          );
-          return false;
+          EluiMessageComponent.warning(context)(child: Text(FlutterI18n.translate(context, "app.basic.app_exit")));
+
+          return;
         }
 
-        await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-        return false;
+        SystemNavigator.pop();
+        return;
       },
       child: Consumer<AppInfoProvider>(
         builder: (context, appInfo, child) {

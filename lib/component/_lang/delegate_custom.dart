@@ -42,50 +42,39 @@ class CustomTranslationLoader extends FileTranslationLoader {
 
   @override
   Future<String> loadString(final String fileName, final String extension) async {
-    Uri resolvedUri = baseUri.replace(path: '${baseUri.path}/$fileName.json');
-    StorageData languageData = await storage.get(packageName);
+    // 尝试从本地存储获取语言配置
+    final languageData = await storage.get(packageName);
+    final localConfig = languageData.value;
 
-    dynamic local = languageData.value;
-    dynamic networkLanguageResult = {};
-    dynamic localLanguageResult = {};
-    dynamic localStatusCodeResult = {};
+    // 优先使用本地缓存的语言配置
+    final networkLanguage = localConfig != null ? localConfig["listLangs"] : {};
 
-    // 从远程服务器取得LANG配置单，如果缓存则使用本地
-    if (local == null || local.toString().isEmpty) {
-      Response networkLang = await Http.request(
-        resolvedUri.path,
-        httpDioValue: "web_site",
-      );
-      if (networkLang.statusCode != null) {
-        networkLanguageResult = jsonDecode(networkLang.data);
-      }
-    } else {
-      networkLanguageResult = local["listLangs"];
+    // 构建语言文件名
+    final languagePath = "$basePath/${composeFileName()}.json";
+
+    // 尝试从本地加载语言文件
+    final localLanguage = await _loadJson(languagePath) ?? {};
+
+    // 尝试从本地加载状态码文件（可选）
+    final statusCodePath = "$basePath/${composeFileName()}_status_code.json";
+    final statusCodeMap = await _loadJson(statusCodePath) ?? {};
+
+    // 合并所有数据源
+    final mergedData = {
+      ...localLanguage,
+      ...statusCodeMap,
+      ...networkLanguage,
+    };
+
+    return jsonEncode(mergedData);
+  }
+
+  Future<Map<String, dynamic>> _loadJson(String path) async {
+    try {
+      final jsonString = await assetBundle.loadString(path, cache: true);
+      return jsonDecode(jsonString);
+    } catch (e) {
+      return <String, dynamic>{};
     }
-
-    // 本地载入
-    String localLanguagePath = "$basePath/${composeFileName()}.json";
-    String loadString = await assetBundle.loadString(localLanguagePath, cache: true);
-    if (loadString.isEmpty) {
-      String localFallbackFilePath = "$basePath/$fallbackFile.json";
-      localLanguageResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: true));
-    } else {
-      localLanguageResult = jsonDecode(loadString);
-    }
-
-    String localStatusCodePath = "$basePath/${composeFileName()}_status_code.json";
-    String loadStatusCodeString = await assetBundle.loadString(localStatusCodePath, cache: true);
-    if (loadStatusCodeString.isEmpty) {
-      String localFallbackFilePath = "$basePath/${fallbackFile}_status_code.json";
-      localStatusCodeResult = jsonDecode(await assetBundle.loadString(localFallbackFilePath, cache: true));
-    } else {
-      localStatusCodeResult = jsonDecode(loadStatusCodeString);
-    }
-
-    _decodedMap.addAll(localLanguageResult);
-    _decodedMap.addAll(localStatusCodeResult);
-    _decodedMap.addAll(networkLanguageResult);
-
-    return jsonEncode(_decodedMap);
   }
 }

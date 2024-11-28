@@ -15,10 +15,10 @@ class TranslationProvider with ChangeNotifier {
 
   // 语言配置列表
   // 如: { 'zh': {} }
-  Map _list = {};
+  final Map _list = {};
 
   // 默认语言
-  String _default = "zh_CN";
+  final String _default = "en";
 
   String get defaultLang => _default;
 
@@ -141,7 +141,7 @@ class PublicApiTranslationProvider with ChangeNotifier {
   String SELECTACTIVATE = ".selectActivate";
 
   // 默认激活名称
-  String _default = "youdao";
+  final String _default = "youdao";
 
   // 翻译工具是否打开
   bool _isSwitch = false;
