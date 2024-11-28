@@ -8,17 +8,10 @@ class Config {
   static final List _envStringNames = ["production", "development"];
   static String _envCurrentStringName = "";
   static Map<String, BaseUrl> apis = {};
-  static Map jiguans = {};
 
   /// 当前环境名称
   /// [_envStringNames] 所有
   static String get envCurrentName => _envCurrentStringName;
-
-  static Map get jiguan {
-    Map d = {"channel": "developer-default"};
-    d.addAll(jiguans);
-    return d;
-  }
 
   static BaseUrl apiUpload = BaseUrl(
     protocol: BaseUrlProtocol.HTTPS,
@@ -130,18 +123,16 @@ class Config {
     return list;
   }
 
-  Config.dev({required Map<String, BaseUrl> api, Map? jiguan, BaseUrl? apiUpload}) {
+  Config.dev({required Map<String, BaseUrl> api, BaseUrl? apiUpload}) {
     Config.apis.addAll(api);
-    if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
     if (apiUpload!.host!.isNotEmpty) Config.apiUpload = apiUpload;
     Config.env = Env.DEV;
     Config._envCurrentStringName = _envStringNames[Config.env.index];
   }
 
   // <String, BaseUrl>
-  Config.prod({required Map<String, BaseUrl> api, Map? jiguan, BaseUrl? apiUpload}) {
+  Config.prod({required Map<String, BaseUrl> api, BaseUrl? apiUpload}) {
     Config.apis.addAll(api);
-    if (jiguan!.isNotEmpty) Config.jiguans = jiguan;
     if (apiUpload!.host!.isNotEmpty) Config.apiUpload = apiUpload;
     Config.env = Env.PROD;
     Config._envCurrentStringName = _envStringNames[Config.env.index];

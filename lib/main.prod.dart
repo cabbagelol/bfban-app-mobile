@@ -14,10 +14,6 @@ void main() async {
       "network_bfv_hackers_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfvhackers.com", pathname: "/api/v1"),
       "network_service_request": BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "api.bfban.com", pathname: "/api"),
     },
-    jiguan: {
-      // In Disuse
-      "appKey": "",
-    },
     apiUpload: BaseUrl(protocol: BaseUrlProtocol.HTTPS, host: "bfban.gametools.network", pathname: "/api/"),
   );
 

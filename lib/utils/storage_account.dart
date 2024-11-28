@@ -40,12 +40,12 @@ class StorageAccount extends Storage {
   }
 
   /// 取得attr的值
-  getConfiguration(String key) async {
+  getConfiguration(String key, [dynamic defaultValue]) async {
     StorageData userData = await get(NAME);
     Map data = userData.value ??= {};
 
-    if (userData.code != 0) return false;
-    // * The configuration is usually of type bool
-    return Map.from(data).containsKey(key) ? data[key] : false;
+    if (userData.code != 0) return defaultValue ?? false;
+    // * The configuration is usually of defaultValue or type bool
+    return Map.from(data).containsKey(key) ? data[key] : defaultValue ?? false;
   }
 }

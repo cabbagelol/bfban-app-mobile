@@ -36,7 +36,7 @@ class _SettingPageState extends State<SettingPage> {
   /// [Event]
   /// 读取首页加载模块配置
   void _getHomeNav() async {
-    dynamic localNavIndex = await _storageAccount.getConfiguration("userHomeNavPageIndex"); // type int or bool
+    dynamic localNavIndex = await _storageAccount.getConfiguration("userHomeNavPageIndex", 1); // type int or bool
     setState(() {
       currNavIndex = localNavIndex ?? 0;
     });

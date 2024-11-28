@@ -381,7 +381,7 @@ class _AppealPageState extends State<AppealPage> {
                                     ),
                                     const Divider(height: 1),
                                     CustomReplyWidget(
-                                      type: CustomReplyType.General,
+                                      type: CustomReplyType.general,
                                       onChange: (String selectTemp) {
                                         setState(() {
                                           appealStatus.parame!.content = selectTemp;

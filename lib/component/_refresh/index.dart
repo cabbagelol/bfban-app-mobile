@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bfban/component/_refresh/headr.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -13,14 +14,14 @@ class Refresh extends StatefulWidget {
   final Axis triggerAxis;
 
   const Refresh({
-    Key? key,
+    super.key,
     this.onRefresh,
     this.onLoad,
     this.edgeOffset = 100,
     this.triggerOffset = 70,
     this.triggerAxis = Axis.vertical,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<Refresh> createState() => RefreshState();
@@ -46,12 +47,12 @@ class RefreshState extends State<Refresh> {
 
   Header? onHeader() {
     Header ch = const CupertinoHeader();
-    Header mh = MaterialHeader(
+    Header app = AppHeader(
       triggerOffset: widget.edgeOffset,
       backgroundColor: Theme.of(context).canvasColor,
       color: Theme.of(context).colorScheme.primary,
     );
-    return {'ios': ch, 'macos': ch, 'android': mh}['android'] ?? mh;
+    return {'ios': ch, 'macos': ch, 'android': app}['android'] ?? app;
   }
 
   @override
