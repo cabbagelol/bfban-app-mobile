@@ -1,0 +1,290 @@
+{
+  "app": {
+    "basic": {
+      "function": {
+        "auto": {
+          "title": "オートメーション",
+          "describe": "体系的な決定に基づく"
+        }
+      },
+      "message": {
+        "saveSuccess": "セーブ・サクセス",
+        "saveError": "セーブし損ねる"
+      },
+      "time": {
+        "seconds": "{s}秒前",
+        "minutes": "{s}分前",
+        "hours": "{s}時間前",
+        "today": "現時点では",
+        "yesterday": "昨日",
+        "beforeYesterday": "一昨日",
+        "dayAgo": "{日����������������������������"
+      },
+      "web_site": "ウェブサイトアドレス",
+      "setting": "設定する",
+      "app_exit": "プログラムを終了するには、もう一度クリックする。"
+    },
+    "media": {
+      "open": "チェックする",
+      "delete": "除去",
+      "fileInfo": "詳細情報",
+      "uploadFile": "ファイルをアップロードする",
+      "export": "導き出す",
+      "directory": {
+        "appInteriorDir": "内蔵アプリケーション",
+        "libraryDirectory": "共用",
+        "temporaryDirectory": "(キャッシュ",
+        "downloadsDirectory": "ダウンロード",
+        "external": "インデックス}を展開する"
+      },
+      "tab": {
+        "local": "この地",
+        "cloud": "クラウドライブラリ"
+      }
+    },
+    "home": {
+      "scancode": "撮る",
+      "takeLook": "周りを見渡せばいい。",
+      "needAccount": "この機能にはアカウントが必要なので、まずログインしてほしい",
+      "tabs": {
+        "activities": "どうたい",
+        "tourRecord": "遠足の記録",
+        "subscribes": "軌跡をたどる",
+        "trend": "ホットケース"
+      },
+      "screen": {
+        "banAppeal": "苦情",
+        "judgement": "判断",
+        "report": "届ける",
+        "signup": "新規ユーザー"
+      },
+      "paging": "ページ {num}"
+    },
+    "splash": {
+      "account": "アカウント情報を読み込む",
+      "appInitial": "イニシャライザー・アプリケーション",
+      "dir": "ストレージの初期構成",
+      "guide": "プライミング",
+      "message": "更新ニュース",
+      "networkError": "アプリケーションはネットワークに接続されておらず、プログラムはオンラインサービスに依存している。",
+      "theme": "初期設定のテーマ",
+      "token": "ユーザー・アイデンティティの設定",
+      "version": "バリデーション・バージョニング・サービス"
+    },
+    "guide": {
+      "endNext": "果たす",
+      "agreement": {
+        "title": "プロトコル",
+        "content": "合意内容 ...",
+        "errorContent": "ネットワークエラーでプロトコルの内容を取得できない。"
+      },
+      "login": {
+        "title": "ようこそ。",
+        "label": "す���にBFBANアカウントをお持ちの方は、今すぐログインできる。",
+        "welcomeBack": "私たちの '戦場'におかえりなさい。"
+      },
+      "permission": {
+        "title": "管轄範囲",
+        "label": "あなたのニーズに応じて、アプリケーションのアクセス許可を事前に承認するために、以下のユニットに触れる。これは、特定の機能の必要性で、必須ではありません、プログラムは、未承認のアクセス許可を求めるためにあなたをプロンプトが表示されます。",
+        "tip": "永久拒否」オプションがある場合は、「設定」>「アプリケーション」>「許可」でいつでも変更できる。",
+        "list": {
+          "manageExternalStorage": {
+            "name": "外部ストレージ",
+            "describe": "この機能は、外部ストレージからメディアクリップを読み書きするために使用される。"
+          },
+          "camera": {
+            "name": "監視カメラ",
+            "describe": "マルチメディアの撮影または録音で、メディア・コンテンツの多くを証拠として残すこと。"
+          },
+          "audio": {
+            "name": "可聴",
+            "describe": "マルチメディア・サウンドをキャプチャまたは録音する"
+          },
+          "videos": {
+            "name": "ビデオ",
+            "describe": "ビデオコンテンツの読み込み、素材のインポートまたはエクスポート、アップロードを使用する"
+          },
+          "photos": {
+            "name": "フォトアルバム",
+            "describe": "アルバムの内容を読む��素材の使用をインポートまたはエクスポートする、アップロードする"
+          },
+          "storage": {
+            "name": "ローカル記憶装置",
+            "describe": "アプリ内でユーザーが生成したデータ"
+          },
+          "notification": {
+            "name": "通知",
+            "describe": "外部通知を行う手順"
+          }
+        },
+        "status": {
+          "-1": "未開拓",
+          "0": "許可",
+          "1": "拒否された",
+          "2": "永久不合格",
+          "3": "制限付き"
+        }
+      },
+      "language": {
+        "waitDownloadHint": "翻訳ファイルがリモートサービスからダウンロードされるまでお待ちください。"
+      },
+      "agree": "上記の意見に同意する"
+    },
+    "setting": {
+      "title": "セットアップセンター",
+      "cell": {
+        "achievement": {
+          "title": "達成度",
+          "describe": "ユーザー実績"
+        },
+        "history": {
+          "title": "ツアーの歴史",
+          "describe": "過去のコンテンツを見る"
+        },
+        "subscribes": {
+          "title": "ケースの焦点",
+          "describe": "サブスクリプション・ケース"
+        },
+        "information": {
+          "title": "オンラインアカウント",
+          "describe": "ユーザー名の変更、パスワードの変更、アカウント設定"
+        },
+        "customReply": {
+          "title": "カスタマイズされたテンプレート",
+          "describe": "対応、判断、報告のテンプレート"
+        },
+        "media": {
+          "title": "メディアライブラリー",
+          "describe": "写真、ビデオ、ファイルのアップロード、管理"
+        },
+        "dirConfiguration": {
+          "title": "フォルダ構成",
+          "describe": "デフォルトフォルダ、ファイルスキャン",
+          "scanDirectoryTitle": "カタログをスキャンする",
+          "scanDirectoryDescription": "ファイルをスキャンするディレクトリを選択する（複数選択可）",
+          "defaultSavePathTitle": "デフォルトのダウンロード場所",
+          "defaultSavePathDirectory": "��組内ダウンロードの優先保管場所",
+          "leastOneHint": "少なくとも1つを選択する"
+        },
+        "website": {
+          "title": "ウェブサイトアドレス",
+          "describe": "UNBANウェブサイト"
+        },
+        "resources": {
+          "title": "アジュバント",
+          "describe": "ブートストラップ、Githubプログラム、ライセンス、アプリケーション・ドキュメント"
+        }
+      },
+      "versions": {
+        "title": "リリース",
+        "describe": "アップデート、最新バージョン、現行バージョン",
+        "currentVersion": "現行バージョン",
+        "newVersion": "新着情報",
+        "newVersionDescribe_new": "最新の",
+        "newVersionDescribe_old": "旧バージョン",
+        "type": "類型論",
+        "superHairVersionTip": "現在のバージョンは絶版かもしれない。"
+      },
+      "language": {
+        "title": "多言語主義"
+      },
+      "theme": {
+        "title": "テーマ",
+        "describe": "カラー外観,時間指定テーマ切り替え,フォントサイズ",
+        "textScaleFactor": "フォントサイズ"
+      },
+      "firstPage": {
+        "title": "スプラッシュ・スクリーン",
+        "describe": "制御プログラムの最初の画面表示ページ"
+      },
+      "cleanManagement": {
+        "title": "晴れる",
+        "describe": "ローカルデータの削除は慎重に。"
+      },
+      "appInfo": {
+        "title": "アプリケーション",
+        "describe": "番組アプリケーション情報を開く"
+      },
+      "notice": {
+        "title": "通知設定",
+        "describe": "対応する通知管理を適用する",
+        "tagstitle": "IDタグ",
+        "switch": {
+          "title": "アプリ・プッシュ",
+          "describe": "アプリからのプッシュメッセージを受信するかどうか"
+        },
+        "site": {
+          "title": "プッシュする",
+          "describe": "サイト内プッシュ・メッセージを受信するかどうか"
+        }
+      },
+      "support": {
+        "title": "アジュバント",
+        "guide": "アプリケー��ョンの初期起動",
+        "feedbackTitle": "フィードバック・グループ (612949946)",
+        "feedbackDescription": "著者に近い。",
+        "githubTitle": "ギサブ",
+        "githubDescription": "オープンソース・リポジトリへのアクセス",
+        "donateTitle": "寄付金",
+        "donateDescription": "BFBAN APPの開発者に寄付する。",
+        "licenseTitle": "ライセンス",
+        "licenseDescription": "プログラム・ライセンスのリスト",
+        "appDocumentationTitle": "アプリケーションノート",
+        "appDocumentationDescription": "ヘルプファイルのアドレス"
+      },
+      "publicTranslator": {
+        "title": "翻訳モジュール",
+        "describe": "翻訳キーの設定、スイッチ",
+        "switch": "配電盤",
+        "switchDescription": "翻訳モジュール起動スイッチ"
+      }
+    },
+    "networkDetection": {
+      "title": "ネットワーク・モニタリング",
+      "status": {
+        "0": "調査中",
+        "1": "通常サービス",
+        "2": "サービス異常",
+        "3": "サービス不明"
+      }
+    },
+    "userspace": {
+      "title": "ユーザーコントロール",
+      "introduction": "あの男は怠け者で、何も言わなかった。",
+      "row": {
+        "privilege": "威厳",
+        "joinTime": "参加時間",
+        "lastOnlineTime": "最終オンライン時間",
+        "reportCount": "レポート総数"
+      }
+    },
+    "report": {
+      "title": "選手を報告する",
+      "overflowLength": "最大長を超えるリンクを追加した場合は、リンクを削除するか、短いリンクを使用してください。下のボタンをクリックして、すべてのリンクを説明文に配置することをお勧めする。",
+      "overflowLengthButton": "よし、説明欄に追加してくれ。"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "ツーリスト・ビュー"
+    },
+    "signin": {
+      "title": "サインイン",
+      "panel": {
+        "title": "BFBAN",
+        "label": "BFBAN APPへようこそ",
+        "BfbanAccountButton": "BFBAN アカウントログイン",
+        "cancelButton": "キャンセル",
+        "signupButton": "BFBANアカウントに登録する"
+      },
+      "accountId": "アカウントID/Eメール",
+      "password": "暗号化",
+      "verificationCode": "CAPTCHA、チャレンジ・レスポンス・テストの一種（コンピューティング）"
+    },
+    "search": {
+      "historySearch": "履歴検索",
+      "hotRecommendation": "トップ・ピック"
+    },
+    "richedit": {
+      "placeholder": "何か書くのか？"
+    }
+  }
+}

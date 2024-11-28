@@ -125,7 +125,7 @@ class _IndexPageState extends State<IndexPage> {
   void _onNavInit() async {
     if (!mounted) return;
 
-    int localNavIndex = await _storageAccount.getConfiguration("userHomeNavPageIndex");
+    int localNavIndex = await _storageAccount.getConfiguration("userHomeNavPageIndex", 1);
     if (localNavIndex != _currentPageIndex) {
       setState(() {
         _currentPageIndex = localNavIndex;
@@ -226,7 +226,6 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return WillPopScope(
       onWillPop: () async {
         if (_lastPressedAt == null || DateTime.now().difference(_lastPressedAt!) > const Duration(seconds: 1)) {

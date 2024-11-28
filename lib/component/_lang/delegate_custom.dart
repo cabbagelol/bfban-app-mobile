@@ -1,4 +1,5 @@
 /// 语言包装
+library;
 
 import 'dart:async';
 import 'dart:convert';
@@ -17,7 +18,7 @@ class CustomTranslationLoader extends FileTranslationLoader {
 
   final Storage storage = Storage();
 
-  Map<dynamic, dynamic> _decodedMap = {};
+  final Map<dynamic, dynamic> _decodedMap = {};
 
   CustomTranslationLoader({
     required this.namespaces,
