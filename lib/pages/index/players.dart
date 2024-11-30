@@ -200,6 +200,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
     _storageAccount.updateConfiguration("playersTabInitialIndex", index);
 
+    setState(() {
+      playersStatus!.list!.clear();
+    });
     await getPlayerList();
 
     _refreshKey.currentState!.controller.resetHeader();
@@ -289,7 +292,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       body: Refresh(
         key: _refreshKey,
         edgeOffset: MediaQuery.of(context).padding.top,
-        triggerOffset: MediaQuery.of(context).viewPadding.bottom + kBottomNavigationBarHeight + 50,
+        triggerOffset: MediaQuery.of(context).viewPadding.bottom + kBottomNavigationBarHeight,
         onRefresh: _onRefresh,
         onLoad: _getMore,
         child: Scrollbar(

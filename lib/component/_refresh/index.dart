@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/component/_refresh/headr.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
@@ -46,13 +47,49 @@ class RefreshState extends State<Refresh> {
   }
 
   Header? onHeader() {
-    Header ch = const CupertinoHeader();
     Header app = AppHeader(
       triggerOffset: widget.edgeOffset,
       backgroundColor: Theme.of(context).canvasColor,
       color: Theme.of(context).colorScheme.primary,
     );
-    return {'ios': ch, 'macos': ch, 'android': app}['android'] ?? app;
+    return app;
+  }
+
+  Footer? onFooter() {
+    return ClassicFooter(
+      triggerOffset: widget.triggerOffset,
+      showText: false,
+      textStyle: TextStyle(fontSize: FontSize.large.value),
+      iconTheme: Theme.of(context).iconTheme.copyWith(size: FontSize.xLarge.value),
+      pullIconBuilder: (BuildContext content, IndicatorState state, double d) {
+        if (state.mode == IndicatorMode.processing || state.mode == IndicatorMode.ready) {
+          return LoadingWidget();
+        }
+
+        switch (state.result) {
+          case IndicatorResult.noMore:
+            return SizedBox(
+              child: const Icon(
+                Icons.inbox_outlined,
+              ),
+            );
+          case IndicatorResult.none:
+            return SizedBox();
+          case IndicatorResult.success:
+            return SizedBox(
+              child: const Icon(
+                Icons.done,
+              ),
+            );
+          case IndicatorResult.fail:
+            return SizedBox(
+              child: const Icon(
+                Icons.error_outline,
+              ),
+            );
+        }
+      },
+    );
   }
 
   @override
@@ -61,12 +98,7 @@ class RefreshState extends State<Refresh> {
       controller: controller,
       triggerAxis: widget.triggerAxis,
       header: onHeader(),
-      footer: ClassicFooter(
-        triggerOffset: widget.triggerOffset,
-        showText: false,
-        textStyle: TextStyle(fontSize: FontSize.large.value),
-        iconTheme: Theme.of(context).iconTheme.copyWith(size: FontSize.xLarge.value),
-      ),
+      footer: onFooter(),
       onRefresh: widget.onRefresh,
       onLoad: widget.onLoad,
       child: widget.child,
