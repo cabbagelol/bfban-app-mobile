@@ -1,4 +1,5 @@
 /// 版本
+library;
 
 import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +15,13 @@ import '/provider/package_provider.dart';
 import '/utils/index.dart';
 
 class AppVersionPackagePage extends StatefulWidget {
-  const AppVersionPackagePage({Key? key}) : super(key: key);
+  const AppVersionPackagePage({super.key});
 
   @override
-  _AppVersionPackagePageState createState() => _AppVersionPackagePageState();
+  AppVersionPackagePageState createState() => AppVersionPackagePageState();
 }
 
-class _AppVersionPackagePageState extends State<AppVersionPackagePage> {
+class AppVersionPackagePageState extends State<AppVersionPackagePage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   PackageProvider _providerUtil = PackageProvider();

@@ -1,4 +1,6 @@
 /// 全局状态管理
+library;
+
 import 'dart:convert' show jsonEncode;
 
 import 'package:app_links/app_links.dart';

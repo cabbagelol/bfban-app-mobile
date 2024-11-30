@@ -17,15 +17,15 @@ class MessagePage extends StatefulWidget {
   final String? id;
 
   const MessagePage({
-    Key? key,
+    super.key,
     this.id,
-  }) : super(key: key);
+  });
 
   @override
-  _MessagePageState createState() => _MessagePageState();
+  MessagePageState createState() => MessagePageState();
 }
 
-class _MessagePageState extends State<MessagePage> {
+class MessagePageState extends State<MessagePage> {
   Future? futureBuilder;
 
   GlobalKey buttonGlobalKey = GlobalKey();
@@ -37,7 +37,7 @@ class _MessagePageState extends State<MessagePage> {
   ScrollController? listViewController = ScrollController();
 
   /// 文本控制器
-  TextEditingController? textFieldcontroller;
+  TextEditingController? textFieldController;
 
   /// 自身信息
   Map? selfInfo;
@@ -68,14 +68,14 @@ class _MessagePageState extends State<MessagePage> {
     },
   };
 
-  double? H = 80.0;
+  double? semanticBoundsHeight = 80.0;
 
   @override
   void initState() {
     super.initState();
 
-    H = buttonGlobalKey.currentContext?.findRenderObject()!.semanticBounds.size.height;
-    textFieldcontroller = TextEditingController();
+    semanticBoundsHeight = buttonGlobalKey.currentContext?.findRenderObject()!.semanticBounds.size.height;
+    textFieldController = TextEditingController();
     selfInfo = ProviderUtil().ofUser(context).userinfo;
     providerMessage = ProviderUtil().ofChat(context);
 
@@ -124,7 +124,7 @@ class _MessagePageState extends State<MessagePage> {
     });
 
     // 更新
-    messageSendStatus!["data"]["content"] = textFieldcontroller!.text;
+    messageSendStatus!["data"]["content"] = textFieldController!.text;
     messageSendStatus!["data"]["toUserId"] = widget.id;
 
     Response result = await HttpToken.request(
@@ -152,12 +152,12 @@ class _MessagePageState extends State<MessagePage> {
   /// 发送按钮
   _healButton() {
     return () async {
-      if (textFieldcontroller!.text.toString().isEmpty) return;
+      if (textFieldController!.text.toString().isEmpty) return;
 
       Map messageContent = {
         "username": selfInfo!["username"],
         "createTime": DateTime.now().toString(),
-        "content": textFieldcontroller!.text.toString(),
+        "content": textFieldController!.text.toString(),
         "byUserId": selfInfo!["userId"],
         "toUserId": widget.id,
         "onLocal": true,
@@ -176,7 +176,7 @@ class _MessagePageState extends State<MessagePage> {
         _setLocal(messageContent);
 
         listViewController!.jumpTo(listViewController!.position.maxScrollExtent);
-        textFieldcontroller!.text = "";
+        textFieldController!.text = "";
       }
     };
   }
@@ -341,7 +341,7 @@ class _MessagePageState extends State<MessagePage> {
                           }).toList(),
                         ),
                       ),
-                      SizedBox(height: H),
+                      SizedBox(height: semanticBoundsHeight),
                     ],
                   );
                 },
@@ -356,7 +356,7 @@ class _MessagePageState extends State<MessagePage> {
                       flex: 1,
                       child: Card(
                         child: TextField(
-                          controller: textFieldcontroller,
+                          controller: textFieldController,
                           maxLines: 1,
                           maxLength: 10,
                           decoration: InputDecoration(

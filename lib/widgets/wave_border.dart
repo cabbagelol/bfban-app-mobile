@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-class WaveBorder extends StatefulWidget {
+class WaveBorderWidget extends StatefulWidget {
   final Widget? child; // 子控件
 
   final int count; // 波纹圈数
@@ -11,7 +11,7 @@ class WaveBorder extends StatefulWidget {
   final double borderWidth; // 波纹粗细
   final Duration duration; // 波纹扩散动画时长（毫秒）
 
-  const WaveBorder({
+  const WaveBorderWidget({
     super.key,
     this.child,
     this.count = 1,
@@ -23,10 +23,10 @@ class WaveBorder extends StatefulWidget {
   });
 
   @override
-  _WaveBorderState createState() => _WaveBorderState();
+  WaveBorderState createState() => WaveBorderState();
 }
 
-class _WaveBorderState extends State<WaveBorder> with TickerProviderStateMixin {
+class WaveBorderState extends State<WaveBorderWidget> with TickerProviderStateMixin {
   final List<AnimationController> _controllerList = []; // 动画控制器数组
   List<Widget> children = []; // 子组件数组（所有波纹 + child）
 

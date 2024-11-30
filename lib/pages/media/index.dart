@@ -21,18 +21,18 @@ import '/component/_Time/index.dart';
 import '/component/_empty/index.dart';
 
 class MediaPage extends StatefulWidget {
-  bool? isSelectFile;
+  final bool? isSelectFile;
 
-  MediaPage({
+  const MediaPage({
     super.key,
     this.isSelectFile = false,
   });
 
   @override
-  State<MediaPage> createState() => _mediaPageState();
+  State<MediaPage> createState() => MediaPageState();
 }
 
-class _mediaPageState extends State<MediaPage> {
+class MediaPageState extends State<MediaPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   final FileManagement _fileManagement = FileManagement();

@@ -11,13 +11,13 @@ import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
 
 class UserChangePasswordPage extends StatefulWidget {
-  const UserChangePasswordPage({Key? key}) : super(key: key);
+  const UserChangePasswordPage({super.key});
 
   @override
-  State<UserChangePasswordPage> createState() => _changePasswordPageState();
+  State<UserChangePasswordPage> createState() => ChangePasswordPageState();
 }
 
-class _changePasswordPageState extends State<UserChangePasswordPage> {
+class ChangePasswordPageState extends State<UserChangePasswordPage> {
   Captcha captcha = Captcha();
 
   bool load = false;

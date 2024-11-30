@@ -1,4 +1,5 @@
 /// 玩家列表
+library;
 
 import 'dart:ui';
 
@@ -18,8 +19,8 @@ import '/utils/index.dart';
 
 class PlayerListPage extends StatefulWidget {
   const PlayerListPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   PlayerListPageState createState() => PlayerListPageState();

@@ -18,12 +18,12 @@ enum TimeLineItemType {
 /// 时间轴卡
 /// Core Card
 class TimeLineBaseCard extends StatefulWidget {
-  List<Widget>? header;
-  Widget? headerSecondary;
-  Widget? content;
-  TimeLineItemBottomBtn? bottom;
-  Widget? button;
-  bool? isShowLine;
+  final List<Widget>? header;
+  final Widget? headerSecondary;
+  final Widget? content;
+  final TimeLineItemBottomBtn? bottom;
+  final Widget? button;
+  final bool? isShowLine;
 
   List? leftIconTypes = [
     CircleAvatar(
@@ -83,7 +83,7 @@ class TimeLineBaseCard extends StatefulWidget {
   CircleAvatar? leftIcon;
 
   TimeLineBaseCard({
-    Key? key,
+    super.key,
     TimeLineItemType type = TimeLineItemType.none,
     this.header,
     this.headerSecondary,
@@ -91,7 +91,7 @@ class TimeLineBaseCard extends StatefulWidget {
     this.button,
     this.bottom,
     this.isShowLine = true,
-  }) : super(key: key) {
+  }) {
     leftIcon = leftIconTypes![type.index];
   }
 

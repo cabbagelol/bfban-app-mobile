@@ -1,5 +1,5 @@
 /// 首页活动面板
-library homeFooterBarPanel;
+library;
 
 import 'dart:convert';
 
@@ -19,18 +19,18 @@ import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
 
 class HomeFooterBarPanel extends StatefulWidget {
-  GlobalKey<DragContainerState>? dragContainerKey;
+  final GlobalKey<DragContainerState>? dragContainerKey;
 
-  HomeFooterBarPanel({
-    Key? key,
+  const HomeFooterBarPanel({
+    super.key,
     this.dragContainerKey,
-  }) : super(key: key);
+  });
 
   @override
-  _HomeFooterBarPanelState createState() => _HomeFooterBarPanelState();
+  HomeFooterBarPanelState createState() => HomeFooterBarPanelState();
 }
 
-class _HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
+class HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
   final UrlUtil _urlUtil = UrlUtil();
 
   final Storage storage = Storage();

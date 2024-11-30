@@ -31,7 +31,7 @@ class DirectoryConfigurationPageState extends State<DirectoryConfigurationPage> 
     // 当可选的存储位置丢失（SD拔出），将代替原来
     if (paths.isNotEmpty && paths.where((element) => element.dirName == dirProvider!.defaultSavePathValue).isEmpty) {
       dirProvider!.defaultSavePathValue = paths.first.dirName;
-      dirProvider!.notifyListeners();
+      // dirProvider!.notifyListeners();
     }
 
     setState(() {

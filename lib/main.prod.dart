@@ -2,8 +2,6 @@ import 'constants/api.dart';
 import 'data/Url.dart';
 import 'main.dart';
 
-// impockage:jpush_flutter/jpush_flutter.dart';
-
 void main() async {
   Config.prod(
     api: {
@@ -19,12 +17,6 @@ void main() async {
 
   // google ads 初始
   // MobileAds.instance.initialize();
-
-  // 极光
-  // JPush().setup(
-  //   appKey: Config.jiguan["appKey"],
-  //   channel: Config.jiguan["channel"],
-  // );
 
   runMain();
 }

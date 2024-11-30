@@ -7,23 +7,23 @@ import '../../data/Theme.dart';
 import 'home_community_activitie.dart';
 import 'home_trend.dart';
 
-class homePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   final int num;
 
-  const homePage({
-    Key? key,
+  const HomePage({
+    super.key,
     this.num = 0,
-  }) : super(key: key);
+  });
 
   get getNum {
     return num;
   }
 
   @override
-  _homePageState createState() => _homePageState();
+  HomePageState createState() => HomePageState();
 }
 
-class _homePageState extends State<homePage> with TickerProviderStateMixin {
+class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   // 应用主体
   AppThemeItem? theme;
 

@@ -8,10 +8,10 @@ class SearchCommentCard extends StatelessWidget {
   final dynamic onTap;
 
   const SearchCommentCard({
-    Key? key,
+    super.key,
     required this.item,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

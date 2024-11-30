@@ -6,14 +6,14 @@ import '../not_found/index.dart';
 
 class RichEditPage extends StatefulWidget {
   const RichEditPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  _RichEditPageState createState() => _RichEditPageState();
+  RichEditPageState createState() => RichEditPageState();
 }
 
-class _RichEditPageState extends State<RichEditPage> {
+class RichEditPageState extends State<RichEditPage> {
   final Storage _storage = Storage();
 
   final GlobalKey<RichEditCoreState> _richEditCoreKey = GlobalKey<RichEditCoreState>();

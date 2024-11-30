@@ -1,4 +1,5 @@
 /// 主题管理
+library;
 
 import 'package:bfban/constants/theme.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +13,13 @@ import 'package:bfban/provider/theme_provider.dart';
 import '/data/index.dart';
 
 class ThemePage extends StatefulWidget {
-  const ThemePage({Key? key}) : super(key: key);
+  const ThemePage({super.key});
 
   @override
-  _ThemePageState createState() => _ThemePageState();
+  ThemePageState createState() => ThemePageState();
 }
 
-class _ThemePageState extends State<ThemePage> {
+class ThemePageState extends State<ThemePage> {
   Map fromData = {
     "textScaleFactor": 1.0,
     "selectThemeName": ThemeDefault,
@@ -297,14 +298,14 @@ class _ThemePageState extends State<ThemePage> {
                     padding: const EdgeInsets.all(10),
                     itemCount: themeData.getList!.length,
                     itemBuilder: (BuildContext context, int index) {
-                      AppThemeItem _i = themeData.getList![index];
-                      ThemeData _themedata = _i.themeData!;
+                      AppThemeItem i = themeData.getList![index];
+                      ThemeData themeDataItem = i.themeData!;
 
                       return GestureDetector(
                         child: Card(
                           clipBehavior: Clip.hardEdge,
-                          color: _themedata.scaffoldBackgroundColor,
-                          shape: _themedata.cardTheme.shape,
+                          color: themeDataItem.scaffoldBackgroundColor,
+                          shape: themeDataItem.cardTheme.shape,
                           child: Stack(
                             children: [
                               Positioned(
@@ -315,17 +316,17 @@ class _ThemePageState extends State<ThemePage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      _i.name,
+                                      i.name,
                                       style: TextStyle(
                                         fontSize: FontSize.xxLarge.value,
-                                        color: _themedata.textTheme.titleMedium!.color,
+                                        color: themeDataItem.textTheme.titleMedium!.color,
                                       ),
                                     ),
                                     Text(
                                       "test".toString(),
                                       style: TextStyle(
                                         fontSize: FontSize.large.value,
-                                        color: _themedata.textTheme.displayMedium!.color,
+                                        color: themeDataItem.textTheme.displayMedium!.color,
                                       ),
                                     )
                                   ],
@@ -341,48 +342,48 @@ class _ThemePageState extends State<ThemePage> {
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.bottomAppBarTheme.color,
+                                      color: themeDataItem.bottomAppBarTheme.color,
                                     ),
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.colorScheme.primary,
+                                      color: themeDataItem.colorScheme.primary,
                                     ),
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.colorScheme.error,
+                                      color: themeDataItem.colorScheme.error,
                                     ),
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.colorScheme.outline,
+                                      color: themeDataItem.colorScheme.outline,
                                     ),
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.colorScheme.surface,
+                                      color: themeDataItem.colorScheme.surface,
                                     ),
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.colorScheme.background,
+                                      color: themeDataItem.colorScheme.surface,
                                     ),
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.bottomNavigationBarTheme.backgroundColor,
+                                      color: themeDataItem.bottomNavigationBarTheme.backgroundColor,
                                     ),
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: _themedata.scaffoldBackgroundColor,
+                                      color: themeDataItem.scaffoldBackgroundColor,
                                     ),
                                   ],
                                 ),
                               ),
                               Visibility(
-                                visible: fromData["autoSwitchTheme"]! ? false : _i.name == (fromData["selectThemeName"] ?? ThemeDefault),
+                                visible: fromData["autoSwitchTheme"]! ? false : i.name == (fromData["selectThemeName"] ?? ThemeDefault),
                                 child: const Positioned(
                                   top: 0,
                                   right: 0,
@@ -401,7 +402,7 @@ class _ThemePageState extends State<ThemePage> {
                         onTap: () {
                           if (fromData["autoSwitchTheme"]) return;
                           setState(() {
-                            fromData["selectThemeName"] = _i.name;
+                            fromData["selectThemeName"] = i.name;
                           });
                         },
                       );

@@ -13,7 +13,7 @@ class ThemeProvider with ChangeNotifier {
 
   Storage storage = Storage();
 
-  _TimeProviderInterval timeProviderInterval = _TimeProviderInterval(
+  final timeProviderInterval = _TimeProviderInterval(
     value: DateTime(DateTime.now().year, 0, 0, 7),
   );
 

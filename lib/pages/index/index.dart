@@ -1,4 +1,5 @@
 /// 功能：首页控制器
+library;
 
 import 'dart:convert';
 import 'dart:math';
@@ -55,9 +56,9 @@ class _IndexPageState extends State<IndexPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 玩家列表
-  GlobalKey<PlayerListPageState>? playerListPage = GlobalKey<PlayerListPageState>();
+  final GlobalKey<PlayerListPageState>? playerListPage = GlobalKey<PlayerListPageState>();
 
-  GlobalKey<DragContainerState>? _drawerWidget = GlobalKey<DragContainerState>();
+  final GlobalKey<DragContainerState> _drawerWidget = GlobalKey<DragContainerState>();
 
   final StorageAccount _storageAccount = StorageAccount();
 
@@ -78,7 +79,7 @@ class _IndexPageState extends State<IndexPage> {
   @override
   void initState() {
     _listWidgetPage = [
-      const homePage(),
+      const HomePage(),
       PlayerListPage(key: playerListPage),
       const UserCenterPage(),
     ];

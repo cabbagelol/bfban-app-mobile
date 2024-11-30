@@ -1,4 +1,5 @@
 /// 支持
+library;
 
 import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +11,13 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SupportPage extends StatefulWidget {
-  const SupportPage({Key? key}) : super(key: key);
+  const SupportPage({super.key});
 
   @override
-  _SupportPageState createState() => _SupportPageState();
+  SupportPageState createState() => SupportPageState();
 }
 
-class _SupportPageState extends State<SupportPage> {
+class SupportPageState extends State<SupportPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   @override

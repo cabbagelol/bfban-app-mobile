@@ -30,7 +30,7 @@ class GameTypeRadioWidget extends StatelessWidget {
           ),
         ),
         elevation: 0,
-        color: index ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.background,
+        color: index ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.surface,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
           child: child!,

@@ -18,18 +18,18 @@ import '../../component/_customReply/customReply.dart';
 import '../../component/_html/html.dart';
 
 class ReplyPage extends StatefulWidget {
-  dynamic data;
+  final dynamic data;
 
-  ReplyPage({
-    Key? key,
+  const ReplyPage({
+    super.key,
     this.data,
-  }) : super(key: key);
+  });
 
   @override
-  _ReplyPageState createState() => _ReplyPageState();
+  ReplyPageState createState() => ReplyPageState();
 }
 
-class _ReplyPageState extends State<ReplyPage> {
+class ReplyPageState extends State<ReplyPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   final Storage _storage = Storage();

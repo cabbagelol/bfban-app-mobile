@@ -18,9 +18,9 @@ class TimeLine extends StatefulWidget {
   final PlayerStatus playerStatus;
 
   const TimeLine({
-    Key? key,
+    super.key,
     required this.playerStatus,
-  }) : super(key: key);
+  });
 
   @override
   State<TimeLine> createState() => TimeLineState();

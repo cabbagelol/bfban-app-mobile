@@ -172,42 +172,44 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   /// [Response]
   /// 账户搜索
   void _onSearch({isButtonClick = true}) async {
-    _titleSearchWidgetKey.currentState?.unFocus();
+    try {
+      _titleSearchWidgetKey.currentState?.unFocus();
 
-    if (searchStatus.load && !isButtonClick) return;
-    if (searchStatus.params.param.isEmpty || searchStatus.params.param.length < 3) return;
+      if (searchStatus.load && !isButtonClick) return;
+      if (searchStatus.params.param.isEmpty || searchStatus.params.param.length < 3) return;
 
-    setState(() {
-      searchStatus.load = true;
-    });
-
-    request = Http.request(
-      Config.httpHost["search"],
-      method: Http.GET,
-      parame: searchStatus.params.toMap,
-    );
-    Response result = await request;
-
-    if (result.data["success"] == 1) {
-      if (!mounted) return;
       setState(() {
-        searchStatus.list.set(searchTabsType[searchTabsIndex]["value"], result.data["data"]);
+        searchStatus.load = true;
+      });
+
+      request = Http.request(
+        Config.httpHost["search"],
+        method: Http.GET,
+        parame: searchStatus.params.toMap,
+      );
+      Response result = await request;
+
+      if (result.data["success"] == 1) {
+        if (!mounted) return;
+        setState(() {
+          searchStatus.list.set(searchTabsType[searchTabsIndex]["value"], result.data["data"]);
+          searchStatus.load = false;
+          isFirstScreen = false;
+
+          _setSearchHistory();
+        });
+        return;
+      }
+    } catch (e) {
+      EluiMessageComponent.error(context)(
+        child: Text(FlutterI18n.translate(context, "$e")),
+      );
+    } finally {
+      setState(() {
         searchStatus.load = false;
         isFirstScreen = false;
-
-        _setSearchHistory();
       });
-      return;
     }
-
-    setState(() {
-      searchStatus.load = false;
-      isFirstScreen = false;
-    });
-
-    EluiMessageComponent.error(context)(
-      child: Text(FlutterI18n.translate(context, result.toString())),
-    );
   }
 
   /// [Response]
@@ -317,7 +319,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
             child: SearchAppBarWidget(
               key: _titleSearchWidgetKey,
               controller: _searchController,
-              theme: titleSearchTheme.white,
+              theme: TitleSearchTheme.white,
               laterInterChild: _searchController.text.isNotEmpty
                   ? SearchFilterPanel(
                       onChange: (Map value) {
@@ -546,7 +548,7 @@ class SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
 }
 
 class SearchHotContentWidget extends StatelessWidget {
-  const SearchHotContentWidget({Key? key}) : super(key: key);
+  const SearchHotContentWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

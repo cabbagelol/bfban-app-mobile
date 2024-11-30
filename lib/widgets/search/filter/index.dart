@@ -1,5 +1,4 @@
 import 'package:bfban/widgets/search/filter/search_sort_filter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -9,10 +8,10 @@ import '../../player/filter/framework.dart';
 class SearchFilterPanel extends StatefulWidget {
   final Function(Map value) onChange;
 
-  SearchFilterPanel({
-    Key? key,
+  const SearchFilterPanel({
+    super.key,
     required this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   State<SearchFilterPanel> createState() => _SearchFilterWidgetState();
@@ -23,7 +22,7 @@ class _SearchFilterWidgetState extends State<SearchFilterPanel> {
   final Map _playerFilter = {"status": 0};
 
   // 原始筛选表单
-  final Map _primitive_from = {};
+  final Map _primitiveFrom = {};
 
   // 确定筛选表单
   final Map _from = {};
@@ -42,7 +41,7 @@ class _SearchFilterWidgetState extends State<SearchFilterPanel> {
   bool diffFrom() {
     bool hasChange = false;
     _from.forEach((key, value) {
-      if (_primitive_from.containsKey(key) && _primitive_from[key] != value || _from.keys.length != _primitive_from.keys.length) {
+      if (_primitiveFrom.containsKey(key) && _primitiveFrom[key] != value || _from.keys.length != _primitiveFrom.keys.length) {
         hasChange = true;
       }
     });
@@ -54,7 +53,7 @@ class _SearchFilterWidgetState extends State<SearchFilterPanel> {
       _playerFilter["status"] = 0;
     });
 
-    widget.onChange(_primitive_from);
+    widget.onChange(_primitiveFrom);
 
     Navigator.pop(context);
   }

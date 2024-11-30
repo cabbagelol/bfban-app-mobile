@@ -10,7 +10,7 @@ import '/data/index.dart';
 import '/provider/translation_provider.dart';
 
 class PublicTranslatorPage extends StatefulWidget {
-  PublicTranslatorPage({Key? key});
+  const PublicTranslatorPage({super.key});
 
   @override
   State<PublicTranslatorPage> createState() => _PublicTranslatorPageState();

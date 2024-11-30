@@ -9,13 +9,13 @@ import '/data/index.dart';
 import '/utils/index.dart';
 
 class AppNetworkPage extends StatefulWidget {
-  const AppNetworkPage({Key? key}) : super(key: key);
+  const AppNetworkPage({super.key});
 
   @override
-  _AppNetworkPageState createState() => _AppNetworkPageState();
+  AppNetworkPageState createState() => AppNetworkPageState();
 }
 
-class _AppNetworkPageState extends State<AppNetworkPage> {
+class AppNetworkPageState extends State<AppNetworkPage> {
   AppNetworkStatus appNetworkStatus = AppNetworkStatus(
     list: [],
   );

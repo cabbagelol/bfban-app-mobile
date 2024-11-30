@@ -15,15 +15,15 @@ class ChatDetailPage extends StatefulWidget {
   final String? id;
 
   const ChatDetailPage({
-    Key? key,
+    super.key,
     required this.id,
-  }) : super(key: key);
+  });
 
   @override
-  _chatDetailPageState createState() => _chatDetailPageState();
+  ChatDetailPageState createState() => ChatDetailPageState();
 }
 
-class _chatDetailPageState extends State<ChatDetailPage> {
+class ChatDetailPageState extends State<ChatDetailPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   Future? futureBuilder;

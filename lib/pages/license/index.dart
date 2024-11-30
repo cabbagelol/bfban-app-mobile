@@ -8,7 +8,7 @@ import '../../component/_html/html.dart';
 import '../../component/_html/htmlWidget.dart';
 
 class LicensePage extends StatefulWidget {
-  const LicensePage({Key? key}) : super(key: key);
+  const LicensePage({super.key});
 
   @override
   State<LicensePage> createState() => _LicensePageState();

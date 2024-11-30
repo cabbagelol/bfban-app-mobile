@@ -1,4 +1,6 @@
 /// 通知
+library;
+
 import 'package:flutter/material.dart';
 
 import 'package:bfban/provider/chat_provider.dart';
@@ -9,13 +11,13 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class NoticePage extends StatefulWidget {
-  const NoticePage({Key? key}) : super(key: key);
+  const NoticePage({super.key});
 
   @override
-  _NoticePageState createState() => _NoticePageState();
+  NoticePageState createState() => NoticePageState();
 }
 
-class _NoticePageState extends State<NoticePage> {
+class NoticePageState extends State<NoticePage> {
   @override
   void initState() {
     super.initState();

@@ -7,9 +7,9 @@ class QuoteCard extends StatefulWidget {
   final Map? data;
 
   const QuoteCard({
-    Key? key,
+    super.key,
     this.data,
-  }) : super(key: key);
+  });
 
   @override
   State<QuoteCard> createState() => _QuoteCardState();

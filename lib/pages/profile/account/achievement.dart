@@ -9,7 +9,7 @@ import '/data/index.dart';
 import '/utils/index.dart';
 
 class UserAchievementPage extends StatefulWidget {
-  const UserAchievementPage({Key? key}) : super(key: key);
+  const UserAchievementPage({super.key});
 
   @override
   State<UserAchievementPage> createState() => _UserAchievementPageState();
@@ -213,20 +213,20 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
 }
 
 class AchievementCard extends StatelessWidget {
-  AchievementUtil achievementUtil = AchievementUtil();
+  final AchievementUtil achievementUtil = AchievementUtil();
 
-  String? iconPath;
+  final String? iconPath;
 
-  String? value;
+  final String? value;
 
-  Function? onTap;
+  final Function? onTap;
 
   AchievementCard({
-    Key? key,
+    super.key,
     this.iconPath,
     this.value,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

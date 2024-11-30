@@ -1,3 +1,6 @@
+/// 用户中心
+library;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -13,19 +16,19 @@ class UserCenterPage extends StatefulWidget {
   final int num;
 
   const UserCenterPage({
-    Key? key,
+    super.key,
     this.num = 0,
-  }) : super(key: key);
+  });
 
   get getNum {
     return num;
   }
 
   @override
-  _UserCenterPageState createState() => _UserCenterPageState();
+  UserCenterPageState createState() => UserCenterPageState();
 }
 
-class _UserCenterPageState extends State<UserCenterPage> {
+class UserCenterPageState extends State<UserCenterPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   /// [Event]

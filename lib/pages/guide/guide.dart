@@ -1,4 +1,5 @@
 /// 引导
+library;
 
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
@@ -12,13 +13,13 @@ import 'login.dart';
 import 'permission.dart';
 
 class GuidePage extends StatefulWidget {
-  const GuidePage({Key? key}) : super(key: key);
+  const GuidePage({super.key});
 
   @override
-  _GuidePageState createState() => _GuidePageState();
+  GuidePageState createState() => GuidePageState();
 }
 
-class _GuidePageState extends State<GuidePage> {
+class GuidePageState extends State<GuidePage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   /// 引导下标

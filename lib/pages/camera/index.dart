@@ -38,7 +38,7 @@ class CameraPageState extends State<CameraPage> {
         // 外部链接
         _urlUtil.onPeUrl("${Config.apiHost["app_web_site"]!.url}/player/${data["content"]}");
         break;
-      case "app_palyer_link":
+      case "app_player_link":
         // 内部玩家链接
         _urlUtil.opEnPage(context, "/player/personaId/${data["content"]}");
         break;
@@ -141,7 +141,7 @@ class CameraPageState extends State<CameraPage> {
                   else
                     OpenMediaButton(
                       state: state,
-                      onTap: (statu) {
+                      onTap: (state) {
                         openMedia();
                       },
                     )

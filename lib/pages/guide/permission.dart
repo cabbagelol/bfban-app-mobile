@@ -10,15 +10,15 @@ class GuidePermissionPage extends StatefulWidget {
   final Function? onChange;
 
   const GuidePermissionPage({
-    Key? key,
+    super.key,
     this.onChange,
-  }) : super(key: key);
+  });
 
   @override
-  _PermissionPageState createState() => _PermissionPageState();
+  PermissionPageState createState() => PermissionPageState();
 }
 
-class _PermissionPageState extends State<GuidePermissionPage> with AutomaticKeepAliveClientMixin {
+class PermissionPageState extends State<GuidePermissionPage> with AutomaticKeepAliveClientMixin {
   List<Permission> permissions = [];
 
   @override

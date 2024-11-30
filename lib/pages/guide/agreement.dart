@@ -1,4 +1,5 @@
 /// 协议内容
+library;
 
 import 'package:bfban/component/_html/htmlLink.dart';
 import 'package:bfban/component/_html/htmlWidget.dart';
@@ -16,8 +17,8 @@ import '../../constants/api.dart';
 
 class GuideAgreementPage extends StatefulWidget {
   const GuideAgreementPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   AgreementPageState createState() => AgreementPageState();
@@ -45,7 +46,7 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
   void initState() {
     langProvider = providerUtil.ofLang(context);
     language = langProvider!.currentLang;
-    
+
     getAgreement();
 
     super.initState();
@@ -54,30 +55,33 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
   /// [Response]
   /// 获取协议
   getAgreement() async {
-    setState(() {
-      agreement["load"] = true;
-    });
-
-    Response result = await Http.request(
-      "agreement/$language.html",
-      httpDioValue: "app_web_site",
-      method: Http.GET,
-    );
-
-    if (result.data is String && result.data != '' || result.data["error"] == null && agreement["content"] != null) {
+    try {
       setState(() {
-        agreement["content"] = result.data.toString();
+        agreement["load"] = true;
       });
-    } else {
+
+      Response result = await Http.request(
+        "agreement/$language.html",
+        httpDioValue: "app_web_site",
+        method: Http.GET,
+      );
+
+      if (result.data is String && result.data != '' || result.data["error"] == null && agreement["content"] != null) {
+        setState(() {
+          agreement["content"] = result.data.toString();
+        });
+        return;
+      }
+    } catch (e) {
       setState(() {
         agreement["error"] = 1;
       });
       EluiMessageComponent.error(context)(child: const Text("error"));
+    } finally {
+      setState(() {
+        agreement["load"] = false;
+      });
     }
-
-    setState(() {
-      agreement["load"] = false;
-    });
   }
 
   /// [Event]

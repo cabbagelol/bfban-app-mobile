@@ -1,4 +1,5 @@
 /// 网站近期活动
+library;
 
 import 'dart:core';
 
@@ -15,7 +16,7 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '../../component/_refresh/index.dart';
 
 class HomeCommunityPage extends StatefulWidget {
-  const HomeCommunityPage({Key? key}) : super(key: key);
+  const HomeCommunityPage({super.key});
 
   @override
   HomeCommunityPageState createState() => HomeCommunityPageState();

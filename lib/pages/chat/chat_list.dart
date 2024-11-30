@@ -1,4 +1,5 @@
 /// 消息中心
+library;
 
 import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_loading/index.dart';
@@ -12,13 +13,13 @@ import '../../utils/index.dart';
 import '../not_found/index.dart';
 
 class ChatListPage extends StatefulWidget {
-  const ChatListPage({Key? key}) : super(key: key);
+  const ChatListPage({super.key});
 
   @override
-  _ChatPageState createState() => _ChatPageState();
+  ChatPageState createState() => ChatPageState();
 }
 
-class _ChatPageState extends State<ChatListPage> {
+class ChatPageState extends State<ChatListPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   /// 列表

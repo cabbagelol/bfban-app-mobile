@@ -1,4 +1,4 @@
-import 'package:flutter/gestures.dart';
+import 'package:flutter/gestures.dart' show TapGestureRecognizer;
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -11,10 +11,10 @@ import 'basic_quote_card.dart';
 /// 申诉
 class AppealCard extends StatelessWidget {
   // 单条数据
-  late Map data;
+  late final Map data;
 
   // 数据数量
-  late num maxDataCount;
+  late final num maxDataCount;
 
   // 位置
   late int index = 0;

@@ -14,9 +14,9 @@ class GuideLanguagePage extends StatefulWidget {
   final Function? onChanged;
 
   const GuideLanguagePage({
-    Key? key,
+    super.key,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   State<GuideLanguagePage> createState() => _GuideLanguagePageState();

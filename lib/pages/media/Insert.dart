@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../utils/index.dart';
 
 class InsertMediaPage extends StatefulWidget {
-  const InsertMediaPage({Key? key}) : super(key: key);
+  const InsertMediaPage({super.key});
 
   @override
   State<InsertMediaPage> createState() => _InsertMediaPageState();
@@ -153,14 +153,14 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
 
 /// 选择方式
 class InsertSelect extends StatefulWidget {
-  Function? onNext;
-  Function? onValue;
+  final Function? onNext;
+  final Function? onValue;
 
   InsertSelect({
-    Key? key,
+    super.key,
     this.onNext,
     this.onValue,
-  }) : super(key: key);
+  });
 
   @override
   State<InsertSelect> createState() => _InsertSelectState();
@@ -323,24 +323,24 @@ enum MediaInsertIndexType {
 }
 
 abstract class MediaBaseInsertPage extends StatefulWidget {
-  MediaInsertIndexType mediaInsertIndexType;
+  final MediaInsertIndexType mediaInsertIndexType;
 
   MediaBaseInsertPage({
-    Key? key,
+    super.key,
     this.mediaInsertIndexType = MediaInsertIndexType.None,
-  }) : super(key: key);
+  });
 }
 
 /// 裁剪
 class InsertCrop extends MediaBaseInsertPage {
-  String? url;
-  int? insertTypes;
+  final String? url;
+  final int? insertTypes;
 
   InsertCrop({
-    Key? key,
+    super.key,
     this.url,
     this.insertTypes = -1,
-  }) : super(key: key);
+  });
 
   @override
   State<InsertCrop> createState() => _InsertCropState();
@@ -399,12 +399,12 @@ class _InsertCropState extends State<InsertCrop> {
 
 /// 预览InsertPreview
 class InsertPreview extends MediaBaseInsertPage {
-  String? url;
+  final String? url;
 
   InsertPreview({
-    Key? key,
+    super.key,
     this.url = "",
-  }) : super(key: key);
+  });
 
   @override
   State<InsertPreview> createState() => _InsertPreviewState();

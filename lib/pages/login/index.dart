@@ -64,7 +64,7 @@ class LoginPanelState extends State<LoginPanelPage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  WaveBorder(
+                  WaveBorderWidget(
                     width: 80,
                     maxWidth: MediaQuery.of(context).size.width,
                     count: 3,

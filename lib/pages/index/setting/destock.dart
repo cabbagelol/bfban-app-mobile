@@ -1,4 +1,6 @@
 /// 清理数据
+library;
+
 import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +13,14 @@ import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 class DestockPage extends StatefulWidget {
-  const DestockPage({Key? key}) : super(key: key);
+  const DestockPage({super.key});
 
   @override
-  _DestockPageState createState() => _DestockPageState();
+  DestockPageState createState() => DestockPageState();
 }
 
-class _DestockPageState extends State<DestockPage> {
-  FileManagement _fileManagement = FileManagement();
+class DestockPageState extends State<DestockPage> {
+  final FileManagement _fileManagement = FileManagement();
 
   String destockEnvValue = "all";
 
@@ -26,7 +28,7 @@ class _DestockPageState extends State<DestockPage> {
 
   String destockKeyValue = "";
 
-  DestockStatus _destockStatus = DestockStatus(list: []);
+  final DestockStatus _destockStatus = DestockStatus(list: []);
 
   Storage storage = Storage();
 

@@ -1,4 +1,5 @@
 /// 举报信息详情
+library;
 
 import 'dart:convert';
 import 'dart:async';

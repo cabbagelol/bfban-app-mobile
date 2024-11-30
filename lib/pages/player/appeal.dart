@@ -14,7 +14,7 @@ import '../../utils/index.dart';
 class AppealPage extends StatefulWidget {
   final String? personaId;
 
-  AppealPage({Key? key, this.personaId}) : super(key: key);
+  const AppealPage({super.key, this.personaId});
 
   @override
   State<AppealPage> createState() => _AppealPageState();

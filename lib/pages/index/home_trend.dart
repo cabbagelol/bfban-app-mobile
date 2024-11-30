@@ -10,7 +10,7 @@ import '../../utils/http.dart';
 import '../../widgets/index/cheat_list_card.dart';
 
 class HomeTrendPage extends StatefulWidget {
-  const HomeTrendPage({Key? key}) : super(key: key);
+  const HomeTrendPage({super.key});
 
   @override
   State<HomeTrendPage> createState() => HomeTrendPageState();

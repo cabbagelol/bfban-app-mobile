@@ -28,9 +28,9 @@ class CheatReportsCard extends StatelessWidget {
   final Function onReplySucceed;
 
   CheatReportsCard({
-    Key? key,
+    super.key,
     required this.onReplySucceed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

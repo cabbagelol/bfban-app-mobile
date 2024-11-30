@@ -13,7 +13,7 @@ import '/utils/index.dart';
 import '/widgets/index.dart';
 
 class UserHistoryPage extends StatefulWidget {
-  const UserHistoryPage();
+  const UserHistoryPage({super.key});
 
   @override
   State<UserHistoryPage> createState() => _UserHistoryPageState();

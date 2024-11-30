@@ -15,7 +15,7 @@ import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
 
 class InformationPage extends StatefulWidget {
-  const InformationPage({key});
+  const InformationPage({super.key});
 
   @override
   State<InformationPage> createState() => _InformationPageState();

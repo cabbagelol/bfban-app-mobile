@@ -1,4 +1,6 @@
 /// 语言选择器
+library;
+
 import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 
@@ -9,13 +11,13 @@ import '/provider/translation_provider.dart';
 import '/utils/index.dart';
 
 class LanguagePage extends StatefulWidget {
-  const LanguagePage({Key? key}) : super(key: key);
+  const LanguagePage({super.key});
 
   @override
-  _LanguagePageState createState() => _LanguagePageState();
+  LanguagePageState createState() => LanguagePageState();
 }
 
-class _LanguagePageState extends State<LanguagePage> {
+class LanguagePageState extends State<LanguagePage> {
   TranslationProvider? langProvider;
 
   bool load = false;

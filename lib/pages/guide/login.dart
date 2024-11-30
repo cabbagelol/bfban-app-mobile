@@ -32,7 +32,7 @@ class GuideLoginPageState extends State<GuideLoginPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              WaveBorder(
+              WaveBorderWidget(
                 width: 200,
                 maxWidth: 600,
                 count: 6,

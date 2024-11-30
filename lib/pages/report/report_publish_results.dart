@@ -8,18 +8,18 @@ enum PublishResultsType { error, success }
 
 class ReportPublishResultsPage extends StatefulWidget {
   final String? type;
-  List types = ["error", "success"];
+  final List types = ["error", "success"];
 
   ReportPublishResultsPage({
-    Key? key,
+    super.key,
     this.type = "success",
-  }) : super(key: key);
+  });
 
   @override
-  _PublishResultsPageState createState() => _PublishResultsPageState();
+  PublishResultsPageState createState() => PublishResultsPageState();
 }
 
-class _PublishResultsPageState extends State<ReportPublishResultsPage> {
+class PublishResultsPageState extends State<ReportPublishResultsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

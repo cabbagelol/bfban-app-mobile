@@ -9,24 +9,24 @@ import 'package:bfban/router/router.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:flutter_i18n/widgets/I18nText.dart';
 
-enum titleSearchTheme {
+enum TitleSearchTheme {
   white,
   black,
 }
 
-class titleSearchColor {
+class TitleSearchColor {
   Color? color;
   Color? iconColor;
   Color? textColor;
 
-  titleSearchColor(titleSearchTheme theme) {
+  TitleSearchColor(TitleSearchTheme theme) {
     switch (theme) {
-      case titleSearchTheme.black:
+      case TitleSearchTheme.black:
         color = Colors.black26;
         iconColor = Colors.white;
         textColor = Colors.white54;
         break;
-      case titleSearchTheme.white:
+      case TitleSearchTheme.white:
         color = Colors.white;
         iconColor = Colors.black45;
         textColor = Colors.black45;
@@ -36,7 +36,7 @@ class titleSearchColor {
 }
 
 class SearchAppBarWidget extends StatefulWidget {
-  final titleSearchTheme theme;
+  final TitleSearchTheme theme;
 
   final Function(String data)? onSubmitted;
 
@@ -48,7 +48,7 @@ class SearchAppBarWidget extends StatefulWidget {
 
   const SearchAppBarWidget({
     Key? key,
-    this.theme = titleSearchTheme.black,
+    this.theme = TitleSearchTheme.black,
     this.onSubmitted,
     this.onChanged,
     this.laterInterChild,
@@ -76,10 +76,10 @@ class TitleSearchState extends State<SearchAppBarWidget> {
   /// 搜索
   dynamic _onSearch() {
     switch (widget.theme) {
-      case titleSearchTheme.white:
+      case TitleSearchTheme.white:
         FocusScope.of(context).requestFocus(controllerFocus);
         break;
-      case titleSearchTheme.black:
+      case TitleSearchTheme.black:
         Routes.router.navigateTo(
           context,
           '/search/${jsonEncode({"text": value})}',
@@ -88,7 +88,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
         return true;
     }
 
-    return widget.theme == titleSearchTheme.black ? true : false;
+    return widget.theme == TitleSearchTheme.black ? true : false;
   }
 
   void unFocus() {
@@ -110,7 +110,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 constraints: BoxConstraints(minHeight: 50),
                 decoration: BoxDecoration(
-                  color: titleSearchColor(widget.theme).color,
+                  color: TitleSearchColor(widget.theme).color,
                   border: Border.all(color: Theme.of(context).dividerTheme.color!.withOpacity(.3), width: 1),
                   borderRadius: BorderRadius.circular(50),
                 ),
@@ -118,7 +118,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                   children: <Widget>[
                     Expanded(
                       flex: 1,
-                      child: widget.theme == titleSearchTheme.white
+                      child: widget.theme == TitleSearchTheme.white
                           ? TextField(
                               controller: controller,
                               focusNode: controllerFocus,
@@ -128,7 +128,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                                 contentPadding: EdgeInsets.zero,
                                 hintText: FlutterI18n.translate(context, "search.placeholder"),
                                 hintStyle: TextStyle(
-                                  color: titleSearchColor(widget.theme).textColor!.withOpacity(.4),
+                                  color: TitleSearchColor(widget.theme).textColor!.withOpacity(.4),
                                 ),
                               ),
                               keyboardType: TextInputType.text,
@@ -137,7 +137,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 15,
-                                color: titleSearchColor(widget.theme).textColor,
+                                color: TitleSearchColor(widget.theme).textColor,
                               ),
                               // backgroundCursorColor: Colors.white,
                               onSubmitted: (data) {
@@ -155,7 +155,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                                 "",
                                 style: TextStyle(
                                   fontSize: 15,
-                                  color: titleSearchColor(widget.theme).textColor,
+                                  color: TitleSearchColor(widget.theme).textColor,
                                 ),
                               ),
                             ),

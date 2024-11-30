@@ -10,9 +10,9 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '/utils/index.dart';
 
 class UserAchievementDetailPage extends StatefulWidget {
-  String? id;
+  final String? id;
 
-  UserAchievementDetailPage({Key? key, this.id = ""}) : super(key: key);
+  const UserAchievementDetailPage({super.key, this.id = ""});
 
   @override
   State<UserAchievementDetailPage> createState() => _UserAchievementPageState();
