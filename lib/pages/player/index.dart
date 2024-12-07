@@ -100,7 +100,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ready();
+      onReady();
     });
 
     if (widget.personaId != null) playerStatus.parame!.personaId = widget.personaId!;
@@ -109,7 +109,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
     super.initState();
   }
 
-  void ready() async {
+  void onReady() async {
     _tabController = TabController(vsync: this, length: cheatersTabs.length)
       ..addListener(() {
         setState(() {

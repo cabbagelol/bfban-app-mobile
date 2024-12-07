@@ -73,7 +73,7 @@ class SigninPageState extends State<SigninPage> {
 
   @override
   void initState() {
-    ready();
+    onReady();
     super.initState();
   }
 
@@ -82,7 +82,7 @@ class SigninPageState extends State<SigninPage> {
     super.dispose();
   }
 
-  void ready() async {
+  void onReady() async {
     StorageData localLoginRecordData = await _storage.get("login.localLoginRecord");
     setState(() {
       localLoginRecord = localLoginRecordData.value ?? {};

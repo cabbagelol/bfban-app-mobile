@@ -21,11 +21,11 @@ class DirectoryConfigurationPageState extends State<DirectoryConfigurationPage> 
 
   @override
   void initState() {
-    ready();
+    onReady();
     super.initState();
   }
 
-  ready() async {
+  onReady() async {
     dirProvider = Provider.of<DirProvider>(context, listen: false);
 
     // 当可选的存储位置丢失（SD拔出），将代替原来

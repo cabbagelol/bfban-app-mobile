@@ -1,4 +1,5 @@
 import 'package:bfban/component/_empty/index.dart';
+import 'package:bfban/utils/index.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
@@ -9,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../component/_refresh/index.dart';
 import '../../../provider/package_provider.dart';
 import '../../../utils/url.dart';
+import '../../../utils/version.dart';
 
 class AppVersionList extends StatefulWidget {
   const AppVersionList({super.key});
@@ -18,7 +20,9 @@ class AppVersionList extends StatefulWidget {
 }
 
 class _AppVersionListState extends State<AppVersionList> {
-  late TextEditingController _searchController = TextEditingController(text: "");
+  late final TextEditingController _searchController = TextEditingController(text: "");
+
+  final Version _version = Version();
 
   final UrlUtil _urlUtil = UrlUtil();
 
@@ -27,16 +31,28 @@ class _AppVersionListState extends State<AppVersionList> {
   /// 列表
   final GlobalKey<RefreshState> _refreshKey = GlobalKey<RefreshState>();
 
+  // 忽略列表
+  Map _ignoredVersions = {};
+
   @override
   void initState() {
+    onReady();
     super.initState();
+  }
+
+  void onReady() async {
+    _ignoredVersions = await _version.getIgnoredVersions();
+
     _searchController.addListener(() {
       setState(() {});
     });
+
+    setState(() {});
   }
 
-  // 查询符合版本
-  List inquireVersion(data) {
+  /// [Event]
+  /// 查询符合版本
+  List inquireVersion(PackageProvider data) {
     return data.list.where((i) => _searchController.text.isEmpty || i["version"].indexOf(_searchController.text) >= 0).toList();
   }
 
@@ -62,10 +78,19 @@ class _AppVersionListState extends State<AppVersionList> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "${i["version"]}",
-                style: const TextStyle(fontSize: 20),
+              /// appbar
+              Row(
+                children: [
+                  Text(
+                    "${i["version"]}",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  Spacer(),
+                  IconButton(onPressed: () => _onDisabledVisibleVersion(i), icon: Icon(Icons.disabled_visible))
+                ],
               ),
+
+              /// data
               const SizedBox(
                 height: 30,
                 child: Divider(height: 1),
@@ -116,6 +141,12 @@ class _AppVersionListState extends State<AppVersionList> {
         );
       },
     );
+  }
+
+  /// [Event]
+  /// 忽略此版本
+  void _onDisabledVisibleVersion(Map i) {
+    _version.onIgnoredVersionItemAsName(i);
   }
 
   Future _onRefresh() async {
@@ -190,30 +221,28 @@ class _AppVersionListState extends State<AppVersionList> {
                               ),
                               onTap: () {},
                             ),
-                            e["version"] == data.currentVersion
-                                ? EluiTagComponent(
-                                    value: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
-                                    color: EluiTagType.none,
-                                    size: EluiTagSize.no2,
-                                    theme: EluiTagTheme(
-                                      backgroundColor: Theme.of(context).colorScheme.primary,
-                                      borderColor: Theme.of(context).bottomAppBarTheme.color!,
-                                    ),
-                                    onTap: () {},
-                                  )
-                                : Container(),
-                            e["version"] == data.currentVersion
-                                ? EluiTagComponent(
-                                    value: FlutterI18n.translate(context, "app.setting.versions.ignoredCurrentVersionItem"),
-                                    color: EluiTagType.none,
-                                    size: EluiTagSize.no2,
-                                    theme: EluiTagTheme(
-                                      backgroundColor: Theme.of(context).colorScheme.primary,
-                                      borderColor: Theme.of(context).bottomAppBarTheme.color!,
-                                    ),
-                                    onTap: () {},
-                                  )
-                                : Container(),
+                            if (e["version"] == data.currentVersion)
+                              EluiTagComponent(
+                                value: FlutterI18n.translate(context, "app.setting.versions.currentVersion"),
+                                color: EluiTagType.none,
+                                size: EluiTagSize.no2,
+                                theme: EluiTagTheme(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                                ),
+                                onTap: () {},
+                              ),
+                            if (_ignoredVersions.entries.toList().map((i) => i.key).contains(e['version']))
+                              EluiTagComponent(
+                                value: FlutterI18n.translate(context, "app.setting.versions.ignoredCurrentVersionItem"),
+                                color: EluiTagType.none,
+                                size: EluiTagSize.no2,
+                                theme: EluiTagTheme(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
+                                  borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                                ),
+                                onTap: () {},
+                              )
                           ],
                         ),
                         trailing: const Icon(Icons.chevron_right),

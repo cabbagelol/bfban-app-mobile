@@ -35,11 +35,11 @@ class _BfvHackersWidgetState extends State<BfvHackersWidget> with AutomaticKeepA
 
   @override
   void initState() {
-    ready();
+    onReady();
     super.initState();
   }
 
-  ready() async {
+  onReady() async {
     StorageData cacheMapItem = await storage.get(NAME);
 
     // 没有缓冲从接口调用

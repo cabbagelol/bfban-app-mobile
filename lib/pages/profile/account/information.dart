@@ -47,11 +47,11 @@ class _InformationPageState extends State<InformationPage> {
 
   @override
   void initState() {
-    ready();
+    onReady();
     super.initState();
   }
 
-  void ready() async {
+  void onReady() async {
     bool langLocalSync = await storageAccount.getConfiguration("langLocalSync");
     setState(() {
       this.langLocalSync = langLocalSync;

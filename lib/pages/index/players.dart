@@ -66,7 +66,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   @override
   void initState() {
-    ready();
+    onReady();
 
     cheaterStatus!.insert(0, {
       "value": -1,
@@ -85,7 +85,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   /// [Event]
   /// 初始
-  ready() async {
+  onReady() async {
     dynamic playersTabInitialIndex = await _storageAccount.getConfiguration("playersTabInitialIndex");
 
     if (playersTabInitialIndex != null && playersTabInitialIndex != 0 && cheaterStatus!.length > 1) _tabController?.index = playersTabInitialIndex is bool ? 0 : playersTabInitialIndex;

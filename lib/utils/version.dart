@@ -1,9 +1,15 @@
 /// 版本管理器
 library;
 
+import 'dart:io';
+
+import 'package:bfban/utils/storage.dart';
+
 enum VersionReleaseType { None, Beta, Release }
 
 class Version {
+  final Storage _storage = Storage();
+
   // 发布类型权重
   final Map _releaseTypeWeights = {
     VersionReleaseType.Beta: 0,
@@ -51,8 +57,26 @@ class Version {
     );
   }
 
+  /// 获取忽略版本列表
+  Future<Map> getIgnoredVersions() async {
+    StorageData localIgnoredVersionData = await _storage.get("version.ignored");
+    Map ignoredMap = {};
+    if (localIgnoredVersionData.code == 0) {
+      ignoredMap.addAll(localIgnoredVersionData.value);
+    }
+    return ignoredMap;
+  }
+
   /// 忽略特定版本
-  void onIgnoredVersionItem() {}
+  void onIgnoredVersionItemAsName(Map i) async {
+    StorageData localIgnoredVersionData = await _storage.get("version.ignored");
+    Map ignoredMap = {};
+    if (localIgnoredVersionData.code == 0) {
+      ignoredMap.addAll(localIgnoredVersionData.value);
+    }
+    ignoredMap[i["version"]] = {"version": i["version"] ?? "0.0.0", "build-number": i["build-number"]?[Platform.operatingSystem] ?? {}, "stage": i["stage"] ?? "none"};
+    _storage.set("version.ignored", value: ignoredMap);
+  }
 }
 
 class VersionData {

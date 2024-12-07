@@ -36,10 +36,10 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
   @override
   initState() {
     super.initState();
-    ready();
+    onReady();
   }
 
-  ready() async {
+  onReady() async {
     _isGloballyIgnoredVersion = await _storageAccount.getConfiguration("globallyIgnoredVersion", _isGloballyIgnoredVersion);
     setState(() {});
   }
@@ -74,7 +74,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
             child: ListView(
               children: [
                 /// hint
-                if (!data.isNewVersion)
+                if (data.isNewVersion)
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 0),
                     child: Dialog.fullscreen(
@@ -107,7 +107,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                           ),
                           children: [
                             TextSpan(text: data.currentVersion.toString()),
-                            TextSpan(text: "\t(${data.currentVersion.replaceAll('.', '')}${data.info!.buildNumber.toString()})"),
+                            TextSpan(text: "\t(${data.currentVersion.replaceAll('.', '')}${data.info!.buildNumber})"),
                           ],
                         ),
                       ),
@@ -138,7 +138,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                         style: TextStyle(
                           fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
                         ),
-                        TextSpan(text: data.info!.buildNumber.toString()),
+                        TextSpan(text: "${data.info!.buildNumber}\t·\t${data.currentVersion.replaceAll('.', '')}${data.info!.buildNumber}"),
                       ),
                     ),
                     Divider(indent: 8, height: 1),

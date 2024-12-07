@@ -43,11 +43,11 @@ class _HtmlTextTranslatorState extends State<HtmlTextTranslator> {
 
   @override
   void initState() {
-    ready();
+    onReady();
     super.initState();
   }
 
-  void ready() async {
+  void onReady() async {
     setState(() {
       modeReadyLoad = true;
     });

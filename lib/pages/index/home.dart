@@ -50,7 +50,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ready();
+      onReady();
     });
     super.initState();
   }
@@ -62,7 +62,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.didChangeDependencies();
   }
 
-  void ready() async {
+  void onReady() async {
     futureBuilder = _initTab();
   }
 
