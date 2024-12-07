@@ -48,7 +48,7 @@ class _HtmlFullScreenState extends State<HtmlFullScreen> with SingleTickerProvid
         });
       });
     setState(() {
-      appName = ProviderUtil().ofPackage(context).package!.appName!;
+      appName = ProviderUtil().ofPackage(context).info!.appName;
     });
 
     super.initState();

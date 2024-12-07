@@ -32,18 +32,20 @@ class HtmlLink extends StatelessWidget {
   }) : super(key: key);
 
   /// [Event]
-  Widget linkIcon() {
+  Widget linkIcon(TextStyle style) {
     String scheme = url!.split(":")[0];
+    double? iconSize = style.fontSize ?? 15.0;
+    Color? iconColor = style.color ?? color;
     switch (scheme) {
       case "http":
       case "https":
-        return Icon(Icons.link_outlined, size: 15, color: color);
+        return Icon(Icons.link_outlined, size: iconSize, color: iconColor);
       case "mailto":
-        return Icon(Icons.email_outlined, size: 15, color: color);
+        return Icon(Icons.email_outlined, size: iconSize, color: iconColor);
       case "sms":
-        return Icon(Icons.sms_outlined, size: 15, color: color);
+        return Icon(Icons.sms_outlined, size: iconSize, color: iconColor);
       default:
-        return Icon(Icons.link_outlined, size: 15, color: color);
+        return Icon(Icons.link_outlined, size: iconSize, color: iconColor);
     }
   }
 
@@ -62,7 +64,7 @@ class HtmlLink extends StatelessWidget {
               WidgetSpan(
                 child: Container(
                   padding: const EdgeInsets.only(right: 5),
-                  child: linkIcon(),
+                  child: linkIcon(style!),
                 ),
               ),
               TextSpan(

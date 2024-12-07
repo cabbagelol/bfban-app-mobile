@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'package:flutter_i18n/loaders/file_translation_loader.dart';
 import 'package:bfban/utils/index.dart';
 
-class CustomTranslationLoader extends FileTranslationLoader {
+class AppTranslationLoader extends FileTranslationLoader {
   // 包名
   // 与[translation_provider]packageName一致
   String packageName = "language";
@@ -18,9 +18,7 @@ class CustomTranslationLoader extends FileTranslationLoader {
 
   final Storage storage = Storage();
 
-  final Map<dynamic, dynamic> _decodedMap = {};
-
-  CustomTranslationLoader({
+  AppTranslationLoader({
     required this.namespaces,
     required this.baseUri,
     basePath = "assets/lang",
@@ -59,14 +57,11 @@ class CustomTranslationLoader extends FileTranslationLoader {
     final statusCodePath = "$basePath/${composeFileName()}_status_code.json";
     final statusCodeMap = await _loadJson(statusCodePath) ?? {};
 
-    // 合并所有数据源
-    final mergedData = {
+    return jsonEncode({
       ...localLanguage,
       ...statusCodeMap,
       ...networkLanguage,
-    };
-
-    return jsonEncode(mergedData);
+    });
   }
 
   Future<Map<String, dynamic>> _loadJson(String path) async {

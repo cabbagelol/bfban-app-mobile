@@ -81,7 +81,7 @@ class _BfBanAppState extends State<BfBanApp> {
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             FlutterI18nDelegate(
-              translationLoader: CustomTranslationLoader(
+              translationLoader: AppTranslationLoader(
                 namespaces: ["app"],
                 basePath: "assets/lang",
                 baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),

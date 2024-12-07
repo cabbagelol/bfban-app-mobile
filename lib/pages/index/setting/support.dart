@@ -92,6 +92,18 @@ class SupportPageState extends State<SupportPage> {
             ),
           ),
           EluiCellComponent(
+            title: "Email",
+            label: "app@bfban.com",
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _urlUtil.onPeUrl("mailto:app@bfban.com", mode: LaunchMode.externalApplication),
+          ),
+          EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.support.licenseTitle"),
             label: FlutterI18n.translate(context, "app.setting.support.licenseDescription"),
             theme: EluiCellTheme(

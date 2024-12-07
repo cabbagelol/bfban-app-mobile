@@ -262,11 +262,12 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
                       builder: (BuildContext context, data, child) {
                         return Column(
                           children: [
-                            AnimatedOpacity(
-                              opacity: data.package!.appName!.toString().isEmpty ? 0 : 1,
-                              duration: const Duration(milliseconds: 300),
-                              child: Text(data.package!.appName.toString()),
-                            ),
+                            if (data.info != null)
+                              AnimatedOpacity(
+                                opacity: data.info!.appName.isEmpty ? 0 : 1,
+                                duration: const Duration(milliseconds: 300),
+                                child: Text(data.info!.appName.toString()),
+                              ),
                             const Opacity(
                               opacity: .6,
                               child: Text(
