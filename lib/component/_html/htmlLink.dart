@@ -12,7 +12,7 @@ class HtmlLink extends StatelessWidget {
 
   String? text;
 
-  TextStyle? style;
+  final TextStyle? style;
 
   bool softWrap;
 
@@ -21,7 +21,7 @@ class HtmlLink extends StatelessWidget {
   TextOverflow? overflow;
 
   HtmlLink({
-    Key? key,
+    super.key,
     required this.url,
     this.color = Colors.blue,
     this.text,
@@ -29,13 +29,16 @@ class HtmlLink extends StatelessWidget {
     this.softWrap = true,
     this.maxLines,
     this.overflow,
-  }) : super(key: key);
+  });
 
   /// [Event]
-  Widget linkIcon(TextStyle style) {
+  Widget linkIcon(TextStyle? style) {
+    style ??= TextStyle(color: color, fontSize: 15.0);
+
     String scheme = url!.split(":")[0];
     double? iconSize = style.fontSize ?? 15.0;
     Color? iconColor = style.color ?? color;
+
     switch (scheme) {
       case "http":
       case "https":
@@ -64,7 +67,7 @@ class HtmlLink extends StatelessWidget {
               WidgetSpan(
                 child: Container(
                   padding: const EdgeInsets.only(right: 5),
-                  child: linkIcon(style!),
+                  child: linkIcon(style),
                 ),
               ),
               TextSpan(
