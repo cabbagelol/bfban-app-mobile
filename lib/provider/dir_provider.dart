@@ -38,14 +38,23 @@ class DirProvider with ChangeNotifier {
   init() async {
     try {
       List<Future> waitMode = [];
-      if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) waitMode.insert(0, getApplicationSupportDirectory());
+      // 0
+      if (Platform.isIOS || Platform.isMacOS) {
+        waitMode.insert(0, getApplicationDocumentsDirectory());
+      } else if (Platform.isAndroid) {
+        waitMode.insert(0, getExternalStorageDirectory());
+      }
+      // 1
       if (Platform.isAndroid || Platform.isIOS || Platform.isMacOS) waitMode.insert(1, getTemporaryDirectory());
+      // 2
       if (Platform.isIOS || Platform.isMacOS) {
         waitMode.insert(2, getLibraryDirectory());
       } else {
         waitMode.insert(2, a());
       }
+      // 3
       if (Platform.isAndroid) waitMode.insert(3, getExternalStorageDirectories());
+      // 4
       if (Platform.isAndroid) waitMode.insert(4, getDownloadsDirectory());
 
       waitMode.map((element) {
@@ -73,7 +82,7 @@ class DirProvider with ChangeNotifier {
 
       _initDirectory();
 
-      if (defaultSavePathValue.isEmpty) defaultSavePathValue = "appInteriorDir";
+      if (defaultSavePathValue.isEmpty) defaultSavePathValue = "appInteriorDirectory";
 
       Map configuration = await getSaveDirPath();
       paths = getPaths();
@@ -94,7 +103,7 @@ class DirProvider with ChangeNotifier {
     List<DirItemStorePath> list = [];
     if (fileAllPath.applicationSupportDirectory!.existsSync()) {
       list.add(DirItemStorePath(
-        dirName: "appInteriorDir",
+        dirName: "appInteriorDirectory",
         translate: DirTranslate(),
         check: true,
         basicPath: fileAllPath.applicationSupportDirectory!.path,
@@ -243,8 +252,7 @@ class DirItemStorePath extends DirBasicItem {
     this.translate!.key = dirName;
   }
 
-  Map<String, dynamic> get toMap =>
-      {
+  Map<String, dynamic> get toMap => {
         "dirName": dirName,
         "translate": translate,
         "check": check,
@@ -253,7 +261,7 @@ class DirItemStorePath extends DirBasicItem {
 }
 
 class FileAllPath {
-  // 应用支持目录
+  // 应用目录
   Directory? applicationSupportDirectory;
 
   // 共享

@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 import 'package:bfban/component/_loading/index.dart';
-import 'package:bfban/component/_userAvatar/index.dart';
 import 'package:flutter/physics.dart' as physics;
 
 import 'package:easy_refresh/easy_refresh.dart';

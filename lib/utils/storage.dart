@@ -1,4 +1,6 @@
 /// 储存
+library;
+
 import 'dart:convert';
 
 import 'package:bfban/constants/api.dart';
@@ -10,9 +12,9 @@ enum StorageType { none, string, int, double, bool }
 class Storage {
   PackageInfo? _packageInfo;
 
-  SharedPreferences? _prefs;
+  SharedPreferencesWithCache? _prefs;
 
-  SharedPreferences? get prefs => _prefs;
+  SharedPreferencesWithCache? get prefs => _prefs;
 
   String _preName = "";
 
@@ -20,8 +22,8 @@ class Storage {
   /// 初始化
   init() async {
     _packageInfo = await PackageInfo.fromPlatform();
-    _prefs = await SharedPreferences.getInstance();
-    _preName = "${_packageInfo!.appName.toLowerCase()}.${Config.envCurrentName}:";
+    _prefs = await SharedPreferencesWithCache.create(cacheOptions: const SharedPreferencesWithCacheOptions());
+    _preName = "${_packageInfo!.appName.trim().toLowerCase()}.${Config.envCurrentName}:";
   }
 
   /// 是否初始化
@@ -120,9 +122,9 @@ class Storage {
   Future getAll() async {
     if (!isInit) await init();
     List keys = [];
-    _prefs!.getKeys().forEach((key) {
+    for (var key in _prefs!.keys) {
       keys.add({"value": _prefs!.get(key), "key": key});
-    });
+    }
     return keys;
   }
 }

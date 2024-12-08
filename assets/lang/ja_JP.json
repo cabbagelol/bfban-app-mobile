@@ -31,7 +31,7 @@
       "uploadFile": "ファイルをアップロードする",
       "export": "導き出す",
       "directory": {
-        "appInteriorDir": "内蔵アプリケーション",
+        "appInteriorDirectory": "内蔵アプリケーション",
         "libraryDirectory": "共用",
         "temporaryDirectory": "(キャッシュ",
         "downloadsDirectory": "ダウンロード",

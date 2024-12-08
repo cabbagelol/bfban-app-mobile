@@ -107,7 +107,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                           ),
                           children: [
                             TextSpan(text: data.currentVersion.toString()),
-                            TextSpan(text: "\t(${data.currentVersion.replaceAll('.', '')}${data.info!.buildNumber})"),
+                            TextSpan(text: "\t(${data.currentVersion}${data.info!.buildNumber})".replaceAll('.', '')),
                           ],
                         ),
                       ),
@@ -138,7 +138,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                         style: TextStyle(
                           fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
                         ),
-                        TextSpan(text: "${data.info!.buildNumber}\t·\t${data.currentVersion.replaceAll('.', '')}${data.info!.buildNumber}"),
+                        TextSpan(text: "${data.info!.buildNumber}\t·\t${data.currentVersion}${data.info!.buildNumber}".replaceAll('.', '')),
                       ),
                     ),
                     Divider(indent: 8, height: 1),
@@ -148,7 +148,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                         style: TextStyle(
                           fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
                         ),
-                        TextSpan(text: data.info!.buildSignature.toString()),
+                        TextSpan(text: data.info!.buildSignature.isNotEmpty ? data.info!.buildSignature : 'N/A'),
                       ),
                     ),
                     Divider(indent: 8, height: 1),

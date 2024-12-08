@@ -35,14 +35,14 @@ class HtmlWidget extends StatefulWidget {
   Function? onChangeOption;
 
   HtmlWidget({
-    Key? key,
+    super.key,
     this.content = "",
     HtmlWidgetFontSize? size = HtmlWidgetFontSize.Default,
     this.quote,
     this.id,
     this.footerToolBar = true,
     this.onChangeOption,
-  }) : super(key: key);
+  });
 
   @override
   State<HtmlWidget> createState() => _HtmlWidgetState();

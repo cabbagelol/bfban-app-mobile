@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/dir_provider.dart';
@@ -18,6 +21,7 @@ import 'package:provider/provider.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const String appGroupId = 'com.cabbagelol.bfban';
 
@@ -25,6 +29,8 @@ const String appGroupId = 'com.cabbagelol.bfban';
 void runMain() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  SharedPreferences.setPrefix('APP.');
 
   // 路由初始
   Routes.configureRoutes(FluroRouter());

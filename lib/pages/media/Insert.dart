@@ -183,7 +183,7 @@ class _InsertSelectState extends State<InsertSelect> {
     ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    var value = await Upload().on(File(image!.path));
+    var value = await Upload.on(File(image!.path));
 
     if (widget.onNext != null) widget.onNext!(value);
   }

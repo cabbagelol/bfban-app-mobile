@@ -9,9 +9,9 @@ class RecordLinkWidget extends StatefulWidget {
   Map? data;
 
   RecordLinkWidget({
-    Key? key,
+    super.key,
     this.data,
-  }) : super(key: key);
+  });
 
   @override
   State<RecordLinkWidget> createState() => _RecordLinkWidgetState();

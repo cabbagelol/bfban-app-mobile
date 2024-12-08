@@ -31,7 +31,7 @@
       "uploadFile": "上传文件",
       "export": "导出",
       "directory": {
-        "appInteriorDir": "应用内置",
+        "appInteriorDirectory": "应用内置",
         "libraryDirectory": "公共",
         "temporaryDirectory": "缓存",
         "downloadsDirectory": "下载",
