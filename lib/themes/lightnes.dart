@@ -36,24 +36,6 @@ class LightnesTheme extends AppBaseThemeItem {
           color: Colors.white,
         ),
       ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ButtonStyle(
-          elevation: WidgetStateProperty.all(0),
-          foregroundColor: WidgetStateProperty.all(const Color(0xff364e80)),
-          textStyle: WidgetStateProperty.all(
-            const TextStyle(color: Color(0xff364e80)),
-          ),
-          shape: WidgetStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
-              side: const BorderSide(
-                color: Colors.white12,
-                width: 1,
-              ),
-            ),
-          ),
-        ),
-      ),
       bottomSheetTheme: const BottomSheetThemeData(
         backgroundColor: Colors.white,
         modalBackgroundColor: Colors.white,
@@ -110,18 +92,6 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
       ),
       highlightColor: Colors.transparent,
-      toggleButtonsTheme: const ToggleButtonsThemeData(
-        color: Color(0xff111b2b),
-        fillColor: Colors.black38,
-        textStyle: TextStyle(
-          color: Colors.black87,
-        ),
-        focusColor: Color(0xff111b2b),
-        selectedColor: Colors.black,
-        selectedBorderColor: Colors.black38,
-        splashColor: Colors.black38,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-      ),
       scrollbarTheme: const ScrollbarThemeData(
         thumbColor: WidgetStatePropertyAll(Colors.black12),
       ),
@@ -165,6 +135,44 @@ class LightnesTheme extends AppBaseThemeItem {
         space: .4,
         indent: .5,
       ),
+      dataTableTheme: const DataTableThemeData(
+        horizontalMargin: 10,
+        columnSpacing: 20,
+        headingRowHeight: 40,
+        checkboxHorizontalMargin: 40,
+      ),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      bannerTheme: const MaterialBannerThemeData(
+        backgroundColor: Color(0xffffffff),
+      ),
+
+      // 按钮 S
+      buttonTheme: ButtonThemeData(
+        buttonColor: Colors.white,
+        disabledColor: const Color(0xff364e80).withOpacity(.2),
+      ),
+      toggleButtonsTheme: const ToggleButtonsThemeData(
+        color: Color(0xff111b2b),
+        fillColor: Colors.black38,
+        textStyle: TextStyle(
+          color: Colors.black87,
+        ),
+        focusColor: Color(0xff111b2b),
+        selectedColor: Colors.black,
+        selectedBorderColor: Colors.black38,
+        splashColor: Colors.black38,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: Color(0xff364e80),
+        focusColor: Colors.white,
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: WidgetStateProperty.all(Colors.transparent),
+          iconColor: const WidgetStatePropertyAll(Color(0xff364e80)),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           elevation: WidgetStateProperty.all(0),
@@ -187,11 +195,23 @@ class LightnesTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      dataTableTheme: const DataTableThemeData(
-        horizontalMargin: 10,
-        columnSpacing: 20,
-        headingRowHeight: 40,
-        checkboxHorizontalMargin: 40,
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          elevation: WidgetStateProperty.all(0),
+          foregroundColor: WidgetStateProperty.all(const Color(0xff364e80)),
+          textStyle: WidgetStateProperty.all(
+            const TextStyle(color: Color(0xff364e80)),
+          ),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(3),
+              side: const BorderSide(
+                color: Colors.white12,
+                width: 1,
+              ),
+            ),
+          ),
+        ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: ButtonStyle(
@@ -215,14 +235,13 @@ class LightnesTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      bannerTheme: const MaterialBannerThemeData(
-        backgroundColor: Color(0xffffffff),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+        ),
       ),
-      buttonTheme: ButtonThemeData(
-        buttonColor: Colors.white,
-        disabledColor: const Color(0xff364e80).withOpacity(.2),
-      ),
+      // 按钮 E
+
       bottomAppBarTheme: const BottomAppBarTheme(
         color: Colors.white,
         elevation: 0,
@@ -251,12 +270,15 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xfff1f5ff),
         foregroundColor: const Color(0xff364e80),
         shadowColor: Colors.black26,
         elevation: 0,
         scrolledUnderElevation: 0,
         iconTheme: const IconThemeData(
+          color: Color(0xff364e80),
+        ),
+        actionsIconTheme: const IconThemeData(
           color: Color(0xff364e80),
         ),
         titleTextStyle: TextStyle(
@@ -265,6 +287,7 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
       ),
       primaryColor: Colors.white,
+
       tabBarTheme: TabBarTheme(
         unselectedLabelColor: Colors.black54,
         dividerColor: Colors.transparent,
@@ -278,10 +301,6 @@ class LightnesTheme extends AppBaseThemeItem {
             width: 3,
           ),
         ),
-      ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: Color(0xff364e80),
-        focusColor: Colors.white,
       ),
       iconTheme: const IconThemeData(
         color: Color(0xff364e80),

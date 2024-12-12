@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
 
+  flutter_staggered_grid_view: any
+
   # 时间选择器 https://pub.dev/packages/syncfusion_flutter_datepicker
   syncfusion_flutter_datepicker: ^27.1.50
 

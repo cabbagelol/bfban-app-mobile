@@ -172,8 +172,9 @@ class AppNetworkPageState extends State<AppNetworkPage> {
                   SizedBox(height: 10),
                   TextField(
                     controller: TextEditingController(text: i.pathname),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "path",
+                      hintStyle: TextStyle(color: Colors.white38),
                       prefixIcon: Icon(Icons.insert_link),
                       alignLabelWithHint: true,
                       border: OutlineInputBorder(),

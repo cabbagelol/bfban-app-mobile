@@ -207,6 +207,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       onLoad: _getMore,
       child: Scrollbar(
         child: ListView(
+          cacheExtent: 800,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 10),
           controller: scrollController,
           children: playerTimelineStatus.list!.isNotEmpty

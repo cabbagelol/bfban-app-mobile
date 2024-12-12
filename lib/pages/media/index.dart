@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -266,6 +267,23 @@ class MediaPageState extends State<MediaPage> {
   }
 
   /// [Event]
+  /// 调用外部程序打开
+  void _onEnExternalFile(context, dynamic i) {
+    try {
+      switch (i.type) {
+        case MediaType.Local:
+          OpenFile.open(i.file.path);
+          break;
+        case MediaType.Network:
+        case MediaType.values:
+          throw "❌";
+      }
+    } catch (E) {
+      EluiMessageComponent.error(context)(child: Text(E.toString()));
+    }
+  }
+
+  /// [Event]
   /// 查看文件详情信息
   void _onEnImageInfo(context, dynamic i) async {
     try {
@@ -456,15 +474,11 @@ class MediaPageState extends State<MediaPage> {
       showModalBottomSheet<void>(
         context: context,
         clipBehavior: Clip.hardEdge,
-        useRootNavigator: true,
+          isScrollControlled: false,
+          showDragHandle: true,
+          useRootNavigator: true,
         builder: (BuildContext context) {
-          return Scaffold(
-            backgroundColor: Colors.transparent,
-            appBar: AppBar(
-              leading: const CloseButton(),
-              title: Text(FlutterI18n.translate(context, "app.media.export")),
-            ),
-            body: ListView(
+            return ListView(
               children: dirProvider!.paths.map((DirItemStorePath dir) {
                 return ListTile(
                   title: Text(FlutterI18n.translate(context, "app.media.directory.${dir.translate!.key!}", translationParams: dir.translate!.param)),
@@ -472,10 +486,8 @@ class MediaPageState extends State<MediaPage> {
                   onTap: () => _onExportFileCore(i, dir),
                 );
               }).toList(),
-            ),
-          );
-        },
-      );
+            );
+          });
     } catch (err) {
       EluiMessageComponent.error(context)(
         child: Text(err.toString()),
@@ -686,6 +698,9 @@ class MediaPageState extends State<MediaPage> {
                                             _getLocalMediaFiles();
                                           },
                                           onTapOpenFile: () {
+                                            _onEnExternalFile(context, i);
+                                          },
+                                          onTapViewFile: () {
                                             _onEnImageInfo(context, i);
                                           },
                                           onTapFileInfo: () {
@@ -857,6 +872,7 @@ class MediaCard extends StatefulWidget {
   bool? isSelectFile;
   Function? onTapDelete;
   Function? onTapOpenFile;
+  Function? onTapViewFile;
   Function? onTapFileInfo;
   Function? onTapUploadFile;
   Function? onTagSelectFile;
@@ -868,6 +884,7 @@ class MediaCard extends StatefulWidget {
     this.isSelectFile = false,
     this.onTapDelete,
     this.onTapOpenFile,
+    this.onTapViewFile,
     this.onTapFileInfo,
     this.onTapUploadFile,
     this.onTagSelectFile,
@@ -911,8 +928,8 @@ class _MediaCardState extends State<MediaCard> {
                     ClipPath(
                       child: GestureDetector(
                         onDoubleTap: () {
-                          if (widget.i.type == MediaType.Local && widget.onTapOpenFile != null) {
-                            widget.onTapOpenFile!();
+                          if (widget.i.type == MediaType.Local && widget.onTapViewFile != null) {
+                            widget.onTapViewFile!();
                           }
                         },
                         child: Hero(
@@ -928,8 +945,8 @@ class _MediaCardState extends State<MediaCard> {
                     ClipPath(
                       child: GestureDetector(
                         onDoubleTap: () {
-                          if (widget.i.type == MediaType.Local && widget.onTapOpenFile != null) {
-                            widget.onTapOpenFile!();
+                          if (widget.i.type == MediaType.Local && widget.onTapViewFile != null) {
+                            widget.onTapViewFile!();
                           }
                         },
                         child: Hero(
@@ -965,6 +982,9 @@ class _MediaCardState extends State<MediaCard> {
                           case "open_file":
                             if (widget.onTapOpenFile != null) widget.onTapOpenFile!();
                             break;
+                          case "view_file":
+                            if (widget.onTapViewFile != null) widget.onTapViewFile!();
+                            break;
                           case "delete":
                             if (widget.onTapDelete != null) widget.onTapDelete!();
                             break;
@@ -988,6 +1008,17 @@ class _MediaCardState extends State<MediaCard> {
                               const Icon(Icons.file_open_rounded),
                               const SizedBox(width: 10),
                               Text(FlutterI18n.translate(context, "app.media.open")),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: "view_file",
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              const Icon(Icons.file_open_rounded),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.media.view")),
                             ],
                           ),
                         ),

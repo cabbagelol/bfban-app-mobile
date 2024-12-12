@@ -1,6 +1,7 @@
 /// 用户登录
 library;
 
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:bfban/component/_captcha/index.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +42,18 @@ class SigninPageState extends State<SigninPage> {
   );
 
   late Map<String, dynamic> localLoginRecord = {};
+
+  final TextEditingController _accountController = TextEditingController(text: "");
+
+  final TextEditingController _passwordController = TextEditingController(text: "");
+
+  final TextEditingController _captchaController = TextEditingController(text: "");
+
+  List games = ['bf1', 'bf6', 'bfv'];
+
+  bool _passwordShow = true;
+
+  List backdropImages = [];
 
   Widget buildTextField(TextEditingController controller, IconData icon, bool obscureText, TextAlign align, int length) {
     return TextField(
@@ -84,7 +98,21 @@ class SigninPageState extends State<SigninPage> {
 
   void onReady() async {
     StorageData localLoginRecordData = await _storage.get("login.localLoginRecord");
+
+    _accountController.addListener(() {
+      loginStatus.parame!.username = _accountController.text;
+    });
+
+    _passwordController.addListener(() {
+      loginStatus.parame!.password = _passwordController.text;
+    });
+
+    _captchaController.addListener(() {
+      loginStatus.parame!.value = _captchaController.text;
+    });
+
     setState(() {
+      backdropImages = List.generate(20, (q) => games[Random().nextInt(games.length)]);
       localLoginRecord = localLoginRecordData.value ?? {};
     });
   }
@@ -181,6 +209,8 @@ class SigninPageState extends State<SigninPage> {
 
     return Scaffold(
       appBar: AppBar(
+        primary: true,
+        excludeHeaderSemantics: true,
         backgroundColor: Colors.transparent,
       ),
       body: ClipRect(
@@ -188,22 +218,36 @@ class SigninPageState extends State<SigninPage> {
           builder: (BuildContext context, data, Widget? child) {
             return Stack(
               fit: StackFit.loose,
-              alignment: AlignmentDirectional.center,
               children: <Widget>[
-                // Positioned(
-                //   top: 0,
-                //   bottom: 0,
-                //   child: Container(),
-                // ),
+                Positioned.fill(
+                  top: 10,
+                  child: Opacity(
+                    opacity: .05,
+                    child: StaggeredGrid.count(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                      children: [
+                        ...backdropImages.map(
+                          (i) => Transform.rotate(
+                            angle: 15 * 3.14159 / 180, // 旋转45度
+                            child: Image.asset(
+                              "assets/images/games/$i/bf.jpg",
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 BackdropFilter(
                   filter: ui.ImageFilter.blur(
-                    sigmaX: 6.0,
-                    sigmaY: 6.0,
+                    sigmaX: 15.0,
+                    sigmaY: 15.0,
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
+                  child: ListView(
+                    children: [
                       data.isLogin
                           ? const Center(
                               child: Icon(Icons.account_circle),
@@ -220,6 +264,7 @@ class SigninPageState extends State<SigninPage> {
                                       child: localLoginRecord.containsKey(loginStatus.parame!.username)
                                           ? Image.network(localLoginRecord[loginStatus.parame!.username]!)
                                           : CircleAvatar(
+                                              backgroundColor: Theme.of(context).primaryColor,
                                               minRadius: avater,
                                               child: Icon(
                                                 Icons.account_circle,
@@ -228,59 +273,75 @@ class SigninPageState extends State<SigninPage> {
                                             ),
                                     ),
                                     const SizedBox(height: 50),
-                                    Card(
+                                    Container(
                                       margin: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: EluiInputComponent(
-                                        theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                        placeholder: FlutterI18n.translate(context, "app.signin.accountId"),
-                                        type: TextInputType.text,
-                                        textInputAction: TextInputAction.next,
-                                        autofillHints: const [AutofillHints.username, AutofillHints.email],
-                                        onChange: (data) {
-                                          setState(() {
-                                            loginStatus.parame!.username = data["value"];
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Card(
-                                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: EluiInputComponent(
-                                        theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                        placeholder: FlutterI18n.translate(context, "app.signin.password"),
-                                        textInputAction: TextInputAction.next,
-                                        autofillHints: const [AutofillHints.password],
-                                        type: TextInputType.visiblePassword,
-                                        onChange: (data) => loginStatus.parame!.password = data["value"],
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    Card(
-                                      clipBehavior: Clip.none,
-                                      margin: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                      ),
-                                      child: EluiInputComponent(
-                                        placeholder: FlutterI18n.translate(context, "captcha.title"),
-                                        internalstyle: true,
-                                        maxLenght: 4,
-                                        textInputAction: TextInputAction.done,
-                                        theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                                        right: CaptchaWidget(
-                                          context: context,
-                                          seconds: 25,
-                                          onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                      child: TextFormField(
+                                        controller: _accountController,
+                                        autofocus: true,
+                                        autocorrect: true,
+                                        decoration: InputDecoration(
+                                          hintText: FlutterI18n.translate(context, "app.signin.accountId"),
+                                          prefixIcon: Icon(Icons.supervisor_account),
+                                          border: OutlineInputBorder(),
+                                          counterText: "",
+                                          suffixIcon: _accountController.text.isNotEmpty
+                                              ? IconButton(
+                                                  icon: Icon(Icons.clear),
+                                                  onPressed: () {
+                                                    _accountController.clear();
+                                                  },
+                                                )
+                                              : null,
                                         ),
-                                        onChange: (data) {
-                                          setState(() {
-                                            loginStatus.parame!.value = data["value"];
-                                          });
+                                        maxLength: 40,
+                                        autofillHints: [AutofillHints.username, AutofillHints.email],
+                                        textInputAction: TextInputAction.next,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: Center(
+                                        child: TextField(
+                                          controller: _passwordController,
+                                          decoration: InputDecoration(
+                                            hintText: FlutterI18n.translate(context, "app.signin.password"),
+                                            prefixIcon: Icon(Icons.password),
+                                            border: OutlineInputBorder(),
+                                            suffixIcon: IconButton(
+                                              icon: Icon(_passwordShow ? Icons.remove_red_eye_rounded : Icons.remove_red_eye_outlined),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _passwordShow = !_passwordShow;
+                                                });
                                         },
+                                      ),
+                                    ),
+                                          autofillHints: [AutofillHints.password],
+                                          textInputAction: TextInputAction.done,
+                                          obscureText: _passwordShow,
+                                          keyboardType: _passwordShow ? TextInputType.text : TextInputType.visiblePassword,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                                      child: TextFormField(
+                                        controller: _captchaController,
+                                        decoration: InputDecoration(
+                                          hintText: FlutterI18n.translate(context, "captcha.title"),
+                                          prefixIcon: Icon(Icons.closed_caption),
+                                          border: OutlineInputBorder(),
+                                          suffixIcon: CaptchaWidget(
+                                            context: context,
+                                            seconds: 25,
+                                            onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                          ),
+                                        ),
+                                        maxLength: 4,
+                                        textInputAction: TextInputAction.done,
+                                        keyboardType: TextInputType.visiblePassword,
                                       ),
                                     ),
                                   ],

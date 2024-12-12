@@ -25,7 +25,8 @@
       "app_exit": "再次点击,退出程序"
     },
     "media": {
-      "open": "查看",
+      "open": "外部打开",
+      "view": "查看",
       "delete": "删除",
       "fileInfo": "详细信息",
       "uploadFile": "上传文件",

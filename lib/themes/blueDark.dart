@@ -58,11 +58,11 @@ class BlueDarkTheme extends AppBaseThemeItem {
         trackColor: WidgetStateProperty.all(Colors.yellow.withOpacity(.2)),
         thumbColor: WidgetStateProperty.all(Colors.yellow),
       ),
+      inputDecorationTheme: InputDecorationTheme(hintStyle: TextStyle(color: Colors.white38)),
       dropdownMenuTheme: DropdownMenuThemeData(
         textStyle: const TextStyle(
           color: Colors.white,
         ),
-        inputDecorationTheme: const InputDecorationTheme(),
         menuStyle: MenuStyle(
           elevation: WidgetStateProperty.all(2),
           backgroundColor: WidgetStateProperty.all(Colors.black87),
