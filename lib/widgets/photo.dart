@@ -145,6 +145,9 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
     _doubleClickAnimation!.addListener(_doubleClickAnimationListener);
 
     _doubleClickAnimationController.forward();
+
+    // Update View
+    setState(() {});
     return null;
   }
 
@@ -177,6 +180,9 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        excludeHeaderSemantics: true,
+        forceMaterialTransparency: _doubleClickAnimation?.value != 1.0,
         title: widget.imageUrl!.isNotEmpty
             ? Text(
                 appBarTitle,
@@ -184,7 +190,6 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
                 maxLines: 2,
               )
             : SizedBox(),
-        centerTitle: true,
         actions: [
           if (widget.type == PhotoViewFileType.network)
             imageSaveStatus
@@ -208,17 +213,14 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
                   ),
         ],
       ),
-      body: ClipRect(
-        clipBehavior: Clip.hardEdge,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 1,
-              child: _getImageItemWidget(widget.type!.index),
-            )
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            flex: 1,
+            child: _getImageItemWidget(widget.type!.index),
+          )
+        ],
       ),
     );
   }

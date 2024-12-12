@@ -129,7 +129,7 @@ class MediaPageState extends State<MediaPage> {
         i.fileDetailLoad = true;
       });
 
-      Response result = await Upload().serviceFile(i.filename!);
+      Response result = await Upload.serviceFile(i.filename!);
 
       if (result.data["success"] == 1) {
         final d = result.data;
@@ -143,11 +143,10 @@ class MediaPageState extends State<MediaPage> {
 
       throw result.data["message"];
     } catch (e) {
-      if (mounted) {
-        EluiMessageComponent.error(context)(
-          child: Text(e.toString()),
-        );
-      }
+      if (mounted) return;
+      EluiMessageComponent.error(context)(
+        child: Text(e.toString()),
+      );
     } finally {
       setState(() {
         i.fileDetailLoad = false;
@@ -225,15 +224,22 @@ class MediaPageState extends State<MediaPage> {
 
   /// [Event]
   /// 删除本地文件
-  Future _deleteLocalFile(File file) async {
-    if (!await file.exists()) return;
-    file.deleteSync();
-    return true;
+  Future<bool> _deleteLocalFile(File file) async {
+    try {
+      if (!await file.exists()) throw "file exists";
+      file.deleteSync();
+      return true;
+    } catch (E) {
+      EluiMessageComponent.error(context)(child: Text(E.toString()));
+      return false;
+    } finally {
+      _getLocalMediaFiles();
+    }
   }
 
   /// [Event]
   /// 打开拍摄
-  void _openCamera() {
+  void _openCameraPage() {
     _urlUtil.opEnPage(context, '/camera').then((res) {
       _getLocalMediaFiles();
     });
@@ -242,79 +248,90 @@ class MediaPageState extends State<MediaPage> {
   /// [Event]
   /// 选择文件
   /// 用于媒体选择，返回
-  _onSelectFile(dynamic i) async {
-    if (openFileDetail[i.filename] == null) {
-      await _getNetworkMediaDetail(i);
-    }
+  Future<void> _onSelectFile(dynamic i) async {
+    try {
+      if (openFileDetail[i.filename] == null) {
+        await _getNetworkMediaDetail(i);
+      }
 
-    if (openFileDetail[i.filename]["downloadURL"] != null) {
-      Navigator.pop(context, openFileDetail[i.filename]["downloadURL"]);
-    } else {
-      EluiMessageComponent.warning(context)(child: const Text("No file information was obtained"));
+      if (openFileDetail[i.filename]["downloadURL"] != null) {
+        Navigator.pop(context, openFileDetail[i.filename]["downloadURL"]);
+        return;
+      }
+
+      throw "No file information was obtained";
+    } catch (E) {
+      EluiMessageComponent.error(context)(child: Text(E.toString()));
     }
   }
 
   /// [Event]
   /// 查看文件详情信息
   void _onEnImageInfo(context, dynamic i) async {
-    switch (i.type) {
-      case MediaType.Local:
-        if (i is! MediaFileLocalData) return;
+    try {
+      switch (i.type) {
+        case MediaType.Local:
+          if (i is! MediaFileLocalData) return;
 
-        Widget widget = Container();
-        if (!await i.file.exists() && i.extension == null) return;
+          Widget widget = Container();
+          if (!await i.file.exists() && i.extension == null) return;
 
-        if (i.extension == FileManagementType.IMAGE) {
-          widget = PhotoViewSimpleScreen(
-            type: PhotoViewFileType.file,
-            imageUrl: i.file.path,
-          );
-        }
+          if (i.extension == FileManagementType.IMAGE) {
+            widget = Hero(
+              tag: "image",
+              child: PhotoViewSimpleScreen(
+                type: PhotoViewFileType.file,
+                imageUrl: i.file.path,
+              ),
+            );
+          }
 
-        if (i.extension == FileManagementType.VIDEO || i.extension == FileManagementType.NONE) {
-          widget = Scaffold(
-            appBar: AppBar(
-              title: Text(i.file.path),
-            ),
-            body: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Center(
-                child: Text(
-                  i.file.path,
-                  textAlign: TextAlign.center,
+          if (i.extension == FileManagementType.VIDEO || i.extension == FileManagementType.NONE) {
+            widget = Scaffold(
+              appBar: AppBar(
+                title: Text(i.file.path),
+              ),
+              body: Container(
+                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Center(
+                  child: Text(
+                    i.file.path,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
-          );
-        }
-
-        Navigator.of(context).push(
-          CupertinoPageRoute(
-            builder: (BuildContext context) {
-              return widget;
-            },
-          ),
-        );
-        break;
-      case MediaType.Network:
-        if (i is! MediaFileNetworkData) return;
-
-        if (openFileDetail[i.filename] == null) {
-          await _getNetworkMediaDetail(i);
-        }
-
-        if (openFileDetail.isEmpty) return;
-        if (openFileDetail[i.filename ?? ""]["downloadURL"] == null) return;
-
-        Navigator.of(context).push(CupertinoPageRoute(
-          builder: (BuildContext context) {
-            return PhotoViewSimpleScreen(
-              type: PhotoViewFileType.network,
-              imageUrl: openFileDetail[i.filename]["downloadURL"],
             );
-          },
-        ));
-        break;
+          }
+
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (BuildContext context) => widget),
+          );
+          break;
+        case MediaType.Network:
+          if (i is! MediaFileNetworkData) return;
+
+          if (openFileDetail[i.filename] == null) {
+            await _getNetworkMediaDetail(i);
+          }
+
+          if (openFileDetail.isEmpty) return;
+          if (openFileDetail[i.filename ?? ""]["downloadURL"] == null) return;
+
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => Hero(
+              tag: "image",
+              child: PhotoViewSimpleScreen(
+                type: PhotoViewFileType.network,
+                imageUrl: openFileDetail[i.filename]["downloadURL"],
+              ),
+            ),
+          ));
+          break;
+        case MediaType.values:
+          throw "MediaType Unsupported type";
+      }
+    } catch (E) {
+      EluiMessageComponent.error(context)(child: Text(E.toString()));
     }
   }
 
@@ -407,8 +424,9 @@ class MediaPageState extends State<MediaPage> {
     }
   }
 
-  ///
-  void _onExportFile(originalFilePath, DirItemStorePath newFilePath) async {
+  /// [Event]
+  /// 导出处理
+  void _onExportFileCore(originalFilePath, DirItemStorePath newFilePath) async {
     try {
       String fileName = fileManagement.splitFileUrl(originalFilePath.file.path)["fileName"];
       String newPath = "${dirProvider?.paths.where((element) => element.dirName == newFilePath.dirName).first.basicPath}/$fileName";
@@ -432,7 +450,7 @@ class MediaPageState extends State<MediaPage> {
   }
 
   /// [Event]
-  /// 导出
+  /// 导出选择器Sheet Model
   void _onPenExportFileModel(context, MediaFileLocalData i) async {
     try {
       showModalBottomSheet<void>(
@@ -451,7 +469,7 @@ class MediaPageState extends State<MediaPage> {
                 return ListTile(
                   title: Text(FlutterI18n.translate(context, "app.media.directory.${dir.translate!.key!}", translationParams: dir.translate!.param)),
                   subtitle: Text(dir.basicPath),
-                  onTap: () => _onExportFile(i, dir),
+                  onTap: () => _onExportFileCore(i, dir),
                 );
               }).toList(),
             ),
@@ -474,29 +492,52 @@ class MediaPageState extends State<MediaPage> {
 
         FileStat stat = await i.file.stat();
 
-        // ignore: use_build_context_synchronously
-        showDialog(
+        if (!context.mounted) return;
+        showModalBottomSheet<void>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  SelectableText(i.file.path.toString()),
-                  Text(stat.type.toString()),
-                  Text("Size ${_fileManagement.onUnitConversion(stat.size)}"),
-                  Text("Accessed ${stat.accessed}"),
-                  Text("Modified ${stat.modified}"),
-                  Text("Changed ${stat.changed}"),
-                ],
+          useSafeArea: true,
+          isDismissible: true,
+          isScrollControlled: false,
+          showDragHandle: true,
+          clipBehavior: Clip.hardEdge,
+          builder: (BuildContext context) => ListView(
+            children: <Widget>[
+              ListTile(
+                title: SelectableText(i.file.path.toString()),
+                leading: Icon(Icons.file_present),
               ),
-            ),
+              Divider(indent: 8),
+              ListTile(
+                title: Text(stat.type.toString()),
+              ),
+              Divider(indent: 8),
+              ListTile(
+                title: Text("Size ${_fileManagement.onUnitConversion(stat.size)}"),
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Accessed"),
+                trailing: Text("${stat.accessed}"),
+              ),
+              Divider(indent: 8),
+              ListTile(
+                title: Text("Modified"),
+                trailing: Text("${stat.modified}"),
+              ),
+              Divider(indent: 8),
+              ListTile(
+                title: Text("Changed"),
+                trailing: Text("${stat.changed}"),
+              ),
+            ],
           ),
         );
+
         break;
       case MediaType.Network:
         if (i is! MediaFileNetworkData) return;
 
-        // 1 查询
+        // 1 查询并返回数据到 openFileDetail
         if (openFileDetail[i.filename] == null) {
           await _getNetworkMediaDetail(i);
         }
@@ -504,18 +545,31 @@ class MediaPageState extends State<MediaPage> {
         // 2 再次检查
         if (openFileDetail[i.filename] == null) return;
 
-        showDialog(
+        if (!context.mounted) return;
+        showModalBottomSheet<void>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  SelectableText("${Config.apis["network_service_request"]!.url}/service/file?filename=${openFileDetail[i.filename]["filename"]}"),
-                  Text("mimeType ${openFileDetail[i.filename]["mimeType"]}"),
-                  Text("Size ${_fileManagement.onUnitConversion(openFileDetail[i.filename]["size"])}"),
-                ],
+          useSafeArea: true,
+          isDismissible: true,
+          isScrollControlled: false,
+          showDragHandle: true,
+          clipBehavior: Clip.hardEdge,
+          builder: (BuildContext context) => ListView(
+            children: <Widget>[
+              ListTile(
+                title: SelectableText("${Config.apis["network_service_request"]!.url}/service/file?filename=${openFileDetail[i.filename]["filename"]}"),
+                leading: Icon(Icons.file_present),
               ),
-            ),
+              Divider(indent: 8),
+              ListTile(
+                title: Text("Mime Type"),
+                trailing: Text("${openFileDetail[i.filename]["mimeType"]}"),
+              ),
+              Divider(indent: 8),
+              ListTile(
+                title: Text("Size"),
+                trailing: Text(_fileManagement.onUnitConversion(openFileDetail[i.filename]["size"])),
+              ),
+            ],
           ),
         );
         break;
@@ -646,7 +700,10 @@ class MediaPageState extends State<MediaPage> {
                                         );
                                       },
                                     )
-                                  : const EmptyWidget(),
+                                  : Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [const EmptyWidget()],
+                                    ),
                             ),
                             const Divider(height: 1),
                             Container(
@@ -671,9 +728,7 @@ class MediaPageState extends State<MediaPage> {
                                     ),
                                   ),
                                   TextButton(
-                                    onPressed: () async {
-                                      _openCamera();
-                                    },
+                                    onPressed: () => _openCameraPage(),
                                     child: const Icon(Icons.camera),
                                   ),
                                   const SizedBox(width: 5),
@@ -860,9 +915,12 @@ class _MediaCardState extends State<MediaCard> {
                             widget.onTapOpenFile!();
                           }
                         },
-                        child: MediaLocalIconCard(
-                          i: widget.i,
-                          filetype: _filetype,
+                        child: Hero(
+                          tag: "image",
+                          child: MediaLocalIconCard(
+                            i: widget.i,
+                            filetype: _filetype,
+                          ),
                         ),
                       ),
                     ),
@@ -874,8 +932,11 @@ class _MediaCardState extends State<MediaCard> {
                             widget.onTapOpenFile!();
                           }
                         },
-                        child: MediaNetworkIconCard(
-                          i: widget.i,
+                        child: Hero(
+                          tag: "image",
+                          child: MediaNetworkIconCard(
+                            i: widget.i,
+                          ),
                         ),
                       ),
                     ),

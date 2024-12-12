@@ -49,6 +49,8 @@ class ChatPageState extends State<ChatListPage> {
   /// [Event]
   /// 刷新
   Future _onRefresh() async {
+    if (!mounted) return;
+
     setState(() {
       chatRequestLoad = true;
     });
@@ -94,6 +96,7 @@ class ChatPageState extends State<ChatListPage> {
 
             return Scaffold(
               appBar: AppBar(
+                title: Text(FlutterI18n.translate(context, "profile.chat.title")),
                 actions: [
                   IconButton(
                     padding: const EdgeInsets.all(16),
@@ -110,10 +113,11 @@ class ChatPageState extends State<ChatListPage> {
                 onRefresh: _onRefresh,
                 child: Consumer<ChatProvider>(
                   builder: (BuildContext context, data, Widget? child) {
-                    return ListView.builder(
-                      itemCount: data.list.where((element) => element["byUserId"] != selfInfo!["userId"]).length.toInt(),
+                    return ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) => const Divider(indent: 10),
+                      itemCount: data.list.length.toInt(),
                       itemBuilder: (BuildContext context, int index) {
-                        Map i = data.list.where((element) => element["byUserId"] != selfInfo!["userId"]).toList()[index];
+                        Map i = data.list[index];
 
                         return ListTile(
                           title: Wrap(
@@ -123,10 +127,8 @@ class ChatPageState extends State<ChatListPage> {
                                 softWrap: true,
                                 textAlign: TextAlign.left,
                                 overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                maxLines: 2,
                               ),
                             ],
                           ),
@@ -135,11 +137,42 @@ class ChatPageState extends State<ChatListPage> {
                               child: Icon(i["haveRead"] == 0 ? Icons.visibility : Icons.visibility_off),
                             ),
                           ),
-                          subtitle: TimeWidget(
-                            data: i["createTime"],
-                            style: TextStyle(
-                              color: Theme.of(context).textTheme.labelLarge!.color,
-                            ),
+                          subtitle: Wrap(
+                            spacing: 5,
+                            runSpacing: 5,
+                            children: [
+                              if (!['reply', 'direct'].contains(i['type']))
+                                Card.outlined(
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(horizontal: 5),
+                                    constraints: BoxConstraints(minHeight: 15),
+                                    child: Text(
+                                      FlutterI18n.translate(context, "profile.chat.types.${i["type"]}.text"),
+                                    ),
+                                  ),
+                                ),
+                              Card.outlined(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  constraints: BoxConstraints(minHeight: 15),
+                                  child: TimeWidget(
+                                    data: i["createTime"],
+                                    style: TextStyle(
+                                      color: Theme.of(context).textTheme.labelLarge!.color,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Card.outlined(
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  constraints: BoxConstraints(minHeight: 15),
+                                  child: Text(
+                                    "${i["byUserId"] ?? 'N/A'}",
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           trailing: PopupMenuButton(
                             iconColor: Theme.of(context).iconTheme.color,

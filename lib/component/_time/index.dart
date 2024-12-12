@@ -15,7 +15,7 @@ class TimeWidget extends StatefulWidget {
   TextAlign? textAlign;
 
   TimeWidget({
-    Key? key,
+    super.key,
     required this.data,
     this.timeType = "Y_D_M",
     this.type = TimeWidgetType.convert,
@@ -23,7 +23,7 @@ class TimeWidget extends StatefulWidget {
     this.overflow,
     this.maxLines,
     this.textAlign,
-  }) : super(key: key);
+  });
 
   @override
   State<TimeWidget> createState() => _TimeWidgetState();

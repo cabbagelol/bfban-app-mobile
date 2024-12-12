@@ -9,6 +9,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/appBuildContent.dart';
+import '../provider/log_provider.dart';
 import '../provider/package_provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -21,20 +22,15 @@ class SplashPage extends StatefulWidget {
 class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMixin {
   final UrlUtil _urlUtil = UrlUtil();
 
-  final Storage storage = Storage();
+  final Storage _storage = Storage();
 
   // 状态机
-  ProviderUtil providerUtil = ProviderUtil();
+  final ProviderUtil _providerUtil = ProviderUtil();
 
   // 载入提示
-  late String? loadTip = "";
+  late String _loadTip = "";
 
-  // unlink队列
-  late Map unlLink = {
-    "list": [],
-  };
-
-  late double _size = 1;
+  late double _animationIconSize = 1;
 
   @override
   void initState() {
@@ -49,10 +45,11 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   void _onReady() async {
     AppStatus.context = context;
 
+    // Icon 动画
     Future.delayed(const Duration(seconds: 1)).then((value) => {
           if (mounted)
             setState(() {
-              _size = 1.5;
+              _animationIconSize = 1.5;
             })
         });
 
@@ -61,6 +58,8 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
       _initLang(),
       _initUserData(),
       _initChat(),
+      _initLog(),
+      _initLink(),
     ]).catchError((onError) => []).whenComplete(() async {
       if (!await _onGuide()) return;
 
@@ -73,10 +72,6 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   void onMain() async {
     AppStatus.context = context;
 
-    AppInfoProvider app = providerUtil.ofApp(context);
-    await app.uniLinks.init(context);
-
-    // ignore: use_build_context_synchronously
     _urlUtil.opEnPage(
       context,
       "/",
@@ -87,18 +82,32 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   }
 
   /// [Event]
+  /// AppUniLink
+  Future _initLog() async {
+    LogProvider app = _providerUtil.ofLog(context).init();
+    return true;
+  }
+
+  /// [Event]
+  /// AppUniLink
+  Future _initLink() async {
+    AppInfoProvider app = _providerUtil.ofApp(context);
+    return await app.uniLinks.init(context);
+  }
+
+  /// [Event]
   /// 国际化
   Future _initLang() async {
-    await providerUtil.ofLang(context).init();
-    await providerUtil.ofPublicApiTranslation(context).init();
-
-    return true;
+    return await Future.wait([
+      _providerUtil.ofLang(context).init(),
+      _providerUtil.ofPublicApiTranslation(context).init(),
+    ]);
   }
 
   /// [Event]
   /// 通知初始
   Future _initChat() async {
-    await providerUtil.ofChat(context).init();
+    await _providerUtil.ofChat(context).init();
 
     return true;
   }
@@ -106,50 +115,50 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   /// [Event]
   /// 初始与用户相关数据
   Future _initUserData() async {
-    StorageData loginData = await storage.get("login");
+    StorageData loginData = await _storage.get("login");
     dynamic user = loginData.value;
 
     if (loginData.code == 0) {
       // 数据 更新到状态机内
       setState(() {
-        loadTip = "app.splash.account";
+        _loadTip = "app.splash.account";
       });
-      providerUtil.ofUser(context).setData(user);
-      // sleep(Duration(seconds: 1));
+      _providerUtil.ofUser(context).setData(user);
 
       // 消息 更新状态机
       setState(() {
-        loadTip = "app.splash.message";
+        _loadTip = "app.splash.message";
       });
-      await providerUtil.ofChat(context).onUpDate();
-      // sleep(Duration(seconds: 1));
+      await _providerUtil.ofChat(context).onUpDate();
     }
 
     // 包 更新状态机
     setState(() {
-      loadTip = "app.splash.version";
+      _loadTip = "app.splash.version";
     });
-    await providerUtil.ofPackage(context).init();
+    await _providerUtil.ofPackage(context).init();
 
     // 主题初始
     setState(() {
-      loadTip = "app.splash.theme";
+      _loadTip = "app.splash.theme";
     });
-    await providerUtil.ofTheme(context).init();
+    await _providerUtil.ofTheme(context).init();
 
     // 文件
     setState(() {
-      loadTip = "app.splash.dir";
+      _loadTip = "app.splash.dir";
     });
-    await providerUtil.ofDir(context).init();
+    await _providerUtil.ofDir(context).init();
 
     // 配置初始
     setState(() {
-      loadTip = "app.splash.appInitial";
+      _loadTip = "app.splash.appInitial";
     });
-    AppInfoProvider app = providerUtil.ofApp(context);
-    await app.conf.init();
-    await app.connectivity.init(context);
+    AppInfoProvider app = _providerUtil.ofApp(context);
+    await Future.wait([
+      app.conf.init(),
+      app.connectivity.init(context),
+    ]);
 
     return true;
   }
@@ -158,15 +167,13 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   /// 处理token
   Future _onToken() async {
     setState(() {
-      loadTip = "app.splash.token";
+      _loadTip = "app.splash.token";
     });
 
     // 初始用户数据
-    await providerUtil.ofUser(context).init();
+    await _providerUtil.ofUser(context).init();
 
-    String token = providerUtil.ofUser(context).getToken;
-
-    HttpToken.setToken(token);
+    HttpToken.setToken(_providerUtil.ofUser(context).getToken);
 
     return true;
   }
@@ -177,16 +184,16 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
     String guideName = "guide";
 
     setState(() {
-      loadTip = "app.splash.guide";
+      _loadTip = "app.splash.guide";
     });
 
-    StorageData guideData = await storage.get(guideName);
+    StorageData guideData = await _storage.get(guideName);
     dynamic guide = guideData.value;
 
     if (guideData.code != 0 && guide == null) {
       await _urlUtil.opEnPage(context, "/guide", transition: TransitionType.fadeIn).then((value) async {
         onMain();
-        await storage.set(guideName, value: 1);
+        await _storage.set(guideName, value: 1);
       });
       return false;
     }
@@ -196,8 +203,8 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Consumer<AppInfoProvider>(
         builder: (BuildContext context, AppInfoProvider appInfo, Widget? child) {
           return Scaffold(
@@ -212,12 +219,12 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AnimatedScale(
-                          scale: _size,
+                          scale: _animationIconSize,
                           curve: Curves.easeOutBack,
                           duration: const Duration(milliseconds: 300),
                           child: const CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage("assets/splash/splash_center_logo.png"),
+                            radius: 50,
+                            foregroundImage: AssetImage("assets/splash/splash_center_logo.png"),
                           ),
                         ),
                       ],
@@ -228,7 +235,7 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
                   alignment: WrapAlignment.center,
                   children: [
                     Text(
-                      FlutterI18n.translate(context, loadTip.toString()),
+                      FlutterI18n.translate(context, _loadTip.toString()),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Theme.of(context).textTheme.labelLarge!.color,

@@ -36,9 +36,12 @@ class _HtmlImageState extends State<HtmlImage> {
     if (imageUrl.isEmpty) return;
     Navigator.of(context).push(MaterialPageRoute(
       builder: (BuildContext context) {
-        return PhotoViewSimpleScreen(
-          type: PhotoViewFileType.network,
-          imageUrl: imageUrl,
+        return Hero(
+          tag: "image",
+          child: PhotoViewSimpleScreen(
+            type: PhotoViewFileType.network,
+            imageUrl: imageUrl,
+          ),
         );
       },
     ));
@@ -176,7 +179,7 @@ class _HtmlImageState extends State<HtmlImage> {
                         child: AnimatedRotation(
                           turns: turns,
                           duration: const Duration(milliseconds: 0),
-                          child: Image(image: state.imageProvider, fit: BoxFit.fitWidth),
+                          child: Hero(tag: "image", child: Image(image: state.imageProvider, fit: BoxFit.fitWidth)),
                         ),
                       ),
                       onTap: () {

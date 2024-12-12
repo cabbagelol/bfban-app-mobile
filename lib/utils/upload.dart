@@ -123,7 +123,7 @@ class Upload extends Http {
   }
 
   /// 查询文件详情
-  Future serviceFile(String filename) async {
+  static Future serviceFile(String filename) async {
     if (filename.isEmpty) return;
 
     Response result = await HttpToken.request(

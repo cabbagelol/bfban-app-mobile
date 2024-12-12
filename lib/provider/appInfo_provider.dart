@@ -209,6 +209,9 @@ class AppUniLinks with ChangeNotifier {
         case "bfban-app.cabbagelol.net":
         case "bfban.com":
           switch (uri.path.toString()) {
+            case "/page":
+              _urlUtil.opEnPage(appLinksContext!, "${uri.queryParameters["path"]}");
+              break;
             case "/player":
               if (uri.queryParameters["id"] == null) return;
               _urlUtil.opEnPage(appLinksContext!, "/player/personaId/${uri.queryParameters["id"]}");

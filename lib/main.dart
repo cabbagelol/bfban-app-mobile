@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/dir_provider.dart';
+import 'package:bfban/provider/log_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
 import 'package:bfban/provider/translation_provider.dart';
@@ -38,26 +38,19 @@ void runMain() async {
   // 设置系统状态栏
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  // Sentry
-  if (Config.env == Env.PROD) {
-    Sentry.init((options) {
-      options.dsn = Config.apiHost["sentry"]!.url;
-    });
-  }
-
   runApp(const BfBanApp());
 
   FlutterNativeSplash.remove();
 }
 
 class BfBanApp extends StatefulWidget {
-  const BfBanApp({Key? key}) : super(key: key);
+  const BfBanApp({super.key});
 
   @override
-  _BfBanAppState createState() => _BfBanAppState();
+  AppState createState() => AppState();
 }
 
-class _BfBanAppState extends State<BfBanApp> {
+class AppState extends State<BfBanApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -71,6 +64,7 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => PublicApiTranslationProvider()),
         ChangeNotifierProvider(create: (context) => CaptchaProvider()),
         ChangeNotifierProvider(create: (context) => DirProvider()),
+        ChangeNotifierProvider(create: (context) => LogProvider()),
       ],
       child: Consumer3<ThemeProvider, TranslationProvider, AppInfoProvider>(builder: (BuildContext context, ThemeProvider themeData, TranslationProvider langData, AppInfoProvider appData, Widget? child) {
         return MaterialApp(
@@ -103,7 +97,7 @@ class _BfBanAppState extends State<BfBanApp> {
             };
 
             return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: themeData.theme.textScaleFactor),
+              data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(themeData.theme.textScaleFactor as double)),
               child: widget!,
             );
           },
@@ -118,10 +112,9 @@ class WidgetError extends StatelessWidget {
   final FlutterErrorDetails? errorDetails;
 
   const WidgetError({
-    Key? key,
+    super.key,
     required this.errorDetails,
-  })  : assert(errorDetails != null),
-        super(key: key);
+  }) : assert(errorDetails != null);
 
   @override
   Widget build(BuildContext context) {

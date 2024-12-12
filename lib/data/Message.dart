@@ -3,13 +3,13 @@ class MessageStatus {
   // 当前详情消息
   dynamic data;
   bool? load;
-  num? total;
+  num total;
   MessageParams? params;
 
   MessageStatus({
     this.data,
     this.load = false,
-    this.total,
+    this.total = 0,
     this.params,
   });
 }
@@ -37,8 +37,10 @@ class MessageParams {
 class MessageJiguanStatus {
   // 应用通知
   bool autoSwitchAppMessage;
+
   // 站内通知
   bool onSwitchSiteMessage;
+
   // tags
   List? AppMessageTags;
 

@@ -65,7 +65,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         inputDecorationTheme: const InputDecorationTheme(),
         menuStyle: MenuStyle(
           elevation: WidgetStateProperty.all(2),
-          backgroundColor: WidgetStateProperty.all(Colors.black),
+          backgroundColor: WidgetStateProperty.all(Colors.black87),
           surfaceTintColor: WidgetStateProperty.all(Colors.white),
         ),
       ),

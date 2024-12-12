@@ -1,4 +1,5 @@
 /// 状态管理 工具包
+library;
 
 import 'package:bfban/provider/dir_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
@@ -6,6 +7,7 @@ import 'package:bfban/provider/theme_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../provider/appInfo_provider.dart';
+import '../provider/log_provider.dart';
 import '../provider/userinfo_provider.dart';
 import '../provider/chat_provider.dart';
 import '../provider/translation_provider.dart';
@@ -49,5 +51,10 @@ class ProviderUtil {
   // 文件
   DirProvider ofDir(BuildContext context) {
     return Provider.of<DirProvider>(context, listen: false);
+  }
+
+  // 文件
+  LogProvider ofLog(BuildContext context) {
+    return Provider.of<LogProvider>(context, listen: false);
   }
 }

@@ -19,8 +19,10 @@ class UserAvatar extends StatefulWidget {
 class _UserAvatarState extends State<UserAvatar> {
   int mirrorImageIndex = 0;
   List mirrorImage = [
+    "http://cn.gravatar.com/avatar/",
     "https://gravatar.loli.net/avatar/",
-    "https://cdn.v2ex.com/gravatar/",
+    "https://cdn.sep.cc/avatar/"
+        "https://cdn.v2ex.com/gravatar/",
     "https://cdn.sep.cc/avatar/",
   ];
 

@@ -37,6 +37,12 @@ class SupportPageState extends State<SupportPage> {
     _urlUtil.opEnPage(context, "/network");
   }
 
+  /// [Event]
+  /// 日志
+  void _opEnLogs() {
+    _urlUtil.opEnPage(context, "/profile/logs");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +68,18 @@ class SupportPageState extends State<SupportPage> {
             ),
             islink: true,
             onTap: () => _opEnGuide(),
+          ),
+          EluiCellComponent(
+            title: FlutterI18n.translate(context, "app.setting.support.logTitle"),
+            label: FlutterI18n.translate(context, "app.setting.support.logDescription"),
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.labelLarge?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _opEnLogs(),
           ),
           const SizedBox(height: 10),
           EluiCellComponent(

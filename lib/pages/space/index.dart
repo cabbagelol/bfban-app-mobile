@@ -618,6 +618,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
 
 class Background extends StatelessWidget {
   const Background({
+    super.key,
     required this.src,
     this.textColor = const Color(0xFF757575),
     this.duration = const Duration(milliseconds: 750),

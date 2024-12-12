@@ -33,22 +33,22 @@ import 'time_line.dart';
 
 class PlayerDetailPage extends StatefulWidget {
   /// User Db id
-  String? dbId;
+  final String? dbId;
 
   /// EA persona Id
-  String? personaId;
+  final String? personaId;
 
   PlayerDetailPage({
-    Key? key,
+    super.key,
     this.dbId,
     this.personaId,
-  }) : super(key: key);
+  });
 
   @override
-  _PlayerDetailPageState createState() => _PlayerDetailPageState();
+  PlayerDetailPageState createState() => PlayerDetailPageState();
 }
 
-class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderStateMixin {
+class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderStateMixin {
   GlobalKey<TimeLineState> timeLineKey = GlobalKey<TimeLineState>();
 
   UrlUtil _urlUtil = UrlUtil();
@@ -254,6 +254,7 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
     dynamic d = result.data;
 
     if (result.data["success"] == 1) {
+      if (!mounted) return;
       setState(() {
         subscribes["isThisUserSubscribes"] = d["data"] ?? false;
       });
@@ -521,7 +522,6 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
       isDismissible: true,
       isScrollControlled: false,
       showDragHandle: true,
-      scrollControlDisabledMaxHeightRatio: .25,
       clipBehavior: Clip.hardEdge,
       builder: (BuildContext context) {
         return Column(
@@ -591,10 +591,13 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                           ),
                         ),
                         const SizedBox(height: 15),
-                        Text(
-                          FlutterI18n.translate(context, "app.detail.openExplorePlayerDetail"),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                        SizedBox(
+                          width: 80,
+                          child: Text(
+                            FlutterI18n.translate(context, "app.detail.openExplorePlayerDetail"),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ),
                       ],
                     ),
@@ -717,30 +720,31 @@ class _PlayerDetailPageState extends State<PlayerDetailPage> with TickerProvider
                                                         cacheWidth: 150,
                                                       ),
                                                     ),
-                                                    ExtendedImage.network(
-                                                      snapshot.data!["avatarLink"],
-                                                      key: ValueKey<String>(const Uuid().v4(options: {
-                                                        'name': 'avatarLink-up',
-                                                        'url': snapshot.data!["avatarLink"],
-                                                        'time': DateTime.now().millisecondsSinceEpoch,
-                                                      })),
-                                                      width: 150,
-                                                      height: 150,
-                                                      cacheWidth: 100,
-                                                      cacheHeight: 100,
-                                                      fit: BoxFit.contain,
-                                                      cache: true,
-                                                      clearMemoryCacheWhenDispose: true,
-                                                      printError: false,
-                                                      loadStateChanged: (ExtendedImageState state) {
-                                                        switch (state.extendedImageLoadState) {
-                                                          case LoadState.completed:
-                                                            return state.completedWidget;
-                                                          case LoadState.failed:
-                                                          default:
-                                                            return Image.asset("assets/images/default-player-avatar.jpg");
-                                                        }
-                                                      },
+                                                    FittedBox(
+                                                      child: ExtendedImage.network(
+                                                        snapshot.data!["avatarLink"],
+                                                        key: ValueKey<String>(const Uuid().v4(options: {
+                                                          'name': 'avatarLink-up',
+                                                          'url': snapshot.data!["avatarLink"],
+                                                          'time': DateTime.now().millisecondsSinceEpoch,
+                                                        })),
+                                                        width: 150,
+                                                        height: 150,
+                                                        cacheWidth: 100,
+                                                        cacheHeight: 100,
+                                                        fit: BoxFit.contain,
+                                                        cache: true,
+                                                        printError: false,
+                                                        loadStateChanged: (ExtendedImageState state) {
+                                                          switch (state.extendedImageLoadState) {
+                                                            case LoadState.completed:
+                                                              return state.completedWidget;
+                                                            case LoadState.failed:
+                                                            default:
+                                                              return Image.asset("assets/images/default-player-avatar.jpg");
+                                                          }
+                                                        },
+                                                      ),
                                                     ),
                                                     Positioned(
                                                       right: 0,

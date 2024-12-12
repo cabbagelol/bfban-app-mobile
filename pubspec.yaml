@@ -57,6 +57,9 @@ dependencies:
   # (文件)选择器 https://pub.flutter-io.cn/packages/file_picker
   file_picker: ^8.1.2
 
+  # 文件访问 https://pub.flutter-io.cn/packages/open_file
+  open_file: ^3.5.10
+
   # 图片扩展(裁剪) https://pub.flutter-io.cn/packages/extended_image
   extended_image: ^8.1.0
 
