@@ -3,6 +3,7 @@ library;
 
 import 'package:bfban/widgets/red_dot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -111,7 +112,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                           ],
                         ),
                       ),
-                      onTap: () => _urlUtil.onPeUrl(Config.apiHost["app_web_site"]!.url),
+                      onLongPress: () => Clipboard.setData(ClipboardData(text: data.info.toString())),
                     ),
                     Divider(indent: 8, height: 1),
                     ListTile(

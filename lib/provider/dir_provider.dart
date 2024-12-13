@@ -149,7 +149,7 @@ class DirProvider with ChangeNotifier {
   }
 
   // 扫描用户配置目录，读取文件列表
-  Future<List> getAllFile({String laterPath = "/media"}) async {
+  Future<List> getAllFile([List<String>? laterPaths]) async {
     dynamic localData = await getSaveDirPath();
     List readLocalPath = saveDirPathToMapAsDirItemStorePath(List.from(localData["configuration"]).where((element) => element["check"]).toList());
     List fileList = [];
@@ -159,19 +159,21 @@ class DirProvider with ChangeNotifier {
     for (DirItemStorePath i in (readLocalPath.isEmpty ? paths : readLocalPath)) {
       if (i.check! == false) continue;
 
-      Directory directory = Directory(i.basicPath + laterPath);
-      directory.createSync(recursive: true);
-      List files = directory.listSync(recursive: true);
-      fileList.addAll(files);
+      for (var pathItem in laterPaths ??= ["/media"]) {
+        Directory directory = Directory(i.basicPath + pathItem);
+        directory.createSync(recursive: true);
+        List files = directory.listSync(recursive: true);
+        fileList.addAll(files);
+      }
     }
     return fileList;
   }
 
   // 保存目录位置
-  setSaveDirPath(List<DirItemStorePath> paths) {
+  void setSaveDirPath(List<DirItemStorePath> paths) {
     Map value = {
       "defaultSavePathValue": defaultSavePathValue,
-      "configuration": paths.map((key) => key.toMap).where((element) => element["check"]).toList(),
+      "configuration": paths.map((key) => key.toMap).where((e) => e["check"]).toList(),
     };
     storage.set(NAME, value: value);
   }
@@ -237,6 +239,10 @@ class DirTranslate {
     this.key = "",
     this.param,
   });
+
+  get toMap {
+    return {"key": key, "param": param};
+  }
 }
 
 class DirItemStorePath extends DirBasicItem {
@@ -245,16 +251,16 @@ class DirItemStorePath extends DirBasicItem {
 
   DirItemStorePath({
     required this.dirName,
-    DirTranslate? translate,
-    bool check = false,
-    required String basicPath,
-  }) : super(check: check, basicPath: basicPath, translate: translate) {
-    this.translate!.key = dirName;
+    super.translate,
+    bool super.check = false,
+    required super.basicPath,
+  }) {
+    translate = DirTranslate(key: dirName, param: {});
   }
 
   Map<String, dynamic> get toMap => {
         "dirName": dirName,
-        "translate": translate,
+        "translate": translate?.toMap,
         "check": check,
         "basicPath": basicPath,
       };

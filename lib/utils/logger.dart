@@ -1,4 +1,4 @@
-import 'package:logger/logger.dart' show Logger, PrettyPrinter, Level;
+import 'package:logger/logger.dart' show Level, Logger, PrettyPrinter;
 
 var logger = Logger(
   filter: null, // Use the default LogFilter (-> only log in debug mode)

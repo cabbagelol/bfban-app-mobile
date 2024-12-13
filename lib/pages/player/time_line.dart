@@ -66,6 +66,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   /// 获取时间轴
   Future getTimeline() async {
     if (playerTimelineStatus.load!) return;
+    if (!mounted) return;
 
     setState(() {
       playerTimelineStatus.load = true;

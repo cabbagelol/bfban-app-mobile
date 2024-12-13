@@ -108,7 +108,7 @@ class TitleSearchState extends State<SearchAppBarWidget> {
               flex: 1,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                constraints: BoxConstraints(minHeight: 50),
+                constraints: BoxConstraints(minHeight: 45),
                 decoration: BoxDecoration(
                   color: TitleSearchColor(widget.theme).color,
                   border: Border.all(color: Theme.of(context).dividerTheme.color!.withOpacity(.3), width: 1),
@@ -122,10 +122,8 @@ class TitleSearchState extends State<SearchAppBarWidget> {
                           ? TextField(
                               controller: controller,
                               focusNode: controllerFocus,
-                              decoration: InputDecoration(
+                              decoration: InputDecoration.collapsed(
                                 border: InputBorder.none,
-                                isCollapsed: true,
-                                contentPadding: EdgeInsets.zero,
                                 hintText: FlutterI18n.translate(context, "search.placeholder"),
                                 hintStyle: TextStyle(
                                   color: TitleSearchColor(widget.theme).textColor!.withOpacity(.4),

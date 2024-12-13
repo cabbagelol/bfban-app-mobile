@@ -317,71 +317,77 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     blendMode: BlendMode.srcIn,
                     child: const SizedBox(),
                   ),
-                  title: Row(
+                  title: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Flexible(
-                        flex: 1,
-                        child: TabBar.secondary(
-                          controller: _tabController,
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.start,
-                          automaticIndicatorColorAdjustment: false,
-                          onTap: (index) => _onSwitchTab(index),
-                          tabs: cheaterStatus!.map((i) {
-                            return Tab(
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: <Widget>[
-                                  I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
-                                  if (i["num"] != null && i["num"] > 0)
-                                    Positioned(
-                                      top: -10,
-                                      right: -12,
-                                      child: AnimatedScale(
-                                        curve: Curves.easeInOutBack,
-                                        scale: i["num"] != null || i["num"] == 0 ? 1 : .8,
-                                        duration: const Duration(milliseconds: 800),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).colorScheme.error,
-                                            borderRadius: BorderRadius.circular(5),
-                                            border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
-                                          ),
-                                          constraints: const BoxConstraints(
-                                            minWidth: 12,
-                                            minHeight: 12,
-                                          ),
-                                          child: Text(
-                                            i["num"] > 9999 ? "9999+" : i["num"].toString(),
-                                            style: TextStyle(
-                                              fontSize: FontSize.xSmall.value,
-                                              color: Theme.of(context).colorScheme.errorContainer,
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: TabBar.secondary(
+                              controller: _tabController,
+                              isScrollable: true,
+                              tabAlignment: TabAlignment.start,
+                              automaticIndicatorColorAdjustment: false,
+                              onTap: (index) => _onSwitchTab(index),
+                              tabs: cheaterStatus!.map((i) {
+                                return Tab(
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: <Widget>[
+                                      I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
+                                      if (i["num"] != null && i["num"] > 0)
+                                        Positioned(
+                                          top: -10,
+                                          right: -12,
+                                          child: AnimatedScale(
+                                            curve: Curves.easeInOutBack,
+                                            scale: i["num"] != null || i["num"] == 0 ? 1 : .8,
+                                            duration: const Duration(milliseconds: 800),
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).colorScheme.error,
+                                                borderRadius: BorderRadius.circular(5),
+                                                border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
+                                              ),
+                                              constraints: const BoxConstraints(
+                                                minWidth: 12,
+                                                minHeight: 12,
+                                              ),
+                                              child: Text(
+                                                i["num"] > 9999 ? "9999+" : i["num"].toString(),
+                                                style: TextStyle(
+                                                  fontSize: FontSize.xSmall.value,
+                                                  color: Theme.of(context).colorScheme.errorContainer,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
                                             ),
-                                            textAlign: TextAlign.center,
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      PlayerFilterPanel(
-                        key: _playerFilterPanelKey,
-                        onChange: (Map value) {
-                          playersStatus!.parame!.game = value["game"];
-                          playersStatus!.parame!.sortBy = value["sortBy"];
-                          playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
-                          playersStatus!.parame!.createTimeTo = value["createTimeTo"];
-                          playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
-                          playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          PlayerFilterPanel(
+                            key: _playerFilterPanelKey,
+                            onChange: (Map value) {
+                              playersStatus!.parame!.game = value["game"];
+                              playersStatus!.parame!.sortBy = value["sortBy"];
+                              playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
+                              playersStatus!.parame!.createTimeTo = value["createTimeTo"];
+                              playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
+                              playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
 
-                          _onRefresh();
-                        },
+                              _onRefresh();
+                            },
+                          ),
+                        ],
                       ),
+                      Divider(height: 1),
                     ],
                   ),
                 ),

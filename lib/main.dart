@@ -35,8 +35,11 @@ void runMain() async {
   // 路由初始
   Routes.configureRoutes(FluroRouter());
 
-  // 设置系统状态栏
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  // 设置系统
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(const BfBanApp());
 

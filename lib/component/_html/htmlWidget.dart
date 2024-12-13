@@ -317,7 +317,7 @@ class CardUtil {
                 bottom: extensionContext.style!.margin!.bottom!.value,
               ),
               child: HtmlImage(
-                src: extensionContext.node.attributes["src"],
+                src: extensionContext.node.attributes["src"] as String,
                 color: extensionContext.style!.color,
                 backgroundColor: extensionContext.style!.backgroundColor,
               ),

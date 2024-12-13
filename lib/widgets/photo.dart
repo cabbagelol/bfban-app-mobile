@@ -8,18 +8,17 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/utils/index.dart';
 
-
 enum PhotoViewFileType { file, network }
 
 class PhotoViewSimpleScreen extends StatefulWidget {
   final PhotoViewFileType? type;
 
-  final String? imageUrl;
+  final String imageUrl;
 
   const PhotoViewSimpleScreen({
     super.key,
     this.type = PhotoViewFileType.network,
-    this.imageUrl = "",
+    required this.imageUrl,
   });
 
   @override
@@ -79,6 +78,10 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
     setState(() {
       imageSaveStatus = false;
     });
+  }
+
+  File get imagePath {
+    return File(widget.imageUrl);
   }
 
   GestureConfig initGestureConfigHandler(state) {
@@ -155,7 +158,7 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
   Widget _getImageItemWidget(int index) {
     return [
       ExtendedImage.file(
-        File(widget.imageUrl!),
+        imagePath,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high,
         mode: ExtendedImageMode.gesture,
@@ -164,7 +167,7 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
         onDoubleTap: onDoubleTap,
       ),
       ExtendedImage.network(
-        widget.imageUrl!,
+        widget.imageUrl,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high,
         mode: ExtendedImageMode.gesture,
@@ -183,7 +186,7 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
         centerTitle: true,
         excludeHeaderSemantics: true,
         forceMaterialTransparency: _doubleClickAnimation?.value != 1.0,
-        title: widget.imageUrl!.isNotEmpty
+        title: widget.imageUrl.isNotEmpty
             ? Text(
                 appBarTitle,
                 style: TextStyle(overflow: TextOverflow.ellipsis),

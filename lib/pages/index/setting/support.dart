@@ -95,6 +95,49 @@ class SupportPageState extends State<SupportPage> {
             onTap: () => _urlUtil.onPeUrl("${Config.apis["web_github"]!.url}/cabbagelol/bfban-app-mobile", mode: LaunchMode.externalApplication),
           ),
           EluiCellComponent(
+            title: "Email",
+            label: "app@bfban.com",
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _urlUtil.onPeUrl("mailto:app@bfban.com", mode: LaunchMode.externalApplication),
+          ),
+          const SizedBox(height: 10),
+          EluiCellComponent(
+            title: "App WebSite",
+            label: Config.apiHost["app_web_site"]!.url,
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _urlUtil.onPeUrl(
+              Config.apiHost["app_web_site"]!.url,
+              mode: LaunchMode.externalApplication,
+            ),
+          ),
+          EluiCellComponent(
+            title: "WebSite Tools",
+            label: "${Config.apiHost["web_site"]!.url}/apps",
+            theme: EluiCellTheme(
+              titleColor: Theme.of(context).textTheme.titleMedium?.color,
+              labelColor: Theme.of(context).textTheme.displayMedium?.color,
+              linkColor: Theme.of(context).textTheme.titleMedium?.color,
+              backgroundColor: Theme.of(context).cardTheme.color,
+            ),
+            islink: true,
+            onTap: () => _urlUtil.onPeUrl(
+              "${Config.apiHost["web_site"]!.url}/apps",
+              mode: LaunchMode.externalApplication,
+            ),
+          ),
+          EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.cell.website.title"),
             label: "${FlutterI18n.translate(context, "app.setting.cell.website.describe")}: ${Config.apiHost["web_site"]!.url}",
             theme: EluiCellTheme(
@@ -110,8 +153,8 @@ class SupportPageState extends State<SupportPage> {
             ),
           ),
           EluiCellComponent(
-            title: "Email",
-            label: "app@bfban.com",
+            title: FlutterI18n.translate(context, "app.setting.support.appDocumentationTitle"),
+            label: FlutterI18n.translate(context, "app.setting.support.appDocumentationDescription"),
             theme: EluiCellTheme(
               titleColor: Theme.of(context).textTheme.titleMedium?.color,
               labelColor: Theme.of(context).textTheme.displayMedium?.color,
@@ -119,8 +162,9 @@ class SupportPageState extends State<SupportPage> {
               backgroundColor: Theme.of(context).cardTheme.color,
             ),
             islink: true,
-            onTap: () => _urlUtil.onPeUrl("mailto:app@bfban.com", mode: LaunchMode.externalApplication),
+            onTap: () => _urlUtil.onPeUrl("https://cabbagelol.github.io/bfban-app-mobile-docs"),
           ),
+          const SizedBox(height: 10),
           EluiCellComponent(
             title: FlutterI18n.translate(context, "app.setting.support.licenseTitle"),
             label: FlutterI18n.translate(context, "app.setting.support.licenseDescription"),
@@ -132,18 +176,6 @@ class SupportPageState extends State<SupportPage> {
             ),
             islink: true,
             onTap: () => UrlUtil().opEnPage(context, "/license"),
-          ),
-          EluiCellComponent(
-            title: FlutterI18n.translate(context, "app.setting.support.appDocumentationTitle"),
-            label: FlutterI18n.translate(context, "app.setting.support.appDocumentationDescription"),
-            theme: EluiCellTheme(
-              titleColor: Theme.of(context).textTheme.titleMedium?.color,
-              labelColor: Theme.of(context).textTheme.displayMedium?.color,
-              linkColor: Theme.of(context).textTheme.titleMedium?.color,
-              backgroundColor: Theme.of(context).cardTheme.color,
-            ),
-            islink: true,
-            onTap: () => _urlUtil.onPeUrl("https://cabbagelol.github.io/bfban-app-mobile-docs"),
           ),
         ],
       ),

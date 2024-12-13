@@ -21,6 +21,13 @@ class LogProvider with ChangeNotifier {
 
   List<LogItemData> get list => _logsList;
 
+  void clear() {
+    if (_logsList.isEmpty) return;
+
+    _logsList.clear();
+    notifyListeners();
+  }
+
   init() {
     // Sentry
     if (Config.env == Env.PROD) {
@@ -29,13 +36,16 @@ class LogProvider with ChangeNotifier {
       });
     }
 
-    FlutterError.onError = (FlutterErrorDetails details) {
-      _logsList.add(LogItemData(
+    // Logs
+    if (Config.env == Env.PROD) {
+      FlutterError.onError = (FlutterErrorDetails details) {
+        _logsList.add(LogItemData(
         time: DateTime.now(),
         error: details.exception,
         stackTrace: details.stack!,
       ));
-      logger.e(details.context, stackTrace: details.stack);
-    };
+        logger.i(details.context, time: DateTime.now(), stackTrace: details.stack);
+      };
+    }
   }
 }

@@ -37,6 +37,8 @@ class MediaPage extends StatefulWidget {
 class MediaPageState extends State<MediaPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final StorageAccount _storageAccount = StorageAccount();
+
   final FileManagement _fileManagement = FileManagement();
 
   TabController? _tabController;
@@ -197,7 +199,12 @@ class MediaPageState extends State<MediaPage> {
   /// [Event]
   /// 获取本地媒体列表
   Future _getLocalMediaFiles() async {
-    List pathFiles = await dirProvider!.getAllFile(laterPath: '/media');
+    List<String> scanDir = ['/media'];
+    bool isShowLog = await _storageAccount.getConfiguration("logShowFile", false);
+    if (isShowLog) {
+      scanDir.add('/logs');
+    }
+    List pathFiles = await dirProvider!.getAllFile(scanDir);
 
     setState(() {
       if (pathFiles.isNotEmpty) {
@@ -296,7 +303,7 @@ class MediaPageState extends State<MediaPage> {
 
           if (i.extension == FileManagementType.IMAGE) {
             widget = Hero(
-              tag: "image",
+              tag: "image.${i.file.path}",
               child: PhotoViewSimpleScreen(
                 type: PhotoViewFileType.file,
                 imageUrl: i.file.path,
@@ -337,7 +344,7 @@ class MediaPageState extends State<MediaPage> {
 
           Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => Hero(
-              tag: "image",
+              tag: "image.${openFileDetail[i.filename]["downloadURL"]}",
               child: PhotoViewSimpleScreen(
                 type: PhotoViewFileType.network,
                 imageUrl: openFileDetail[i.filename]["downloadURL"],
@@ -474,20 +481,21 @@ class MediaPageState extends State<MediaPage> {
       showModalBottomSheet<void>(
         context: context,
         clipBehavior: Clip.hardEdge,
-          isScrollControlled: false,
-          showDragHandle: true,
-          useRootNavigator: true,
+        isScrollControlled: false,
+        showDragHandle: true,
+        useRootNavigator: true,
         builder: (BuildContext context) {
-            return ListView(
-              children: dirProvider!.paths.map((DirItemStorePath dir) {
-                return ListTile(
-                  title: Text(FlutterI18n.translate(context, "app.media.directory.${dir.translate!.key!}", translationParams: dir.translate!.param)),
-                  subtitle: Text(dir.basicPath),
-                  onTap: () => _onExportFileCore(i, dir),
-                );
-              }).toList(),
-            );
-          });
+          return ListView(
+            children: dirProvider!.paths.map((DirItemStorePath dir) {
+              return ListTile(
+                title: Text(FlutterI18n.translate(context, "app.media.directory.${dir.translate!.key!}", translationParams: dir.translate!.param)),
+                subtitle: Text(dir.basicPath),
+                onTap: () => _onExportFileCore(i, dir),
+              );
+            }).toList(),
+          );
+        },
+      );
     } catch (err) {
       EluiMessageComponent.error(context)(
         child: Text(err.toString()),
@@ -933,7 +941,7 @@ class _MediaCardState extends State<MediaCard> {
                           }
                         },
                         child: Hero(
-                          tag: "image",
+                          tag: "image.${widget.i.file.path}",
                           child: MediaLocalIconCard(
                             i: widget.i,
                             filetype: _filetype,
@@ -950,7 +958,7 @@ class _MediaCardState extends State<MediaCard> {
                           }
                         },
                         child: Hero(
-                          tag: "image",
+                          tag: "image.${widget.i.filename}",
                           child: MediaNetworkIconCard(
                             i: widget.i,
                           ),

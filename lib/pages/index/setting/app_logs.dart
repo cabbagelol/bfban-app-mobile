@@ -5,7 +5,6 @@ import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:bfban/provider/dir_provider.dart';
 import 'package:bfban/provider/log_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +36,7 @@ class _AppLogsPageState extends State<AppLogsPage> {
     String path = "${dirData.currentDefaultSavePath}/logs/${DateTime.now()}.log";
     File file = File(path);
     String content = logData.list.map((i) => "${i.time.toString()}:${i.error ?? ''}\n${i.stackTrace ?? ''}").join('\n');
+
     await file.writeAsString(
       content,
       mode: FileMode.append,
@@ -56,6 +56,13 @@ class _AppLogsPageState extends State<AppLogsPage> {
                 IconButton(
                   onPressed: () => _onSaveError(logData, dirData),
                   icon: Icon(Icons.save),
+                ),
+              if (logData.list.isNotEmpty)
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () {
+                    logData.list.clear();
+                  },
                 ),
             ],
           ),
