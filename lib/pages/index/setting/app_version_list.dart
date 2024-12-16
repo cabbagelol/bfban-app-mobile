@@ -1,6 +1,5 @@
 import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/utils/index.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -9,8 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../component/_refresh/index.dart';
 import '../../../provider/package_provider.dart';
-import '../../../utils/url.dart';
-import '../../../utils/version.dart';
 
 class AppVersionList extends StatefulWidget {
   const AppVersionList({super.key});
@@ -167,45 +164,37 @@ class _AppVersionListState extends State<AppVersionList> {
           return Refresh(
             key: _refreshKey,
             onRefresh: _onRefresh,
-            child: ListView.separated(
-              itemCount: data.list.where((i) => i["version"] == data.currentVersion).toList().length,
-              padding: EdgeInsets.symmetric(vertical: 10),
-              separatorBuilder: (BuildContext context, int index) => const Divider(),
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    /// search box
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.search),
-                        ),
-                      ),
-                    ),
-
-                    /// hint
-                    data.list.where((i) => i["version"] == data.currentVersion).toList().isEmpty
-                        ? SizedBox(
-                            height: 50,
-                            child: RawChip(
-                              backgroundColor: Color.lerp(Theme.of(context).colorScheme.primary, Color(0xffc59b0b), .6),
-                              avatar: Icon(Icons.info_outline),
-                              label: Text(FlutterI18n.translate(context, "app.setting.versions.superHairVersionTip")),
+            child: data.list.isNotEmpty
+                ? ListView.separated(
+                    itemCount: data.list.toList().length,
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    separatorBuilder: (BuildContext context, int index) => const Divider(),
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        children: [
+                          /// search box
+                          Container(
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                            child: TextField(
+                              controller: _searchController,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.search),
+                              ),
                             ),
-                          )
-                        : Container(),
-                    const SizedBox(height: 10),
+                          ),
 
-                    /// list
+                          /// list
                     if (inquireVersion(data).isEmpty) EmptyWidget(),
                     ...inquireVersion(data).map((e) {
                       return ListTile(
                         title: Text(
                           "${e["version"]}",
-                          style: TextStyle(fontSize: Theme.of(context).textTheme.titleLarge!.fontSize),
+                          style: TextStyle(fontSize: Theme
+                              .of(context)
+                              .textTheme
+                              .titleLarge!
+                              .fontSize),
                         ),
                         subtitle: Wrap(
                           spacing: 10,
@@ -216,8 +205,14 @@ class _AppVersionListState extends State<AppVersionList> {
                               color: EluiTagType.none,
                               size: EluiTagSize.no2,
                               theme: EluiTagTheme(
-                                backgroundColor: Theme.of(context).colorScheme.primary,
-                                borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                                backgroundColor: Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .primary,
+                                borderColor: Theme
+                                    .of(context)
+                                    .bottomAppBarTheme
+                                    .color!,
                               ),
                               onTap: () {},
                             ),
@@ -227,8 +222,14 @@ class _AppVersionListState extends State<AppVersionList> {
                                 color: EluiTagType.none,
                                 size: EluiTagSize.no2,
                                 theme: EluiTagTheme(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
-                                  borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                                  backgroundColor: Theme
+                                      .of(context)
+                                      .colorScheme
+                                      .primary,
+                                  borderColor: Theme
+                                      .of(context)
+                                      .bottomAppBarTheme
+                                      .color!,
                                 ),
                                 onTap: () {},
                               ),
@@ -238,8 +239,14 @@ class _AppVersionListState extends State<AppVersionList> {
                                 color: EluiTagType.none,
                                 size: EluiTagSize.no2,
                                 theme: EluiTagTheme(
-                                  backgroundColor: Theme.of(context).colorScheme.primary,
-                                  borderColor: Theme.of(context).bottomAppBarTheme.color!,
+                                  backgroundColor: Theme
+                                      .of(context)
+                                      .colorScheme
+                                      .primary,
+                                  borderColor: Theme
+                                      .of(context)
+                                      .bottomAppBarTheme
+                                      .color!,
                                 ),
                                 onTap: () {},
                               )
@@ -252,6 +259,10 @@ class _AppVersionListState extends State<AppVersionList> {
                   ],
                 );
               },
+            )
+                : Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [EmptyWidget()],
             ),
           );
         },

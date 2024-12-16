@@ -21,6 +21,8 @@ class LogProvider with ChangeNotifier {
 
   List<LogItemData> get list => _logsList;
 
+  List<LogItemData> get reverseList => _logsList.reversed.toList();
+
   void clear() {
     if (_logsList.isEmpty) return;
 
@@ -40,10 +42,10 @@ class LogProvider with ChangeNotifier {
     if (Config.env == Env.PROD) {
       FlutterError.onError = (FlutterErrorDetails details) {
         _logsList.add(LogItemData(
-        time: DateTime.now(),
-        error: details.exception,
-        stackTrace: details.stack!,
-      ));
+          time: DateTime.now(),
+          error: details.exception,
+          stackTrace: details.stack!,
+        ));
         logger.i(details.context, time: DateTime.now(), stackTrace: details.stack);
       };
     }

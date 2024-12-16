@@ -26,7 +26,7 @@ class Http extends ScaffoldState {
 
   /// default options
   static const Duration CONNECT_TIEMOUT = Duration(seconds: 10);
-  static const Duration RECEIVE_TIMEOUT = Duration(seconds: 10);
+  static const Duration RECEIVE_TIMEOUT = Duration(seconds: 5);
 
   /// http request methods
   static const String GET = 'get';

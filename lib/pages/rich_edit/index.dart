@@ -48,10 +48,7 @@ class RichEditPageState extends State<RichEditPage> {
     String html = _richEditCoreKey.currentState!.controllerContent;
     Navigator.pop(
       context,
-      {
-        "code": 1,
-        "html": html,
-      },
+      {"code": 1, "html": html},
     );
   }
 

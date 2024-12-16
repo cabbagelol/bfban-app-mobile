@@ -5,6 +5,7 @@ import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
@@ -68,19 +69,31 @@ class ChatPageState extends State<ChatListPage> {
   /// [Evnet]
   /// 删除
   onDeleteMessage(num id) {
-    providerUtil!.onDelete(id);
+    try {
+      providerUtil!.onDelete(id);
+    } catch (E) {
+      EluiMessageComponent.error(context)(child: Text(E.toString()));
+    }
   }
 
   /// [Evnet]
   /// 已读
   onReadMessage(num id) {
-    providerUtil!.onRead(id);
+    try {
+      providerUtil!.onRead(id);
+    } catch (E) {
+      EluiMessageComponent.error(context)(child: Text(E.toString()));
+    }
   }
 
   /// [Evnet]
   /// 未读
   onUnReadChat(num id) {
-    providerUtil!.onUnread(id);
+    try {
+      providerUtil!.onUnread(id);
+    } catch (E) {
+      EluiMessageComponent.error(context)(child: Text(E.toString()));
+    }
   }
 
   @override

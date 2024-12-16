@@ -43,9 +43,9 @@ class MediaPageState extends State<MediaPage> {
 
   TabController? _tabController;
 
-  final GlobalKey<RefreshIndicatorState> _refreshLocalIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshState> _refreshLocalIndicatorKey = GlobalKey<RefreshState>();
 
-  final GlobalKey<RefreshIndicatorState> _refreshNetworkIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshState> _refreshNetworkIndicatorKey = GlobalKey<RefreshState>();
 
   final ScrollController _scrollNetworkController = ScrollController();
 
@@ -210,6 +210,9 @@ class MediaPageState extends State<MediaPage> {
       if (pathFiles.isNotEmpty) {
         mediaStatus.setList(pathFiles, MediaType.Local);
         mediaStatus.setListSort();
+        return;
+      } else {
+        mediaStatus.setList([], MediaType.Local);
       }
     });
     return true;
@@ -258,16 +261,7 @@ class MediaPageState extends State<MediaPage> {
   /// 用于媒体选择，返回
   Future<void> _onSelectFile(dynamic i) async {
     try {
-      if (openFileDetail[i.filename] == null) {
-        await _getNetworkMediaDetail(i);
-      }
-
-      if (openFileDetail[i.filename]["downloadURL"] != null) {
-        Navigator.pop(context, openFileDetail[i.filename]["downloadURL"]);
-        return;
-      }
-
-      throw "No file information was obtained";
+      Navigator.pop(context, "${Config.apis["network_service_request"]!.url}/service/file?filename=${i.filename}");
     } catch (E) {
       EluiMessageComponent.error(context)(child: Text(E.toString()));
     }
@@ -602,13 +596,20 @@ class MediaPageState extends State<MediaPage> {
     switch (type) {
       case MediaType.Local:
         await _getLocalMediaFiles();
+
+        _refreshLocalIndicatorKey.currentState?.controller.finishRefresh();
+        _refreshLocalIndicatorKey.currentState?.controller.resetFooter();
         break;
       case MediaType.Network:
         cloudMediaStatus.parame!.resetPage();
         await _getNetworkMediaInfo();
         await _getNetworkMediaList();
+
+        _refreshNetworkIndicatorKey.currentState?.controller.finishRefresh();
+        _refreshNetworkIndicatorKey.currentState?.controller.resetFooter();
         break;
     }
+
     return;
   }
 

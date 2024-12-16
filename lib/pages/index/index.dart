@@ -318,11 +318,12 @@ class IndexPageState extends State<IndexPage> {
                         return PopupMenuButton(
                           padding: const EdgeInsets.all(16),
                           icon: RedDotWidget(
-                              show: packageData.isNewVersion,
-                              child: Icon(
-                                Icons.adaptive.more,
-                                color: Theme.of(context).appBarTheme.iconTheme!.color,
-                              )),
+                            show: packageData.isNewVersion,
+                            child: Icon(
+                              Icons.adaptive.more,
+                              color: Theme.of(context).appBarTheme.iconTheme!.color,
+                            ),
+                          ),
                           offset: const Offset(0, 45),
                           onSelected: (value) {
                             switch (value) {

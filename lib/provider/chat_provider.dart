@@ -163,6 +163,10 @@ class ChatProvider with ChangeNotifier {
       method: Http.POST,
     );
 
+    if (result.data["code"] != "message.success") {
+      return false;
+    }
+
     if (result.data["success"] == 1) {
       switch (typeIndex) {
         case MessageType.del:
@@ -192,9 +196,8 @@ class ChatProvider with ChangeNotifier {
     }
 
     messageStatus.load = false;
-
     notifyListeners();
-    return false;
+    return true;
   }
 
   /// [Event]

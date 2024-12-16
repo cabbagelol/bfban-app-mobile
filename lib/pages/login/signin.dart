@@ -8,12 +8,10 @@ import 'package:bfban/component/_captcha/index.dart';
 import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/data/index.dart';
-import 'package:bfban/utils/http_token.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'package:bfban/utils/index.dart';
 import 'package:provider/provider.dart';
@@ -49,11 +47,7 @@ class SigninPageState extends State<SigninPage> {
 
   final TextEditingController _captchaController = TextEditingController(text: "");
 
-  List games = ['bf1', 'bf6', 'bfv'];
-
   bool _passwordShow = false;
-
-  List _backdropImages = [];
 
   Widget buildTextField(TextEditingController controller, IconData icon, bool obscureText, TextAlign align, int length) {
     return TextField(
@@ -121,7 +115,6 @@ class SigninPageState extends State<SigninPage> {
     });
 
     setState(() {
-      _backdropImages = List.generate(20, (q) => games[Random().nextInt(games.length)]);
       localLoginRecord = localLoginRecordData.value ?? {};
     });
   }
@@ -227,28 +220,6 @@ class SigninPageState extends State<SigninPage> {
           builder: (BuildContext context, data, Widget? child) {
             return Stack(
               children: <Widget>[
-                Positioned.fill(
-                  top: 10,
-                  child: Opacity(
-                    opacity: .05,
-                    child: StaggeredGrid.count(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20,
-                      children: [
-                        ..._backdropImages.map(
-                          (i) => Transform.rotate(
-                            angle: 15 * 3.14159 / 180, // 旋转45度
-                            child: Image.asset(
-                              "assets/images/games/$i/bf.jpg",
-                              fit: BoxFit.fitWidth,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
                 BackdropFilter(
                   filter: ui.ImageFilter.blur(
                     sigmaX: 15.0,

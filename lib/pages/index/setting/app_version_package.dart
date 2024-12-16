@@ -96,6 +96,16 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                     ),
                   ),
 
+                if (data.isSuperHairVersion)
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+                    child: RawChip(
+                      backgroundColor: Color.lerp(Theme.of(context).colorScheme.primary, Color(0xffc59b0b), .6),
+                      avatar: Icon(Icons.info_outline),
+                      label: Text(FlutterI18n.translate(context, "app.setting.versions.superHairVersionTip")),
+                    ),
+                  ),
+
                 /// version info
                 ListBody(
                   children: [

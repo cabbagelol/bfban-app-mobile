@@ -1,4 +1,4 @@
-import 'package:bfban/pages/index/setting/app_logs.dart';
+import 'package:bfban/pages/index/setting/logs.dart';
 import 'package:bfban/pages/index/setting/app_version_list.dart';
 import 'package:bfban/pages/player/appeal.dart';
 import 'package:bfban/pages/player/index.dart';

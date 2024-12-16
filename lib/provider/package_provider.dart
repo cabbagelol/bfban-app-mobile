@@ -116,6 +116,11 @@ class PackageProvider with ChangeNotifier {
 
   bool get loadOnline => package.loadOnline!;
 
+  /// 是否超发版本
+  bool get isSuperHairVersion {
+    return list.where((i) => i["version"] == currentVersion).toList().isEmpty;
+  }
+
   /// 是否最新版本
   bool get isNewVersion => _version.compareVersions(currentVersion, package.onlineVersion!);
 }
