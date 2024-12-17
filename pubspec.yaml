@@ -134,6 +134,7 @@ flutter_native_splash:
   ios: false
 
 flutter:
+  version: 3.10.2
   uses-material-design: true
   fonts:
     - family: UbuntuMono
