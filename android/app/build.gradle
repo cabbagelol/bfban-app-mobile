@@ -51,7 +51,7 @@ android {
 
     defaultConfig {
         applicationId "com.cabbagelol.bfban"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 34
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
@@ -62,8 +62,8 @@ android {
         }
         manifestPlaceholders = [
                 JPUSH_PKGNAME: "com.cabbagelol.bfban",
-                JPUSH_APPKEY : "966c3770c8bb47ffcbaacff1", // NOTE: JPush 上注册的包名对应的 Appkey.
-                JPUSH_CHANNEL: "developer-default", // 暂时填写默认值即可.
+                JPUSH_APPKEY : "966c3770c8bb47ffcbaacff1",  // NOTE: JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL: "developer-default",         // 暂时填写默认值即可.
         ]
     }
 
@@ -84,9 +84,11 @@ android {
             shrinkResources false
         }
     }
+
     buildFeatures {
         viewBinding true
     }
+
     ndkVersion '27.0.12077973'
 }
 

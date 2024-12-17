@@ -24,12 +24,13 @@ enum HtmlWidgetFontSize {
 }
 
 class HtmlWidget extends StatefulWidget {
-  String? content;
-  HtmlWidgetFontSize? size;
-  List sizeConfig = [];
-  Widget? quote;
-  String? id;
-  bool? footerToolBar;
+  final String? content;
+  late final HtmlWidgetFontSize? size;
+  final List sizeConfig = [];
+  final Widget? quote;
+  final String? id;
+  final bool? footerToolBar;
+  final bool isBorder;
 
   // 选项变动
   Function? onChangeOption;
@@ -42,13 +43,16 @@ class HtmlWidget extends StatefulWidget {
     this.id,
     this.footerToolBar = true,
     this.onChangeOption,
-  });
+    this.isBorder = true,
+  }) {
+    this.size = size;
+  }
 
   @override
-  State<HtmlWidget> createState() => _HtmlWidgetState();
+  State<HtmlWidget> createState() => HtmlWidgetState();
 }
 
-class _HtmlWidgetState extends State<HtmlWidget> {
+class HtmlWidgetState extends State<HtmlWidget> {
   Future? futureBuilder;
 
   List htmlStyle = [];
@@ -155,7 +159,7 @@ class _HtmlWidgetState extends State<HtmlWidget> {
       child: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).cardTheme.color,
-          border: Border.all(color: Theme.of(context).dividerTheme.color!, width: 1),
+          border: widget.isBorder ? Border.all(color: Theme.of(context).dividerTheme.color!, width: 1) : null,
           borderRadius: BorderRadius.circular(3),
         ),
         child: Column(

@@ -46,7 +46,7 @@ class LogProvider with ChangeNotifier {
           error: details.exception,
           stackTrace: details.stack!,
         ));
-        logger.i(details.context, time: DateTime.now(), stackTrace: details.stack);
+        logger.i(details.context, stackTrace: details.stack);
       };
     }
   }
