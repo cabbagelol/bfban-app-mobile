@@ -5,6 +5,7 @@ version: '0.2.13'
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
+  flutter: 3.24.3
 
 dependencies:
   flutter:
@@ -97,7 +98,8 @@ dependencies:
 
   # UI库
   flutter_elui_plugin:
-    path: ../flutter_elui_plugin
+    git:
+      url: https://github.com/ElementUserInterface/flutter-elui-plus-plugin.git
 
   # 视频 https://pub.flutter-io.cn/packages/video_player
   video_player: ^2.1.1
@@ -107,7 +109,7 @@ dependencies:
 
   # 极光 https://pub.flutter-io.cn/packages/jpush_flutter
   # 需要配置android/ios目录
-  #  jpush_flutter: ^2.3.8
+  # jpush_flutter: ^2.3.8
 
   # 许可证页 https://pub.flutter-io.cn/packages/flutter_custom_license_page
   flutter_custom_license_page: ^0.0.3
@@ -134,7 +136,6 @@ flutter_native_splash:
   ios: false
 
 flutter:
-  version: 3.24.3
   uses-material-design: true
   fonts:
     - family: UbuntuMono

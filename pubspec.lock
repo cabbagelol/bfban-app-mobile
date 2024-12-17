@@ -526,9 +526,11 @@ packages:
   flutter_elui_plugin:
     dependency: "direct main"
     description:
-      path: "../flutter_elui_plugin"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: "3a907c2eb44171e5a1ff9c61cfaf5e8a9abae487"
+      url: "https://github.com/ElementUserInterface/flutter-elui-plus-plugin.git"
+    source: git
     version: "0.2.0"
   flutter_html:
     dependency: "direct main"
@@ -1791,5 +1793,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
-  flutter: ">=3.24.0"
+  dart: ">=3.5.3 <4.0.0"
+  flutter: ">=3.24.3"
