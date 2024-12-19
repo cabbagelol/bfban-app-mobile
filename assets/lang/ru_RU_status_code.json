@@ -12,7 +12,7 @@
     "achievement_ineffective": "Неверное достижение",
     "achievement_success": "Достижение успешно получено",
     "bindOrigin_bad": "Произошла ошибка при привязке аккаунта. Обратитесь к администратору {message}",
-    "bindOrigin_error": "发生错误，请联系管理员 {message}",
+    "bindOrigin_error": "Произошла ошибка, обратитесь к администратору {message}",
     "bindOrigin_expired": "激活验证码过期，请重新注册",
     "bindOrigin_gameNotShowed": "判断的账户，没有对应战地系列游戏",
     "bindOrigin_needVerify": "恭喜，你还差一步，请前往邮箱激活账户",
