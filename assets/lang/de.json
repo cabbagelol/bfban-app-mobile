@@ -25,11 +25,19 @@
       "app_exit": "Klicken Sie erneut, um das Programm zu beenden"
     },
     "media": {
-      "open": "Überprüfen",
+      "open": "Von außen öffnen",
+      "view": "Überprüfen",
       "delete": "löschen",
       "fileInfo": "Einzelheiten",
       "uploadFile": "Daten hochladen",
       "export": "Export",
+      "directory": {
+        "appInteriorDirectory": "Integrierte Anwendung",
+        "libraryDirectory": "öffentlich",
+        "temporaryDirectory": "Cache",
+        "downloadsDirectory": "herunterladen",
+        "external": "Erweiterung ${index}"
+      },
       "tab": {
         "local": "lokal",
         "cloud": "Wolkenfotogalerie"
@@ -126,20 +134,33 @@
     "setting": {
       "title": "Zentrum setzen",
       "cell": {
+        "achievement": {
+          "title": "Leistung",
+          "describe": "Benutzererfolge"
+        },
+        "history": {
+          "title": "Tourgeschichte",
+          "describe": "Durchsuchen Sie frühere Inhalte"
+        },
+        "subscribes": {
+          "title": "Achtung",
+          "describe": "Abonnieren Sie Fälle"
+        },
         "information": {
           "title": "Konto",
           "describe": "Benutzername, passwort und zugangseinstellungen ändern"
         },
         "customReply": {
           "title": "Definierte vorlage",
-          "describe": "Schaltest die vorlage durch"
+          "describe": "Antwort, Urteil, Berichtsvorlage"
         },
         "media": {
           "title": "Medienbibliothek",
           "describe": "Fotos, videos, hochladen Von dateien, verwaltung"
         },
         "dirConfiguration": {
-          "title": "Speichereinrichtung",
+          "title": "Ordnerkonfiguration",
+          "describe": "Standardordner, Dateiscan",
           "scanDirectoryTitle": "Liste einscannen",
           "scanDirectoryDescription": "Wählen sie ordner einscannen (auswahl)",
           "defaultSavePathTitle": "Standard download position erkannt",
@@ -158,12 +179,23 @@
       "versions": {
         "title": "Ausführung",
         "describe": "Aktualisierung, aktuelle ausgabe",
+        "appName": "Anwendungsname",
+        "packageName": "Paketname",
         "currentVersion": "aktuelle Version",
+        "buildNumber": "Build-Version",
+        "buildSignature": "Signatur erstellen",
+        "installerStore": "Installationsquelle",
+        "ignoredCurrentVersionItem": "Für aktuelle Version ignorieren",
+        "ignoredGloballyVersionTitle": "Versionsaktualisierungen ignorieren",
+        "ignoredGloballyVersionSubtitle": "Keine Versionsprüfung mehr, dadurch wird die Versionsprüfung überall im Programm deaktiviert",
+        "showVersionsTitle": "Alle verfügbaren Versionen",
+        "showVersionsSubtitle": "Alle Versionen anzeigen und ignorierte Versionen verwalten",
         "newVersion": "Die neueste version",
         "newVersionDescribe_new": "Bereits aktuell",
         "newVersionDescribe_old": "veraltete Version",
         "type": "Typ",
-        "superHairVersionTip": "Die entsprechende Version wurde nicht gefunden, Ihre aktuelle Version ist möglicherweise eine überveröffentlichte Version"
+        "superHairVersionTip": "Die entsprechende Version wurde nicht gefunden, Ihre aktuelle Version ist möglicherweise eine überveröffentlichte Version",
+        "newVersionTip": "neue Version gefunden\nBitte aktualisieren Sie über den Store (wenn Sie von Store-Kanälen außerhalb der Plattform herunterladen, gehen Sie bitte manuell zur offiziellen Website, um das neue Installationspaket herunterzuladen, um die Installation zu überschreiben)"
       },
       "language": {
         "title": "Sprache"
@@ -172,6 +204,10 @@
         "title": "Thema",
         "describe": "Aussehen der farben, gescheites thema, schriftgröße",
         "textScaleFactor": "Die schriftgröße"
+      },
+      "firstPage": {
+        "title": "Oberhalb der Falte",
+        "describe": "Anzeigeseite des Startbildschirms des Steuerungsprogramms"
       },
       "cleanManagement": {
         "title": "Aufräumen",
@@ -197,6 +233,8 @@
       "support": {
         "title": "Unterstützung",
         "guide": "Erster Start der App",
+        "logTitle": "Protokoll",
+        "logDescription": "Programmfehlerprotokoll",
         "feedbackTitle": "Feedback-Gruppe (612949946)",
         "feedbackDescription": "näher am Autor",
         "githubTitle": "Github",
@@ -240,7 +278,7 @@
       "overflowLengthButton": "Ok, fügen sie das imaginarium hinzu"
     },
     "detail": {
-      "openExplorePlayerDetail": "Der tourist schaute den fall"
+      "openExplorePlayerDetail": "Browseransicht"
     },
     "signin": {
       "title": "Anmeldung",
