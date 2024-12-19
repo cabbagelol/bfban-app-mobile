@@ -20,7 +20,7 @@
     "bindOrigin_notImplement": "Произошла ошибка, обратитесь к администратору {message}",
     "bindOrigin_originBindingExist": "Этот адрес электронной почты привязан к аккаунту",
     "bindOrigin_originNotFound": "Эту учетную запись электронной почты невозможно найти. Проверьте, правильный ли адрес электронной почты и включите ли поиск по электронной почте.",
-    "bindOrigin_success": "恭喜你成功激活!",
+    "bindOrigin_success": "Поздравляем с успешной активацией!",
     "server_error": "服务错误 {message}",
     "captcha_bad": "验证码模块发生错误,请联系管理员 {message}",
     "captcha_expired": "验证码过期或未填",
