@@ -20,16 +20,23 @@
         "beforeYesterday": "前天",
         "dayAgo": "{s}天前"
       },
-      "web_site": "網站地址",
+      "web_site": "網址",
       "setting": "設定",
-      "app_exit": "再次點擊,退出程式"
+      "app_exit": "再次點擊,退出程序"
     },
     "media": {
       "open": "查看",
       "delete": "刪除",
-      "fileInfo": "詳細信息",
+      "fileInfo": "詳細資訊",
       "uploadFile": "上傳文件",
-      "export": "導出",
+      "export": "匯出",
+      "directory": {
+        "appInteriorDir": "應用程式內建",
+        "libraryDirectory": "公有",
+        "temporaryDirectory": "快取",
+        "downloadsDirectory": "下載",
+        "external": "擴充 ${index}"
+      },
       "tab": {
         "local": "本地",
         "cloud": "雲圖庫"
@@ -38,10 +45,10 @@
     "home": {
       "scancode": "拍攝",
       "takeLook": "隨便看看",
-      "needAccount": "此功能需要賬戶, 請先登錄",
+      "needAccount": "此功能需要帳戶, 請先登入",
       "tabs": {
         "activities": "動態",
-        "tourRecord": "瀏覽記錄",
+        "tourRecord": "遊覽記錄",
         "subscribes": "追蹤",
         "trend": "熱門案件"
       },
@@ -54,40 +61,40 @@
       "paging": "第{num}頁"
     },
     "splash": {
-      "account": "加載帳戶信息",
+      "account": "載入帳戶資訊",
       "appInitial": "初始化程式應用",
       "dir": "初始儲存配置",
       "guide": "初始引導",
-      "message": "更新消息",
-      "networkError": "未連接網路，程式需要網路在線服務",
+      "message": "更新訊息",
+      "networkError": "應用未連接網路,程式依賴線上服務",
       "theme": "初始化主題",
-      "token": "用戶身份配置",
+      "token": "使用者身份配置",
       "version": "驗證版本服務"
     },
     "guide": {
       "endNext": "完成",
       "agreement": {
-        "title": "協議",
+        "title": "協定",
         "content": "協議內容..",
-        "errorContent": "網絡錯誤無法獲取協議內容，請訪問:"
+        "errorContent": "網路錯誤無法取得協定內容,請存取:"
       },
       "login": {
         "title": "歡迎您到來",
-        "label": "如果你已經擁有BFBAN帳戶，現在就可登入.",
+        "label": "如果你已經擁有BFBAN帳號,現在就可登入.",
         "welcomeBack": "歡迎回到我們的'戰場'上"
       },
       "permission": {
         "title": "權限",
-        "label": "依照您需求觸摸下方單元，預先授權程式權限;此處並非強制要求,在需要特定功能下程式會提示您未授權的權限詢問;一些功能不授權不影響整體APP使用",
-        "tip": "如果存在【永久拒絕】選項，可以到設置>應用>權限隨時修改",
+        "label": "依照您需求觸摸下方單元,預先授權應用權限;此處並非強制要求,在需要特定功能下程式會提示您未授權的權限詢問;有些功能不授權不影響整體APP使用",
+        "tip": "如果存在【永久拒絕】選項,可以到設定>應用程式>權限隨時修改",
         "list": {
           "manageExternalStorage": {
             "name": "外部儲存",
             "describe": "此功能用於從外部儲存讀取和寫入媒體素材"
           },
           "camera": {
-            "name": "攝影鏡頭",
-            "describe": "拍攝或錄製多媒體，媒體內容多為證據"
+            "name": "網路攝影機",
+            "describe": "拍攝或錄製多媒體,媒體內容多為證據"
           },
           "audio": {
             "name": "聲音",
@@ -95,15 +102,15 @@
           },
           "videos": {
             "name": "影片",
-            "describe": "讀取影片內容,用途素材導入或導出、上傳"
+            "describe": "讀取影片內容,用途素材匯入或匯出、上傳"
           },
           "photos": {
-            "name": "相冊",
-            "describe": "讀取相簿內容,用途素材導入或導出、上傳"
+            "name": "相簿",
+            "describe": "讀取相簿內容,用途素材匯入或匯出、上傳"
           },
           "storage": {
             "name": "本地儲存",
-            "describe": "由用戶在APP內生成數據"
+            "describe": "由用戶在APP內產生數據"
           },
           "notification": {
             "name": "通知",
@@ -112,7 +119,7 @@
         },
         "status": {
           "-1": "未知",
-          "0": "允許",
+          "0": "準許",
           "1": "被拒絕",
           "2": "永久拒絕",
           "3": "受限制"
@@ -126,20 +133,32 @@
     "setting": {
       "title": "設定中心",
       "cell": {
+        "achievement": {
+          "title": "成就",
+          "describe": "用戶成就"
+        },
+        "history": {
+          "title": "遊覽歷史",
+          "describe": "遊覽過往內容"
+        },
+        "subscribes": {
+          "title": "案件關注",
+          "describe": "訂閱案件"
+        },
         "information": {
           "title": "帳戶",
-          "describe": "修改用戶名稱,修改密碼,帳戶設定"
+          "describe": "修改使用者名稱,修改密碼,帳號設定"
         },
         "customReply": {
-          "title": "自定義模板",
-          "describe": "回覆模板"
+          "title": "自訂模板",
+          "describe": "回覆、判決、檢舉模板"
         },
         "media": {
           "title": "媒體庫",
-          "describe": "圖片,影片,上傳文件,管理"
+          "describe": "圖片,影片,上傳檔案,管理"
         },
         "dirConfiguration": {
-          "title": "檔案夾配置",
+          "title": "資料夾配置",
           "describe": "默認檔案夾，檔案掃描",
           "scanDirectoryTitle": "掃描目錄",
           "scanDirectoryDescription": "選擇掃描文件目錄(多選)",
@@ -173,6 +192,10 @@
         "title": "主題",
         "describe": "顏色外觀,定時主題切換,字體大小",
         "textScaleFactor": "字體大小"
+      },
+      "firstPage": {
+        "title": "首屏顯示",
+        "describe": "控製程式首屏顯示頁"
       },
       "cleanManagement": {
         "title": "清理",
@@ -241,7 +264,7 @@
       "overflowLengthButton": "好的,添加描述框中"
     },
     "detail": {
-      "openExplorePlayerDetail": "瀏覽器查看案件"
+      "openExplorePlayerDetail": "遊覽器查看"
     },
     "signin": {
       "title": "登入",
