@@ -25,13 +25,14 @@
       "app_exit": "Click again to exit the program"
     },
     "media": {
-      "open": "View",
+      "open": "External Open",
+      "view": "Check",
       "delete": "Delete",
       "fileInfo": "Detailed information",
       "uploadFile": "Upload files",
       "export": "Export file",
       "directory": {
-        "appInteriorDirectory": "in-app",
+        "appInteriorDirectory": "Built-in application",
         "libraryDirectory": "commonality",
         "temporaryDirectory": "cache",
         "downloadsDirectory": "Download",
@@ -178,12 +179,23 @@
       "versions": {
         "title": "Revision",
         "describe": "Update, latest version, current version",
+        "appName": "Application Name",
+        "packageName": "Package Name",
         "currentVersion": "Current Version",
+        "buildNumber": "Build Version",
+        "buildSignature": "Build Signature",
+        "installerStore": "Installation Source",
+        "ignoredCurrentVersionItem": "Ignore for current version",
+        "ignoredGloballyVersionTitle": "Ignore version updates",
+        "ignoredGloballyVersionSubtitle": "Do not check the version anymore. This will turn off the version check everywhere in the program.",
+        "showVersionsTitle": "All available versions",
+        "showVersionsSubtitle": "View all versions and manage ignored versions",
         "newVersion": "Latest version",
         "newVersionDescribe_new": "Already up-to-date",
         "newVersionDescribe_old": "obsolete version",
         "type": "Type",
-        "superHairVersionTip": "Version not found, your current version may be an over-issued version"
+        "superHairVersionTip": "Version not found, your current version may be an over-issued version",
+        "newVersionTip": "New version found\nPlease update through the store (if downloaded from a non-platform store channel, please manually go to the official website to download the new installation package to overwrite the installation)"
       },
       "language": {
         "title": "language"
@@ -221,6 +233,8 @@
       "support": {
         "title": "Support",
         "guide": "Application initial boot",
+        "logTitle": "log",
+        "logDescription": "Program error log",
         "feedbackTitle": "Tencent feedback community (612949946)",
         "feedbackDescription": "Closer to the author",
         "githubTitle": "Github",
