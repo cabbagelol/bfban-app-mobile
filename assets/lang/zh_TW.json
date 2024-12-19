@@ -25,13 +25,14 @@
       "app_exit": "再次點擊,退出程序"
     },
     "media": {
-      "open": "查看",
+      "open": "外部打開",
+      "view": "查看",
       "delete": "刪除",
       "fileInfo": "詳細資訊",
       "uploadFile": "上傳文件",
       "export": "匯出",
       "directory": {
-        "appInteriorDir": "應用程式內建",
+        "appInteriorDirectory": "應用程式內建",
         "libraryDirectory": "公有",
         "temporaryDirectory": "快取",
         "downloadsDirectory": "下載",
@@ -178,12 +179,23 @@
       "versions": {
         "title": "版本",
         "describe": "更新,最新版本,當前版本",
+        "appName": "應用程式名稱",
+        "packageName": "包名",
         "currentVersion": "當前版本",
+        "buildNumber": "建置版本",
+        "buildSignature": "建置簽名",
+        "installerStore": "安裝來源",
+        "ignoredCurrentVersionItem": "目前版本忽略",
+        "ignoredGloballyVersionTitle": "忽略版本更新",
+        "ignoredGloballyVersionSubtitle": "不再檢查版本，這將關閉程式所有地方版本檢查",
+        "showVersionsTitle": "所有可用版本",
+        "showVersionsSubtitle": "查看所有版本，並管理忽略版本",
         "newVersion": "最新版本",
         "newVersionDescribe_new": "已經最新",
         "newVersionDescribe_old": "過時的版本",
         "type": "類型",
-        "superHairVersionTip": "未找到對應版本，您當前版本可能是預先版本"
+        "superHairVersionTip": "未找到對應版本，您當前版本可能是預先版本",
+        "newVersionTip": "發現新版本\n請透過商店更新(如果從非平台商店管道下載，請手動前往官網下載新安裝包覆蓋安裝)"
       },
       "language": {
         "title": "語言"
@@ -221,6 +233,8 @@
       "support": {
         "title": "支持",
         "guide": "程式初始引導",
+        "logTitle": "紀錄",
+        "logDescription": "程式錯誤日誌",
         "feedbackTitle": "反饋群(612949946)",
         "feedbackDescription": "和作者更加接近呢",
         "githubTitle": "Github",
