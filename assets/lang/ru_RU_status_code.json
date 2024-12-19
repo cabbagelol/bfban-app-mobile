@@ -56,7 +56,7 @@
     "reply_bad": "В ответе произошла ошибка, обратитесь к администратору {message}",
     "reply_notFound": "Нет такого ответа или игрока",
     "reply_spam": "Отправленный вами контент не прошел проверку и был помечен как спам {message}",
-    "reply_success": "Ответ отправлен",
+    "reply_success": "已提交回复",
     "report_bad": "举报发生错误，请联系管理员 {message}",
     "report_error": "举报发生错误，请联系管理员 {message}",
     "report_notFound": "查无此用户信息",
