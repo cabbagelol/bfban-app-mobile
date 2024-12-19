@@ -18,7 +18,7 @@
         "today": "現時点では",
         "yesterday": "昨日",
         "beforeYesterday": "一昨日",
-        "dayAgo": "{日����������������������������"
+        "dayAgo": "{s} 日前"
       },
       "web_site": "ウェブサイトアドレス",
       "setting": "設定する",
@@ -34,9 +34,9 @@
       "directory": {
         "appInteriorDirectory": "内蔵アプリケーション",
         "libraryDirectory": "共用",
-        "temporaryDirectory": "(キャッシュ",
+        "temporaryDirectory": "キャッシュ",
         "downloadsDirectory": "ダウンロード",
-        "external": "インデックス}を展開する"
+        "external": "拡張子 ${index}"
       },
       "tab": {
         "local": "この地",
