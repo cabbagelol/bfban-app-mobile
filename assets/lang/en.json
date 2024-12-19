@@ -151,7 +151,7 @@
         },
         "customReply": {
           "title": "Custom templates",
-          "describe": "Reply template"
+          "describe": "Reply, judgment, report template"
         },
         "media": {
           "title": "Media",
@@ -194,8 +194,8 @@
         "textScaleFactor": "The font size"
       },
       "firstPage": {
-        "title": "First Page",
-        "describe": "Control program first screen display page"
+        "title": "First screen display",
+        "describe": "Control program home screen display page"
       },
       "cleanManagement": {
         "title": "clean up",
@@ -264,7 +264,7 @@
       "overflowLengthButton": "Ok, add a description box"
     },
     "detail": {
-      "openExplorePlayerDetail": "Viewer to view the case"
+      "openExplorePlayerDetail": "Browser View"
     },
     "signin": {
       "title": "Login",
