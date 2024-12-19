@@ -20,7 +20,7 @@
         "beforeYesterday": "l'altro ieri",
         "dayAgo": "{s} giorni fa"
       },
-      "web_site": "indirizzo Web",
+      "web_site": "indirizzo del sito web",
       "setting": "impostare",
       "app_exit": "Fare nuovamente clic per uscire dal programma"
     },
