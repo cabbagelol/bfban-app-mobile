@@ -46,7 +46,7 @@
     "userInfo_bad": "Информация о пользователе неверна, обратитесь к администратору {message}",
     "userInfo_notFound": "Нет такого пользователя",
     "logout_bad": "Не удалось выйти из системы, обратитесь к администратору",
-    "logout_success": "再见👋🏻",
+    "logout_success": "До свидания👋🏻",
     "needBindEaAccount": "请绑定你的EA账号以后在回复",
     "noAccess": "当前账户,无权限",
     "noReports": "还没有任何举报",
