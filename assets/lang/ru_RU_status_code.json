@@ -36,7 +36,7 @@
     "forgetPassword_needVerify": "Пожалуйста, проверьте свою электронную почту, чтобы сбросить пароль",
     "forgetPassword_notFound": "Такого пользователя нет или вы не привязали адрес электронной почты. Проверьте, совпадают ли имя или адрес электронной почты.",
     "forgetPassword_permissionDenied": "Ваш аккаунт не может этого сделать",
-    "forgetPassword_success": "重置密码成功",
+    "forgetPassword_success": "Сброс пароля успешен",
     "judgement_appealLock": "上诉被锁定，案件无法进一步裁决",
     "judgement_bad": "判决发生错误，请联系管理员 {message}",
     "judgement_notFound": "未找到案件，请联系管理员 {message}",
