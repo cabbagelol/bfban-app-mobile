@@ -75,7 +75,7 @@
     "signup_notImplement": "Произошла ошибка, обратитесь к администратору {message}",
     "signup_originBindingExist": "Этот адрес электронной почты привязан к аккаунту",
     "signup_originNotFound": "Невозможно найти учетную запись EA на основе информации, предоставленной пользователем.",
-    "signup_usernameExist": "网站用户或账户待激活账户池内用户名已存在",
+    "signup_usernameExist": "Имя пользователя веб-сайта или активируемая учетная запись уже существует в пуле учетных записей.",
     "user_invalid": "令牌失效",
     "user_permissionDenined": "无权许可",
     "user_tokenClientException": "当前客户端令牌过期或失效",
