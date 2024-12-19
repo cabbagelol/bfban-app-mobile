@@ -64,7 +64,7 @@
     "report_spam": "Отправленный вами контент не прошел проверку и был помечен как спам {message}",
     "report_success": "Спасибо за ваш отчет",
     "signin_bad": "Произошла ошибка входа. Свяжитесь с администратором {message}",
-    "signin_noSuchUser": "无此用户或密码错误",
+    "signin_noSuchUser": "Нет такого пользователя или неправильный пароль",
     "signin_success": "欢迎回来",
     "signup_bad": "注册发生错误，请联系管理员 {message}",
     "signup_error": "发生错误，请联系管理员 {message}",
