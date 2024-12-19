@@ -291,7 +291,7 @@
       },
       "accountId": "アカウントID/Eメール",
       "password": "暗号化",
-      "verificationCode": "CAPTCHA、チャレンジ・レスポンス・テストの一種（コンピューティング）"
+      "verificationCode": "検証コード"
     },
     "search": {
       "historySearch": "履歴検索",
