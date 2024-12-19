@@ -1,15 +1,15 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "automatico",
-          "describe": "secondo il sistema"
+          "describe": "Dipende dal sistema"
         }
       },
       "message": {
         "saveSuccess": "Salvato con successo",
-        "saveError": "salvataggio fallito"
+        "saveError": "Salvataggio non riuscito"
       },
       "time": {
         "seconds": "{s} secondi fa",
@@ -20,15 +20,24 @@
         "beforeYesterday": "l'altro ieri",
         "dayAgo": "{s} giorni fa"
       },
-      "web_site": "indirizzo Web",
+      "web_site": "indirizzo del sito web",
       "setting": "impostare",
       "app_exit": "Fare nuovamente clic per uscire dal programma"
     },
     "media": {
-      "open": "Controllo",
+      "open": "Aperto esternamente",
+      "view": "Controllo",
       "delete": "eliminare",
       "fileInfo": "dettagli",
       "uploadFile": "caricare files",
+      "export": "Esportare",
+      "directory": {
+        "appInteriorDirectory": "Applicazione integrata",
+        "libraryDirectory": "pubblico",
+        "temporaryDirectory": "cache",
+        "downloadsDirectory": "scaricamento",
+        "external": "Estensione ${index}"
+      },
       "tab": {
         "local": "Locale",
         "cloud": "galleria fotografica nuvola"
@@ -40,47 +49,53 @@
       "needAccount": "Questa funzione richiede un account, per favore accedi prima",
       "tabs": {
         "activities": "dinamico",
-        "trend": "Casi caldi",
+        "tourRecord": "cronologia di navigazione",
         "subscribes": "traccia",
-        "tourRecord": "cronologia di navigazione"
+        "trend": "Casi caldi"
       },
       "screen": {
-        "report": "rapporto",
         "banAppeal": "appello",
-        "signup": "nuovo utente",
-        "judgement": "giudizio"
+        "judgement": "giudizio",
+        "report": "rapporto",
+        "signup": "nuovo utente"
       },
       "paging": "Pagina {num}"
     },
     "splash": {
-      "guide": "avvio iniziale",
       "account": "Carica le informazioni sull'account",
-      "token": "Configurazione dell'identità dell'utente",
-      "message": "messaggio di aggiornamento",
-      "version": "Verifica versione servizio",
-      "theme": "Inizializza il tema",
       "appInitial": "applicazione inizializzatore",
-      "networkError": "L'applicazione non è connessa alla rete e il programma si basa su servizi online"
+      "dir": "Configurazione di archiviazione iniziale",
+      "guide": "avvio iniziale",
+      "message": "messaggio di aggiornamento",
+      "networkError": "L'applicazione non è connessa alla rete e il programma si basa su servizi online",
+      "theme": "Inizializza il tema",
+      "token": "Configurazione dell'identità dell'utente",
+      "version": "Verifica versione servizio"
     },
     "guide": {
       "endNext": "Fine",
       "agreement": {
         "title": "protocollo",
         "content": "Accordo..",
-        "errorContent": "Errore di rete Impossibile ottenere il contenuto del protocollo, visitare:"
+        "errorContent": "Errore di rete: impossibile ottenere il contenuto del protocollo, visitare:"
       },
       "login": {
         "title": "Benvenuto",
-        "label": "Se hai già un account BFBAN, puoi accedere ora."
+        "label": "Se hai già un conto BFBAN, puoi accedere adesso.",
+        "welcomeBack": "Bentornati sul nostro \"campo di battaglia\""
       },
       "permission": {
         "title": "autorizzazioni",
-        "label": "Toccare l'unità sottostante per pre-autorizzare le autorizzazioni dell'applicazione in base alle proprie esigenze; ​​questo non è un requisito obbligatorio e il programma richiederà autorizzazioni non autorizzate quando sono richieste funzioni specifiche; alcune funzioni non autorizzano e non influiscono sull'utilizzo complessivo dell'APP",
-        "tip": "Se è presente un'opzione【Rifiuto permanente】, puoi andare su Impostazioni > Applicazione > Autorizzazioni per modificarla in qualsiasi momento",
+        "label": "Tocca l'unità sottostante in base alle tue esigenze per pre-autorizzare le autorizzazioni dell'applicazione; questo non è un requisito obbligatorio e il programma ti richiederà richieste di autorizzazioni non autorizzate quando sono richieste funzioni specifiche APP",
+        "tip": "Se è presente un'opzione [Nega permanente], puoi andare su Impostazioni > Applicazioni > Autorizzazioni per modificarla in qualsiasi momento.",
         "list": {
+          "manageExternalStorage": {
+            "name": "archiviazione esterna",
+            "describe": "Questa funzione viene utilizzata per leggere e scrivere materiale multimediale da una memoria esterna"
+          },
           "camera": {
             "name": "Telecamera",
-            "describe": "Riprendi o registra contenuti multimediali, la maggior parte dei quali sono prove"
+            "describe": "Riprendendo o registrando contenuti multimediali, la maggior parte dei contenuti multimediali costituisce una prova"
           },
           "audio": {
             "name": "suono",
@@ -88,11 +103,11 @@
           },
           "videos": {
             "name": "video",
-            "describe": "Leggi il video esterno del dispositivo"
+            "describe": "Leggi contenuti video, importa o esporta materiali e caricali"
           },
           "photos": {
             "name": "album di foto",
-            "describe": "Leggi il contenuto dell'album fotografico, usa principalmente prove"
+            "describe": "Leggi il contenuto dell'album, importa o esporta materiali e caricali"
           },
           "storage": {
             "name": "memoria locale",
@@ -119,13 +134,38 @@
     "setting": {
       "title": "impostare il centro",
       "cell": {
-        "account": {
-          "title": "account",
-          "describe": "Gestisci le informazioni sull'account BFBAN"
+        "achievement": {
+          "title": "Risultato",
+          "describe": "Risultati dell'utente"
+        },
+        "history": {
+          "title": "Storia del giro",
+          "describe": "Sfoglia i contenuti precedenti"
+        },
+        "subscribes": {
+          "title": "Attenzione al caso",
+          "describe": "Iscriviti ai casi"
+        },
+        "information": {
+          "title": "Account",
+          "describe": "Modifica nome utente, modifica password, impostazioni account"
+        },
+        "customReply": {
+          "title": "Modello personalizzato",
+          "describe": "Risposta, giudizio, modello di relazione"
         },
         "media": {
           "title": "Libreria multimediale",
-          "describe": "Salva e crea file in BFBAN"
+          "describe": "Immagini, video, caricamento file, gestione"
+        },
+        "dirConfiguration": {
+          "title": "Configurazione della cartella",
+          "describe": "Cartella predefinita, scansione file",
+          "scanDirectoryTitle": "Directory di scansione",
+          "scanDirectoryDescription": "Selezionare la directory in cui scansionare i file (selezioni multiple)",
+          "defaultSavePathTitle": "Percorso di download predefinito",
+          "defaultSavePathDirectory": "Posizione di archiviazione preferita per i download in-app",
+          "leastOneHint": "Scegline almeno uno"
         },
         "website": {
           "title": "indirizzo Web",
@@ -133,29 +173,45 @@
         },
         "resources": {
           "title": "supporto",
-          "describe": "I dati del programma sono forniti da diversi fornitori di servizi"
+          "describe": "Bootstrap, programma Github, licenza, documentazione dell'applicazione"
         }
       },
       "versions": {
         "title": "Versione",
-        "describe": "Versione del programma",
+        "describe": "aggiornamento, ultima versione, versione corrente",
+        "appName": "Nome dell'applicazione",
+        "packageName": "nome del pacchetto",
         "currentVersion": "Versione attuale",
+        "buildNumber": "costruire la versione",
+        "buildSignature": "Costruisci la firma",
+        "installerStore": "Origine dell'installazione",
+        "ignoredCurrentVersionItem": "Ignora per la versione corrente",
+        "ignoredGloballyVersionTitle": "Ignora gli aggiornamenti della versione",
+        "ignoredGloballyVersionSubtitle": "Niente più controllo della versione, questo disattiverà il controllo della versione ovunque nel programma",
+        "showVersionsTitle": "Tutte le versioni disponibili",
+        "showVersionsSubtitle": "Visualizza tutte le versioni e gestisci le versioni ignorate",
         "newVersion": "L'ultima versione",
         "newVersionDescribe_new": "Già aggiornato",
         "newVersionDescribe_old": "versione obsoleta",
         "type": "tipo",
-        "superHairVersionTip": "La versione corrispondente non è stata trovata, la versione corrente potrebbe essere una versione superata"
+        "superHairVersionTip": "La versione corrispondente non è stata trovata. La tua versione attuale potrebbe essere una versione rilasciata in eccesso.",
+        "newVersionTip": "nuova versione trovata\nSi prega di aggiornare tramite lo store (se scaricato da canali di store non di piattaforma, andare manualmente al sito Web ufficiale per scaricare il nuovo pacchetto di installazione per sovrascrivere l'installazione)"
       },
       "language": {
         "title": "lingua"
       },
       "theme": {
         "title": "tema",
-        "describe": "impostare l'aspetto del programma"
+        "describe": "Aspetto del colore, cambio di tema programmato, dimensione del carattere",
+        "textScaleFactor": "dimensione del carattere"
+      },
+      "firstPage": {
+        "title": "Sopra la piega",
+        "describe": "Pagina di visualizzazione della schermata iniziale del programma di controllo"
       },
       "cleanManagement": {
         "title": "pulire",
-        "describe": "Cleaner salva i file in modo persistente, procedere con cautela"
+        "describe": "Elimina i dati locali, procedi con cautela"
       },
       "appInfo": {
         "title": "applicazione",
@@ -177,6 +233,8 @@
       "support": {
         "title": "supporto",
         "guide": "Avvio iniziale dell'app",
+        "logTitle": "tronco d'albero",
+        "logDescription": "Registro degli errori del programma",
         "feedbackTitle": "Gruppo di feedback (612949946)",
         "feedbackDescription": "più vicino all'autore",
         "githubTitle": "Github",
@@ -187,6 +245,12 @@
         "licenseDescription": "Elenca le licenze del programma",
         "appDocumentationTitle": "documentazione della domanda",
         "appDocumentationDescription": "Aiuto documento indirizzo"
+      },
+      "publicTranslator": {
+        "title": "Modulo di traduzione",
+        "describe": "Configurazione chiave di traduzione, interruttore",
+        "switch": "interruttore",
+        "switchDescription": "Interruttore di avvio del modulo di traduzione"
       }
     },
     "networkDetection": {
@@ -208,6 +272,14 @@
         "reportCount": "numero totale di segnalazioni"
       }
     },
+    "report": {
+      "title": "Segnala giocatore",
+      "overflowLength": "Il collegamento aggiunto supera la lunghezza massima. Elimina il collegamento o utilizza un collegamento breve. Si consiglia di fare clic sul pulsante in basso per inserire tutti i collegamenti nella descrizione.",
+      "overflowLengthButton": "OK, aggiungilo nella casella della descrizione"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "Visualizzazione browser"
+    },
     "signin": {
       "title": "Login",
       "panel": {
@@ -217,8 +289,8 @@
         "cancelButton": "Annulla",
         "signupButton": "Registra un conto BFBAN"
       },
-      "accountId": "ID conto / e-mail",
-      "password": "crittografico",
+      "accountId": "ID account/e-mail",
+      "password": "parola d'ordine",
       "verificationCode": "codice di verifica"
     },
     "search": {

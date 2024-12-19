@@ -1,6 +1,6 @@
 {
   "app": {
-    "basic":  {
+    "basic": {
       "function": {
         "auto": {
           "title": "automático",
@@ -25,10 +25,19 @@
       "app_exit": "Haga clic de nuevo para salir del programa."
     },
     "media": {
-      "open": "Controlar",
+      "open": "Abierto externamente",
+      "view": "Controlar",
       "delete": "borrar",
       "fileInfo": "detalles",
       "uploadFile": "subir archivos",
+      "export": "Exportar",
+      "directory": {
+        "appInteriorDirectory": "Aplicación incorporada",
+        "libraryDirectory": "público",
+        "temporaryDirectory": "cache",
+        "downloadsDirectory": "descargar",
+        "external": "Extensión ${index}"
+      },
       "tab": {
         "local": "local",
         "cloud": "galería de fotos de nubes"
@@ -40,27 +49,28 @@
       "needAccount": "Esta función requiere una cuenta, inicie sesión primero",
       "tabs": {
         "activities": "dinámica",
-        "trend": "Casos calientes",
+        "tourRecord": "récord de gira",
         "subscribes": "pista",
-        "tourRecord": "récord de gira"
+        "trend": "Casos calientes"
       },
       "screen": {
-        "report": "informe",
         "banAppeal": "apelar",
-        "signup": "Nuevo Usuario",
-        "judgement": "juicio"
+        "judgement": "juicio",
+        "report": "informe",
+        "signup": "Nuevo Usuario"
       },
       "paging": "Página {núm}"
     },
     "splash": {
-      "guide": "arranque inicial",
       "account": "Cargar información de la cuenta",
-      "token": "Configuración de identidad de usuario",
-      "message": "mensaje de actualización",
-      "version": "Verificar servicio de versión",
-      "theme": "Inicializar el tema",
       "appInitial": "aplicación de inicialización",
-      "networkError": "La aplicación no está conectada a la red, el programa depende de los servicios en línea"
+      "dir": "Configuración de almacenamiento inicial",
+      "guide": "arranque inicial",
+      "message": "mensaje de actualización",
+      "networkError": "La aplicación no está conectada a la red, el programa depende de los servicios en línea",
+      "theme": "Inicializar el tema",
+      "token": "Configuración de identidad de usuario",
+      "version": "Verificar servicio de versión"
     },
     "guide": {
       "endNext": "Finalizar",
@@ -124,17 +134,38 @@
     "setting": {
       "title": "establecer el centro",
       "cell": {
+        "achievement": {
+          "title": "Logro",
+          "describe": "Logros del usuario"
+        },
+        "history": {
+          "title": "Historia de la gira",
+          "describe": "Explorar contenido pasado"
+        },
+        "subscribes": {
+          "title": "Atención de casos",
+          "describe": "Suscríbete a casos"
+        },
         "information": {
           "title": "Las cuentas",
           "describe": "Cambiar nombre de usuario, cambiar contraseña, configuración de cuenta"
         },
         "customReply": {
           "title": "Personaliza tu plantilla",
-          "describe": "Responder a plantillas"
+          "describe": "Respuesta, juicio, plantilla de informe."
         },
         "media": {
           "title": "Mediateca",
           "describe": "Imágenes, videos, subir archivos, administrar"
+        },
+        "dirConfiguration": {
+          "title": "Configuración de carpetas",
+          "describe": "Carpeta predeterminada, escaneo de archivos",
+          "scanDirectoryTitle": "Directorio de escaneo",
+          "scanDirectoryDescription": "Seleccione el directorio para escanear archivos (múltiples selecciones)",
+          "defaultSavePathTitle": "Ubicación de descarga predeterminada",
+          "defaultSavePathDirectory": "Ubicación de almacenamiento preferida para descargas dentro de la aplicación",
+          "leastOneHint": "Elige al menos uno"
         },
         "website": {
           "title": "dirección web",
@@ -148,12 +179,23 @@
       "versions": {
         "title": "Versión",
         "describe": "Actualización, última versión, versión actual",
+        "appName": "Nombre de la aplicación",
+        "packageName": "nombre del paquete",
         "currentVersion": "versión actual",
+        "buildNumber": "versión de compilación",
+        "buildSignature": "Construir firma",
+        "installerStore": "Fuente de instalación",
+        "ignoredCurrentVersionItem": "Ignorar para la versión actual",
+        "ignoredGloballyVersionTitle": "Ignorar actualizaciones de versión",
+        "ignoredGloballyVersionSubtitle": "No más verificación de versiones, esto desactivará la verificación de versiones en todas partes del programa.",
+        "showVersionsTitle": "Todas las versiones disponibles",
+        "showVersionsSubtitle": "Ver todas las versiones y gestionar las versiones ignoradas",
         "newVersion": "La última versión",
         "newVersionDescribe_new": "Ya está actualizado",
         "newVersionDescribe_old": "versión obsoleta",
         "type": "tipo",
-        "superHairVersionTip": "No se ha encontrado ninguna correspondencia. Su versión actual puede ser ultra hair"
+        "superHairVersionTip": "No se ha encontrado ninguna correspondencia. Su versión actual puede ser ultra hair",
+        "newVersionTip": "nueva versión encontrada\nActualice a través de la tienda (si lo descarga desde canales de la tienda que no son de plataforma, vaya manualmente al sitio web oficial para descargar el nuevo paquete de instalación para sobrescribir la instalación)"
       },
       "language": {
         "title": "idioma"
@@ -162,6 +204,10 @@
         "title": "tema",
         "describe": "Apariencia de color, cambio de tema de tiempo, tamaño de fuente",
         "textScaleFactor": "Tamaño de letra"
+      },
+      "firstPage": {
+        "title": "Por encima del pliegue",
+        "describe": "Página de visualización de la pantalla de inicio del programa de control"
       },
       "cleanManagement": {
         "title": "limpiar",
@@ -187,6 +233,8 @@
       "support": {
         "title": "apoyo",
         "guide": "Arranque inicial de la aplicación",
+        "logTitle": "registro",
+        "logDescription": "Registro de errores del programa",
         "feedbackTitle": "Grupo de comentarios (612949946)",
         "feedbackDescription": "más cerca del autor",
         "githubTitle": "Github",
@@ -197,6 +245,12 @@
         "licenseDescription": "Lista de licencias de programas",
         "appDocumentationTitle": "documentación de la aplicación",
         "appDocumentationDescription": "Dirección del documento de ayuda"
+      },
+      "publicTranslator": {
+        "title": "Módulo de traducción",
+        "describe": "Configuración de clave de traducción, interruptor",
+        "switch": "cambiar",
+        "switchDescription": "Interruptor de inicio del módulo de traducción"
       }
     },
     "networkDetection": {
@@ -224,7 +278,7 @@
       "overflowLengthButton": "Ok, añadir descripción en el cuadro"
     },
     "detail": {
-      "openExplorePlayerDetail": "Tour ver caso"
+      "openExplorePlayerDetail": "Vista del navegador"
     },
     "signin": {
       "title": "Acceso",

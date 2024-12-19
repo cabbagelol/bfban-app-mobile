@@ -14,10 +14,12 @@ git:
   settings:
     pr_branch_name: tx_translations_<br_unique_id>
     language_mapping:
-      de_DE: de_DE
+      de_DE: de
       en_US: en
-      es_ES: es_ES
-      it_IT: it_IT
+      es_ES: es
+      fr_FR: fr_FR
+      it_IT: it
       ja_JP: ja_JP
+      ru_RU: ru_RU
       zh_CN: zh_CN
       zh_TW: zh_TW
