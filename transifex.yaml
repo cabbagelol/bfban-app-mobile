@@ -5,13 +5,19 @@ git:
       source_language: zh_CN
       source_file: 'assets/lang/zh_CN.json'
       translation_files_expression: 'assets/lang/<lang>.json'
+    - filter_type: file
+      file_format: KEYVALUEJSON
+      source_language: zh_CN
+      source_file: 'assets/lang/zh_CN_status_code.json'
+      translation_files_expression: 'assets/lang/<lang>_status_code.json'
 
   settings:
     pr_branch_name: tx_translations_<br_unique_id>
     language_mapping:
+      de_DE: de_DE
       en_US: en
+      es_ES: es_ES
+      it_IT: it_IT
+      ja_JP: ja_JP
       zh_CN: zh_CN
       zh_TW: zh_TW
-      it_IT: it_IT
-      es_ES: es_ES
-      de_DE: de_DE
