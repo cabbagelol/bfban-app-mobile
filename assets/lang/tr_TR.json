@@ -1,0 +1,305 @@
+{
+  "app": {
+    "basic": {
+      "function": {
+        "auto": {
+          "title": "otomatik",
+          "describe": "Sisteme bağlıdır"
+        }
+      },
+      "message": {
+        "saveSuccess": "Başarıyla kaydedildi",
+        "saveError": "Kaydetme başarısız oldu"
+      },
+      "time": {
+        "seconds": "{s} saniye önce",
+        "minutes": "{s} dakika önce",
+        "hours": "{s} saat önce",
+        "today": "Bugün",
+        "yesterday": "Dün",
+        "beforeYesterday": "dünden önceki gün",
+        "dayAgo": "{s} gün önce"
+      },
+      "web_site": "web sitesi adresi",
+      "setting": "kurmak",
+      "app_exit": "Programdan çıkmak için tekrar tıklayın"
+    },
+    "media": {
+      "open": "Harici olarak aç",
+      "view": "Kontrol etmek",
+      "delete": "silmek",
+      "fileInfo": "Detaylar",
+      "uploadFile": "Dosyaları yükle",
+      "export": "İhracat",
+      "directory": {
+        "appInteriorDirectory": "Yerleşik uygulama",
+        "libraryDirectory": "halk",
+        "temporaryDirectory": "önbellek",
+        "downloadsDirectory": "indirmek",
+        "external": "Uzantı ${index}"
+      },
+      "tab": {
+        "local": "yerel",
+        "cloud": "Bulut kitaplığı"
+      }
+    },
+    "home": {
+      "scancode": "çekim",
+      "takeLook": "Sadece bir göz at",
+      "needAccount": "Bu işlev bir hesap gerektirir, lütfen önce oturum açın",
+      "tabs": {
+        "activities": "dinamik",
+        "tourRecord": "Tur geçmişi",
+        "subscribes": "izlemek",
+        "trend": "Popüler vakalar"
+      },
+      "screen": {
+        "banAppeal": "Çekici",
+        "judgement": "yargı",
+        "report": "rapor",
+        "signup": "yeni kullanıcı"
+      },
+      "paging": "Sayfa {num}"
+    },
+    "splash": {
+      "account": "Hesap bilgilerini yükle",
+      "appInitial": "Başlatıcı uygulaması",
+      "dir": "İlk depolama yapılandırması",
+      "guide": "ilk önyükleme",
+      "message": "Haberleri güncelle",
+      "networkError": "Uygulama ağa bağlı değil ve program çevrimiçi hizmetlere güveniyor",
+      "theme": "Temayı başlat",
+      "token": "Kullanıcı kimliği yapılandırması",
+      "version": "Sürüm hizmetini doğrulayın"
+    },
+    "guide": {
+      "endNext": "Sona ermek",
+      "agreement": {
+        "title": "protokol",
+        "content": "Sözleşme içeriği..",
+        "errorContent": "Ağ hatası protokol içeriğini alamıyor, lütfen şu adresi ziyaret edin:"
+      },
+      "login": {
+        "title": "gelişinize hoş geldiniz",
+        "label": "Zaten bir BFBAN hesabınız varsa şimdi giriş yapabilirsiniz.",
+        "welcomeBack": "'Savaş alanımıza' tekrar hoş geldiniz"
+      },
+      "permission": {
+        "title": "İzinler",
+        "label": "Uygulama izinlerini önceden yetkilendirmek için ihtiyaçlarınıza göre aşağıdaki birime dokunun; bu zorunlu bir gereklilik değildir ve belirli işlevler gerektiğinde program sizden izinsiz izin sorgulamaları isteyecektir; bazı işlevlere izin verilmemesi, uygulamanın genel kullanımını etkilemeyecektir. UYGULAMA",
+        "tip": "[Kalıcı Reddet] seçeneği varsa, bunu istediğiniz zaman değiştirmek için Ayarlar > Uygulamalar > İzinler'e gidebilirsiniz.",
+        "list": {
+          "manageExternalStorage": {
+            "name": "harici depolama",
+            "describe": "Bu işlev, medya materyalini harici depolama biriminden okumak ve yazmak için kullanılır"
+          },
+          "camera": {
+            "name": "Kamera",
+            "describe": "Multimedya çekimi veya kaydı, medya içeriğinin çoğu kanıt niteliğindedir"
+          },
+          "audio": {
+            "name": "ses",
+            "describe": "Multimedya sesini yakalayın veya kaydedin"
+          },
+          "videos": {
+            "name": "video",
+            "describe": "Video içeriğini okuyun, malzemeleri içe veya dışa aktarın ve yükleyin"
+          },
+          "photos": {
+            "name": "fotoğraf albümü",
+            "describe": "Albümün içeriğini okuyun, malzemeleri içe veya dışa aktarın ve yükleyin"
+          },
+          "storage": {
+            "name": "yerel depolama",
+            "describe": "Uygulama içindeki kullanıcılar tarafından oluşturulan veriler"
+          },
+          "notification": {
+            "name": "bildirmek",
+            "describe": "Program harici bildirimler sağlar"
+          }
+        },
+        "status": {
+          "-1": "bilinmiyor",
+          "0": "izin vermek",
+          "1": "Reddedilmiş",
+          "2": "Kalıcı ret",
+          "3": "sınırlı"
+        }
+      },
+      "language": {
+        "waitDownloadHint": "Lütfen çeviri dosyasının uzak hizmetten indirilmesini bekleyin."
+      },
+      "agree": "Yukarıdakilere katılıyorum"
+    },
+    "setting": {
+      "title": "Ayarlar merkezi",
+      "cell": {
+        "achievement": {
+          "title": "Başarı",
+          "describe": "Kullanıcı başarıları"
+        },
+        "history": {
+          "title": "Tur geçmişi",
+          "describe": "Geçmiş içeriğe göz atın"
+        },
+        "subscribes": {
+          "title": "Vaka dikkati",
+          "describe": "Vakalara abone olun"
+        },
+        "information": {
+          "title": "Hesap",
+          "describe": "Kullanıcı adını değiştirin, şifreyi değiştirin, hesap ayarları"
+        },
+        "customReply": {
+          "title": "Özel şablon",
+          "describe": "Yanıt, karar, rapor şablonu"
+        },
+        "media": {
+          "title": "medya kütüphanesi",
+          "describe": "Resimler, videolar, dosya yükleme, yönetim"
+        },
+        "dirConfiguration": {
+          "title": "Klasör yapılandırması",
+          "describe": "Varsayılan klasör, dosya taraması",
+          "scanDirectoryTitle": "Dizini tara",
+          "scanDirectoryDescription": "Dosyaların taranacağı dizini seçin (birden fazla seçim)",
+          "defaultSavePathTitle": "Varsayılan indirme konumu",
+          "defaultSavePathDirectory": "Uygulama içi indirmeler için tercih edilen depolama konumu",
+          "leastOneHint": "En az birini seçin"
+        },
+        "website": {
+          "title": "web sitesi adresi",
+          "describe": "LianBAN web sitesi"
+        },
+        "resources": {
+          "title": "Destek",
+          "describe": "Bootstrap, program Github, lisans, uygulama belgeleri"
+        }
+      },
+      "versions": {
+        "title": "Sürüm",
+        "describe": "güncelleme, en son sürüm, güncel sürüm",
+        "appName": "Uygulama adı",
+        "packageName": "paket adı",
+        "currentVersion": "Güncel sürüm",
+        "buildNumber": "sürüm oluştur",
+        "buildSignature": "İmza oluştur",
+        "installerStore": "Kurulum kaynağı",
+        "ignoredCurrentVersionItem": "Geçerli sürüm için yoksay",
+        "ignoredGloballyVersionTitle": "Sürüm güncellemelerini yoksay",
+        "ignoredGloballyVersionSubtitle": "Artık sürüm kontrolü yok; bu, programın her yerinde sürüm kontrolünü kapatacaktır.",
+        "showVersionsTitle": "Mevcut tüm sürümler",
+        "showVersionsSubtitle": "Tüm sürümleri görüntüleyin ve yok sayılan sürümleri yönetin",
+        "newVersion": "son sürüm",
+        "newVersionDescribe_new": "Zaten en yeni",
+        "newVersionDescribe_old": "Eski sürüm",
+        "type": "tip",
+        "superHairVersionTip": "İlgili sürüm bulunamadı. Mevcut sürümünüz fazla yayınlanmış bir sürüm olabilir.",
+        "newVersionTip": "yeni sürüm bulundu\nLütfen mağaza aracılığıyla güncelleyin (platform dışı mağaza kanallarından indirildiyse lütfen kurulumun üzerine yazmak üzere yeni kurulum paketini indirmek için resmi web sitesine manuel olarak gidin)"
+      },
+      "language": {
+        "title": "dil"
+      },
+      "theme": {
+        "title": "tema",
+        "describe": "Renk görünümü, planlanmış tema değiştirme, yazı tipi boyutu",
+        "textScaleFactor": "yazı tipi boyutu"
+      },
+      "firstPage": {
+        "title": "Katlamanın üstünde",
+        "describe": "Kontrol programı ana ekran görüntüleme sayfası"
+      },
+      "cleanManagement": {
+        "title": "Temizlemek",
+        "describe": "Yerel verileri silin, dikkatli ilerleyin"
+      },
+      "appInfo": {
+        "title": "uygulama",
+        "describe": "Uygulama bilgilerini aç"
+      },
+      "notice": {
+        "title": "Bildirim ayarları",
+        "describe": "İlgili bildirim yönetimini uygulayın",
+        "tagstitle": "kimlik etiketi",
+        "switch": {
+          "title": "Uygulama aktarımı",
+          "describe": "Uygulamadan push bilgilerinin alınıp alınmayacağı"
+        },
+        "site": {
+          "title": "Site içi push",
+          "describe": "Site içi mesaj gönderiminin alınıp alınmayacağı"
+        }
+      },
+      "support": {
+        "title": "Destek",
+        "guide": "İlk önyüklemeyi uygula",
+        "logTitle": "kayıt",
+        "logDescription": "Program hata günlüğü",
+        "feedbackTitle": "Geri bildirim grubu (612949946)",
+        "feedbackDescription": "Yazara yakınlaşın",
+        "githubTitle": "Github",
+        "githubDescription": "Açık kaynak deposunu ziyaret edin",
+        "donateTitle": "Bağış yapmak",
+        "donateDescription": "BFBAN APP geliştiricilerine bağış yapın",
+        "licenseTitle": "lisans",
+        "licenseDescription": "Program lisanslarını listeleyin",
+        "appDocumentationTitle": "Uygulama belgeleri",
+        "appDocumentationDescription": "Yardım belgesi adresi"
+      },
+      "publicTranslator": {
+        "title": "Çeviri modülü",
+        "describe": "Çeviri anahtarı yapılandırması, geçiş",
+        "switch": "anahtar",
+        "switchDescription": "Çeviri modülü başlatma anahtarı"
+      }
+    },
+    "networkDetection": {
+      "title": "Ağ izleme",
+      "status": {
+        "0": "Denetim altında",
+        "1": "Servis normal",
+        "2": "Hizmet istisnası",
+        "3": "Hizmet bilinmiyor"
+      }
+    },
+    "userspace": {
+      "title": "kullanıcı kontrolü",
+      "introduction": "Bu adam tembel ve hiçbir şey söylemedi.",
+      "row": {
+        "privilege": "kimlik",
+        "joinTime": "Katılma zamanı",
+        "lastOnlineTime": "Son çevrimiçi zaman",
+        "reportCount": "Toplam rapor sayısı"
+      }
+    },
+    "report": {
+      "title": "Oyuncuyu bildir",
+      "overflowLength": "Eklenen bağlantı maksimum uzunluğu aşıyor. Lütfen bağlantıyı silin veya kısa bir bağlantı kullanın. Tüm bağlantıları açıklamaya yerleştirmek için aşağıdaki düğmeye tıklamanız önerilir.",
+      "overflowLengthButton": "Tamam, açıklama kutusuna ekle"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "Tarayıcı görünümü"
+    },
+    "signin": {
+      "title": "Giriş yapmak",
+      "panel": {
+        "title": "BFBAN",
+        "label": "BFBAN APP'ye hoş geldiniz",
+        "BfbanAccountButton": "BFBAN hesabı girişi",
+        "cancelButton": "İptal etmek",
+        "signupButton": "BFBAN hesabını kaydedin"
+      },
+      "accountId": "Hesap kimliği/e-posta",
+      "password": "şifre",
+      "verificationCode": "Doğrulama kodu"
+    },
+    "search": {
+      "historySearch": "Geçmiş aramalar",
+      "hotRecommendation": "Popüler öneriler"
+    },
+    "richedit": {
+      "placeholder": "Bir şey yaz?"
+    }
+  }
+}
+

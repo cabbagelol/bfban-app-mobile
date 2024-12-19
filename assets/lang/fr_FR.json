@@ -25,13 +25,14 @@
       "app_exit": "Cliquez à nouveau pour quitter le programme"
     },
     "media": {
-      "open": "Vérifier",
+      "open": "Ouvert à l'extérieur",
+      "view": "Vérifier",
       "delete": "supprimer",
       "fileInfo": "Détails",
       "uploadFile": "Télécharger des fichiers",
       "export": "Exporter",
       "directory": {
-        "appInteriorDir": "Application intégrée",
+        "appInteriorDirectory": "Application intégrée",
         "libraryDirectory": "publique",
         "temporaryDirectory": "cache",
         "downloadsDirectory": "télécharger",
@@ -178,12 +179,23 @@
       "versions": {
         "title": "Version",
         "describe": "mise à jour, dernière version, version actuelle",
+        "appName": "Nom de la demande",
+        "packageName": "nom du paquet",
         "currentVersion": "Version actuelle",
+        "buildNumber": "version de construction",
+        "buildSignature": "Construire la signature",
+        "installerStore": "Source d'installation",
+        "ignoredCurrentVersionItem": "Ignorer pour la version actuelle",
+        "ignoredGloballyVersionTitle": "Ignorer les mises à jour de version",
+        "ignoredGloballyVersionSubtitle": "Plus de vérification de version, cela désactivera la vérification de version partout dans le programme",
+        "showVersionsTitle": "Toutes les versions disponibles",
+        "showVersionsSubtitle": "Afficher toutes les versions et gérer les versions ignorées",
         "newVersion": "dernière version",
         "newVersionDescribe_new": "Déjà le dernier",
         "newVersionDescribe_old": "Version obsolète",
         "type": "taper",
-        "superHairVersionTip": "La version correspondante n'a pas été trouvée. Votre version actuelle est peut-être une version excédentaire."
+        "superHairVersionTip": "La version correspondante n'a pas été trouvée. Votre version actuelle est peut-être une version excédentaire.",
+        "newVersionTip": "nouvelle version trouvée\nVeuillez mettre à jour via le magasin (en cas de téléchargement à partir de canaux de magasin non-plateforme, veuillez vous rendre manuellement sur le site officiel pour télécharger le nouveau package d'installation afin d'écraser l'installation)"
       },
       "language": {
         "title": "langue"
@@ -221,6 +233,8 @@
       "support": {
         "title": "soutien",
         "guide": "Appliquer le démarrage initial",
+        "logTitle": "enregistrer",
+        "logDescription": "Journal des erreurs du programme",
         "feedbackTitle": "Groupe de commentaires (612949946)",
         "feedbackDescription": "Rapprochez-vous de l'auteur",
         "githubTitle": "GitHub",
