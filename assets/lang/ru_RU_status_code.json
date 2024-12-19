@@ -78,8 +78,8 @@
     "signup_usernameExist": "Имя пользователя веб-сайта или активируемая учетная запись уже существует в пуле учетных записей.",
     "user_invalid": "Срок действия токена истек",
     "user_permissionDenined": "Нет разрешения",
-    "user_tokenClientException": "当前客户端令牌过期或失效",
-    "user_tokenExpired": "令牌过期，请重新登陆",
+    "user_tokenClientException": "Срок действия текущего клиентского токена истек или срок его действия истек.",
+    "user_tokenExpired": "Срок действия токена истек, пожалуйста, войдите снова",
     "userReports_bad": "用户举报发生错误，请联系管理员 {message}",
     "userReports_notFound": "没有此玩家，请仔细核对",
     "userReports_success": "举报成功"
