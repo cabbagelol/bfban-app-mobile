@@ -82,6 +82,6 @@
     "user_tokenExpired": "Срок действия токена истек, пожалуйста, войдите снова",
     "userReports_bad": "Пользователи сообщают об ошибке. Обратитесь к администратору {message}",
     "userReports_notFound": "Такого плеера нет, проверьте внимательно",
-    "userReports_success": "举报成功"
+    "userReports_success": "Сообщить об успехе"
   }
 }
