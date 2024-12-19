@@ -4,12 +4,12 @@
       "function": {
         "auto": {
           "title": "automatico",
-          "describe": "secondo il sistema"
+          "describe": "Dipende dal sistema"
         }
       },
       "message": {
         "saveSuccess": "Salvato con successo",
-        "saveError": "salvataggio fallito"
+        "saveError": "Salvataggio non riuscito"
       },
       "time": {
         "seconds": "{s} secondi fa",
