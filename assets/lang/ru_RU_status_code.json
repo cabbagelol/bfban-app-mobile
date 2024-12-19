@@ -42,7 +42,7 @@
     "judgement_notFound": "Случай не найден, обратитесь к администратору {message}",
     "judgement_permissionDenied": "ты не имеешь права делать это",
     "judgement_spam": "Отправленный вами контент не прошел проверку и был помечен как спам {message}",
-    "judgement_success": "感谢你的判决",
+    "judgement_success": "спасибо за ваш вердикт",
     "userInfo_bad": "用户信息错误，请联系管理员 {message}",
     "userInfo_notFound": "没有这样的用户",
     "logout_bad": "注销失败,请联系管理员",
