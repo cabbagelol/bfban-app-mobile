@@ -18,7 +18,7 @@
         "today": "現時点では",
         "yesterday": "昨日",
         "beforeYesterday": "一昨日",
-        "dayAgo": "{日����������������������������"
+        "dayAgo": "{s} 日前"
       },
       "web_site": "ウェブサイトアドレス",
       "setting": "設定する",
@@ -26,6 +26,7 @@
     },
     "media": {
       "open": "チェックする",
+      "view": "チェック",
       "delete": "除去",
       "fileInfo": "詳細情報",
       "uploadFile": "ファイルをアップロードする",
@@ -33,9 +34,9 @@
       "directory": {
         "appInteriorDirectory": "内蔵アプリケーション",
         "libraryDirectory": "共用",
-        "temporaryDirectory": "(キャッシュ",
+        "temporaryDirectory": "キャッシュ",
         "downloadsDirectory": "ダウンロード",
-        "external": "インデックス}を展開する"
+        "external": "拡張子 ${index}"
       },
       "tab": {
         "local": "この地",
@@ -86,7 +87,7 @@
       "permission": {
         "title": "管轄範囲",
         "label": "あなたのニーズに応じて、アプリケーションのアクセス許可を事前に承認するために、以下のユニットに触れる。これは、特定の機能の必要性で、必須ではありません、プログラムは、未承認のアクセス許可を求めるためにあなたをプロンプトが表示されます。",
-        "tip": "永久拒否」オプションがある場合は、「設定」>「アプリケーション」>「許可」でいつでも変更できる。",
+        "tip": "[永久拒否] オプションがある場合は、[設定] > [アプリケーション] > [アクセス許可] に移動していつでも変更できます。",
         "list": {
           "manageExternalStorage": {
             "name": "外部ストレージ",
@@ -178,12 +179,23 @@
       "versions": {
         "title": "リリース",
         "describe": "アップデート、最新バージョン、現行バージョン",
+        "appName": "アプリケーション名",
+        "packageName": "パッケージ名",
         "currentVersion": "現行バージョン",
+        "buildNumber": "ビルドバージョン",
+        "buildSignature": "ビルド署名",
+        "installerStore": "インストール元",
+        "ignoredCurrentVersionItem": "現在のバージョンでは無視します",
+        "ignoredGloballyVersionTitle": "バージョン更新を無視する",
+        "ignoredGloballyVersionSubtitle": "バージョン チェックが不要になります。これにより、プログラム内のあらゆる場所でバージョン チェックがオフになります。",
+        "showVersionsTitle": "利用可能なすべてのバージョン",
+        "showVersionsSubtitle": "すべてのバージョンを表示し、無視されたバージョンを管理する",
         "newVersion": "新着情報",
         "newVersionDescribe_new": "最新の",
         "newVersionDescribe_old": "旧バージョン",
         "type": "類型論",
-        "superHairVersionTip": "現在のバージョンは絶版かもしれない。"
+        "superHairVersionTip": "現在のバージョンは絶版かもしれない。",
+        "newVersionTip": "新しいバージョンが見つかりました\nストアを通じて更新してください (プラットフォーム以外のストア チャネルからダウンロードした場合は、手動で公式 Web サイトにアクセスして新しいインストール パッケージをダウンロードし、インストールを上書きしてください)"
       },
       "language": {
         "title": "多言語主義"
@@ -221,6 +233,8 @@
       "support": {
         "title": "アジュバント",
         "guide": "アプリケー��ョンの初期起動",
+        "logTitle": "ログ",
+        "logDescription": "プログラムエラーログ",
         "feedbackTitle": "フィードバック・グループ (612949946)",
         "feedbackDescription": "著者に近い。",
         "githubTitle": "ギサブ",
@@ -277,7 +291,7 @@
       },
       "accountId": "アカウントID/Eメール",
       "password": "暗号化",
-      "verificationCode": "CAPTCHA、チャレンジ・レスポンス・テストの一種（コンピューティング）"
+      "verificationCode": "検証コード"
     },
     "search": {
       "historySearch": "履歴検索",
@@ -288,3 +302,4 @@
     }
   }
 }
+

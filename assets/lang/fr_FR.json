@@ -1,0 +1,291 @@
+{
+  "app": {
+    "basic": {
+      "function": {
+        "auto": {
+          "title": "automatique",
+          "describe": "Dépend du système"
+        }
+      },
+      "message": {
+        "saveSuccess": "Enregistré avec succès",
+        "saveError": "Échec de l'enregistrement"
+      },
+      "time": {
+        "seconds": "il y a {s} secondes",
+        "minutes": "il y a {s} minutes",
+        "hours": "Il y a {s} heures",
+        "today": "aujourd'hui",
+        "yesterday": "hier",
+        "beforeYesterday": "avant-hier",
+        "dayAgo": "il y a {s} jours"
+      },
+      "web_site": "adresse du site Web",
+      "setting": "installation",
+      "app_exit": "Cliquez à nouveau pour quitter le programme"
+    },
+    "media": {
+      "open": "Vérifier",
+      "delete": "supprimer",
+      "fileInfo": "Détails",
+      "uploadFile": "Télécharger des fichiers",
+      "export": "Exporter",
+      "directory": {
+        "appInteriorDir": "Application intégrée",
+        "libraryDirectory": "publique",
+        "temporaryDirectory": "cache",
+        "downloadsDirectory": "télécharger",
+        "external": "Extension ${index}"
+      },
+      "tab": {
+        "local": "locale",
+        "cloud": "Bibliothèque cloud"
+      }
+    },
+    "home": {
+      "scancode": "tournage",
+      "takeLook": "Jetez juste un oeil",
+      "needAccount": "Cette fonction nécessite un compte, veuillez d'abord vous connecter",
+      "tabs": {
+        "activities": "dynamique",
+        "tourRecord": "Histoire de la tournée",
+        "subscribes": "piste",
+        "trend": "Cas populaires"
+      },
+      "screen": {
+        "banAppeal": "Appel",
+        "judgement": "jugement",
+        "report": "rapport",
+        "signup": "nouvel utilisateur"
+      },
+      "paging": "Page {num}"
+    },
+    "splash": {
+      "account": "Charger les informations du compte",
+      "appInitial": "Application d'initialisation",
+      "dir": "Configuration de stockage initiale",
+      "guide": "démarrage initial",
+      "message": "Mettre à jour l'actualité",
+      "networkError": "L'application n'est pas connectée au réseau et le programme s'appuie sur des services en ligne",
+      "theme": "Initialiser le thème",
+      "token": "Configuration de l'identité de l'utilisateur",
+      "version": "Vérifier le service de version"
+    },
+    "guide": {
+      "endNext": "Finition",
+      "agreement": {
+        "title": "protocole",
+        "content": "Contenu de l'accord..",
+        "errorContent": "Une erreur réseau ne permet pas d'obtenir le contenu du protocole, veuillez visiter :"
+      },
+      "login": {
+        "title": "bienvenue à votre arrivée",
+        "label": "Si vous possédez déjà un compte BFBAN, vous pouvez vous connecter dès maintenant.",
+        "welcomeBack": "Bienvenue sur notre « champ de bataille »"
+      },
+      "permission": {
+        "title": "Autorisations",
+        "label": "Touchez l'unité ci-dessous en fonction de vos besoins pour pré-autoriser les autorisations de l'application ; ce n'est pas une exigence obligatoire, et le programme vous demandera des demandes d'autorisation non autorisées lorsque des fonctions spécifiques sont requises. Le fait de ne pas autoriser certaines fonctions n'affectera pas l'utilisation globale de l'application ; APPLICATION",
+        "tip": "S'il existe une option [Refus permanent], vous pouvez accéder à Paramètres > Applications > Autorisations pour la modifier à tout moment.",
+        "list": {
+          "manageExternalStorage": {
+            "name": "stockage externe",
+            "describe": "Cette fonction est utilisée pour lire et écrire du matériel multimédia à partir d'un stockage externe"
+          },
+          "camera": {
+            "name": "Caméra",
+            "describe": "Tournage ou enregistrement multimédia, la plupart du contenu multimédia est une preuve"
+          },
+          "audio": {
+            "name": "son",
+            "describe": "Capturez ou enregistrez du son multimédia"
+          },
+          "videos": {
+            "name": "vidéo",
+            "describe": "Lisez du contenu vidéo, importez ou exportez du matériel et téléchargez-le"
+          },
+          "photos": {
+            "name": "photo album",
+            "describe": "Lisez le contenu de l'album, importez ou exportez du matériel et téléchargez-le"
+          },
+          "storage": {
+            "name": "stockage local",
+            "describe": "Données générées par les utilisateurs au sein de l'APP"
+          },
+          "notification": {
+            "name": "notifier",
+            "describe": "Le programme fournit des notifications externes"
+          }
+        },
+        "status": {
+          "-1": "inconnu",
+          "0": "permis",
+          "1": "rejeté",
+          "2": "Rejet permanent",
+          "3": "limité"
+        }
+      },
+      "language": {
+        "waitDownloadHint": "Veuillez attendre que le fichier de traduction soit téléchargé depuis le service distant"
+      },
+      "agree": "Je suis d'accord avec ce qui précède"
+    },
+    "setting": {
+      "title": "Centre de paramètres",
+      "cell": {
+        "achievement": {
+          "title": "Réalisation",
+          "describe": "Réalisations des utilisateurs"
+        },
+        "history": {
+          "title": "Histoire de la tournée",
+          "describe": "Parcourir le contenu précédent"
+        },
+        "subscribes": {
+          "title": "Attention au cas",
+          "describe": "Abonnez-vous aux cas"
+        },
+        "information": {
+          "title": "Compte",
+          "describe": "Modifier le nom d'utilisateur, modifier le mot de passe, les paramètres du compte"
+        },
+        "customReply": {
+          "title": "Modèle personnalisé",
+          "describe": "Réponse, jugement, modèle de rapport"
+        },
+        "media": {
+          "title": "médiathèque",
+          "describe": "Photos, vidéos, téléchargement de fichiers, gestion"
+        },
+        "dirConfiguration": {
+          "title": "Configuration des dossiers",
+          "describe": "Dossier par défaut, analyse de fichiers",
+          "scanDirectoryTitle": "Répertoire de numérisation",
+          "scanDirectoryDescription": "Sélectionnez le répertoire dans lequel analyser les fichiers (sélections multiples)",
+          "defaultSavePathTitle": "Emplacement de téléchargement par défaut",
+          "defaultSavePathDirectory": "Emplacement de stockage préféré pour les téléchargements intégrés à l'application",
+          "leastOneHint": "Choisissez-en au moins un"
+        },
+        "website": {
+          "title": "adresse du site Web",
+          "describe": "Site Internet de LianBAN"
+        },
+        "resources": {
+          "title": "soutien",
+          "describe": "Bootstrap, programme Github, licence, documentation de l'application"
+        }
+      },
+      "versions": {
+        "title": "Version",
+        "describe": "mise à jour, dernière version, version actuelle",
+        "currentVersion": "Version actuelle",
+        "newVersion": "dernière version",
+        "newVersionDescribe_new": "Déjà le dernier",
+        "newVersionDescribe_old": "Version obsolète",
+        "type": "taper",
+        "superHairVersionTip": "La version correspondante n'a pas été trouvée. Votre version actuelle est peut-être une version excédentaire."
+      },
+      "language": {
+        "title": "langue"
+      },
+      "theme": {
+        "title": "thème",
+        "describe": "Apparence des couleurs, changement de thème programmé, taille de la police",
+        "textScaleFactor": "taille de la police"
+      },
+      "firstPage": {
+        "title": "Au-dessus du pli",
+        "describe": "Page d'affichage de l'écran d'accueil du programme de contrôle"
+      },
+      "cleanManagement": {
+        "title": "nettoyer",
+        "describe": "Supprimez les données locales, procédez avec prudence"
+      },
+      "appInfo": {
+        "title": "application",
+        "describe": "Ouvrir les informations sur l'application"
+      },
+      "notice": {
+        "title": "Paramètres de notification",
+        "describe": "Appliquer la gestion des notifications correspondante",
+        "tagstitle": "étiquette d'identité",
+        "switch": {
+          "title": "Poussée d'application",
+          "describe": "S'il faut recevoir des informations push de l'application"
+        },
+        "site": {
+          "title": "Push sur site",
+          "describe": "S'il faut recevoir des messages push sur le site"
+        }
+      },
+      "support": {
+        "title": "soutien",
+        "guide": "Appliquer le démarrage initial",
+        "feedbackTitle": "Groupe de commentaires (612949946)",
+        "feedbackDescription": "Rapprochez-vous de l'auteur",
+        "githubTitle": "GitHub",
+        "githubDescription": "Visitez le référentiel open source",
+        "donateTitle": "Faire un don",
+        "donateDescription": "Faites un don aux développeurs de BFBAN APP",
+        "licenseTitle": "licence",
+        "licenseDescription": "Répertorier les licences du programme",
+        "appDocumentationTitle": "Documents de candidature",
+        "appDocumentationDescription": "Adresse du document d'aide"
+      },
+      "publicTranslator": {
+        "title": "Module de traduction",
+        "describe": "Configuration des clés de traduction, commutateur",
+        "switch": "changer",
+        "switchDescription": "Interrupteur de démarrage du module de traduction"
+      }
+    },
+    "networkDetection": {
+      "title": "Surveillance du réseau",
+      "status": {
+        "0": "En cours d'inspection",
+        "1": "Le service est normal",
+        "2": "Exception de service",
+        "3": "Service inconnu"
+      }
+    },
+    "userspace": {
+      "title": "contrôle utilisateur",
+      "introduction": "Ce type est paresseux et n'a rien dit.",
+      "row": {
+        "privilege": "identité",
+        "joinTime": "Rejoignez le temps",
+        "lastOnlineTime": "Dernière fois en ligne",
+        "reportCount": "Nombre total de rapports"
+      }
+    },
+    "report": {
+      "title": "Signaler le joueur",
+      "overflowLength": "Le lien ajouté dépasse la longueur maximale. Veuillez supprimer le lien ou utiliser un lien court. Il est recommandé de cliquer sur le bouton ci-dessous pour placer tous les liens dans la description.",
+      "overflowLengthButton": "OK, ajoutez-le dans la zone de description"
+    },
+    "detail": {
+      "openExplorePlayerDetail": "Vue du navigateur"
+    },
+    "signin": {
+      "title": "Se connecter",
+      "panel": {
+        "title": "BFBAN",
+        "label": "Bienvenue sur l'application BFBAN",
+        "BfbanAccountButton": "Connexion au compte BFBAN",
+        "cancelButton": "Annuler",
+        "signupButton": "Créer un compte BFBAN"
+      },
+      "accountId": "Identifiant de compte/e-mail",
+      "password": "mot de passe",
+      "verificationCode": "Le code de vérification"
+    },
+    "search": {
+      "historySearch": "Recherches historiques",
+      "hotRecommendation": "Recommandations populaires"
+    },
+    "richedit": {
+      "placeholder": "Écrire quelque chose ?"
+    }
+  }
+}
+
