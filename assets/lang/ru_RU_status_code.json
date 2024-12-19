@@ -1,8 +1,8 @@
 {
   "appStatusCode": {
-    "search_bad": "搜索发生错误，请联系管理员 {message}",
-    "search_success": "搜索成功",
-    "search_notExist": "未找到数据",
+    "search_bad": "Произошла ошибка поиска. Свяжитесь с администратором {message}",
+    "search_success": "Поиск успешен",
+    "search_notExist": "Данные не найдены",
     "me_bad": "个人信息发生错误，请联系管理员 {message}",
     "me_success": "保存个人信息成功",
     "request_404": "不存在此请求地址，请检查接口",
