@@ -80,7 +80,7 @@
     "user_permissionDenined": "Нет разрешения",
     "user_tokenClientException": "Срок действия текущего клиентского токена истек или срок его действия истек.",
     "user_tokenExpired": "Срок действия токена истек, пожалуйста, войдите снова",
-    "userReports_bad": "用户举报发生错误，请联系管理员 {message}",
+    "userReports_bad": "Пользователи сообщают об ошибке. Обратитесь к администратору {message}",
     "userReports_notFound": "没有此玩家，请仔细核对",
     "userReports_success": "举报成功"
   }
