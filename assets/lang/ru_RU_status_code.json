@@ -62,7 +62,7 @@
     "report_notFound": "Информация об этом пользователе не найдена",
     "report_notImplement": "Произошла ошибка, обратитесь к администратору {message}",
     "report_spam": "Отправленный вами контент не прошел проверку и был помечен как спам {message}",
-    "report_success": "感谢你的举报",
+    "report_success": "Спасибо за ваш отчет",
     "signin_bad": "登录发生错误，请联系管理员 {message}",
     "signin_noSuchUser": "无此用户或密码错误",
     "signin_success": "欢迎回来",
