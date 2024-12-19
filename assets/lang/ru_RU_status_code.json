@@ -33,7 +33,7 @@
     "changePassword_notMatch": "Исходный пароль неверен",
     "changePassword_success": "Вам необходимо снова войти в систему, чтобы завершить этот процесс.",
     "forgetPassword_bad": "Неправильный сброс пароля. Обратитесь к администратору {message}",
-    "forgetPassword_needVerify": "请检查您的电子邮件以重置密码",
+    "forgetPassword_needVerify": "Пожалуйста, проверьте свою электронную почту, чтобы сбросить пароль",
     "forgetPassword_notFound": "没有这样的用户或者您没有绑定电子邮件，请检查名称或邮箱是否一致",
     "forgetPassword_permissionDenied": "你账户无法这样做",
     "forgetPassword_success": "重置密码成功",
