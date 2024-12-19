@@ -39,7 +39,7 @@
     "forgetPassword_success": "Сброс пароля успешен",
     "judgement_appealLock": "Апелляция заблокирована, и дальнейшее рассмотрение дела невозможно.",
     "judgement_bad": "При вынесении решения произошла ошибка, обратитесь к администратору {message}",
-    "judgement_notFound": "未找到案件，请联系管理员 {message}",
+    "judgement_notFound": "Случай не найден, обратитесь к администратору {message}",
     "judgement_permissionDenied": "你无权这样做",
     "judgement_spam": "你所提交的内容不通过检测，被标记为垃圾内容 {message}",
     "judgement_success": "感谢你的判决",
