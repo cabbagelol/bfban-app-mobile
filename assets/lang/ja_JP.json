@@ -26,6 +26,7 @@
     },
     "media": {
       "open": "チェックする",
+      "view": "チェック",
       "delete": "除去",
       "fileInfo": "詳細情報",
       "uploadFile": "ファイルをアップロードする",
@@ -178,12 +179,23 @@
       "versions": {
         "title": "リリース",
         "describe": "アップデート、最新バージョン、現行バージョン",
+        "appName": "アプリケーション名",
+        "packageName": "パッケージ名",
         "currentVersion": "現行バージョン",
+        "buildNumber": "ビルドバージョン",
+        "buildSignature": "ビルド署名",
+        "installerStore": "インストール元",
+        "ignoredCurrentVersionItem": "現在のバージョンでは無視します",
+        "ignoredGloballyVersionTitle": "バージョン更新を無視する",
+        "ignoredGloballyVersionSubtitle": "バージョン チェックが不要になります。これにより、プログラム内のあらゆる場所でバージョン チェックがオフになります。",
+        "showVersionsTitle": "利用可能なすべてのバージョン",
+        "showVersionsSubtitle": "すべてのバージョンを表示し、無視されたバージョンを管理する",
         "newVersion": "新着情報",
         "newVersionDescribe_new": "最新の",
         "newVersionDescribe_old": "旧バージョン",
         "type": "類型論",
-        "superHairVersionTip": "現在のバージョンは絶版かもしれない。"
+        "superHairVersionTip": "現在のバージョンは絶版かもしれない。",
+        "newVersionTip": "新しいバージョンが見つかりました\nストアを通じて更新してください (プラットフォーム以外のストア チャネルからダウンロードした場合は、手動で公式 Web サイトにアクセスして新しいインストール パッケージをダウンロードし、インストールを上書きしてください)"
       },
       "language": {
         "title": "多言語主義"
@@ -221,6 +233,8 @@
       "support": {
         "title": "アジュバント",
         "guide": "アプリケー��ョンの初期起動",
+        "logTitle": "ログ",
+        "logDescription": "プログラムエラーログ",
         "feedbackTitle": "フィードバック・グループ (612949946)",
         "feedbackDescription": "著者に近い。",
         "githubTitle": "ギサブ",
@@ -288,3 +302,4 @@
     }
   }
 }
+
