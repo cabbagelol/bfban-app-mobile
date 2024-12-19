@@ -70,7 +70,7 @@
     "signup_error": "Произошла ошибка, обратитесь к администратору {message}",
     "signup_notFound": "Неверный код активации",
     "signup_expired": "Срок действия кода активации истек, пожалуйста, зарегистрируйтесь еще раз",
-    "signup_gameNotShowed": "判断的账户，没有对应战地系列游戏",
+    "signup_gameNotShowed": "Судейский аккаунт не соответствует серии игр Battlefield.",
     "signup_needVerify": "恭喜，你还差一步，请前往邮箱激活账户",
     "signup_notImplement": "发生错误，请联系管理员 {message}",
     "signup_originBindingExist": "此邮箱已绑定账户",
