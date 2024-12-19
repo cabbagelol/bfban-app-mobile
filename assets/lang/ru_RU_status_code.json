@@ -59,7 +59,7 @@
     "reply_success": "Ответ отправлен",
     "report_bad": "Чтобы сообщить об ошибке, обратитесь к администратору {message}",
     "report_error": "Чтобы сообщить об ошибке, обратитесь к администратору {message}",
-    "report_notFound": "查无此用户信息",
+    "report_notFound": "Информация об этом пользователе не найдена",
     "report_notImplement": "发生错误，请联系管理员 {message}",
     "report_spam": "你所提交的内容不通过检测，被标记为垃圾内容 {message}",
     "report_success": "感谢你的举报",
