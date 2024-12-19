@@ -14,7 +14,7 @@
 [开发计划进展](https://trello.com/b/ZECQnnEz/bfban-app) |
 [联Ban网站](https://bfban.com) |
 [应用网站](http://bfban-app.cabbagelol.net) |
-[App网站仓库](https://github.com/cabbagelol/bfbanAppWebsite)
+[App网站仓库](https://github.com/hll-gun-calculator/website)
 
 ## 👋 介绍
 
@@ -50,12 +50,25 @@ bfban不支持多平台登录，使用app登录账户将重置凭证，导致其
 
 额外依赖：
 
-- flutter_plugin_elui: https://github.com/cabbagelol/flutter-elui-plugin
-- flutter_rich_html: https://github.com/cabbagelol/rich_html-d20822
+-
+flutter_plugin_elui (<
+1.8): https://github.com/cabbagelol/flutter-elui-plugin
+-
+flutter_plugin_plus_elui (>
+3.0): https://github.com/ElementUserInterface/flutter-elui-plus-plugin
+-
+~~
+flutter_rich_html~~ (<
+0.1.10,
+已丢弃): https://github.com/cabbagelol/rich_html-d20822
 
 (内置app相关配置接口来源)
 
-- app网站: https://github.com/cabbagelol/bfbanAppWebsite
+-
+App网站:
+  - https://github.com/hll-gun-calculator/website
+  -
+  ~~https://github.com/cabbagelol/bfbanAppWebsite~~
 
 ## 截图
 

@@ -66,6 +66,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
   /// 获取时间轴
   Future getTimeline() async {
     if (playerTimelineStatus.load!) return;
+    if (!mounted) return;
 
     setState(() {
       playerTimelineStatus.load = true;
@@ -207,6 +208,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
       onLoad: _getMore,
       child: Scrollbar(
         child: ListView(
+          cacheExtent: 800,
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top + 10),
           controller: scrollController,
           children: playerTimelineStatus.list!.isNotEmpty

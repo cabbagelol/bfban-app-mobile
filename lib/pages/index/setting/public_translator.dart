@@ -34,11 +34,11 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
   void initState() {
     publicApiTranslationProvider = Provider.of<PublicApiTranslationProvider>(context, listen: false);
 
-    ready();
+    onReady();
     super.initState();
   }
 
-  void ready() async {
+  void onReady() async {
     String selectActivate = await publicApiTranslationProvider!.getSelectActivate();
     setState(() {
       mirror_trList = List.from(trList);

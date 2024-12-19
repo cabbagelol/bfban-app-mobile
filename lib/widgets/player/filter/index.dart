@@ -12,9 +12,9 @@ class PlayerFilterPanel extends FilterPanelWidget {
   final Function(Map value) onChange;
 
   PlayerFilterPanel({
-    Key? key,
+    super.key,
     required this.onChange,
-  }) : super(key: key);
+  });
 
   @override
   State<PlayerFilterPanel> createState() => PlayerFilterPanelState();
@@ -167,6 +167,7 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
     }
 
     return IconButton(
+      color: Colors.red,
       onPressed: () => _openPlayerFilter(1),
       icon: Icon(
         [Icons.filter_alt_outlined, Icons.filter_alt_outlined, Icons.filter_alt][status],

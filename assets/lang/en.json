@@ -31,7 +31,7 @@
       "uploadFile": "Upload files",
       "export": "Export file",
       "directory": {
-        "appInteriorDir": "in-app",
+        "appInteriorDirectory": "in-app",
         "libraryDirectory": "commonality",
         "temporaryDirectory": "cache",
         "downloadsDirectory": "Download",

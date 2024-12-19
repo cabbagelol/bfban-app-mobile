@@ -66,7 +66,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   @override
   void initState() {
-    ready();
+    onReady();
 
     cheaterStatus!.insert(0, {
       "value": -1,
@@ -85,7 +85,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   /// [Event]
   /// 初始
-  ready() async {
+  onReady() async {
     dynamic playersTabInitialIndex = await _storageAccount.getConfiguration("playersTabInitialIndex");
 
     if (playersTabInitialIndex != null && playersTabInitialIndex != 0 && cheaterStatus!.length > 1) _tabController?.index = playersTabInitialIndex is bool ? 0 : playersTabInitialIndex;
@@ -308,7 +308,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                 automaticallyImplyLeading: false,
                 expandedHeight: 0,
                 toolbarHeight: 40,
-                backgroundColor: Theme.of(context).primaryColor.withOpacity(.95),
+                backgroundColor: Theme.of(context).primaryColor,
                 flexibleSpace: FlexibleSpaceBar(
                   expandedTitleScale: 1,
                   titlePadding: EdgeInsets.zero,
@@ -317,71 +317,100 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                     blendMode: BlendMode.srcIn,
                     child: const SizedBox(),
                   ),
-                  title: Row(
+                  title: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Flexible(
-                        flex: 1,
-                        child: TabBar.secondary(
-                          controller: _tabController,
-                          isScrollable: true,
-                          tabAlignment: TabAlignment.start,
-                          automaticIndicatorColorAdjustment: false,
-                          onTap: (index) => _onSwitchTab(index),
-                          tabs: cheaterStatus!.map((i) {
-                            return Tab(
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                children: <Widget>[
-                                  I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
-                                  if (i["num"] != null && i["num"] > 0)
-                                    Positioned(
-                                      top: -10,
-                                      right: -12,
-                                      child: AnimatedScale(
-                                        curve: Curves.easeInOutBack,
-                                        scale: i["num"] != null || i["num"] == 0 ? 1 : .8,
-                                        duration: const Duration(milliseconds: 800),
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).colorScheme.error,
-                                            borderRadius: BorderRadius.circular(5),
-                                            border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
-                                          ),
-                                          constraints: const BoxConstraints(
-                                            minWidth: 12,
-                                            minHeight: 12,
-                                          ),
-                                          child: Text(
-                                            i["num"] > 9999 ? "9999+" : i["num"].toString(),
-                                            style: TextStyle(
-                                              fontSize: FontSize.xSmall.value,
-                                              color: Theme.of(context).colorScheme.errorContainer,
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 1,
+                            child: Stack(
+                              children: [
+                                TabBar.secondary(
+                                  controller: _tabController,
+                                  isScrollable: true,
+                                  tabAlignment: TabAlignment.start,
+                                  automaticIndicatorColorAdjustment: false,
+                                  onTap: (index) => _onSwitchTab(index),
+                                  tabs: cheaterStatus!.map((i) {
+                                    return Tab(
+                                      child: Stack(
+                                        clipBehavior: Clip.none,
+                                        children: <Widget>[
+                                          I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
+                                          if (i["num"] != null && i["num"] > 0)
+                                            Positioned(
+                                              top: -10,
+                                              right: -12,
+                                              child: AnimatedScale(
+                                                curve: Curves.easeInOutBack,
+                                                scale: i["num"] != null || i["num"] == 0 ? 1 : .8,
+                                                duration: const Duration(milliseconds: 800),
+                                                child: Container(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context).colorScheme.error,
+                                                    borderRadius: BorderRadius.circular(5),
+                                                    border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
+                                                  ),
+                                                  constraints: const BoxConstraints(
+                                                    minWidth: 12,
+                                                    minHeight: 12,
+                                                  ),
+                                                  child: Text(
+                                                    i["num"] > 9999 ? "9999+" : i["num"].toString(),
+                                                    style: TextStyle(
+                                                      fontSize: FontSize.xSmall.value,
+                                                      color: Theme.of(context).colorScheme.errorContainer,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                            textAlign: TextAlign.center,
-                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  right: -10,
+                                  bottom: -1,
+                                  child: IgnorePointer(
+                                    ignoring: true,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [Theme.of(context).primaryColor.withOpacity(.1), Theme.of(context).primaryColor.withOpacity(.95), Theme.of(context).primaryColor],
                                         ),
                                       ),
+                                      width: 60,
+                                      height: 70,
                                     ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ),
-                      PlayerFilterPanel(
-                        key: _playerFilterPanelKey,
-                        onChange: (Map value) {
-                          playersStatus!.parame!.game = value["game"];
-                          playersStatus!.parame!.sortBy = value["sortBy"];
-                          playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
-                          playersStatus!.parame!.createTimeTo = value["createTimeTo"];
-                          playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
-                          playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          PlayerFilterPanel(
+                            key: _playerFilterPanelKey,
+                            onChange: (Map value) {
+                              playersStatus!.parame!.game = value["game"];
+                              playersStatus!.parame!.sortBy = value["sortBy"];
+                              playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
+                              playersStatus!.parame!.createTimeTo = value["createTimeTo"];
+                              playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
+                              playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
 
-                          _onRefresh();
-                        },
+                              _onRefresh();
+                            },
+                          ),
+                        ],
                       ),
+                      Divider(height: 1),
                     ],
                   ),
                 ),

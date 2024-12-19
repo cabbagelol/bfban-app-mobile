@@ -110,14 +110,11 @@ class UserCenterPageState extends State<UserCenterPage> {
                               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
                               decoration: BoxDecoration(
                                 color: Theme.of(context).cardTheme.color,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurStyle: BlurStyle.solid,
-                                    spreadRadius: 0,
-                                    blurRadius: 20,
-                                    color: Theme.of(context).shadowColor.withOpacity(.1),
-                                  ),
-                                ],
+                                border: Border(
+                                    top: BorderSide(
+                                  color: Theme.of(context).dividerColor,
+                                  width: 1,
+                                )),
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(15),
                                   topRight: Radius.circular(15),

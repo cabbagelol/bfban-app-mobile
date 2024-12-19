@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/dir_provider.dart';
+import 'package:bfban/provider/log_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
 import 'package:bfban/provider/translation_provider.dart';
@@ -18,6 +21,7 @@ import 'package:provider/provider.dart';
 import 'package:bfban/router/router.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const String appGroupId = 'com.cabbagelol.bfban';
 
@@ -26,18 +30,16 @@ void runMain() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
+  SharedPreferences.setPrefix('APP.');
+
   // 路由初始
   Routes.configureRoutes(FluroRouter());
 
-  // 设置系统状态栏
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-
-  // Sentry
-  if (Config.env == Env.PROD) {
-    Sentry.init((options) {
-      options.dsn = Config.apiHost["sentry"]!.url;
-    });
-  }
+  // 设置系统
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(const BfBanApp());
 
@@ -45,13 +47,13 @@ void runMain() async {
 }
 
 class BfBanApp extends StatefulWidget {
-  const BfBanApp({Key? key}) : super(key: key);
+  const BfBanApp({super.key});
 
   @override
-  _BfBanAppState createState() => _BfBanAppState();
+  AppState createState() => AppState();
 }
 
-class _BfBanAppState extends State<BfBanApp> {
+class AppState extends State<BfBanApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -65,6 +67,7 @@ class _BfBanAppState extends State<BfBanApp> {
         ChangeNotifierProvider(create: (context) => PublicApiTranslationProvider()),
         ChangeNotifierProvider(create: (context) => CaptchaProvider()),
         ChangeNotifierProvider(create: (context) => DirProvider()),
+        ChangeNotifierProvider(create: (context) => LogProvider()),
       ],
       child: Consumer3<ThemeProvider, TranslationProvider, AppInfoProvider>(builder: (BuildContext context, ThemeProvider themeData, TranslationProvider langData, AppInfoProvider appData, Widget? child) {
         return MaterialApp(
@@ -81,7 +84,7 @@ class _BfBanAppState extends State<BfBanApp> {
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             FlutterI18nDelegate(
-              translationLoader: CustomTranslationLoader(
+              translationLoader: AppTranslationLoader(
                 namespaces: ["app"],
                 basePath: "assets/lang",
                 baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
@@ -97,7 +100,7 @@ class _BfBanAppState extends State<BfBanApp> {
             };
 
             return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: themeData.theme.textScaleFactor),
+              data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(themeData.theme.textScaleFactor as double)),
               child: widget!,
             );
           },
@@ -112,10 +115,9 @@ class WidgetError extends StatelessWidget {
   final FlutterErrorDetails? errorDetails;
 
   const WidgetError({
-    Key? key,
+    super.key,
     required this.errorDetails,
-  })  : assert(errorDetails != null),
-        super(key: key);
+  }) : assert(errorDetails != null);
 
   @override
   Widget build(BuildContext context) {

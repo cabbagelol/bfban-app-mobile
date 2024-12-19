@@ -8,7 +8,6 @@ import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'agreement.dart';
 import 'language.dart';
-import 'explain.dart';
 import 'login.dart';
 import 'permission.dart';
 
@@ -38,7 +37,6 @@ class GuidePageState extends State<GuidePage> {
     const GuidePermissionPage(
       onChange: null,
     ),
-    const GuideExplainPage(),
     const GuideLoginPage(),
   ];
 

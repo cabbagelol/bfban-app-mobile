@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class FileWidgetUI extends StatefulWidget {
-  final i;
+  final dynamic i;
 
   final Function onSucceed;
 
   const FileWidgetUI({
-    Key? key,
+    super.key,
     this.i,
     required this.onSucceed,
-  }) : super(key: key);
+  });
 
   @override
-  _FileWidgetUIState createState() => _FileWidgetUIState();
+  FileWidgetUIState createState() => FileWidgetUIState();
 }
 
-class _FileWidgetUIState extends State<FileWidgetUI> {
+class FileWidgetUIState extends State<FileWidgetUI> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

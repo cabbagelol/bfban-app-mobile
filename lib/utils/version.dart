@@ -1,8 +1,15 @@
 /// 版本管理器
+library;
+
+import 'dart:io';
+
+import 'package:bfban/utils/storage.dart';
 
 enum VersionReleaseType { None, Beta, Release }
 
 class Version {
+  final Storage _storage = Storage();
+
   // 发布类型权重
   final Map _releaseTypeWeights = {
     VersionReleaseType.Beta: 0,
@@ -14,13 +21,13 @@ class Version {
   /// 对比版本
   /// 通常格式 0.0.1-beta
   bool compareVersions(String v1, String v2) {
-    VersionData _version_1 = _setSplitFactory(v1);
-    VersionData _version_2 = _setSplitFactory(v2);
+    VersionData version_1 = _setSplitFactory(v1);
+    VersionData version_2 = _setSplitFactory(v2);
 
-    if (_version_1.number > _version_2.number) {
+    if (version_1.number > version_2.number) {
       return true;
-    } else if (_version_1.number == _version_2.number) {
-      return _releaseTypeWeights[_version_1.releaseType] > _releaseTypeWeights[_version_2.releaseType];
+    } else if (version_1.number == version_2.number) {
+      return _releaseTypeWeights[version_1.releaseType] > _releaseTypeWeights[version_2.releaseType];
     } else {
       return false;
     }
@@ -48,6 +55,27 @@ class Version {
       number: int.parse(s[0].replaceAll(".", "")),
       releaseType: releaseType,
     );
+  }
+
+  /// 获取忽略版本列表
+  Future<Map> getIgnoredVersions() async {
+    StorageData localIgnoredVersionData = await _storage.get("version.ignored");
+    Map ignoredMap = {};
+    if (localIgnoredVersionData.code == 0) {
+      ignoredMap.addAll(localIgnoredVersionData.value);
+    }
+    return ignoredMap;
+  }
+
+  /// 忽略特定版本
+  void onIgnoredVersionItemAsName(Map i) async {
+    StorageData localIgnoredVersionData = await _storage.get("version.ignored");
+    Map ignoredMap = {};
+    if (localIgnoredVersionData.code == 0) {
+      ignoredMap.addAll(localIgnoredVersionData.value);
+    }
+    ignoredMap[i["version"]] = {"version": i["version"] ?? "0.0.0", "build-number": i["build-number"]?[Platform.operatingSystem] ?? {}, "stage": i["stage"] ?? "none"};
+    _storage.set("version.ignored", value: ignoredMap);
   }
 }
 

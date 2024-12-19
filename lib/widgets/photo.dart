@@ -8,18 +8,17 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import 'package:bfban/utils/index.dart';
 
-
 enum PhotoViewFileType { file, network }
 
 class PhotoViewSimpleScreen extends StatefulWidget {
   final PhotoViewFileType? type;
 
-  final String? imageUrl;
+  final String imageUrl;
 
   const PhotoViewSimpleScreen({
     super.key,
     this.type = PhotoViewFileType.network,
-    this.imageUrl = "",
+    required this.imageUrl,
   });
 
   @override
@@ -79,6 +78,10 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
     setState(() {
       imageSaveStatus = false;
     });
+  }
+
+  File get imagePath {
+    return File(widget.imageUrl);
   }
 
   GestureConfig initGestureConfigHandler(state) {
@@ -145,6 +148,9 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
     _doubleClickAnimation!.addListener(_doubleClickAnimationListener);
 
     _doubleClickAnimationController.forward();
+
+    // Update View
+    setState(() {});
     return null;
   }
 
@@ -152,7 +158,7 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
   Widget _getImageItemWidget(int index) {
     return [
       ExtendedImage.file(
-        File(widget.imageUrl!),
+        imagePath,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high,
         mode: ExtendedImageMode.gesture,
@@ -161,7 +167,7 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
         onDoubleTap: onDoubleTap,
       ),
       ExtendedImage.network(
-        widget.imageUrl!,
+        widget.imageUrl,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high,
         mode: ExtendedImageMode.gesture,
@@ -177,14 +183,16 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: widget.imageUrl!.isNotEmpty
+        centerTitle: true,
+        excludeHeaderSemantics: true,
+        forceMaterialTransparency: _doubleClickAnimation?.value != 1.0,
+        title: widget.imageUrl.isNotEmpty
             ? Text(
                 appBarTitle,
                 style: TextStyle(overflow: TextOverflow.ellipsis),
                 maxLines: 2,
               )
             : SizedBox(),
-        centerTitle: true,
         actions: [
           if (widget.type == PhotoViewFileType.network)
             imageSaveStatus
@@ -208,17 +216,14 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
                   ),
         ],
       ),
-      body: ClipRect(
-        clipBehavior: Clip.hardEdge,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 1,
-              child: _getImageItemWidget(widget.type!.index),
-            )
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            flex: 1,
+            child: _getImageItemWidget(widget.type!.index),
+          )
+        ],
       ),
     );
   }

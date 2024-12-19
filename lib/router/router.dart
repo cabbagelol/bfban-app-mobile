@@ -1,3 +1,5 @@
+import 'package:bfban/pages/index/setting/logs.dart';
+import 'package:bfban/pages/index/setting/app_version_list.dart';
 import 'package:bfban/pages/player/appeal.dart';
 import 'package:bfban/pages/player/index.dart';
 import 'package:bfban/pages/license/index.dart';
@@ -294,15 +296,27 @@ class Routes {
       },
     },
     {
+      "url": "/profile/logs",
+      "item": (context, params) {
+        return const AppLogsPage();
+      },
+    },
+    {
       "url": "/profile/support",
       "item": (context, params) {
         return const SupportPage();
       },
     },
     {
-      "url": "/profile/version",
+      "url": "/profile/version/info",
       "item": (context, params) {
         return const AppVersionPackagePage();
+      },
+    },
+    {
+      "url": "/profile/version/list",
+      "item": (context, params) {
+        return const AppVersionList();
       },
     },
     {

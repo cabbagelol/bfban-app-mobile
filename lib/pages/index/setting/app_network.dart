@@ -1,5 +1,6 @@
 import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
@@ -105,91 +106,103 @@ class AppNetworkPageState extends State<AppNetworkPage> {
   /// [Event]
   /// 编辑网络地址
   void _opEditNetwork(AppNetworkItem i) async {
-    await showDialog(
+    showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      isDismissible: true,
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, onState) {
-            return AlertDialog(
-              title: const Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [Icon(Icons.info), Text("\tEdit")],
+            return SingleChildScrollView(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                left: 20,
+                right: 20,
               ),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: [
-                    TextField(
-                      controller: TextEditingController(text: i.name),
-                      decoration: InputDecoration(
-                        hintText: i.name,
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (data) {
-                        onState(() {
-                          i.name = data;
-                        });
-                      },
+              child: ListBody(
+                children: [
+                  TextField(
+                    controller: TextEditingController(text: i.name),
+                    decoration: InputDecoration(
+                      hintText: i.name,
+                      prefixIcon: Icon(Icons.title),
+                      border: OutlineInputBorder(),
                     ),
-                    DropdownButton(
-                      isExpanded: true,
-                      dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                      style: Theme.of(context).dropdownMenuTheme.textStyle,
-                      value: i.protocol.toString(),
-                      items: i.protocols
-                          .map((protocol) => DropdownMenuItem(
-                                value: protocol,
-                                child: Text(protocol),
-                              ))
-                          .toList(),
-                      onChanged: (currentProtocol) {
-                        onState(() {
-                          i.protocol = currentProtocol.toString();
-                        });
-                      },
+                    onChanged: (data) {
+                      onState(() {
+                        i.name = data;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      hintText: i.host,
+                      prefixIcon: Icon(Icons.https),
+                      border: OutlineInputBorder(),
                     ),
-                    TextField(
-                      controller: TextEditingController(text: i.host),
-                      decoration: InputDecoration(
-                        hintText: i.host,
-                        border: InputBorder.none,
-                      ),
-                      minLines: 1,
-                      maxLines: 3,
-                      onChanged: (data) {
-                        setState(() {
-                          i.host = data;
-                        });
-                      },
+                    borderRadius: BorderRadius.circular(40),
+                    dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+                    style: Theme.of(context).dropdownMenuTheme.textStyle,
+                    value: i.protocol.toString(),
+                    items: i.protocols.map((protocol) => DropdownMenuItem(value: protocol, child: Text(protocol))).toList(),
+                    onChanged: (currentProtocol) {
+                      onState(() {
+                        i.protocol = currentProtocol.toString();
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: TextEditingController(text: i.host),
+                    decoration: InputDecoration(
+                      hintText: i.host,
+                      prefixIcon: Icon(Icons.web_asset_sharp),
+                      border: OutlineInputBorder(),
                     ),
-                    TextField(
-                      controller: TextEditingController(text: i.pathname),
-                      decoration: const InputDecoration(
-                        hintText: "path",
-                        border: InputBorder.none,
-                      ),
-                      minLines: 2,
-                      maxLines: 5,
-                      onChanged: (data) {
-                        setState(() {
-                          i.pathname = data;
-                        });
-                      },
+                    minLines: 1,
+                    maxLines: 3,
+                    onChanged: (data) {
+                      setState(() {
+                        i.host = data;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: TextEditingController(text: i.pathname),
+                    decoration: InputDecoration(
+                      hintText: "path",
+                      hintStyle: TextStyle(color: Colors.white38),
+                      prefixIcon: Icon(Icons.insert_link),
+                      alignLabelWithHint: true,
+                      border: OutlineInputBorder(),
                     ),
-                  ],
-                ),
+                    minLines: 2,
+                    maxLines: 5,
+                    onChanged: (data) {
+                      setState(() {
+                        i.pathname = data;
+                      });
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        Config.apis.addAll({i.name: i.toBaseUrl});
+                      });
+                      _onRefresh();
+                      Navigator.of(context).pop();
+                    },
+                    child: SizedBox(
+                      height: 50,
+                      child: Icon(Icons.done),
+                    ),
+                  ),
+                ],
               ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      Config.apis.addAll({i.name: i.toBaseUrl});
-                    });
-                    _onRefresh();
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
             );
           },
         );

@@ -18,6 +18,8 @@ class LoginPanelPage extends StatefulWidget {
 class LoginPanelState extends State<LoginPanelPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  bool isShowWaveBorder = true;
+
   /// [Event]
   /// 取消
   _pop() {
@@ -27,9 +29,16 @@ class LoginPanelState extends State<LoginPanelPage> {
   /// [Event]
   /// 登录
   dynamic _openSignin() {
+    setState(() {
+      isShowWaveBorder = true;
+    });
+
     _urlUtil.opEnPage(context, '/signin', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
       if (ProviderUtil().ofUser(context).isLogin) {
-        _urlUtil.popPage(context);
+        setState(() {
+          _urlUtil.popPage(context);
+          isShowWaveBorder = true;
+        });
       }
     });
   }
@@ -64,27 +73,28 @@ class LoginPanelState extends State<LoginPanelPage> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  WaveBorderWidget(
-                    width: 80,
-                    maxWidth: MediaQuery.of(context).size.width,
-                    count: 3,
-                    borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
-                    borderWidth: 5,
-                    duration: const Duration(seconds: 10),
-                    child: CircleAvatar(
-                      radius: 39,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          "assets/splash/splash_center_logo.png",
-                          width: 80,
-                          height: 80,
-                          fit: BoxFit.cover,
-                          filterQuality: FilterQuality.high,
+                  if (isShowWaveBorder)
+                    WaveBorderWidget(
+                      width: 80,
+                      maxWidth: MediaQuery.of(context).size.width,
+                      count: 5,
+                      borderColor: Theme.of(context).appBarTheme.backgroundColor!.withOpacity(.2),
+                      borderWidth: 5,
+                      duration: const Duration(seconds: 10),
+                      child: CircleAvatar(
+                        radius: 39,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: Image.asset(
+                            "assets/splash/splash_center_logo.png",
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(

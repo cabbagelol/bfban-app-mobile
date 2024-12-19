@@ -1,11 +1,13 @@
 /// 储存
+library;
+
 import 'dart:convert';
 
 import 'package:bfban/constants/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-enum StorageType { none, string, int, double, bool }
+enum StorageType { string, int, double, bool }
 
 class Storage {
   PackageInfo? _packageInfo;
@@ -21,7 +23,7 @@ class Storage {
   init() async {
     _packageInfo = await PackageInfo.fromPlatform();
     _prefs = await SharedPreferences.getInstance();
-    _preName = "${_packageInfo!.appName.toLowerCase()}.${Config.envCurrentName}:";
+    _preName = "${_packageInfo!.appName.trim().toLowerCase()}.${Config.envCurrentName}:";
   }
 
   /// 是否初始化
@@ -47,10 +49,6 @@ class Storage {
       case StorageType.string:
         result.setData(_prefs!.getString("$_preName$name"));
         break;
-      case StorageType.none:
-      default:
-        result.setData(_prefs!.get("$_preName$name"));
-        break;
     }
 
     return result;
@@ -72,7 +70,6 @@ class Storage {
         case StorageType.bool:
           _prefs!.setBool(name, value);
           break;
-        case StorageType.none:
         case StorageType.string:
           int time = DateTime.now().millisecondsSinceEpoch;
           Map<dynamic, dynamic> val = {"time": time, "value": value};
@@ -120,9 +117,9 @@ class Storage {
   Future getAll() async {
     if (!isInit) await init();
     List keys = [];
-    _prefs!.getKeys().forEach((key) {
+    for (var key in _prefs!.getKeys()) {
       keys.add({"value": _prefs!.get(key), "key": key});
-    });
+    }
     return keys;
   }
 }

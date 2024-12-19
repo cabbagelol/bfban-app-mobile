@@ -50,7 +50,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ready();
+      onReady();
     });
     super.initState();
   }
@@ -62,7 +62,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.didChangeDependencies();
   }
 
-  void ready() async {
+  void onReady() async {
     futureBuilder = _initTab();
   }
 
@@ -84,7 +84,7 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
           waitMap["load"] = _homeTrendPageKey.currentState?.trendStatus.load ?? false;
           break;
         default:
-        // Null
+          // Null
           break;
       }
       _homeTabs.add(waitMap);
@@ -131,35 +131,44 @@ class HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10, tileMode: TileMode.decal),
                         child: const SizedBox(),
                       ),
-                      title: TabBar(
-                        controller: tabController,
-                        isScrollable: false,
-                        tabs: homeTabs.map((e) {
-                          return Tab(
-                            iconMargin: EdgeInsets.zero,
-                            child: e["load"] ?? false
-                                ? const Text("-")
-                                : Container(
-                                    padding: EdgeInsets.zero,
-                                    constraints: BoxConstraints(
-                                      maxWidth: MediaQuery.of(context).size.width / 4,
-                                    ),
-                                    child: Wrap(
-                                      crossAxisAlignment: WrapCrossAlignment.center,
-                                      children: [
-                                        // e["icon"],
-                                        // const SizedBox(width: 5),
-                                        Text(
-                                          "${e["text"]}",
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
+                      title: PreferredSize(
+                        preferredSize: Size(0, 55),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TabBar(
+                              controller: tabController,
+                              isScrollable: false,
+                              tabs: homeTabs.map((e) {
+                                return Tab(
+                                  iconMargin: EdgeInsets.zero,
+                                  child: e["load"] ?? false
+                                      ? const Text("-")
+                                      : Container(
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(
+                                            maxWidth: MediaQuery.of(context).size.width / 4,
+                                          ),
+                                          child: Wrap(
+                                            crossAxisAlignment: WrapCrossAlignment.center,
+                                            children: [
+                                              // e["icon"],
+                                              // const SizedBox(width: 5),
+                                              Text(
+                                                "${e["text"]}",
+                                                textAlign: TextAlign.center,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                          );
-                        }).toList(),
+                                );
+                              }).toList(),
+                            ),
+                            Divider(height: 1),
+                          ],
+                        ),
                       ),
                     ),
                   ),

@@ -92,7 +92,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
         });
       });
 
-    ready();
+    onReady();
     super.initState();
   }
 
@@ -107,7 +107,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
     super.dispose();
   }
 
-  void ready() async {
+  void onReady() async {
     // Update query id
     userSpaceInfo.parame.id = widget.id!;
     reportListStatus.parame.id = int.parse(widget.id!);
@@ -618,6 +618,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
 
 class Background extends StatelessWidget {
   const Background({
+    super.key,
     required this.src,
     this.textColor = const Color(0xFF757575),
     this.duration = const Duration(milliseconds: 750),

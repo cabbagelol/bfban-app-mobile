@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:animations/animations.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +18,8 @@ class InsertMediaPage extends StatefulWidget {
 }
 
 class _InsertMediaPageState extends State<InsertMediaPage> {
+  final Regular _regular = Regular();
+
   String imageUrl = "";
 
   List insertListPage = [];
@@ -56,7 +59,7 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
       });
 
       // 检查图片是否可访问
-      if (await Regular().authImage(imageUrl) && imageUrl.isNotEmpty) {
+      if (await _regular.authImage(imageUrl) && imageUrl.isNotEmpty) {
         setState(() {
           insertCheckStatus = true;
         });
@@ -107,12 +110,12 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
     ];
 
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.transparent,
       body: PageTransitionSwitcher(
         duration: const Duration(milliseconds: 150),
         transitionBuilder: (Widget child, Animation<double> primaryAnimation, Animation<double> secondaryAnimation) {
           return SharedAxisTransition(
-            fillColor: Theme.of(context).scaffoldBackgroundColor,
+            fillColor: Colors.transparent,
             animation: primaryAnimation,
             secondaryAnimation: secondaryAnimation,
             transitionType: SharedAxisTransitionType.horizontal,
@@ -154,9 +157,10 @@ class _InsertMediaPageState extends State<InsertMediaPage> {
 /// 选择方式
 class InsertSelect extends StatefulWidget {
   final Function? onNext;
+
   final Function? onValue;
 
-  InsertSelect({
+  const InsertSelect({
     super.key,
     this.onNext,
     this.onValue,
@@ -169,6 +173,8 @@ class InsertSelect extends StatefulWidget {
 class _InsertSelectState extends State<InsertSelect> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final TextEditingController _textEditingController = TextEditingController(text: "");
+
   String insertValue = "0";
 
   List insertTypes = [
@@ -177,13 +183,30 @@ class _InsertSelectState extends State<InsertSelect> {
     {"name": "textarea.type.media", "value": "2"},
   ];
 
+  @override
+  void initState() {
+    super.initState();
+
+    _textEditingController.addListener(() {
+      setState(() {
+        if (widget.onValue != null) widget.onValue!(_textEditingController.text);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
   /// [Event]
   /// 选择文件上传文件
   _onUploadFile() async {
     ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    var value = await Upload().on(File(image!.path));
+    var value = await Upload.on(File(image!.path));
 
     if (widget.onNext != null) widget.onNext!(value);
   }
@@ -204,50 +227,41 @@ class _InsertSelectState extends State<InsertSelect> {
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: Column(
         children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(3),
-              side: BorderSide(
-                color: Theme.of(context).dividerTheme.color!,
-                width: 1,
-              ),
+          DropdownButtonFormField(
+            dropdownColor: Theme.of(context).bottomAppBarTheme.color,
+            style: Theme.of(context).dropdownMenuTheme.textStyle,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.more_vert_rounded),
             ),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: DropdownButton(
-                isDense: true,
-                isExpanded: true,
-                underline: const SizedBox(),
-                dropdownColor: Theme.of(context).bottomAppBarTheme.color,
-                style: Theme.of(context).dropdownMenuTheme.textStyle,
-                onChanged: (value) {
-                  setState(() {
-                    insertValue = value.toString();
-                  });
-                },
-                value: insertValue,
-                items: insertTypes.map<DropdownMenuItem<String>>((i) {
-                  return DropdownMenuItem(
-                    value: i["value"].toString(),
-                    child: Text(FlutterI18n.translate(context, i["name"])),
-                  );
-                }).toList(),
-              ),
-            ),
+            onChanged: (value) {
+              setState(() {
+                insertValue = value.toString();
+              });
+            },
+            value: insertValue,
+            items: insertTypes.map<DropdownMenuItem<String>>((i) {
+              return DropdownMenuItem(
+                value: i["value"].toString(),
+                child: Text(FlutterI18n.translate(context, i["name"])),
+              );
+            }).toList(),
           ),
           const SizedBox(height: 20),
           if (insertValue == "0")
-            Card(
-              child: EluiInputComponent(
-                value: "",
-                type: TextInputType.text,
-                placeholder: "http(s)://",
-                internalstyle: true,
-                theme: EluiInputTheme(textStyle: Theme.of(context).textTheme.bodyMedium),
-                onChange: (data) {
-                  if (widget.onValue != null) widget.onValue!(data["value"]);
-                },
+            TextField(
+              controller: _textEditingController,
+              decoration: InputDecoration(
+                hintText: "http(s)://",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.link),
               ),
+              minLines: 2,
+              maxLines: 4,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r"^(https?://)?[^\s]+")),
+              ],
+              autofillHints: [AutofillHints.url],
             )
           else if (insertValue == "1")
             Column(
@@ -289,26 +303,18 @@ class _InsertSelectState extends State<InsertSelect> {
               ],
             )
           else if (insertValue == "2")
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextButton(
-                  style: ButtonStyle(padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 30))),
-                  onPressed: () => _onMediaPage(),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.perm_media,
-                        size: 90,
-                      )
-                    ],
-                  ),
-                ),
-              ],
+            TextField(
+              controller: _textEditingController,
+              readOnly: true,
+              decoration: InputDecoration(
+                hintText: "file://",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.perm_media),
+              ),
+              onTap: () => _onMediaPage(),
             )
           else
-            const Text("不支持"),
+            const Icon(Icons.dangerous),
         ],
       ),
     );

@@ -64,7 +64,7 @@ class SettingPageState extends State<SettingPage> {
   /// [Event]
   /// 前往版本
   void _opEnVersionDowUrl() {
-    _urlUtil.opEnPage(context, "/profile/version");
+    _urlUtil.opEnPage(context, "/profile/version/info");
   }
 
   /// [Event]

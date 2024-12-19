@@ -28,7 +28,7 @@ class RichEditPageState extends State<RichEditPage> {
   @override
   void initState() {
     super.initState();
-    futureBuilder = _ready();
+    futureBuilder = _onReady();
 
     Future.delayed(const Duration(seconds: 1)).then((value) {
       setState(() {
@@ -37,7 +37,7 @@ class RichEditPageState extends State<RichEditPage> {
     });
   }
 
-  Future _ready() async {
+  Future _onReady() async {
     StorageData richEditData = await _storage.get("richedit");
     data = richEditData.value;
     return data;
@@ -48,10 +48,7 @@ class RichEditPageState extends State<RichEditPage> {
     String html = _richEditCoreKey.currentState!.controllerContent;
     Navigator.pop(
       context,
-      {
-        "code": 1,
-        "html": html,
-      },
+      {"code": 1, "html": html},
     );
   }
 

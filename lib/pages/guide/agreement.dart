@@ -157,9 +157,19 @@ class AgreementPageState extends State<GuideAgreementPage> with AutomaticKeepAli
                                 child: SizedBox(width: 30, height: 30, child: LoadingWidget(strokeWidth: 2)),
                               ),
                             )
-                          : HtmlWidget(
-                              content: agreement["content"],
-                              footerToolBar: false,
+                          : Container(
+                              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 2),
+                              child: Scrollbar(
+                                child: ListView(
+                                  children: [
+                                    HtmlWidget(
+                                      content: agreement["content"],
+                                      isBorder: false,
+                                      footerToolBar: false,
+                                    )
+                                  ],
+                                ),
+                              ),
                             ),
                     ),
                 ],

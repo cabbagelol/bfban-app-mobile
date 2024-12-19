@@ -116,6 +116,7 @@ class ChatProvider with ChangeNotifier {
   /// 消息接口
   /// 获取消息
   Future _api() async {
+    int total = 0;
     messageStatus.load = true;
     _list = [];
 
@@ -126,13 +127,12 @@ class ChatProvider with ChangeNotifier {
 
     if (result.data["success"] == 1) {
       final d = result.data["data"];
-      int total = 0;
-      _list = d["messages"];
-      for (var e in _list) {
+      for (var e in _list = d["messages"]) {
         if (e["haveRead"] == 0) {
           total += 1;
         }
       }
+
       messageStatus.total = total;
     }
 
@@ -154,7 +154,6 @@ class ChatProvider with ChangeNotifier {
     // 更新
     messageStatus.params!.id = id;
     messageStatus.params!.type = type[typeIndex];
-
     messageStatus.load = true;
     notifyListeners();
 
@@ -163,6 +162,10 @@ class ChatProvider with ChangeNotifier {
       parame: messageStatus.params!.toMap,
       method: Http.POST,
     );
+
+    if (result.data["code"] != "message.success") {
+      return false;
+    }
 
     if (result.data["success"] == 1) {
       switch (typeIndex) {
@@ -185,7 +188,6 @@ class ChatProvider with ChangeNotifier {
           }
           break;
         case MessageType.none:
-          // TODO: Handle this case.
           break;
       }
 
@@ -194,9 +196,8 @@ class ChatProvider with ChangeNotifier {
     }
 
     messageStatus.load = false;
-
     notifyListeners();
-    return false;
+    return true;
   }
 
   /// [Event]

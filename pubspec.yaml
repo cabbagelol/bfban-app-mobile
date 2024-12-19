@@ -1,10 +1,11 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.2.12'
+version: '0.2.13'
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
+  flutter: 3.24.3
 
 dependencies:
   flutter:
@@ -55,7 +56,10 @@ dependencies:
   image: any
 
   # (文件)选择器 https://pub.flutter-io.cn/packages/file_picker
-  file_picker: ^8.1.2
+  file_picker: 8.1.3
+
+  # 文件访问 https://pub.flutter-io.cn/packages/open_file
+  open_file: ^3.5.10
 
   # 图片扩展(裁剪) https://pub.flutter-io.cn/packages/extended_image
   extended_image: ^8.1.0
@@ -94,7 +98,8 @@ dependencies:
 
   # UI库
   flutter_elui_plugin:
-    path: ../flutter_elui_plugin
+    git:
+      url: https://github.com/ElementUserInterface/flutter-elui-plus-plugin.git
 
   # 视频 https://pub.flutter-io.cn/packages/video_player
   video_player: ^2.1.1
@@ -104,7 +109,7 @@ dependencies:
 
   # 极光 https://pub.flutter-io.cn/packages/jpush_flutter
   # 需要配置android/ios目录
-  #  jpush_flutter: ^2.3.8
+  # jpush_flutter: ^2.3.8
 
   # 许可证页 https://pub.flutter-io.cn/packages/flutter_custom_license_page
   flutter_custom_license_page: ^0.0.3

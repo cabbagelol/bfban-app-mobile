@@ -47,11 +47,11 @@ class _InformationPageState extends State<InformationPage> {
 
   @override
   void initState() {
-    ready();
+    onReady();
     super.initState();
   }
 
-  void ready() async {
+  void onReady() async {
     bool langLocalSync = await storageAccount.getConfiguration("langLocalSync");
     setState(() {
       this.langLocalSync = langLocalSync;
@@ -346,11 +346,12 @@ class _InformationPageState extends State<InformationPage> {
                                   label: FlutterI18n.translate(context, "profile.space.form.languageSyncDescribe"),
                                   cont: Row(
                                     children: [
+                                      if (langLocalSync) VerticalDivider(),
                                       if (langLocalSync)
                                         Container(
                                           constraints: const BoxConstraints(maxWidth: 150),
                                           child: DropdownButton(
-                                            isDense: false,
+                                            underline: SizedBox(),
                                             dropdownColor: Theme.of(context).bottomAppBarTheme.color,
                                             style: Theme.of(context).dropdownMenuTheme.textStyle,
                                             onChanged: (value) {
@@ -370,7 +371,7 @@ class _InformationPageState extends State<InformationPage> {
                                           ),
                                         ),
                                       const SizedBox(width: 5),
-                                      Checkbox(
+                                      Switch.adaptive(
                                         value: langLocalSync,
                                         onChanged: (bool? value) {
                                           setState(() {
@@ -385,7 +386,7 @@ class _InformationPageState extends State<InformationPage> {
                                 EluiCellComponent(
                                   title: FlutterI18n.translate(context, "profile.space.form.showOrigin"),
                                   label: FlutterI18n.translate(context, "profile.space.form.showOriginDescribe"),
-                                  cont: Checkbox(
+                                  cont: Switch.adaptive(
                                     value: informationStatus.data!.attr!.showOrigin ?? false,
                                     onChanged: (bool? value) {
                                       setState(() {
@@ -397,11 +398,22 @@ class _InformationPageState extends State<InformationPage> {
                                 EluiCellComponent(
                                   title: FlutterI18n.translate(context, "profile.space.form.allowDM"),
                                   label: FlutterI18n.translate(context, "profile.space.form.allowDMdescribe"),
-                                  cont: Checkbox(
+                                  cont: Switch.adaptive(
                                     value: informationStatus.data!.attr!.allowDM ?? false,
                                     onChanged: (bool? value) {
                                       setState(() {
                                         informationStatus.data!.attr!.allowDM = !informationStatus.data!.attr!.allowDM!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                EluiCellComponent(
+                                  title: FlutterI18n.translate(context, "profile.space.form.showAchievement"),
+                                  cont: Switch.adaptive(
+                                    value: informationStatus.data!.attr!.showAchievement ?? false,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        informationStatus.data!.attr!.showAchievement = !informationStatus.data!.attr!.showAchievement!;
                                       });
                                     },
                                   ),

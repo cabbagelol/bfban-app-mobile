@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'richEditCore.dart';
+import 'rich_edit_core.dart';
 
 class RichEditWidget extends StatefulWidget {
   String? data;

@@ -6,7 +6,11 @@ class UserAvatar extends StatefulWidget {
   final String? src;
   final double? size;
 
-  UserAvatar({this.src = "", this.size});
+  const UserAvatar({
+    super.key,
+    this.src = "",
+    this.size,
+  });
 
   @override
   State<UserAvatar> createState() => _UserAvatarState();
@@ -15,8 +19,10 @@ class UserAvatar extends StatefulWidget {
 class _UserAvatarState extends State<UserAvatar> {
   int mirrorImageIndex = 0;
   List mirrorImage = [
+    "http://cn.gravatar.com/avatar/",
     "https://gravatar.loli.net/avatar/",
-    "https://cdn.v2ex.com/gravatar/",
+    "https://cdn.sep.cc/avatar/"
+        "https://cdn.v2ex.com/gravatar/",
     "https://cdn.sep.cc/avatar/",
   ];
 
@@ -31,11 +37,13 @@ class _UserAvatarState extends State<UserAvatar> {
         loadStateChanged: (ExtendedImageState state) {
           switch (state.extendedImageLoadState) {
             case LoadState.failed:
-              setState(() {
-                widget.src!.replaceAll(mirrorImageIndex == 0 ? 'https://www.gravatar.com/avatar/' : mirrorImage[mirrorImageIndex - 1], mirrorImage[mirrorImageIndex]);
+              if (mounted) {
+                setState(() {
+                  widget.src!.replaceAll(mirrorImageIndex == 0 ? 'https://www.gravatar.com/avatar/' : mirrorImage[mirrorImageIndex - 1], mirrorImage[mirrorImageIndex]);
 
-                mirrorImageIndex += 1;
-              });
+                  mirrorImageIndex += 1;
+                });
+              }
               return Icon(Icons.image_not_supported_outlined);
             case LoadState.loading:
               return LoadingWidget();

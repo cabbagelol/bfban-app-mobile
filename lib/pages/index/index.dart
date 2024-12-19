@@ -3,10 +3,10 @@ library;
 
 import 'dart:convert';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/chat_provider.dart';
+import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +21,7 @@ import 'package:bfban/utils/index.dart';
 
 import '../../constants/api.dart';
 import '../../widgets/drawer.dart';
+import '../../widgets/red_dot.dart';
 import 'user_center.dart';
 import 'home_footer_bar_panel.dart';
 import 'home.dart';
@@ -45,14 +46,14 @@ List<dynamic> navs = [
 
 class IndexPage extends StatefulWidget {
   const IndexPage({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  _IndexPageState createState() => _IndexPageState();
+  IndexPageState createState() => IndexPageState();
 }
 
-class _IndexPageState extends State<IndexPage> {
+class IndexPageState extends State<IndexPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
   // 玩家列表
@@ -225,6 +226,12 @@ class _IndexPageState extends State<IndexPage> {
     _urlUtil.opEnPage(context, '/report/$data');
   }
 
+  /// [Event]
+  /// 举报
+  void _opEnVersion() {
+    _urlUtil.opEnPage(context, "/profile/version/info");
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -257,7 +264,7 @@ class _IndexPageState extends State<IndexPage> {
                     leading: Consumer2<ChatProvider, UserInfoProvider>(
                       builder: (BuildContext context, chatData, userData, Widget? child) {
                         return Stack(
-                          fit: StackFit.expand,
+                          fit: StackFit.passthrough,
                           clipBehavior: Clip.none,
                           children: <Widget>[
                             AnimatedOpacity(
@@ -307,12 +314,15 @@ class _IndexPageState extends State<IndexPage> {
                         },
                         icon: const Icon(Icons.search),
                       ),
-                      Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
+                      Consumer2<UserInfoProvider, PackageProvider>(builder: (BuildContext context, UserInfoProvider userData, PackageProvider packageData, Widget? child) {
                         return PopupMenuButton(
                           padding: const EdgeInsets.all(16),
-                          icon: Icon(
-                            Icons.adaptive.more,
-                            color: Theme.of(context).appBarTheme.iconTheme!.color,
+                          icon: RedDotWidget(
+                            show: packageData.isNewVersion,
+                            child: Icon(
+                              Icons.adaptive.more,
+                              color: Theme.of(context).appBarTheme.iconTheme!.color,
+                            ),
                           ),
                           offset: const Offset(0, 45),
                           onSelected: (value) {
@@ -328,6 +338,9 @@ class _IndexPageState extends State<IndexPage> {
                                 break;
                               case 4:
                                 _opEnReport();
+                                break;
+                              case 5:
+                                _opEnVersion();
                                 break;
                             }
                           },
@@ -363,7 +376,7 @@ class _IndexPageState extends State<IndexPage> {
                               ),
                               PopupMenuItem(
                                 value: 4,
-                                enabled: data.isLogin,
+                                enabled: userData.isLogin,
                                 child: Wrap(
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
@@ -391,6 +404,22 @@ class _IndexPageState extends State<IndexPage> {
                                     ),
                                     const SizedBox(width: 10),
                                     Text(FlutterI18n.translate(context, "app.networkDetection.title")),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                value: 5,
+                                child: Wrap(
+                                  children: [
+                                    Icon(
+                                      Icons.tips_and_updates,
+                                      color: Theme.of(context).iconTheme.color,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    RedDotWidget(
+                                      show: packageData.isNewVersion,
+                                      child: Text(FlutterI18n.translate(context, "app.setting.versions.title")),
+                                    ),
                                   ],
                                 ),
                               ),

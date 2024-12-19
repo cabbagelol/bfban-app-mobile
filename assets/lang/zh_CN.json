@@ -25,13 +25,14 @@
       "app_exit": "再次点击,退出程序"
     },
     "media": {
-      "open": "查看",
+      "open": "外部打开",
+      "view": "查看",
       "delete": "删除",
       "fileInfo": "详细信息",
       "uploadFile": "上传文件",
       "export": "导出",
       "directory": {
-        "appInteriorDir": "应用内置",
+        "appInteriorDirectory": "应用内置",
         "libraryDirectory": "公共",
         "temporaryDirectory": "缓存",
         "downloadsDirectory": "下载",
@@ -178,12 +179,23 @@
       "versions": {
         "title": "版本",
         "describe": "更新,最新版本,当前版本",
+        "appName": "应用名称",
+        "packageName": "包名",
         "currentVersion": "当前版本",
+        "buildNumber": "构建版本",
+        "buildSignature": "构建签名",
+        "installerStore": "安装来源",
+        "ignoredCurrentVersionItem": "当前版本忽略",
+        "ignoredGloballyVersionTitle": "忽略版本更新",
+        "ignoredGloballyVersionSubtitle": "不再检查版本，这将关闭程序所有地方版本检查",
+        "showVersionsTitle": "所有可用版本",
+        "showVersionsSubtitle": "查看所有版本，并管理忽略版本",
         "newVersion": "最新版本",
         "newVersionDescribe_new": "已经最新",
         "newVersionDescribe_old": "过时的版本",
         "type": "类型",
-        "superHairVersionTip": "未找到对应版本,您当前版本可能是超发版本"
+        "superHairVersionTip": "未找到对应版本,您当前版本可能是超发版本",
+        "newVersionTip": "发现新版本\n请通过商店更新(如果从非平台商店渠道下载，请手动前往官网下载新安装包覆盖安装)"
       },
       "language": {
         "title": "语言"
@@ -221,6 +233,8 @@
       "support": {
         "title": "支持",
         "guide": "应用初始引导",
+        "logTitle": "日志",
+        "logDescription": "程序错误日志",
         "feedbackTitle": "反馈群(612949946)",
         "feedbackDescription": "和作者更加接近呢",
         "githubTitle": "Github",
