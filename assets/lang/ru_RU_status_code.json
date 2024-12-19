@@ -77,7 +77,7 @@
     "signup_originNotFound": "Невозможно найти учетную запись EA на основе информации, предоставленной пользователем.",
     "signup_usernameExist": "Имя пользователя веб-сайта или активируемая учетная запись уже существует в пуле учетных записей.",
     "user_invalid": "Срок действия токена истек",
-    "user_permissionDenined": "无权许可",
+    "user_permissionDenined": "Нет разрешения",
     "user_tokenClientException": "当前客户端令牌过期或失效",
     "user_tokenExpired": "令牌过期，请重新登陆",
     "userReports_bad": "用户举报发生错误，请联系管理员 {message}",
