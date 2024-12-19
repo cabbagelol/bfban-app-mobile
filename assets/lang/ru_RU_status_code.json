@@ -7,7 +7,7 @@
     "me_success": "Личная информация успешно сохранена",
     "request_404": "Этот адрес запроса не существует, проверьте интерфейс",
     "achievement_bad": "Произошла ошибка достижения. Свяжитесь с администратором {message}",
-    "achievement_duplicate": "重复领取成就",
+    "achievement_duplicate": "Получайте достижения неоднократно",
     "achievement_notConditions": "领取成就条件不符合",
     "achievement_ineffective": "无效的成就",
     "achievement_success": "成就领取成功",
