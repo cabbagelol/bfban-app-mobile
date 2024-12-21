@@ -126,10 +126,9 @@ class _InformationPageState extends State<InformationPage> {
   /// [Response]
   /// 获取语言列表
   Future getLanguageList() async {
-    Response result = await Http.request(
+    Response result = await Http.fetchJsonPData(
       "config/languages.json",
       httpDioValue: "web_site",
-      method: Http.GET,
     );
 
     if (result.data.toString().isNotEmpty) {

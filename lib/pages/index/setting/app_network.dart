@@ -224,103 +224,104 @@ class AppNetworkPageState extends State<AppNetworkPage> {
               const SizedBox(height: 10),
               Expanded(
                 flex: 1,
-                child: ListView(
-                  children: appNetworkStatus.list!.map((AppNetworkItem i) {
-                    return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            IndexedStack(
-                              index: i.status,
-                              children: [
-                                EluiTagComponent(
-                                  value: FlutterI18n.translate(context, "app.networkDetection.status.0"),
-                                  theme: EluiTagTheme(
-                                    backgroundColor: Theme.of(context).colorScheme.primary,
-                                  ),
-                                  color: EluiTagType.none,
-                                  size: EluiTagSize.no2,
+                child: ListView.separated(
+                  itemBuilder: (context, index) {
+                    var i = appNetworkStatus.list![index];
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                      title: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        alignment: WrapAlignment.start,
+                        spacing: 3,
+                        runSpacing: 3,
+                        children: [
+                          IndexedStack(
+                            index: i.status,
+                            children: [
+                              EluiTagComponent(
+                                value: FlutterI18n.translate(context, "app.networkDetection.status.0"),
+                                theme: EluiTagTheme(
+                                  backgroundColor: Theme.of(context).colorScheme.primary,
                                 ),
-                                EluiTagComponent(
-                                  value: FlutterI18n.translate(context, "app.networkDetection.status.2"),
-                                  color: EluiTagType.error,
-                                  size: EluiTagSize.no2,
-                                ),
-                                EluiTagComponent(
-                                  value: FlutterI18n.translate(context, "app.networkDetection.status.1"),
-                                  color: EluiTagType.succeed,
-                                  size: EluiTagSize.no2,
-                                ),
-                                EluiTagComponent(
-                                  value: FlutterI18n.translate(context, "app.networkDetection.status.3"),
-                                  color: EluiTagType.warning,
-                                  size: EluiTagSize.no2,
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              i.name.toString().toUpperCase(),
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SelectionArea(
-                              child: Text(
-                                i.baseHost.toString(),
-                                style: TextStyle(
-                                  color: Theme.of(context).textTheme.displayMedium!.color,
-                                ),
+                                color: EluiTagType.none,
+                                size: EluiTagSize.no2,
                               ),
-                            ),
-                            if (i.statusLogs.isNotEmpty)
-                              Container(
-                                margin: const EdgeInsets.only(top: 10),
-                                child: Column(
-                                  children: i.statusLogs.indexed.map((log) {
-                                    return Wrap(
-                                      spacing: 5,
-                                      crossAxisAlignment: WrapCrossAlignment.center,
-                                      children: [
-                                        Text("${log.$1}"),
-                                        const SizedBox(
-                                          width: 4,
-                                          child: Divider(height: 1, thickness: 1),
-                                        ),
-                                        Text(log.$2["message"].toString()),
-                                        const SizedBox(
-                                          width: 15,
-                                          child: Divider(height: 1, thickness: 1),
-                                        ),
-                                        Text(log.$2["time"].toString()),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
+                              EluiTagComponent(
+                                value: FlutterI18n.translate(context, "app.networkDetection.status.2"),
+                                color: EluiTagType.error,
+                                size: EluiTagSize.no2,
                               ),
-                          ],
-                        ),
-                        trailing: i.load
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: LoadingWidget(
-                                  strokeWidth: 2,
-                                ),
+                              EluiTagComponent(
+                                value: FlutterI18n.translate(context, "app.networkDetection.status.1"),
+                                color: EluiTagType.succeed,
+                                size: EluiTagSize.no2,
+                              ),
+                              EluiTagComponent(
+                                value: FlutterI18n.translate(context, "app.networkDetection.status.3"),
+                                color: EluiTagType.warning,
+                                size: EluiTagSize.no2,
                               )
-                            : Text(i.statusCode.toString()),
-                        onLongPress: () => _opEditNetwork(i),
+                            ],
+                          ),
+                          Text(
+                            i.name.trim().toUpperCase(),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                        ],
                       ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SelectionArea(
+                            child: Text(
+                              i.host.toString(),
+                              style: TextStyle(
+                                color: Theme.of(context).textTheme.displayMedium!.color,
+                              ),
+                            ),
+                          ),
+                          if (i.statusLogs.isNotEmpty)
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: Column(
+                                children: i.statusLogs.indexed.map((log) {
+                                  return Wrap(
+                                    spacing: 5,
+                                    crossAxisAlignment: WrapCrossAlignment.center,
+                                    children: [
+                                      Text("${log.$1}"),
+                                      const SizedBox(
+                                        width: 4,
+                                        child: Divider(height: 1, thickness: 1),
+                                      ),
+                                      Text(log.$2["message"].toString()),
+                                      const SizedBox(
+                                        width: 15,
+                                        child: Divider(height: 1, thickness: 1),
+                                      ),
+                                      Text(log.$2["time"].toString()),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                        ],
+                      ),
+                      trailing: i.load
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: LoadingWidget(
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text(i.statusCode.toString()),
+                      onLongPress: () => _opEditNetwork(i),
                     );
-                  }).toList(),
+                  },
+                  separatorBuilder: (BuildContext context, int index) => Divider(),
+                  itemCount: appNetworkStatus.list!.length,
                 ),
               ),
             ],

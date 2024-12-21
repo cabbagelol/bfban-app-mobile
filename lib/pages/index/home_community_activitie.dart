@@ -4,6 +4,7 @@ library;
 import 'dart:core';
 
 import 'package:bfban/component/_Time/index.dart';
+import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/component/_gamesTag/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
@@ -187,6 +188,203 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
     _refreshKey.currentState!.controller.resetFooter();
   }
 
+  List get filterList {
+    return activityStatus.list!.where((i) {
+      var item = chipCont["list"].where((element) => element["value"] == i["type"]).toList();
+      var is_ = item.length > 0 ? restorablebool[item[0]["index"]].value : false;
+      if (restorablebool.where((element) => element.value).isEmpty) is_ = true;
+      return is_;
+    }).toList();
+  }
+
+  Widget get child {
+    if (activityStatus.list!.isNotEmpty && activityStatus.load) {
+      return ListView.builder(
+        controller: _scrollController,
+        itemCount: 8,
+        itemBuilder: (BuildContext context, int index) {
+          return Opacity(
+            opacity: 1 - (.1 * index),
+            child: Stack(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Placeholder(
+                              color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                              strokeWidth: 20,
+                              child: const SizedBox(
+                                width: 30,
+                                height: 30,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Placeholder(
+                            color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                            strokeWidth: 10,
+                            child: const SizedBox(
+                              width: 30,
+                              height: 8,
+                            ),
+                          ),
+                          const Expanded(flex: 1, child: SizedBox()),
+                          Placeholder(
+                            color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                            strokeWidth: 10,
+                            child: const SizedBox(
+                              width: 50,
+                              height: 6,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Placeholder(
+                            color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                            strokeWidth: 10,
+                            child: const SizedBox(
+                              width: 120,
+                              height: 5,
+                            ),
+                          ),
+                          const SizedBox(width: 20),
+                          Placeholder(
+                            color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                            strokeWidth: 10,
+                            child: const SizedBox(
+                              width: 120,
+                              height: 5,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  top: 35,
+                  right: 0,
+                  child: Opacity(
+                    opacity: .5,
+                    child: Placeholder(
+                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
+                      strokeWidth: 50,
+                      child: const SizedBox(
+                        width: 70,
+                        height: 70,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+
+    return ListView.builder(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).systemGestureInsets.bottom + kBottomNavigationBarHeight),
+      controller: _scrollController,
+      itemCount: filterList.length,
+      itemBuilder: (BuildContext context, int index) {
+        Map i = filterList[index];
+
+        return InkWell(
+          onTap: () => _opEnDynamicDetail(i),
+          child: Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        if (i["playerAvatarLink"] != null)
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: ExtendedImage.network(
+                              i["playerAvatarLink"],
+                              width: 30,
+                              height: 30,
+                              fit: BoxFit.fill,
+                              cacheWidth: 30,
+                              cacheHeight: 30,
+                              cache: true,
+                              printError: false,
+                              loadStateChanged: (ExtendedImageState state) {
+                                switch (state.extendedImageLoadState) {
+                                  case LoadState.completed:
+                                    return state.completedWidget;
+                                  case LoadState.failed:
+                                  default:
+                                    return Image.asset(
+                                      "assets/images/default-player-avatar.jpg",
+                                      cacheWidth: 30,
+                                      cacheHeight: 30,
+                                    );
+                                }
+                              },
+                            ),
+                          )
+                        else
+                          CircleAvatar(
+                            radius: 15,
+                            child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString().toUpperCase()),
+                          ),
+                        const SizedBox(width: 10),
+                        Text(
+                          (i["username"] ?? i["toPlayerName"]).toString(),
+                          style: const TextStyle(fontSize: 20, fontFamily: "UbuntuMono"),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: TimeWidget(
+                            data: i["createTime"],
+                            style: const TextStyle(
+                              fontSize: 12,
+                            ),
+                            textAlign: TextAlign.end,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    WidgetStateText(itemData: i),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: 5,
+                right: 0,
+                child: Icon(
+                  iconTypes[i["type"]] ?? Icons.message_outlined,
+                  size: 70,
+                  color: Theme.of(context).textTheme.titleSmall!.color!.withOpacity(.02),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -197,216 +395,79 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
         context: context,
         removeTop: true,
         removeBottom: true,
-        child: Scrollbar(
-          child: activityStatus.list!.isNotEmpty && !activityStatus.load
-              ? ListView.builder(
-                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).systemGestureInsets.bottom + kBottomNavigationBarHeight),
-                  controller: _scrollController,
-                  itemCount: activityStatus.list!.length + 1,
-                  itemBuilder: (BuildContext context, int index) {
-                    // 筛选
-                    if (index == 0) {
-                      return Container(
-                        height: 59,
-                        color: Theme.of(context).primaryColorDark.withOpacity(.03),
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-                          children: [
-                            const Icon(Icons.filter_list_outlined),
-                            const SizedBox(width: 5),
-                            Wrap(
-                              spacing: 5,
-                              runSpacing: 5,
-                              runAlignment: WrapAlignment.center,
-                              alignment: WrapAlignment.center,
-                              children: chipWidgets,
-                            )
-                          ],
-                        ),
-                      );
-                    }
-
-                    Map i = activityStatus.list![index - 1];
-
-                    return Visibility(
-                      visible: _isShow(i),
-                      child: InkWell(
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      if (i["playerAvatarLink"] != null)
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(20),
-                                          child: ExtendedImage.network(
-                                            i["playerAvatarLink"],
-                                            width: 30,
-                                            height: 30,
-                                            fit: BoxFit.fill,
-                                            cacheWidth: 30,
-                                            cacheHeight: 30,
-                                            cache: true,
-                                            printError: false,
-                                            loadStateChanged: (ExtendedImageState state) {
-                                              switch (state.extendedImageLoadState) {
-                                                case LoadState.completed:
-                                                  return state.completedWidget;
-                                                case LoadState.failed:
-                                                default:
-                                                  return Image.asset(
-                                                    "assets/images/default-player-avatar.jpg",
-                                                    cacheWidth: 30,
-                                                    cacheHeight: 30,
-                                                  );
-                                              }
-                                            },
-                                          ),
-                                        )
-                                      else
-                                        CircleAvatar(
-                                          radius: 15,
-                                          child: Text((i["username"] ?? i["byUserName"] ?? i["toPlayerName"])[0].toString().toUpperCase()),
-                                        ),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        (i["username"] ?? i["toPlayerName"]).toString(),
-                                        style: const TextStyle(fontSize: 20, fontFamily: "UbuntuMono"),
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 2,
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: TimeWidget(
-                                          data: i["createTime"],
-                                          style: const TextStyle(
-                                            fontSize: 12,
-                                          ),
-                                          textAlign: TextAlign.end,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  WidgetStateText(itemData: i),
-                                ],
-                              ),
-                            ),
-                            Positioned(
-                              top: 5,
-                              right: 0,
-                              child: Icon(
-                                iconTypes[i["type"]] ?? Icons.message_outlined,
-                                size: 70,
-                                color: Theme.of(context).textTheme.titleSmall!.color!.withOpacity(.02),
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () => _opEnDynamicDetail(i),
-                      ),
-                    );
-                  },
-                )
-              : ListView.builder(
-                  controller: _scrollController,
-                  itemCount: 8,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Opacity(
-                      opacity: 1 - (.1 * index),
-                      child: Stack(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Placeholder(
-                                        color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                        strokeWidth: 20,
-                                        child: const SizedBox(
-                                          width: 30,
-                                          height: 30,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Placeholder(
-                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                      strokeWidth: 10,
-                                      child: const SizedBox(
-                                        width: 30,
-                                        height: 8,
-                                      ),
-                                    ),
-                                    const Expanded(flex: 1, child: SizedBox()),
-                                    Placeholder(
-                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                      strokeWidth: 10,
-                                      child: const SizedBox(
-                                        width: 50,
-                                        height: 6,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Placeholder(
-                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                      strokeWidth: 10,
-                                      child: const SizedBox(
-                                        width: 120,
-                                        height: 5,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Placeholder(
-                                      color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                      strokeWidth: 10,
-                                      child: const SizedBox(
-                                        width: 120,
-                                        height: 5,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                              ],
-                            ),
+        child: Column(
+          children: [
+            /// filter
+            Container(
+              height: 59,
+              color: Theme.of(context).primaryColorDark.withOpacity(.03),
+              child: Stack(
+                children: [
+                  ListView(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                    children: [
+                      Wrap(
+                        spacing: 5,
+                        runSpacing: 5,
+                        runAlignment: WrapAlignment.center,
+                        alignment: WrapAlignment.center,
+                        children: chipWidgets,
+                      )
+                    ],
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    child: IgnorePointer(
+                      ignoring: true,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            colors: [
+                              Colors.transparent,
+                              Theme.of(context).primaryColorDark.withOpacity(0),
+                              Theme.of(context).primaryColorDark.withOpacity(.01),
+                              ...List.generate(2, (e) => Theme.of(context).primaryColorDark.withOpacity(.05)),
+                            ],
                           ),
-                          Positioned(
-                            top: 35,
-                            right: 0,
-                            child: Opacity(
-                              opacity: .5,
-                              child: Placeholder(
-                                color: Theme.of(context).cardTheme.color!.withOpacity(.8),
-                                strokeWidth: 50,
-                                child: const SizedBox(
-                                  width: 70,
-                                  height: 70,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
+                        width: 100,
+                        height: 70,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
+                    top: 0,
+                    bottom: 0,
+                    child: Icon(
+                      Icons.filter_alt,
+                      shadows: [
+                        Shadow(color: Theme.of(context).primaryColor.withOpacity(.4), blurRadius: 24),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+
+            /// list
+            if (filterList.isEmpty)
+              Container(
+                padding: EdgeInsets.only(top: 50),
+                child: EmptyWidget(),
+              ),
+            Expanded(
+              flex: 1,
+              child: Scrollbar(
+                child: child,
+              ),
+            ),
+          ],
         ),
       ),
     );

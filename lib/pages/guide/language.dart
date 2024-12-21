@@ -57,10 +57,9 @@ class _GuideLanguagePageState extends State<GuideLanguagePage> with AutomaticKee
       load = true;
     });
 
-    Response result = await Http.request(
+    Response result = await Http.fetchJsonPData(
       "config/languages.json",
       httpDioValue: "app_web_site",
-      method: Http.GET,
     );
 
     if (result.data.toString().isNotEmpty) {

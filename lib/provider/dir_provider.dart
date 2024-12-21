@@ -25,7 +25,7 @@ class DirProvider with ChangeNotifier {
   bool isSupportDirectory() => paths.isNotEmpty;
 
   // 获取默认选择保存的完整地址
-  get currentDefaultSavePath => getPaths().where((element) => element.dirName == defaultSavePathValue).first.basicPath;
+  String get currentDefaultSavePath => getPaths().where((element) => element.dirName == defaultSavePathValue).first.basicPath;
 
   Future<Directory?> a() async {
     return Directory("");

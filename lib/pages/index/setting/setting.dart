@@ -131,7 +131,13 @@ class SettingPageState extends State<SettingPage> {
             ),
             cont: Consumer<TranslationProvider>(
               builder: (context, data, child) {
-                return Text(data.currentToLocalLangName);
+                return Text(
+                  data.currentToLocalLangName,
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    decorationStyle: TextDecorationStyle.dashed,
+                  ),
+                );
               },
             ),
             islink: true,

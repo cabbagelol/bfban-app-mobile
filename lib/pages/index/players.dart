@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_elui_plugin/_message/index.dart';
 
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -26,7 +27,7 @@ class PlayerListPage extends StatefulWidget {
   PlayerListPageState createState() => PlayerListPageState();
 }
 
-class PlayerListPageState extends State<PlayerListPage> with SingleTickerProviderStateMixin {
+class PlayerListPageState extends State<PlayerListPage> with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   // 抽屉
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -64,6 +65,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   // 玩家状态
   List? cheaterStatus = Config.cheaterStatus["child"] ?? [];
 
+  // 返回提示会话临时存值
+  Map homePlayerStatus = {'finallyPlayerID': -1, 'departureTime': Duration(), 'status': -1};
+
   @override
   void initState() {
     onReady();
@@ -81,6 +85,51 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     );
 
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed: // 应用从后台返回
+        if (playersStatus!.list!.isEmpty || homePlayerStatus['status'] != playersStatus!.parame!.status! || homePlayerStatus['finallyPlayerID'] <= -1) return;
+
+        await Future.wait([getPlayerList(), getPlayerStatistics()]);
+
+        int count = 0;
+        for (var item in playersStatus!.list!) {
+          if (item['id'] == homePlayerStatus['finallyPlayerID']) break;
+          count++;
+        }
+
+        if (count == 0) return;
+
+        EluiMessageComponent.success(context)(
+          child: Text(FlutterI18n.translate(context, "app.home.returnAppHint", translationParams: {'count': count.toString()})),
+          duration: 5000,
+        );
+        break;
+      case AppLifecycleState.inactive: // 应用处于不活动状态，例如来电、切换应用等
+      case AppLifecycleState.paused: // 应用进入后台
+      case AppLifecycleState.hidden:
+        if (playersStatus!.list!.isEmpty) return;
+
+        homePlayerStatus = {
+          'finallyPlayerID': playersStatus!.list!.first['id'],
+          'departureTime': DateTime.now(),
+          'status': playersStatus!.parame!.status!,
+        };
+        break;
+      case AppLifecycleState.detached: // 应用即将关闭
+        break;
+    }
   }
 
   /// [Event]
@@ -320,95 +369,101 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                   title: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            flex: 1,
-                            child: Stack(
-                              children: [
-                                TabBar.secondary(
-                                  controller: _tabController,
-                                  isScrollable: true,
-                                  tabAlignment: TabAlignment.start,
-                                  automaticIndicatorColorAdjustment: false,
-                                  onTap: (index) => _onSwitchTab(index),
-                                  tabs: cheaterStatus!.map((i) {
-                                    return Tab(
-                                      child: Stack(
-                                        clipBehavior: Clip.none,
-                                        children: <Widget>[
-                                          I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
-                                          if (i["num"] != null && i["num"] > 0)
-                                            Positioned(
-                                              top: -10,
-                                              right: -12,
-                                              child: AnimatedScale(
-                                                curve: Curves.easeInOutBack,
-                                                scale: i["num"] != null || i["num"] == 0 ? 1 : .8,
-                                                duration: const Duration(milliseconds: 800),
-                                                child: Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.error,
-                                                    borderRadius: BorderRadius.circular(5),
-                                                    border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
-                                                  ),
-                                                  constraints: const BoxConstraints(
-                                                    minWidth: 12,
-                                                    minHeight: 12,
-                                                  ),
-                                                  child: Text(
-                                                    i["num"] > 9999 ? "9999+" : i["num"].toString(),
-                                                    style: TextStyle(
-                                                      fontSize: FontSize.xSmall.value,
-                                                      color: Theme.of(context).colorScheme.errorContainer,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
+                      Flexible(
+                        flex: 1,
+                        child: Stack(
+                          children: [
+                            TabBar.secondary(
+                              controller: _tabController,
+                              isScrollable: true,
+                              tabAlignment: TabAlignment.start,
+                              automaticIndicatorColorAdjustment: false,
+                              onTap: (index) => _onSwitchTab(index),
+                              tabs: cheaterStatus!.map((i) {
+                                return Tab(
+                                  child: Stack(
+                                    clipBehavior: Clip.none,
+                                    children: <Widget>[
+                                      I18nText("basic.status.${i["value"] == -1 ? "all" : i["value"]}.text"),
+                                      if (i["num"] != null && i["num"] > 0)
+                                        Positioned(
+                                          top: -10,
+                                          right: -12,
+                                          child: AnimatedScale(
+                                            curve: Curves.easeInOutBack,
+                                            scale: i["num"] != null || i["num"] == 0 ? 1 : .8,
+                                            duration: const Duration(milliseconds: 800),
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).colorScheme.error,
+                                                borderRadius: BorderRadius.circular(5),
+                                                border: Border.all(color: Theme.of(context).colorScheme.errorContainer, width: .7),
+                                              ),
+                                              constraints: const BoxConstraints(
+                                                minWidth: 12,
+                                                minHeight: 12,
+                                              ),
+                                              child: Text(
+                                                i["num"] > 9999 ? "9999+" : i["num"].toString(),
+                                                style: TextStyle(
+                                                  fontSize: FontSize.xSmall.value,
+                                                  color: Theme.of(context).colorScheme.errorContainer,
                                                 ),
+                                                textAlign: TextAlign.center,
                                               ),
                                             ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                Positioned(
-                                  top: 0,
-                                  right: -10,
-                                  bottom: -1,
-                                  child: IgnorePointer(
-                                    ignoring: true,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                          colors: [Theme.of(context).primaryColor.withOpacity(.1), Theme.of(context).primaryColor.withOpacity(.95), Theme.of(context).primaryColor],
+                                          ),
                                         ),
-                                      ),
-                                      width: 60,
-                                      height: 70,
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              bottom: 0,
+                              child: IgnorePointer(
+                                ignoring: true,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.bottomRight,
+                                      colors: [
+                                        Colors.transparent,
+                                        Theme.of(context).primaryColor.withOpacity(0),
+                                        Theme.of(context).primaryColor.withOpacity(.95),
+                                        ...List.generate(2, (e) => Theme.of(context).primaryColor),
+                                      ],
                                     ),
                                   ),
+                                  width: 90,
+                                  height: 70,
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                          PlayerFilterPanel(
-                            key: _playerFilterPanelKey,
-                            onChange: (Map value) {
-                              playersStatus!.parame!.game = value["game"];
-                              playersStatus!.parame!.sortBy = value["sortBy"];
-                              playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
-                              playersStatus!.parame!.createTimeTo = value["createTimeTo"];
-                              playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
-                              playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
+                            Positioned(
+                              top: 0,
+                              bottom: 0,
+                              right: 0,
+                              child: PlayerFilterPanel(
+                                key: _playerFilterPanelKey,
+                                onChange: (Map value) {
+                                  playersStatus!.parame!.game = value["game"];
+                                  playersStatus!.parame!.sortBy = value["sortBy"];
+                                  playersStatus!.parame!.createTimeFrom = value["createTimeFrom"];
+                                  playersStatus!.parame!.createTimeTo = value["createTimeTo"];
+                                  playersStatus!.parame!.updateTimeFrom = value["updateTimeFrom"];
+                                  playersStatus!.parame!.updateTimeTo = value["updateTimeTo"];
 
-                              _onRefresh();
-                            },
-                          ),
-                        ],
+                                  _onRefresh();
+                                },
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       Divider(height: 1),
                     ],

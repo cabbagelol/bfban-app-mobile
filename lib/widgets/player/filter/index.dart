@@ -167,7 +167,6 @@ class PlayerFilterPanelState extends State<PlayerFilterPanel> {
     }
 
     return IconButton(
-      color: Colors.red,
       onPressed: () => _openPlayerFilter(1),
       icon: Icon(
         [Icons.filter_alt_outlined, Icons.filter_alt_outlined, Icons.filter_alt][status],

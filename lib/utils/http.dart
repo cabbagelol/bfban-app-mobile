@@ -1,6 +1,7 @@
 /// http请求
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
@@ -25,8 +26,8 @@ class Http extends ScaffoldState {
   static Dio dio = createInstance();
 
   /// default options
-  static const Duration CONNECT_TIEMOUT = Duration(seconds: 10);
-  static const Duration RECEIVE_TIMEOUT = Duration(seconds: 5);
+  static const Duration CONNECT_TIEMOUT = Duration(seconds: 20);
+  static const Duration RECEIVE_TIMEOUT = Duration(seconds: 10);
 
   /// http request methods
   static const String GET = 'get';
@@ -136,6 +137,66 @@ class Http extends ScaffoldState {
       }
     }
     return result;
+  }
+
+  static Future<Response> fetchJsonPData(
+    String url, {
+    String httpDioValue = "network_service_request",
+    HttpDioType httpDioType = HttpDioType.api,
+  }) async {
+    try {
+      final method = 'JSONP';
+      final dio = Dio();
+
+      String domain = "";
+      switch (httpDioType) {
+        case HttpDioType.api:
+          domain = httpDioValue.isEmpty ? "" : Config.apiHost[httpDioValue]!.url;
+          break;
+        case HttpDioType.none:
+        default:
+          domain = "";
+          break;
+      }
+
+      String path = "${domain.isEmpty ? "" : "$domain/"}$url?callback=run";
+
+      final response = await dio.get<String>(
+        path,
+        options: Options(responseType: ResponseType.plain), // 以文本形式接收响应
+      );
+
+      if (response.statusCode == 200) {
+        try {
+          final data = jsonDecode(response.data as String);
+
+          return Response(
+            data: data,
+            requestOptions: RequestOptions(path: path, method: method),
+          );
+        } catch (e) {
+          return Response(
+            statusCode: 404,
+            statusMessage: e.toString(),
+            requestOptions: RequestOptions(path: path, method: method),
+          );
+        }
+      } else {
+        return Response(
+          statusCode: 404,
+          statusMessage: '请求失败，状态码：${response.statusCode}',
+          requestOptions: RequestOptions(path: path, method: method),
+        );
+      }
+    } on DioException catch (e) {
+      return Response(
+        statusCode: 404,
+        statusMessage: e.toString(),
+        requestOptions: RequestOptions(),
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   static Dio createInstance() {

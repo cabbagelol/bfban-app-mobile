@@ -53,11 +53,13 @@ class IndexPage extends StatefulWidget {
   IndexPageState createState() => IndexPageState();
 }
 
-class IndexPageState extends State<IndexPage> {
+class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final ProviderUtil _providerUtil = ProviderUtil();
+
   // 玩家列表
-  final GlobalKey<PlayerListPageState>? playerListPage = GlobalKey<PlayerListPageState>();
+  final GlobalKey<PlayerListPageState> _playerListPage = GlobalKey<PlayerListPageState>();
 
   final GlobalKey<DragContainerState> _drawerWidget = GlobalKey<DragContainerState>();
 
@@ -81,19 +83,35 @@ class IndexPageState extends State<IndexPage> {
   void initState() {
     _listWidgetPage = [
       const HomePage(),
-      PlayerListPage(key: playerListPage),
+      PlayerListPage(key: _playerListPage),
       const UserCenterPage(),
     ];
     _onUserTokenExpired();
     _onNavInit();
 
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
   void deactivate() {
     _onNotNetwork();
     super.deactivate();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    if (state case AppLifecycleState.resumed) {
+      _providerUtil.ofChat(context).getLocalMessage();
+    }
   }
 
   @override
@@ -156,7 +174,9 @@ class IndexPageState extends State<IndexPage> {
 
   /// [Event]
   /// 首页控制器序列
-  void onHomePageIndexTap(int index) {
+  void _onHomePageIndexTap(int index) {
+    if (_currentPageIndex == index) return;
+
     setState(() {
       _currentPageIndex = index;
     });
@@ -486,7 +506,7 @@ class IndexPageState extends State<IndexPage> {
                       );
                     }).toList(),
                     currentIndex: _currentPageIndex,
-                    onTap: (int index) => onHomePageIndexTap(index),
+                    onTap: (int index) => _onHomePageIndexTap(index),
                   ),
                 );
               } else {

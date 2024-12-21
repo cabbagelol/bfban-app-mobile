@@ -51,7 +51,7 @@ class PackageProvider with ChangeNotifier {
   /// 初始
   Future init() async {
     // info: 由于getOnlinePackage在初始消耗大量时间，修改为Future.any 时代任意完成既可
-    await Future.any([getPackage(), getOnlinePackage()]);
+    await Future.any([getPackage(), getOnlinePackage()]).timeout(Duration(seconds: 4));
 
     notifyListeners();
     return true;
@@ -80,10 +80,9 @@ class PackageProvider with ChangeNotifier {
       package.loadOnline = true;
       notifyListeners();
 
-      result = await Http.request(
+      result = await Http.fetchJsonPData(
         "config/version.json",
         httpDioValue: "app_web_site",
-        method: Http.GET,
       );
 
       if (result.data.toString().length >= 0) {

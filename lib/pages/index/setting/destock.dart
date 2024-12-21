@@ -1,6 +1,8 @@
 /// 清理数据
 library;
 
+import 'dart:io';
+
 import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:bfban/utils/index.dart';
 
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_input/index.dart';
+import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -26,6 +29,8 @@ class DestockPageState extends State<DestockPage> {
   final TextEditingController _searchController = TextEditingController(text: "");
 
   final FileManagement _fileManagement = FileManagement();
+
+  final ProviderUtil _providerUtil = ProviderUtil();
 
   String destockEnvValue = "all";
 
@@ -82,6 +87,31 @@ class DestockPageState extends State<DestockPage> {
   }
 
   /// [Event]
+  /// 导出配置
+  _exportConfig() {
+    try {
+      String dirPath = _providerUtil.ofDir(context).currentDefaultSavePath;
+      List queue = [];
+
+      for (var i in _destockStatus.list!) {
+        if (i.check) {
+          queue.add(File('$dirPath/${i.fullName}-${DateTime.now().millisecondsSinceEpoch}.json').writeAsString(i.value));
+        }
+      }
+
+      EluiMessageComponent.success(context)(
+        child: Wrap(
+          spacing: 5,
+          children: [Icon(Icons.done), Text(dirPath)],
+        ),
+        duration: 5000,
+      );
+    } catch (E) {
+      EluiMessageComponent.success(context)(child: Text(E.toString()));
+    }
+  }
+
+  /// [Event]
   /// 删除勾选记录
   _removeSelectLocal() {
     // 全选
@@ -124,13 +154,6 @@ class DestockPageState extends State<DestockPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(FlutterI18n.translate(context, "app.setting.cleanManagement.title")),
-        actions: [
-          if (_destockStatus.list!.where((i) => i.check).isNotEmpty)
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () => _removeSelectLocal(),
-            ),
-        ],
         bottom: PreferredSize(
           preferredSize: Size(0, 50),
           child: Container(
@@ -266,37 +289,57 @@ class DestockPageState extends State<DestockPage> {
                             child: const Icon(Icons.delete),
                           ),
                         );
-
-                        return Row(
-                          children: [
-                            Checkbox(
-                              value: e.check,
-                              visualDensity: VisualDensity.compact,
-                              onChanged: (value) {
-                                setState(() {
-                                  e.check = value!;
-                                });
-                              },
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: SelectionArea(
-                                child: EluiCellComponent(
-                                  title: "${e.key}",
-                                  label: e.fullName,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            TextButton(
-                              onPressed: () => _removeLocal(e),
-                              child: const Icon(Icons.delete),
-                            ),
-                            const SizedBox(width: 5),
-                          ],
-                        );
                       },
                     ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        padding: EdgeInsets.zero,
+        height: 60,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Divider(height: 1),
+            Container(
+              padding: EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: selectAll,
+                    onChanged: (value) {
+                      setState(() {
+                        selectAll = value!;
+                        for (var i in _destockStatus.list!) {
+                          i.check = value;
+                        }
+                      });
+                    },
+                  ),
+                  VerticalDivider(),
+                  Flexible(
+                    flex: 1,
+                    child: SizedBox(
+                      height: 40,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          IconButton.filled(
+                            icon: const Icon(Icons.delete),
+                            onPressed: _destockStatus.list!.where((i) => i.check).isNotEmpty ? () => _removeSelectLocal() : null,
+                          ),
+                          SizedBox(width: 5),
+                          IconButton.filled(
+                            icon: const Icon(Icons.upload_file_sharp),
+                            onPressed: _destockStatus.list!.where((i) => i.check).isNotEmpty ? () => _exportConfig() : null,
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),

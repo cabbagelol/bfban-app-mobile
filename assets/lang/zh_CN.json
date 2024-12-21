@@ -59,7 +59,8 @@
         "report": "举报",
         "signup": "新用户"
       },
-      "paging": "第{num}页"
+      "paging": "第{num}页",
+      "returnAppHint": "欢迎回来,你不在的这段时间新增{count}条记录"
     },
     "splash": {
       "account": "加载账户信息",

@@ -1,3 +1,4 @@
+import 'package:bfban/pages/login/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,8 @@ class LoginPanelPage extends StatefulWidget {
 class LoginPanelState extends State<LoginPanelPage> {
   final UrlUtil _urlUtil = UrlUtil();
 
+  final ProviderUtil _providerUtil = ProviderUtil();
+
   bool isShowWaveBorder = true;
 
   /// [Event]
@@ -33,13 +36,24 @@ class LoginPanelState extends State<LoginPanelPage> {
       isShowWaveBorder = true;
     });
 
-    _urlUtil.opEnPage(context, '/signin', transition: TransitionType.cupertinoFullScreenDialog).then((value) {
-      if (ProviderUtil().ofUser(context).isLogin) {
+    var filterModal = showModalBottomSheet<void>(
+      context: context,
+      isDismissible: false,
+      showDragHandle: true,
+      scrollControlDisabledMaxHeightRatio: .8,
+      builder: (context) {
+        return SigninPage();
+      },
+    );
+
+    filterModal.then((fileName) {
+      if (_providerUtil.ofUser(context).isLogin) {
         setState(() {
           _urlUtil.popPage(context);
           isShowWaveBorder = true;
         });
       }
+      return fileName;
     });
   }
 

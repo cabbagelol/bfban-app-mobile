@@ -39,15 +39,15 @@ class LogProvider with ChangeNotifier {
     }
 
     // Logs
-    if (Config.env == Env.PROD) {
-      FlutterError.onError = (FlutterErrorDetails details) {
-        _logsList.add(LogItemData(
-          time: DateTime.now(),
-          error: details.exception,
-          stackTrace: details.stack!,
-        ));
-        logger.i(details.context, stackTrace: details.stack);
-      };
-    }
+    // if (Config.env == Env.PROD) {
+    //   FlutterError.onError = (FlutterErrorDetails details) {
+    //     _logsList.add(LogItemData(
+    //       time: DateTime.now(),
+    //       error: details.exception,
+    //       stackTrace: details.stack!,
+    //     ));
+    //     logger.i(details.context, stackTrace: details.stack);
+    //   };
+    // }
   }
 }

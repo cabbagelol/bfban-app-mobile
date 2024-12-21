@@ -210,7 +210,7 @@
         "describe": "Control program home screen display page"
       },
       "cleanManagement": {
-        "title": "clean up",
+        "title": "destock",
         "describe": "Delete local data, and proceed with caution"
       },
       "appInfo": {

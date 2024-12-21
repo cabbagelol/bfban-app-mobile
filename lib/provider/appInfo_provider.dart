@@ -111,10 +111,9 @@ class NetwrokConf with ChangeNotifier {
   /// [Response]
   /// 获取远程配置
   Future getRemoteConfiguration(String fileName) async {
-    Response result = await Http.request(
+    Response result = await Http.fetchJsonPData(
       "config/$fileName.json",
       httpDioValue: "web_site",
-      method: Http.GET,
     );
 
     switch (fileName) {

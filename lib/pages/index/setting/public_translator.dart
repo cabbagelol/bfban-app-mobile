@@ -20,7 +20,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
   PublicApiTranslationProvider? publicApiTranslationProvider;
 
   // 镜像
-  List<PublicTranslatorItem> mirror_trList = [];
+  List<PublicTranslatorItem> mirrorTrList = [];
 
   // 所有翻译API选项
   List<PublicTranslatorItem> trList = [
@@ -41,7 +41,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
   void onReady() async {
     String selectActivate = await publicApiTranslationProvider!.getSelectActivate();
     setState(() {
-      mirror_trList = List.from(trList);
+      mirrorTrList = List.from(trList);
     });
 
     setState(() {
@@ -68,7 +68,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
     item.index = item.data!.type.index;
 
     setState(() {
-      if (item.data!.type.index != 0) mirror_trList.removeAt(trList.indexWhere((element) => element.type.index == item.data!.type.index));
+      if (item.data!.type.index != 0) mirrorTrList.removeAt(trList.indexWhere((element) => element.type.index == item.data!.type.index));
       publicApiTranslationProvider!.userTrList.add(item);
     });
   }
@@ -77,7 +77,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
   /// 删除
   void _onDeleItem(index, e) {
     setState(() {
-      mirror_trList.add(e);
+      mirrorTrList.add(e);
       publicApiTranslationProvider!.userTrList.removeAt(index);
     });
   }
@@ -90,14 +90,6 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
           appBar: AppBar(
             title: Text(FlutterI18n.translate(context, "app.setting.publicTranslator.title")),
             actions: [
-              IconButton(
-                padding: const EdgeInsets.all(16),
-                onPressed: () {
-                  _onAddItem();
-                },
-                icon: const Icon(Icons.add),
-              ),
-              const VerticalDivider(),
               IconButton(
                 padding: const EdgeInsets.all(16),
                 onPressed: () {
@@ -257,6 +249,7 @@ class _PublicTranslatorPageState extends State<PublicTranslatorPage> {
               ),
             ],
           ),
+          floatingActionButton: FloatingActionButton(onPressed: () => _onAddItem(), child: const Icon(Icons.add)),
         );
       },
     );
