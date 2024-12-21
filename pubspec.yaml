@@ -122,18 +122,20 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
   # 启动屏幕 https://pub.flutter-io.cn/packages/flutter_native_splash
-  flutter_native_splash: ^2.2.10+1
+  flutter_native_splash: ^2.4.3
   build_runner: ^2.4.6
 
 flutter_native_splash:
   color: "#f2f2f2"
-  color_dark: "#000"
+  color_dark: "#000000"
+  image: assets/splash/ic_launcher.png
   branding: assets/splash/ic_launcher.png
   branding_mode: center
   android_gravity: center
   fullscreen: true
   android: true
   ios: false
+  web: false
 
 flutter:
   uses-material-design: true

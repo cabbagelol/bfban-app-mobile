@@ -15,7 +15,6 @@ import 'package:flutter_i18n/flutter_i18n_delegate.dart';
 import 'package:bfban/component/_lang/delegate_custom.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:sentry/sentry.dart';
 import 'package:provider/provider.dart';
 
 import 'package:bfban/router/router.dart';
