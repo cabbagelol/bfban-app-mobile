@@ -26,9 +26,9 @@
 
 #### Q: 使用BFBAN APP登录账户为何网页版账户掉线？
 
-bfban不支持多平台登录，使用app登录账户将重置凭证，导致其他平台失效
-
-(重要) 在8月20日BFBAN已支持多端，应用也在0.2.6之后做适配
+bfban不支持多平台登录，使用app登录账户将重置凭证，导致其他平台失效(
+重要)
+在8月20日BFBAN已支持多端，应用也在0.2.6之后做适配
 
 #### Q: BFBAN助手会不会盗窃我资料或泄露我隐私？
 
@@ -60,15 +60,8 @@ flutter_plugin_plus_elui (>
 ~~
 flutter_rich_html~~ (<
 0.1.10,
-已丢弃): https://github.com/cabbagelol/rich_html-d20822
-
-(内置app相关配置接口来源)
-
--
-App网站:
-  - https://github.com/hll-gun-calculator/website
-  -
-  ~~https://github.com/cabbagelol/bfbanAppWebsite~~
+已丢弃): https://github.com/cabbagelol/rich_html-d20822 (
+内置app相关配置接口来源)
 
 ## 截图
 
@@ -91,42 +84,41 @@ App网站:
 ### 1. 默认打包
 
 ```shell
-   flutter build --release ./lib/main.prod.dart
+   flutter build --release ./lib/main.prod.dart --build-name 0.0.1 --build-number 1
 ```
 
 ### 2. 使用Distribute(v2)
 
-脚本基于Distribute编写的脚本,
-依照提示选择打包
+>
+使用ide内置的终端来配置使用
+
+基于Distribute编写的shell脚本,
+运行后依照提示选择打包
 
 -
 简单化，自动计算版本
 -
-需要将此脚本的工作目录设置为
-`/`
-，而不是
-`/script/`
+需要将此脚本的工作目录设置为'/'
+，而不是'/script/'
 里运行
 
-```cmd   
-  # ./script/build-v2.sh
+```shell   
+  sh ./script/build-v2.sh
 ```
 
-### 3.
-~~
-使用sh脚本(
-v1)~~
+### 3. 使用sh脚本(v1)
 
-注意此方法打包，需要修改
-`pubspec.yaml`
-内的version值，将
-`0.0.1+1`
-改为
-`0.0.1`,
+>
+使用ide内置的终端来配置使用
+
+注意此方法打包，需要修改'pubspec.yaml'
+内的'version'
+值，将'0.0.1+1'
+改为'0.0.1',
 再由脚本提示输入build-number
 
-```cmd
- # ./script/build-v1.sh
+```shell
+ sh ./script/build-v1.sh
 ```
 
 ## 分支介绍
@@ -135,6 +127,7 @@ v1)~~
 - weex 旧方案实现(未完成)
 
 # 捐助
+
 此捐助是用于app开发者费用，Apple与Google总计￥853.69:
 
 感谢所有捐助者，排名不分前后;

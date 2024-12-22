@@ -1,8 +1,8 @@
 <component
     name="ProjectRunConfigurationManager">
     <configuration
-        name="Prod"
         default="false"
+        name="Prod"
         factoryName="Flutter"
         type="FlutterRunConfigurationType">
         <option
