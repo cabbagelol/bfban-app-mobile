@@ -1,14 +1,12 @@
 #!/bin/bash
 
-# 配置文件路径
-config_file="version.json"
-input_platform="2"
-input_version=0
+PATH="$PATH":"$HOME/.pub-cache/bin"
+CONFIG_FILE="version.json"
 
 # Get Version
 get_version() {
   local platform="$1"
-  local input_version=$(jq -r ".[\"$platform\"].version" "$config_file")
+  local input_version=$(jq -r ".[\"$platform\"].number" "$CONFIG_FILE")
 
   # 如果配置文件不存在或版本号为空，则初始化为1
   if [[ -z "$input_version" ]]; then
@@ -25,7 +23,7 @@ set_version() {
   local build_time=$(date +%s)
 
   jq --argjson platform "\"$platform\"" --argjson version "$version" --argjson build_time "$build_time" \
-          '(.["'$platform'"] = {version: $version, buildTime: $build_time})' "$config_file" > temp.json && mv temp.json "$config_file"
+          '(.["'$platform'"] = {number: $version, buildTime: $build_time})' "$CONFIG_FILE" > temp.json && mv temp.json "$CONFIG_FILE"
 }
 
 options=("apk(Android)" "app-bundle(Google Play)" "ipa(Ios Store)")
@@ -35,16 +33,19 @@ for ((i=0; i<${#options[@]}; i++)); do
 done
 
 read -p "Build Platform(1/2/3..): " input_platform
-read -p "Build Number: " input_version
+read -p "Is Custom build-number (y/n): " is_custom_build_number
+if [[ $is_custom_build_number == 'y' ]]; then
+    read -p "Build Number: " input_version
+fi
+read -p "Is Skip Clean (y/n): " is_skip_clean
 if [[ $input_platform == 3 ]];
   then
-    read -p "Is Reset Version (y/n): " input_is_reset_version_main
+    read -p "Is Reset Build Number (y/n): " input_is_reset_version_main
     echo "(hint): 当大版本更新时，将需要重置build-number"
 fi
-
 if [[ -z $input_platform ]];
   then
-    default_platform=2
+    default_platform=1
     echo "            -> Default Platform ($default_platform)"
     platform=$default_platform
   else
@@ -64,23 +65,29 @@ if [[ $input_is_reset_version_main == 'y' ]];
         version=$(get_version "$platform")
         echo "            -> Auto Version ($version)"
       else
+        # 自定义build number
         version=$input_version
+        echo "            -> Custom Version ($version)"
     fi
 fi
 
 echo "===================== start build ====================="
 
-# 构建命令
+# Build Main
+echo "正在构建 ${options[$($platform - 1)]} ..."
+skip_clean=''
+if [[ $is_skip_clean == 'y' ]]; then
+  skip_clean='--skip-clean'
+fi
 case "$platform" in
   1)
-    echo "正在构建$platform..."
-    flutter build apk lib/main.prod.dart --release --build-number "$version"
+    flutter_distributor release --name android $skip_clean
     ;;
   2)
-    flutter build appbundle lib/main.prod.dart --release --build-number "$version" --target-platform android-arm,android-arm64,android-x64
+    flutter_distributor release --name android $skip_clean
     ;;
   3)
-    flutter build ipa lib/main.prod.dart --release --build-number "$version"
+    flutter_distributor release --name ios $skip_clean
     ;;
   *)
     echo "不支持的平台: $platform"
@@ -92,10 +99,11 @@ echo "===================== end build ====================="
 
 # 是否递增版本号
 if [[ $input_is_reset_version_main == 'n' ]]; then
-    new_version=$((version + 1))
+    new_number_version=$((version + 1))
   else
-    new_version=$version
+    new_number_version=$version
 fi
-set_version "$platform" "$new_version"
-echo "Updata build-number: $new_version"
+set_version "$platform" "$new_number_version"
+
+echo "Updata next build-number: $new_number_version"
 echo "END 👋🏻👋🏻"

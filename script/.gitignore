@@ -1,0 +1,8 @@
+*.p8
+*.ipa
+*.apk
+*.hmap
+*.aab
+
+./config.json
+/bfban-assistant-app_GooglePlay.json

@@ -61,3 +61,7 @@ app.*.map.json
 ./lib/main.*.dart
 ./lib/main.dev.dart
 ./lib/main.prod.dart
+
+# Build Script
+distribute_options.yaml
+/installation

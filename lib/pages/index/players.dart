@@ -430,7 +430,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       begin: Alignment.centerLeft,
-                                      end: Alignment.bottomRight,
+                                      end: Alignment.centerRight,
                                       colors: [
                                         Colors.transparent,
                                         Theme.of(context).primaryColor.withOpacity(0),

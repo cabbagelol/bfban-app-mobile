@@ -798,6 +798,9 @@ class MediaPageState extends State<MediaPage> {
                                                 // 云端不支持删除
                                                 onTapDelete: null,
                                                 onTapOpenFile: () {
+                                                  _onEnExternalFile(context, i);
+                                                },
+                                                onTapViewFile: () {
                                                   _onEnImageInfo(context, i);
                                                 },
                                                 onTapFileInfo: () {

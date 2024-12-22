@@ -1,0 +1,14 @@
+<component
+    name="ProjectRunConfigurationManager">
+    <configuration
+        name="Prod"
+        default="false"
+        factoryName="Flutter"
+        type="FlutterRunConfigurationType">
+        <option
+            name="filePath"
+            value="$PROJECT_DIR$/lib/main.prod.dart" />
+        <method
+            v="2" />
+    </configuration>
+</component>

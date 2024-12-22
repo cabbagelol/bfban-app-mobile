@@ -44,7 +44,7 @@
       }
     },
     "home": {
-      "scancode": "Scan Code",
+      "scancode": "Shoot",
       "takeLook": "Take a look",
       "needAccount": "This function requires an account, please log in first",
       "tabs": {

@@ -1,7 +1,7 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.2.13'
+version: '0.2.13+51'
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -10,8 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   flutter_localizations:
     sdk: flutter
+
+  community_material_icon: ^5.9.55
+
   cupertino_icons: ^1.0.2
 
   # 时间选择器 https://pub.dev/packages/syncfusion_flutter_datepicker
@@ -119,11 +123,16 @@ dev_dependencies:
     sdk: flutter
 
   logger: ^2.4.0
+
   flutter_lints: ^5.0.0
 
   # 启动屏幕 https://pub.flutter-io.cn/packages/flutter_native_splash
   flutter_native_splash: ^2.4.3
+
   build_runner: ^2.4.6
+
+  # 打包工具 https://pub.flutter-io.cn/packages/flutter_distributor
+  flutter_distributor: ^0.0.2
 
 flutter_native_splash:
   color: "#f2f2f2"

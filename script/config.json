@@ -1,0 +1,13 @@
+{
+  "ios_store": {
+    "ipaPath": "./BFBAN.ipa",
+    "username": "nickmiku@foxmail.com",
+    "password": "ZSE57b89906x",
+    "apiKey": "/Users/cabbagelol/Code/bfban/bfban_app/script/AuthKey_T38W734AK9.p8",
+    "apiIssuer": "3ca124e7-eb3f-47a6-b21b-c288433feec4"
+  },
+  "google_play": {
+    "apkPath": "",
+    "arrPath": ""
+  }
+}

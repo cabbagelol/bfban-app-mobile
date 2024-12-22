@@ -319,7 +319,6 @@ class SigninPageState extends State<SigninPage> {
                               ),
                             ),
                             maxLength: 4,
-                            autofillHints: [AutofillHints.username],
                             textInputAction: TextInputAction.done,
                             keyboardType: TextInputType.visiblePassword,
                             onFieldSubmitted: (e) => _onLogin(),

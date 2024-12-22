@@ -88,11 +88,46 @@ App网站:
 
 ## 构建
 
-运行
-```
-   flutter build --release
+### 1. 默认打包
+
+```shell
+   flutter build --release ./lib/main.prod.dart
 ```
 
+### 2. 使用Distribute(v2)
+
+脚本基于Distribute编写的脚本,
+依照提示选择打包
+
+-
+简单化，自动计算版本
+-
+需要将此脚本的工作目录设置为
+`/`
+，而不是
+`/script/`
+里运行
+
+```cmd   
+  # ./script/build-v2.sh
+```
+
+### 3.
+~~
+使用sh脚本(
+v1)~~
+
+注意此方法打包，需要修改
+`pubspec.yaml`
+内的version值，将
+`0.0.1+1`
+改为
+`0.0.1`,
+再由脚本提示输入build-number
+
+```cmd
+ # ./script/build-v1.sh
+```
 
 ## 分支介绍
 
