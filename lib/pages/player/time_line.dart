@@ -81,6 +81,7 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
     if (result.data["success"] == 1) {
       Map d = result.data["data"];
 
+      if (!mounted) result;
       setState(() {
         // 追加数据预期状态
         if (d["result"].isEmpty || d["result"].length <= playerTimelineStatus.parame.limit) {

@@ -50,7 +50,7 @@ class _HtmlImageState extends State<HtmlImage> {
   @override
   Widget build(BuildContext context) {
     return ExtendedImage.network(
-      widget.src!,
+      widget.src,
       fit: BoxFit.fitWidth,
       mode: ExtendedImageMode.editor,
       filterQuality: FilterQuality.low,

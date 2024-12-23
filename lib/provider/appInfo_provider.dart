@@ -11,13 +11,14 @@ import '../constants/api.dart';
 import '../utils/index.dart';
 
 class AppInfoProvider with ChangeNotifier {
-  NetwrokConf conf = NetwrokConf();
-  AppInfoNetwrokStatus connectivity = AppInfoNetwrokStatus();
+  NetworkConf conf = NetworkConf();
+  AppInfoNetworkStatus connectivity = AppInfoNetworkStatus();
   AppUniLinks uniLinks = AppUniLinks();
+  AppRoute appRoute = AppRoute();
 }
 
 // 应用网络状态
-class AppInfoNetwrokStatus with ChangeNotifier {
+class AppInfoNetworkStatus with ChangeNotifier {
   final Connectivity _connectivity = Connectivity();
 
   ConnectivityResult? _connectivityResult;
@@ -73,7 +74,7 @@ class AppInfoNetwrokStatus with ChangeNotifier {
   }
 }
 
-class NetwrokConf with ChangeNotifier {
+class NetworkConf with ChangeNotifier {
   String? packageName = "netwrok_conf";
 
   // 从远程服务获取配置
@@ -237,5 +238,17 @@ class AppUniLinks with ChangeNotifier {
           break;
       }
     }
+  }
+}
+
+// 应用路由
+class AppRoute extends ChangeNotifier {
+  String? _currentRoute;
+
+  String get currentRoute => _currentRoute!;
+
+  void setCurrentRoute(String route) {
+    _currentRoute = route;
+    notifyListeners();
   }
 }

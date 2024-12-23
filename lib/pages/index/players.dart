@@ -4,12 +4,14 @@ library;
 import 'dart:ui';
 
 import 'package:easy_refresh/easy_refresh.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../router/router.dart';
 import '/component/_refresh/index.dart';
 import '/component/_empty/index.dart';
 import '/data/index.dart';
@@ -39,6 +41,9 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
 
   // TAB
   late TabController? _tabController;
+
+  // Home Page Index
+  late int homePageIndex = 0;
 
   // 列表视图控制器
   final ScrollController _scrollController = ScrollController();
@@ -98,8 +103,8 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     switch (state) {
-      case AppLifecycleState.resumed: // 应用从后台返回
-        if (playersStatus!.list!.isEmpty || homePlayerStatus['status'] != playersStatus!.parame!.status! || homePlayerStatus['finallyPlayerID'] <= -1) return;
+      case AppLifecycleState.resumed:
+        if (homePageIndex != 1 || playersStatus!.list!.isEmpty || homePlayerStatus['status'] != playersStatus!.parame!.status! || homePlayerStatus['finallyPlayerID'] <= -1) return;
 
         await Future.wait([getPlayerList(), getPlayerStatistics()]);
 

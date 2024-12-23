@@ -147,10 +147,22 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
 
     int localNavIndex = await _storageAccount.getConfiguration("userHomeNavPageIndex", 1);
     if (localNavIndex != _currentPageIndex) {
-      setState(() {
-        _currentPageIndex = localNavIndex;
-      });
+      _changePageIndex(localNavIndex);
     }
+  }
+
+  void _changePageIndex(int? index) {
+    if (index == null || _playerListPage.currentState == null) return;
+
+    setState(() {
+      _currentPageIndex = index;
+    });
+
+    // 更新内部
+    if (!_playerListPage.currentState!.mounted) return;
+    _playerListPage.currentState!.setState(() {
+      _playerListPage.currentState!.homePageIndex = index;
+    });
   }
 
   /// [Event]
@@ -176,10 +188,7 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   /// 首页控制器序列
   void _onHomePageIndexTap(int index) {
     if (_currentPageIndex == index) return;
-
-    setState(() {
-      _currentPageIndex = index;
-    });
+    _changePageIndex(index);
   }
 
   /// [Event]
@@ -614,9 +623,7 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
                     children: [
                       NavigationRail(
                         onDestinationSelected: (value) {
-                          setState(() {
-                            _currentPageIndex = value;
-                          });
+                          _changePageIndex(value);
                         },
                         labelType: NavigationRailLabelType.none,
                         backgroundColor: Theme.of(context).bottomAppBarTheme.color,

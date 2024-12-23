@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:bfban/utils/index.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:fluro/fluro.dart';
@@ -10,6 +11,8 @@ import 'package:bfban/router/router.dart';
 import '../provider/appBuildContent.dart';
 
 class UrlUtil {
+  final ProviderUtil _providerUtil = ProviderUtil();
+
   /// default mode
   LaunchMode get defaultMode {
     switch (Platform.operatingSystem) {
@@ -85,6 +88,8 @@ class UrlUtil {
   }) async {
     if (url.isEmpty && url == "/" && context == null) return;
 
+    _providerUtil.ofApp(AppStatus.context!).appRoute.setCurrentRoute(url);
+
     return await Routes.router.navigateTo(
       context,
       url,
@@ -104,6 +109,8 @@ class UrlUtil {
   }) async {
     try {
       if (url.isEmpty) return;
+
+      _providerUtil.ofApp(AppStatus.context!).appRoute.setCurrentRoute(url);
 
       return await Routes.router.navigateTo(
         AppStatus.context!,
