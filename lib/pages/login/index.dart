@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:bfban/utils/index.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../provider/userinfo_provider.dart';

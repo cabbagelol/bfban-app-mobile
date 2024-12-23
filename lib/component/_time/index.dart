@@ -6,15 +6,15 @@ import '../../utils/index.dart';
 enum TimeWidgetType { convert, full }
 
 class TimeWidget extends StatefulWidget {
-  String data;
-  TimeWidgetType type;
-  String? timeType;
-  TextStyle? style;
-  TextOverflow? overflow;
-  int? maxLines;
-  TextAlign? textAlign;
+  final String data;
+  final TimeWidgetType type;
+  final String? timeType;
+  final TextStyle? style;
+  final TextOverflow? overflow;
+  final int? maxLines;
+  final TextAlign? textAlign;
 
-  TimeWidget({
+  const TimeWidget({
     super.key,
     required this.data,
     this.timeType = "Y_D_M",
@@ -75,7 +75,7 @@ class _TimeWidgetState extends State<TimeWidget> {
         break;
       case TimeWidgetType.full:
       default:
-      return this.time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
+        return this.time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
     }
     return this.time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
   }
@@ -84,10 +84,10 @@ class _TimeWidgetState extends State<TimeWidget> {
   Widget build(BuildContext context) {
     return Text(
       getFriendlyDescriptionTime(widget.data, typeTime: widget.timeType),
-      style: widget.style ??= null,
-      overflow: widget.overflow ??= null,
-      maxLines: widget.maxLines ??= null,
-      textAlign: widget.textAlign ??= null,
+      style: widget.style,
+      overflow: widget.overflow,
+      maxLines: widget.maxLines,
+      textAlign: widget.textAlign,
     );
   }
 }

@@ -1,8 +1,6 @@
 /// 用户登录
 library;
 
-import 'dart:ui' as ui;
-
 import 'package:bfban/component/_captcha/index.dart';
 import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/constants/api.dart';

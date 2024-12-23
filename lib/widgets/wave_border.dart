@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 class WaveBorderWidget extends StatefulWidget {
   final Widget? child; // 子控件
-
   final int count; // 波纹圈数
   final double? width; // 波纹直径
   final double? maxWidth; // 波纹扩散后最大直径
@@ -35,10 +34,11 @@ class WaveBorderState extends State<WaveBorderWidget> with TickerProviderStateMi
     super.initState();
 
     // 配置动画和子控件
-    configAnimation();
+    _initConfigAnimation();
   }
 
-  configAnimation() {
+  /// [Event]
+  void _initConfigAnimation() {
     for (int i = 0; i < widget.count; i++) {
       // 动画控制器
       var controller = AnimationController(

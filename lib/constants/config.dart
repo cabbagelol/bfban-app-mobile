@@ -7,13 +7,13 @@ class AppConfig extends InheritedWidget {
   final String apiBaseUrl;
 
   const AppConfig({
-    Key? key,
+    super.key,
     this.debug = false,
     required this.appName,
     required this.flavorName,
     required this.apiBaseUrl,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   static AppConfig? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppConfig>();

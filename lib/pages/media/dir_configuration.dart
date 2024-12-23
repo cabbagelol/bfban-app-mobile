@@ -1,7 +1,6 @@
 import 'package:bfban/provider/dir_provider.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';

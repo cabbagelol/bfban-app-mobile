@@ -2,21 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../utils/index.dart';
-import 'basic_card_types.dart';
+import 'base_card.dart';
+import 'basic_timeline_types.dart';
 
-class HistoryNameCard extends StatelessWidget {
+class HistoryNameCard extends StatelessWidget implements BaseCardStatelessWidget {
   // 单条数据
+  @override
   late Map data;
 
   // 数据数量
+  @override
   late num maxDataCount;
 
   // 位置
+  @override
   late int index = 0;
 
   HistoryNameCard({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
+  @override
+  HistoryNameCard init({required Map data, required num maxDataCount, required int index}) {
+    this.data = data;
+    this.maxDataCount = maxDataCount;
+    this.index = index;
+    return this;
+  }
 
   @override
   Widget build(BuildContext context) {

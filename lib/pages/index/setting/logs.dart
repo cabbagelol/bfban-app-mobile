@@ -4,7 +4,6 @@ import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_empty/index.dart';
 import 'package:bfban/component/_html/htmlWidget.dart';
 import 'package:bfban/component/_loading/index.dart';
-import 'package:bfban/constants/api.dart';
 import 'package:bfban/provider/dir_provider.dart';
 import 'package:bfban/provider/log_provider.dart';
 import 'package:flutter/material.dart';

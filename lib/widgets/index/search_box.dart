@@ -7,7 +7,6 @@ import 'package:fluro/fluro.dart';
 
 import 'package:bfban/router/router.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-import 'package:flutter_i18n/widgets/I18nText.dart';
 
 enum TitleSearchTheme {
   white,

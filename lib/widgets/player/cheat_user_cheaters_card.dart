@@ -4,20 +4,24 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
-import 'basic_card_types.dart';
+import 'base_card.dart';
+import 'basic_timeline_types.dart';
 import 'basic_quote_card.dart';
 
 /// 回复
-class CheatUserCheatersCard extends StatelessWidget {
+class CheatUserCheatersCard extends StatelessWidget implements BaseCardStatelessWidget {
   final GlobalKey<TimeLineBaseCardState> _timeLineBaseCardKey = GlobalKey<TimeLineBaseCardState>();
 
   // 单条数据
+  @override
   late Map data;
 
   // 数据数量
+  @override
   late num maxDataCount;
 
   // 位置
+  @override
   late int index = 0;
 
   final Function onReplySucceed;
@@ -25,9 +29,17 @@ class CheatUserCheatersCard extends StatelessWidget {
   final CardUtil _detailApi = CardUtil();
 
   CheatUserCheatersCard({
-    Key? key,
+    super.key,
     required this.onReplySucceed,
-  }) : super(key: key);
+  });
+
+  @override
+  CheatUserCheatersCard init({required Map data, required num maxDataCount, required int index}) {
+    this.data = data;
+    this.maxDataCount = maxDataCount;
+    this.index = index;
+    return this;
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -43,7 +43,7 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
 
   // 地址后缀内容
   String get appBarTitle {
-    Uri uri = Uri.parse(widget.imageUrl!);
+    Uri uri = Uri.parse(widget.imageUrl);
     return uri.pathSegments[uri.pathSegments.length - 1].toString();
   }
 

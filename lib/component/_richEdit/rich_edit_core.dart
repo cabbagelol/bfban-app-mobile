@@ -44,7 +44,7 @@ class RichEditCoreState extends State<RichEditCore> {
 
   @override
   void didChangeDependencies() {
-    String initialText = widget.data.toString().replaceAll("<br>", "\n") ?? "";
+    String initialText = widget.data.toString().replaceAll("<br>", "\n");
     controller = HtmlEditorController(
       processNewLineAsBr: false,
       processOutputHtml: true,
@@ -129,7 +129,8 @@ class RichEditCoreState extends State<RichEditCore> {
       final formKey = GlobalKey<FormState>();
       var openNewTab = false;
 
-      Future<void> filterModal = showModalBottomSheet<void>(
+      if (!mounted) return;
+      showModalBottomSheet<void>(
         context: context,
         useSafeArea: true,
         isDismissible: true,

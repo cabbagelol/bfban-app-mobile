@@ -9,7 +9,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/appBuildContent.dart';
-import '../provider/log_provider.dart';
 import '../provider/package_provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -84,8 +83,7 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
   /// [Event]
   /// AppUniLink
   Future _initLog() async {
-    LogProvider app = _providerUtil.ofLog(context).init();
-    return true;
+    return await _providerUtil.ofLog(context).init();
   }
 
   /// [Event]

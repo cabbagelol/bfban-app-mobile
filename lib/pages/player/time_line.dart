@@ -259,37 +259,42 @@ class TimeLineState extends State<TimeLine> with AutomaticKeepAliveClientMixin {
                         // 回复
                         return CheatUserCheatersCard(
                           onReplySucceed: _onReplySucceed,
-                        )
-                          ..maxDataCount = maxDataCount
-                          ..data = timeLineItem
-                          ..index = index + 1;
+                        ).init(
+                          data: timeLineItem,
+                          maxDataCount: maxDataCount,
+                          index: index + 1,
+                        );
                       case "report":
                         // 举报卡片
                         return CheatReportsCard(
                           onReplySucceed: _onReplySucceed,
-                        )
-                          ..maxDataCount = maxDataCount
-                          ..data = timeLineItem
-                          ..index = index + 1;
+                        ).init(
+                          data: timeLineItem,
+                          maxDataCount: maxDataCount,
+                          index: index + 1,
+                        );
                       case "judgement":
                         // 举报
-                        return JudgementCard()
-                          ..maxDataCount = maxDataCount
-                          ..data = timeLineItem
-                          ..index = index + 1;
+                        return JudgementCard().init(
+                          data: timeLineItem,
+                          maxDataCount: maxDataCount,
+                          index: index + 1,
+                        );
                       case "banAppeal":
                         // 申诉
                         return AppealCard(
                           onReplySucceed: _onReplySucceed,
-                        )
-                          ..maxDataCount = maxDataCount
-                          ..data = timeLineItem
-                          ..index = index + 1;
+                        ).init(
+                          data: timeLineItem,
+                          maxDataCount: maxDataCount,
+                          index: index + 1,
+                        );
                       case "historyUsername":
-                        return HistoryNameCard()
-                          ..maxDataCount = maxDataCount
-                          ..data = timeLineItem
-                          ..index = index + 1;
+                        return HistoryNameCard().init(
+                          data: timeLineItem,
+                          maxDataCount: maxDataCount,
+                          index: index + 1,
+                        );
                     }
                   }
 

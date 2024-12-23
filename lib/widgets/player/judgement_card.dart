@@ -5,29 +5,41 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
+import 'base_card.dart';
 import 'basic_quote_card.dart';
-import 'basic_card_types.dart';
+import 'basic_timeline_types.dart';
 
 /// 裁判
-class JudgementCard extends StatelessWidget {
+class JudgementCard extends StatelessWidget implements BaseCardStatelessWidget {
   final GlobalKey<TimeLineBaseCardState> _timeLineBaseCardKey = GlobalKey<TimeLineBaseCardState>();
 
   final Util _util = Util();
 
   // 单条数据
+  @override
   late Map data;
 
   // 数据数量
+  @override
   late num maxDataCount;
 
   // 位置
+  @override
   late int index = 0;
 
   final CardUtil _detailApi = CardUtil();
 
   JudgementCard({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
+
+  @override
+  JudgementCard init({required Map data, required num maxDataCount, required int index}) {
+    this.data = data;
+    this.maxDataCount = maxDataCount;
+    this.index = index;
+    return this;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +48,7 @@ class JudgementCard extends StatelessWidget {
       type: TimeLineItemType.judgement,
       isShowLine: maxDataCount > 1 && index < maxDataCount,
       header: [
-        // 类型
+        /// 类型
         Text.rich(
           TextSpan(
             style: const TextStyle(fontSize: 16, height: 1.5),

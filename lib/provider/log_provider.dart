@@ -1,4 +1,3 @@
-import 'package:bfban/utils/logger.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sentry/sentry.dart';
 

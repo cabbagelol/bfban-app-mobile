@@ -8,17 +8,15 @@ class GameTypeRadioWidget extends StatelessWidget {
   final GestureTapCallback? onTap;
 
   const GameTypeRadioWidget({
-    Key? key,
+    super.key,
     this.child,
     this.index = false,
     this.errorHint = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    ChipTheme.of(context).color;
-
     return GestureDetector(
       onTap: onTap,
       child: Card(

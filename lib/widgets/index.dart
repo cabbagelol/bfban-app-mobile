@@ -1,7 +1,7 @@
 export 'photo.dart';
 
 // S detail
-export 'player/basic_card_types.dart';
+export 'player/basic_timeline_types.dart';
 // E detail
 
 // S index

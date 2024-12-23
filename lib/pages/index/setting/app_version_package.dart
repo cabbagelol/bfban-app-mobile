@@ -179,7 +179,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                         style: TextStyle(
                           fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
                         ),
-                        TextSpan(text: data.info!.appName ?? 'N/A'),
+                        TextSpan(text: data.info!.appName),
                       ),
                     ),
                     Divider(indent: 8, height: 1),
@@ -189,7 +189,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                         style: TextStyle(
                           fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
                         ),
-                        TextSpan(text: data.info!.packageName ?? 'N/A'),
+                        TextSpan(text: data.info!.packageName),
                       ),
                     ),
                     Divider(indent: 8, height: 1),
@@ -224,7 +224,7 @@ class AppVersionPackagePageState extends State<AppVersionPackagePage> {
                           style: TextStyle(
                             fontSize: Theme.of(context).textTheme.titleMedium!.fontSize!,
                           ),
-                          TextSpan(text: data.info!.toString() ?? 'N/A'),
+                          TextSpan(text: data.info!.toString()),
                         ),
                       ),
                     ),

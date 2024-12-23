@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bfban/provider/captcha_provider.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/dir_provider.dart';

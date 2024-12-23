@@ -22,14 +22,14 @@ class CheatListCard extends StatelessWidget {
   final double? size;
 
   const CheatListCard({
-    Key? key,
+    super.key,
     required this.item,
     this.size = 40,
     this.isIconView = true,
     this.isIconCommendView = true,
     this.isIconHotView = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class CheatListCard extends StatelessWidget {
         runAlignment: WrapAlignment.center,
         children: <Widget>[
           if (isIconView!)
-            CheatersCardIconitem(
+            CheatersCardIconItem(
               n: item["viewNum"].toString(),
               i: Icons.visibility,
             ),
@@ -109,7 +109,7 @@ class CheatListCard extends StatelessWidget {
               color: Theme.of(context).dividerTheme.color!,
             ),
           if (isIconCommendView!)
-            CheatersCardIconitem(
+            CheatersCardIconItem(
               n: item["commentsNum"].toString(),
               i: Icons.add_comment,
             ),
@@ -121,7 +121,7 @@ class CheatListCard extends StatelessWidget {
               color: Theme.of(context).dividerTheme.color!,
             ),
           if (isIconHotView!)
-            CheatersCardIconitem(
+            CheatersCardIconItem(
               n: item["hot"].toString(),
               i: Icons.local_fire_department,
             ),
@@ -147,15 +147,15 @@ class CheatListCard extends StatelessWidget {
   }
 }
 
-class CheatersCardIconitem extends StatelessWidget {
+class CheatersCardIconItem extends StatelessWidget {
   final String? n;
   final IconData? i;
 
-  const CheatersCardIconitem({
-    Key? key,
+  const CheatersCardIconItem({
+    super.key,
     this.n,
     this.i,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -51,11 +51,11 @@ class AppTranslationLoader extends FileTranslationLoader {
     final languagePath = "$basePath/${composeFileName()}.json";
 
     // 尝试从本地加载语言文件
-    final localLanguage = await _loadJson(languagePath) ?? {};
+    final localLanguage = await _loadJson(languagePath);
 
     // 尝试从本地加载状态码文件（可选）
     final statusCodePath = "$basePath/${composeFileName()}_status_code.json";
-    final statusCodeMap = await _loadJson(statusCodePath) ?? {};
+    final statusCodeMap = await _loadJson(statusCodePath);
 
     return jsonEncode({
       ...localLanguage,
