@@ -48,7 +48,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /android/app/src/keystore
-/android/gradle/wrapper/gradle-wrapper.properties
 /android/Gemfile
 /android/Gemfile.lock
 
