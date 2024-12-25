@@ -169,7 +169,7 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   /// 用户令牌失效触发器
   void _onUserTokenExpired() {
     eventUtil.on('user-token-expired', (arg) {
-      UserInfoProvider().accountQuit(context);
+      _providerUtil.ofUser(context).accountQuit(context);
     });
   }
 
@@ -179,7 +179,7 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
     eventUtil.on("not-network", (arg) {
       if (!mounted) return;
       Future.delayed(const Duration(seconds: 1), () {
-        _urlUtil.opEnPage2("/notnetwork");
+        _urlUtil.opEnPage(context, "/notnetwork");
       });
     });
   }
@@ -196,7 +196,7 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
   dynamic _openMessage() {
     return () {
       // 检查登录状态
-      if (!ProviderUtil().ofUser(context).checkLogin()) return;
+      if (!_providerUtil.ofUser(context).checkLogin()) return;
 
       _urlUtil.opEnPage(context, "/chat/list");
     };

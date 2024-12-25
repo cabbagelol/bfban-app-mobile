@@ -11,7 +11,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../component/_refresh/index.dart';
+import '/component/_refresh/index.dart';
 import '/widgets/drawer.dart';
 import '/data/index.dart';
 import '/constants/api.dart';

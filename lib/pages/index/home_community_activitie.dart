@@ -481,9 +481,9 @@ class WidgetStateText extends StatelessWidget {
   final Util _util = Util();
 
   WidgetStateText({
-    Key? key,
+    super.key,
     this.itemData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

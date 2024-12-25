@@ -381,6 +381,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
                               controller: _tabController,
                               isScrollable: true,
                               tabAlignment: TabAlignment.start,
+                              padding: EdgeInsets.only(right: 45),
                               automaticIndicatorColorAdjustment: false,
                               onTap: (index) => _onSwitchTab(index),
                               tabs: cheaterStatus!.map((i) {
