@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../component/_Time/index.dart';
 import '../../component/_html/htmlWidget.dart';
 import '../../utils/index.dart';
 import 'base_card.dart';
@@ -51,7 +52,7 @@ class JudgementCard extends StatelessWidget implements BaseCardStatelessWidget {
         /// 类型
         Text.rich(
           TextSpan(
-            style: const TextStyle(fontSize: 16, height: 1.5),
+            style: DefaultTextStyle.of(context).style,
             children: [
               TextSpan(
                 text: data["username"],
@@ -95,7 +96,22 @@ class JudgementCard extends StatelessWidget implements BaseCardStatelessWidget {
                 WidgetSpan(
                   child: CheatMethodsTagWidget(data: data["cheatMethods"]),
                 ),
-              TextSpan(text: "\t·\t${Time().parse(data['createTime']).getExtendDate.Y_D_M}")
+              WidgetSpan(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text('\t·\t'),
+                    TimeWidget(
+                      data: data['createTime'],
+                      type: TimeWidgetType.full,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

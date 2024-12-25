@@ -86,8 +86,8 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
       PlayerListPage(key: _playerListPage),
       const UserCenterPage(),
     ];
-    _onUserTokenExpired();
     _onNavInit();
+    _onUserTokenExpired();
 
     super.initState();
     WidgetsBinding.instance.addObserver(this);
@@ -231,11 +231,12 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
     );
 
     if (reportsCount == 1) {
-      await _getReportsCount().onError((e, s) => Navigator.pop(context));
+      await _getReportsCount().onError((e, _) => Navigator.pop(context));
     }
 
     int random = Random().nextInt(reportsCount as int);
 
+    if (!mounted) return;
     Navigator.pop(context);
     _urlUtil.opEnPage(context, "/player/dbId/$random");
   }
@@ -280,377 +281,239 @@ class IndexPageState extends State<IndexPage> with WidgetsBindingObserver {
       },
       child: Consumer<AppInfoProvider>(
         builder: (context, appInfo, child) {
-          return LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              if (constraints.maxWidth < 1024) {
-                // move app
-                return Scaffold(
-                  extendBodyBehindAppBar: true,
-                  appBar: AppBar(
-                    backgroundColor: Colors.transparent,
-                    automaticallyImplyLeading: false,
-                    centerTitle: true,
-                    leading: Consumer2<ChatProvider, UserInfoProvider>(
-                      builder: (BuildContext context, chatData, userData, Widget? child) {
-                        return Stack(
-                          fit: StackFit.passthrough,
-                          clipBehavior: Clip.none,
-                          children: <Widget>[
-                            AnimatedOpacity(
-                              opacity: userData.isLogin ? 1 : .3,
-                              duration: const Duration(seconds: 1),
-                              child: IconButton(
-                                icon: const Icon(Icons.chat_bubble),
-                                onPressed: _openMessage(),
-                              ),
-                            ),
-                            Visibility(
-                              visible: chatData.total != 0,
-                              child: Positioned(
-                                top: 10,
-                                right: 10,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).colorScheme.error,
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(color: Theme.of(context).appBarTheme.iconTheme!.color!, width: 1.4),
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 15,
-                                    minHeight: 15,
-                                  ),
-                                  child: Text(
-                                    chatData.total.toString(), //通知数量
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: FontSize.small.value,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    actions: <Widget>[
-                      IconButton(
-                        padding: const EdgeInsets.all(16),
-                        onPressed: () {
-                          UrlUtil().opEnPage(context, '/search/${jsonEncode({"text": ''})}');
-                        },
-                        icon: const Icon(Icons.search),
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              leading: Consumer2<ChatProvider, UserInfoProvider>(
+                builder: (BuildContext context, chatData, userData, Widget? child) {
+                  return Stack(
+                    fit: StackFit.passthrough,
+                    clipBehavior: Clip.none,
+                    children: <Widget>[
+                      AnimatedOpacity(
+                        opacity: userData.isLogin ? 1 : .3,
+                        duration: const Duration(seconds: 1),
+                        child: IconButton(
+                          icon: const Icon(Icons.chat_bubble),
+                          onPressed: _openMessage(),
+                        ),
                       ),
-                      Consumer2<UserInfoProvider, PackageProvider>(builder: (BuildContext context, UserInfoProvider userData, PackageProvider packageData, Widget? child) {
-                        return PopupMenuButton(
-                          padding: const EdgeInsets.all(16),
-                          icon: RedDotWidget(
-                            show: packageData.isNewVersion,
-                            child: Icon(
-                              Icons.adaptive.more,
-                              color: Theme.of(context).appBarTheme.iconTheme!.color,
+                      Visibility(
+                        visible: chatData.total != 0,
+                        child: Positioned(
+                          top: 10,
+                          right: 10,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 0),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.error,
+                              borderRadius: BorderRadius.circular(5),
+                              border: Border.all(color: Theme.of(context).appBarTheme.iconTheme!.color!, width: 1.4),
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 15,
+                              minHeight: 15,
+                            ),
+                            child: Text(
+                              chatData.total.toString(), //通知数量
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: FontSize.small.value,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
                           ),
-                          offset: const Offset(0, 45),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 1:
-                                _urlUtil.opEnPage(context, '/camera').then((value) {});
-                                break;
-                              case 2:
-                                _takeLook();
-                                break;
-                              case 3:
-                                _opEnNetwork();
-                                break;
-                              case 4:
-                                _opEnReport();
-                                break;
-                              case 5:
-                                _opEnVersion();
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                value: 1,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.camera,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "app.home.scancode")),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                value: 2,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.casino_outlined,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "app.home.takeLook")),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                value: 4,
-                                enabled: userData.isLogin,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.front_hand,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "report.title")),
-                                  ],
-                                ),
-                              ),
-                              const PopupMenuItem(
-                                height: 10,
-                                child: Divider(height: 1),
-                              ),
-                              PopupMenuItem(
-                                value: 3,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.language,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "app.networkDetection.title")),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                value: 5,
-                                child: Wrap(
-                                  children: [
-                                    Icon(
-                                      Icons.tips_and_updates,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    RedDotWidget(
-                                      show: packageData.isNewVersion,
-                                      child: Text(FlutterI18n.translate(context, "app.setting.versions.title")),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ];
-                          },
-                        );
-                      })
+                        ),
+                      ),
                     ],
-                  ),
-                  body: FlutterPluginDrawer(
-                    body: SizedBox(
-                      height: screenHeight,
-                      child: IndexedStack(
-                        index: _currentPageIndex,
-                        children: _listWidgetPage,
+                  );
+                },
+              ),
+              actions: <Widget>[
+                IconButton(
+                  padding: const EdgeInsets.all(16),
+                  onPressed: () {
+                    UrlUtil().opEnPage(context, '/search/${jsonEncode({"text": ''})}');
+                  },
+                  icon: const Icon(Icons.search),
+                ),
+                Consumer2<UserInfoProvider, PackageProvider>(builder: (BuildContext context, UserInfoProvider userData, PackageProvider packageData, Widget? child) {
+                  return PopupMenuButton(
+                    padding: const EdgeInsets.all(16),
+                    icon: RedDotWidget(
+                      show: packageData.isNewVersion,
+                      child: Icon(
+                        Icons.adaptive.more,
+                        color: Theme.of(context).appBarTheme.iconTheme!.color,
                       ),
                     ),
-                    dragContainer: DragContainer(
-                      key: _drawerWidget,
-                      drawer: Container(
+                    offset: const Offset(0, 45),
+                    onSelected: (value) {
+                      switch (value) {
+                        case 1:
+                          _urlUtil.opEnPage(context, '/camera').then((value) {});
+                          break;
+                        case 2:
+                          _takeLook();
+                          break;
+                        case 3:
+                          _opEnNetwork();
+                          break;
+                        case 4:
+                          _opEnReport();
+                          break;
+                        case 5:
+                          _opEnVersion();
+                          break;
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          value: 1,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.camera,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.home.scancode")),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 2,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.casino_outlined,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.home.takeLook")),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 4,
+                          enabled: userData.isLogin,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.front_hand,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "report.title")),
+                            ],
+                          ),
+                        ),
+                        const PopupMenuItem(
+                          height: 10,
+                          child: Divider(height: 1),
+                        ),
+                        PopupMenuItem(
+                          value: 3,
+                          child: Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.language,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(FlutterI18n.translate(context, "app.networkDetection.title")),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          value: 5,
+                          child: Wrap(
+                            children: [
+                              Icon(
+                                Icons.tips_and_updates,
+                                color: Theme.of(context).iconTheme.color,
+                              ),
+                              const SizedBox(width: 10),
+                              RedDotWidget(
+                                show: packageData.isNewVersion,
+                                child: Text(FlutterI18n.translate(context, "app.setting.versions.title")),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ];
+                    },
+                  );
+                })
+              ],
+            ),
+            body: FlutterPluginDrawer(
+              body: SizedBox(
+                height: screenHeight,
+                child: IndexedStack(
+                  index: _currentPageIndex,
+                  children: _listWidgetPage,
+                ),
+              ),
+              dragContainer: DragContainer(
+                key: _drawerWidget,
+                drawer: Container(
+                  decoration: BoxDecoration(
+                    color: Color.alphaBlend(Theme.of(context).bottomAppBarTheme.color!, Theme.of(context).bottomSheetTheme.backgroundColor!),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  height: screenBarHeight,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: 6.0,
+                        width: 45.0,
+                        margin: const EdgeInsets.only(top: 10.0, bottom: 10),
                         decoration: BoxDecoration(
-                          color: Color.alphaBlend(Theme.of(context).bottomAppBarTheme.color!, Theme.of(context).bottomSheetTheme.backgroundColor!),
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(20),
-                            topRight: Radius.circular(20),
+                          color: Theme.of(context).dividerTheme.color,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(5.0),
                           ),
                         ),
-                        height: screenBarHeight,
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              height: 6.0,
-                              width: 45.0,
-                              margin: const EdgeInsets.only(top: 10.0, bottom: 10),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).dividerTheme.color,
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(5.0),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: screenHeight * 0.55 - screenBarHeight,
-                              child: HomeFooterBarPanel(
-                                dragContainerKey: _drawerWidget,
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
-                      defaultShowHeight: screenBarHeight,
-                      height: screenHeight * .55,
-                    ),
-                  ),
-                  bottomNavigationBar: BottomNavigationBar(
-                    type: BottomNavigationBarType.fixed,
-                    showSelectedLabels: true,
-                    showUnselectedLabels: false,
-                    items: navs.map((nav) {
-                      return BottomNavigationBarItem(
-                        icon: nav!["icon"],
-                        activeIcon: nav["activeIcon"],
-                        label: FlutterI18n.translate(context, "${nav["name"]}.title"),
-                      );
-                    }).toList(),
-                    currentIndex: _currentPageIndex,
-                    onTap: (int index) => _onHomePageIndexTap(index),
-                  ),
-                );
-              } else {
-                // desktop
-                return Scaffold(
-                  appBar: AppBar(
-                    actions: <Widget>[
-                      Consumer<UserInfoProvider>(builder: (BuildContext context, UserInfoProvider data, Widget? child) {
-                        return PopupMenuButton(
-                          padding: const EdgeInsets.all(16),
-                          icon: Icon(
-                            Icons.adaptive.more,
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                          offset: const Offset(0, 45),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 1:
-                                _urlUtil.opEnPage(context, '/camera').then((value) {});
-                                break;
-                              case 2:
-                                _takeLook();
-                                break;
-                              case 3:
-                                _opEnNetwork();
-                                break;
-                              case 4:
-                                _opEnReport();
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                value: 1,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.camera,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "app.home.scancode")),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                value: 2,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.casino_outlined,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "app.home.takeLook")),
-                                  ],
-                                ),
-                              ),
-                              PopupMenuItem(
-                                value: 4,
-                                enabled: data.isLogin,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.front_hand,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "report.title")),
-                                  ],
-                                ),
-                              ),
-                              const PopupMenuItem(
-                                height: 10,
-                                child: Divider(height: 1),
-                              ),
-                              PopupMenuItem(
-                                value: 3,
-                                child: Wrap(
-                                  crossAxisAlignment: WrapCrossAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.language,
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Text(FlutterI18n.translate(context, "app.networkDetection.title")),
-                                  ],
-                                ),
-                              ),
-                            ];
-                          },
-                        );
-                      })
-                    ],
-                    elevation: 0,
-                    titleSpacing: 65,
-                    centerTitle: false,
-                  ),
-                  body: Row(
-                    children: [
-                      NavigationRail(
-                        onDestinationSelected: (value) {
-                          _changePageIndex(value);
-                        },
-                        labelType: NavigationRailLabelType.none,
-                        backgroundColor: Theme.of(context).bottomAppBarTheme.color,
-                        destinations: navs.map((nav) {
-                          return NavigationRailDestination(
-                            icon: nav!["icon"],
-                            selectedIcon: nav!["activeIcon"],
-                            label: Text(FlutterI18n.translate(
-                              context,
-                              "${nav["name"]}.title",
-                            )),
-                          );
-                        }).toList(),
-                        selectedIndex: _currentPageIndex,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: IndexedStack(
-                          index: _currentPageIndex,
-                          children: _listWidgetPage,
+                      SizedBox(
+                        height: screenHeight * 0.55 - screenBarHeight,
+                        child: HomeFooterBarPanel(
+                          dragContainerKey: _drawerWidget,
                         ),
                       ),
                     ],
                   ),
+                ),
+                defaultShowHeight: screenBarHeight,
+                height: screenHeight * .55,
+              ),
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              showSelectedLabels: true,
+              showUnselectedLabels: false,
+              items: navs.map((nav) {
+                return BottomNavigationBarItem(
+                  icon: nav!["icon"],
+                  activeIcon: nav["activeIcon"],
+                  label: FlutterI18n.translate(context, "${nav["name"]}.title"),
                 );
-              }
-            },
+              }).toList(),
+              currentIndex: _currentPageIndex,
+              onTap: (int index) => _onHomePageIndexTap(index),
+            ),
           );
         },
       ),

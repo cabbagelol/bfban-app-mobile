@@ -30,24 +30,50 @@ class TimeWidget extends StatefulWidget {
 }
 
 class _TimeWidgetState extends State<TimeWidget> {
-  String? value;
+  final Time _time = Time();
 
-  Time time = Time();
+  final Map _data = {
+    'original': 'N/A',
+    'originalConversion': 'N/A',
+    'localOriginal': 'N/A',
+    'localTimeZoneName': 'N/A',
+    'localConversion': 'N/A',
+  };
+
+  String get original {
+    return widget.data;
+  }
+
+  String get originalConversion {
+    return _getFriendlyDescriptionTime(widget.data, type: TimeWidgetType.convert, typeTime: widget.timeType);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (!mounted) return;
+      setState(() {
+        _data['original'] = original;
+        _data['originalConversion'] = originalConversion;
+      });
+    });
+  }
 
   /// [Event]
   /// 时间转换可读时间刻
-  String getFriendlyDescriptionTime(String date, {typeTime = "Y_D_M_M"}) {
+  String _getFriendlyDescriptionTime(String date, {type, typeTime = "Y_D_M_M"}) {
     if (date.isEmpty) return "N/A";
 
     var time = DateTime.parse(date);
     var now = DateTime.now();
     var d = now.difference(time);
 
-    switch (widget.type) {
+    switch (type) {
       case TimeWidgetType.convert:
         if (d.inDays == 0) {
           // 一天之内
-
           if (d.inSeconds >= 0 && d.inSeconds <= 60) {
             // 60秒内
             return FlutterI18n.translate(context, "app.basic.time.seconds", translationParams: {
@@ -75,19 +101,94 @@ class _TimeWidgetState extends State<TimeWidget> {
         break;
       case TimeWidgetType.full:
       default:
-        return this.time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
+        return _time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
     }
-    return this.time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
+    return _time.parse(time.millisecondsSinceEpoch).getExtendDate.value(typeTime);
+  }
+
+  /// [Event]
+  /// 查看具体时间信息
+  void _openDateDetail() {
+    setState(() {
+      _data['localOriginal'] = DateTime.parse(original).toLocal();
+      _data['localTimeZoneName'] = _data['localOriginal'].timeZoneName;
+      _data['localConversion'] = _getFriendlyDescriptionTime(_data['localOriginal'].toString(), type: TimeWidgetType.full, typeTime: "Y_D_M_M");
+    });
+
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isDismissible: true,
+      useSafeArea: true,
+      builder: (context) {
+        return ListView(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          children: [
+            TextField(
+              readOnly: true,
+              controller: TextEditingController(text: _data['original']),
+              decoration: InputDecoration(
+                icon: Icon(Icons.date_range),
+                label: Text(FlutterI18n.translate(context, "detail.dateView.primitive")),
+                helper: Wrap(
+                  spacing: 5,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Icon(Icons.info, size: 15),
+                    Text(FlutterI18n.translate(context, "detail.dateView.primitiveDescription")),
+                  ],
+                ),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 35),
+            TextField(
+              readOnly: true,
+              controller: TextEditingController(text: _data['localTimeZoneName'].toString()),
+              decoration: InputDecoration(
+                label: Text(FlutterI18n.translate(context, "detail.dateView.localTimeZoneName")),
+                icon: Icon(Icons.location_on_sharp),
+                border: OutlineInputBorder(),
+              ),
+            ),
+            SizedBox(height: 15),
+            TextField(
+              readOnly: true,
+              controller: TextEditingController(text: _data['localConversion'].toString()),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                icon: Icon(Icons.date_range),
+                labelText: FlutterI18n.translate(context, "detail.dateView.localeTime"),
+                helper: Wrap(
+                  spacing: 5,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Icon(Icons.info, size: 15),
+                    Text(FlutterI18n.translate(context, "detail.dateView.localeTimeDescription")),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      getFriendlyDescriptionTime(widget.data, typeTime: widget.timeType),
-      style: widget.style,
-      overflow: widget.overflow,
-      maxLines: widget.maxLines,
-      textAlign: widget.textAlign,
+    return GestureDetector(
+      onTap: () => _openDateDetail(),
+      child: Text(
+        originalConversion,
+        style: (widget.style ?? TextStyle()).copyWith(
+          decoration: TextDecoration.underline,
+          decorationStyle: TextDecorationStyle.dashed,
+        ),
+        overflow: widget.overflow,
+        maxLines: widget.maxLines,
+        textAlign: widget.textAlign,
+      ),
     );
   }
 }

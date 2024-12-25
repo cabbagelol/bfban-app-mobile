@@ -1,3 +1,4 @@
+import 'package:bfban/component/_Time/index.dart';
 import 'package:bfban/component/_cheatMethodsTag/index.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class CheatReportsCard extends StatelessWidget implements BaseCardStatelessWidge
         // 标题
         Text.rich(
           TextSpan(
-            style: const TextStyle(fontSize: 16, height: 1.5),
+            style: DefaultTextStyle.of(context).style,
             children: [
               TextSpan(
                 text: data["username"],
@@ -100,10 +101,20 @@ class CheatReportsCard extends StatelessWidget implements BaseCardStatelessWidge
               WidgetSpan(
                 child: CheatMethodsTagWidget(data: data["cheatMethods"]),
               ),
-              TextSpan(
-                text: "\t·\t${Time().parse(data['createTime']).getExtendDate.Y_D_M}",
-                style: const TextStyle(
-                  fontWeight: FontWeight.normal,
+              WidgetSpan(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text('\t·\t'),
+                    TimeWidget(
+                      data: data['createTime'],
+                      type: TimeWidgetType.full,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

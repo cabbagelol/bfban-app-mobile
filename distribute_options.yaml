@@ -10,11 +10,11 @@ releases:
             target: lib/main.prod.dart
             profile: true
             target-platform: android-arm,android-arm64,android-x64
-        publish:
-          target: playstore
-          args:
-            package-name: com.cabbagelol.bfban
-            track: alpha
+      #        publish:
+      #          target: playstore
+      #          args:
+      #            package-name: com.cabbagelol.bfban
+      #            track: alpha
       - name: android-apk
         package:
           platform: android

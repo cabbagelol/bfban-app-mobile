@@ -76,7 +76,7 @@ class LightnesTheme extends AppBaseThemeItem {
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        selectionColor: const Color(0x7a364e80).withOpacity(.3),
+        selectionColor: const Color(0x7a364e80),
         selectionHandleColor: const Color(0x7a364e80),
         cursorColor: const Color(0x7a364e80),
       ),
@@ -129,11 +129,9 @@ class LightnesTheme extends AppBaseThemeItem {
           color: Colors.black54,
         ),
       ),
-      dividerColor: const Color(0xffe7e7e7),
+      dividerColor: const Color(0xffececec),
       dividerTheme: const DividerThemeData(
         color: Color(0xffe7e7e7),
-        space: .4,
-        indent: .5,
       ),
       dataTableTheme: const DataTableThemeData(
         horizontalMargin: 10,
@@ -351,6 +349,7 @@ class LightnesTheme extends AppBaseThemeItem {
         primary: Color(0xff364e80),
         primaryContainer: Colors.white,
         onPrimary: Color(0xff364e80),
+        onPrimaryContainer: Colors.white,
         secondary: Color(0xff99acd2),
         onSecondary: Color(0xff99acd2),
         error: Colors.red,

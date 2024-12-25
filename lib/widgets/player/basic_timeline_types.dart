@@ -18,82 +18,30 @@ enum TimeLineItemType {
 /// 时间轴卡
 /// Core Card
 class TimeLineBaseCard extends StatefulWidget {
+  final TimeLineItemType type;
+
   final List<Widget>? header;
+
   final Widget? headerSecondary;
+
   final Widget? content;
+
   final TimeLineItemBottomBtn? bottom;
+
   final Widget? button;
+
   final bool? isShowLine;
 
-  List? leftIconTypes = [
-    CircleAvatar(
-      radius: 18,
-      backgroundColor: Colors.blue.withOpacity(.2),
-      child: const Icon(
-        Icons.help,
-        color: Colors.red,
-        size: 14,
-      ),
-    ),
-    CircleAvatar(
-      radius: 18,
-      backgroundColor: Colors.blue.withOpacity(.2),
-      child: const Icon(
-        Icons.chat_bubble_outlined,
-        color: Colors.blue,
-        size: 14,
-      ),
-    ),
-    CircleAvatar(
-      radius: 18,
-      backgroundColor: Colors.white.withOpacity(.2),
-      child: const Icon(
-        Icons.front_hand,
-        size: 14,
-      ),
-    ),
-    CircleAvatar(
-      radius: 18,
-      backgroundColor: const Color(0xFF3d1380).withOpacity(.8),
-      child: const Icon(
-        Icons.chat_rounded,
-        color: Colors.white,
-        size: 14,
-      ),
-    ),
-    CircleAvatar(
-      radius: 18,
-      backgroundColor: const Color(0xFFeb2f96).withOpacity(.2),
-      child: const Icon(
-        Icons.bookmark,
-        color: Color(0xFFeb2f96),
-        size: 14,
-      ),
-    ),
-    CircleAvatar(
-      radius: 18,
-      backgroundColor: const Color(0xFFffe58f).withOpacity(.2),
-      child: const Icon(
-        Icons.history,
-        color: Color(0xFFffe58f),
-        size: 14,
-      ),
-    )
-  ];
-  CircleAvatar? leftIcon;
-
-  TimeLineBaseCard({
+  const TimeLineBaseCard({
     super.key,
-    TimeLineItemType type = TimeLineItemType.none,
+    this.type = TimeLineItemType.none,
     this.header,
     this.headerSecondary,
     this.content,
     this.button,
     this.bottom,
     this.isShowLine = true,
-  }) {
-    leftIcon = leftIconTypes![type.index];
-  }
+  });
 
   @override
   State<TimeLineBaseCard> createState() => TimeLineBaseCardState();
@@ -107,8 +55,70 @@ class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPro
 
   bool inInit = false;
 
+  Widget? leftIconWidget;
+
+  List get leftIconTypes {
+    return [
+      CircleAvatar(
+        radius: 18,
+        backgroundColor: Colors.blue.withOpacity(.2),
+        child: const Icon(
+          Icons.help,
+          color: Colors.red,
+          size: 14,
+        ),
+      ),
+      CircleAvatar(
+        radius: 18,
+        backgroundColor: Colors.blue.withOpacity(.2),
+        child: const Icon(
+          Icons.chat_bubble_outlined,
+          color: Colors.blue,
+          size: 14,
+        ),
+      ),
+      CircleAvatar(
+        radius: 18,
+        backgroundColor: Colors.yellow,
+        child: const Icon(
+          Icons.front_hand,
+          size: 14,
+        ),
+      ),
+      CircleAvatar(
+        radius: 18,
+        backgroundColor: const Color(0xFF3d1380).withOpacity(.8),
+        child: const Icon(
+          Icons.chat_rounded,
+          color: Colors.white,
+          size: 14,
+        ),
+      ),
+      CircleAvatar(
+        radius: 18,
+        backgroundColor: const Color(0xFFeb2f96).withOpacity(.2),
+        child: const Icon(
+          Icons.bookmark,
+          color: Color(0xFFeb2f96),
+          size: 14,
+        ),
+      ),
+      CircleAvatar(
+        radius: 18,
+        backgroundColor: const Color(0xFFffe58f).withOpacity(.2),
+        child: const Icon(
+          Icons.history,
+          color: Color(0xFFffe58f),
+          size: 14,
+        ),
+      )
+    ];
+  }
+
   @override
   void initState() {
+    leftIconWidget = leftIconTypes[widget.type.index];
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       updateWidgetHeight();
     });
@@ -125,7 +135,7 @@ class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPro
 
   /// [Event]
   /// 设置垂直线高度
-  updateWidgetHeight() {
+  void updateWidgetHeight() {
     if (mounted && inInit) {
       double semanticBounds = contentHtmlBaseKey.currentContext!.findRenderObject()!.semanticBounds.size.height;
       setState(() {
@@ -148,10 +158,11 @@ class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPro
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
-                child: widget.leftIcon!,
-              ),
+              if (leftIconWidget != null)
+                Container(
+                  padding: const EdgeInsets.only(top: 0, left: 10, right: 10),
+                  child: leftIconWidget!,
+                ),
               if (widget.isShowLine!)
                 Flexible(
                   flex: 2,

@@ -36,7 +36,15 @@ for ((i=0; i<${#options[@]}; i++)); do
 done
 
 read -p "Build Platform(1/2/3..): " input_platform
+read -p "Version Name: " input_version_name
 read -p "Build Number: " input_version
+if [[ -z $input_version_name ]];
+  then
+    echo "版本不可空"
+    exit ;
+  else
+    platform=$input_platform
+fi
 if [[ $input_platform == 3 ]];
   then
     read -p "Is Reset Version (y/n): " input_is_reset_version_main
@@ -74,13 +82,13 @@ echo "===================== start build ====================="
 echo "正在构建$platform..."
 case "$platform" in
   1)
-    flutter build apk lib/main.prod.dart --release --build-number "$version"
+    flutter build apk lib/main.prod.dart --release --build-name "$input_version_name" --build-number "$version"
     ;;
   2)
-    flutter build appbundle lib/main.prod.dart --release --build-number "$version" --target-platform android-arm,android-arm64,android-x64
+    flutter build appbundle lib/main.prod.dart --release --build-name "$input_version_name" --build-number "$version" --target-platform android-arm,android-arm64,android-x64
     ;;
   3)
-    flutter build ipa lib/main.prod.dart --release --build-number "$version"
+    flutter build ipa lib/main.prod.dart --release --build-name "$input_version_name" --build-number "$version"
     ;;
   *)
     echo "不支持的平台: $platform"

@@ -325,6 +325,7 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
       });
 
       // 渲染[TAB]不同状态统计
+      if (!mounted) return;
       setState(() {
         cheaterStatus = tabStatusData;
       });

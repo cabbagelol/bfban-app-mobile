@@ -255,7 +255,7 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
                 Container(
                   child: LoadingAnimationWidget.progressiveDots(
                     size: 28,
-                    color: Theme.of(context).colorScheme.primaryContainer,
+                    color: Color.lerp(Theme.of(context).colorScheme.primaryContainer, Theme.of(context).colorScheme.primary, .5)!,
                   ),
                 ),
                 Divider(height: 1),

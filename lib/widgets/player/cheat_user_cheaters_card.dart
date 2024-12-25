@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
+import '../../component/_time/index.dart';
 import '../../utils/index.dart';
 import 'base_card.dart';
 import 'basic_timeline_types.dart';
@@ -51,8 +52,8 @@ class CheatUserCheatersCard extends StatelessWidget implements BaseCardStateless
         // 类型
         Text.rich(
           TextSpan(
-            style: const TextStyle(fontSize: 16),
-            children: <TextSpan>[
+            style: DefaultTextStyle.of(context).style,
+            children: [
               TextSpan(
                 text: data["username"],
                 style: const TextStyle(
@@ -72,9 +73,22 @@ class CheatUserCheatersCard extends StatelessWidget implements BaseCardStateless
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              TextSpan(
-                text: "\t·\t${Time().parse(data['createTime']).getExtendDate.Y_D_M}",
-              )
+              WidgetSpan(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text('\t·\t'),
+                    TimeWidget(
+                      data: data['createTime'],
+                      type: TimeWidgetType.full,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

@@ -9,10 +9,12 @@ enum GamesTagSize {
 
 class GamesTagWidget extends StatefulWidget {
   final dynamic data;
+
   final Widget? splitChar;
+
   late GamesTagSize? size;
 
-  List<GamesTagSizeConfig>? sizeType = [
+  late List<GamesTagSizeConfig>? sizeType = [
     GamesTagSizeConfig(
       height: 14,
       padding: const EdgeInsets.symmetric(
@@ -31,7 +33,7 @@ class GamesTagWidget extends StatefulWidget {
     ),
   ];
 
-  GamesTagSizeConfig currentSizeType = GamesTagSizeConfig(
+  late GamesTagSizeConfig currentSizeType = GamesTagSizeConfig(
     height: 16,
     padding: const EdgeInsets.symmetric(
       vertical: 2,

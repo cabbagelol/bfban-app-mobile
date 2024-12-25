@@ -33,48 +33,14 @@ for ((i=0; i<${#options[@]}; i++)); do
 done
 
 read -p "Build Platform(1/2/3..): " input_platform
-read -p "Is Custom build-number (y/n): " is_custom_build_number
-if [[ $is_custom_build_number == 'y' ]]; then
-    read -p "Build Number: " input_version
-fi
 read -p "Is Skip Clean (y/n): " is_skip_clean
-if [[ $input_platform == 3 ]];
-  then
-    read -p "Is Reset Build Number (y/n): " input_is_reset_version_main
-    echo "(hint): 当大版本更新时，将需要重置build-number"
-fi
-if [[ -z $input_platform ]];
-  then
-    default_platform=1
-    echo "            -> Default Platform ($default_platform)"
-    platform=$default_platform
-  else
-    platform=$input_platform
-fi
-if [[ $input_is_reset_version_main == 'y' ]];
-  then
-    # yes reset
-    input_version=1
-    version=1
-    echo "            -> Reset Version ($version)"
-  else
-    # no
-    if [[ -z $input_version ]];
-      then
-        # 获取当前平台的版本号
-        version=$(get_version "$platform")
-        echo "            -> Auto Version ($version)"
-      else
-        # 自定义build number
-        version=$input_version
-        echo "            -> Custom Version ($version)"
-    fi
-fi
+
+platform=$input_platform
 
 echo "===================== start build ====================="
 
 # Build Main
-echo "正在构建 ${options[$($platform - 1)]} ..."
+echo "正在构建 ${options[$($platform)]} ..."
 skip_clean=''
 if [[ $is_skip_clean == 'y' ]]; then
   skip_clean='--skip-clean'
@@ -97,13 +63,4 @@ esac
 
 echo "===================== end build ====================="
 
-# 是否递增版本号
-if [[ $input_is_reset_version_main == 'n' ]]; then
-    new_number_version=$((version + 1))
-  else
-    new_number_version=$version
-fi
-set_version "$platform" "$new_number_version"
-
-echo "Updata next build-number: $new_number_version"
 echo "END 👋🏻👋🏻"

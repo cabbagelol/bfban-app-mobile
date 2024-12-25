@@ -86,7 +86,7 @@ class _HtmlImageState extends State<HtmlImage> {
                       Opacity(
                         opacity: .5,
                         child: HtmlLink(
-                          url: "${widget.src}",
+                          url: widget.src,
                           color: Theme.of(context).textTheme.bodyLarge!.color,
                         ),
                       )

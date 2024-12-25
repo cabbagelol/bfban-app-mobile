@@ -276,6 +276,7 @@ class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderS
       });
     }
 
+    if (!mounted) return;
     setState(() {
       subscribes["load"] = false;
     });

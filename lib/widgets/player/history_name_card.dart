@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
+import '../../component/_Time/index.dart';
 import '../../utils/index.dart';
 import 'base_card.dart';
 import 'basic_timeline_types.dart';
@@ -39,7 +40,7 @@ class HistoryNameCard extends StatelessWidget implements BaseCardStatelessWidget
         // 标题
         Text.rich(
           TextSpan(
-            style: const TextStyle(fontSize: 16, height: 1.5),
+            style: DefaultTextStyle.of(context).style,
             children: [
               TextSpan(
                 text: "\t${FlutterI18n.translate(context, "detail.appeal.info.changeName")}\t",
@@ -47,9 +48,22 @@ class HistoryNameCard extends StatelessWidget implements BaseCardStatelessWidget
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextSpan(
-                text: "\t·\t${Time().parse(data["fromTime"]).getExtendDate.Y_D_M}",
-              )
+              WidgetSpan(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text('\t·\t'),
+                    TimeWidget(
+                      data: data['fromTime'],
+                      type: TimeWidgetType.full,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
