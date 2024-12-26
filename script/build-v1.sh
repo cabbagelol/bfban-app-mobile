@@ -82,7 +82,7 @@ echo "===================== start build ====================="
 echo "正在构建$platform..."
 case "$platform" in
   1)
-    flutter build apk lib/main.prod.dart --release --build-name "$input_version_name" --build-number "$version"
+    flutter build apk lib/main.prod.dart --release --split-per-abi --build-name "$input_version_name" --build-number "$version"
     ;;
   2)
     flutter build appbundle lib/main.prod.dart --release --build-name "$input_version_name" --build-number "$version" --target-platform android-arm,android-arm64,android-x64

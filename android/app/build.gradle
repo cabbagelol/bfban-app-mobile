@@ -56,14 +56,10 @@ android {
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        ndk {
-            abiFilters "arm64-v8a"
-            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
-        }
         manifestPlaceholders = [
                 JPUSH_PKGNAME: "com.cabbagelol.bfban",
                 JPUSH_APPKEY : "966c3770c8bb47ffcbaacff1",  // NOTE: JPush 上注册的包名对应的 Appkey.
-                JPUSH_CHANNEL: "developer-default",         // 暂时填写默认值即可.
+                JPUSH_CHANNEL: "developer-default",         // Default Value.
         ]
     }
 
@@ -94,4 +90,16 @@ android {
 
 flutter {
     source '../..'
+}
+
+ext.abiCodes = ["x86_64": 1, "armeabi-v7a": 2, "arm64-v8a": 3]
+import com.android.build.OutputFile
+
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def abiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+        if (abiVersionCode != null) {
+            output.versionCodeOverride = variant.versionCode * 10 + abiVersionCode
+        }
+    }
 }
