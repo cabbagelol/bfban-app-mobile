@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_empty/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '/utils/index.dart';
+import '/component/_time/index.dart';
+import '/component/_empty/index.dart';
 import '/component/_html/htmlWidget.dart';
 import '/component/_customReply/customReply.dart';
+import '/utils/index.dart';
 
 class CustomReplyListPage extends StatefulWidget {
   const CustomReplyListPage({super.key});

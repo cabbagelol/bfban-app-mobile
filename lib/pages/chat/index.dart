@@ -1,15 +1,16 @@
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_html/htmlWidget.dart';
-import 'package:bfban/component/_loading/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/api.dart';
-import '../../data/index.dart';
-import '../../provider/chat_provider.dart';
-import '../../utils/index.dart';
+import '/component/_time/index.dart';
+import '/component/_html/htmlWidget.dart';
+import '/component/_loading/index.dart';
+import '/constants/api.dart';
+import '/data/index.dart';
+import '/provider/chat_provider.dart';
+import '/utils/index.dart';
+
 import '../not_found/index.dart';
 
 class MessagePage extends StatefulWidget {

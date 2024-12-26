@@ -1,16 +1,16 @@
 /// 消息中心
 library;
 
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_loading/index.dart';
-import 'package:bfban/provider/chat_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../component/_refresh/index.dart';
-import '../../utils/index.dart';
+import '/component/_time/index.dart';
+import '/component/_loading/index.dart';
+import '/provider/chat_provider.dart';
+import '/component/_refresh/index.dart';
+import '/utils/index.dart';
 import '../not_found/index.dart';
 
 class ChatListPage extends StatefulWidget {

@@ -5,30 +5,29 @@ import 'dart:convert';
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_loading/index.dart';
-import 'package:bfban/pages/not_found/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-
 import 'package:fluro/fluro.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
-
-import 'package:bfban/data/index.dart';
-import 'package:bfban/constants/api.dart';
-import 'package:bfban/utils/index.dart';
-import 'package:bfban/widgets/index.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../component/_bfvHackers/index.dart';
-import '../../component/_gamesTag/index.dart';
-import '../../component/_playerStatusTag/index.dart';
-import '../../component/_recordLink/index.dart';
-import '../../provider/userinfo_provider.dart';
+import '/component/_time/index.dart';
+import '/component/_loading/index.dart';
+import '/pages/not_found/index.dart';
+import '/data/index.dart';
+import '/constants/api.dart';
+import '/utils/index.dart';
+import '/widgets/index.dart';
+import '/component/_bfvHackers/index.dart';
+import '/component/_gamesTag/index.dart';
+import '/component/_playerStatusTag/index.dart';
+import '/component/_recordLink/index.dart';
+import '/provider/userinfo_provider.dart';
+
 import 'time_line.dart';
 
 class PlayerDetailPage extends StatefulWidget {

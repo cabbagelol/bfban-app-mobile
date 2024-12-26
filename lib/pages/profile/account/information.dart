@@ -1,6 +1,3 @@
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_loading/index.dart';
-import 'package:bfban/component/_privilegesTag/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_cell/cell.dart';
 import 'package:flutter_elui_plugin/_img/index.dart';
@@ -13,6 +10,9 @@ import '/constants/api.dart';
 import '/data/index.dart';
 import '/provider/userinfo_provider.dart';
 import '/utils/index.dart';
+import '/component/_time/index.dart';
+import '/component/_loading/index.dart';
+import '/component/_privilegesTag/index.dart';
 
 class InformationPage extends StatefulWidget {
   const InformationPage({super.key});

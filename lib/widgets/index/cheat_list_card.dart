@@ -1,10 +1,11 @@
 /// 作弊者列表卡片
 library;
 
-import 'package:bfban/component/_Time/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
+
+import 'package:bfban/component/_time/index.dart';
 
 import '../../router/router.dart';
 

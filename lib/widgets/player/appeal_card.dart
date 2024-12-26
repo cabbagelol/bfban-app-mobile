@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/_tag/tag.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../component/_Time/index.dart';
+import '../../component/_time/index.dart';
 import '../../component/_html/htmlWidget.dart';
-import '../../utils/index.dart';
+
 import 'base_card.dart';
 import 'basic_timeline_types.dart';
 import 'basic_quote_card.dart';

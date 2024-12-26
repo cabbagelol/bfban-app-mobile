@@ -1,8 +1,3 @@
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_achievement/index.dart';
-import 'package:bfban/component/_html/html.dart';
-import 'package:bfban/component/_loading/index.dart';
-import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +7,17 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:provider/provider.dart';
 
-import '../../component/_privilegesTag/index.dart';
-import '../../component/_refresh/index.dart';
-import '../../component/_userAvatar/index.dart';
-import '../../data/index.dart';
-import '../../utils/index.dart';
-import '../../widgets/index.dart';
+import '/component/_time/index.dart';
+import '/component/_achievement/index.dart';
+import '/component/_html/html.dart';
+import '/component/_loading/index.dart';
+import '/provider/userinfo_provider.dart';
+import '/component/_privilegesTag/index.dart';
+import '/component/_refresh/index.dart';
+import '/component/_userAvatar/index.dart';
+import '/data/index.dart';
+import '/utils/index.dart';
+import '/widgets/index.dart';
 import '../not_found/index.dart';
 
 class UserSpacePage extends StatefulWidget {

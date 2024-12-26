@@ -3,18 +3,17 @@ library;
 
 import 'dart:core';
 
-import 'package:bfban/component/_Time/index.dart';
-import 'package:bfban/component/_empty/index.dart';
-import 'package:bfban/component/_gamesTag/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bfban/data/index.dart';
-import 'package:bfban/constants/api.dart';
-import 'package:bfban/utils/index.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
-import '../../component/_refresh/index.dart';
+import '/component/_time/index.dart';
+import '/component/_empty/index.dart';
+import '/component/_gamesTag/index.dart';
+import '/component/_refresh/index.dart';
+import '/data/index.dart';
+import '/constants/api.dart';
+import '/utils/index.dart';
 
 class HomeCommunityPage extends StatefulWidget {
   const HomeCommunityPage({super.key});

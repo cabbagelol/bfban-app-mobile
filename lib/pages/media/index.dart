@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:bfban/component/_loading/index.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +10,17 @@ import 'package:open_file/open_file.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../component/_refresh/index.dart';
-import '../../constants/api.dart';
-import '../../data/index.dart';
-import '../../provider/dir_provider.dart';
-import '../../provider/userinfo_provider.dart';
-import '../../utils/index.dart';
-import '../../widgets/hint_login.dart';
-import '../../widgets/photo.dart';
-import '/component/_Time/index.dart';
+import '/component/_loading/index.dart';
+import '/component/_refresh/index.dart';
+import '/component/_time/index.dart';
 import '/component/_empty/index.dart';
+import '/constants/api.dart';
+import '/data/index.dart';
+import '/provider/dir_provider.dart';
+import '/provider/userinfo_provider.dart';
+import '/utils/index.dart';
+import '/widgets/hint_login.dart';
+import '/widgets/photo.dart';
 
 class MediaPage extends StatefulWidget {
   final bool? isSelectFile;
