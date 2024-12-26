@@ -1,0 +1,1 @@
+This app provides a mobile interface for BABAN.com with functions including local image recognition, reporting material management, preview and recording of adjacent clients and more.
