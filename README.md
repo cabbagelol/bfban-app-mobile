@@ -4,6 +4,8 @@
 
 ![GitHub closed issues](https://img.shields.io/github/issues-closed/cabbagelol/bfban-app-mobile)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/cabbagelol/bfban-app-mobile)
+[<img src="https://img.shields.io/f-droid/v/com.cabbagelol.bfban?logo=fdroid&logoColor=white"
+    alt="F-Droid">](https://f-droid.org/packages/com.cabbagelol.bfban)
 ![pub package](https://img.shields.io/badge/ios-yes-green)
 ![pub package](https://img.shields.io/badge/desktop_ios-yes-green)
 ![pub package](https://img.shields.io/badge/android-yes-green)
