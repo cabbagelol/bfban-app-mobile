@@ -39,7 +39,7 @@ class LoginPanelState extends State<LoginPanelPage> {
       context: context,
       isDismissible: false,
       showDragHandle: true,
-      scrollControlDisabledMaxHeightRatio: .8,
+      scrollControlDisabledMaxHeightRatio: .9,
       builder: (context) {
         return SigninPage();
       },

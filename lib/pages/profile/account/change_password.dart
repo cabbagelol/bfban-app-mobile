@@ -134,7 +134,7 @@ class ChangePasswordPageState extends State<UserChangePasswordPage> {
                       right: CaptchaWidget(
                         context: context,
                         seconds: 25,
-                        onChange: (Captcha captcha) => captcha.setCaptcha(captcha),
+                        onChange: (dynamic captcha) => captcha.setCaptcha(captcha),
                       ),
                     ),
                   ),

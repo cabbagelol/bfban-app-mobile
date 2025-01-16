@@ -195,14 +195,14 @@ class SigninPageState extends State<SigninPage> {
             )),
             duration: 10000);
       }
-
-      setState(() {
-        loginStatus.load = false;
-      });
     } catch (err) {
       EluiMessageComponent.error(context)(
         child: Text(err.toString()),
       );
+    } finally {
+      setState(() {
+        loginStatus.load = false;
+      });
     }
   }
 
@@ -313,7 +313,7 @@ class SigninPageState extends State<SigninPage> {
                               suffixIcon: CaptchaWidget(
                                 context: context,
                                 seconds: 25,
-                                onChange: (Captcha captcha) => loginStatus.parame!.setCaptcha(captcha),
+                                onChange: (dynamic captcha) => loginStatus.parame!.setCaptcha(captcha),
                               ),
                             ),
                             maxLength: 4,

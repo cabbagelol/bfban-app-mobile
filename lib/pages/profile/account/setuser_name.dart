@@ -225,7 +225,7 @@ class SetuserNamePageState extends State<UserSetUserNamePage> {
                         right: CaptchaWidget(
                           context: context,
                           seconds: 25,
-                          onChange: (Captcha captcha) => captcha.setCaptcha(captcha),
+                          onChange: (dynamic captcha) => captcha.setCaptcha(captcha),
                         ),
                       ),
                     ),

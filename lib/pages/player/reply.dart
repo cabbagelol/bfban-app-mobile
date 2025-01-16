@@ -273,7 +273,7 @@ class ReplyPageState extends State<ReplyPage> {
                             field.didChange(data["value"]);
                           },
                           right: CaptchaWidget(
-                            onChange: (Captcha captcha) => replyStatus.parame!.setCaptcha(captcha),
+                            onChange: (dynamic captcha) => replyStatus.parame!.setCaptcha(captcha),
                           ),
                           maxLenght: 4,
                           placeholder: FlutterI18n.translate(context, "captcha.title"),

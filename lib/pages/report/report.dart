@@ -719,7 +719,7 @@ class _ReportPageState extends State<ReportPage> {
                         });
                       },
                       right: CaptchaWidget(
-                        onChange: (Captcha captcha) => reportStatus.param!.setCaptcha(captcha),
+                        onChange: (dynamic captcha) => reportStatus.param!.setCaptcha(captcha),
                       ),
                       maxLenght: 4,
                       placeholder: FlutterI18n.translate(context, "captcha.title"),
