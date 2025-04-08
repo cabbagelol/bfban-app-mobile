@@ -79,7 +79,7 @@ class TimeLineBaseCardState extends State<TimeLineBaseCard> with SingleTickerPro
       ),
       CircleAvatar(
         radius: 18,
-        backgroundColor: Colors.yellow,
+        backgroundColor: Color(0xFFFF9900),
         child: const Icon(
           Icons.front_hand,
           size: 14,

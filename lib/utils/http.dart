@@ -216,7 +216,6 @@ class Http extends ScaffoldState {
       options: CacheOptions(
         store: MemCacheStore(),
         policy: CachePolicy.request,
-        hitCacheOnErrorExcept: [],
         maxStale: const Duration(days: 7),
         priority: CachePriority.normal,
         cipher: null,

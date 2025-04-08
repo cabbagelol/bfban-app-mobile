@@ -216,6 +216,7 @@ class AppUniLinks with ChangeNotifier {
               if (uri.queryParameters["id"] == null) return;
               _urlUtil.opEnPage(appLinksContext!, "/player/personaId/${uri.queryParameters["id"]}");
               break;
+            case "/space":
             case "/account":
               if (uri.queryParameters["id"] == null) return;
               _urlUtil.opEnPage(appLinksContext!, '/account/${uri.queryParameters["id"]}');

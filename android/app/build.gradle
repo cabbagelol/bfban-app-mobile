@@ -31,6 +31,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace 'com.cabbagelol.bfban'
     compileSdkVersion 34
+    compileSdk = 35
 
     lintOptions {
         checkReleaseBuilds false
@@ -51,15 +52,15 @@ android {
 
     defaultConfig {
         applicationId "com.cabbagelol.bfban"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 34
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         manifestPlaceholders = [
                 JPUSH_PKGNAME: "com.cabbagelol.bfban",
-                JPUSH_APPKEY : "966c3770c8bb47ffcbaacff1",  // NOTE: JPush 上注册的包名对应的 Appkey.
-                JPUSH_CHANNEL: "developer-default",         // Default Value.
+                JPUSH_APPKEY : "966c3770c8bb47ffcbaacff1",
+                JPUSH_CHANNEL: "developer-default",
         ]
     }
 
