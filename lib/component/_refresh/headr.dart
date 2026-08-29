@@ -68,9 +68,9 @@ class AppHeader extends Header {
     this.bezierBackgroundAnimation = false,
     this.bezierBackgroundBounce = false,
   }) : super(
-          readySpringBuilder: readySpringBuilder ?? (bezierBackgroundAnimation ? kBezierSpringBuilder : kMaterialSpringBuilder),
-          frictionFactor: frictionFactor ?? (showBezierBackground ? kBezierFrictionFactor : kMaterialFrictionFactor),
-          horizontalFrictionFactor: frictionFactor ?? (showBezierBackground ? kBezierHorizontalFrictionFactor : kMaterialHorizontalFrictionFactor),
+          readySpringBuilder: readySpringBuilder ?? (bezierBackgroundAnimation ? kBezierSpringBuilder : app_indicator.kMaterialSpringBuilder),
+          frictionFactor: frictionFactor ?? (showBezierBackground ? kBezierFrictionFactor : app_indicator.kMaterialFrictionFactor),
+          horizontalFrictionFactor: frictionFactor ?? (showBezierBackground ? kBezierHorizontalFrictionFactor : app_indicator.kMaterialHorizontalFrictionFactor),
         );
 
   @override

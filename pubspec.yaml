@@ -1,7 +1,7 @@
 name: bfban
 description: bfban.com
 publish_to: 'none'
-version: '0.2.14'
+version: '0.2.15'
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -78,7 +78,8 @@ dependencies:
   connectivity_plus: ^6.0.5
 
   # 相机(扫码 and 拍摄) https://pub.flutter-io.cn/packages/camerawesome
-  camerawesome: ^2.1.0
+  camerawesome:
+    path: ./plugins/camerawesome
 
   # 下拉刷新与加载 https://pub.flutter-io.cn/packages/easy_refresh
   easy_refresh: ^3.3.2+2

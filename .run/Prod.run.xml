@@ -6,6 +6,9 @@
         factoryName="Flutter"
         type="FlutterRunConfigurationType">
         <option
+            name="attachArgs"
+            value="--info" />
+        <option
             name="filePath"
             value="$PROJECT_DIR$/lib/main.prod.dart" />
         <method

@@ -130,6 +130,7 @@ class Http extends ScaffoldState {
             requestOptions: RequestOptions(path: url, method: method),
           );
         case DioExceptionType.unknown:
+        default:
           return Response(
             data: {'error': -2, 'message': 'unknown'},
             requestOptions: RequestOptions(path: url, method: method),

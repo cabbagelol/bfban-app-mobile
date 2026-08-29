@@ -20,7 +20,11 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/utils/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'main.prod.dart' as prod;
+
 const String appGroupId = 'com.cabbagelol.bfban';
+
+void main() => prod.main();
 
 // 入口
 void runMain() async {

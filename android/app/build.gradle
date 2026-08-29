@@ -30,8 +30,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace 'com.cabbagelol.bfban'
-    compileSdkVersion 34
-    compileSdk = 35
+    compileSdk = 36
 
     lintOptions {
         checkReleaseBuilds false
@@ -53,7 +52,7 @@ android {
     defaultConfig {
         applicationId "com.cabbagelol.bfban"
         minSdkVersion 24
-        targetSdkVersion 34
+        targetSdkVersion 36
         multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

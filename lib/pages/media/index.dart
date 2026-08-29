@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:extended_image/extended_image.dart';
+import 'package:extended_image/extended_image.dart' hide MediaType;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
