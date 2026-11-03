@@ -66,11 +66,15 @@ class AppInfoNetworkStatus with ChangeNotifier {
   /// ConnectivityResult.none
   /// 获取连接的网络类型
   Future<ConnectivityResult> getConnectivityResult() async {
-    final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
-    _connectivityResult = connectivityResult.first;
+    try {
+      final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+      _connectivityResult = connectivityResult.isNotEmpty ? connectivityResult.first : ConnectivityResult.none;
+    } catch (_) {
+      _connectivityResult = ConnectivityResult.none;
+    }
     if (!isNetwork) eventUtil.emit("not-network");
     notifyListeners();
-    return connectivityResult.first;
+    return _connectivityResult!;
   }
 }
 
@@ -89,59 +93,73 @@ class NetworkConf with ChangeNotifier {
     recordLink: {},
   );
 
-  /// [Event]
-  /// 初始化
+  /**
+   * 初始化配置，并发获取远程配置并设置超时保护
+   */
   Future init() async {
-    for (int index = 0; index < data.confList!.length; index++) {
-      await getRemoteConfiguration(data.confList![index]);
+    try {
+      final List confList = data.confList ?? [];
+      await Future.wait(
+        confList.map((fileName) => getRemoteConfiguration(fileName.toString())),
+      ).timeout(const Duration(seconds: 4));
+    } catch (_) {
+      // 网络超时或失败时保持默认配置
     }
 
-    // 更新类
-    Config.game = data.gameName!;
-    Config.achievements = data.achievements!;
-    Config.privilege = data.privilege!;
-    Config.cheatMethodsGlossary = data.cheatMethodsGlossary!;
-    Config.cheaterStatus = data.cheaterStatus!;
-    Config.action = data.action!;
-    Config.recordLink = data.recordLink!;
+    // 更新类，带安全兜底，防止远程配置失败时出现 null unwrap 崩溃
+    Config.game = data.gameName ?? {"child": []};
+    Config.achievements = (data.achievements != null && data.achievements!["child"] != null) ? data.achievements! : {"child": []};
+    Config.privilege = data.privilege ?? {};
+    Config.cheatMethodsGlossary = (data.cheatMethodsGlossary != null && data.cheatMethodsGlossary!["child"] != null) ? data.cheatMethodsGlossary! : {"child": []};
+    Config.cheaterStatus = data.cheaterStatus ?? {};
+    Config.action = (data.action != null && data.action!["child"] != null) ? data.action! : {"child": []};
+    Config.recordLink = data.recordLink ?? {};
 
     notifyListeners();
     return Config;
   }
 
-  /// [Response]
-  /// 获取远程配置
+  /**
+   * 获取单项远程配置
+   */
   Future getRemoteConfiguration(String fileName) async {
-    Response result = await Http.fetchJsonPData(
-      "config/$fileName.json",
-      httpDioValue: "web_site",
-    );
+    try {
+      Response result = await Http.fetchJsonPData(
+        "config/$fileName.json",
+        httpDioValue: "web_site",
+      );
 
-    switch (fileName) {
-      case "gameName":
-        data.gameName = result.data;
-        break;
-      case "achievements":
-        data.achievements = result.data;
-        break;
-      case "action":
-        data.action = result.data;
-        break;
-      case "cheatMethodsGlossary":
-        data.cheatMethodsGlossary = result.data;
-        break;
-      case "cheaterStatus":
-        data.cheaterStatus = result.data;
-        break;
-      case "privilege":
-        data.privilege = result.data;
-        break;
-      case "recordLink":
-        data.recordLink = result.data;
-        break;
+      if (result.statusCode == 200 && result.data != null && result.data is Map) {
+        final Map mapData = result.data as Map;
+        switch (fileName) {
+          case "gameName":
+            data.gameName = mapData;
+            break;
+          case "achievements":
+            data.achievements = mapData;
+            break;
+          case "action":
+            data.action = mapData;
+            break;
+          case "cheatMethodsGlossary":
+            data.cheatMethodsGlossary = mapData;
+            break;
+          case "cheaterStatus":
+            data.cheaterStatus = mapData;
+            break;
+          case "privilege":
+            data.privilege = mapData;
+            break;
+          case "recordLink":
+            data.recordLink = mapData;
+            break;
+        }
+      }
+
+      return result;
+    } catch (_) {
+      return null;
     }
-
-    return result;
   }
 }
 

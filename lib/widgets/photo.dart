@@ -166,7 +166,10 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
         loadStateChanged: loadStateChanged,
         onDoubleTap: onDoubleTap,
       ),
-      ExtendedImage.network(
+      (widget.imageUrl
+          .trim()
+          .isNotEmpty)
+          ? ExtendedImage.network(
         widget.imageUrl,
         fit: BoxFit.contain,
         filterQuality: FilterQuality.high,
@@ -176,6 +179,7 @@ class PhotoViewSimpleScreenState extends State<PhotoViewSimpleScreen> with Ticke
         loadStateChanged: loadStateChanged,
         onDoubleTap: onDoubleTap,
       )
+          : const Center(child: Icon(Icons.broken_image))
     ][index];
   }
 

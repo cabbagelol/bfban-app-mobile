@@ -88,7 +88,7 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
 
       dynamic d = result.data;
 
-      if (result.data["success"] == 1) {
+      if (result.data["success"] == 1 && d["data"] is List) {
         for (var playerItem in d["data"] as List) {
           TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
           tourRecordPlayerBaseData.setData(playerItem);

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:extended_image/extended_image.dart' hide MediaType;
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_elui_plugin/elui.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
@@ -1225,26 +1225,32 @@ class MediaNetworkIconCard extends StatelessWidget {
       children: [
         Expanded(
           flex: 1,
-          child: ExtendedImage.network(
-            "${Config.apis["network_service_request"]!.url}/service/file?filename=${i.filename}",
+          child: (Config.apiHost["network_service_request"]?.url != null && i.filename
+              .toString()
+              .isNotEmpty)
+              ? ExtendedImage.network(
+            "${Config.apiHost["network_service_request"]!.url}/service/file?filename=${i.filename}",
             fit: BoxFit.contain,
             filterQuality: FilterQuality.low,
             repeat: ImageRepeat.noRepeat,
             loadStateChanged: (ExtendedImageState state) {
               switch (state.extendedImageLoadState) {
                 case LoadState.failed:
-                  return Center(
+                  return const Center(
                     child: Icon(Icons.error),
                   );
                 case LoadState.completed:
                   break;
                 case LoadState.loading:
-                  return Center(
+                  return const Center(
                     child: LoadingWidget(),
                   );
               }
               return null;
             },
+          )
+              : const Center(
+            child: Icon(Icons.broken_image),
           ),
         )
       ],

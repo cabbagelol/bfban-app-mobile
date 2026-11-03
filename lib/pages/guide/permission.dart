@@ -175,9 +175,9 @@ class _PermissionState extends State<PermissionWidget> {
       "text": "app.guide.permission.status.0",
       "icon": Icons.check_circle,
     },
-    PermissionStatus.values: {
-      "text": "app.guide.permission.status.-1",
-      "icon": Icons.remove_circle,
+    PermissionStatus.limited: {
+      "text": "app.guide.permission.status.0",
+      "icon": Icons.check_circle_outline,
     },
     PermissionStatus.denied: {
       "text": "app.guide.permission.status.1",
@@ -185,11 +185,15 @@ class _PermissionState extends State<PermissionWidget> {
     },
     PermissionStatus.permanentlyDenied: {
       "text": "app.guide.permission.status.2",
-      "icon": Icons.remove_circle,
+      "icon": Icons.cancel,
     },
     PermissionStatus.restricted: {
       "text": "app.guide.permission.status.3",
       "icon": Icons.info,
+    },
+    PermissionStatus.provisional: {
+      "text": "app.guide.permission.status.-1",
+      "icon": Icons.help_outline,
     },
   };
 
@@ -209,7 +213,9 @@ class _PermissionState extends State<PermissionWidget> {
 
   void _listenForPermissionStatus() async {
     final status = await _permission.status;
-    setState(() => _permissionStatus = status);
+    if (mounted) {
+      setState(() => _permissionStatus = status);
+    }
   }
 
   Color getPermissionColor() {
@@ -227,18 +233,44 @@ class _PermissionState extends State<PermissionWidget> {
   }
 
   void _shouldShowRequestRationale(Permission permission) async {
-    permissionName[_permission]['shouldShowRequestRationale'] = await permission.shouldShowRequestRationale;
+    if (permissionName.containsKey(_permission)) {
+      permissionName[_permission]['shouldShowRequestRationale'] = await permission.shouldShowRequestRationale;
+    }
+  }
+
+  Map<String, dynamic> _getStatusConfig(PermissionStatus status) {
+    if (permissionStatus.containsKey(status) && permissionStatus[status] is Map) {
+      return Map<String, dynamic>.from(permissionStatus[status] as Map);
+    }
+    return {
+      "text": "app.guide.permission.status.-1",
+      "icon": Icons.help_outline,
+    };
+  }
+
+  Map<String, dynamic> _getNameConfig(Permission permission) {
+    if (permissionName.containsKey(permission) && permissionName[permission] is Map) {
+      return Map<String, dynamic>.from(permissionName[permission] as Map);
+    }
+    return {
+      "name": "app.guide.permission.title",
+      "describe": "",
+      "shouldShowRequestRationale": false,
+    };
   }
 
   @override
   Widget build(BuildContext context) {
+    final statusConf = _getStatusConfig(_permissionStatus);
+    final nameConf = _getNameConfig(_permission);
+
     return Column(
       children: [
         const Divider(height: 1),
         EluiCellComponent(
           icons: GestureDetector(
             child: Icon(
-              permissionStatus[_permissionStatus]["icon"],
+              statusConf["icon"] as IconData,
               color: getPermissionColor(),
             ),
           ),
@@ -248,8 +280,8 @@ class _PermissionState extends State<PermissionWidget> {
             linkColor: Theme.of(context).textTheme.displayMedium?.color,
             backgroundColor: Theme.of(context).cardTheme.color,
           ),
-          title: "${FlutterI18n.translate(context, permissionName[_permission]["name"])} - ${FlutterI18n.translate(context, permissionStatus[_permissionStatus]["text"])}",
-          label: FlutterI18n.translate(context, permissionName[_permission]["describe"]),
+          title: "${FlutterI18n.translate(context, nameConf["name"].toString())} - ${FlutterI18n.translate(context, statusConf["text"].toString())}",
+          label: FlutterI18n.translate(context, nameConf["describe"].toString()),
           onTap: () {
             requestPermission(_permission);
           },

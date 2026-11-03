@@ -76,6 +76,39 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    final String iconUrl = achievementUtil.getIcon(achievementDetailInfo["iconPath"]?.toString());
+    final String val = achievementDetailInfo["value"]?.toString() ?? "";
+    final bool canActive = achievementDetailInfo["acquisition"] is List &&
+        (achievementDetailInfo["acquisition"] as List).contains("active");
+
+    Widget buildIconWidget() {
+      if (iconUrl.isEmpty) {
+        return Container(
+          color: Theme
+              .of(context)
+              .dividerTheme
+              .color ?? Colors.grey.shade300,
+          width: 100,
+          height: 100,
+        );
+      }
+      return Image.network(
+        iconUrl,
+        width: 100,
+        height: 100,
+        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+          return Container(
+            color: Theme
+                .of(context)
+                .dividerTheme
+                .color ?? Colors.grey.shade300,
+            width: 100,
+            height: 100,
+          );
+        },
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(),
       body: Scrollbar(
@@ -90,36 +123,14 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
                 child: Center(
                   child: Stack(
                     children: [
-                      Image.network(
-                        achievementUtil.getIcon(achievementDetailInfo["iconPath"]),
-                        width: 100,
-                        height: 100,
-                        errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                          return Container(
-                            color: Theme.of(context).dividerTheme.color,
-                            width: 100,
-                            height: 100,
-                          );
-                        },
-                      ),
+                      buildIconWidget(),
                       Positioned(
                         child: BackdropFilter(
                           filter: ui.ImageFilter.blur(
                             sigmaX: 50.0,
                             sigmaY: 50.0,
                           ),
-                          child: Image.network(
-                            achievementUtil.getIcon(achievementDetailInfo["iconPath"]),
-                            width: 100,
-                            height: 100,
-                            errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
-                              return Container(
-                                color: Theme.of(context).dividerTheme.color,
-                                width: 100,
-                                height: 100,
-                              );
-                            },
-                          ),
+                          child: buildIconWidget(),
                         ),
                       )
                     ],
@@ -133,7 +144,7 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.name"),
+                    val.isNotEmpty ? FlutterI18n.translate(context, "profile.achievement.list.$val.name") : "",
                     style: TextStyle(fontSize: FontSize.xLarge.value, fontWeight: FontWeight.bold),
                   ),
                   if (achievementDetailInfo["rarity"] != null)
@@ -147,15 +158,17 @@ class _UserAchievementPageState extends State<UserAchievementDetailPage> {
                       ),
                     ),
                   const Divider(),
-                  HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.description")),
-                  HtmlCore(
-                    data: FlutterI18n.translate(context, "profile.achievement.list.${achievementDetailInfo["value"]}.conditions"),
-                    style: {'*': Style(color: Colors.white54)},
-                  ),
+                  if (val.isNotEmpty) ...[
+                    HtmlCore(data: FlutterI18n.translate(context, "profile.achievement.list.$val.description")),
+                    HtmlCore(
+                      data: FlutterI18n.translate(context, "profile.achievement.list.$val.conditions"),
+                      style: {'*': Style(color: Colors.white54)},
+                    ),
+                  ],
                 ],
               ),
             ),
-            if ((achievementDetailInfo.containsKey("acquisition") && achievementDetailInfo["acquisition"].indexOf("active") >= 0))
+            if (canActive)
               Container(
                 padding: const EdgeInsets.all(10),
                 child: ElevatedButton(

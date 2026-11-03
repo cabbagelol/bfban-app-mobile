@@ -119,7 +119,7 @@ class _UserAchievementPageState extends State<UserAchievementPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: (Config.achievements["child"] as List).where((o) => !o.containsKey("isHidden")).map<Widget>((e) {
+                children: (Config.achievements["child"] is List ? Config.achievements["child"] as List : []).where((o) => o is Map && !o.containsKey("isHidden")).map<Widget>((e) {
                   if (e["child"] != null) {
                     return ListTile(
                       dense: true,

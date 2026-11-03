@@ -66,7 +66,7 @@ class PinkTheme extends AppBaseThemeItem {
       scaffoldBackgroundColor: const Color(0xFFFFFAFB),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         elevation: 10,
         backgroundColor: Colors.pink.shade300,
         titleTextStyle: const TextStyle(
@@ -211,7 +211,7 @@ class PinkTheme extends AppBaseThemeItem {
         ),
       ),
       primaryColor: Colors.pink.shade300,
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: Colors.pink.shade100,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
@@ -228,7 +228,7 @@ class PinkTheme extends AppBaseThemeItem {
       iconTheme: const IconThemeData(
         color: Color(0xFFB22554),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
@@ -283,7 +283,7 @@ class PinkTheme extends AppBaseThemeItem {
         surface: Colors.white,
         onSurface: Colors.black,
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: Color(0xFFFFFDFD),
         elevation: 0,
       ),

@@ -2,7 +2,6 @@ import 'package:bfban/component/_richEdit/index.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/index.dart';
-import '../not_found/index.dart';
 
 class RichEditPage extends StatefulWidget {
   const RichEditPage({
@@ -39,13 +38,13 @@ class RichEditPageState extends State<RichEditPage> {
 
   Future _onReady() async {
     StorageData richEditData = await _storage.get("richedit");
-    data = richEditData.value;
+    data = (richEditData.value ?? "").toString();
     return data;
   }
 
   /// 确认
   void _onSubmit() async {
-    String html = _richEditCoreKey.currentState!.controllerContent;
+    String html = _richEditCoreKey.currentState?.controllerContent ?? data;
     Navigator.pop(
       context,
       {"code": 1, "html": html},
@@ -77,13 +76,14 @@ class RichEditPageState extends State<RichEditPage> {
       body: FutureBuilder(
         future: futureBuilder,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            return const NotFoundPage();
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
           }
 
           return RichEditCore(
             key: _richEditCoreKey,
             data: data,
+            expandFullHeight: true,
           );
         },
       ),

@@ -59,7 +59,9 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
       _initChat(),
       _initLog(),
       _initLink(),
-    ]).catchError((onError) => []).whenComplete(() async {
+    ]).timeout(const Duration(seconds: 6), onTimeout: () {
+      return [];
+    }).catchError((onError) => []).whenComplete(() async {
       if (!await _onGuide()) return;
 
       onMain();
@@ -153,10 +155,14 @@ class SplashPageState extends State<SplashPage> with SingleTickerProviderStateMi
       _loadTip = "app.splash.appInitial";
     });
     AppInfoProvider app = _providerUtil.ofApp(context);
-    await Future.wait([
-      app.conf.init(),
-      app.connectivity.init(context),
-    ]);
+    try {
+      await Future.wait([
+        app.conf.init(),
+        app.connectivity.init(context),
+      ]).timeout(const Duration(seconds: 4));
+    } catch (_) {
+      // 容错处理，防止因网络或服务未启动卡在初始状态
+    }
 
     return true;
   }

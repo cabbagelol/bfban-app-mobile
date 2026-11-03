@@ -85,17 +85,21 @@ class PackageProvider with ChangeNotifier {
         httpDioValue: "app_web_site",
       );
 
-      if (result.data.toString().length >= 0) {
+      if (result.statusCode == 200 && result.data != null && result.data is Map && result.data["list"] is List) {
         package.versionLists = result.data["list"];
-        package.onlineVersion = package.versionLists!.first["version"];
+        if (package.versionLists!.isNotEmpty) {
+          package.onlineVersion = package.versionLists!.first["version"];
+        }
+      } else {
+        package.versionLists = [];
       }
-
-      package.loadOnline = false;
-      notifyListeners();
 
       return result;
     } catch (e) {
       package.versionLists = [];
+    } finally {
+      package.loadOnline = false;
+      notifyListeners();
     }
   }
 

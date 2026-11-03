@@ -72,7 +72,6 @@ class Http extends ScaffoldState {
         domain = Config.apiUpload.url;
         break;
       case HttpDioType.none:
-      default:
         domain = "";
         break;
     }
@@ -140,6 +139,9 @@ class Http extends ScaffoldState {
     return result;
   }
 
+  /**
+   * 获取远程配置/JSONP数据
+   */
   static Future<Response> fetchJsonPData(
     String url, {
     String httpDioValue = "network_service_request",
@@ -147,15 +149,20 @@ class Http extends ScaffoldState {
   }) async {
     try {
       final method = 'JSONP';
-      final dio = Dio();
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 4),
+          receiveTimeout: const Duration(seconds: 4),
+        ),
+      );
 
       String domain = "";
       switch (httpDioType) {
         case HttpDioType.api:
           domain = httpDioValue.isEmpty ? "" : Config.apiHost[httpDioValue]!.url;
           break;
+        case HttpDioType.upload:
         case HttpDioType.none:
-        default:
           domain = "";
           break;
       }
@@ -164,12 +171,18 @@ class Http extends ScaffoldState {
 
       final response = await dio.get<String>(
         path,
-        options: Options(responseType: ResponseType.plain), // 以文本形式接收响应
+        options: Options(responseType: ResponseType.plain),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data != null) {
         try {
-          final data = jsonDecode(response.data as String);
+          String raw = (response.data as String).trim();
+          if (raw.startsWith('run(') && raw.endsWith(');')) {
+            raw = raw.substring(4, raw.length - 2).trim();
+          } else if (raw.startsWith('run(') && raw.endsWith(')')) {
+            raw = raw.substring(4, raw.length - 1).trim();
+          }
+          final data = jsonDecode(raw);
 
           return Response(
             data: data,
@@ -196,7 +209,11 @@ class Http extends ScaffoldState {
         requestOptions: RequestOptions(),
       );
     } catch (e) {
-      rethrow;
+      return Response(
+        statusCode: 500,
+        statusMessage: e.toString(),
+        requestOptions: RequestOptions(),
+      );
     }
   }
 

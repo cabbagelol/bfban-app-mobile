@@ -136,11 +136,11 @@ class MediaFileLocalData extends BaseMediaFileData {
   }
 
   String get filename {
-    return (fileManagement.splitFileUrl(_file!.path)["fileName"] as String).replaceAll(upLoadedName, "");
+    return (fileManagement.splitFileUrl(_file?.path ?? "")["fileName"]?.toString() ?? "").replaceAll(upLoadedName, "");
   }
 
   String get fileExtension {
-    return fileManagement.splitFileUrl(_file!.path)["fileExtension"] as String;
+    return fileManagement.splitFileUrl(_file?.path ?? "")["fileExtension"]?.toString() ?? "";
   }
 }
 

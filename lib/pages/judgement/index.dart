@@ -10,7 +10,7 @@ import '/constants/api.dart';
 import '/data/index.dart';
 import '/component/_privilegesTag/index.dart';
 import '/component/_customReply/customReply.dart';
-import '/component/_html/html.dart';
+import '/component/_richEdit/index.dart';
 import '/widgets/edit/game_type_radio.dart';
 
 class JudgementPage extends StatefulWidget {
@@ -53,19 +53,22 @@ class JudgementPageState extends State<JudgementPage> {
   void initState() {
     super.initState();
     AppInfoProvider app = ProviderUtil().ofApp(context);
-    Map cheatMethodsGlossary = app.conf.data.cheatMethodsGlossary!;
+    Map? cheatMethodsGlossary = app.conf.data.cheatMethodsGlossary;
 
     setState(() {
       manageStatus.parame!.toPlayerId = widget.id;
-      if (app.conf.data.action!["child"] != null) manageStatus.parame!.action = app.conf.data.action!["child"][0]["value"];
+      final actionList = (app.conf.data.action != null && app.conf.data.action!["child"] is List) ? (app.conf.data.action!["child"] as List) : [];
+      if (actionList.isNotEmpty) {
+        manageStatus.parame!.action = actionList[0]["value"];
+      }
 
-      if (cheatMethodsGlossary["child"] != null) {
-        cheatMethodsGlossary["child"].forEach((i) {
-          setState(() {
+      if (cheatMethodsGlossary != null && cheatMethodsGlossary["child"] is List) {
+        for (var i in cheatMethodsGlossary["child"] as List) {
+          if (i is Map && i["value"] != null) {
             String key = _util.queryCheatMethodsGlossary(i["value"]);
             _cheatingTypes.add({"value": key, "select": false});
-          });
-        });
+          }
+        }
       }
     });
   }
@@ -132,11 +135,11 @@ class JudgementPageState extends State<JudgementPage> {
   _opEnRichEdit({updateValue}) async {
     await _storage.set("richedit", value: updateValue ?? manageStatus.parame!.content.toString());
 
-    Map data = await _urlUtil.opEnPage(context, "/richedit");
+    dynamic data = await _urlUtil.opEnPage(context, "/richedit");
 
     /// 按下确认储存富文本编写的内容
-    if (data["code"] == 1) {
-      return data["html"];
+    if (data != null && data is Map && data["code"] == 1) {
+      return (data["html"] ?? "").toString();
     }
 
     return "";
@@ -175,17 +178,25 @@ class JudgementPageState extends State<JudgementPage> {
                 /// S 处理意见
                 FormField(
                   builder: (FormFieldState field) {
+                    final List actionChildList = (appInfo.conf.data.action != null &&
+                        appInfo.conf.data.action!["child"] != null &&
+                        appInfo.conf.data.action!["child"] is List)
+                        ? (appInfo.conf.data.action!["child"] as List)
+                        : [];
                     return Column(
                       children: [
                         EluiCellComponent(title: FlutterI18n.translate(context, "detail.judgement.behavior")),
-                        if (appInfo.conf.data.action!["child"].length > 0)
+                        if (actionChildList.isNotEmpty)
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 15),
                             child: Card(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(3),
                                 side: BorderSide(
-                                  color: Theme.of(context).dividerTheme.color!,
+                                  color: Theme
+                                      .of(context)
+                                      .dividerTheme
+                                      .color ?? Colors.grey.shade300,
                                   width: 1,
                                 ),
                               ),
@@ -207,7 +218,7 @@ class JudgementPageState extends State<JudgementPage> {
                                       });
                                     },
                                     value: field.value,
-                                    items: appInfo.conf.data.action!["child"].map<DropdownMenuItem<String>>((i) {
+                                    items: actionChildList.map<DropdownMenuItem<String>>((i) {
                                       return DropdownMenuItem(
                                         value: i["value"].toString(),
                                         child: Text(
@@ -223,12 +234,21 @@ class JudgementPageState extends State<JudgementPage> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        PrivilegesTagWidget(data: appInfo.conf.data.action!["child"].where((element) => element["value"] == field.value).first["privilege"]),
-                                        const SizedBox(height: 5),
-                                        Text(
-                                          FlutterI18n.translate(context, "basic.action.${_util.queryAction(field.value)}.describe"),
-                                          style: TextStyle(fontSize: FontSize.small.value, color: Theme.of(context).textTheme.displaySmall!.color),
-                                        ),
+                                        if (actionChildList.any((element) => element["value"] == field.value)) ...[
+                                          PrivilegesTagWidget(data: actionChildList.firstWhere((element) => element["value"] == field.value)["privilege"]),
+                                          const SizedBox(height: 5),
+                                          Text(
+                                            FlutterI18n.translate(context, "basic.action.${_util.queryAction(field.value)}.describe"),
+                                            style: TextStyle(
+                                              fontSize: FontSize.small.value,
+                                              color: Theme
+                                                  .of(context)
+                                                  .textTheme
+                                                  .displaySmall
+                                                  ?.color ?? Colors.grey,
+                                            ),
+                                          ),
+                                        ],
                                       ],
                                     ),
                                   ),
@@ -243,7 +263,7 @@ class JudgementPageState extends State<JudgementPage> {
                   initialValue: manageStatus.parame!.action,
                   onSaved: (value) {
                     setState(() {
-                      manageStatus.parame!.action = value as String;
+                      manageStatus.parame!.action = (value ?? "").toString();
                     });
                   },
                   validator: (value) {
@@ -353,17 +373,21 @@ class JudgementPageState extends State<JudgementPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  InkWell(
-                                    child: Container(
-                                      constraints: const BoxConstraints(minHeight: 100),
-                                      child: Opacity(
-                                        opacity: field.value.isNotEmpty ? 1 : .5,
-                                        child: HtmlCore(data: field.value.isNotEmpty ? field.value : FlutterI18n.translate(context, "app.richedit.placeholder")),
-                                      ),
-                                    ),
-                                    onTap: () async {
-                                      String html = await _opEnRichEdit(updateValue: field.value);
+                                  RichEditWidget(
+                                    data: field.value?.toString() ?? "",
+                                    minHeight: 160,
+                                    onChange: (String html) {
                                       field.didChange(html);
+                                      manageStatus.parame!.content = html;
+                                    },
+                                    onFullscreen: () async {
+                                      String html = await _opEnRichEdit(updateValue: field.value);
+                                      if (html.isNotEmpty) {
+                                        field.didChange(html);
+                                        setState(() {
+                                          manageStatus.parame!.content = html;
+                                        });
+                                      }
                                     },
                                   ),
                                   const Divider(height: 1),

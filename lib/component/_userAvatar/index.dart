@@ -17,36 +17,59 @@ class UserAvatar extends StatefulWidget {
 }
 
 class _UserAvatarState extends State<UserAvatar> {
-  int mirrorImageIndex = 0;
-  List mirrorImage = [
-    "http://cn.gravatar.com/avatar/",
-    "https://gravatar.loli.net/avatar/",
-    "https://cdn.sep.cc/avatar/"
-        "https://cdn.v2ex.com/gravatar/",
-    "https://cdn.sep.cc/avatar/",
-  ];
+  /// 处理 Gravatar 国内镜像，避免海外域名超时或无法访问
+  String _normalizeAvatarUrl(String url) {
+    String cleanUrl = url.trim();
+    if (cleanUrl.contains("gravatar.com/avatar/")) {
+      cleanUrl = cleanUrl.replaceFirst(RegExp(r'https?:\/\/[a-zA-Z0-9_.-]*gravatar\.com\/avatar\/'), "https://cravatar.cn/avatar/");
+    }
+    return cleanUrl;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final String src = _normalizeAvatarUrl(widget.src ?? "");
+    final double defaultSize = widget.size ?? 40.0;
+
+    Widget buildFallbackAvatar() {
+      return Container(
+        width: widget.size,
+        height: widget.size,
+        color: Theme
+            .of(context)
+            .colorScheme
+            .surfaceContainerHighest,
+        child: Icon(
+          Icons.account_circle,
+          size: defaultSize,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .onSurfaceVariant,
+        ),
+      );
+    }
+
+    if (src.isEmpty) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(60),
+        child: buildFallbackAvatar(),
+      );
+    }
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(60),
       child: ExtendedImage.network(
-        widget.src!,
+        src,
         width: widget.size,
         height: widget.size,
+        printError: false,
         loadStateChanged: (ExtendedImageState state) {
           switch (state.extendedImageLoadState) {
             case LoadState.failed:
-              if (mounted) {
-                setState(() {
-                  widget.src!.replaceAll(mirrorImageIndex == 0 ? 'https://www.gravatar.com/avatar/' : mirrorImage[mirrorImageIndex - 1], mirrorImage[mirrorImageIndex]);
-
-                  mirrorImageIndex += 1;
-                });
-              }
-              return Icon(Icons.image_not_supported_outlined);
+              return buildFallbackAvatar();
             case LoadState.loading:
-              return LoadingWidget();
+              return const LoadingWidget();
             case LoadState.completed:
               break;
           }

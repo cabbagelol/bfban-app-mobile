@@ -88,7 +88,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
       scaffoldBackgroundColor: const Color(0xfff6fffd),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         elevation: 10,
         backgroundColor: color300,
         titleTextStyle: const TextStyle(
@@ -226,7 +226,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         ),
       ),
       primaryColor: color0,
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: color300,
         dividerColor: Colors.transparent,
         overlayColor: WidgetStateProperty.all(Colors.transparent),
@@ -246,7 +246,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
       iconTheme: IconThemeData(
         color: color800,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
@@ -302,7 +302,7 @@ class MikuGreenTheme extends AppBaseThemeItem {
         surface: color0,
         onSurface: Colors.black,
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: Color(0xFFFFFDFD),
         elevation: 0,
       ),

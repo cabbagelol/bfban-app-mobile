@@ -4,7 +4,7 @@ library;
 import 'package:bfban/provider/dir_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/theme_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:provider/provider.dart';
 import '../provider/appInfo_provider.dart';
 import '../provider/log_provider.dart';

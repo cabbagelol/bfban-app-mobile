@@ -6,7 +6,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_customReply/customReply.dart';
-import '../../component/_html/html.dart';
+import '../../component/_richEdit/index.dart';
 import '../../constants/api.dart';
 import '../../data/index.dart';
 import '../../utils/index.dart';
@@ -138,11 +138,11 @@ class _AppealPageState extends State<AppealPage> {
   _opEnRichEdit({updateValue}) async {
     await _storage.set("richedit", value: updateValue ?? appealStatus.parame!.content.toString());
 
-    Map data = await _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino);
+    dynamic data = await _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino);
 
     /// 按下确认储存富文本编写的内容
-    if (data["code"] == 1) {
-      return data["html"];
+    if (data != null && data is Map && data["code"] == 1) {
+      return (data["html"] ?? "").toString();
     }
 
     return "";
@@ -201,7 +201,7 @@ class _AppealPageState extends State<AppealPage> {
                       style: Theme.of(context).dropdownMenuTheme.textStyle,
                       onChanged: (value) {
                         setState(() {
-                          appealStatus.parame!.appealType = value as String;
+                          appealStatus.parame!.appealType = (value ?? "").toString();
                         });
                       },
                       value: appealStatus.parame!.appealType,
@@ -248,7 +248,9 @@ class _AppealPageState extends State<AppealPage> {
                       });
                     },
                     validator: (value) {
-                      if (['moss'].contains(appealStatus.parame!.appealType) && (value as String).isEmpty) return "";
+                      if (['moss'].contains(appealStatus.parame!.appealType) && (value == null || value
+                          .toString()
+                          .isEmpty)) return "";
                       return null;
                     },
                   ),
@@ -284,7 +286,9 @@ class _AppealPageState extends State<AppealPage> {
                       });
                     },
                     validator: (value) {
-                      if (['moss', 'farm'].contains(appealStatus.parame!.appealType) && (value as String).isEmpty) return "";
+                      if (['moss', 'farm'].contains(appealStatus.parame!.appealType) && (value == null || value
+                          .toString()
+                          .isEmpty)) return "";
                       return null;
                     },
                   ),
@@ -327,7 +331,9 @@ class _AppealPageState extends State<AppealPage> {
                       });
                     },
                     validator: (value) {
-                      if (['moss'].contains(appealStatus.parame!.appealType) && (value as String).isEmpty) return "";
+                      if (['moss'].contains(appealStatus.parame!.appealType) && (value == null || value
+                          .toString()
+                          .isEmpty)) return "";
                       return null;
                     },
                   ),
@@ -366,23 +372,28 @@ class _AppealPageState extends State<AppealPage> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
-                                    InkWell(
-                                      child: Container(
-                                        constraints: const BoxConstraints(minHeight: 100),
-                                        child: Opacity(
-                                          opacity: field.value.isNotEmpty ? 1 : .5,
-                                          child: HtmlCore(data: field.value.isNotEmpty ? field.value : FlutterI18n.translate(context, "app.richedit.placeholder")),
-                                        ),
-                                      ),
-                                      onTap: () async {
-                                        String html = await _opEnRichEdit(updateValue: field.value);
+                                    RichEditWidget(
+                                      data: field.value?.toString() ?? "",
+                                      minHeight: 160,
+                                      onChange: (String html) {
                                         field.didChange(html);
+                                        appealStatus.parame!.content = html;
+                                      },
+                                      onFullscreen: () async {
+                                        String html = await _opEnRichEdit(updateValue: field.value);
+                                        if (html.isNotEmpty) {
+                                          field.didChange(html);
+                                          setState(() {
+                                            appealStatus.parame!.content = html;
+                                          });
+                                        }
                                       },
                                     ),
                                     const Divider(height: 1),
                                     CustomReplyWidget(
                                       type: CustomReplyType.general,
                                       onChange: (String selectTemp) {
+                                        field.didChange(selectTemp);
                                         setState(() {
                                           appealStatus.parame!.content = selectTemp;
                                         });
@@ -404,7 +415,9 @@ class _AppealPageState extends State<AppealPage> {
                       });
                     },
                     validator: (value) {
-                      if (['moss', 'farm', 'none'].contains(appealStatus.parame!.appealType) && (value as String).isEmpty) return "";
+                      if (['moss', 'farm', 'none'].contains(appealStatus.parame!.appealType) && (value == null || value
+                          .toString()
+                          .isEmpty)) return "";
                       if (value.toString().length < 0 && value.toString().length > 5000) return "";
                       if (value.toString().isEmpty) return "";
                       return null;

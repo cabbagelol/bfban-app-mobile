@@ -1,7 +1,7 @@
 /// 账户持久管理
 
 import 'package:bfban/utils/provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 import "storage.dart";
 

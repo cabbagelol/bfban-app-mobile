@@ -41,8 +41,12 @@ class CheatListCard extends StatelessWidget {
           Radius.circular(20),
         ),
         child: CircleAvatar(
-          child: ExtendedImage.network(
-            item["avatarLink"],
+          child: (item["avatarLink"] != null && item["avatarLink"]
+              .toString()
+              .trim()
+              .isNotEmpty && item["avatarLink"].toString() != "null")
+              ? ExtendedImage.network(
+            item["avatarLink"].toString(),
             width: size,
             height: size,
             fit: BoxFit.fill,
@@ -58,11 +62,20 @@ class CheatListCard extends StatelessWidget {
                 default:
                   return Image.asset(
                     "assets/images/default-player-avatar.jpg",
-                    cacheWidth: size!.toInt(),
-                    cacheHeight: size!.toInt(),
+                    width: size,
+                    height: size,
+                    cacheWidth: size?.toInt(),
+                    cacheHeight: size?.toInt(),
                   );
               }
             },
+          )
+              : Image.asset(
+            "assets/images/default-player-avatar.jpg",
+            width: size,
+            height: size,
+            cacheWidth: size?.toInt(),
+            cacheHeight: size?.toInt(),
           ),
         ),
       ),

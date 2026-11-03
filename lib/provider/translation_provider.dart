@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 import '../data/index.dart';
 import '../utils/index.dart';
@@ -47,12 +47,18 @@ class TranslationProvider with ChangeNotifier {
   Future init() async {
     Map localLang = await getLocalLang();
 
-    if (_listDictionaryFrom.isEmpty && localLang.isEmpty) {
-      await getNetworkLangListDictionary();
-      await updateLocalLang();
-    }
+    try {
+      if (_listDictionaryFrom.isEmpty && localLang.isEmpty) {
+        await getNetworkLangListDictionary().timeout(const Duration(seconds: 3));
+        await updateLocalLang().timeout(const Duration(seconds: 3));
+      }
+    } catch (_) {}
 
-    _currentLang = localLang["currentLang"];
+    _currentLang = (localLang["currentLang"] != null && localLang["currentLang"]
+        .toString()
+        .isNotEmpty)
+        ? localLang["currentLang"].toString()
+        : _default;
     notifyListeners();
   }
 
@@ -102,12 +108,12 @@ class TranslationProvider with ChangeNotifier {
       httpDioValue: "app_web_site",
     );
 
-    if (result.data.toString().isNotEmpty) {
+    if (result.statusCode == 200 && result.data != null && result.data is Map && result.data["child"] is List) {
       _listDictionaryFrom = result.data["child"];
     }
     notifyListeners();
 
-    return result.data["child"];
+    return _listDictionaryFrom;
   }
 
   // 获取国际化对应的语言文本

@@ -83,7 +83,7 @@ class DarkTheme extends AppBaseThemeItem {
       unselectedWidgetColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xff111111),
       splashColor: Colors.transparent,
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         elevation: 2,
         backgroundColor: Color(0xff171414),
         titleTextStyle: TextStyle(
@@ -272,7 +272,7 @@ class DarkTheme extends AppBaseThemeItem {
         titleTextStyle: TextStyle(color: Colors.white, fontSize: FontSize.xLarge.value),
       ),
       primaryColor: Colors.black,
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: Colors.white38,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
@@ -286,7 +286,7 @@ class DarkTheme extends AppBaseThemeItem {
           ),
         ),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: const Color(0xff000000),
         shadowColor: Colors.black54,
         margin: EdgeInsets.zero,
@@ -348,7 +348,7 @@ class DarkTheme extends AppBaseThemeItem {
         surface: Color(0xff111b2b),
         onSurface: Colors.white,
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: Colors.black,
         elevation: 0,
       ),

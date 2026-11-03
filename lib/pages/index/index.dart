@@ -8,7 +8,7 @@ import 'package:bfban/pages/index/players.dart';
 import 'package:bfban/provider/chat_provider.dart';
 import 'package:bfban/provider/package_provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';

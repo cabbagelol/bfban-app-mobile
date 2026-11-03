@@ -120,7 +120,7 @@ class HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
 
       dynamic d = result.data;
 
-      if (result.data["success"] == 1) {
+      if (result.data["success"] == 1 && d["data"] is List) {
         for (var playerItem in d["data"] as List) {
           TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
           tourRecordPlayerBaseData.setData(playerItem);
@@ -304,17 +304,26 @@ class HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
                                   .entries
                                   .map<Widget>((e) => Opacity(
                                         opacity: 1 - (.4 * e.key),
-                                        child: ExtendedImage.network(
-                                          e.value.avatarLink.toString(),
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.contain,
-                                          cache: true,
-                                          clearMemoryCacheWhenDispose: true,
-                                          printError: false,
-                                          cacheHeight: 50,
-                                          cacheWidth: 50,
-                                        ),
+                            child: (e.value.avatarLink != null && e.value.avatarLink
+                                .toString()
+                                .trim()
+                                .isNotEmpty && e.value.avatarLink.toString() != "null")
+                                ? ExtendedImage.network(
+                              e.value.avatarLink.toString(),
+                              width: 70,
+                              height: 70,
+                              fit: BoxFit.contain,
+                              cache: true,
+                              clearMemoryCacheWhenDispose: true,
+                              printError: false,
+                              cacheHeight: 50,
+                              cacheWidth: 50,
+                            )
+                                : Image.asset(
+                              "assets/images/default-player-avatar.jpg",
+                              width: 70,
+                              height: 70,
+                            ),
                                       ))
                                   .toList()
                               : [

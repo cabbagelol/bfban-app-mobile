@@ -126,14 +126,12 @@ class _CustomReplyEditPageState extends State<CustomReplyEditPage> {
   _opEnRichEdit() async {
     await Storage().set("richedit", value: data.content);
 
-    _urlUtil.opEnPage(context, "/richedit").then((data) {
-      /// 按下确认储存富文本编写的内容
-      if (data["code"] == 1) {
-        setState(() {
-          this.data.content = data["html"];
-        });
-      }
-    });
+    dynamic resData = await _urlUtil.opEnPage(context, "/richedit");
+    if (resData != null && resData is Map && resData["code"] == 1) {
+      setState(() {
+        data.content = resData["html"];
+      });
+    }
   }
 
   @override

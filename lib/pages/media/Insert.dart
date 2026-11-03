@@ -419,6 +419,10 @@ class InsertPreview extends MediaBaseInsertPage {
 class _InsertPreviewState extends State<InsertPreview> {
   @override
   Widget build(BuildContext context) {
+    if (widget.url == null || widget.url!.trim().isEmpty) {
+      return const Center(child: Icon(Icons.broken_image));
+    }
+
     return Center(
       child: ExtendedImage.network(
         widget.url!,

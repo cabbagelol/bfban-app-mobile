@@ -78,7 +78,7 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
       initialValue: widget.data!.values[0],
       onSaved: (value) {
         setState(() {
-          widget.data!.values[0] = value as String;
+          widget.data!.values[0] = (value ?? "").toString();
         });
       },
       validator: (value) {

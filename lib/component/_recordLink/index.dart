@@ -37,92 +37,116 @@ class _RecordLinkWidgetState extends State<RecordLinkWidget> {
   }
 
   _generateColumn() {
-    if (widget.data!.isEmpty || widget.data!["games"].isEmpty) return;
-    List games = widget.data!["games"];
+    if (widget.data == null || widget.data!.isEmpty || widget.data!["games"] == null || widget.data!["games"] is! List) return;
+    List games = widget.data!["games"] as List;
     List<Widget> rows = [];
 
     for (var i in games) {
       rows.add(Column(
-        children: _generateLine([], i),
+        children: _generateLine([], i.toString()),
       ));
     }
 
-    setState(() {
-      this.rows = rows;
-    });
+    if (mounted) {
+      setState(() {
+        this.rows = rows;
+      });
+    }
   }
 
   List<Widget> _generateLine(List children, String gameName) {
     String platformSelect = 'origin';
-    List<Widget> _children = [];
-    if (widget.data!.isEmpty) return [];
+    List<Widget> childrenList = [];
+    if (widget.data == null || widget.data!.isEmpty) return [];
 
-    Config.recordLink["links"][gameName].forEach((platformName) {
-      if (Config.recordLink["site"][platformName]["platform"][platformSelect][gameName].isNotEmpty) {
-        String url = Config.recordLink["site"][platformName]["webSite"] + Config.recordLink["site"][platformName]["platform"][platformSelect][gameName];
-        List<Widget> gamePlatform = [];
+    final recordLink = Config.recordLink;
+    if (recordLink.isEmpty) return [];
 
-        for (var gamePlatformKey in Config.recordLink["site"][platformName]["platform"].entries) {
-          if (Config.recordLink["site"][platformName]["platform"][gamePlatformKey.key][gameName] != null) {
-            gamePlatform.add(
-              InkWell(
-                child: ActionChip(
-                  visualDensity: const VisualDensity(horizontal: 3, vertical: -4),
-                  label: Text(gamePlatformKey.key),
-                ),
-                onTap: () => _urlUtil.onPeUrl(
-                  _util.onReplacementStringVariable(url, {
-                    "id": widget.data!["originUserId"],
-                    "name": widget.data!["originName"],
-                  }),
-                ),
+    final links = recordLink["links"];
+    final sites = recordLink["site"];
+    if (links == null || sites == null || links is! Map || sites is! Map) return [];
+
+    final gamePlatforms = links[gameName];
+    if (gamePlatforms == null || gamePlatforms is! Iterable) return [];
+
+    for (var platformName in gamePlatforms) {
+      final siteConfig = sites[platformName];
+      if (siteConfig == null || siteConfig is! Map) continue;
+
+      final platforms = siteConfig["platform"];
+      if (platforms == null || platforms is! Map) continue;
+
+      final defaultPlatform = platforms[platformSelect];
+      final urlPath = (defaultPlatform is Map) ? defaultPlatform[gameName] : null;
+      if (urlPath == null || urlPath
+          .toString()
+          .isEmpty) continue;
+
+      String url = (siteConfig["webSite"] ?? "").toString() + urlPath.toString();
+      List<Widget> gamePlatform = [];
+
+      for (var gamePlatformKey in platforms.entries) {
+        if (gamePlatformKey.value is Map && gamePlatformKey.value[gameName] != null) {
+          gamePlatform.add(
+            InkWell(
+              child: ActionChip(
+                visualDensity: const VisualDensity(horizontal: 3, vertical: -4),
+                label: Text(gamePlatformKey.key.toString()),
               ),
-            );
-          }
+              onTap: () =>
+                  _urlUtil.onPeUrl(
+                    _util.onReplacementStringVariable(url, {
+                      "id": widget.data?["originUserId"] ?? "",
+                      "name": widget.data?["originName"] ?? "",
+                    }),
+                  ),
+            ),
+          );
         }
+      }
 
-        _children.add(Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Card(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(3),
-                          child: Image.asset(
-                            "assets/images/recordPlatforms/$platformName.png",
-                            width: 20,
-                            height: 20,
-                          ),
+      childrenList.add(Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Card(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(3),
+                        child: Image.asset(
+                          "assets/images/recordPlatforms/$platformName.png",
+                          width: 20,
+                          height: 20,
+                          errorBuilder: (context, error, stackTrace) => const SizedBox(width: 20, height: 20),
                         ),
                       ),
-                      const SizedBox(width: 4),
-                      Expanded(
-                        flex: 1,
-                        child: Text(platformName),
-                      ),
-                      GamesTagWidget(data: [gameName.toString()]),
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Wrap(
-                    spacing: 3,
-                    children: gamePlatform,
-                  )
-                ],
-              ),
+                    ),
+                    const SizedBox(width: 4),
+                    Expanded(
+                      flex: 1,
+                      child: Text(platformName.toString()),
+                    ),
+                    GamesTagWidget(data: [gameName]),
+                  ],
+                ),
+                const SizedBox(height: 5),
+                Wrap(
+                  spacing: 3,
+                  children: gamePlatform,
+                )
+              ],
             ),
-            const Divider(height: 1),
-          ],
-        ));
-      }
-    });
+          ),
+          const Divider(height: 1),
+        ],
+      ));
+    }
 
-    return _children;
+    return childrenList;
   }
 
   @override

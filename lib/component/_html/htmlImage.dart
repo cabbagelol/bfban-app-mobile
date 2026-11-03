@@ -49,6 +49,26 @@ class _HtmlImageState extends State<HtmlImage> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.src
+        .trim()
+        .isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final Color cardFallbackColor = (widget.color ?? Theme
+        .of(context)
+        .cardTheme
+        .color ?? Colors.grey.shade100).withValues(alpha: 0.5);
+    final Color bgFallbackColor = (widget.backgroundColor ?? Theme
+        .of(context)
+        .cardTheme
+        .color ?? Colors.grey.shade100).withValues(alpha: 0.2);
+    final Color textColor = Theme
+        .of(context)
+        .textTheme
+        .bodyLarge
+        ?.color ?? Colors.black87;
+
     return ExtendedImage.network(
       widget.src,
       fit: BoxFit.fitWidth,
@@ -63,7 +83,7 @@ class _HtmlImageState extends State<HtmlImage> {
           case LoadState.loading:
             return Card(
               margin: EdgeInsets.zero,
-              color: widget.color!.withOpacity(.5),
+              color: cardFallbackColor,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                 child: Center(
@@ -87,7 +107,7 @@ class _HtmlImageState extends State<HtmlImage> {
                         opacity: .5,
                         child: HtmlLink(
                           url: widget.src,
-                          color: Theme.of(context).textTheme.bodyLarge!.color,
+                          color: textColor,
                         ),
                       )
                     ],
@@ -97,7 +117,7 @@ class _HtmlImageState extends State<HtmlImage> {
             );
           case LoadState.completed:
             return Card(
-              color: widget.color!.withOpacity(.5),
+              color: cardFallbackColor,
               child: Column(
                 children: [
                   Container(
@@ -175,7 +195,7 @@ class _HtmlImageState extends State<HtmlImage> {
                     child: InkWell(
                       child: Container(
                         width: double.infinity,
-                        color: widget.backgroundColor!.withOpacity(.2),
+                        color: bgFallbackColor,
                         child: AnimatedRotation(
                           turns: turns,
                           duration: const Duration(milliseconds: 0),
@@ -197,10 +217,9 @@ class _HtmlImageState extends State<HtmlImage> {
               ),
             );
           case LoadState.failed:
-          default:
             return Card(
               margin: EdgeInsets.zero,
-              color: widget.color!.withOpacity(.5),
+              color: cardFallbackColor,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                 child: Center(
@@ -225,7 +244,7 @@ class _HtmlImageState extends State<HtmlImage> {
                         opacity: .5,
                         child: HtmlLink(
                           url: "${widget.src}",
-                          color: Theme.of(context).textTheme.bodyLarge!.color,
+                          color: textColor,
                         ),
                       )
                     ],

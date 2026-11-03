@@ -310,11 +310,14 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        if (i["playerAvatarLink"] != null)
+                        if (i["playerAvatarLink"] != null && i["playerAvatarLink"]
+                            .toString()
+                            .trim()
+                            .isNotEmpty && i["playerAvatarLink"].toString() != "null")
                           ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: ExtendedImage.network(
-                              i["playerAvatarLink"],
+                              i["playerAvatarLink"].toString(),
                               width: 30,
                               height: 30,
                               fit: BoxFit.fill,

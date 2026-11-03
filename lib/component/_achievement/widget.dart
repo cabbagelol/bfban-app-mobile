@@ -28,25 +28,42 @@ class _achievementWidgetState extends State<achievementWidget> {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 3,
-      children: widget.data == null
+      children: (widget.data == null || widget.data!.isEmpty)
           ? [const Text("N/A")]
           : widget.data!.map<Widget>((i) {
+        final String name = (i is Map ? i["name"] ?? "" : "").toString();
+        final String iconPath = (achievementUtil.getItem(name)["iconPath"] ?? "").toString();
+        final String iconUrl = achievementUtil.getIcon(iconPath);
+        final double itemSize = widget.size ?? 25.0;
+
               return GestureDetector(
                 onTap: () {
-                  _openAchievementDetail(i["name"]);
+                  _openAchievementDetail(name);
                 },
                 child: SizedBox(
-                  width: widget.size as double,
-                  height: widget.size as double,
-                  child: Image.network(
-                    achievementUtil.getIcon(achievementUtil.getItem(i["name"])["iconPath"]),
+                  width: itemSize,
+                  height: itemSize,
+                  child: iconUrl.isNotEmpty
+                      ? Image.network(
+                    iconUrl,
                     errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
                       return Container(
-                        color: Theme.of(context).dividerTheme.color,
-                        width: widget.size as double,
-                        height: widget.size as double,
+                        color: Theme
+                            .of(context)
+                            .dividerTheme
+                            .color ?? Colors.grey.shade300,
+                        width: itemSize,
+                        height: itemSize,
                       );
                     },
+                  )
+                      : Container(
+                    color: Theme
+                        .of(context)
+                        .dividerTheme
+                        .color ?? Colors.grey.shade300,
+                    width: itemSize,
+                    height: itemSize,
                   ),
                 ),
               );

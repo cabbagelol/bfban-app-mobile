@@ -22,7 +22,6 @@ rootProject.allprojects {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
 
 
 def DEFAULT_PLAY_SERVICES_LOCATION_VERSION = "21.3.0"

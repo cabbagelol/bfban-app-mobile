@@ -20,7 +20,7 @@ class Captcha {
     if (captcha != null) captcha?.value = value;
   }
 
-  get value => captcha!.value ?? '';
+  get value => captcha?.value ?? '';
 
   Captcha({
     captcha,

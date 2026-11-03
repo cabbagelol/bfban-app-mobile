@@ -529,7 +529,9 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                                       ),
                                                       const SizedBox(height: 5),
                                                       achievementWidget(
-                                                        data: snapshot.data["attr"]["achievements"],
+                                                        data: (snapshot.data["attr"] != null && snapshot.data["attr"]["achievements"] is List)
+                                                            ? snapshot.data["attr"]["achievements"]
+                                                            : [],
                                                       )
                                                     ],
                                                   ),
@@ -541,7 +543,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                         Container(height: 20),
 
                                         /// introduction
-                                        if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
+                                        if (snapshot.data["attr"]?["introduction"] != null && (snapshot.data["attr"]["introduction"].toString()).isNotEmpty)
                                           Container(
                                             width: MediaQuery.of(context).size.width,
                                             margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -552,7 +554,7 @@ class UserSpacePageState extends State<UserSpacePage> with TickerProviderStateMi
                                               ),
                                             ),
                                           ),
-                                        if ((snapshot.data["attr"]["introduction"] as String).isNotEmpty)
+                                        if (snapshot.data["attr"]?["introduction"] != null && (snapshot.data["attr"]["introduction"].toString()).isNotEmpty)
                                           Container(
                                             margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                                             child: Card(

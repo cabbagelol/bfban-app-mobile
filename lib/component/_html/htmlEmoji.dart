@@ -29,34 +29,41 @@ class _HtmlImageState extends State<HtmlEmoji> {
   /// [Event]
   /// 获取表情地址
   String? getEmojiUrl(Map? attributes) {
+    if (attributes == null || attributes['style'] == null) return "";
     Regular regular = Regular();
-    if (attributes!['style'] == null) return "";
-    RegExpMatch? reg = regular.REGULARTYPE[RegularType.Link]?.v.firstMatch(attributes["style"]);
+    RegExpMatch? reg = regular.REGULARTYPE[RegularType.Link]?.v.firstMatch(attributes["style"].toString());
     return reg?.group(0);
   }
 
   @override
   Widget build(BuildContext context) {
-    String onlyLoadUrl = getEmojiUrl(widget.attributes!)!;
+    final Map attrs = widget.attributes ?? {};
+    final String onlyLoadUrl = getEmojiUrl(attrs) ?? "";
+    final String styleStr = (attrs['style'] ?? "").toString();
+
     return Container(
       margin: const EdgeInsets.only(right: 2),
       child: Wrap(
         children: [
-          if (onlyLoadUrl.isNotEmpty && (widget.attributes!['style'].toString().split(';').where((i) => i.indexOf('background-position') >= 0)).isEmpty)
+          if (onlyLoadUrl.isNotEmpty && (styleStr.split(';').where((i) => i.contains('background-position'))).isEmpty)
             Tooltip(
-              message: widget.attributes!['title'] ?? widget.attributes!['alt'] ?? ':none:',
+              message: attrs['title'] ?? attrs['alt'] ?? ':none:',
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardTheme.color,
-                  border: Border.all(color: Theme.of(context).dividerTheme.color!),
+                  border: Border.all(color: Theme
+                      .of(context)
+                      .dividerTheme
+                      .color ?? Colors.grey.shade300),
                 ),
                 child: Image.network(onlyLoadUrl, width: 20, height: 20),
               ),
             )
-          else if ((widget.attributes!['style'].toString().split(';').where((i) => i.indexOf('background-position') >= 0)).isNotEmpty)
+          else
+            if ((styleStr.split(';').where((i) => i.contains('background-position'))).isNotEmpty)
             Tooltip(
-              message: widget.attributes!['title'] ?? widget.attributes!['alt'] ?? ':none:',
-              child: Text(widget.attributes!['alt'].toString()),
+              message: attrs['title'] ?? attrs['alt'] ?? ':none:',
+              child: Text(attrs['alt']?.toString() ?? ""),
             )
           else
             const SizedBox(

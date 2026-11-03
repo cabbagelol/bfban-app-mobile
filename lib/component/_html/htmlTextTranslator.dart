@@ -1,7 +1,7 @@
 import 'package:bfban/component/_loading/index.dart';
 import 'package:bfban/data/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:bfban/component/_html/html.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/translation_provider.dart';
@@ -67,7 +67,7 @@ class _HtmlTextTranslatorState extends State<HtmlTextTranslator> {
         return Column(
           children: [
             if (translation.isNotEmpty) const Divider(),
-            if (translation.isNotEmpty) Html(data: translation),
+            if (translation.isNotEmpty) HtmlCore(data: translation),
             if (data.currentPublicTranslatorItem.type != PublicTranslatorType.none)
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),

@@ -15,7 +15,7 @@ import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:bfban/component/_captcha/index.dart';
 
 import '../../component/_customReply/customReply.dart';
-import '../../component/_html/html.dart';
+import '../../component/_richEdit/index.dart';
 
 class ReplyPage extends StatefulWidget {
   final dynamic data;
@@ -130,11 +130,11 @@ class ReplyPageState extends State<ReplyPage> {
   _opEnRichEdit({updateValue}) async {
     await _storage.set("richedit", value: updateValue ?? replyStatus.parame!.content.toString());
 
-    Map data = await _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino);
+    dynamic data = await _urlUtil.opEnPage(context, "/richedit", transition: TransitionType.cupertino);
 
     /// 按下确认储存富文本编写的内容
-    if (data["code"] == 1) {
-      return data["html"];
+    if (data != null && data is Map && data["code"] == 1) {
+      return (data["html"] ?? "").toString();
     }
 
     return "";
@@ -206,23 +206,28 @@ class ReplyPageState extends State<ReplyPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  InkWell(
-                                    child: Container(
-                                      constraints: const BoxConstraints(minHeight: 100),
-                                      child: Opacity(
-                                        opacity: field.value.isNotEmpty ? 1 : .5,
-                                        child: HtmlCore(data: field.value.isNotEmpty ? field.value : FlutterI18n.translate(context, "app.richedit.placeholder")),
-                                      ),
-                                    ),
-                                    onTap: () async {
-                                      String html = await _opEnRichEdit(updateValue: field.value);
+                                  RichEditWidget(
+                                    data: field.value?.toString() ?? "",
+                                    minHeight: 160,
+                                    onChange: (String html) {
                                       field.didChange(html);
+                                      replyStatus.parame!.content = html;
+                                    },
+                                    onFullscreen: () async {
+                                      String html = await _opEnRichEdit(updateValue: field.value);
+                                      if (html.isNotEmpty) {
+                                        field.didChange(html);
+                                        setState(() {
+                                          replyStatus.parame!.content = html;
+                                        });
+                                      }
                                     },
                                   ),
                                   const Divider(height: 1),
                                   CustomReplyWidget(
                                     type: CustomReplyType.general,
                                     onChange: (String selectTemp) {
+                                      field.didChange(selectTemp);
                                       setState(() {
                                         replyStatus.parame!.content = selectTemp;
                                       });
@@ -285,7 +290,7 @@ class ReplyPageState extends State<ReplyPage> {
                   initialValue: replyStatus.parame!.value,
                   onSaved: (value) {
                     setState(() {
-                      replyStatus.parame!.value = value as String;
+                      replyStatus.parame!.value = (value ?? "").toString();
                     });
                   },
                   validator: (value) {

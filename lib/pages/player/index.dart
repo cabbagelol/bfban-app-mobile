@@ -712,11 +712,18 @@ class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderS
                                               child: FadeTransition(
                                                 opacity: _avatarAnimation,
                                                 alwaysIncludeSemantics: true,
-                                                child: ExtendedImage.network(
-                                                  snapshot.data!["avatarLink"],
-                                                  width: MediaQuery.of(context).size.width,
+                                                child: (snapshot.data?["avatarLink"] != null && snapshot.data!["avatarLink"]
+                                                    .toString()
+                                                    .trim()
+                                                    .isNotEmpty && snapshot.data!["avatarLink"].toString() != "null")
+                                                    ? ExtendedImage.network(
+                                                  snapshot.data!["avatarLink"].toString(),
+                                                  width: MediaQuery
+                                                      .of(context)
+                                                      .size
+                                                      .width,
                                                   fit: BoxFit.cover,
-                                                  constraints: BoxConstraints(
+                                                  constraints: const BoxConstraints(
                                                     maxHeight: 350,
                                                     minHeight: 150,
                                                   ),
@@ -731,6 +738,14 @@ class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderS
                                                     }
                                                     return null;
                                                   },
+                                                )
+                                                    : Image.asset(
+                                                  "assets/images/default-player-avatar.jpg",
+                                                  width: MediaQuery
+                                                      .of(context)
+                                                      .size
+                                                      .width,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
                                             ),
@@ -762,12 +777,18 @@ class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderS
                                                     ),
                                                     Hero(
                                                       tag: "image.player.avatar",
-                                                      child: ExtendedImage.network(
-                                                        snapshot.data!["avatarLink"],
+                                                      child: (snapshot.data?["avatarLink"] != null && snapshot.data!["avatarLink"]
+                                                          .toString()
+                                                          .trim()
+                                                          .isNotEmpty && snapshot.data!["avatarLink"].toString() != "null")
+                                                          ? ExtendedImage.network(
+                                                        snapshot.data!["avatarLink"].toString(),
                                                         key: ValueKey<String>(const Uuid().v4(options: {
                                                           'name': 'avatarLink-up',
                                                           'url': snapshot.data!["avatarLink"],
-                                                          'time': DateTime.now().millisecondsSinceEpoch,
+                                                          'time': DateTime
+                                                              .now()
+                                                              .millisecondsSinceEpoch,
                                                         })),
                                                         width: 150,
                                                         height: 150,
@@ -785,6 +806,11 @@ class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderS
                                                               return Image.asset("assets/images/default-player-avatar.jpg");
                                                           }
                                                         },
+                                                      )
+                                                          : Image.asset(
+                                                        "assets/images/default-player-avatar.jpg",
+                                                        width: 150,
+                                                        height: 150,
                                                       ),
                                                     ),
                                                     Positioned(

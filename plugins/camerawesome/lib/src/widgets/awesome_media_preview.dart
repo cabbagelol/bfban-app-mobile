@@ -4,7 +4,7 @@ import 'package:camerawesome/src/orchestrator/models/media_capture.dart';
 import 'package:camerawesome/src/widgets/camera_awesome_builder.dart';
 import 'package:camerawesome/src/widgets/utils/awesome_bouncing_widget.dart';
 import 'package:camerawesome/src/widgets/utils/awesome_oriented_widget.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

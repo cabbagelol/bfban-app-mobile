@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -84,7 +84,7 @@ class LightnesTheme extends AppBaseThemeItem {
       scaffoldBackgroundColor: const Color(0xfff7f9fd),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         elevation: 2,
         backgroundColor: Colors.white,
         titleTextStyle: TextStyle(
@@ -240,7 +240,7 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       // 按钮 E
 
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: Colors.white,
         elevation: 0,
       ),
@@ -286,7 +286,7 @@ class LightnesTheme extends AppBaseThemeItem {
       ),
       primaryColor: Colors.white,
 
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: Colors.black54,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
@@ -303,7 +303,7 @@ class LightnesTheme extends AppBaseThemeItem {
       iconTheme: const IconThemeData(
         color: Color(0xff364e80),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         shadowColor: const Color(0x39131372),
         margin: EdgeInsets.zero,

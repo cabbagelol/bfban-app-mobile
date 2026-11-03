@@ -76,7 +76,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
       ),
       unselectedWidgetColor: Colors.white,
       splashColor: Colors.transparent,
-      dialogTheme: const DialogTheme(
+      dialogTheme: const DialogThemeData(
         elevation: 2,
         backgroundColor: Color(0xff405d98),
         titleTextStyle: TextStyle(
@@ -286,7 +286,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         ),
       ),
       primaryColor: const Color(0xff111b2b),
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: Colors.white38,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
@@ -305,7 +305,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
       iconTheme: const IconThemeData(
         color: Colors.white,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: const Color(0xff0d1323),
         shadowColor: Colors.black54,
         margin: EdgeInsets.zero,
@@ -368,7 +368,7 @@ class BlueDarkTheme extends AppBaseThemeItem {
         surface: Color(0xff0a101a),
         onSurface: Colors.white,
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: Colors.black,
         elevation: 0,
       ),

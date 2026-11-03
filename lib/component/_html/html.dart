@@ -1,16 +1,49 @@
-import 'package:bfban/component/_html/htmlWidget.dart';
-import 'package:bfban/utils/index.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 
+import 'html_parser_core.dart';
+
+/**
+ * 纯 Flutter 原生 HTML 与自定义富文本渲染核心组件
+ */
 class HtmlCore extends StatefulWidget {
+  /**
+   * 待渲染的 HTML 或富文本字符串内容
+   */
   final String? data;
-  final Map<String, Style>? style;
+
+  /**
+   * 兼容样式字典或配置
+   */
+  final dynamic style;
+
+  /**
+   * 基础文本样式
+   */
+  final TextStyle? textStyle;
+
+  /**
+   * 基础字号
+   */
+  final double? fontSize;
+
+  /**
+   * 点击链接回调
+   */
+  final Function(String url)? onLinkTap;
+
+  /**
+   * 是否支持长按复制与文本选择
+   */
+  final bool selectable;
 
   const HtmlCore({
     super.key,
     this.data,
     this.style,
+    this.textStyle,
+    this.fontSize,
+    this.onLinkTap,
+    this.selectable = true,
   });
 
   @override
@@ -18,94 +51,85 @@ class HtmlCore extends StatefulWidget {
 }
 
 class _HtmlCoreState extends State<HtmlCore> {
-  final CardUtil _detailApi = CardUtil();
-
-  final Regular _regular = Regular();
-
-  String renderView = "";
+  // 解析后的组件列表
+  List<Widget> _parsedWidgets = [];
 
   @override
   void didChangeDependencies() {
-    packagingRender();
     super.didChangeDependencies();
+    _rebuildWidgets();
   }
 
   @override
   void didUpdateWidget(covariant HtmlCore oldWidget) {
     super.didUpdateWidget(oldWidget);
-    packagingRender();
+    if (oldWidget.data != widget.data || oldWidget.fontSize != widget.fontSize || oldWidget.style != widget.style) {
+      _rebuildWidgets();
+    }
   }
 
-  /// [Event]
-  /// 包装器
-  void packagingRender() {
-    if (widget.data!.isEmpty) return;
+  /**
+   * 重新解析构建内容组件
+   */
+  void _rebuildWidgets() {
+    String content = widget.data ?? "";
+    if (content
+        .trim()
+        .isEmpty) {
+      setState(() {
+        _parsedWidgets = [];
+      });
+      return;
+    }
 
-    String vDom = "<div class='root'>${widget.data ?? ""}</div>";
-
-    // p
-    Iterable<RegExpMatch> p = _regular.getCheckText(RegularType.P, widget.data);
-
-    for (var i in p) {
-      Iterable<RegExpMatch> abbreviations = RegExp(r'{(\S*)}').allMatches(i.group(0)!);
-
-      // p child -> links
-      // 可疑链接
-      // 将可疑的文本链接转换为链接widget
-      // for (var p_child_link_item in _regular.getCheckText(RegularType.Link, i.group(0))) {
-      //   RegExpMatch _p_child_link_item = p_child_link_item;
-      //   String text = p_child_link_item.group(0);
-      //   String textFront;
-      //
-      //   if (_p_child_link_item.start > 4 && vDom.toString().length < _p_child_link_item.start && text[_p_child_link_item.start - 4] != null) {
-      //     textFront = vDom.substring(_p_child_link_item.start - 4, _p_child_link_item.start);
-      //   } else {
-      //     textFront = "";
-      //   }
-      //
-      //   if (textFront.indexOf("img") < 0 && !textFront.contains("=\"") && !textFront.contains("src=") && !textFront.contains("href=")) {
-      //     vDom = vDom.replaceFirst(text, "<a href=$text>$text</a>");
-      //   }
-      // }
-
-      // p child -> hrs
-      if (i.group(0).toString().contains("----")) {
-        vDom = vDom.replaceFirst("<p>----</p>", "<app-hr></app-hr>");
-      }
-
-      for (var abbreviationItem in abbreviations) {
-        List split = abbreviationItem.input.substring(abbreviationItem.start + 1, abbreviationItem.end - 1).split(":");
-        String commend = split[0];
-        String value = split[1];
-
-        switch (commend) {
-          case "icon":
-            vDom = vDom.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-icon icon=$value></app-icon>");
-            break;
-          case "player":
-            vDom = vDom.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-player id=$value lang=zh-CN></app-player>");
-            break;
-          case "user":
-            vDom = vDom.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-user id=$value></app-user>");
-            break;
-          case "floor":
-            vDom = vDom.replaceAll(RegExp(abbreviationItem.group(0).toString()), "<app-floor id=$value></app-floor>");
-            break;
-        }
+    // 计算实际基础样式
+    double effectiveFontSize = widget.fontSize ?? 14.0;
+    if (widget.style is Map && widget.style["body"] != null) {
+      dynamic bodyStyle = widget.style["body"];
+      if (bodyStyle is TextStyle && bodyStyle.fontSize != null) {
+        effectiveFontSize = bodyStyle.fontSize!;
       }
     }
 
+    TextStyle baseStyle = widget.textStyle ??
+        TextStyle(
+          fontSize: effectiveFontSize,
+          color: Theme
+              .of(context)
+              .textTheme
+              .bodyMedium
+              ?.color ?? Colors.black87,
+          height: 1.5,
+        );
+
+    HtmlParserCore parser = HtmlParserCore(
+      baseStyle: baseStyle,
+      onLinkTap: widget.onLinkTap,
+    );
+
+    List<Widget> result = parser.parse(context, content);
+
     setState(() {
-      renderView = vDom.trim();
+      _parsedWidgets = result;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Html(
-      data: renderView,
-      style: widget.style ?? _detailApi.styleHtml(context),
-      extensions: _detailApi.customRenders(),
+    if (_parsedWidgets.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    Widget content = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: _parsedWidgets,
     );
+
+    if (widget.selectable) {
+      return SelectionArea(child: content);
+    }
+
+    return content;
   }
 }

@@ -16,7 +16,7 @@ import 'package:bfban/constants/api.dart';
 import 'package:bfban/widgets/edit/game_type_radio.dart';
 
 import '../../component/_customReply/customReply.dart';
-import '../../component/_html/html.dart';
+import '../../component/_richEdit/index.dart';
 import '../../data/index.dart';
 
 class ReportPage extends StatefulWidget {
@@ -238,11 +238,11 @@ class _ReportPageState extends State<ReportPage> {
   Future<String> _opEnRichEdit({updateValue}) async {
     await Storage().set("richedit", value: updateValue ?? reportStatus.param!.description.toString());
 
-    Map data = await _urlUtil.opEnPage(context, "/richedit");
+    dynamic data = await _urlUtil.opEnPage(context, "/richedit");
 
     /// 按下确认储存富文本编写的内容
-    if (data["code"] == 1) {
-      return data["html"];
+    if (data != null && data is Map && data["code"] == 1) {
+      return (data["html"] ?? "").toString();
     }
 
     return "";
@@ -357,7 +357,7 @@ class _ReportPageState extends State<ReportPage> {
               },
               initialValue: reportStatus.param!.originName,
               onSaved: (value) {
-                _changeReportUserInput(value as String);
+                _changeReportUserInput(value?.toString() ?? "");
               },
               validator: (value) {
                 if (value.toString().isEmpty) return "";
@@ -378,7 +378,7 @@ class _ReportPageState extends State<ReportPage> {
                     onSelected: (value) {
                       field.didChange(value);
                       setState(() {
-                        reportStatus.param!.game = value as String;
+                        reportStatus.param!.game = (value ?? "").toString();
                       });
                     },
                     itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
@@ -649,23 +649,28 @@ class _ReportPageState extends State<ReportPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              InkWell(
-                                child: Container(
-                                  constraints: const BoxConstraints(minHeight: 100),
-                                  child: Opacity(
-                                    opacity: field.value.isNotEmpty ? 1 : .5,
-                                    child: HtmlCore(data: field.value.isNotEmpty ? field.value : FlutterI18n.translate(context, "app.richedit.placeholder")),
-                                  ),
-                                ),
-                                onTap: () async {
-                                  String html = await _opEnRichEdit(updateValue: field.value);
+                              RichEditWidget(
+                                data: field.value?.toString() ?? "",
+                                minHeight: 160,
+                                onChange: (String html) {
                                   field.didChange(html);
+                                  reportStatus.param!.description = html;
+                                },
+                                onFullscreen: () async {
+                                  String html = await _opEnRichEdit(updateValue: field.value);
+                                  if (html.isNotEmpty) {
+                                    field.didChange(html);
+                                    setState(() {
+                                      reportStatus.param!.description = html;
+                                    });
+                                  }
                                 },
                               ),
                               const Divider(height: 1),
                               CustomReplyWidget(
                                 type: CustomReplyType.general,
                                 onChange: (String selectTemp) {
+                                  field.didChange(selectTemp);
                                   setState(() {
                                     reportStatus.param!.description = selectTemp;
                                   });
@@ -682,7 +687,7 @@ class _ReportPageState extends State<ReportPage> {
               initialValue: reportStatus.param!.description,
               onSaved: (value) {
                 setState(() {
-                  reportStatus.param!.description = value as String?;
+                  reportStatus.param!.description = value?.toString();
                 });
               },
               validator: (value) {
@@ -715,11 +720,11 @@ class _ReportPageState extends State<ReportPage> {
                       onChange: (data) {
                         field.didChange(data["value"]);
                         setState(() {
-                          reportStatus.param!.value = data["value"];
+                          reportStatus.param?.value = data["value"];
                         });
                       },
                       right: CaptchaWidget(
-                        onChange: (dynamic captcha) => reportStatus.param!.setCaptcha(captcha),
+                        onChange: (dynamic captcha) => reportStatus.param?.setCaptcha(captcha),
                       ),
                       maxLenght: 4,
                       placeholder: FlutterI18n.translate(context, "captcha.title"),
@@ -727,14 +732,16 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 );
               },
-              initialValue: reportStatus.param!.value,
+              initialValue: reportStatus.param?.value ?? "",
               onSaved: (value) {
-                if ((value as String).isEmpty) {
+                if (value == null || value
+                    .toString()
+                    .isEmpty) {
                   return;
                 }
 
                 setState(() {
-                  reportStatus.param!.value = value;
+                  reportStatus.param?.value = value.toString();
                 });
               },
               validator: (value) {

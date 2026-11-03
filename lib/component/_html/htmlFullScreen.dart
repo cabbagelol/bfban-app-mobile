@@ -6,7 +6,8 @@ import 'package:bfban/constants/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_elui_plugin/_message/index.dart';
-import 'package:flutter_html/flutter_html.dart';
+
+// 移除第三方 flutter_html 引用
 import 'package:flutter_i18n/flutter_i18n.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -16,7 +17,7 @@ import 'html.dart';
 class HtmlFullScreen extends StatefulWidget {
   final String content;
 
-  final Map<String, Style> style;
+  final dynamic style;
 
   HtmlFullScreen({
     required this.content,

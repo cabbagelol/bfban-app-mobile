@@ -67,7 +67,7 @@ class GreenTheme extends AppBaseThemeItem {
       scaffoldBackgroundColor: const Color(0xFFF4FFF4),
       splashColor: Colors.transparent,
       dialogBackgroundColor: Colors.white,
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         elevation: 10,
         backgroundColor: Colors.green.shade300,
         titleTextStyle: const TextStyle(
@@ -227,7 +227,7 @@ class GreenTheme extends AppBaseThemeItem {
         ),
       ),
       primaryColor: Colors.green,
-      tabBarTheme: TabBarTheme(
+      tabBarTheme: TabBarThemeData(
         unselectedLabelColor: Colors.green.shade100,
         dividerColor: Colors.transparent,
         indicatorColor: Colors.transparent,
@@ -244,7 +244,7 @@ class GreenTheme extends AppBaseThemeItem {
       iconTheme: IconThemeData(
         color: Colors.green.shade900,
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: Colors.white,
         shadowColor: Colors.transparent,
         margin: EdgeInsets.zero,
@@ -298,7 +298,7 @@ class GreenTheme extends AppBaseThemeItem {
         surface: Colors.white,
         onSurface: Colors.black,
       ),
-      bottomAppBarTheme: const BottomAppBarTheme(
+      bottomAppBarTheme: const BottomAppBarThemeData(
         color: Color(0xFFFFFDFD),
         elevation: 0,
       ),

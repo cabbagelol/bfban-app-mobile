@@ -143,12 +143,27 @@ class LanguagePageState extends State<LanguagePage> {
                 Map lang = languages[index];
                 return RadioListTile<String>(
                   value: lang["fileName"].toString(),
-                  onChanged: (value) => setCurrentPageSelectLang(value as String),
+                  onChanged: (value) {
+                    if (value != null) setCurrentPageSelectLang(value);
+                  },
                   groupValue: currentPageSelectLang,
-                  selectedTileColor: langData.currentLang == lang['fileName'] ? Theme.of(context).dividerColor.withOpacity(.05) : null,
+                  selectedTileColor: langData.currentLang == lang['fileName'] ? Theme
+                      .of(context)
+                      .dividerColor
+                      .withValues(alpha: .05) : null,
                   title: Text(
                     lang["label"].toString(),
-                    style: Theme.of(context).listTileTheme.titleTextStyle!.copyWith(fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize),
+                    style: (Theme
+                        .of(context)
+                        .listTileTheme
+                        .titleTextStyle ?? Theme
+                        .of(context)
+                        .textTheme
+                        .bodyLarge)?.copyWith(fontSize: Theme
+                        .of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.fontSize),
                   ),
                   subtitle: Wrap(
                     spacing: 4,

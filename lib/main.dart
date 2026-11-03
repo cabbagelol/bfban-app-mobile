@@ -7,6 +7,7 @@ import 'package:bfban/provider/theme_provider.dart';
 import 'package:bfban/provider/translation_provider.dart';
 import 'package:bfban/provider/userinfo_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_i18n/flutter_i18n_delegate.dart';
@@ -77,18 +78,45 @@ class AppState extends State<BfBanApp> {
           themeAnimationDuration: Duration.zero,
           initialRoute: '/splash',
           supportedLocales: const [
-            Locale('zh', 'CH'),
+            Locale('zh', 'CN'),
+            Locale('zh', 'TW'),
+            Locale('zh'),
             Locale('en', 'US'),
+            Locale('en'),
+            Locale('ja', 'JP'),
+            Locale('ja'),
+            Locale('ru', 'RU'),
+            Locale('ru'),
+            Locale('de', 'DE'),
+            Locale('fr', 'FR'),
+            Locale('tr', 'TR'),
+            Locale('it', 'IT'),
+            Locale('es', 'ES'),
           ],
+          localeResolutionCallback: (Locale? locale, Iterable<Locale> supportedLocales) {
+            if (locale == null) return const Locale('zh', 'CN');
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode && supportedLocale.countryCode == locale.countryCode) {
+                return supportedLocale;
+              }
+            }
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode) {
+                return supportedLocale;
+              }
+            }
+            return const Locale('zh', 'CN');
+          },
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
+            const FallbackCupertinoLocalizationsDelegate(),
             FlutterI18nDelegate(
               translationLoader: AppTranslationLoader(
                 namespaces: ["app"],
                 basePath: "assets/lang",
-                baseUri: Uri.https(Config.apiHost["web_site"]!.host as String, "lang"),
+                baseUri: Uri.https(Config.apiHost["web_site"]?.host ?? "bfban.gametools.network", "lang"),
                 useCountryCode: false,
                 fallback: langData.defaultLang,
                 forcedLocale: Locale(langData.currentLang.isEmpty ? langData.defaultLang : langData.currentLang),
@@ -132,3 +160,21 @@ class WidgetError extends StatelessWidget {
     );
   }
 }
+
+/**
+ * Cupertino 本地化备用委托
+ * 当特定地区语言缺少 Cupertino 官方翻译实现时提供默认后备，防止抛出未支持异常
+ */
+class FallbackCupertinoLocalizationsDelegate extends LocalizationsDelegate<CupertinoLocalizations> {
+  const FallbackCupertinoLocalizationsDelegate();
+
+  @override
+  bool isSupported(Locale locale) => true;
+
+  @override
+  Future<CupertinoLocalizations> load(Locale locale) => DefaultCupertinoLocalizations.load(locale);
+
+  @override
+  bool shouldReload(FallbackCupertinoLocalizationsDelegate old) => false;
+}
+

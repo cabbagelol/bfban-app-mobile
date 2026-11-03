@@ -1,5 +1,5 @@
 import 'package:bfban/data/Games.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 
 class SearchStatus {
   late bool load;

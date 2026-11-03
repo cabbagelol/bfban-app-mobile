@@ -143,6 +143,7 @@ class _InformationPageState extends State<InformationPage> {
   /// [Event]
   /// 对比内容是否修改
   bool _contrastModification(StationUserInfoData a, StationUserInfoData b) {
+    if (a.attr == null || b.attr == null) return false;
     int l = 0;
     (a.attr!.toMap as Map).forEach((key, value) {
       if (b.attr!.toMap[key] != value) l += 1;
