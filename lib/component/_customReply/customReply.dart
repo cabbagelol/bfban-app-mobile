@@ -85,7 +85,6 @@ class CustomReplyWidgetState extends State<CustomReplyWidget> {
         break;
       case CustomReplyType.report:
       case CustomReplyType.general:
-      default:
         break;
     }
 

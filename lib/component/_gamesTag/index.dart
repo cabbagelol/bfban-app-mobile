@@ -12,12 +12,12 @@ class GamesTagWidget extends StatefulWidget {
 
   final Widget? splitChar;
 
-  late GamesTagSize? size;
+  final GamesTagSize size;
 
-  late List<GamesTagSizeConfig>? sizeType = [
+  static const List<GamesTagSizeConfig> sizeType = [
     GamesTagSizeConfig(
       height: 14,
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: 3,
         horizontal: 7,
       ),
@@ -25,7 +25,7 @@ class GamesTagWidget extends StatefulWidget {
     ),
     GamesTagSizeConfig(
       height: 20,
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: 2,
         horizontal: 7,
       ),
@@ -33,23 +33,14 @@ class GamesTagWidget extends StatefulWidget {
     ),
   ];
 
-  late GamesTagSizeConfig currentSizeType = GamesTagSizeConfig(
-    height: 16,
-    padding: const EdgeInsets.symmetric(
-      vertical: 2,
-      horizontal: 7,
-    ),
-    border: 3,
-  );
+  GamesTagSizeConfig get currentSizeType => sizeType[size.index];
 
-  GamesTagWidget({
+  const GamesTagWidget({
     super.key,
     this.data,
     this.splitChar,
-    GamesTagSize size = GamesTagSize.no2,
-  }) {
-    currentSizeType = sizeType![size.index];
-  }
+    this.size = GamesTagSize.no2,
+  });
 
   @override
   State<GamesTagWidget> createState() => _GamesTagWidgetState();
@@ -111,11 +102,11 @@ class _GamesTagWidgetState extends State<GamesTagWidget> {
 }
 
 class GamesTagSizeConfig {
-  double height = 16;
-  EdgeInsets padding = const EdgeInsets.symmetric(vertical: 2, horizontal: 7);
-  double border = 3;
+  final double height;
+  final EdgeInsets padding;
+  final double border;
 
-  GamesTagSizeConfig({
+  const GamesTagSizeConfig({
     required this.height,
     required this.padding,
     required this.border,

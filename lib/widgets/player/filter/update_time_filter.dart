@@ -9,8 +9,15 @@ import 'framework.dart';
 
 class UpdateTimeFilterPanel extends FilterPanelWidget {
   UpdateTimeFilterPanel({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    FilterPanelData? data,
+  }) : super(
+          data: data ??
+              FilterPanelData(
+                values: [null, null],
+                names: ["updateTimeFrom", "updateTimeTo"],
+              ),
+        );
 
   @override
   UpdateTimeFilterPanelState createState() => UpdateTimeFilterPanelState();
@@ -21,11 +28,6 @@ class UpdateTimeFilterPanelState extends State<UpdateTimeFilterPanel> {
 
   @override
   void initState() {
-    widget.data ??= FilterPanelData(
-      values: [null, null],
-      names: ["updateTimeFrom", "updateTimeTo"],
-    );
-
     super.initState();
   }
 

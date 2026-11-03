@@ -9,8 +9,15 @@ import 'framework.dart';
 
 class CreateTimeFilterPanel extends FilterPanelWidget {
   CreateTimeFilterPanel({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    FilterPanelData? data,
+  }) : super(
+          data: data ??
+              FilterPanelData(
+                values: [null, null],
+                names: ["createTimeFrom", "createTimeTo"],
+              ),
+        );
 
   @override
   CreateTimeFilterPanelState createState() => CreateTimeFilterPanelState();
@@ -21,11 +28,6 @@ class CreateTimeFilterPanelState extends State<CreateTimeFilterPanel> {
 
   @override
   void initState() {
-    widget.data ??= FilterPanelData(
-      values: [null, null],
-      names: ["createTimeFrom", "createTimeTo"],
-    );
-
     super.initState();
   }
 

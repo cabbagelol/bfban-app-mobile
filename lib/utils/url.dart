@@ -86,7 +86,7 @@ class UrlUtil {
     rootNavigator = false,
     opaque = false,
   }) async {
-    if (url.isEmpty && url == "/" && context == null) return;
+    if (url.isEmpty) return;
 
     _providerUtil.ofApp(AppStatus.context!).appRoute.setCurrentRoute(url);
 

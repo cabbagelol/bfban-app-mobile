@@ -10,8 +10,15 @@ import 'framework.dart';
 
 class GameNameFilterPanel extends FilterPanelWidget {
   GameNameFilterPanel({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    FilterPanelData? data,
+  }) : super(
+          data: data ??
+              FilterPanelData(
+                values: ["all"],
+                names: ["game"],
+              ),
+        );
 
   @override
   GameNameFilterPanelState createState() => GameNameFilterPanelState();
@@ -25,13 +32,9 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
 
   @override
   void initState() {
-    widget.data ??= FilterPanelData(
-      values: ["all"],
-      names: ["game"],
-    );
-
     setState(() {
-      gameList.addAll(Config.game["child"]);
+      final List gameChildList = (Config.game["child"] is List) ? (Config.game["child"] as List) : [];
+      gameList.addAll(gameChildList);
     });
 
     super.initState();
@@ -44,7 +47,8 @@ class GameNameFilterPanelState extends State<GameNameFilterPanel> {
       {"value": "all"}
     ];
     setState(() {
-      gameList.addAll(Config.game["child"]);
+      final List gameChildList = (Config.game["child"] is List) ? (Config.game["child"] as List) : [];
+      gameList.addAll(gameChildList);
     });
   }
 

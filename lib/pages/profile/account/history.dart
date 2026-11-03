@@ -45,7 +45,7 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
 
   @override
   void initState() {
-    _getTourRecordList();
+    _getTourRecordList(isRefresh: true);
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -58,41 +58,83 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
 
   /// [Result]
   /// 获取游览历史
-  Future _getTourRecordList() async {
+  Future _getTourRecordList({bool isRefresh = false}) async {
     try {
       if (tourRecordStatus.load!) return;
 
       StorageData viewedData = await storage.get("viewed");
-      int skip = tourRecordStatus.skip ?? 0;
+      int page = (tourRecordStatus.skip == null || tourRecordStatus.skip! < 1) ? 1 : tourRecordStatus.skip!;
       int limit = tourRecordStatus.limit ?? 40;
 
-      Map viewed = viewedData.value ?? {};
-      List<TourRecordPlayerBaseData>? viewedWidgets = [];
+      Map viewed = viewedData.value is Map ? (viewedData.value as Map) : {};
+
+      if (isRefresh) {
+        setState(() {
+          tourRecordStatus.list!.clear();
+        });
+      }
+
+      if (viewed.isEmpty) {
+        setState(() {
+          tourRecordStatus.list = [];
+          tourRecordStatus.load = false;
+        });
+        _refreshKey.currentState?.controller.finishLoad(IndicatorResult.noMore);
+        return;
+      }
 
       setState(() {
-        tourRecordStatus.list!.clear();
         tourRecordStatus.load = true;
       });
 
-      List dbIds = [];
-      int start = (skip - 1) * limit;
-      int end = (skip * limit) <= viewed.length ? skip * limit : viewed.length;
-      viewed.entries.toList().sort((a, b) => a.value > b.value ? 1 : -1);
-      dbIds = viewed.entries.toList().sublist(start, end).map((e) => e.key).toList();
+      // 按时间戳倒序排列（最新游览排在最前）
+      List<MapEntry> sortedEntries = viewed.entries.toList();
+      sortedEntries.sort((a, b) {
+        num valA = (a.value is num) ? a.value as num : 0;
+        num valB = (b.value is num) ? b.value as num : 0;
+        return valB.compareTo(valA);
+      });
 
-      Response result = await Http.request(
-        Config.httpHost["player_batch"],
-        parame: {"dbIds": dbIds},
-        method: Http.GET,
-      );
+      int total = sortedEntries.length;
+      int start = (page - 1) * limit;
 
-      dynamic d = result.data;
+      if (start >= total) {
+        setState(() {
+          tourRecordStatus.load = false;
+        });
+        _refreshKey.currentState?.controller.finishLoad(IndicatorResult.noMore);
+        return;
+      }
 
-      if (result.data["success"] == 1 && d["data"] is List) {
-        for (var playerItem in d["data"] as List) {
-          TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
-          tourRecordPlayerBaseData.setData(playerItem);
-          viewedWidgets.add(tourRecordPlayerBaseData);
+      int end = (start + limit).clamp(0, total);
+      List dbIds = sortedEntries.sublist(start, end).map((e) => int.tryParse(e.key.toString()) ?? e.key).toList();
+
+      List<TourRecordPlayerBaseData> viewedWidgets = isRefresh ? [] : List.from(tourRecordStatus.list ?? []);
+
+      if (dbIds.isNotEmpty) {
+        Response result = await Http.request(
+          Config.httpHost["player_batch"],
+          data: {"dbIds": dbIds},
+          method: Http.POST,
+        );
+
+        dynamic d = result.data;
+
+        if (d != null && d["success"] == 1 && d["data"] is List) {
+          // 为了保持按游览时间倒序，将返回的数据映射回 dbIds 的排序顺序
+          Map<dynamic, dynamic> resultMap = {};
+          for (var item in d["data"] as List) {
+            if (item is Map && item["id"] != null) {
+              resultMap[item["id"]] = item;
+            }
+          }
+          for (var id in dbIds) {
+            if (resultMap.containsKey(id)) {
+              TourRecordPlayerBaseData baseData = TourRecordPlayerBaseData();
+              baseData.setData(resultMap[id]);
+              viewedWidgets.add(baseData);
+            }
+          }
         }
       }
 
@@ -101,7 +143,9 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
         tourRecordStatus.load = false;
       });
 
-      _refreshKey.currentState!.controller.finishLoad(IndicatorResult.success);
+      _refreshKey.currentState?.controller.finishLoad(
+        end >= total ? IndicatorResult.noMore : IndicatorResult.success,
+      );
     } catch (err) {
       setState(() {
         tourRecordStatus.load = false;
@@ -112,12 +156,12 @@ class _UserHistoryPageState extends State<UserHistoryPage> {
   /// [Event]
   /// 下拉刷新方法,为list重新赋值
   Future _onRefresh() async {
-    tourRecordStatus.resetPage();
+    tourRecordStatus.skip = 1;
 
-    await _getTourRecordList();
+    await _getTourRecordList(isRefresh: true);
 
-    _refreshKey.currentState!.controller.finishRefresh();
-    _refreshKey.currentState!.controller.resetFooter();
+    _refreshKey.currentState?.controller.finishRefresh();
+    _refreshKey.currentState?.controller.resetFooter();
   }
 
   /// [Event]

@@ -245,7 +245,7 @@ class ReplyPageState extends State<ReplyPage> {
                   initialValue: replyStatus.parame!.content,
                   onSaved: (value) {
                     setState(() {
-                      replyStatus.parame!.content = value as String?;
+                      replyStatus.parame!.content = value;
                     });
                   },
                   validator: (value) {

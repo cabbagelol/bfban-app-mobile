@@ -22,7 +22,7 @@ class AppealCard extends StatelessWidget implements BaseCardStatelessWidget {
 
   // 位置
   @override
-  late int index = 0;
+  late final int index;
 
   final Function onReplySucceed;
 

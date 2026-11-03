@@ -28,8 +28,17 @@ class Config {
 
   /// 游戏类型
   /// base 配置, 会被远程覆盖
-  static Map game = {"child": []};tatic Map achievements = {"child": []};
-  sstatic Map privilege = {};
+  static Map game = {
+    "defaultIndex": 0,
+    "default": "bf1",
+    "child": [
+      {"value": "bf1", "full_name": "bf1"},
+      {"value": "bfv", "full_name": "bfv"},
+      {"value": "bf6", "full_name": "bf2042"},
+    ]
+  };
+  static Map achievements = {"child": []};
+  static Map privilege = {};
   static Map cheatMethodsGlossary = {};
   static Map cheaterStatus = {};
   static Map action = {"child": []};

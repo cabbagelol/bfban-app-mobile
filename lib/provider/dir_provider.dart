@@ -57,14 +57,6 @@ class DirProvider with ChangeNotifier {
       // 4
       if (Platform.isAndroid) waitMode.insert(4, getDownloadsDirectory());
 
-      waitMode.map((element) {
-        if (element is Directory && element == null) {
-          return a();
-        } else if (element is List && (element as List).isEmpty) {
-          return b();
-        }
-        return a();
-      });
 
       List futurePath = await Future.wait(waitMode);
 

@@ -227,8 +227,9 @@ class _ReportPageState extends State<ReportPage> {
           },
         ],
       };
-      if (Config.game["child"].isNotEmpty) {
-        reportStatus.param!.game = Config.game["child"][0]["value"];
+      final List gameChildList = (Config.game["child"] is List) ? (Config.game["child"] as List) : [];
+      if (gameChildList.isNotEmpty) {
+        reportStatus.param!.game = gameChildList[0]["value"];
       }
     });
   }
@@ -381,12 +382,15 @@ class _ReportPageState extends State<ReportPage> {
                         reportStatus.param!.game = (value ?? "").toString();
                       });
                     },
-                    itemBuilder: (context) => Config.game["child"].map<PopupMenuItem>((i) {
-                      return PopupMenuItem(
-                        value: i["value"],
-                        child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
-                      );
-                    }).toList(),
+                    itemBuilder: (context) {
+                      final List gameChildList = (Config.game["child"] is List) ? (Config.game["child"] as List) : [];
+                      return gameChildList.map<PopupMenuItem>((i) {
+                        return PopupMenuItem(
+                          value: i["value"],
+                          child: Text(FlutterI18n.translate(context, "basic.games.${i["value"]}")),
+                        );
+                      }).toList();
+                    },
                     child: EluiCellComponent(
                       title: FlutterI18n.translate(context, "report.labels.game"),
                       theme: EluiCellTheme(backgroundColor: Colors.transparent, labelColor: Theme.of(context).textTheme.labelLarge!.color),
@@ -511,7 +515,7 @@ class _ReportPageState extends State<ReportPage> {
               initialValue: reportStatus.param!.cheatMethods,
               onSaved: (value) {
                 setState(() {
-                  reportStatus.param!.cheatMethods = value as List?;
+                  reportStatus.param!.cheatMethods = value;
                 });
               },
               validator: (value) {

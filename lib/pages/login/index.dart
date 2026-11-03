@@ -56,12 +56,6 @@ class LoginPanelState extends State<LoginPanelPage> {
     });
   }
 
-  /// [Event]
-  /// 注册
-  dynamic _openSignup() {
-    _urlUtil.opEnPage(context, '/signup').then((value) {});
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

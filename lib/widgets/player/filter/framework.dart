@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'class.dart';
 
 abstract class FilterPanelWidget extends StatefulWidget {
-  late FilterPanelData? data;
+  final FilterPanelData? data;
 
-  FilterPanelWidget({
+  const FilterPanelWidget({
     super.key,
     this.data,
   });

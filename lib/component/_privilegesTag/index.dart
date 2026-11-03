@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class PrivilegesTagWidget extends StatefulWidget {
-  List<dynamic>? data;
+  final List<dynamic>? data;
 
-  PrivilegesTagWidget({
-    Key? key,
+  const PrivilegesTagWidget({
+    super.key,
     this.data,
-  }) : super(key: key);
+  });
 
   @override
   State<PrivilegesTagWidget> createState() => _PrivilegesTagWidgetState();

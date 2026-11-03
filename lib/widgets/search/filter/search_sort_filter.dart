@@ -8,7 +8,16 @@ import '../../player/filter/class.dart';
 import '../../player/filter/framework.dart';
 
 class SearchSortFilterPanel extends FilterPanelWidget {
-  SearchSortFilterPanel({super.key});
+  SearchSortFilterPanel({
+    super.key,
+    FilterPanelData? data,
+  }) : super(
+          data: data ??
+              FilterPanelData(
+                values: ["default"],
+                names: ["sort"],
+              ),
+        );
 
   @override
   SearchSortFilterPanelState createState() => SearchSortFilterPanelState();
@@ -25,11 +34,6 @@ class SearchSortFilterPanelState extends State<SearchSortFilterPanel> {
 
   @override
   void initState() {
-    widget.data ??= FilterPanelData(
-      values: ["default"],
-      names: ["sort"],
-    );
-
     super.initState();
   }
 

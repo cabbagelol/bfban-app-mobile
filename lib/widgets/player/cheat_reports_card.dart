@@ -18,15 +18,15 @@ class CheatReportsCard extends StatelessWidget implements BaseCardStatelessWidge
 
   // 单条数据
   @override
-  late Map data;
+  late final Map data;
 
   // 数据数量
   @override
-  late num maxDataCount;
+  late final num maxDataCount;
 
   // 位置
   @override
-  late int index;
+  late final int index;
 
   final CardUtil _detailApi = CardUtil();
 
@@ -50,7 +50,7 @@ class CheatReportsCard extends StatelessWidget implements BaseCardStatelessWidge
     return TimeLineBaseCard(
       key: _timeLineBaseCardKey,
       type: TimeLineItemType.report,
-      isShowLine: maxDataCount > 1 && index! < maxDataCount,
+      isShowLine: maxDataCount > 1 && index < maxDataCount,
       header: [
         // 标题
         Text.rich(

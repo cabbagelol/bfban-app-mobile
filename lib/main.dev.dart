@@ -5,8 +5,8 @@ import 'data/Url.dart';
 import 'main.dart';
 
 void main() async {
-  // 本地服务开关：若本地未启动前后端服务或在真机调试，设为 false 自动使用线上服务
-  bool useLocalServer = false;
+  // 本地服务开关：若本地未启动前后端服务或在真机调试，默认为 false 使用线上服务
+  bool useLocalServer = Platform.environment["USE_LOCAL_SERVER"] == "true";
 
   Config.dev(
     api: {

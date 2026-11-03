@@ -328,7 +328,7 @@ class JudgementPageState extends State<JudgementPage> {
                     initialValue: manageStatus.parame!.cheatMethods,
                     onSaved: (value) {
                       setState(() {
-                        manageStatus.parame!.cheatMethods = value as List?;
+                        manageStatus.parame!.cheatMethods = value;
                       });
                     },
                     validator: (value) {
@@ -412,7 +412,7 @@ class JudgementPageState extends State<JudgementPage> {
                   initialValue: manageStatus.parame!.content,
                   onSaved: (value) {
                     setState(() {
-                      manageStatus.parame!.content = value as String?;
+                      manageStatus.parame!.content = value;
                     });
                   },
                   validator: (value) {

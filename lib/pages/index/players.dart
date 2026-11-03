@@ -270,9 +270,10 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
     // 生成查询条件
     Map data = {"data": []};
 
-    Config.game["child"].forEach((i) {
+    final List gameChildList = (Config.game["child"] is List) ? (Config.game["child"] as List) : [];
+    for (var i in gameChildList) {
       data["data"].add({"game": i["value"], "status": -1});
-    });
+    }
 
     cheaterStatus!.asMap().keys.forEach((index) {
       // 跳过状态 -1 全部
@@ -312,13 +313,12 @@ class PlayerListPageState extends State<PlayerListPage> with SingleTickerProvide
             // 游戏类型统计
             // 游戏类i["status"]是-1
             if (i["game"] != "*" && i["status"] == -1) {
-              Config.game["child"].asMap().keys.forEach((index) {
-                var gameNameItem = Config.game["child"][index];
-
+              final List gameList = (Config.game["child"] is List) ? (Config.game["child"] as List) : [];
+              for (var gameNameItem in gameList) {
                 if (gameNameItem["value"] == i["game"]) {
                   gameNameItem["num"] = i["count"];
                 }
-              });
+              }
             }
           }
         }

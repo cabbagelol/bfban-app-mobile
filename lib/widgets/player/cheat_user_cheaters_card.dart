@@ -4,7 +4,6 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 
 import '../../component/_html/htmlWidget.dart';
 import '../../component/_time/index.dart';
-import '../../utils/index.dart';
 import 'base_card.dart';
 import 'basic_timeline_types.dart';
 import 'basic_quote_card.dart';
@@ -15,15 +14,15 @@ class CheatUserCheatersCard extends StatelessWidget implements BaseCardStateless
 
   // 单条数据
   @override
-  late Map data;
+  late final Map data;
 
   // 数据数量
   @override
-  late num maxDataCount;
+  late final num maxDataCount;
 
   // 位置
   @override
-  late int index = 0;
+  late final int index;
 
   final Function onReplySucceed;
 

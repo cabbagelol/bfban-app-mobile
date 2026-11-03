@@ -173,34 +173,40 @@ class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderS
   }
 
   /// [Event]
-  /// 更新游览值
+  /// 更新游览值并记录本地游览历史
   Future _onUpdateViewed() async {
     StorageData? viewedData = await storage.get("viewed");
-    Map<String, dynamic> viewed = viewedData.value ?? {};
-    String? id = viewedStatus.parame!.id.toString();
+    Map<String, dynamic> viewed = Map<String, dynamic>.from(viewedData.value ?? {});
+    String? id = viewedStatus.parame!.id?.toString();
 
-    if (id.isEmpty) return;
+    if (id == null || id.isEmpty) return;
 
-    // 校验,含id且1天内，则不更新游览值
-    if (viewed.containsKey(id) && (viewed[id]! < viewed[id]! + 10 * 60 * 60 * 1000)) return;
+    int now = DateTime.now().millisecondsSinceEpoch;
+    int lastViewTime = (viewed[id] is num) ? (viewed[id] as num).toInt() : 0;
 
-    Response result = await Http.request(
-      Config.httpHost["player_viewed"],
-      data: viewedStatus.parame!.toMap,
-      method: Http.POST,
-    );
-    Map d = result.data;
+    // 无论服务端计数是否更新，本地游览历史都必须记录并置顶当前时间戳
+    viewed[id] = now;
+    await storage.set("viewed", value: viewed);
 
-    if (d["success"] == 1) {
-      viewed[id] = DateTime.now().millisecondsSinceEpoch;
-      storage.set("viewed", value: viewed);
+    // 校验：若含该id且在 10 小时冷却期内，则不向服务端重复发起累加游览量请求
+    if (lastViewTime > 0 && (now - lastViewTime < 10 * 60 * 60 * 1000)) return;
 
-      if (mounted) {
-        setState(() {
-          playerStatus.data!.viewNum = playerStatus.data!.viewNum! + 1;
-        });
+    try {
+      Response result = await Http.request(
+        Config.httpHost["player_viewed"],
+        data: viewedStatus.parame!.toMap,
+        method: Http.POST,
+      );
+      Map d = result.data;
+
+      if (d["success"] == 1) {
+        if (mounted) {
+          setState(() {
+            playerStatus.data!.viewNum = (playerStatus.data!.viewNum ?? 0) + 1;
+          });
+        }
       }
-    }
+    } catch (_) {}
   }
 
   /// [Event]
@@ -1207,10 +1213,10 @@ class PlayerDetailPageState extends State<PlayerDetailPage> with TickerProviderS
                                 itemBuilder: (context) {
                                   return [
                                     // 申诉处理
-                                    if (data.isLogin && false)
+                                    if (data.isLogin && playerStatus.data?.status == 1)
                                       PopupMenuItem(
                                         value: 1,
-                                        enabled: data.isLogin && playerStatus.data!.status == 1,
+                                        enabled: true,
                                         child: Wrap(
                                           spacing: 15,
                                           runAlignment: WrapAlignment.center,

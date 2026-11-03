@@ -453,7 +453,7 @@ class CamerawesomePlugin {
   }) async {
     try {
       if (Platform.isAndroid) {
-        return CameraInterface().requestPermissions(saveGpsLocation).then((givenPermissions) {
+        return await CameraInterface().requestPermissions(saveGpsLocation).then((givenPermissions) {
           return givenPermissions.map((e) => CamerAwesomePermission.values.firstWhere((element) => element.name == e)).toList();
         });
       } else if (Platform.isIOS) {
@@ -467,7 +467,7 @@ class CamerawesomePlugin {
           permissions.add("camera");
         }
 
-        return CamerawesomePlugin.checkiOSPermissions(permissions).then((givenPermissions) => CamerAwesomePermission.values);
+        return await CamerawesomePlugin.checkiOSPermissions(permissions).then((givenPermissions) => CamerAwesomePermission.values);
       }
     } catch (e) {
       printLog("failed to check permissions here...");

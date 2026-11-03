@@ -5,9 +5,9 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 import '../../utils/index.dart';
 
 class CheatMethodsTagWidget extends StatefulWidget {
-  late List data;
+  final List data;
 
-  CheatMethodsTagWidget({
+  const CheatMethodsTagWidget({
     super.key,
     required this.data,
   });

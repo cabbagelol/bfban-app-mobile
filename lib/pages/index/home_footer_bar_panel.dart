@@ -98,44 +98,78 @@ class HomeFooterBarPanelState extends State<HomeFooterBarPanel> {
       int skip = 1;
       int limit = 3;
 
-      Map viewed = viewedData.value ?? {};
-      List<TourRecordPlayerBaseData>? viewedWidgets = [];
+      Map viewed = viewedData.value is Map ? (viewedData.value as Map) : {};
 
-      setState(() {
-        tourRecordStatus.list!.clear();
-        tourRecordStatus.load = true;
+      if (viewed.isEmpty) {
+        if (mounted) {
+          setState(() {
+            tourRecordStatus.list = [];
+            tourRecordStatus.load = false;
+          });
+        }
+        return;
+      }
+
+      if (mounted) {
+        setState(() {
+          tourRecordStatus.list!.clear();
+          tourRecordStatus.load = true;
+        });
+      }
+
+      // 按时间戳倒序排列
+      List<MapEntry> sortedEntries = viewed.entries.toList();
+      sortedEntries.sort((a, b) {
+        num valA = (a.value is num) ? a.value as num : 0;
+        num valB = (b.value is num) ? b.value as num : 0;
+        return valB.compareTo(valA);
       });
 
-      List dbIds = [];
+      int total = sortedEntries.length;
       int start = (skip - 1) * limit;
-      int end = (skip * limit) <= viewed.length ? skip * limit : viewed.length;
-      viewed.entries.toList().sort((a, b) => a.value > b.value ? 1 : -1);
-      dbIds = viewed.entries.toList().sublist(start, end).map((e) => e.key).toList();
+      int end = (start + limit).clamp(0, total);
+      List dbIds = sortedEntries.sublist(start, end).map((e) => int.tryParse(e.key.toString()) ?? e.key).toList();
 
-      Response result = await Http.request(
-        Config.httpHost["player_batch"],
-        parame: {"dbIds": dbIds},
-        method: Http.GET,
-      );
+      List<TourRecordPlayerBaseData> viewedWidgets = [];
 
-      dynamic d = result.data;
+      if (dbIds.isNotEmpty) {
+        Response result = await Http.request(
+          Config.httpHost["player_batch"],
+          data: {"dbIds": dbIds},
+          method: Http.POST,
+        );
 
-      if (result.data["success"] == 1 && d["data"] is List) {
-        for (var playerItem in d["data"] as List) {
-          TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
-          tourRecordPlayerBaseData.setData(playerItem);
-          viewedWidgets.add(tourRecordPlayerBaseData);
+        dynamic d = result.data;
+
+        if (d != null && d["success"] == 1 && d["data"] is List) {
+          Map<dynamic, dynamic> resultMap = {};
+          for (var playerItem in d["data"] as List) {
+            if (playerItem is Map && playerItem["id"] != null) {
+              resultMap[playerItem["id"]] = playerItem;
+            }
+          }
+          for (var id in dbIds) {
+            if (resultMap.containsKey(id)) {
+              TourRecordPlayerBaseData tourRecordPlayerBaseData = TourRecordPlayerBaseData();
+              tourRecordPlayerBaseData.setData(resultMap[id]);
+              viewedWidgets.add(tourRecordPlayerBaseData);
+            }
+          }
         }
       }
 
-      setState(() {
-        tourRecordStatus.list = viewedWidgets;
-        tourRecordStatus.load = false;
-      });
+      if (mounted) {
+        setState(() {
+          tourRecordStatus.list = viewedWidgets;
+          tourRecordStatus.load = false;
+        });
+      }
     } catch (err) {
-      setState(() {
-        tourRecordStatus.load = false;
-      });
+      if (mounted) {
+        setState(() {
+          tourRecordStatus.load = false;
+        });
+      }
     }
   }
 

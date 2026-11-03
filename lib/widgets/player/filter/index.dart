@@ -11,7 +11,7 @@ import 'solt_filter.dart';
 class PlayerFilterPanel extends FilterPanelWidget {
   final Function(Map value) onChange;
 
-  PlayerFilterPanel({
+  const PlayerFilterPanel({
     super.key,
     required this.onChange,
   });

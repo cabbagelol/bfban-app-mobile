@@ -244,7 +244,7 @@ class _AppealPageState extends State<AppealPage> {
                     initialValue: appealStatus.parame!.extendedLinks!.videoLink,
                     onSaved: (value) {
                       setState(() {
-                        appealStatus.parame!.extendedLinks!.videoLink = value as String?;
+                        appealStatus.parame!.extendedLinks!.videoLink = value;
                       });
                     },
                     validator: (value) {
@@ -282,7 +282,7 @@ class _AppealPageState extends State<AppealPage> {
                     initialValue: appealStatus.parame!.extendedLinks!.btrLink,
                     onSaved: (value) {
                       setState(() {
-                        appealStatus.parame!.extendedLinks!.btrLink = value as String?;
+                        appealStatus.parame!.extendedLinks!.btrLink = value;
                       });
                     },
                     validator: (value) {
@@ -327,7 +327,7 @@ class _AppealPageState extends State<AppealPage> {
                     initialValue: appealStatus.parame!.extendedLinks!.mossDownloadUrl,
                     onSaved: (value) {
                       setState(() {
-                        appealStatus.parame!.extendedLinks!.mossDownloadUrl = value as String?;
+                        appealStatus.parame!.extendedLinks!.mossDownloadUrl = value;
                       });
                     },
                     validator: (value) {
@@ -411,7 +411,7 @@ class _AppealPageState extends State<AppealPage> {
                     initialValue: appealStatus.parame!.content,
                     onSaved: (value) {
                       setState(() {
-                        appealStatus.parame!.content = value as String?;
+                        appealStatus.parame!.content = value;
                       });
                     },
                     validator: (value) {

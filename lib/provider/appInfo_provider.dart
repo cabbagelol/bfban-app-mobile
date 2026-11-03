@@ -107,7 +107,17 @@ class NetworkConf with ChangeNotifier {
     }
 
     // 更新类，带安全兜底，防止远程配置失败时出现 null unwrap 崩溃
-    Config.game = data.gameName ?? {"child": []};
+    Config.game = (data.gameName != null && data.gameName!["child"] is List && (data.gameName!["child"] as List).isNotEmpty)
+        ? data.gameName!
+        : {
+            "defaultIndex": 0,
+            "default": "bf1",
+            "child": [
+              {"value": "bf1", "full_name": "bf1"},
+              {"value": "bfv", "full_name": "bfv"},
+              {"value": "bf6", "full_name": "bf2042"},
+            ]
+          };
     Config.achievements = (data.achievements != null && data.achievements!["child"] != null) ? data.achievements! : {"child": []};
     Config.privilege = data.privilege ?? {};
     Config.cheatMethodsGlossary = (data.cheatMethodsGlossary != null && data.cheatMethodsGlossary!["child"] != null) ? data.cheatMethodsGlossary! : {"child": []};

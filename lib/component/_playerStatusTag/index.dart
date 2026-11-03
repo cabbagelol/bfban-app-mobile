@@ -4,10 +4,11 @@ import 'package:flutter_i18n/flutter_i18n.dart';
 enum PlayerStatusTagSize { small, medium, large }
 
 class PlayerStatusTagWidget extends StatefulWidget {
-  int status;
-  PlayerStatusTagSize size;
+  final int status;
+  final PlayerStatusTagSize size;
 
-  PlayerStatusTagWidget({
+  const PlayerStatusTagWidget({
+    super.key,
     this.status = 0,
     this.size = PlayerStatusTagSize.medium,
   });

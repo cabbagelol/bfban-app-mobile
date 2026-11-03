@@ -6,9 +6,9 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_i18n/flutter_i18n.dart';
 
 class RecordLinkWidget extends StatefulWidget {
-  Map? data;
+  final Map? data;
 
-  RecordLinkWidget({
+  const RecordLinkWidget({
     super.key,
     this.data,
   });

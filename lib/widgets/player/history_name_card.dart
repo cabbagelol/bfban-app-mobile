@@ -9,15 +9,15 @@ import 'basic_timeline_types.dart';
 class HistoryNameCard extends StatelessWidget implements BaseCardStatelessWidget {
   // 单条数据
   @override
-  late Map data;
+  late final Map data;
 
   // 数据数量
   @override
-  late num maxDataCount;
+  late final num maxDataCount;
 
   // 位置
   @override
-  late int index = 0;
+  late final int index;
 
   HistoryNameCard({
     super.key,

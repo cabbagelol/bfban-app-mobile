@@ -188,12 +188,7 @@ class HomeCommunityPageState extends State<HomeCommunityPage> with RestorationMi
   }
 
   List get filterList {
-    return activityStatus.list!.where((i) {
-      var item = chipCont["list"].where((element) => element["value"] == i["type"]).toList();
-      var is_ = item.length > 0 ? restorablebool[item[0]["index"]].value : false;
-      if (restorablebool.where((element) => element.value).isEmpty) is_ = true;
-      return is_;
-    }).toList();
+    return activityStatus.list!.where(_isShow).toList();
   }
 
   Widget get child {

@@ -6,14 +6,21 @@ import 'framework.dart';
 
 class SoltFilterPanel extends FilterPanelWidget {
   SoltFilterPanel({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    FilterPanelData? data,
+  }) : super(
+          data: data ??
+              FilterPanelData(
+                values: ["updateTime"],
+                names: ["sortBy"],
+              ),
+        );
 
   @override
-  _SoltFilterPanelState createState() => _SoltFilterPanelState();
+  SoltFilterPanelState createState() => SoltFilterPanelState();
 }
 
-class _SoltFilterPanelState extends State<SoltFilterPanel> {
+class SoltFilterPanelState extends State<SoltFilterPanel> {
   /// solt
   List<Map<String, String>> soltList = [
     {"value": "createTime"},
@@ -24,11 +31,6 @@ class _SoltFilterPanelState extends State<SoltFilterPanel> {
 
   @override
   void initState() {
-    widget.data ??= FilterPanelData(
-      values: ["updateTime"],
-      names: ["sortBy"],
-    );
-
     super.initState();
   }
 

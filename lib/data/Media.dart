@@ -55,7 +55,6 @@ class MediaWrite {
         case OrderType.asc:
           return aTime < bTime ? 1 : -1;
         case OrderType.desc:
-        default:
           return aTime > bTime ? 1 : -1;
       }
     });
